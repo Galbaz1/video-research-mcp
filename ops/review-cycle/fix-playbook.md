@@ -94,3 +94,12 @@
 - Regression coverage:
   - `tests/test_research_document_tools.py::TestResearchDocument::test_surfaces_preparation_issues`
   - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_collects_download_failures_and_keeps_successes`
+
+## FP-010: Delimit untrusted retrieval content in summarization prompts
+- Context: LLM post-processing over untrusted search hits and user query text.
+- Rule: Wrap query/hit payloads in explicit untrusted-data markers and instruct model to ignore embedded instructions in those payloads.
+- Why: Reduces prompt-injection/tool-misuse risk from instruction smuggling in retrieved content.
+- Applied in iteration 7:
+  - `src/video_research_mcp/tools/knowledge/summarize.py`
+- Regression coverage:
+  - `tests/test_knowledge_summarize.py::TestSummarizeHits::test_prompt_hardens_untrusted_query_and_properties`

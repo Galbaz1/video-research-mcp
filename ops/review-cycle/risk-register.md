@@ -70,4 +70,12 @@
 - Area: Prompt-injection/tool-misuse resistance
 - Evidence: Iterations 1-6 focused on trust boundaries, validation, idempotency, auth, cache integrity, and fault isolation; no dedicated adversarial prompt-injection review artifacts yet.
 - Exploit reasoning: Untrusted content merged into model prompts may induce policy bypass attempts without explicit adversarial coverage tests.
-- Status: Open (scheduled as iteration 7 primary focus).
+- Status: Partially mitigated in iteration 7 with untrusted-data prompt delimiters + adversarial test coverage in `src/video_research_mcp/tools/knowledge/summarize.py`.
+- Residual risk: Other text-recomposition flows (for example `content._reshape_to_schema`) still interpolate untrusted model output without equivalent explicit anti-injection framing.
+
+## R-011
+- Severity: Medium
+- Area: Prompt-injection/tool-misuse resistance
+- Evidence: `src/video_research_mcp/tools/content.py:208` and `src/video_research_mcp/tools/content.py:216` pass raw `unstructured` model output directly into second-pass schema reshaping prompts.
+- Exploit reasoning: Adversarial instructions embedded in fetched/parsed content can influence second-pass behavior and reduce schema/summary reliability.
+- Status: Open (queued for iteration 8 alongside broader resource/concurrency hardening).

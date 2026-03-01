@@ -57,3 +57,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 4. If at least one source is still prepared successfully, the final `research_document` response shall include preparation-failure metadata instead of silently dropping failed sources.
 5. If all sources fail preparation, the tool shall return structured `make_tool_error()` output and shall not proceed to synthesis.
 6. The run shall persist severity-ranked findings, exploit reasoning, implemented remediations, confidence deltas, and next-iteration hypotheses in review-cycle artifacts before completion.
+
+## Iteration 7 Mission Rewritten as EARS Requirements
+1. When iteration state indicates `current_iteration=7`, the run shall prioritize prompt-injection and tool-misuse resistance.
+2. If iteration 6 lessons emphasize explicit integrity boundaries, iteration 7 shall apply that pattern to untrusted prompt inputs by labeling and delimiting them.
+3. When query text or retrieved properties are inserted into model prompts, the system shall mark those values as untrusted and instruct the model to ignore embedded instructions.
+4. If adversarial text attempts instruction override (for example "ignore previous instructions"), regression tests shall verify hardened prompt contracts remain present.
+5. The run shall record severity-ranked findings, exploit reasoning, implemented or patch-ready remediations, and confidence deltas in review-cycle artifacts.

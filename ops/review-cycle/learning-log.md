@@ -67,3 +67,15 @@
 ## Iteration 7 seed hypotheses
 - Evaluate prompt-injection and instruction-smuggling resistance across tools that combine untrusted content with system prompts.
 - Add negative tests that prove malicious document/content strings cannot override tool safety constraints or policy gates.
+
+## Iteration 7 (Prompt Injection and Tool Misuse Resistance) - 2026-03-01T16:03:02Z
+- Observation: `knowledge` Flash post-processing built prompts by embedding query and hit properties directly in free-form text (`src/video_research_mcp/tools/knowledge/summarize.py`) without explicit untrusted-data framing.
+- Inference: Untrusted retrieval content could attempt instruction smuggling (for example "ignore previous instructions") and reduce reliability of summary/property-selection outputs.
+- Strategy: Apply iteration-6 lesson ("make implicit integrity boundaries explicit") to prompt boundaries by introducing explicit untrusted-data delimiters and hard model instructions to ignore embedded commands.
+- Validation: Hardened `_build_prompt(...)` with `UNTRUSTED_QUERY`/`UNTRUSTED_HIT` wrappers and added adversarial regression coverage in `tests/test_knowledge_summarize.py::test_prompt_hardens_untrusted_query_and_properties`; focused lint + tests passed.
+- Confidence change: 0.58 -> 0.81 for prompt-boundary robustness in knowledge summarization path.
+- Delivery confidence: 0.81 -> 0.86 after targeted tests passed on branch `codex/review/i07`.
+
+## Iteration 8 seed hypotheses
+- Audit concurrency/resource-exhaustion risks in batch/document pipelines (`asyncio.gather` fan-out, upload/download parallelism) and add bounded concurrency controls where needed.
+- Add negative tests covering adversarially large batch inputs to validate graceful degradation instead of resource spikes.
