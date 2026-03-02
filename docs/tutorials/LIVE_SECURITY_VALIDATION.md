@@ -5,8 +5,8 @@ Use this runbook after security changes merge, before release, and during period
 ## What Codex Can Do For You
 - Keep CI checks wired (`lint`, `test`, `security-smoke`) and update coverage as mitigations evolve.
 - Maintain reusable scripts:
-  - [`scripts/run_security_smoke.sh`](/Users/fausto/.codex/worktrees/6e71/gemini-research-mcp/scripts/run_security_smoke.sh)
-  - [`scripts/run_live_tool_security_checks.py`](/Users/fausto/.codex/worktrees/6e71/gemini-research-mcp/scripts/run_live_tool_security_checks.py)
+  - [`scripts/run_security_smoke.sh`](../../scripts/run_security_smoke.sh)
+  - [`scripts/run_live_tool_security_checks.py`](../../scripts/run_live_tool_security_checks.py)
 - Open PRs for remediation and provide exact pass/fail output.
 
 ## What You Need To Do
@@ -61,7 +61,14 @@ GEMINI_API_KEY=... PYTHONPATH=src uv run python scripts/run_live_tool_security_c
 Expected additional PASS check:
 - `online_extract`
 
-If `online_extract` is `SKIP`, `GEMINI_API_KEY` was not set in your shell.
+If `online_extract` is `SKIP`, either:
+- `GEMINI_API_KEY` was not set in your shell, or
+- the provider returned a transient availability/capacity error (e.g. temporary 503/high demand).
+
+To treat transient upstream errors as release-blocking failures:
+```bash
+GEMINI_API_KEY=... PYTHONPATH=src uv run python scripts/run_live_tool_security_checks.py --run-online --strict-online
+```
 
 ## Step 4: MCP Client Live Validation (Manual)
 Run these in your MCP client against a staging server:
@@ -80,4 +87,5 @@ Run these in your MCP client against a staging server:
 Before tagging a release:
 1. Run Step 2 and Step 3.
 2. Attach output snippets to the release PR.
-3. If any check fails, block release and open a remediation PR.
+3. If Step 2 fails, block release and open a remediation PR.
+4. In Step 3, block release on policy check FAILs. For `online_extract`, retry once with `GEMINI_MODEL=gemini-3-flash-preview`; if still `SKIP` due transient provider availability, log it in the PR and continue.

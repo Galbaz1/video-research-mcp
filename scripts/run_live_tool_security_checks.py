@@ -16,7 +16,7 @@ import tempfile
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
+from typing import Awaitable, Callable, Iterator
 
 import video_research_mcp.config as cfg_mod
 from video_research_mcp.tools import content as content_mod
@@ -71,6 +71,29 @@ def _as_error(result: dict) -> str:
     category = result.get("category", "<missing>")
     message = result.get("error", "<missing>")
     return f"{category}: {message}"
+
+
+def _is_transient_upstream_unavailable(result: dict) -> bool:
+    """Return True when a tool error looks like temporary provider saturation."""
+    category = str(result.get("category", "")).upper()
+    if category in {"NETWORK_ERROR", "API_QUOTA_EXCEEDED"}:
+        return True
+    text = " ".join(
+        str(result.get(key, "")).lower()
+        for key in ("error", "hint")
+    )
+    transient_markers = (
+        "503",
+        "unavailable",
+        "high demand",
+        "resource_exhausted",
+        "quota",
+        "rate limit",
+        "timed out",
+        "timeout",
+        "try again later",
+    )
+    return any(marker in text for marker in transient_markers)
 
 
 async def _check_non_https_url_blocked() -> CheckResult:
@@ -156,7 +179,7 @@ async def _check_research_source_limit() -> CheckResult:
     return CheckResult("research_source_limit", "FAIL", expectation, str(result))
 
 
-async def _check_online_extract() -> CheckResult:
+async def _check_online_extract(strict_online: bool) -> CheckResult:
     """Run one online Gemini-backed extraction check when requested."""
     expectation = "successful extraction with non-empty summary"
     api_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
@@ -174,13 +197,25 @@ async def _check_online_extract() -> CheckResult:
         "additionalProperties": False,
     }
     with _with_env({"GEMINI_API_KEY": api_key}):
+        effective_model = cfg_mod.get_config().default_model
         result = await CONTENT_EXTRACT(
             content="Codex can run recurring security checks for MCP servers.",
             schema=schema,
         )
     summary = result.get("summary") if isinstance(result, dict) else None
     if isinstance(summary, str) and summary.strip():
-        return CheckResult("online_extract", "PASS", expectation, str(result))
+        return CheckResult("online_extract", "PASS", expectation, f"model={effective_model}; {result}")
+    if (
+        isinstance(result, dict)
+        and _is_transient_upstream_unavailable(result)
+        and not strict_online
+    ):
+        return CheckResult(
+            "online_extract",
+            "SKIP",
+            expectation,
+            f"model={effective_model}; transient upstream issue: {result}",
+        )
     return CheckResult("online_extract", "FAIL", expectation, str(result))
 
 
@@ -199,9 +234,9 @@ def _print_results(results: list[CheckResult]) -> None:
     print(f"  pass={passed} fail={failed} skip={skipped}")
 
 
-async def _run(run_online: bool) -> int:
+async def _run(run_online: bool, strict_online: bool) -> int:
     """Execute selected checks and return process exit code."""
-    checks = [
+    checks: list[Callable[[], Awaitable[CheckResult]]] = [
         _check_non_https_url_blocked,
         _check_local_path_boundary,
         _check_infra_mutation_gate_disabled,
@@ -209,7 +244,7 @@ async def _run(run_online: bool) -> int:
         _check_research_source_limit,
     ]
     if run_online:
-        checks.append(_check_online_extract)
+        checks.append(lambda: _check_online_extract(strict_online=strict_online))
 
     results: list[CheckResult] = []
     for check in checks:
@@ -237,8 +272,13 @@ def main() -> int:
         action="store_true",
         help="Run one Gemini-backed live extraction check (requires GEMINI_API_KEY).",
     )
+    parser.add_argument(
+        "--strict-online",
+        action="store_true",
+        help="Treat transient upstream provider issues as FAIL instead of SKIP.",
+    )
     args = parser.parse_args()
-    return asyncio.run(_run(run_online=args.run_online))
+    return asyncio.run(_run(run_online=args.run_online, strict_online=args.strict_online))
 
 
 if __name__ == "__main__":
