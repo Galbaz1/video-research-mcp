@@ -7,6 +7,10 @@ from video_research_mcp.models.knowledge import (
     HitSummaryBatch,
     KnowledgeHit,
 )
+from tests.adversarial_inputs import (
+    ADVERSARIAL_PROMPT_INJECTION,
+    ADVERSARIAL_TOOL_MISUSE,
+)
 
 
 def _make_hit(object_id: str, collection: str = "VideoAnalyses", **props) -> KnowledgeHit:
@@ -128,3 +132,33 @@ class TestSummarizeHits:
 
         assert result[0].summary == "Summary for A"
         assert result[1].summary is None  # No summary for uuid-2
+
+    async def test_adversarial_query_and_props_are_treated_as_data(self, mock_gemini_client):
+        """Prompt-injection text in query/properties should stay untrusted prompt data."""
+        malicious_query = f"{ADVERSARIAL_PROMPT_INJECTION} {ADVERSARIAL_TOOL_MISUSE}"
+        hits = [
+            _make_hit(
+                "uuid-1",
+                title=ADVERSARIAL_PROMPT_INJECTION,
+                notes=ADVERSARIAL_TOOL_MISUSE,
+            )
+        ]
+        mock_gemini_client["generate_structured"].return_value = HitSummaryBatch(
+            summaries=[HitSummary(
+                object_id="uuid-1",
+                relevance=0.7,
+                summary="Handled safely",
+                useful_properties=["title"],
+            )],
+        )
+
+        from video_research_mcp.tools.knowledge.summarize import summarize_hits
+        result = await summarize_hits(hits, malicious_query)
+
+        assert result[0].summary == "Handled safely"
+        call_args = mock_gemini_client["generate_structured"].call_args
+        assert "system_instruction" in call_args.kwargs
+        prompt = call_args.args[0]
+        assert malicious_query in prompt
+        assert ADVERSARIAL_PROMPT_INJECTION in prompt
+        assert ADVERSARIAL_TOOL_MISUSE in prompt

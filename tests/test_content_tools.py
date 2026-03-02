@@ -10,6 +10,7 @@ import video_research_mcp.tools.content as content_mod
 from video_research_mcp.models.content import ContentResult
 from video_research_mcp.prompts.content import CONTENT_ANALYSIS_SYSTEM
 from video_research_mcp.tools.content import _build_content_parts
+from tests.adversarial_inputs import ADVERSARIAL_PROMPT_INJECTION
 from tests.conftest import unwrap_tool
 
 content_analyze = unwrap_tool(content_mod.content_analyze)
@@ -160,6 +161,30 @@ class TestContentAnalyze:
         assert mock_gemini_client["generate_structured"].call_count == 1
         structured_kwargs = mock_gemini_client["generate_structured"].call_args.kwargs
         assert structured_kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
+
+    @pytest.mark.asyncio
+    async def test_url_reshape_with_adversarial_content_keeps_guardrails(self, mock_gemini_client):
+        """Adversarial unstructured URL content stays data and cannot drop system guardrails."""
+        mock_gemini_client["generate"].side_effect = [
+            Exception("structured output not supported with UrlContext"),
+            ADVERSARIAL_PROMPT_INJECTION,
+        ]
+        mock_gemini_client["generate_structured"].return_value = ContentResult(
+            title="Safe Reshape",
+            summary="Ignored adversarial directives",
+        )
+
+        result = await content_analyze(
+            url="https://example.com",
+            instruction="Summarize key points",
+        )
+
+        assert result["title"] == "Safe Reshape"
+        reshape_call = mock_gemini_client["generate_structured"].call_args
+        assert reshape_call.kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
+        reshape_prompt = reshape_call.args[0]
+        assert "Summarize key points" in reshape_prompt
+        assert ADVERSARIAL_PROMPT_INJECTION in reshape_prompt
 
 
 class TestContentExtract:

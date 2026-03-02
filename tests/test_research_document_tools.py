@@ -14,6 +14,11 @@ from video_research_mcp.models.research_document import (
     DocumentMap,
     DocumentResearchReport,
 )
+from video_research_mcp.prompts.research_document import DOCUMENT_RESEARCH_SYSTEM
+from tests.adversarial_inputs import (
+    ADVERSARIAL_PROMPT_INJECTION,
+    ADVERSARIAL_TOOL_MISUSE,
+)
 from tests.conftest import unwrap_tool
 
 research_document = unwrap_tool(research_document_mod.research_document)
@@ -282,3 +287,41 @@ class TestResearchDocument:
                     "error": "Blocked hostname",
                 }
             ]
+
+    @patch(
+        "video_research_mcp.tools.research_document.store_research_finding",
+        new_callable=AsyncMock,
+    )
+    async def test_document_synthesis_with_adversarial_findings_keeps_guardrails(
+        self, mock_store_fn, mock_prepare, mock_gemini_client,
+    ):
+        """Injected instructions in findings are treated as data during synthesis."""
+        malicious_claim = (
+            f"{ADVERSARIAL_PROMPT_INJECTION} "
+            f"{ADVERSARIAL_TOOL_MISUSE}"
+        )
+        mock_gemini_client["generate_structured"].side_effect = [
+            DocumentMap(title="Doc", sections=["Intro"], summary="Map"),
+            DocumentFindingsContainer(
+                document="doc1.pdf",
+                findings=[DocumentFinding(claim=malicious_claim, evidence_tier="SPECULATION")],
+            ),
+            DocumentResearchReport(executive_summary="Synthesis complete"),
+        ]
+
+        result = await research_document(
+            instruction="Synthesize findings",
+            file_paths=["/path/to/doc1.pdf"],
+            scope="moderate",
+        )
+
+        assert "error" not in result
+        synthesis_call = mock_gemini_client["generate_structured"].call_args_list[2]
+        assert synthesis_call.kwargs["system_instruction"] == DOCUMENT_RESEARCH_SYSTEM
+        synthesis_contents = synthesis_call.args[0]
+        synthesis_prompt = next(
+            (part.text for part in synthesis_contents.parts if getattr(part, "text", None)),
+            "",
+        )
+        assert "Synthesize findings" in synthesis_prompt
+        assert malicious_claim in synthesis_prompt
