@@ -2,8 +2,8 @@
   "current_iteration": 11,
   "max_iterations": 10,
   "last_completed_iteration": 10,
-  "last_run_at": "2026-03-01T16:06:53Z",
-  "active_branch": "codex/review/i10",
+  "last_run_at": "2026-03-02T10:13:37Z",
+  "active_branch": "main",
   "mainline_branch": "codex/review-mainline",
-  "status": "cycle_complete_pending_finalization"
+  "status": "cycle_complete_merged_to_main"
 }

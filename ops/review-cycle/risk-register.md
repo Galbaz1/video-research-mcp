@@ -88,12 +88,12 @@
 - Evidence: Prior to iteration 9, `src/video_research_mcp/url_policy.py::download_checked` used `follow_redirects=True` and validated redirected target only after follow.
 - Exploit reasoning: Safe-looking external URL could redirect to a blocked internal target and trigger a network request before policy rejection.
 - Status: Mitigated in iteration 9 by switching to manual redirect handling with per-hop `validate_url()` before every follow-up request.
-- Residual risk: Equivalent redirect handling guarantees must be preserved for any future download helpers added outside `url_policy.py`.
+- Residual risk: Equivalent redirect handling guarantees must still be preserved for any future download helpers added outside `url_policy.py`; mitigation now includes a required tool-authoring checklist item in `docs/tutorials/ADDING_A_TOOL.md`.
 
 ## R-013
 - Severity: Medium
 - Area: Regression assurance / control drift
 - Evidence: Before iteration 10, high-impact security checks required multiple ad hoc targeted commands with no consolidated runner.
 - Exploit reasoning: Operational friction increases the probability that key controls are not re-validated each run, allowing silent regression drift.
-- Status: Partially mitigated in iteration 10 via `scripts/run_security_smoke.sh`.
-- Residual risk: Smoke suite is currently manual; CI enforcement is still pending.
+- Status: Mitigated by iteration 10 smoke-suite consolidation plus CI enforcement in `.github/workflows/ci.yml` (merged to `main` via PR #41 on 2026-03-02).
+- Residual risk: Coverage can still drift if future mitigations are not added to `scripts/run_security_smoke.sh` and kept in required CI checks.

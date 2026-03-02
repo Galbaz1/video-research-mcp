@@ -1,11 +1,11 @@
 # Review Cycle Final Report (Iterations 1-10)
 
-Date: 2026-03-01T16:06:53Z  
+Date: 2026-03-02T10:13:37Z  
 Cycle: Hourly Plugin Security Review  
 Scope: `video-research-mcp` MCP servers and supporting infrastructure
 
 ## Executive Summary
-The 10-iteration cycle materially reduced high-risk exposure across trust boundaries, auth/secret handling, idempotency, cache integrity, prompt safety, concurrency limits, and regression harness reliability. Most originally high-impact findings are now mitigated with code + test coverage. Remaining risk is concentrated in long-term regression assurance (CI enforcement), broader adversarial prompt corpus coverage, and ensuring future tools inherit existing policy primitives.
+The 10-iteration cycle materially reduced high-risk exposure across trust boundaries, auth/secret handling, idempotency, cache integrity, prompt safety, concurrency limits, and regression harness reliability. Most originally high-impact findings are now mitigated with code + test coverage and merged to `main` (PR #41, commit `f4f95b3`). Remaining risk is concentrated in adversarial prompt corpus breadth and preserving policy-helper reuse in future tools.
 
 ## Iteration Outcomes (Condensed)
 1. Architecture/trust boundaries: URL ingress policy enforcement added.
@@ -22,14 +22,14 @@ The 10-iteration cycle materially reduced high-risk exposure across trust bounda
 ## Prioritized Remediation Roadmap
 ## Priority 1 (High)
 - Enforce smoke suite in CI
-  - Action: Wire [`scripts/run_security_smoke.sh`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/scripts/run_security_smoke.sh) into required PR checks on `codex/review-mainline`.
+  - Action: Wire [`scripts/run_security_smoke.sh`](../../scripts/run_security_smoke.sh) into required PR checks.
   - Risk addressed: R-013 residual manual execution gap.
-  - Target: Immediate.
+  - Status: Completed on 2026-03-02 via [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) (merged to `main` in PR #41).
 
 - Preserve redirect policy invariants for future download helpers
   - Action: Add developer checklist item in tool-authoring docs requiring `url_policy.download_checked` reuse for any new URL download path.
   - Risk addressed: R-012 residual future divergence.
-  - Target: Immediate.
+  - Status: Completed on 2026-03-02 in [`docs/tutorials/ADDING_A_TOOL.md`](../../docs/tutorials/ADDING_A_TOOL.md).
 
 ## Priority 2 (Medium)
 - Expand adversarial prompt corpus across multi-pass tools
@@ -52,27 +52,27 @@ The 10-iteration cycle materially reduced high-risk exposure across trust bounda
 - High residual: none currently unmitigated in core reviewed paths.
 - Medium residual:
   - Prompt-injection adversarial coverage breadth (R-010).
-  - Manual smoke execution not yet CI-enforced (R-013).
-  - Future-helper divergence risk for redirect/policy flows (R-012).
+  - Policy inheritance drift risk when new URL/path-taking tools are added (R-001/R-003).
 - Low residual:
+  - Future-helper divergence risk for redirect/policy flows is reduced, but still relies on checklist discipline (R-012).
   - All-source failure handling still returns top-level error without partial context (R-006).
 
 ## Confidence Trajectory
 - Start-of-cycle confidence (iteration 1 baseline): 0.55
-- End-of-cycle operational confidence: 0.93
+- End-of-cycle operational confidence: 0.95
 - Main drivers:
   - Shared policy primitives at ingress boundaries
   - Deterministic error categorization
   - Explicit control-plane authorization
   - Resource-envelope controls
-  - Consolidated recurring smoke verification
+  - Consolidated recurring smoke verification enforced in CI
 
 ## Deliverables Generated
 - Iteration reports:
-  - [`ops/review-cycle/iteration-10-report.md`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/iteration-10-report.md)
+  - [`ops/review-cycle/iteration-10-report.md`](./iteration-10-report.md)
 - Updated cycle memory:
-  - [`ops/review-cycle/state.json`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/state.json)
-  - [`ops/review-cycle/learning-log.md`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/learning-log.md)
-  - [`ops/review-cycle/fix-playbook.md`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/fix-playbook.md)
-  - [`ops/review-cycle/risk-register.md`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/risk-register.md)
-  - [`ops/review-cycle/prompt-evolution.md`](/Users/fausto/.codex/worktrees/174b/gemini-research-mcp/ops/review-cycle/prompt-evolution.md)
+  - [`ops/review-cycle/state.json`](./state.json)
+  - [`ops/review-cycle/learning-log.md`](./learning-log.md)
+  - [`ops/review-cycle/fix-playbook.md`](./fix-playbook.md)
+  - [`ops/review-cycle/risk-register.md`](./risk-register.md)
+  - [`ops/review-cycle/prompt-evolution.md`](./prompt-evolution.md)
