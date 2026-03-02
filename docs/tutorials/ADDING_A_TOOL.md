@@ -377,6 +377,7 @@ Before submitting:
 - [ ] Docstring has Args and Returns sections
 - [ ] Uses `generate_structured()` for default schemas
 - [ ] Catches all exceptions and returns `make_tool_error()`
+- [ ] Any new URL download flow reuses `url_policy.download_checked()` (no ad hoc redirect-following clients)
 - [ ] Output model defined in `models/`
 - [ ] Write-through store function added to `weaviate_store.py`
 - [ ] Tests written with `mock_gemini_client` fixture
