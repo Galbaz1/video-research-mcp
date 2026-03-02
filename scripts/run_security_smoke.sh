@@ -6,6 +6,7 @@ export PYTHONPATH=src
 
 uv run pytest -q \
   tests/test_content_tools.py::TestContentAnalyze::test_url_rejects_non_https_before_model_call \
+  tests/test_policy_inheritance.py::TestPolicyInheritance::test_content_analyze_url_calls_validate_url \
   tests/test_infra_tools.py::TestInfraTools::test_infra_configure_requires_token_when_configured \
   tests/test_video_file.py::TestUploadCache::test_concurrent_same_hash_uploads_once \
   tests/test_video_file.py::TestValidateVideoPath::test_rejects_path_outside_local_access_root \
