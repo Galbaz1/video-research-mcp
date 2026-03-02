@@ -7,6 +7,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
+from uuid import uuid4
 
 from .config import get_config
 
@@ -72,7 +73,9 @@ def save(
             "model": model,
             "analysis": analysis,
         }
-        p.write_text(json.dumps(envelope, indent=2))
+        tmp = p.with_suffix(f".{uuid4().hex}.tmp")
+        tmp.write_text(json.dumps(envelope, indent=2))
+        tmp.replace(p)
         logger.info("Cached: %s", p.name)
         return True
     except OSError as exc:

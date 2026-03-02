@@ -5,6 +5,7 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, patch
 
 from video_research_mcp.tools.research_document_file import (
+    _prepare_all_documents_with_issues,
     _normalize_document_url,
     _download_document,
 )
@@ -92,3 +93,71 @@ class TestDownloadDocument:
             await _download_document("https://example.com/doc.pdf", tmp_path)
 
             assert mock_dl.call_args[1]["max_bytes"] == 50 * 1024 * 1024
+
+
+class TestPrepareAllDocumentsWithIssues:
+    """Tests for issue-aware document preparation helper."""
+
+    async def test_collects_download_failures_and_keeps_successes(self, tmp_path):
+        """GIVEN one download failure WHEN preparing THEN output includes issue metadata."""
+        ok_path = tmp_path / "ok.pdf"
+
+        with (
+            patch(
+                "video_research_mcp.tools.research_document_file._download_document",
+                new_callable=AsyncMock,
+            ) as mock_download,
+            patch(
+                "video_research_mcp.tools.research_document_file._prepare_document",
+                new_callable=AsyncMock,
+            ) as mock_prepare,
+        ):
+            mock_download.side_effect = [ok_path, RuntimeError("fetch failed")]
+            mock_prepare.return_value = ("gs://ok", "hash-ok")
+
+            prepared, issues = await _prepare_all_documents_with_issues(
+                file_paths=None,
+                urls=["https://example.com/ok.pdf", "https://example.com/bad.pdf"],
+            )
+
+            assert prepared == [("gs://ok", "hash-ok", "https://example.com/ok.pdf")]
+            assert issues == [
+                {
+                    "source": "https://example.com/bad.pdf",
+                    "phase": "download",
+                    "error_type": "RuntimeError",
+                    "error": "fetch failed",
+                }
+            ]
+
+    async def test_cleans_tmp_dir_after_url_preparation(self, tmp_path):
+        """Temporary URL download directory is removed after preparation."""
+        ok_path = tmp_path / "ok.pdf"
+        tmp_dir = tmp_path / "research_doc_tmp"
+        tmp_dir.mkdir()
+
+        with (
+            patch(
+                "video_research_mcp.tools.research_document_file.tempfile.mkdtemp",
+                return_value=str(tmp_dir),
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file._download_document",
+                new_callable=AsyncMock,
+                return_value=ok_path,
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file._prepare_document",
+                new_callable=AsyncMock,
+                return_value=("gs://ok", "hash-ok"),
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file.shutil.rmtree"
+            ) as mock_rmtree,
+        ):
+            await _prepare_all_documents_with_issues(
+                file_paths=None,
+                urls=["https://example.com/ok.pdf"],
+            )
+
+            mock_rmtree.assert_called_once_with(tmp_dir, True)

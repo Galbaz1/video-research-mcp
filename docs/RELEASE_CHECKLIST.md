@@ -6,6 +6,8 @@ Copy this checklist into a GitHub issue or PR for each release.
 
 - [ ] All tests pass: `uv run pytest tests/ -v`
 - [ ] Lint clean: `uv run ruff check src/ tests/`
+- [ ] Security smoke suite passes: `./scripts/run_security_smoke.sh`
+- [ ] Live tool security checks pass (offline): `PYTHONPATH=src uv run python scripts/run_live_tool_security_checks.py`
 - [ ] Tool count in docs matches `grep -c "@server.tool" src/video_research_mcp/tools/*.py src/video_research_mcp/tools/knowledge/*.py`
 - [ ] CHANGELOG.md has a section for the new version
 - [ ] Version bumped in `pyproject.toml`

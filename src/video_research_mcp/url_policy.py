@@ -140,23 +140,43 @@ async def download_checked(url: str, tmp_dir: Path, *, max_bytes: int) -> Path:
     filename = url_path if "." in url_path else "document.pdf"
     local = tmp_dir / filename
 
-    async with httpx.AsyncClient(follow_redirects=True, max_redirects=5, timeout=60) as client:
-        async with client.stream("GET", url) as resp:
-            _verify_peer_ip(resp)
-            # Validate final URL after redirects (blocks scheme downgrade / private hosts)
-            final_url = str(resp.url)
-            if final_url != url:
-                await validate_url(final_url)
-            resp.raise_for_status()
-            accumulated = 0
-            with local.open("wb") as f:
-                async for chunk in resp.aiter_bytes():
-                    accumulated += len(chunk)
-                    if accumulated > max_bytes:
+    max_redirects = 5
+    current_url = url
+    redirects_followed = 0
+
+    async with httpx.AsyncClient(follow_redirects=False, timeout=60) as client:
+        while True:
+            async with client.stream("GET", current_url) as resp:
+                _verify_peer_ip(resp)
+
+                if resp.status_code in {301, 302, 303, 307, 308}:
+                    location = resp.headers.get("location")
+                    if not location:
                         raise UrlPolicyError(
-                            f"Response exceeds size limit ({max_bytes} bytes)"
+                            f"Redirect response missing Location header (status {resp.status_code})"
                         )
-                    f.write(chunk)
+                    if redirects_followed >= max_redirects:
+                        raise UrlPolicyError(
+                            f"Too many redirects (>{max_redirects}) while downloading URL"
+                        )
+
+                    next_url = str(resp.url.join(location))
+                    await validate_url(next_url)
+                    current_url = next_url
+                    redirects_followed += 1
+                    continue
+
+                resp.raise_for_status()
+                accumulated = 0
+                with local.open("wb") as f:
+                    async for chunk in resp.aiter_bytes():
+                        accumulated += len(chunk)
+                        if accumulated > max_bytes:
+                            raise UrlPolicyError(
+                                f"Response exceeds size limit ({max_bytes} bytes)"
+                            )
+                        f.write(chunk)
+                break
 
     logger.info("Downloaded %s (%d bytes) to %s", url, accumulated, local)
     return local

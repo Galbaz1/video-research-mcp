@@ -5,10 +5,13 @@ from __future__ import annotations
 import pytest
 from unittest.mock import AsyncMock, patch
 
+from tests.conftest import unwrap_tool
 from video_research_mcp.tools.content_batch import (
     content_batch_analyze,
     _resolve_files,
 )
+
+content_batch_analyze = unwrap_tool(content_batch_analyze)
 
 
 @pytest.fixture()
@@ -72,6 +75,17 @@ class TestResolveFiles:
         files = _resolve_files(str(sample_files), None, "*.pdf", 20)
         assert len(files) == 2
         assert all(f.suffix == ".pdf" for f in files)
+
+    async def test_directory_outside_local_access_root(
+        self, sample_files, monkeypatch, clean_config,
+    ):
+        """Configured local access root blocks directory scans outside allowlist."""
+        allowed_root = sample_files / "allowed"
+        allowed_root.mkdir()
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(allowed_root))
+
+        with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+            _resolve_files(str(sample_files), None, "*", 20)
 
 
 class TestContentBatchAnalyze:

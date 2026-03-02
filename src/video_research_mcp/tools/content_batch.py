@@ -12,6 +12,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..errors import make_tool_error
+from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..models.content_batch import BatchContentItem, BatchContentResult
 from ..tracing import trace
 from ..types import ThinkingLevel, coerce_json_param
@@ -58,7 +59,7 @@ def _resolve_files(
         raise ValueError("Provide either directory or file_paths")
 
     if directory:
-        dir_path = Path(directory).expanduser().resolve()
+        dir_path = enforce_local_access_root(resolve_path(directory))
         if not dir_path.is_dir():
             raise FileNotFoundError(f"Not a directory: {directory}")
         files = sorted(
@@ -69,7 +70,7 @@ def _resolve_files(
 
     resolved: list[Path] = []
     for fp in file_paths:  # type: ignore[union-attr]
-        p = Path(fp).expanduser().resolve()
+        p = enforce_local_access_root(resolve_path(fp))
         if not p.exists():
             raise FileNotFoundError(f"File not found: {fp}")
         if p.suffix.lower() in SUPPORTED_CONTENT_EXTENSIONS:
@@ -210,7 +211,7 @@ async def content_batch_analyze(
 
     try:
         files = _resolve_files(directory, file_paths, glob_pattern, max_files)
-    except (ValueError, FileNotFoundError) as exc:
+    except (ValueError, FileNotFoundError, PermissionError) as exc:
         return make_tool_error(exc)
 
     if not files:

@@ -20,6 +20,15 @@ class DocumentSource(BaseModel):
     file_uri: str = ""
 
 
+class DocumentPreparationIssue(BaseModel):
+    """Preparation-stage failure metadata for a single document source."""
+
+    source: str
+    phase: str = "download"  # "download" | "upload"
+    error_type: str = ""
+    error: str = ""
+
+
 class DocumentMap(BaseModel):
     """Phase 1 output -- structure overview of a single document."""
 
@@ -87,6 +96,7 @@ class DocumentResearchReport(BaseModel):
     executive_summary: str = ""
     findings: list[DocumentFinding] = Field(default_factory=list)
     cross_references: CrossReferenceMap = Field(default_factory=CrossReferenceMap)
+    preparation_issues: list[DocumentPreparationIssue] = Field(default_factory=list)
     open_questions: list[str] = Field(default_factory=list)
     methodology_critique: str = ""
     recommendations: list[str] = Field(default_factory=list)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 
 import pytest
 
@@ -65,6 +66,24 @@ class TestCache:
         entries = cache.list_entries()
         assert len(entries) >= 1
         assert entries[0]["content_id"] == "vid1"
+
+    def test_save_is_atomic_when_replace_fails(self, monkeypatch):
+        """A failed atomic replace should preserve the previously committed cache payload."""
+        assert cache.save("vid_atomic", "analyze", "model", {"version": 1}) is True
+
+        original_replace = Path.replace
+
+        def _fail_replace(self: Path, target: Path) -> Path:
+            if self.suffix == ".tmp":
+                raise OSError("simulated replace failure")
+            return original_replace(self, target)
+
+        monkeypatch.setattr(Path, "replace", _fail_replace)
+        assert cache.save("vid_atomic", "analyze", "model", {"version": 2}) is False
+
+        loaded = cache.load("vid_atomic", "analyze", "model")
+        assert loaded is not None
+        assert loaded["version"] == 1
 
 
     def test_list_entries_with_missing_cached_at(self, tmp_path, monkeypatch):

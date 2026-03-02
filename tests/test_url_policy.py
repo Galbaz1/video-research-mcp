@@ -6,6 +6,7 @@ import socket
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
 import pytest
 
 from video_research_mcp.url_policy import (
@@ -54,10 +55,19 @@ class _AsyncIterBytes:
 class _FakeResponse:
     """Minimal httpx response mock with async streaming."""
 
-    def __init__(self, chunks: list[bytes], *, peer_ip: str | None = None):
+    def __init__(
+        self,
+        chunks: list[bytes],
+        *,
+        peer_ip: str | None = None,
+        status_code: int = 200,
+        headers: dict[str, str] | None = None,
+    ):
         self._chunks = chunks
-        self.url: str = ""  # Set by _FakeClient.stream or test
+        self.url: httpx.URL | None = None  # Set by _FakeClient.stream or test
         self.extensions: dict = {}
+        self.status_code = status_code
+        self.headers = headers or {}
         if peer_ip:
             self.extensions["network_stream"] = _FakeNetworkStream(peer_ip)
 
@@ -84,13 +94,17 @@ class _FakeStreamCtx:
 class _FakeClient:
     """Minimal httpx.AsyncClient mock."""
 
-    def __init__(self, resp: _FakeResponse):
-        self._resp = resp
+    def __init__(self, resp: _FakeResponse | list[_FakeResponse]):
+        self._responses = resp if isinstance(resp, list) else [resp]
+        self.called_urls: list[str] = []
 
     def stream(self, method, url):
-        if not self._resp.url:
-            self._resp.url = url
-        return _FakeStreamCtx(self._resp)
+        self.called_urls.append(url)
+        idx = len(self.called_urls) - 1
+        resp = self._responses[idx] if idx < len(self._responses) else self._responses[-1]
+        if resp.url is None:
+            resp.url = httpx.URL(url)
+        return _FakeStreamCtx(resp)
 
     async def __aenter__(self):
         return self
@@ -229,8 +243,8 @@ class TestDownloadChecked:
                     "https://example.com/huge.pdf", tmp_path, max_bytes=500
                 )
 
-    async def test_follows_redirects_with_limit(self, tmp_path: Path):
-        """Client is created with follow_redirects=True and max_redirects=5."""
+    async def test_uses_manual_redirect_handling(self, tmp_path: Path):
+        """Client is created with follow_redirects=False for pre-hop validation."""
         resp = _FakeResponse([b"content"])
         client = _FakeClient(resp)
         mock_cls = MagicMock(return_value=client)
@@ -242,16 +256,16 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=True, max_redirects=5, timeout=60)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60)
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
         WHEN download_checked runs,
         THEN it calls validate_url on the final redirected URL.
         """
-        resp = _FakeResponse([b"content"])
-        resp.url = "https://cdn.example.com/doc.pdf"
-        client = _FakeClient(resp)
+        first = _FakeResponse([], status_code=302, headers={"location": "https://cdn.example.com/doc.pdf"})
+        final = _FakeResponse([b"content"], status_code=200)
+        client = _FakeClient([first, final])
 
         validate_calls = []
         original_validate = AsyncMock(side_effect=lambda url: validate_calls.append(url))
@@ -264,11 +278,36 @@ class TestDownloadChecked:
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
 
-        # Pre-flight validation + redirect validation
+        # Pre-flight validation + per-hop redirect validation
         assert validate_calls == [
             "https://example.com/doc.pdf",
             "https://cdn.example.com/doc.pdf",
         ]
+        assert client.called_urls == [
+            "https://example.com/doc.pdf",
+            "https://cdn.example.com/doc.pdf",
+        ]
+
+    async def test_blocks_redirect_before_following_blocked_target(self, tmp_path: Path):
+        """Redirect target is validated before a second request is sent."""
+        first = _FakeResponse([], status_code=302, headers={"location": "https://blocked.internal/doc.pdf"})
+        client = _FakeClient([first])
+
+        async def _validate(url: str):
+            if "blocked.internal" in url:
+                raise UrlPolicyError("blocked target")
+
+        with (
+            patch("video_research_mcp.url_policy.validate_url", side_effect=_validate),
+            patch("video_research_mcp.url_policy.httpx.AsyncClient", return_value=client),
+        ):
+            with pytest.raises(UrlPolicyError, match="blocked target"):
+                await download_checked(
+                    "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
+                )
+
+        # No request should be made to blocked.internal.
+        assert client.called_urls == ["https://example.com/doc.pdf"]
 
     async def test_writes_file(self, tmp_path: Path):
         """Happy path: file is written to tmp_dir."""
