@@ -5,15 +5,19 @@ from __future__ import annotations
 import asyncio
 import logging
 import re
+import shutil
 import tempfile
 from pathlib import Path
+from typing import Awaitable, TypeVar
 
 from ..config import get_config
+from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..url_policy import download_checked
 
 from .video_file import _file_content_hash, _upload_large_file
 
 logger = logging.getLogger(__name__)
+T = TypeVar("T")
 
 SUPPORTED_DOC_EXTENSIONS: dict[str, str] = {
     ".pdf": "application/pdf",
@@ -24,6 +28,17 @@ SUPPORTED_DOC_EXTENSIONS: dict[str, str] = {
 }
 
 DOC_MAX_SIZE = 50 * 1024 * 1024  # 50 MB Gemini limit
+
+
+async def _gather_bounded(coros: list[Awaitable[T]], limit: int) -> list[T]:
+    """Run awaitables with bounded concurrency while preserving order."""
+    semaphore = asyncio.Semaphore(limit)
+
+    async def _run(coro: Awaitable[T]) -> T:
+        async with semaphore:
+            return await coro
+
+    return list(await asyncio.gather(*[_run(coro) for coro in coros], return_exceptions=True))
 
 
 def _doc_mime_type(path: Path) -> str:
@@ -91,46 +106,81 @@ async def _prepare_all_documents(
     file_paths: list[str] | None,
     urls: list[str] | None,
 ) -> list[tuple[str, str, str]]:
+    """Backward-compatible wrapper returning only prepared documents."""
+    prepared, _issues = await _prepare_all_documents_with_issues(file_paths, urls)
+    return prepared
+
+
+async def _prepare_all_documents_with_issues(
+    file_paths: list[str] | None,
+    urls: list[str] | None,
+) -> tuple[list[tuple[str, str, str]], list[dict[str, str]]]:
     """Prepare all documents for the research pipeline.
 
     Downloads URL documents to temp files, then uploads everything via File API.
 
     Returns:
-        List of (file_uri, content_id, original_path_or_url) tuples.
+        Tuple of:
+        - prepared documents as (file_uri, content_id, original_path_or_url)
+        - preparation issues with source, phase, error_type, and error message
     """
     prepared: list[tuple[str, str, str]] = []
+    issues: list[dict[str, str]] = []
+    cfg = get_config()
+    phase_concurrency = cfg.research_document_phase_concurrency
 
     # Download URL documents first
     downloaded: list[tuple[Path, str]] = []
-    if urls:
-        tmp_dir = Path(tempfile.mkdtemp(prefix="research_doc_"))
-        download_tasks = [_download_document(u, tmp_dir) for u in urls]
-        results = await asyncio.gather(*download_tasks, return_exceptions=True)
-        for url, result in zip(urls, results):
+    tmp_dir: Path | None = None
+    try:
+        if urls:
+            tmp_dir = Path(tempfile.mkdtemp(prefix="research_doc_"))
+            download_tasks = [_download_document(u, tmp_dir) for u in urls]
+            results = await _gather_bounded(download_tasks, phase_concurrency)
+            for url, result in zip(urls, results):
+                if isinstance(result, Exception):
+                    logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                    issues.append(
+                        {
+                            "source": url,
+                            "phase": "download",
+                            "error_type": type(result).__name__,
+                            "error": str(result),
+                        }
+                    )
+                else:
+                    downloaded.append((result, url))
+
+        # Collect all local paths
+        all_paths: list[tuple[Path, str]] = []
+        if file_paths:
+            for fp in file_paths:
+                p = enforce_local_access_root(resolve_path(fp))
+                all_paths.append((p, fp))
+        all_paths.extend(downloaded)
+
+        # Upload all via File API (parallel)
+        async def _upload(path: Path, original: str) -> tuple[str, str, str]:
+            uri, cid = await _prepare_document(path)
+            return uri, cid, original
+
+        upload_tasks = [_upload(p, orig) for p, orig in all_paths]
+        results = await _gather_bounded(upload_tasks, phase_concurrency)
+        for (_path, original), result in zip(all_paths, results):
             if isinstance(result, Exception):
-                logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                logger.warning("Failed to upload document: %s", result)
+                issues.append(
+                    {
+                        "source": original,
+                        "phase": "upload",
+                        "error_type": type(result).__name__,
+                        "error": str(result),
+                    }
+                )
             else:
-                downloaded.append((result, url))
+                prepared.append(result)
 
-    # Collect all local paths
-    all_paths: list[tuple[Path, str]] = []
-    if file_paths:
-        for fp in file_paths:
-            p = Path(fp).expanduser().resolve()
-            all_paths.append((p, fp))
-    all_paths.extend(downloaded)
-
-    # Upload all via File API (parallel)
-    async def _upload(path: Path, original: str) -> tuple[str, str, str]:
-        uri, cid = await _prepare_document(path)
-        return uri, cid, original
-
-    upload_tasks = [_upload(p, orig) for p, orig in all_paths]
-    results = await asyncio.gather(*upload_tasks, return_exceptions=True)
-    for result in results:
-        if isinstance(result, Exception):
-            logger.warning("Failed to upload document: %s", result)
-        else:
-            prepared.append(result)
-
-    return prepared
+        return prepared, issues
+    finally:
+        if tmp_dir is not None:
+            await asyncio.to_thread(shutil.rmtree, tmp_dir, True)

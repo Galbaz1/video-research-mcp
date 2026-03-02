@@ -10,6 +10,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..errors import make_tool_error
+from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..models.video_batch import BatchVideoItem, BatchVideoResult
 from ..types import ThinkingLevel, VideoDirectoryPath, coerce_json_param
 from .video import video_server
@@ -61,9 +62,12 @@ async def video_batch_analyze(
     """
     output_schema = coerce_json_param(output_schema, dict)
 
-    dir_path = Path(directory).expanduser().resolve()
-    if not dir_path.is_dir():
-        return make_tool_error(ValueError(f"Not a directory: {directory}"))
+    try:
+        dir_path = enforce_local_access_root(resolve_path(directory))
+        if not dir_path.is_dir():
+            return make_tool_error(ValueError(f"Not a directory: {directory}"))
+    except PermissionError as exc:
+        return make_tool_error(exc)
 
     video_files = sorted(
         f for f in dir_path.glob(glob_pattern)

@@ -10,6 +10,7 @@ import asyncio
 import json
 import logging
 from pathlib import Path
+from uuid import uuid4
 
 from google.genai import types
 
@@ -42,7 +43,7 @@ def _save_registry() -> None:
         for (cid, model), name in _registry.items():
             nested.setdefault(cid, {})[model] = name
         # Atomic write: tmp file + rename prevents corruption on crash
-        tmp = path.with_suffix(".tmp")
+        tmp = path.with_suffix(f".{uuid4().hex}.tmp")
         tmp.write_text(json.dumps(nested))
         tmp.replace(path)
     except Exception:
@@ -60,9 +61,17 @@ def _load_registry() -> None:
         if not path.exists():
             return
         nested = json.loads(path.read_text())
+        if not isinstance(nested, dict):
+            return
+        parsed: dict[tuple[str, str], str] = {}
         for cid, models in nested.items():
+            if not isinstance(cid, str) or not isinstance(models, dict):
+                continue
             for model, name in models.items():
-                _registry.setdefault((cid, model), name)
+                if isinstance(model, str) and isinstance(name, str):
+                    parsed[(cid, model)] = name
+        for key, name in parsed.items():
+            _registry.setdefault(key, name)
     except Exception:
         logger.debug("Failed to load context cache registry", exc_info=True)
 

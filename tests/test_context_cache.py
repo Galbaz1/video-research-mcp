@@ -570,6 +570,20 @@ class TestRegistryPersistence:
         cc_mod._load_registry()
         assert len(cc_mod._registry) == 0
 
+    def test_load_ignores_invalid_shape_entries(self, _isolate_registry_path):
+        """GIVEN mixed-shape registry JSON WHEN load called THEN only valid mappings are loaded."""
+        _isolate_registry_path.write_text(
+            (
+                '{"good":{"model-a":"cachedContents/ok"},'
+                '"bad_cid":["not-a-dict"],'
+                '"bad_models":{"model-b":42}}'
+            )
+        )
+        cc_mod._loaded = False
+        cc_mod._load_registry()
+
+        assert cc_mod._registry == {("good", "model-a"): "cachedContents/ok"}
+
     def test_gc_caps_at_max_entries(self, _isolate_registry_path):
         """GIVEN 250 entries WHEN saved THEN capped at _MAX_REGISTRY_ENTRIES."""
         for i in range(250):

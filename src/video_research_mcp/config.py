@@ -119,6 +119,11 @@ class ServerConfig(BaseModel):
     mlflow_tracking_uri: str = Field(default="")
     mlflow_experiment_name: str = Field(default="video-research-mcp")
     doc_max_download_bytes: int = Field(default=50 * 1024 * 1024)
+    research_document_max_sources: int = Field(default=12)
+    research_document_phase_concurrency: int = Field(default=4)
+    local_file_access_root: str = Field(default="")
+    infra_mutations_enabled: bool = Field(default=False)
+    infra_admin_token: str = Field(default="")
 
     @field_validator("default_thinking_level")
     @classmethod
@@ -129,7 +134,15 @@ class ServerConfig(BaseModel):
             raise ValueError(f"Invalid thinking level '{value}'. Allowed: {allowed}")
         return level
 
-    @field_validator("cache_ttl_days", "max_sessions", "session_timeout_hours", "session_max_turns", "context_cache_ttl_seconds")
+    @field_validator(
+        "cache_ttl_days",
+        "max_sessions",
+        "session_timeout_hours",
+        "session_max_turns",
+        "context_cache_ttl_seconds",
+        "research_document_max_sources",
+        "research_document_phase_concurrency",
+    )
     @classmethod
     def validate_positive_ints(cls, value: int) -> int:
         if value < 1:
@@ -156,6 +169,9 @@ class ServerConfig(BaseModel):
         from pathlib import Path
 
         cache_default = str(Path.home() / ".cache" / "video-research-mcp")
+        local_file_access_root = os.getenv("LOCAL_FILE_ACCESS_ROOT", "").strip()
+        if local_file_access_root:
+            local_file_access_root = str(Path(local_file_access_root).expanduser().resolve())
         weaviate_url = _normalize_weaviate_url(os.getenv("WEAVIATE_URL", ""))
         _cohere_key = os.environ.get("COHERE_API_KEY", "")
         _reranker_flag = os.getenv("RERANKER_ENABLED", "").lower()
@@ -193,6 +209,13 @@ class ServerConfig(BaseModel):
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
             doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+            research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
+            research_document_phase_concurrency=int(
+                os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")
+            ),
+            local_file_access_root=local_file_access_root,
+            infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
+            infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
         )
 
 

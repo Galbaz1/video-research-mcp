@@ -6,12 +6,14 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+import video_research_mcp.tools.content as content_mod
 from video_research_mcp.models.content import ContentResult
-from video_research_mcp.tools.content import (
-    _build_content_parts,
-    content_analyze,
-    content_extract,
-)
+from video_research_mcp.prompts.content import CONTENT_ANALYSIS_SYSTEM
+from video_research_mcp.tools.content import _build_content_parts
+from tests.conftest import unwrap_tool
+
+content_analyze = unwrap_tool(content_mod.content_analyze)
+content_extract = unwrap_tool(content_mod.content_extract)
 
 
 class TestBuildContentParts:
@@ -40,6 +42,16 @@ class TestBuildContentParts:
         assert len(parts) == 1
         assert "test.txt" in desc
 
+    def test_file_outside_local_access_root(self, tmp_path, monkeypatch, clean_config):
+        root = tmp_path / "allowed"
+        root.mkdir()
+        f = tmp_path / "test.txt"
+        f.write_text("content")
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(root))
+
+        with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+            _build_content_parts(file_path=str(f))
+
 
 class TestContentAnalyze:
     @pytest.mark.asyncio
@@ -67,6 +79,17 @@ class TestContentAnalyze:
         assert result["title"] == "Page"
         call_kwargs = mock_gemini_client["generate"].call_args.kwargs
         assert call_kwargs["tools"][0].url_context is not None
+        assert call_kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
+
+    @pytest.mark.asyncio
+    async def test_url_rejects_non_https_before_model_call(self, mock_gemini_client):
+        """Non-HTTPS URLs are rejected by URL policy before any Gemini call."""
+        result = await content_analyze(url="http://example.com")
+
+        assert "error" in result
+        assert "Only HTTPS URLs are allowed" in result["error"]
+        mock_gemini_client["generate"].assert_not_called()
+        mock_gemini_client["generate_structured"].assert_not_called()
 
     @pytest.mark.asyncio
     async def test_no_input_returns_error(self):
@@ -132,7 +155,11 @@ class TestContentAnalyze:
         result = await content_analyze(url="https://example.com")
 
         assert result["title"] == "Fallback"
+        for call in mock_gemini_client["generate"].call_args_list:
+            assert call.kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
         assert mock_gemini_client["generate_structured"].call_count == 1
+        structured_kwargs = mock_gemini_client["generate_structured"].call_args.kwargs
+        assert structured_kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
 
 
 class TestContentExtract:
@@ -149,6 +176,8 @@ class TestContentExtract:
 
         assert result["name"] == "Alice"
         assert result["age"] == 30
+        call_kwargs = mock_gemini_client["generate"].call_args.kwargs
+        assert call_kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
 
     @pytest.mark.asyncio
     async def test_extract_json_decode_error(self, mock_gemini_client):

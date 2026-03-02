@@ -5,19 +5,21 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from typing import Annotated
+from typing import Annotated, Awaitable, TypeVar
 
 from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..client import GeminiClient
+from ..config import get_config
 from ..errors import make_tool_error
 from ..tracing import trace
 from ..models.research_document import (
     CrossReferenceMap,
     DocumentFindingsContainer,
     DocumentMap,
+    DocumentPreparationIssue,
     DocumentResearchReport,
     DocumentSource,
 )
@@ -31,9 +33,21 @@ from ..prompts.research_document import (
 from ..types import Scope, ThinkingLevel, coerce_json_param
 from ..weaviate_store import store_research_finding
 from .research import research_server
-from .research_document_file import _prepare_all_documents
+from .research_document_file import _prepare_all_documents_with_issues
 
 logger = logging.getLogger(__name__)
+T = TypeVar("T")
+
+
+async def _gather_bounded(coros: list[Awaitable[T]], limit: int) -> list[T]:
+    """Run awaitables with bounded concurrency while preserving order."""
+    semaphore = asyncio.Semaphore(limit)
+
+    async def _run(coro: Awaitable[T]) -> T:
+        async with semaphore:
+            return await coro
+
+    return list(await asyncio.gather(*[_run(coro) for coro in coros]))
 
 
 @research_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
@@ -71,9 +85,20 @@ async def research_document(
 
     if not file_paths and not urls:
         return make_tool_error(ValueError("Provide at least one of: file_paths or urls"))
+    cfg = get_config()
+    total_sources = len(file_paths or []) + len(urls or [])
+    if total_sources > cfg.research_document_max_sources:
+        return make_tool_error(
+            ValueError(
+                "Too many document sources requested: "
+                f"{total_sources} > configured limit {cfg.research_document_max_sources}. "
+                "Split into smaller batches or raise RESEARCH_DOCUMENT_MAX_SOURCES."
+            )
+        )
 
     try:
-        prepared = await _prepare_all_documents(file_paths, urls)
+        prepared, prep_issue_dicts = await _prepare_all_documents_with_issues(file_paths, urls)
+        prep_issues = [DocumentPreparationIssue(**issue) for issue in prep_issue_dicts]
         if not prepared:
             total = len(file_paths or []) + len(urls or [])
             return make_tool_error(ValueError(
@@ -99,7 +124,7 @@ async def research_document(
 
         if scope == "quick":
             return await _quick_synthesis(
-                file_parts, sources, instruction, doc_maps, thinking_level,
+                file_parts, sources, instruction, doc_maps, prep_issues, thinking_level,
             )
 
         all_findings = await _phase_evidence_extraction(
@@ -114,7 +139,7 @@ async def research_document(
 
         return await _phase_synthesis(
             file_parts, sources, instruction, doc_maps,
-            all_findings, cross_refs, scope, thinking_level,
+            all_findings, cross_refs, prep_issues, scope, thinking_level,
         )
 
     except Exception as exc:
@@ -142,7 +167,7 @@ async def _phase_document_map(
         return result
 
     tasks = [_map_one(p, s) for p, s in zip(file_parts, sources)]
-    return list(await asyncio.gather(*tasks))
+    return await _gather_bounded(tasks, get_config().research_document_phase_concurrency)
 
 
 async def _phase_evidence_extraction(
@@ -173,7 +198,7 @@ async def _phase_evidence_extraction(
         _extract_one(p, s, m)
         for p, s, m in zip(file_parts, sources, doc_maps)
     ]
-    return list(await asyncio.gather(*tasks))
+    return await _gather_bounded(tasks, get_config().research_document_phase_concurrency)
 
 
 async def _phase_cross_reference(
@@ -202,6 +227,7 @@ async def _phase_synthesis(
     doc_maps: list[DocumentMap],
     all_findings: list[DocumentFindingsContainer],
     cross_refs: CrossReferenceMap,
+    preparation_issues: list[DocumentPreparationIssue],
     scope: str,
     thinking_level: ThinkingLevel,
 ) -> dict:
@@ -226,6 +252,7 @@ async def _phase_synthesis(
     synthesis.instruction = instruction
     synthesis.scope = scope
     synthesis.document_sources = sources
+    synthesis.preparation_issues = preparation_issues
     if not synthesis.findings:
         synthesis.findings = [f for fc in all_findings for f in fc.findings]
     synthesis.cross_references = cross_refs
@@ -241,6 +268,7 @@ async def _quick_synthesis(
     sources: list[DocumentSource],
     instruction: str,
     doc_maps: list[DocumentMap],
+    preparation_issues: list[DocumentPreparationIssue],
     thinking_level: ThinkingLevel,
 ) -> dict:
     """Quick scope: skip phases 2-4, produce lightweight report from maps only."""
@@ -262,6 +290,7 @@ async def _quick_synthesis(
     report.instruction = instruction
     report.scope = "quick"
     report.document_sources = sources
+    report.preparation_issues = preparation_issues
     result = report.model_dump(mode="json")
 
     await store_research_finding(result)

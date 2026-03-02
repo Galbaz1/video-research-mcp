@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+import video_research_mcp.tools.research_document as research_document_mod
 from video_research_mcp.models.research_document import (
     CrossReferenceMap,
     DocumentFinding,
@@ -13,19 +14,22 @@ from video_research_mcp.models.research_document import (
     DocumentMap,
     DocumentResearchReport,
 )
-from video_research_mcp.tools.research_document import research_document
+from tests.conftest import unwrap_tool
+
+research_document = unwrap_tool(research_document_mod.research_document)
 
 
 @pytest.fixture()
 def mock_prepare():
     """Mock document preparation to avoid real File API uploads."""
     with patch(
-        "video_research_mcp.tools.research_document._prepare_all_documents",
+        "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
         new_callable=AsyncMock,
     ) as mock:
-        mock.return_value = [
-            ("gs://fake-uri-1", "hash1", "/path/to/doc1.pdf"),
-        ]
+        mock.return_value = (
+            [("gs://fake-uri-1", "hash1", "/path/to/doc1.pdf")],
+            [],
+        )
         yield mock
 
 
@@ -33,13 +37,16 @@ def mock_prepare():
 def mock_prepare_multi():
     """Mock preparation for multi-document tests."""
     with patch(
-        "video_research_mcp.tools.research_document._prepare_all_documents",
+        "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
         new_callable=AsyncMock,
     ) as mock:
-        mock.return_value = [
-            ("gs://fake-uri-1", "hash1", "/path/to/doc1.pdf"),
-            ("gs://fake-uri-2", "hash2", "/path/to/doc2.pdf"),
-        ]
+        mock.return_value = (
+            [
+                ("gs://fake-uri-1", "hash1", "/path/to/doc1.pdf"),
+                ("gs://fake-uri-2", "hash2", "/path/to/doc2.pdf"),
+            ],
+            [],
+        )
         yield mock
 
 
@@ -150,12 +157,22 @@ class TestResearchDocument:
         result = await research_document(instruction="test")
         assert "error" in result
 
+    async def test_rejects_too_many_sources(self, clean_config, monkeypatch, mock_gemini_client):
+        """GIVEN more sources than policy limit WHEN calling THEN return bounded-workload error."""
+        monkeypatch.setenv("RESEARCH_DOCUMENT_MAX_SOURCES", "1")
+        result = await research_document(
+            instruction="test",
+            file_paths=["/path/to/doc1.pdf", "/path/to/doc2.pdf"],
+        )
+        assert "error" in result
+        assert "Too many document sources requested" in result["error"]
+
     async def test_preparation_failure(self, mock_gemini_client):
         """GIVEN file prep fails WHEN calling THEN error returned."""
         with patch(
-            "video_research_mcp.tools.research_document._prepare_all_documents",
+            "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
             new_callable=AsyncMock,
-            return_value=[],
+            return_value=([], []),
         ):
             result = await research_document(
                 instruction="test",
@@ -207,9 +224,9 @@ class TestResearchDocument:
     ):
         """GIVEN a URL source WHEN processing THEN source_type is 'url'."""
         with patch(
-            "video_research_mcp.tools.research_document._prepare_all_documents",
+            "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
             new_callable=AsyncMock,
-            return_value=[("gs://fake", "hash1", "https://example.com/paper.pdf")],
+            return_value=([("gs://fake", "hash1", "https://example.com/paper.pdf")], []),
         ):
             mock_gemini_client["generate_structured"].side_effect = [
                 DocumentMap(title="URL Doc", summary="From URL"),
@@ -222,3 +239,46 @@ class TestResearchDocument:
                 scope="moderate",
             )
             assert result["document_sources"][0]["source_type"] == "url"
+
+    @patch(
+        "video_research_mcp.tools.research_document.store_research_finding",
+        new_callable=AsyncMock,
+    )
+    async def test_surfaces_preparation_issues(
+        self, mock_store_fn, mock_gemini_client,
+    ):
+        """GIVEN partial prep failures WHEN synthesis completes THEN response includes issues."""
+        with patch(
+            "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
+            new_callable=AsyncMock,
+            return_value=(
+                [("gs://fake", "hash1", "/path/to/doc.pdf")],
+                [
+                    {
+                        "source": "https://example.com/bad.pdf",
+                        "phase": "download",
+                        "error_type": "UrlPolicyError",
+                        "error": "Blocked hostname",
+                    }
+                ],
+            ),
+        ):
+            mock_gemini_client["generate_structured"].side_effect = [
+                DocumentMap(title="Doc", summary="OK"),
+                DocumentFindingsContainer(document="doc.pdf", findings=[]),
+                DocumentResearchReport(executive_summary="Done"),
+            ]
+            result = await research_document(
+                instruction="test",
+                file_paths=["/path/to/doc.pdf"],
+                urls=["https://example.com/bad.pdf"],
+                scope="moderate",
+            )
+            assert result["preparation_issues"] == [
+                {
+                    "source": "https://example.com/bad.pdf",
+                    "phase": "download",
+                    "error_type": "UrlPolicyError",
+                    "error": "Blocked hostname",
+                }
+            ]
