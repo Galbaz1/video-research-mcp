@@ -162,7 +162,6 @@ class TestContentAnalyze:
         structured_kwargs = mock_gemini_client["generate_structured"].call_args.kwargs
         assert structured_kwargs["system_instruction"] == CONTENT_ANALYSIS_SYSTEM
 
-    @pytest.mark.asyncio
     async def test_url_reshape_with_adversarial_content_keeps_guardrails(self, mock_gemini_client):
         """Adversarial unstructured URL content stays data and cannot drop system guardrails."""
         mock_gemini_client["generate"].side_effect = [

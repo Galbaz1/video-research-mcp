@@ -7,6 +7,8 @@ from video_research_mcp.models.knowledge import (
     HitSummaryBatch,
     KnowledgeHit,
 )
+from video_research_mcp.prompts.knowledge import KNOWLEDGE_SUMMARIZE_SYSTEM
+from video_research_mcp.tools.knowledge.summarize import summarize_hits
 from tests.adversarial_inputs import (
     ADVERSARIAL_PROMPT_INJECTION,
     ADVERSARIAL_TOOL_MISUSE,
@@ -37,7 +39,6 @@ class TestSummarizeHits:
             )],
         )
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, "AI")
 
         assert len(result) == 1
@@ -55,7 +56,6 @@ class TestSummarizeHits:
             )],
         )
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, "test")
 
         assert "title" in result[0].properties
@@ -67,7 +67,6 @@ class TestSummarizeHits:
         hits = [_make_hit("uuid-1", title="Original")]
         mock_gemini_client["generate_structured"].side_effect = RuntimeError("Flash failed")
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, "test")
 
         assert len(result) == 1
@@ -76,7 +75,6 @@ class TestSummarizeHits:
 
     async def test_skips_empty_hits(self, mock_gemini_client):
         """GIVEN empty list WHEN summarize_hits THEN returns empty, no Flash call."""
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits([], "test")
 
         assert result == []
@@ -87,7 +85,6 @@ class TestSummarizeHits:
         hits = [_make_hit(f"uuid-{i}", title=f"Hit {i}") for i in range(120)]
         mock_gemini_client["generate_structured"].return_value = HitSummaryBatch(summaries=[])
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         await summarize_hits(hits, "test")
 
         call_args = mock_gemini_client["generate_structured"].call_args
@@ -108,7 +105,6 @@ class TestSummarizeHits:
             )],
         )
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, "test")
 
         # Falls back to all properties when useful_properties is empty
@@ -127,7 +123,6 @@ class TestSummarizeHits:
             )],
         )
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, "test")
 
         assert result[0].summary == "Summary for A"
@@ -152,12 +147,11 @@ class TestSummarizeHits:
             )],
         )
 
-        from video_research_mcp.tools.knowledge.summarize import summarize_hits
         result = await summarize_hits(hits, malicious_query)
 
         assert result[0].summary == "Handled safely"
         call_args = mock_gemini_client["generate_structured"].call_args
-        assert "system_instruction" in call_args.kwargs
+        assert call_args.kwargs["system_instruction"] == KNOWLEDGE_SUMMARIZE_SYSTEM
         prompt = call_args.args[0]
         assert malicious_query in prompt
         assert ADVERSARIAL_PROMPT_INJECTION in prompt
