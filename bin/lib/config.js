@@ -28,6 +28,13 @@ const MCP_SERVERS = {
 };
 
 /**
+ * Servers previously installed by older versions that should be removed on
+ * upgrade. These packages were never published to PyPI, so their entries
+ * always fail. Cleaned up automatically during mergeConfig().
+ */
+const DEPRECATED_SERVERS = ['video-explainer', 'video-agent'];
+
+/**
  * Return the path to the MCP config file.
  * Global: ~/.claude/.mcp.json
  * Local:  ./.mcp.json (project root, not inside .claude/)
@@ -68,6 +75,11 @@ function mergeConfig(configPath) {
 
   for (const [name, config] of Object.entries(MCP_SERVERS)) {
     existing.mcpServers[name] = config;
+  }
+
+  // Remove deprecated servers left by older installer versions
+  for (const name of DEPRECATED_SERVERS) {
+    delete existing.mcpServers[name];
   }
 
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
@@ -185,6 +197,7 @@ function ensureEnvFile() {
 
 module.exports = {
   MCP_SERVERS,
+  DEPRECATED_SERVERS,
   getConfigPath,
   readConfig,
   mergeConfig,
