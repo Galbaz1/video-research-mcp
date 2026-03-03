@@ -1,6 +1,6 @@
 [project]
 name = "video-research-mcp"
-version = "0.3.0"
+version = "0.3.1"
 description = "Unified Gemini research partner — 41 tools for video analysis, deep research, content extraction, and explainer video creation via MCP"
 requires-python = ">=3.11"
 license = { text = "MIT" }

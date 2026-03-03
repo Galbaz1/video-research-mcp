@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, codex/review-mainline]
+    branches: [main]
   pull_request:
-    branches: [main, codex/review-mainline]
+    branches: [main]
 
 permissions:
   contents: read
