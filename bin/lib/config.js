@@ -9,9 +9,6 @@ const MCP_SERVERS = {
   'video-research': {
     command: 'uvx',
     args: ['video-research-mcp[tracing]'],
-    env: {
-      MLFLOW_TRACKING_URI: '${MLFLOW_TRACKING_URI}',
-    },
   },
   'video-explainer': {
     command: 'uvx',
@@ -28,9 +25,6 @@ const MCP_SERVERS = {
   'mlflow-mcp': {
     command: 'uvx',
     args: ['--with', 'mlflow[mcp]>=3.5.1', 'mlflow', 'mcp', 'run'],
-    env: {
-      MLFLOW_TRACKING_URI: '${MLFLOW_TRACKING_URI}',
-    },
   },
 };
 
