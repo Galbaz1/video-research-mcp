@@ -11,14 +11,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Security tests: adversarial prompt corpus coverage (#43), policy-inheritance guard tests (#44), smoke suite extension (#45)
+- **Local filesystem boundary enforcement** — new `local_path_policy.py` validates all local file paths against `LOCAL_FILE_ACCESS_ROOT`; applied in `video_file`, `video_batch`, `research_document_file` (PR #41)
+- **Infra mutation auth gating** — `infra_configure` now requires `auth_token` matching `INFRA_ADMIN_TOKEN` env var; `infra_cache` read-only ops remain unauthenticated (PR #41)
+- **Prompt injection guardrails** — system prompts for content, research, research_document, and knowledge tools now include injection defense instructions (PR #41)
+- **`PERMISSION_DENIED` error category** — new error classification in `errors.py` for `PermissionError`, `TimeoutError`, `httpx.TimeoutException`, `httpx.NetworkError` (PR #41)
+- **`DocumentPreparationIssue` model** — surfaces file preparation problems in `research_document` reports (PR #41)
+- **Security tests** — adversarial prompt corpus coverage (#43), policy-inheritance guard tests (#44), smoke suite extension (#45)
+- 5 new config fields: `research_document_max_sources`, `research_document_phase_concurrency`, `local_file_access_root`, `infra_mutations_enabled`, `infra_admin_token`
 
 ### Fixed
 
+- **Atomic cache writes** — `cache.py` and `context_cache.py` now write via UUID temp files to prevent corruption on concurrent access (PR #41)
+- **Sensitive config redaction** — `infra_configure` output redacts `GEMINI_API_KEY`, `WEAVIATE_API_KEY`, `COHERE_API_KEY`, `INFRA_ADMIN_TOKEN` (PR #41)
 - Weaviate setup skill: minor fix in SKILL.md
 
 ### Changed
 
+- `url_policy.py` — expanded URL validation with stricter enforcement
+- `research_document.py` — concurrency limits via config fields
 - README: clarify plugin = MCP servers + commands + skills + agents
 - Docs: fix tool counts (41 total), review-cycle finalization
 
@@ -86,6 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
+[0.3.1]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.1.0
