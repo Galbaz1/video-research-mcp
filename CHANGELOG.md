@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-03-03
+
+### Added
+
+- Security tests: adversarial prompt corpus coverage (#43), policy-inheritance guard tests (#44), smoke suite extension (#45)
+
+### Fixed
+
+- Weaviate setup skill: minor fix in SKILL.md
+
+### Changed
+
+- README: clarify plugin = MCP servers + commands + skills + agents
+- Docs: fix tool counts (41 total), review-cycle finalization
+
 ## [0.3.0] - 2026-03-01
 
 ### Added
