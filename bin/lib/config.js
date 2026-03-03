@@ -4,19 +4,18 @@ const fs = require('fs');
 const path = require('path');
 const ui = require('./ui');
 
-/** MCP server entries to install. */
+/**
+ * MCP server entries to install.
+ *
+ * Only include servers that are published to a public registry (PyPI or npm).
+ * Unpublished packages (video-explainer-mcp, video-agent-mcp) are excluded
+ * because `uvx` cannot resolve them — users who need them must add local
+ * `uv run --directory` entries manually.
+ */
 const MCP_SERVERS = {
   'video-research': {
     command: 'uvx',
     args: ['video-research-mcp[tracing]'],
-  },
-  'video-explainer': {
-    command: 'uvx',
-    args: ['video-explainer-mcp'],
-  },
-  'video-agent': {
-    command: 'uvx',
-    args: ['video-agent-mcp'],
   },
   playwright: {
     command: 'npx',
