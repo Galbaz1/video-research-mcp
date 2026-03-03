@@ -4,22 +4,18 @@ const fs = require('fs');
 const path = require('path');
 const ui = require('./ui');
 
-/** MCP server entries to install. */
+/**
+ * MCP server entries to install.
+ *
+ * Only include servers that are published to a public registry (PyPI or npm).
+ * Unpublished packages (video-explainer-mcp, video-agent-mcp) are excluded
+ * because `uvx` cannot resolve them — users who need them must add local
+ * `uv run --directory` entries manually.
+ */
 const MCP_SERVERS = {
   'video-research': {
     command: 'uvx',
     args: ['video-research-mcp[tracing]'],
-    env: {
-      MLFLOW_TRACKING_URI: '${MLFLOW_TRACKING_URI}',
-    },
-  },
-  'video-explainer': {
-    command: 'uvx',
-    args: ['video-explainer-mcp'],
-  },
-  'video-agent': {
-    command: 'uvx',
-    args: ['video-agent-mcp'],
   },
   playwright: {
     command: 'npx',
@@ -28,11 +24,15 @@ const MCP_SERVERS = {
   'mlflow-mcp': {
     command: 'uvx',
     args: ['--with', 'mlflow[mcp]>=3.5.1', 'mlflow', 'mcp', 'run'],
-    env: {
-      MLFLOW_TRACKING_URI: '${MLFLOW_TRACKING_URI}',
-    },
   },
 };
+
+/**
+ * Servers previously installed by older versions that should be removed on
+ * upgrade. These packages were never published to PyPI, so their entries
+ * always fail. Cleaned up automatically during mergeConfig().
+ */
+const DEPRECATED_SERVERS = ['video-explainer', 'video-agent'];
 
 /**
  * Return the path to the MCP config file.
@@ -75,6 +75,11 @@ function mergeConfig(configPath) {
 
   for (const [name, config] of Object.entries(MCP_SERVERS)) {
     existing.mcpServers[name] = config;
+  }
+
+  // Remove deprecated servers left by older installer versions
+  for (const name of DEPRECATED_SERVERS) {
+    delete existing.mcpServers[name];
   }
 
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
@@ -192,6 +197,7 @@ function ensureEnvFile() {
 
 module.exports = {
   MCP_SERVERS,
+  DEPRECATED_SERVERS,
   getConfigPath,
   readConfig,
   mergeConfig,

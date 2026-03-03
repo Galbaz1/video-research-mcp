@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-03-03
+
+### Added
+
+- **`/gr:getting-started` command** — interactive first-time setup: verifies config, runs smoke test, shows all available commands and optional features
+- Installer "Next steps" now links to Gemini API key page and directs users to `/gr:getting-started`
+
+### Fixed
+
+- **Installer: removed unpublished MCP servers** — `video-explainer-mcp` and `video-agent-mcp` are not on PyPI; the installer was creating broken server entries that failed on startup for every new user
+- **Installer: removed unresolvable env placeholders** — `${MLFLOW_TRACKING_URI}` was written as a literal string in `.mcp.json` (no shell expansion); server reads config from `~/.config/video-research-mcp/.env` instead
+
 ## [0.3.1] - 2026-03-03
 
 ### Added
@@ -96,6 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.1.0...v0.2.0
