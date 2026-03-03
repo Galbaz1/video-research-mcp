@@ -21,6 +21,7 @@ const FILE_MAP = {
   'commands/traces.md':        'commands/gr/traces.md',
   'commands/research-doc.md':  'commands/gr/research-doc.md',
   'commands/ingest.md':        'commands/gr/ingest.md',
+  'commands/getting-started.md': 'commands/gr/getting-started.md',
 
   'commands/explainer.md':      'commands/ve/explainer.md',
   'commands/explain-video.md':  'commands/ve/explain-video.md',

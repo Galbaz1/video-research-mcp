@@ -252,15 +252,20 @@ async function install(mode, force) {
   ui.header('Next steps');
   let stepNum = 1;
   if (!process.env.GEMINI_API_KEY) {
-    ui.step(`${stepNum}. Add your API key to the config file:`);
+    ui.step(`${stepNum}. Get a Gemini API key (free):`);
+    ui.step('   https://aistudio.google.com/apikey');
+    ui.blank();
+    stepNum++;
+    ui.step(`${stepNum}. Paste it in the config file:`);
     ui.step('   ~/.config/video-research-mcp/.env');
     ui.step('   (This file stays on your machine — never uploaded or shared)');
     ui.blank();
     stepNum++;
   }
-  ui.step(`${stepNum}. Start Claude Code and try:`);
-  ui.step('   /gr:search "latest MCP protocol updates"');
-  ui.step('   /gr:video https://youtube.com/watch?v=...');
+  ui.step(`${stepNum}. Restart Claude Code, then run:`);
+  ui.step('   /gr:getting-started');
+  ui.blank();
+  ui.step('   This will verify your setup and show you what\'s available.');
   ui.blank();
 }
 
