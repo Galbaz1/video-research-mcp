@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Annotated
 
 from fastmcp import FastMCP
-from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
@@ -269,6 +268,8 @@ async def _download_and_cache(
         logger.warning("File API upload failed for %s: %s", video_id, exc)
         return "", "", "failed", "", str(local_path)
 
+    from google.genai import types
+
     cfg = get_config()
     try:
         file_part = types.Part(file_data=types.FileData(file_uri=file_uri))
@@ -426,6 +427,8 @@ async def video_continue_session(
             "category": "API_NOT_FOUND",
             "hint": "Create a new session with video_create_session",
         }
+
+    from google.genai import types
 
     use_cache, contents, config_kwargs = await prepare_cached_request(session, prompt)
     user_content = contents[-1]  # last entry is the user message we just built

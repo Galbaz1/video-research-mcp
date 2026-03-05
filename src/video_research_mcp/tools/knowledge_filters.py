@@ -8,9 +8,10 @@ collection (checked against _ALLOWED_PROPERTIES from the schema).
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
-from weaviate.classes.query import Filter
-
+if TYPE_CHECKING:
+    from weaviate.classes.query import Filter
 
 def build_collection_filter(
     col_name: str,
@@ -41,6 +42,8 @@ def build_collection_filter(
     Returns:
         Combined Filter or None if no conditions apply.
     """
+    from weaviate.classes.query import Filter
+
     conditions: list[Filter] = []
 
     if evidence_tier and "evidence_tier" in allowed_properties:

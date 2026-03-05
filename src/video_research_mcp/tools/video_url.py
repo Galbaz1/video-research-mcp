@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
-from google.genai import types
+if TYPE_CHECKING:
+    from google.genai import types
 
 _VIDEO_ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 
@@ -97,6 +99,8 @@ def is_youtube_url(url: str) -> bool:
 
 def _video_content(url: str, prompt: str) -> types.Content:
     """Build a Content with video FileData + text prompt."""
+    from google.genai import types
+
     return types.Content(
         parts=[
             types.Part(file_data=types.FileData(file_uri=url)),
@@ -129,6 +133,8 @@ def _video_content_with_metadata(
     Returns:
         Content with video part (optionally with VideoMetadata) + text part.
     """
+    from google.genai import types
+
     video_part = types.Part(file_data=types.FileData(file_uri=url))
 
     if fps is not None or start_offset is not None or end_offset is not None:

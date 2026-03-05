@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from typing import TYPE_CHECKING
 
-from google.genai import types
+if TYPE_CHECKING:
+    from google.genai import types
 
 from .. import context_cache
 from ..config import get_config
@@ -27,6 +29,8 @@ def prewarm_cache(content_id: str, video_url: str) -> None:
     if is_youtube_url(video_url):
         logger.debug("Skipping cache prewarm for YouTube URL: %s", content_id)
         return
+    from google.genai import types
+
     cfg = get_config()
     warm_parts = [types.Part(file_data=types.FileData(file_uri=video_url))]
     context_cache.start_prewarm(content_id, warm_parts, cfg.default_model)
@@ -88,6 +92,8 @@ async def ensure_session_cache(video_id: str, video_url: str) -> tuple[str, str,
     # Slow path: create/join cache via start_prewarm (deduplicates against
     # any concurrent prewarm task to avoid creating duplicate caches)
     try:
+        from google.genai import types
+
         video_parts = [types.Part(file_data=types.FileData(file_uri=video_url))]
         task = context_cache.start_prewarm(video_id, video_parts, cfg.default_model)
         cache_name = await asyncio.wait_for(asyncio.shield(task), timeout=60.0) or ""
@@ -121,6 +127,8 @@ async def prepare_cached_request(
     Returns:
         (use_cache, contents, config_kwargs) — ready for generate_content.
     """
+    from google.genai import types
+
     use_cache = False
     if session.cache_name:
         cache_alive = await context_cache.refresh_ttl(session.cache_name)

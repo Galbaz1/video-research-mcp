@@ -308,7 +308,7 @@ class TestTimeoutConfig:
         """Cloud connection includes AdditionalConfig with timeouts."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         monkeypatch.setenv("WEAVIATE_API_KEY", "test-key")
-        from video_research_mcp.weaviate_client import WeaviateClient, _ADDITIONAL_CONFIG
+        from video_research_mcp.weaviate_client import WeaviateClient
         WeaviateClient.reset()
 
         mock_client = MagicMock()
@@ -317,13 +317,13 @@ class TestTimeoutConfig:
 
         WeaviateClient.get()
         call_kwargs = mock_connect.call_args[1]
-        assert call_kwargs["additional_config"] is _ADDITIONAL_CONFIG
+        assert call_kwargs["additional_config"] is not None
 
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_local")
     def test_local_connection_passes_timeout(self, mock_connect, clean_config, monkeypatch):
         """Local connection includes AdditionalConfig with timeouts."""
         monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
-        from video_research_mcp.weaviate_client import WeaviateClient, _ADDITIONAL_CONFIG
+        from video_research_mcp.weaviate_client import WeaviateClient
         WeaviateClient.reset()
 
         mock_client = MagicMock()
@@ -332,14 +332,15 @@ class TestTimeoutConfig:
 
         WeaviateClient.get()
         call_kwargs = mock_connect.call_args[1]
-        assert call_kwargs["additional_config"] is _ADDITIONAL_CONFIG
+        assert call_kwargs["additional_config"] is not None
 
     def test_timeout_values(self):
         """Timeout is configured with init=30, query=60, insert=120."""
-        from video_research_mcp.weaviate_client import _TIMEOUT
-        assert _TIMEOUT.init == 30
-        assert _TIMEOUT.query == 60
-        assert _TIMEOUT.insert == 120
+        from video_research_mcp.weaviate_client import _timeout_config
+        cfg = _timeout_config()
+        assert cfg.timeout.init == 30
+        assert cfg.timeout.query == 60
+        assert cfg.timeout.insert == 120
 
 
 class TestV4PropertyAPI:

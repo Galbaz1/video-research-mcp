@@ -6,7 +6,6 @@ import logging
 from typing import Annotated
 
 from fastmcp import FastMCP
-from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
@@ -36,6 +35,8 @@ async def web_search(
         Dict with query, response text, and grounding sources.
     """
     try:
+        from google.genai import types
+
         config = types.GenerateContentConfig(
             tools=[types.Tool(google_search=types.GoogleSearch())],
         )

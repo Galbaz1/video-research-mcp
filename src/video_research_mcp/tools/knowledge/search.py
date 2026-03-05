@@ -7,8 +7,6 @@ from typing import Annotated
 
 from mcp.types import ToolAnnotations
 from pydantic import Field
-from weaviate.classes.query import MetadataQuery
-
 from ...config import get_config
 from ...errors import make_tool_error
 from ...models.knowledge import KnowledgeHit, KnowledgeSearchResult
@@ -159,6 +157,7 @@ def _build_rerank(prop: str, query: str):
 
 def _dispatch_search(collection, query, search_type, limit, alpha, col_filter, rerank_cfg=None):
     """Dispatch to the correct Weaviate query method based on search_type."""
+    from weaviate.classes.query import MetadataQuery
     if search_type == "semantic":
         return collection.query.near_text(
             query=query,

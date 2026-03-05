@@ -5,11 +5,13 @@ from __future__ import annotations
 import json
 import logging
 import os
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from google import genai
-from google.genai import types
 from pydantic import BaseModel, TypeAdapter
+
+if TYPE_CHECKING:
+    from google import genai
+    from google.genai import types
 
 from .config import VALID_THINKING_LEVELS, get_config
 from .retry import with_retry
@@ -38,6 +40,8 @@ class GeminiClient:
     @classmethod
     def get(cls, api_key: str | None = None) -> genai.Client:
         """Return (or create) the shared client for *api_key*."""
+        from google import genai  # lazy — saves ~280ms at startup
+
         key = api_key or get_config().gemini_api_key or os.getenv("GEMINI_API_KEY", "")
         if not key:
             raise ValueError("No Gemini API key — set GEMINI_API_KEY or pass api_key explicitly")
@@ -78,6 +82,8 @@ class GeminiClient:
         Returns:
             The model's text response with thinking parts stripped.
         """
+        from google.genai import types  # lazy — saves ~160ms at startup
+
         cfg = get_config()
         resolved_model = model or cfg.default_model
         resolved_thinking = _resolve_thinking_level(thinking_level or cfg.default_thinking_level)
