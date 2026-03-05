@@ -2,7 +2,7 @@
 name: comment-analyst
 description: Fetch YouTube video comments and analyze them via Gemini Flash for sentiment and key opinions (runs in background)
 tools: Read, Write, Glob, Bash, mcp__jina__read_url, mcp__video-research__content_analyze, mcp__video-research__video_metadata, mcp__video-research__video_comments
-model: haiku
+model: opus
 color: orange
 ---
 
