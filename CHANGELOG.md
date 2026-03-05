@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.6] - 2026-03-05
+
+### Added
+
+- **`knowledge_schema` tool** — returns property names, types, and descriptions for any collection without requiring a Weaviate connection. Call before `knowledge_ingest` to discover expected fields
+
+### Improved
+
+- **`knowledge_ingest` error messages** — unknown-property errors now include allowed `name:type` pairs and a hint to call `knowledge_schema`, eliminating trial-and-error loops
+
 ## [0.3.5] - 2026-03-05
 
 ### Changed
