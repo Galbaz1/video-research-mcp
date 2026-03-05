@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.7] - 2026-03-05
+
+### Fixed
+
+- **comment-analyst agent** — changed model from `haiku` (banned) to `opus` per global policy
+
 ## [0.3.6] - 2026-03-05
 
 ### Added
