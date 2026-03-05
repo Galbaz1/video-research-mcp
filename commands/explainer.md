@@ -15,17 +15,19 @@ If `$ARGUMENTS` is empty, guide the user:
 
 ```
 AskUserQuestion:
-  question: "What kind of video do you want to create?"
-  header: "Video type"
-  options:
-    - label: "From a Production Order"
-      description: "Use an existing POD file (docs/plans/*.md) as the blueprint"
-    - label: "From research output"
-      description: "Turn a /gr:video or /gr:research analysis into a video"
-    - label: "From scratch"
-      description: "Start with a topic — I'll help you build the content"
-    - label: "Check existing projects"
-      description: "See what projects exist and their status"
+  questions:
+    - question: "What kind of video do you want to create?"
+      header: "Video type"
+      multiSelect: false
+      options:
+        - label: "From a Production Order"
+          description: "Use an existing POD file (docs/plans/*.md) as the blueprint"
+        - label: "From research output"
+          description: "Turn a /gr:video or /gr:research analysis into a video"
+        - label: "From scratch"
+          description: "Start with a topic — I'll help you build the content"
+        - label: "Check existing projects"
+          description: "See what projects exist and their status"
 ```
 
 **If "From a Production Order":**

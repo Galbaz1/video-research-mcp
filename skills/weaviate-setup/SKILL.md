@@ -17,15 +17,17 @@ Ask the user which Weaviate deployment they want to use:
 
 ```
 AskUserQuestion:
-  question: "Which Weaviate deployment will you use?"
-  header: "Deployment"
-  options:
-    - label: "Weaviate Cloud (Recommended)"
-      description: "Managed cloud service at console.weaviate.cloud — free tier available, no infrastructure to manage"
-    - label: "Local Docker"
-      description: "Run Weaviate locally via Docker on port 8080 — full control, no network latency"
-    - label: "Custom/Self-hosted"
-      description: "Your own Weaviate deployment at a custom URL"
+  questions:
+    - question: "Which Weaviate deployment will you use?"
+      header: "Deployment"
+      multiSelect: false
+      options:
+        - label: "Weaviate Cloud (Recommended)"
+          description: "Managed cloud service at console.weaviate.cloud — free tier available, no infrastructure to manage"
+        - label: "Local Docker"
+          description: "Run Weaviate locally via Docker on port 8080 — full control, no network latency"
+        - label: "Custom/Self-hosted"
+          description: "Your own Weaviate deployment at a custom URL"
 ```
 
 ### Step 2: Collect Credentials (based on choice)
@@ -122,13 +124,15 @@ Ask the user if they want AI-powered Q&A over their knowledge store:
 
 ```
 AskUserQuestion:
-  question: "Do you want to enable AI-powered knowledge Q&A?"
-  header: "QueryAgent (Optional)"
-  options:
-    - label: "Yes -- install weaviate-agents"
-      description: "Enables knowledge_ask (AI answers with sources) and knowledge_query (natural language search). Requires the weaviate-agents package."
-    - label: "No -- skip for now"
-      description: "You can install it later with: uv pip install 'video-research-mcp[agents]'"
+  questions:
+    - question: "Do you want to enable AI-powered knowledge Q&A?"
+      header: "QueryAgent (Optional)"
+      multiSelect: false
+      options:
+        - label: "Yes -- install weaviate-agents"
+          description: "Enables knowledge_ask (AI answers with sources) and knowledge_query (natural language search). Requires the weaviate-agents package."
+        - label: "No -- skip for now"
+          description: "You can install it later with: uv pip install 'video-research-mcp[agents]'"
 ```
 
 **If yes**, tell them to install the agents extra:
