@@ -314,6 +314,15 @@ when Weaviate is configured, and falls back to filesystem grep otherwise.
 Knowledge states (fuzzy/unknown) and visualization browsing are always filesystem-based.
 Direct MCP tool calls remain available for programmatic use.
 
+### Ingesting data into the knowledge store
+
+**Always call `knowledge_schema(collection="<name>")` before `knowledge_ingest`.** This returns the exact property names and types — never guess field names.
+
+```
+knowledge_schema(collection="ResearchFindings")  # discover fields first
+knowledge_ingest(collection="ResearchFindings", properties={...})  # then ingest
+```
+
 ### Compare multiple videos (orchestrated by you)
 1. Call `video_analyze` on each URL with the same instruction
 2. Synthesize the results in your response — you are the comparison engine
