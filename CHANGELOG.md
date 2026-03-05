@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.8] - 2026-03-05
+
+### Improved
+
+- **`/gr:ingest` command** — now calls `knowledge_schema` before ingesting to discover exact property names; removed hardcoded property table that could drift from schema
+- **video-research skill** — added schema-first convention for knowledge ingest workflows
+
 ## [0.3.7] - 2026-03-05
 
 ### Fixed

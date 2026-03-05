@@ -1,7 +1,7 @@
 ---
 description: Manually add knowledge to the Weaviate store
 argument-hint: "[collection] [text or file path]"
-allowed-tools: mcp__video-research__knowledge_ingest, mcp__video-research__knowledge_stats, mcp__video-research__knowledge_search, Read
+allowed-tools: mcp__video-research__knowledge_ingest, mcp__video-research__knowledge_schema, mcp__video-research__knowledge_stats, mcp__video-research__knowledge_search, Read
 model: sonnet
 ---
 
@@ -32,16 +32,18 @@ AskUserQuestion:
 
 Map the user's intent to the right collection. Call `knowledge_stats()` first to verify Weaviate is available.
 
-| Intent | Collection | Key Properties |
-|--------|-----------|----------------|
-| Finding/insight | `ResearchFindings` | `topic`, `claim`, `evidence_tier`, `source_url`, `source_title` |
-| Content analysis | `ContentAnalyses` | `title`, `summary`, `source_url`, `source_type`, `key_points` |
-| Video note | `VideoAnalyses` | `title`, `summary`, `video_id`, `source_url` |
-| Concept | `ConceptKnowledge` | `concept_name`, `description`, `state`, `source_category` |
-| Relationship | `RelationshipEdges` | `from_concept`, `to_concept`, `relationship_type`, `evidence` |
-| Meeting/call note | `CallNotes` | `title`, `summary`, `participants`, `key_decisions` |
+| Intent | Collection |
+|--------|-----------|
+| Finding/insight | `ResearchFindings` |
+| Content analysis | `ContentAnalyses` |
+| Video note | `VideoAnalyses` |
+| Concept | `ConceptKnowledge` |
+| Relationship | `RelationshipEdges` |
+| Meeting/call note | `CallNotes` |
 
 If `$ARGUMENTS` includes a collection name, use it directly.
+
+**Always call `knowledge_schema(collection="<name>")` to get the exact property names and types.** Do not guess property names — the schema is the source of truth.
 
 ## Phase 2: Gather Properties
 
@@ -62,7 +64,7 @@ On success: report the object UUID and offer:
 - "Add related concepts or relationships"
 
 On error:
-- **Schema validation error**: Show which properties were rejected and list the valid properties for that collection. Use the error message — it lists unknown keys.
+- **Schema validation error**: The error message lists allowed `name:type` pairs. Call `knowledge_schema(collection="<name>")` for full details, then retry with correct properties.
 - **Weaviate not configured**: "Set up Weaviate first: `/skill weaviate-setup`"
 
 ## Bulk Ingestion
