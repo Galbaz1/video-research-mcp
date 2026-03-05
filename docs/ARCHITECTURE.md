@@ -116,9 +116,10 @@ src/video_research_mcp/
     search.py            search_server (1 tool)
     infra.py             infra_server (2 tools)
     knowledge_filters.py Collection-aware Weaviate filter builder
-    knowledge/           knowledge_server (7 tools: search, retrieval, ingest, QueryAgent)
+    knowledge/           knowledge_server (8 tools: search, retrieval, ingest, schema, QueryAgent)
       __init__.py        Server + tool imports
       search.py          knowledge_search with reranking + Flash summarization
+      schema.py          knowledge_schema (offline collection property introspection)
       helpers.py         RERANK_PROPERTY mapping, ALLOWED_PROPERTIES, serialize
       summarize.py       Flash post-processor (HitSummary/HitSummaryBatch)
       agent.py           knowledge_ask, knowledge_query (QueryAgent)
@@ -147,7 +148,7 @@ app.mount(content_server)     # tools/content.py      3 tools
 app.mount(search_server)      # tools/search.py       1 tool
 app.mount(infra_server)       # tools/infra.py        2 tools
 app.mount(youtube_server)     # tools/youtube.py      3 tools
-app.mount(knowledge_server)   # tools/knowledge/       7 tools
+app.mount(knowledge_server)   # tools/knowledge/       8 tools
 #                                                     ── 28 tools total
 ```
 
@@ -639,7 +640,7 @@ Returns depend on `action`:
 
 Changes take effect immediately. Returns current config, active preset, and available presets.
 
-### Knowledge Server (7 tools)
+### Knowledge Server (8 tools)
 
 All knowledge tools gracefully degrade when Weaviate is not configured (return empty results, not errors). `knowledge_ask` requires the optional `weaviate-agents` package. `knowledge_query` is **deprecated** — use `knowledge_search` instead.
 
@@ -686,7 +687,15 @@ Returns: `KnowledgeStatsResult` with per-collection counts and total.
 | `collection` | `KnowledgeCollection` | (required) | Target collection |
 | `properties` | `dict` | (required) | Object properties |
 
-Validates properties against the collection schema -- unknown keys are rejected. Returns: `KnowledgeIngestResult` with object UUID.
+Validates properties against the collection schema -- unknown keys are rejected with allowed `name:type` pairs. Returns: `KnowledgeIngestResult` with object UUID.
+
+**`knowledge_schema`** -- Return property schemas for knowledge collections (no Weaviate needed).
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `collection` | `KnowledgeCollection \| None` | `None` | Single collection or all |
+
+Reads from local `CollectionDef` objects -- no Weaviate connection required. Returns `{name, type, description}` per property. Call before `knowledge_ingest` to discover expected fields.
 
 **`knowledge_fetch`** -- Retrieve a single object by UUID.
 
