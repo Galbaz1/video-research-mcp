@@ -192,7 +192,7 @@ Agent configuration: `.claude/rules/` contains project-specific conventions that
 
 ## Testing
 
-717 tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits the real API.
+724 tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits the real API.
 
 **Key fixtures** (`conftest.py`): `mock_gemini_client` (mocks `.get()`, `.generate()`, `.generate_structured()`), `clean_config` (isolates config), `mock_weaviate_client`, `mock_weaviate_disabled`, `_unwrap_fastmcp_tools` (session-scoped, ensures tool callability), autouse `GEMINI_API_KEY=test-key-not-real`, `_disable_tracing`, `_isolate_dotenv`, `_isolate_upload_cache`.
 

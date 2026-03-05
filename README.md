@@ -16,7 +16,7 @@ Claude Code can't process video. Gemini 3.1 Pro can. This plugin bridges the two
 
 ## What's in the box
 
-A **Claude Code plugin** -- not just MCP servers, but a full integration: 41 tools, 14 slash commands, 5 skills, and 6 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
+A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 14 slash commands, 5 skills, and 6 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -170,7 +170,7 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 ## Tools
 
 <details>
-<summary><strong>video-research-mcp -- 24 tools</strong></summary>
+<summary><strong>video-research-mcp -- 28 tools</strong></summary>
 
 **Video** (4): `video_analyze`, `video_create_session`, `video_continue_session`, `video_batch_analyze`
 
@@ -342,7 +342,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines. 
 - **[video_explainer](https://github.com/prajwal-y/video_explainer)** by [prajwal-y](https://github.com/prajwal-y) -- the video synthesis engine behind the explainer pipeline. We extended it with configurable ElevenLabs voice settings, env-based configuration, and MCP tool integration. The original repo is included as a git submodule at `packages/video-explainer/`.
 - **[Weaviate](https://weaviate.io/)** -- vector database powering the knowledge store. Eleven collections, hybrid search, and the [Weaviate Claude Code skill](https://github.com/weaviate/weaviate-claude-code-skill) that inspired the knowledge architecture.
 - **[Google Gemini](https://ai.google.dev/)** (`google-genai` SDK) -- Gemini 3.1 Pro provides native video understanding, thinking mode, context caching, and the 1M token window that makes all of this work.
-- **[FastMCP](https://github.com/jlowin/fastmcp)** -- MCP server framework. The composable sub-server pattern (`app.mount()`) keeps 41 tools organized across 3 servers and 15 namespaces.
+- **[FastMCP](https://github.com/jlowin/fastmcp)** -- MCP server framework. The composable sub-server pattern (`app.mount()`) keeps 45 tools organized across 3 servers.
 - **[MLflow](https://mlflow.org/)** (`mlflow-tracing`) -- optional observability. Every Gemini call becomes a traceable span with token counts and latency.
 - **[Pydantic](https://docs.pydantic.dev/)** -- schema validation for all tool I/O. Structured generation via `model_json_schema()`.
 - **[Remotion](https://www.remotion.dev/)** -- React-based video rendering for the explainer pipeline.

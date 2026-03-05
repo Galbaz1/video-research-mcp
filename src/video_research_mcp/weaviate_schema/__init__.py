@@ -1,4 +1,4 @@
-"""Weaviate collection definitions — 11 collections for knowledge storage.
+"""Weaviate collection definitions — 12 collections for knowledge storage.
 
 Each CollectionDef maps to a Weaviate class. Collections are created
 idempotently by WeaviateClient.ensure_collections() on first connection.

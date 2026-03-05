@@ -1,7 +1,7 @@
 {
   "name": "gr",
-  "version": "0.2.0",
-  "description": "Claude Code plugin for video analysis, deep research, content extraction, and web search — powered by Gemini 3.1 Pro.",
+  "version": "0.3.3",
+  "description": "Claude Code plugin for video analysis, deep research, content extraction, web search, and explainer video creation — powered by Gemini 3.1 Pro.",
   "author": {
     "name": "Fausto Albers"
   },

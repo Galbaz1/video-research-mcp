@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-03-05
+
+### Added
+
+- **Gemini Deep Research Agent tools** — added `research_web`, `research_web_status`, `research_web_followup`, and `research_web_cancel` for long-running web-grounded research via the Interactions API
+- **DeepResearchReports knowledge collection** — stores completed deep-research reports, usage metadata, and follow-up Q&A; includes cross-references to `ResearchFindings` and `WebSearchResults`
+- **`DEEP_RESEARCH_AGENT` config variable** — explicit environment variable and runtime validation for selecting the Interactions API agent
+- **`/gr:research-deep` command** — interview-driven command workflow for launching and iterating on Deep Research runs
+- **`research-brief-builder` skill** — brief-quality checklist and challenge templates for high-signal research prompts
+
+### Fixed
+
+- Deep Research follow-up tool annotation now correctly marks write behavior (`readOnlyHint=false`)
+- Deep Research launch tracking now evicts stale IDs (TTL + cap) and cleans terminal interactions to avoid in-memory growth
+- Follow-up results are now persisted to Weaviate (`follow_ups_json`) instead of storing only follow-up IDs
+
+### Changed
+
+- `researcher` agent now includes Deep Research and knowledge-search tools in its default workflow
+- Installer copy map now ships the new `/gr:research-deep` command and `research-brief-builder` skill
+
 ## [0.3.2] - 2026-03-03
 
 ### Added
@@ -108,7 +129,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.3...HEAD
+[0.3.3]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.2.0...v0.3.0
