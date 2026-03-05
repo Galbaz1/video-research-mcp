@@ -12,9 +12,9 @@ This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-ba
 
 ## What This Is
 
-A monorepo with 3 MCP servers (41 tools total):
+A monorepo with 3 MCP servers (45 tools total):
 
-1. **video-research-mcp** (root) — 24 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai`) and YouTube Data API v3.
+1. **video-research-mcp** (root) — 28 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai`) and YouTube Data API v3.
 2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos.
 3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools for parallel scene generation via Claude Agent SDK.
 
@@ -48,7 +48,8 @@ Do not mix review scopes in one pass unless explicitly requested.
 
 - `tools/video.py`: video analysis/session/batch tools
 - `tools/youtube.py`: metadata/comments/playlist tools
-- `tools/research.py`: deep research/planning/evidence + `research_document` (via deferred import)
+- `tools/research.py`: deep research/planning/evidence + deferred registration for `research_document` and `research_web*` tools
+- `tools/research_web.py`: Deep Research Agent tools (`research_web`, status/follow-up/cancel)
 - `tools/content.py`: content analyze/extract + `content_batch_analyze` (via deferred import)
 - `tools/search.py`: web search tool
 - `tools/infra.py`: infra/cache/config tools
@@ -130,6 +131,7 @@ Main variables:
 - `GEMINI_API_KEY` (required)
 - `GEMINI_MODEL` (default `gemini-3.1-pro-preview`)
 - `GEMINI_FLASH_MODEL` (default `gemini-3-flash-preview`)
+- `DEEP_RESEARCH_AGENT` (default `deep-research-pro-preview-12-2025`)
 - `WEAVIATE_URL` (empty disables knowledge store)
 - `WEAVIATE_API_KEY`
 - `GEMINI_SESSION_DB` (empty means in-memory sessions)

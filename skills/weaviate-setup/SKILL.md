@@ -5,7 +5,7 @@ description: Interactive onboarding for the Weaviate knowledge store. Guides use
 
 # Weaviate Knowledge Store Setup
 
-You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. All 24 tools automatically write results to Weaviate when configured. 7 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
+You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. All 28 tools automatically write results to Weaviate when configured. 7 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
 
 ## Setup Flow
 
@@ -88,7 +88,7 @@ After the user has configured the environment, tell them to restart Claude Code 
 knowledge_search(query="test")
 ```
 
-This will attempt to connect and search. On first connection, the server auto-creates all 11 collections. If the search returns empty results with no error, the connection is working.
+This will attempt to connect and search. On first connection, the server auto-creates all 12 collections. If the search returns empty results with no error, the connection is working.
 
 Then confirm collections exist:
 
@@ -96,7 +96,7 @@ Then confirm collections exist:
 knowledge_stats()
 ```
 
-This should return counts for all 11 collections (all 0 initially). If it returns an error, troubleshoot based on the error category:
+This should return counts for all 12 collections (all 0 initially). If it returns an error, troubleshoot based on the error category:
 
 | Error | Fix |
 |-------|-----|
@@ -108,7 +108,7 @@ This should return counts for all 11 collections (all 0 initially). If it return
 
 Once `knowledge_stats` returns successfully, tell the user:
 
-1. All 24 tools now automatically store results to Weaviate
+1. All 28 tools now automatically store results to Weaviate
 2. Use `knowledge_search(query="...")` to find past results semantically (supports hybrid, semantic, keyword modes)
 3. Use `knowledge_related(object_id="...", collection="...")` to find similar items
 4. Use `knowledge_fetch(object_id="...", collection="...")` to retrieve a specific object by UUID
@@ -149,17 +149,22 @@ If successful, they now also have:
 
 These tools use Weaviate's AsyncQueryAgent, which automatically translates natural-language queries into optimized Weaviate operations.
 
-## 7 Collections Created Automatically
+## 12 Collections Created Automatically
 
 | Collection | Populated by | Knowledge tools that query it |
 |---|---|---|
-| `ResearchFindings` | `research_deep`, `research_assess_evidence` | All 8 knowledge tools |
-| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | All 8 knowledge tools |
-| `ContentAnalyses` | `content_analyze` | All 8 knowledge tools |
-| `VideoMetadata` | `video_metadata` | All 8 knowledge tools |
-| `SessionTranscripts` | `video_continue_session` | All 8 knowledge tools |
-| `WebSearchResults` | `web_search` | All 8 knowledge tools |
-| `ResearchPlans` | `research_plan` | All 8 knowledge tools |
+| `ResearchFindings` | `research_deep`, `research_assess_evidence`, `research_document` | All 7 knowledge tools |
+| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | All 7 knowledge tools |
+| `ContentAnalyses` | `content_analyze`, `content_batch_analyze` | All 7 knowledge tools |
+| `VideoMetadata` | `video_metadata` | All 7 knowledge tools |
+| `SessionTranscripts` | `video_continue_session` | All 7 knowledge tools |
+| `WebSearchResults` | `web_search` | All 7 knowledge tools |
+| `ResearchPlans` | `research_plan` | All 7 knowledge tools |
+| `DeepResearchReports` | `research_web_status`, `research_web_followup` | All 7 knowledge tools |
+| `CommunityReactions` | comment-analyst agent outputs | All 7 knowledge tools |
+| `ConceptKnowledge` | concept extraction/enrichment pipelines | All 7 knowledge tools |
+| `RelationshipEdges` | relationship graph extraction | All 7 knowledge tools |
+| `CallNotes` | call/meeting analysis pipelines | All 7 knowledge tools |
 
 ## Supported Deployment URLs
 

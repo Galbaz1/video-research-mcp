@@ -46,21 +46,35 @@ graph TD
     VS --> V4
 
     Y1["video_metadata"]:::tool
+    Y0["video_comments"]:::tool
     Y2["video_playlist"]:::tool
     YS --> Y1
+    YS --> Y0
     YS --> Y2
 
     R1["research_deep"]:::tool
     R2["research_plan"]:::tool
     R3["research_assess_evidence"]:::tool
+    R4["research_document"]:::tool
+    R5["research_web"]:::tool
+    R6["research_web_status"]:::tool
+    R7["research_web_followup"]:::tool
+    R8["research_web_cancel"]:::tool
     RS --> R1
     RS --> R2
     RS --> R3
+    RS --> R4
+    RS --> R5
+    RS --> R6
+    RS --> R7
+    RS --> R8
 
     C1["content_analyze"]:::tool
     C2["content_extract"]:::tool
+    C3["content_batch_analyze"]:::tool
     CS --> C1
     CS --> C2
+    CS --> C3
 
     S1["web_search"]:::tool
     SS --> S1
@@ -73,11 +87,17 @@ graph TD
     K1["knowledge_search"]:::tool
     K2["knowledge_related"]:::tool
     K3["knowledge_stats"]:::tool
-    K4["knowledge_ingest"]:::tool
+    K4["knowledge_fetch"]:::tool
+    K5["knowledge_ingest"]:::tool
+    K6["knowledge_ask"]:::tool
+    K7["knowledge_query"]:::tool
     KS --> K1
     KS --> K2
     KS --> K3
     KS --> K4
+    KS --> K5
+    KS --> K6
+    KS --> K7
 ```
 
 ---
@@ -214,7 +234,7 @@ stateDiagram-v2
 
 ## 4. Weaviate Knowledge Store Data Flow
 
-All tool results are written through to Weaviate collections via `weaviate_store/`. The knowledge tools (`knowledge_*`) provide query access. The 11 collections store different data types, each with common properties (`created_at`, `source_tool`) plus domain-specific fields.
+All tool results are written through to Weaviate collections via `weaviate_store/`. The knowledge tools (`knowledge_*`) provide query access. The 12 collections store different data types, each with common properties (`created_at`, `source_tool`) plus domain-specific fields.
 
 ```mermaid
 flowchart LR
@@ -231,6 +251,9 @@ flowchart LR
         T3["research_deep"]:::tool
         T4["research_plan"]:::tool
         T5["research_assess_evidence"]:::tool
+        T9["research_document"]:::tool
+        T10["research_web_status"]:::tool
+        T11["research_web_followup"]:::tool
         T6["video_metadata"]:::tool
         T7["video_continue_session"]:::tool
         T8["web_search"]:::tool
@@ -242,6 +265,8 @@ flowchart LR
         S3["store_research_finding()"]:::store
         S4["store_research_plan()"]:::store
         S5["store_evidence_assessment()"]:::store
+        S9["store_deep_research()"]:::store
+        S10["store_deep_research_followup()"]:::store
         S6["store_video_metadata()"]:::store
         S7["store_session_turn()"]:::store
         S8["store_web_search()"]:::store
@@ -252,6 +277,9 @@ flowchart LR
     T3 --> S3
     T4 --> S4
     T5 --> S5
+    T9 --> S3
+    T10 --> S9
+    T11 --> S10
     T6 --> S6
     T7 --> S7
     T8 --> S8
@@ -418,7 +446,7 @@ graph TD
     REPO["gemini-research-mcp<br/>(monorepo)"]:::root
 
     subgraph "Root: video-research-mcp"
-        ROOT_PKG["video-research-mcp<br/>24 tools | 7 sub-servers<br/>PyPI + npm (plugin installer)"]:::pkg
+        ROOT_PKG["video-research-mcp<br/>28 tools | 7 sub-servers<br/>PyPI + npm (plugin installer)"]:::pkg
         ROOT_DEPS["google-genai >=1.57<br/>fastmcp >=3.0.2<br/>weaviate-client >=4.19.2<br/>pydantic >=2.0"]:::dep
         ROOT_PKG --- ROOT_DEPS
     end

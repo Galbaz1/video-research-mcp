@@ -32,7 +32,7 @@ Call `knowledge_stats()` first. If it returns collection counts, Weaviate is ava
 4. Present unified overview:
 
    **Knowledge Store** (if available)
-   X objects across 11 collections
+   X objects across 12 collections
    ResearchFindings: N | VideoAnalyses: N | ContentAnalyses: N | ...
 
    **Project Memory** (filesystem)

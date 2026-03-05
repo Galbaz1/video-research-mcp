@@ -8,7 +8,7 @@ Technical reference for the `video-research-mcp` codebase. Covers the system des
 2. [Composite Server Pattern](#2-composite-server-pattern)
 3. [GeminiClient Pipeline](#3-geminiclient-pipeline)
 4. [Tool Conventions](#4-tool-conventions)
-5. [Tool Reference (24 tools)](#5-tool-reference-24-tools)
+5. [Tool Reference (28 tools)](#5-tool-reference-28-tools)
 6. [Singletons](#6-singletons)
 7. [Weaviate Integration](#7-weaviate-integration)
 8. [Session Management](#8-session-management)
@@ -25,7 +25,7 @@ Technical reference for the `video-research-mcp` codebase. Covers the system des
 
 ## 1. System Overview
 
-`video-research-mcp` is an MCP (Model Context Protocol) server that exposes 24 tools for video analysis, deep research, content extraction, web search, and knowledge management. It communicates over **stdio transport** using **FastMCP** (`fastmcp>=3.0.2`) and is powered by **Gemini 3.1 Pro** via the `google-genai` SDK.
+`video-research-mcp` is an MCP (Model Context Protocol) server that exposes 28 tools for video analysis, deep research, content extraction, web search, and knowledge management. It communicates over **stdio transport** using **FastMCP** (`fastmcp>=3.0.2`) and is powered by **Gemini 3.1 Pro** via the `google-genai` SDK.
 
 ### Core Dependencies
 
@@ -66,14 +66,15 @@ src/video_research_mcp/
   retry.py               Exponential backoff for transient Gemini errors
   tracing.py             Optional MLflow integration (@trace decorator, autolog)
   weaviate_client.py     WeaviateClient singleton
-  weaviate_schema/       11 collection definitions (package, 5 modules)
+  weaviate_schema/       12 collection definitions (package, 6 modules)
     __init__.py          Re-exports ALL_COLLECTIONS + types
     base.py              CollectionDef, PropertyDef, ReferenceDef, _common_properties
     collections.py       7 core collections (Findings, Analyses, Metadata, etc.)
     community.py         CommunityReactions collection
     concepts.py          ConceptKnowledge, RelationshipEdges collections
     calls.py             CallNotes collection
-  weaviate_store/        Write-through store functions (package, 8 modules)
+    deep_research.py     DeepResearchReports collection
+  weaviate_store/        Write-through store functions (package, 9 modules)
     __init__.py          Re-exports all store_* functions
     _base.py             Shared guard (_is_enabled) and helpers
     video.py             store_video_analysis, store_video_metadata
@@ -84,6 +85,7 @@ src/video_research_mcp/
     community.py         store_community_reaction
     concepts.py          store_concept_knowledge, store_relationship_edges
     calls.py             store_call_notes
+    deep_research.py     store_deep_research, store_deep_research_followup
   models/
     video.py             VideoResult, SessionInfo, SessionResponse
     video_batch.py       BatchVideoItem, BatchVideoResult
@@ -105,8 +107,9 @@ src/video_research_mcp/
     video_url.py         YouTube URL validation + Content builder
     video_file.py        Local video file handling, File API upload
     youtube.py           youtube_server (3 tools)
-    research.py          research_server (4 tools)
+    research.py          research_server (3 core tools + deferred registrations)
     research_document.py research_document tool + 4-phase orchestration (split from research.py)
+    research_web.py      Deep Research Agent tools (`research_web*`)
     research_document_file.py Document File API upload + URL download helpers
     content.py           content_server (3 tools)
     content_batch.py     content_batch_analyze tool (split from content.py)
@@ -122,7 +125,7 @@ src/video_research_mcp/
       ingest.py          knowledge_ingest, knowledge_fetch, knowledge_stats
 ```
 
-**Tool count**: 4 + 3 + 4 + 3 + 1 + 2 + 7 = **24 tools** across 7 sub-servers.
+**Tool count**: 4 + 3 + 8 + 3 + 1 + 2 + 7 = **28 tools** across 7 sub-servers.
 
 ---
 
@@ -137,14 +140,15 @@ app = FastMCP("video-research", instructions="...", lifespan=_lifespan)
 
 app.mount(video_server)       # tools/video.py       4 tools
 _ensure_document_tool()       # deferred: research_document registers on research_server
-app.mount(research_server)    # tools/research.py     4 tools
+_ensure_web_tools()           # deferred: research_web* registers on research_server
+app.mount(research_server)    # tools/research.py     8 tools total
 _ensure_batch_tool()          # deferred: content_batch_analyze registers on content_server
 app.mount(content_server)     # tools/content.py      3 tools
 app.mount(search_server)      # tools/search.py       1 tool
 app.mount(infra_server)       # tools/infra.py        2 tools
 app.mount(youtube_server)     # tools/youtube.py      3 tools
 app.mount(knowledge_server)   # tools/knowledge/       7 tools
-#                                                     ── 24 tools total
+#                                                     ── 28 tools total
 ```
 
 ### Lifespan Hook
@@ -383,11 +387,13 @@ return result
 | `research_plan` | `store_research_plan` | `ResearchPlans` |
 | `research_assess_evidence` | `store_evidence_assessment` | `ResearchFindings` |
 | `research_document` | `store_research_finding` | `ResearchFindings` |
+| `research_web_status` | `store_deep_research` | `DeepResearchReports` |
+| `research_web_followup` | `store_deep_research_followup` | `DeepResearchReports` |
 | `content_analyze` | `store_content_analysis` | `ContentAnalyses` |
 | `content_batch_analyze` | `store_content_analysis` (per file) | `ContentAnalyses` |
 | `web_search` | `store_web_search` | `WebSearchResults` |
 
-Tools not in this table (`content_extract`, `video_comments`, `video_playlist`, `infra_cache`, `infra_configure`, and the knowledge tools) do not write through.
+Tools not in this table (`content_extract`, `video_comments`, `video_playlist`, `research_web` launch-only, `research_web_cancel`, `infra_cache`, `infra_configure`, and the knowledge tools) do not write through.
 
 **Key guarantees**:
 - **Non-fatal**: All store functions catch exceptions and log warnings. Tool results are never lost due to Weaviate failures.
@@ -396,7 +402,7 @@ Tools not in this table (`content_extract`, `video_comments`, `video_playlist`, 
 
 ---
 
-## 5. Tool Reference (24 tools)
+## 5. Tool Reference (28 tools)
 
 ### Video Server (4 tools)
 
@@ -473,7 +479,7 @@ Returns: dict with `video_id`, `comments` list (text, like count, author), and `
 
 Returns: `PlaylistInfo` dict. Costs 1 YouTube API unit per page.
 
-### Research Server (4 tools)
+### Research Server (8 tools)
 
 **`research_deep`** -- Run multi-phase deep research with evidence-tier labeling.
 
@@ -520,6 +526,40 @@ Returns: `EvidenceAssessment` dict with tier, confidence (0-1), reasoning. Write
 4-phase pipeline: Document Mapping (`DocumentMap` per doc, parallel) → Evidence Extraction (`DocumentFindingsContainer` per doc, parallel) → Cross-Reference (`CrossReferenceMap`, all docs in one call) → Synthesis (`DocumentResearchReport`). Scope `quick` skips phases 2–4; phase 3 is skipped for single-document `moderate` scope.
 
 Documents are always uploaded via File API (`research_document_file.py`) regardless of size — amortizes upload cost across all 3–4 Gemini calls. URL documents are downloaded to a temp dir first via `httpx`, then uploaded. Registration uses deferred import pattern (`_ensure_document_tool()` called from `server.py`) to avoid circular import. Writes to `ResearchFindings`.
+
+**`research_web`** -- Launch Gemini Deep Research Agent in background mode.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `topic` | `str` | (required) | Detailed research brief |
+| `output_format` | `str` | `""` | Optional report structure guidance |
+
+Returns: launch envelope with `interaction_id`, `status`. Uses `DEEP_RESEARCH_AGENT`.
+
+**`research_web_status`** -- Poll status or retrieve completed Deep Research result.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `interaction_id` | `str` | (required) | Interaction ID from `research_web` |
+
+Returns: status while running; full report + sources + usage when completed. Writes completed reports to `DeepResearchReports`.
+
+**`research_web_followup`** -- Ask follow-up questions on completed Deep Research reports.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `interaction_id` | `str` | (required) | Original Deep Research interaction ID |
+| `question` | `str` | (required) | Follow-up question |
+
+Returns: follow-up response with a new `interaction_id`. Appends Q&A to `DeepResearchReports`.
+
+**`research_web_cancel`** -- Cancel an in-flight Deep Research interaction.
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `interaction_id` | `str` | (required) | Interaction ID to cancel |
+
+Returns: cancellation status response.
 
 ### Content Server (3 tools)
 
@@ -745,7 +785,7 @@ The knowledge layer uses Weaviate as a vector database for persistent, searchabl
 Tool produces result
   -> weaviate_store.store_*()     # write-through (non-fatal)
      -> WeaviateClient.get()      # lazy connect + schema ensure
-        -> weaviate_schema/       # 11 collection definitions
+        -> weaviate_schema/       # 12 collection definitions
      -> collection.data.insert()  # async via to_thread
 ```
 
@@ -761,13 +801,13 @@ Tool produces result
 
 All connection paths include `AdditionalConfig(timeout=Timeout(init=30, query=60, insert=120))` for production reliability.
 
-On first connection, `ensure_collections()` iterates all 7 `CollectionDef` objects and creates any that don't exist using the v4 `Property()` API (not `create_from_dict`). Existing collections are evolved by adding missing properties via `_evolve_collection()`.
+On first connection, `ensure_collections()` iterates all 12 `CollectionDef` objects and creates any that don't exist using the v4 `Property()` API (not `create_from_dict`). Existing collections are evolved by adding missing properties via `_evolve_collection()`.
 
 ### Schema (`weaviate_schema/` package)
 
-The schema package contains 5 modules: `base.py` (types), `collections.py` (7 core collections), `community.py`, `concepts.py`, and `calls.py`. The `__init__.py` re-exports `ALL_COLLECTIONS` and all types so existing imports remain stable.
+The schema package contains 6 modules: `base.py` (types), `collections.py` (7 core collections), `community.py`, `concepts.py`, `calls.py`, and `deep_research.py`. The `__init__.py` re-exports `ALL_COLLECTIONS` and all types so existing imports remain stable.
 
-Eleven collections, each defined as a `CollectionDef` dataclass:
+Twelve collections, each defined as a `CollectionDef` dataclass:
 
 | Collection | Source Tool(s) | Vectorized Fields |
 |------------|---------------|-------------------|
@@ -778,6 +818,7 @@ Eleven collections, each defined as a `CollectionDef` dataclass:
 | `SessionTranscripts` | `video_continue_session` | video_title, turn_prompt, turn_response |
 | `WebSearchResults` | `web_search` | query, response |
 | `ResearchPlans` | `research_plan` | topic, task_decomposition |
+| `DeepResearchReports` | `research_web_status`, `research_web_followup` | topic, report_text |
 | `CommunityReactions` | comment analysis agent | video_id, sentiment, themes |
 | `ConceptKnowledge` | concept extraction | name, description, domain |
 | `RelationshipEdges` | relationship mapping | source, target, relationship_type |
@@ -796,7 +837,7 @@ Fields marked `skip_vectorization=True` are stored but not included in the vecto
 
 ### Write-Through Store (`weaviate_store/` package)
 
-The store package contains 8 domain modules plus a shared `_base.py` with the `_is_enabled()` guard and helpers. The `__init__.py` re-exports all 11 `store_*` functions so existing imports like `from .weaviate_store import store_video_analysis` keep working.
+The store package contains 9 domain modules plus a shared `_base.py` with the `_is_enabled()` guard and helpers. The `__init__.py` re-exports all 14 `store_*` functions so existing imports like `from .weaviate_store import store_video_analysis` keep working.
 
 One async function per collection, all following the same pattern:
 
@@ -823,7 +864,7 @@ Key design decisions:
 
 ### Knowledge Tools (`tools/knowledge/`)
 
-Eight tools provide read/write/query access to the knowledge store:
+Seven tools provide read/write/query access to the knowledge store:
 - `knowledge_search` -- search across collections (hybrid, semantic, or keyword mode)
 - `knowledge_related` -- near-object vector search for semantic similarity
 - `knowledge_stats` -- object counts per collection with optional group_by
@@ -850,7 +891,7 @@ All tools gracefully degrade when `weaviate_enabled` is `False` (return empty re
 | Layer | Storage | Search Method | Unique Data |
 |-------|---------|---------------|-------------|
 | Filesystem | `~/.claude/projects/*/memory/gr/` | Glob + Grep (exact) | Knowledge states, visualizations, full markdown |
-| Weaviate | 11 collections | Hybrid/semantic/keyword | Cross-collection search, AI Q&A, similarity |
+| Weaviate | 12 collections | Hybrid/semantic/keyword | Cross-collection search, AI Q&A, similarity |
 
 Availability detection: `knowledge_stats()` at command start. Returns immediately when Weaviate is not configured (no network call). If unavailable, pure filesystem mode.
 
@@ -1044,6 +1085,7 @@ All configuration is resolved from environment variables via `ServerConfig.from_
 | `GEMINI_API_KEY` | `gemini_api_key` | `""` (required at runtime) | -- |
 | `GEMINI_MODEL` | `default_model` | `gemini-3.1-pro-preview` | -- |
 | `GEMINI_FLASH_MODEL` | `flash_model` | `gemini-3-flash-preview` | -- |
+| `DEEP_RESEARCH_AGENT` | `deep_research_agent` | `deep-research-pro-preview-12-2025` | Must not be empty |
 | `GEMINI_THINKING_LEVEL` | `default_thinking_level` | `high` | Must be in `{minimal, low, medium, high}` |
 | `GEMINI_TEMPERATURE` | `default_temperature` | `1.0` | -- |
 | `GEMINI_CACHE_DIR` | `cache_dir` | `~/.cache/video-research-mcp/` | -- |

@@ -16,11 +16,11 @@ Claude Code can't process video. Gemini 3.1 Pro can. This plugin bridges the two
 
 ## What's in the box
 
-A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 14 slash commands, 5 skills, and 6 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
+A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 16 slash commands, 6 skills, and 6 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
-| **video-research-mcp** | 24 | Video analysis, deep research, content extraction, web search, knowledge store |
+| **video-research-mcp** | 28 | Video analysis, deep research, content extraction, web search, knowledge store |
 | **video-creation** | 17 | Synthesize explainer videos from research — project setup, pipeline, quality, audio, and parallel scene generation (wraps [video_explainer](https://github.com/prajwal-y/video_explainer) + [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk)) |
 
 ## Install
@@ -30,7 +30,7 @@ npx video-research-mcp@latest
 export GEMINI_API_KEY="your-key-here"
 ```
 
-One install. One API key. The installer copies 14 commands, 5 skills, and 6 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
+One install. One API key. The installer copies 16 commands, 6 skills, and 6 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
 
 ```bash
 npx video-research-mcp@latest --check     # show install status
@@ -127,11 +127,14 @@ The tools are standard MCP. Any MCP client can call them -- no Claude Code requi
 | `/gr:video <source>` | One-shot video analysis with concept map and frame extraction |
 | `/gr:video-chat <source>` | Multi-turn video Q&A with progressive note-taking |
 | `/gr:research <topic>` | Deep research with evidence-tier labeling |
+| `/gr:research-deep <topic>` | Launch Gemini Deep Research Agent with interview-built brief |
 | `/gr:research-doc <files>` | Evidence-tiered research grounded in source documents |
 | `/gr:analyze <content>` | Analyze any URL, file, text, or directory of documents |
 | `/gr:search <query>` | Web search via Gemini grounding |
 | `/gr:recall [filter]` | Browse past analyses from memory |
 | `/gr:models [preset]` | Switch Gemini model preset (best/stable/budget) |
+| `/gr:getting-started` | Guided onboarding and environment check |
+| `/gr:ingest <file>` | Import external structured knowledge into Weaviate |
 | `/gr:explainer <project>` | Create and manage explainer video projects |
 | `/gr:explain-video <project>` | Generate a full explainer video from project content |
 | `/gr:explain-status <project>` | Check render progress and pipeline state |
@@ -176,7 +179,7 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 
 **YouTube** (3): `video_metadata`, `video_comments`, `video_playlist`
 
-**Research** (4): `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`
+**Research** (8): `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`, `research_web`, `research_web_status`, `research_web_followup`, `research_web_cancel`
 
 **Content** (3): `content_analyze`, `content_batch_analyze`, `content_extract`
 
@@ -207,7 +210,7 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 
 Connect Weaviate, and everything you learn gets stored -- searchable across projects, across sessions. Without it, the plugin works the same; you just don't get persistent semantic search.
 
-Eleven collections are created on first connection:
+Twelve collections are created on first connection:
 
 | Collection | Filled by |
 |------------|-----------|
@@ -218,6 +221,7 @@ Eleven collections are created on first connection:
 | `SessionTranscripts` | `video_continue_session` |
 | `WebSearchResults` | `web_search` |
 | `ResearchPlans` | `research_plan` |
+| `DeepResearchReports` | `research_web_status` (reports), `research_web_followup` (Q&A updates) |
 | `CommunityReactions` | comment analysis (via `/gr:video` agent) |
 | `ConceptKnowledge` | concept extraction from analyses |
 | `RelationshipEdges` | relationship mapping between concepts |
@@ -248,6 +252,7 @@ export WEAVIATE_API_KEY="your-key"
 | `GEMINI_API_KEY` | **(required)** | Google AI API key |
 | `GEMINI_MODEL` | `gemini-3.1-pro-preview` | Primary model |
 | `GEMINI_FLASH_MODEL` | `gemini-3-flash-preview` | Fast model for search and summaries |
+| `DEEP_RESEARCH_AGENT` | `deep-research-pro-preview-12-2025` | Interactions API agent for `research_web*` tools |
 | `GEMINI_THINKING_LEVEL` | `high` | Thinking depth (minimal / low / medium / high) |
 | `GEMINI_TEMPERATURE` | `1.0` | Sampling temperature |
 | `GEMINI_CACHE_DIR` | `~/.cache/video-research-mcp/` | Cache directory |
@@ -340,7 +345,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines. 
 ## Credits
 
 - **[video_explainer](https://github.com/prajwal-y/video_explainer)** by [prajwal-y](https://github.com/prajwal-y) -- the video synthesis engine behind the explainer pipeline. We extended it with configurable ElevenLabs voice settings, env-based configuration, and MCP tool integration. The original repo is included as a git submodule at `packages/video-explainer/`.
-- **[Weaviate](https://weaviate.io/)** -- vector database powering the knowledge store. Eleven collections, hybrid search, and the [Weaviate Claude Code skill](https://github.com/weaviate/weaviate-claude-code-skill) that inspired the knowledge architecture.
+- **[Weaviate](https://weaviate.io/)** -- vector database powering the knowledge store. Twelve collections, hybrid search, and the [Weaviate Claude Code skill](https://github.com/weaviate/weaviate-claude-code-skill) that inspired the knowledge architecture.
 - **[Google Gemini](https://ai.google.dev/)** (`google-genai` SDK) -- Gemini 3.1 Pro provides native video understanding, thinking mode, context caching, and the 1M token window that makes all of this work.
 - **[FastMCP](https://github.com/jlowin/fastmcp)** -- MCP server framework. The composable sub-server pattern (`app.mount()`) keeps 45 tools organized across 3 servers.
 - **[MLflow](https://mlflow.org/)** (`mlflow-tracing`) -- optional observability. Every Gemini call becomes a traceable span with token counts and latency.

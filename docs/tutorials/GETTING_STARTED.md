@@ -133,7 +133,7 @@ Add the server to your MCP configuration. For global access across all projects,
 
 For project-local configuration, create `.mcp.json` in the project root with the same structure.
 
-After saving, restart Claude Code. All 24 tools will appear automatically in Claude's tool list.
+After saving, restart Claude Code. All 28 tools will appear automatically in Claude's tool list.
 
 ## First Tool Calls
 

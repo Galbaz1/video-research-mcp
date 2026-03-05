@@ -1,6 +1,6 @@
 # Knowledge Store
 
-How the knowledge store works, how to set up Weaviate, and how to use the 8 knowledge tools for persistent semantic search across all tool results.
+How the knowledge store works, how to set up Weaviate, and how to use the 7 knowledge tools for persistent semantic search across all tool results.
 
 ## What It Is
 
@@ -31,10 +31,10 @@ Three modules implement the knowledge store:
 | Module | Responsibility |
 |--------|---------------|
 | `weaviate_client.py` | Singleton client, connection management, schema bootstrap |
-| `weaviate_schema.py` | 7 collection definitions (PropertyDef, CollectionDef dataclasses) |
-| `weaviate_store.py` | Write-through functions (one per collection) |
+| `weaviate_schema/` | 12 collection definitions (PropertyDef, CollectionDef dataclasses) |
+| `weaviate_store/` | Write-through functions (one per collection) |
 
-The 8 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retrieval.py`, `ingest.py`, and `agent.py`).
+The 7 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retrieval.py`, `ingest.py`, and `agent.py`).
 
 ## Setup
 
@@ -68,7 +68,7 @@ export WEAVIATE_API_KEY="your-weaviate-api-key"
 
 ### Verify Connection
 
-Start the MCP server. On first connection, it will auto-create all 11 collections if they do not exist. Check logs for:
+Start the MCP server. On first connection, it will auto-create all 12 collections if they do not exist. Check logs for:
 
 ```
 INFO: Connected to Weaviate at http://localhost:8080
@@ -77,7 +77,7 @@ INFO: Created Weaviate collection: VideoAnalyses
 ...
 ```
 
-## The 11 Collections
+## The 12 Collections
 
 Each collection stores results from specific tools. All collections share two common properties: `created_at` (date) and `source_tool` (text).
 
@@ -173,6 +173,21 @@ Stores orchestration plans from `research_plan`.
 | task_decomposition | text[] | yes | Task breakdown |
 | phases_json | text | no | Phases as JSON |
 
+### DeepResearchReports
+
+Stores completed long-running Deep Research reports and follow-up Q&A.
+
+| Property | Type | Vectorized | Description |
+|----------|------|-----------|-------------|
+| interaction_id | text | no | Gemini Interactions API ID |
+| topic | text | yes | Research question/brief |
+| report_text | text | yes | Full report text |
+| sources_json | text | no | Report source list as JSON |
+| source_count | int | no | Number of sources |
+| usage_json | text | no | Token usage details as JSON |
+| follow_up_ids | text[] | no | Follow-up interaction IDs |
+| follow_ups_json | text | no | Follow-up Q&A as JSON |
+
 ### CommunityReactions
 
 Stores YouTube comment sentiment analysis from the comment-analyst agent.
@@ -244,7 +259,7 @@ Use knowledge_search with query "batch normalization" and search_type "keyword"
 Parameters:
 - `query` (required) -- search text
 - `search_type` (optional) -- `"hybrid"` (default), `"semantic"`, or `"keyword"`
-- `collections` (optional) -- list of collection names to search; defaults to all 11
+- `collections` (optional) -- list of collection names to search; defaults to all 12
 - `limit` (optional) -- max results per collection (default 10)
 - `alpha` (optional) -- hybrid balance: 0.0 = pure keyword, 1.0 = pure vector, 0.5 = balanced (hybrid mode only)
 - `evidence_tier` (optional) -- filter ResearchFindings by tier (e.g. `"CONFIRMED"`)
@@ -334,7 +349,7 @@ Use knowledge_ask with query "How does RLHF work?" and collections ["ResearchFin
 
 Parameters:
 - `query` (required) -- natural-language question
-- `collections` (optional) -- list of collection names to query; defaults to all 7
+- `collections` (optional) -- list of collection names to query; defaults to all 12
 
 Returns an AI-generated `answer` string plus a `sources` list with collection name and object UUID for each cited source.
 
@@ -398,6 +413,7 @@ Each collection has a designated rerank property -- the text field that best rep
 | ConceptKnowledge | `description` |
 | RelationshipEdges | `relationship_type` |
 | CallNotes | `summary` |
+| DeepResearchReports | `report_text` |
 
 The overfetch pattern:
 1. Request `limit * 3` results from Weaviate (with Cohere `Rerank` config attached)
@@ -467,7 +483,7 @@ Source: `config.py:ServerConfig.flash_summarize`, `tools/knowledge/summarize.py`
 
 ## Write-Through Store Pattern
 
-Every tool that produces results automatically writes them to Weaviate via functions in `weaviate_store.py`. This is the biggest architectural pattern to understand when adding new tools.
+Every tool that produces results automatically writes them to Weaviate via functions in `weaviate_store/`. This is the biggest architectural pattern to understand when adding new tools.
 
 ### Which tools store to which collections
 
@@ -478,9 +494,13 @@ Every tool that produces results automatically writes them to Weaviate via funct
 | `video_continue_session` | `store_session_turn` | SessionTranscripts |
 | `video_metadata` | `store_video_metadata` | VideoMetadata |
 | `content_analyze` | `store_content_analysis` | ContentAnalyses |
+| `content_batch_analyze` | `store_content_analysis` (per file) | ContentAnalyses |
 | `research_deep` | `store_research_finding` | ResearchFindings |
+| `research_document` | `store_research_finding` | ResearchFindings |
 | `research_plan` | `store_research_plan` | ResearchPlans |
 | `research_assess_evidence` | `store_evidence_assessment` | ResearchFindings |
+| `research_web_status` | `store_deep_research` | DeepResearchReports |
+| `research_web_followup` | `store_deep_research_followup` | DeepResearchReports |
 | `web_search` | `store_web_search` | WebSearchResults |
 
 ### The pattern
@@ -528,15 +548,15 @@ Key design decisions:
 
 ### Adding a store function for a new tool
 
-1. Add the function to `weaviate_store.py`
+1. Add the function to the appropriate module in `weaviate_store/` (or create one)
 2. Map result fields to collection properties
 3. Call it from your tool after computing the result
 
-If your tool needs a new collection, define it in `weaviate_schema.py` (see next section).
+If your tool needs a new collection, define it in `weaviate_schema/` (see next section).
 
 ## Adding a New Collection
 
-1. Define the collection in `weaviate_schema.py`:
+1. Define the collection in a module under `weaviate_schema/`:
 
 ```python
 MY_DATA = CollectionDef(
@@ -571,7 +591,7 @@ KnowledgeCollection = Literal[
 ]
 ```
 
-4. Write a store function in `weaviate_store.py` (see pattern above).
+4. Write a store function in `weaviate_store/` (see pattern above).
 
 5. The collection is created automatically on first server start (idempotent).
 
@@ -610,7 +630,7 @@ All connections include `Timeout(init=30, query=60, insert=120)` for production 
 - [Adding a New Tool](./ADDING_A_TOOL.md) -- integrating write-through in new tools
 - [Writing Tests](./WRITING_TESTS.md) -- `mock_weaviate_client` fixture
 - [Architecture Guide](../ARCHITECTURE.md) -- overall server design
-- Source: `src/video_research_mcp/weaviate_schema.py` -- collection definitions
-- Source: `src/video_research_mcp/weaviate_store.py` -- write-through functions
+- Source: `src/video_research_mcp/weaviate_schema/` -- collection definitions
+- Source: `src/video_research_mcp/weaviate_store/` -- write-through functions
 - Source: `src/video_research_mcp/weaviate_client.py` -- client singleton
-- Source: `src/video_research_mcp/tools/knowledge/` -- query tools (8 tools across 4 modules)
+- Source: `src/video_research_mcp/tools/knowledge/` -- query tools (7 tools across 4 modules)

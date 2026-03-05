@@ -343,11 +343,11 @@ class TestKnowledgeSearch:
     async def test_searches_all_collections(
         self, mock_weaviate_client, clean_config, monkeypatch
     ):
-        """knowledge_search queries all 11 collections when none specified."""
+        """knowledge_search queries all 12 collections when none specified."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.tools.knowledge import knowledge_search
         await knowledge_search(query="test")
-        assert mock_weaviate_client["client"].collections.get.call_count == 11
+        assert mock_weaviate_client["client"].collections.get.call_count == 12
 ```
 
 Note the lazy import pattern (`from ... import knowledge_search` inside the test function). This ensures the import happens after fixtures have patched the modules.

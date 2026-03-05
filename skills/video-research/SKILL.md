@@ -1,11 +1,11 @@
 ---
 name: video-research
-description: Teaches Claude how to effectively use the 24 video-research-mcp tools. Activates when working with video analysis, deep research, content extraction, web search, or knowledge store via the video-research MCP server.
+description: Teaches Claude how to effectively use the 28 video-research-mcp tools. Activates when working with video analysis, deep research, content extraction, web search, or knowledge store via the video-research MCP server.
 ---
 
 # Video Research MCP — Tool Usage Guide
 
-You have access to the `video-research-mcp` MCP server, which exposes 24 tools powered by Gemini 3.1 Pro and the YouTube Data API. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Two tools (`video_metadata`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
+You have access to the `video-research-mcp` MCP server, which exposes 28 tools powered by Gemini 3.1 Pro and the YouTube Data API. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
 
 ## Core Principle
 
@@ -22,6 +22,10 @@ Tools accept an `instruction` parameter instead of fixed modes. Write specific, 
 | Research a topic in depth | `research_deep` |
 | Plan a research strategy | `research_plan` |
 | Verify a specific claim | `research_assess_evidence` |
+| Launch long-running web-grounded deep research | `research_web` |
+| Poll status of a running deep-research job | `research_web_status` |
+| Ask follow-up questions on a completed deep-research report | `research_web_followup` |
+| Cancel a running deep-research job | `research_web_cancel` |
 | Analyze a URL, file, or text | `content_analyze` |
 | Batch-analyze a folder of documents | `content_batch_analyze` |
 | Extract structured data from content | `content_extract` |
@@ -45,7 +49,7 @@ Knowledge results may include:
 
 ## Tool Reference
 
-### Video Tools (3) + YouTube Tools (2)
+### Video Tools (4) + YouTube Tools (3)
 
 #### `video_metadata` — Get YouTube video metadata (no Gemini cost)
 ```
@@ -181,7 +185,7 @@ content_extract(content: str, schema: dict)
 ```
 Use when you have a specific JSON Schema and want guaranteed structured extraction.
 
-### Research Tools (4)
+### Research Tools (8)
 
 #### `research_deep` — Multi-phase deep research
 ```
@@ -224,6 +228,30 @@ Every claim cited back to document + page. Documents uploaded via File API for m
 **Examples:**
 - Analyze a paper: `research_document(file_paths=["paper.pdf"], instruction="Assess methodology")`
 - Compare reports: `research_document(file_paths=["q1.pdf", "q2.pdf"], instruction="Find contradictions", scope="deep")`
+
+#### `research_web` — Launch Gemini Deep Research Agent (background)
+```
+research_web(topic: str, output_format: str = "")
+```
+Starts a long-running, web-grounded research task (typically 10-20 minutes) and returns an `interaction_id`.
+
+#### `research_web_status` — Poll a Deep Research interaction
+```
+research_web_status(interaction_id: str)
+```
+Returns current status while running and returns full report + sources when completed.
+
+#### `research_web_followup` — Ask follow-up questions on completed Deep Research
+```
+research_web_followup(interaction_id: str, question: str)
+```
+Returns a contextual follow-up response tied to the original deep-research interaction.
+
+#### `research_web_cancel` — Cancel a running Deep Research task
+```
+research_web_cancel(interaction_id: str)
+```
+Cancels the in-flight deep-research interaction to stop unnecessary cost/time.
 
 #### `research_assess_evidence` — Assess a claim against sources
 ```
