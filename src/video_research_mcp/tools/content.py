@@ -5,10 +5,12 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
+
+if TYPE_CHECKING:
+    from google.genai import types
 
 from fastmcp import FastMCP
-from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
@@ -35,6 +37,7 @@ def _build_content_parts(
 
     Returns (parts, description) for prompt interpolation.
     """
+    from google.genai import types  # noqa: F811 — lazy for fast startup
     parts: list[types.Part] = []
     description = ""
 
@@ -149,6 +152,8 @@ async def _analyze_url(
     UrlContext and response_json_schema don't compose), falls back to a
     two-step approach: fetch unstructured text, then reshape into schema.
     """
+    from google.genai import types
+
     try:
         raw = await GeminiClient.generate(
             prompt_text,
@@ -181,6 +186,8 @@ async def _analyze_parts(
     Appends the instruction as a text part, then routes to either
     ``generate`` (custom schema) or ``generate_structured`` (ContentResult).
     """
+    from google.genai import types
+
     parts.append(types.Part(text=instruction))
     contents = types.Content(parts=parts)
 

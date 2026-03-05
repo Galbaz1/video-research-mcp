@@ -7,8 +7,6 @@ from typing import Annotated
 
 from mcp.types import ToolAnnotations
 from pydantic import Field
-from weaviate.classes.query import MetadataQuery
-
 from ...config import get_config
 from ...errors import make_tool_error
 from ...models.knowledge import (
@@ -56,6 +54,8 @@ async def knowledge_related(
 
     try:
         def _search():
+            from weaviate.classes.query import MetadataQuery
+
             client = WeaviateClient.get()
             col = client.collections.get(collection)
             response = col.query.near_object(

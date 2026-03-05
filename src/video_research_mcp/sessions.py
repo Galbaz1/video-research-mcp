@@ -5,8 +5,10 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
-from google.genai import types
+if TYPE_CHECKING:
+    from google.genai import types
 
 from .config import get_config
 
@@ -37,10 +39,11 @@ class SessionStore:
         Args:
             db_path: Path to SQLite DB file. Empty string = in-memory only.
         """
-        from .persistence import SessionDB
-
         self._sessions: dict[str, VideoSession] = {}
-        self._db: SessionDB | None = SessionDB(db_path) if db_path else None
+        self._db: SessionDB | None = None
+        if db_path:
+            from .persistence import SessionDB  # lazy — saves ~500ms at startup
+            self._db = SessionDB(db_path)
 
     def create(
         self,

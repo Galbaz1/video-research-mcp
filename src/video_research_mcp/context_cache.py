@@ -10,9 +10,11 @@ import asyncio
 import json
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
-from google.genai import types
+if TYPE_CHECKING:
+    from google.genai import types
 
 from .client import GeminiClient
 from .config import get_config
@@ -114,6 +116,8 @@ async def get_or_create(
             _save_registry()  # persist eviction even if recreate fails
 
     try:
+        from google.genai import types
+
         client = GeminiClient.get()
         cfg = get_config()
         ttl = f"{cfg.context_cache_ttl_seconds}s"
@@ -184,6 +188,8 @@ def diagnostics() -> dict:
 async def refresh_ttl(cache_name: str) -> bool:
     """Extend the TTL of an active cache. Returns True on success."""
     try:
+        from google.genai import types
+
         client = GeminiClient.get()
         cfg = get_config()
         ttl = f"{cfg.context_cache_ttl_seconds}s"
