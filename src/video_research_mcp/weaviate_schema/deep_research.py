@@ -41,6 +41,10 @@ DEEP_RESEARCH_REPORTS = CollectionDef(
         ),
         PropertyDef("follow_up_ids", ["text[]"], "Follow-up interaction IDs",
                      skip_vectorization=True),
+        PropertyDef(
+            "follow_ups_json", ["text"], "Follow-up Q&A pairs as JSON array",
+            skip_vectorization=True, index_searchable=False,
+        ),
     ],
     references=[
         ReferenceDef(

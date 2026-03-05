@@ -47,6 +47,7 @@ async def store_deep_research(report_dict: dict) -> str | None:
                 "duration_seconds": report_dict.get("duration_seconds") or 0,
                 "usage_json": json.dumps(report_dict.get("usage", {})),
                 "follow_up_ids": [],
+                "follow_ups_json": "[]",
             }))
 
             _cross_reference(client, collection, uuid, topic)
@@ -100,13 +101,19 @@ def _cross_reference(client, collection, uuid: str, topic: str) -> None:
 
 
 async def store_deep_research_followup(
-    original_id: str, followup_id: str,
+    original_id: str,
+    followup_id: str,
+    *,
+    question: str = "",
+    response: str = "",
 ) -> bool:
-    """Append a follow-up interaction ID to an existing report.
+    """Append a follow-up interaction ID and Q&A text to an existing report.
 
     Args:
         original_id: The original interaction_id of the report.
         followup_id: The new follow-up interaction_id.
+        question: The follow-up question text.
+        response: The follow-up response text.
 
     Returns:
         True if updated, False if not found or disabled.
@@ -126,11 +133,24 @@ async def store_deep_research_followup(
                 return False
 
             obj = objs[0]
-            existing = obj.properties.get("follow_up_ids", []) or []
-            existing.append(followup_id)
+            existing_ids = obj.properties.get("follow_up_ids", []) or []
+            existing_ids.append(followup_id)
+
+            existing_json = obj.properties.get("follow_ups_json", "") or "[]"
+            followups = json.loads(existing_json)
+            followups.append({
+                "id": followup_id,
+                "question": question,
+                "response": response,
+            })
+
             collection.data.update(
                 uuid=obj.uuid,
-                properties={"follow_up_ids": existing, "updated_at": _now()},
+                properties={
+                    "follow_up_ids": existing_ids,
+                    "follow_ups_json": json.dumps(followups),
+                    "updated_at": _now(),
+                },
             )
             return True
 

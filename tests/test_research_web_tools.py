@@ -13,10 +13,14 @@ from video_research_mcp.models.research_web import (
     DeepResearchSource,
 )
 from video_research_mcp.tools.research_web import (
+    _MAX_TRACKED,
+    _TTL_SECONDS,
+    _evict_stale,
     _extract_report,
     _extract_usage,
     _launch_times,
     research_web,
+    research_web_cancel,
     research_web_followup,
     research_web_status,
 )
@@ -297,7 +301,10 @@ class TestResearchWebFollowup:
         mock_client.aio.interactions.create = AsyncMock(return_value=followup_interaction)
         mock_gemini_client["get"].return_value = mock_client
 
-        with patch("video_research_mcp.weaviate_store.store_deep_research_followup", new_callable=AsyncMock):
+        with patch(
+            "video_research_mcp.weaviate_store.store_deep_research_followup",
+            new_callable=AsyncMock,
+        ) as mock_store:
             result = await research_web_followup(
                 interaction_id="original-123",
                 question="What about the security implications?",
@@ -306,6 +313,11 @@ class TestResearchWebFollowup:
         assert result["interaction_id"] == "followup-789"
         assert result["previous_interaction_id"] == "original-123"
         assert "key distinction" in result["response"]
+        mock_store.assert_called_once_with(
+            "original-123", "followup-789",
+            question="What about the security implications?",
+            response="The key distinction is...",
+        )
 
     async def test_followup_uses_previous_interaction_id(self, mock_gemini_client):
         """GIVEN interaction_id WHEN following up THEN passes previous_interaction_id."""
@@ -376,3 +388,83 @@ class TestModels:
         )
         d = m.model_dump(mode="json")
         assert d["previous_interaction_id"] == "old"
+
+
+# ── research_web_cancel ──────────────────────────────────────────────────
+
+
+class TestResearchWebCancel:
+    async def test_cancel_success(self, mock_gemini_client):
+        """GIVEN running task WHEN cancelling THEN returns cancelled status."""
+        mock_client = MagicMock()
+        mock_client.aio.interactions.cancel = AsyncMock(return_value=None)
+        mock_gemini_client["get"].return_value = mock_client
+
+        _launch_times["cancel-me-123"] = {"time": time.time(), "topic": "test"}
+
+        result = await research_web_cancel(interaction_id="cancel-me-123")
+
+        assert result["interaction_id"] == "cancel-me-123"
+        assert result["status"] == "cancelled"
+        assert "cancel-me-123" not in _launch_times
+
+    async def test_cancel_already_completed(self, mock_gemini_client):
+        """GIVEN completed task WHEN cancelling THEN API error is returned."""
+        mock_client = MagicMock()
+        mock_client.aio.interactions.cancel = AsyncMock(
+            side_effect=RuntimeError("Interaction already completed"),
+        )
+        mock_gemini_client["get"].return_value = mock_client
+
+        result = await research_web_cancel(interaction_id="done-id")
+
+        assert "error" in result
+        assert "already completed" in result["error"]
+
+    async def test_cancel_api_error(self, mock_gemini_client):
+        """GIVEN API failure WHEN cancelling THEN returns tool error."""
+        mock_client = MagicMock()
+        mock_client.aio.interactions.cancel = AsyncMock(
+            side_effect=RuntimeError("Network error"),
+        )
+        mock_gemini_client["get"].return_value = mock_client
+
+        result = await research_web_cancel(interaction_id="net-err-id")
+
+        assert "error" in result
+        assert "Network error" in result["error"]
+
+
+# ── _evict_stale ─────────────────────────────────────────────────────────
+
+
+class TestEvictStale:
+    def test_ttl_evicts_old_entries(self):
+        """GIVEN entries older than TTL WHEN evicting THEN they are removed."""
+        _launch_times.clear()
+        now = time.time()
+        _launch_times["old-1"] = {"time": now - _TTL_SECONDS - 1, "topic": "old"}
+        _launch_times["old-2"] = {"time": now - _TTL_SECONDS - 100, "topic": "older"}
+        _launch_times["fresh"] = {"time": now - 60, "topic": "recent"}
+
+        _evict_stale()
+
+        assert "old-1" not in _launch_times
+        assert "old-2" not in _launch_times
+        assert "fresh" in _launch_times
+        _launch_times.clear()
+
+    def test_cap_evicts_oldest_when_full(self):
+        """GIVEN more than _MAX_TRACKED entries WHEN evicting THEN oldest are removed."""
+        _launch_times.clear()
+        now = time.time()
+        for i in range(_MAX_TRACKED + 5):
+            _launch_times[f"entry-{i}"] = {"time": now - i, "topic": f"topic-{i}"}
+
+        _evict_stale()
+
+        assert len(_launch_times) == _MAX_TRACKED
+        # The 5 oldest (highest offset) should be gone
+        for i in range(_MAX_TRACKED, _MAX_TRACKED + 5):
+            assert f"entry-{i}" not in _launch_times
+        _launch_times.clear()

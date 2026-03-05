@@ -6,9 +6,9 @@ Do not import `AGENTS.md` (for example via `@AGENTS.md` or `@../AGENTS.md`) from
 
 ## What This Is
 
-A monorepo with three MCP servers (44 tools total):
+A monorepo with three MCP servers (45 tools total):
 
-1. **video-research-mcp** (root) — 27 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai` SDK) and YouTube Data API v3.
+1. **video-research-mcp** (root) — 28 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai` SDK) and YouTube Data API v3.
 2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos from research content. Wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI.
 3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools providing an autonomous research agent orchestrator. Wraps video-research-mcp tools with planning and execution loops.
 
@@ -58,7 +58,7 @@ Priority when multiple states can apply:
 | Sub-server | Tools | Count | Files |
 |------------|-------|-------|-------|
 | video | `video_analyze`, `video_create_session`, `video_continue_session`, `video_batch_analyze` | 4 | `tools/video.py`, `tools/video_batch.py` |
-| research | `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`, `research_web`, `research_web_status`, `research_web_followup` | 7 | `tools/research.py`, `tools/research_document.py`, `tools/research_web.py` |
+| research | `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`, `research_web`, `research_web_status`, `research_web_followup`, `research_web_cancel` | 8 | `tools/research.py`, `tools/research_document.py`, `tools/research_web.py` |
 | content | `content_analyze`, `content_extract`, `content_batch_analyze` | 3 | `tools/content.py`, `tools/content_batch.py` |
 | search | `web_search` | 1 | `tools/search.py` |
 | infra | `infra_cache`, `infra_configure` | 2 | `tools/infra.py` |

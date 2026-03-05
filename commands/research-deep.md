@@ -1,13 +1,13 @@
 ---
 description: Launch Gemini Deep Research Agent with interview-driven brief
 argument-hint: <topic>
-allowed-tools: mcp__video-research__research_web, mcp__video-research__research_web_status, mcp__video-research__research_web_followup, mcp__video-research__web_search, mcp__video-research__knowledge_search, Write, Read, Glob, Bash, AskUserQuestion
+allowed-tools: mcp__video-research__research_web, mcp__video-research__research_web_status, mcp__video-research__research_web_followup, mcp__video-research__research_web_cancel, mcp__video-research__web_search, mcp__video-research__knowledge_search, Write, Read, Glob, Bash, AskUserQuestion
 model: opus
 ---
 
 # Deep Research: $ARGUMENTS
 
-Last updated: 2026-03-05 14:57 CET
+Last updated: 2026-03-05 15:19 CET
 
 Launch the Gemini Deep Research Agent for autonomous web-grounded research ($2-5/task, 10-20 min).
 

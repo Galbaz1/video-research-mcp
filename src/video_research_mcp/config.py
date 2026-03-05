@@ -164,6 +164,14 @@ class ServerConfig(BaseModel):
             raise ValueError("Retry delay must be > 0")
         return value
 
+    @field_validator("deep_research_agent")
+    @classmethod
+    def validate_deep_research_agent(cls, value: str) -> str:
+        v = value.strip()
+        if not v:
+            raise ValueError("DEEP_RESEARCH_AGENT must not be empty")
+        return v
+
     @classmethod
     def from_env(cls) -> ServerConfig:
         """Build config from environment variables."""

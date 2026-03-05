@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from video_research_mcp.config import ServerConfig
 
 
@@ -49,3 +51,17 @@ class TestWeaviateUrlNormalization:
         cfg = ServerConfig.from_env()
         assert cfg.weaviate_url == ""
         assert cfg.weaviate_enabled is False
+
+
+class TestDeepResearchAgentValidator:
+    """Verify DEEP_RESEARCH_AGENT validation at config load."""
+
+    def test_empty_agent_string_raises(self, monkeypatch):
+        monkeypatch.setenv("DEEP_RESEARCH_AGENT", "  ")
+        with pytest.raises(Exception, match="DEEP_RESEARCH_AGENT must not be empty"):
+            ServerConfig.from_env()
+
+    def test_valid_agent_string_passes(self, monkeypatch):
+        monkeypatch.setenv("DEEP_RESEARCH_AGENT", "custom-agent-v3")
+        cfg = ServerConfig.from_env()
+        assert cfg.deep_research_agent == "custom-agent-v3"

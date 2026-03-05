@@ -1,8 +1,9 @@
-"""Deep Research tools — Gemini Interactions API (3 tools on research_server).
+"""Deep Research tools — Gemini Interactions API (4 tools on research_server).
 
 Provides research_web (launch), research_web_status (poll/retrieve),
-and research_web_followup (conversational follow-up) tools that wrap
-the Gemini Deep Research Agent for autonomous web-grounded research.
+research_web_followup (conversational follow-up), and research_web_cancel
+(abort running task) tools that wrap the Gemini Deep Research Agent for
+autonomous web-grounded research.
 """
 
 from __future__ import annotations
@@ -30,6 +31,19 @@ logger = logging.getLogger(__name__)
 
 # In-memory tracker for launch metadata (interaction_id -> {time, topic})
 _launch_times: dict[str, dict] = {}
+_MAX_TRACKED = 100
+_TTL_SECONDS = 7200  # 2 hours
+
+
+def _evict_stale() -> None:
+    """Remove launch entries older than TTL and cap total size."""
+    now = time.time()
+    stale = [k for k, v in _launch_times.items() if now - v["time"] > _TTL_SECONDS]
+    for k in stale:
+        _launch_times.pop(k, None)
+    while len(_launch_times) > _MAX_TRACKED:
+        oldest = min(_launch_times, key=lambda k: _launch_times[k]["time"])
+        _launch_times.pop(oldest)
 
 
 def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
@@ -107,6 +121,8 @@ async def research_web(
         Dict with interaction_id and status, or error via make_tool_error().
     """
     try:
+        _evict_stale()
+
         prompt = topic
         if output_format:
             prompt = f"{topic}\n\nOutput format:\n{output_format}"
@@ -245,9 +261,41 @@ async def research_web_followup(
         ).model_dump(mode="json")
 
         from ..weaviate_store import store_deep_research_followup
-        await store_deep_research_followup(interaction_id, followup.id)
+        await store_deep_research_followup(
+            interaction_id, followup.id,
+            question=question, response=response_text.strip(),
+        )
 
         return result
 
+    except Exception as exc:
+        return make_tool_error(exc)
+
+
+@research_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
+@trace(name="research_web_cancel", span_type="TOOL")
+async def research_web_cancel(
+    interaction_id: Annotated[str, Field(
+        min_length=1,
+        description="Interaction ID to cancel",
+    )],
+) -> dict:
+    """Cancel a running Deep Research task.
+
+    Sends a cancel request to the Interactions API and cleans up local
+    tracking state. Useful for aborting expensive ($2-5) tasks early.
+
+    Args:
+        interaction_id: The interaction ID from research_web.
+
+    Returns:
+        Dict with interaction_id and status, or error via make_tool_error().
+    """
+    try:
+        client = GeminiClient.get()
+        await client.aio.interactions.cancel(interaction_id)
+        _launch_times.pop(interaction_id, None)
+        logger.info("Deep Research cancelled: %s", interaction_id)
+        return {"interaction_id": interaction_id, "status": "cancelled"}
     except Exception as exc:
         return make_tool_error(exc)
