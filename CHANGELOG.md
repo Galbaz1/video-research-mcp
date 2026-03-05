@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.5] - 2026-03-05
+
+### Changed
+
+- **3x faster server startup** — lazy-import `google-genai` and `weaviate` SDKs; deferred from module load to first tool call (fixes Glama Docker build timeout)
+
 ## [0.3.4] - 2026-03-05
 
 ### Added
