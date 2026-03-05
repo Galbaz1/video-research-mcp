@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.4] - 2026-03-05
+
+### Added
+
+- **`__main__.py` entry point** — enables `python -m video_research_mcp` for Docker and direct invocation (fixes Glama Docker build)
+
+### Fixed
+
+- **Stale `__version__`** — `__init__.py` now tracks the actual release version instead of hardcoded `0.1.0`
+
 ## [0.3.3] - 2026-03-05
 
 ### Added
