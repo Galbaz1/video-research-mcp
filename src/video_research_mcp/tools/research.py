@@ -1,4 +1,4 @@
-"""Research tools — 3 tools on a FastMCP sub-server."""
+"""Research tools — 6 tools on a FastMCP sub-server."""
 
 from __future__ import annotations
 
@@ -206,3 +206,12 @@ def _ensure_document_tool() -> None:
     Called by server.py after research_server is fully initialised.
     """
     from . import research_document  # noqa: F401
+
+
+def _ensure_web_tools() -> None:
+    """Import research_web to register Deep Research tools on research_server.
+
+    Deferred so research_server is fully initialised before tools register.
+    Called by server.py alongside _ensure_document_tool.
+    """
+    from . import research_web  # noqa: F401

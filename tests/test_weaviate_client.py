@@ -112,6 +112,7 @@ class TestEnsureCollections:
                 "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
                 "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
                 "CommunityReactions", "ConceptKnowledge", "RelationshipEdges", "CallNotes",
+                "DeepResearchReports",
             ]
         }
         mock_client.collections.list_all.return_value = existing
@@ -356,7 +357,7 @@ class TestV4PropertyAPI:
         mock_connect.return_value = mock_client
 
         WeaviateClient.get()
-        assert mock_client.collections.create.call_count == 11
+        assert mock_client.collections.create.call_count == 12
         mock_client.collections.create_from_dict.assert_not_called()
 
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")

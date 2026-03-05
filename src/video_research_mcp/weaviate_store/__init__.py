@@ -10,6 +10,7 @@ Re-exports all store functions so existing imports like
 
 from .calls import store_call_notes
 from .community import store_community_reaction
+from .deep_research import store_deep_research, store_deep_research_followup
 from .concepts import store_concept_knowledge, store_relationship_edges
 from .content import store_content_analysis
 from .research import store_evidence_assessment, store_research_finding, store_research_plan
@@ -19,6 +20,8 @@ from .video import store_video_analysis, store_video_metadata
 
 __all__ = [
     "store_call_notes",
+    "store_deep_research",
+    "store_deep_research_followup",
     "store_community_reaction",
     "store_concept_knowledge",
     "store_content_analysis",

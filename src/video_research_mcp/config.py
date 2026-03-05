@@ -122,6 +122,7 @@ class ServerConfig(BaseModel):
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
+    deep_research_agent: str = Field(default="deep-research-pro-preview-12-2025")
     infra_mutations_enabled: bool = Field(default=False)
     infra_admin_token: str = Field(default="")
 
@@ -214,6 +215,7 @@ class ServerConfig(BaseModel):
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")
             ),
             local_file_access_root=local_file_access_root,
+            deep_research_agent=os.getenv("DEEP_RESEARCH_AGENT", "deep-research-pro-preview-12-2025"),
             infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
             infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
         )

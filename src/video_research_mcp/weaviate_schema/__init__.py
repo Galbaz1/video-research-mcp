@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from .base import CollectionDef, PropertyDef, ReferenceDef, _common_properties
 from .calls import CALL_NOTES
+from .deep_research import DEEP_RESEARCH_REPORTS
 from .collections import (
     CONTENT_ANALYSES,
     RESEARCH_FINDINGS,
@@ -36,6 +37,7 @@ ALL_COLLECTIONS: list[CollectionDef] = [
     CONCEPT_KNOWLEDGE,
     RELATIONSHIP_EDGES,
     CALL_NOTES,
+    DEEP_RESEARCH_REPORTS,
 ]
 
 __all__ = [
@@ -45,6 +47,7 @@ __all__ = [
     "CONCEPT_KNOWLEDGE",
     "CollectionDef",
     "CONTENT_ANALYSES",
+    "DEEP_RESEARCH_REPORTS",
     "PropertyDef",
     "ReferenceDef",
     "RELATIONSHIP_EDGES",

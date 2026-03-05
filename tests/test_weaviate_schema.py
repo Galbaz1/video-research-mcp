@@ -17,11 +17,11 @@ from video_research_mcp.weaviate_schema import (
 
 
 class TestCollectionDefinitions:
-    """Verify all 11 collections are defined correctly."""
+    """Verify all 12 collections are defined correctly."""
 
     def test_all_collections_count(self):
-        """ALL_COLLECTIONS contains exactly 11 collections."""
-        assert len(ALL_COLLECTIONS) == 11
+        """ALL_COLLECTIONS contains exactly 12 collections."""
+        assert len(ALL_COLLECTIONS) == 12
 
     def test_collection_names(self):
         """All expected collection names are present."""
@@ -30,6 +30,7 @@ class TestCollectionDefinitions:
             "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
             "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
             "CommunityReactions", "ConceptKnowledge", "RelationshipEdges", "CallNotes",
+            "DeepResearchReports",
         }
         assert names == expected
 
@@ -121,7 +122,7 @@ class TestReferences:
 
     def test_collections_without_references(self):
         """Most collections have no references."""
-        has_refs = {"VideoAnalyses", "ResearchFindings", "CommunityReactions"}
+        has_refs = {"VideoAnalyses", "ResearchFindings", "CommunityReactions", "DeepResearchReports"}
         for col in ALL_COLLECTIONS:
             if col.name not in has_refs:
                 assert len(col.references) == 0, f"{col.name} should have no references"
@@ -327,9 +328,9 @@ class TestNewCollections:
             prop_names = [p.name for p in col.properties]
             assert "updated_at" in prop_names, f"{col.name} missing updated_at"
 
-    def test_allowed_properties_includes_all_11(self):
-        """ALLOWED_PROPERTIES auto-derived from ALL_COLLECTIONS includes all 11."""
+    def test_allowed_properties_includes_all_12(self):
+        """ALLOWED_PROPERTIES auto-derived from ALL_COLLECTIONS includes all 12."""
         from video_research_mcp.tools.knowledge.helpers import ALLOWED_PROPERTIES
-        assert len(ALLOWED_PROPERTIES) == 11
+        assert len(ALLOWED_PROPERTIES) == 12
         for col in ALL_COLLECTIONS:
             assert col.name in ALLOWED_PROPERTIES, f"{col.name} missing from ALLOWED_PROPERTIES"

@@ -22,6 +22,7 @@ const FILE_MAP = {
   'commands/research-doc.md':  'commands/gr/research-doc.md',
   'commands/ingest.md':        'commands/gr/ingest.md',
   'commands/getting-started.md': 'commands/gr/getting-started.md',
+  'commands/research-deep.md':   'commands/gr/research-deep.md',
 
   'commands/explainer.md':      'commands/ve/explainer.md',
   'commands/explain-video.md':  'commands/ve/explain-video.md',
@@ -36,6 +37,7 @@ const FILE_MAP = {
   'skills/video-explainer/SKILL.md':                             'skills/video-explainer/SKILL.md',
   'skills/weaviate-setup/SKILL.md':                             'skills/weaviate-setup/SKILL.md',
   'skills/mlflow-traces/SKILL.md':                              'skills/mlflow-traces/SKILL.md',
+  'skills/research-brief-builder/SKILL.md':                      'skills/research-brief-builder/SKILL.md',
 
   'agents/researcher.md':      'agents/researcher.md',
   'agents/video-analyst.md':   'agents/video-analyst.md',
@@ -53,6 +55,7 @@ const CLEANUP_DIRS = [
   'skills/video-explainer',
   'skills/weaviate-setup',
   'skills/mlflow-traces',
+  'skills/research-brief-builder',
   'commands/gr',
   'commands/ve',
 ];

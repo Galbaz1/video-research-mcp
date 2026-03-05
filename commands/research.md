@@ -7,6 +7,9 @@ model: sonnet
 
 # Research: $ARGUMENTS
 
+> For web-grounded deep research with the Gemini Deep Research Agent ($2-5/task, 10-20 min),
+> use `/gr:research-deep` instead. This command uses offline analysis (free, instant).
+
 Run a multi-phase deep research analysis with progressive memory saving and automatic evidence-network visualization.
 
 ## Phase 1: Research (run BOTH in parallel)
