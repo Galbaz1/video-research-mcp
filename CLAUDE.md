@@ -63,7 +63,7 @@ Priority when multiple states can apply:
 | search | `web_search` | 1 | `tools/search.py` |
 | infra | `infra_cache`, `infra_configure` | 2 | `tools/infra.py` |
 | youtube | `video_metadata`, `video_comments`, `video_playlist` | 3 | `tools/youtube.py` |
-| knowledge | `knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_ask`, `knowledge_query` | 7 | `tools/knowledge/` |
+| knowledge | `knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query` | 8 | `tools/knowledge/` |
 
 **Key patterns:**
 - **Instruction-driven tools** — tools accept free-text `instruction` + optional `output_schema` instead of fixed modes
@@ -255,7 +255,7 @@ All other config (thinking level, temperature, cache dir/TTL, session limits, re
 | `docs/tutorials/GETTING_STARTED.md` | Install, configure, first tool call |
 | `docs/tutorials/ADDING_A_TOOL.md` | Step-by-step tool creation with checklist |
 | `docs/tutorials/WRITING_TESTS.md` | Fixtures, patterns, running tests |
-| `docs/tutorials/KNOWLEDGE_STORE.md` | Weaviate setup, 12 collections, 7 knowledge tools |
+| `docs/tutorials/KNOWLEDGE_STORE.md` | Weaviate setup, 12 collections, 8 knowledge tools |
 | `docs/PLUGIN_DISTRIBUTION.md` | Two-package architecture, FILE_MAP, discovery, full inventory |
 | `docs/PUBLISHING.md` | Dual-registry publishing guide with version sync policy |
 | `docs/RELEASE_CHECKLIST.md` | Copy-paste checklist for each release |

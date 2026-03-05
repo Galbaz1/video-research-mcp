@@ -227,7 +227,7 @@ Twelve collections are created on first connection:
 | `RelationshipEdges` | relationship mapping between concepts |
 | `CallNotes` | meeting/call analysis notes |
 
-Seven knowledge tools let you query this data: hybrid search with optional Cohere reranking, semantic similarity, fetch by UUID, manual ingest, and collection stats. `knowledge_ask` uses Weaviate's QueryAgent for AI-generated answers with source citations (requires the `weaviate-agents` package).
+Eight knowledge tools let you query this data: hybrid search with optional Cohere reranking, semantic similarity, fetch by UUID, manual ingest, schema introspection, and collection stats. `knowledge_ask` uses Weaviate's QueryAgent for AI-generated answers with source citations (requires the `weaviate-agents` package).
 
 ```bash
 # install QueryAgent support

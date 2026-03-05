@@ -5,7 +5,7 @@ description: Interactive onboarding for the Weaviate knowledge store. Guides use
 
 # Weaviate Knowledge Store Setup
 
-You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. All 28 tools automatically write results to Weaviate when configured. 7 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
+You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. All 28 tools automatically write results to Weaviate when configured. 8 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
 
 ## Setup Flow
 
@@ -153,18 +153,18 @@ These tools use Weaviate's AsyncQueryAgent, which automatically translates natur
 
 | Collection | Populated by | Knowledge tools that query it |
 |---|---|---|
-| `ResearchFindings` | `research_deep`, `research_assess_evidence`, `research_document` | All 7 knowledge tools |
-| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | All 7 knowledge tools |
-| `ContentAnalyses` | `content_analyze`, `content_batch_analyze` | All 7 knowledge tools |
-| `VideoMetadata` | `video_metadata` | All 7 knowledge tools |
-| `SessionTranscripts` | `video_continue_session` | All 7 knowledge tools |
-| `WebSearchResults` | `web_search` | All 7 knowledge tools |
-| `ResearchPlans` | `research_plan` | All 7 knowledge tools |
-| `DeepResearchReports` | `research_web_status`, `research_web_followup` | All 7 knowledge tools |
-| `CommunityReactions` | comment-analyst agent outputs | All 7 knowledge tools |
-| `ConceptKnowledge` | concept extraction/enrichment pipelines | All 7 knowledge tools |
-| `RelationshipEdges` | relationship graph extraction | All 7 knowledge tools |
-| `CallNotes` | call/meeting analysis pipelines | All 7 knowledge tools |
+| `ResearchFindings` | `research_deep`, `research_assess_evidence`, `research_document` | All 8 knowledge tools |
+| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | All 8 knowledge tools |
+| `ContentAnalyses` | `content_analyze`, `content_batch_analyze` | All 8 knowledge tools |
+| `VideoMetadata` | `video_metadata` | All 8 knowledge tools |
+| `SessionTranscripts` | `video_continue_session` | All 8 knowledge tools |
+| `WebSearchResults` | `web_search` | All 8 knowledge tools |
+| `ResearchPlans` | `research_plan` | All 8 knowledge tools |
+| `DeepResearchReports` | `research_web_status`, `research_web_followup` | All 8 knowledge tools |
+| `CommunityReactions` | comment-analyst agent outputs | All 8 knowledge tools |
+| `ConceptKnowledge` | concept extraction/enrichment pipelines | All 8 knowledge tools |
+| `RelationshipEdges` | relationship graph extraction | All 8 knowledge tools |
+| `CallNotes` | call/meeting analysis pipelines | All 8 knowledge tools |
 
 ## Supported Deployment URLs
 

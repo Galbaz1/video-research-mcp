@@ -1,6 +1,6 @@
 # Knowledge Store
 
-How the knowledge store works, how to set up Weaviate, and how to use the 7 knowledge tools for persistent semantic search across all tool results.
+How the knowledge store works, how to set up Weaviate, and how to use the 8 knowledge tools for persistent semantic search across all tool results.
 
 ## What It Is
 
@@ -34,7 +34,7 @@ Three modules implement the knowledge store:
 | `weaviate_schema/` | 12 collection definitions (PropertyDef, CollectionDef dataclasses) |
 | `weaviate_store/` | Write-through functions (one per collection) |
 
-The 7 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retrieval.py`, `ingest.py`, and `agent.py`).
+The 8 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retrieval.py`, `ingest.py`, `schema.py`, and `agent.py`).
 
 ## Setup
 
@@ -327,6 +327,17 @@ Parameters:
 
 Returns `found: true` with the object's properties, or `found: false` if the UUID doesn't exist.
 
+### knowledge_schema -- collection property introspection
+
+Returns property names, types, and descriptions for one or all collections. Reads from local schema definitions — no Weaviate connection needed.
+
+```
+Use knowledge_schema with collection "VideoMetadata"
+Use knowledge_schema                                  # all 12 collections
+```
+
+Call this before `knowledge_ingest` to discover expected property names and types.
+
 ### knowledge_ingest -- manual data entry
 
 Insert data directly into any collection. Properties are validated against the collection schema.
@@ -336,7 +347,7 @@ Use knowledge_ingest with collection "ResearchFindings" and properties:
 {"topic": "AI Safety", "claim": "RLHF reduces harmful outputs", "evidence_tier": "CONFIRMED", "confidence": 0.85}
 ```
 
-Unknown properties are rejected with an error listing the allowed fields.
+Unknown properties are rejected with an error listing the allowed `name:type` pairs and a hint to call `knowledge_schema`.
 
 ### knowledge_ask -- AI-generated answers (QueryAgent)
 
@@ -633,4 +644,4 @@ All connections include `Timeout(init=30, query=60, insert=120)` for production 
 - Source: `src/video_research_mcp/weaviate_schema/` -- collection definitions
 - Source: `src/video_research_mcp/weaviate_store/` -- write-through functions
 - Source: `src/video_research_mcp/weaviate_client.py` -- client singleton
-- Source: `src/video_research_mcp/tools/knowledge/` -- query tools (7 tools across 4 modules)
+- Source: `src/video_research_mcp/tools/knowledge/` -- query tools (8 tools across 5 modules)
