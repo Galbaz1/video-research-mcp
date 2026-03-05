@@ -32,9 +32,11 @@ async def store_deep_research(report_dict: dict) -> str | None:
             client = WeaviateClient.get()
             collection = client.collections.get("DeepResearchReports")
 
-            topic = report_dict.get("report_text", "")[:500]
+            topic = report_dict.get("topic", "") or report_dict.get("report_text", "")[:500]
+            now = _now()
             uuid = str(collection.data.insert(properties={
-                "created_at": _now(),
+                "created_at": now,
+                "updated_at": now,
                 "source_tool": "research_web",
                 "interaction_id": report_dict.get("interaction_id", ""),
                 "topic": topic,

@@ -28,8 +28,8 @@ from .research import research_server
 
 logger = logging.getLogger(__name__)
 
-# In-memory tracker for created_at timestamps (interaction_id -> epoch)
-_launch_times: dict[str, float] = {}
+# In-memory tracker for launch metadata (interaction_id -> {time, topic})
+_launch_times: dict[str, dict] = {}
 
 
 def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
@@ -121,7 +121,7 @@ async def research_web(
         )
 
         interaction_id = interaction.id
-        _launch_times[interaction_id] = time.time()
+        _launch_times[interaction_id] = {"time": time.time(), "topic": topic}
         logger.info("Deep Research launched: %s", interaction_id)
 
         return DeepResearchLaunch(
@@ -158,18 +158,28 @@ async def research_web_status(
 
         status = getattr(interaction, "status", "unknown") or "unknown"
 
+        # Pop launch metadata on any non-transient status to prevent unbounded growth.
+        # Only "in_progress" keeps the entry; terminal statuses (completed, failed,
+        # cancelled, unknown) always clear it.
+        if status != "in_progress":
+            launch_meta = _launch_times.pop(interaction_id, None)
+        else:
+            launch_meta = _launch_times.get(interaction_id)
+
         if status != "completed":
             return {"interaction_id": interaction_id, "status": status}
 
         report_text, sources = _extract_report(interaction)
         usage = _extract_usage(interaction)
 
-        launch_time = _launch_times.pop(interaction_id, None)
+        launch_time = launch_meta.get("time") if launch_meta else None
+        original_topic = launch_meta.get("topic", "") if launch_meta else ""
         duration = int(time.time() - launch_time) if launch_time else None
 
         result = DeepResearchResult(
             interaction_id=interaction_id,
             status="completed",
+            topic=original_topic,
             report_text=report_text,
             sources=sources,
             source_count=len(sources),
@@ -186,7 +196,7 @@ async def research_web_status(
         return make_tool_error(exc)
 
 
-@research_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
+@research_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 @trace(name="research_web_followup", span_type="TOOL")
 async def research_web_followup(
     interaction_id: Annotated[str, Field(

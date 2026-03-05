@@ -6,8 +6,6 @@ import time
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
-
 from video_research_mcp.models.research_web import (
     DeepResearchFollowup,
     DeepResearchLaunch,
@@ -138,7 +136,6 @@ class TestExtractUsage:
 
 
 class TestResearchWeb:
-    @pytest.mark.asyncio
     async def test_launch_returns_interaction_id(self, mock_gemini_client):
         """GIVEN valid topic WHEN launching THEN returns interaction_id and status."""
         mock_interaction = _make_interaction(
@@ -157,9 +154,10 @@ class TestResearchWeb:
         assert result["status"] == "in_progress"
         assert result["estimated_minutes"] == "10-20"
         assert "dr-abc-123" in _launch_times
+        assert "time" in _launch_times["dr-abc-123"]
+        assert "topic" in _launch_times["dr-abc-123"]
         _launch_times.pop("dr-abc-123", None)  # cleanup
 
-    @pytest.mark.asyncio
     async def test_launch_with_output_format(self, mock_gemini_client):
         """GIVEN output_format WHEN launching THEN prompt includes format."""
         mock_interaction = _make_interaction(
@@ -180,7 +178,6 @@ class TestResearchWeb:
         assert "Executive summary + data tables" in call_kwargs["input"]
         _launch_times.pop("dr-fmt-456", None)
 
-    @pytest.mark.asyncio
     async def test_launch_uses_configured_agent(self, mock_gemini_client, clean_config, monkeypatch):
         """GIVEN custom agent env var WHEN launching THEN uses configured agent."""
         monkeypatch.setenv("DEEP_RESEARCH_AGENT", "custom-agent-v2")
@@ -195,7 +192,6 @@ class TestResearchWeb:
         assert call_kwargs["agent"] == "custom-agent-v2"
         _launch_times.pop("dr-custom", None)
 
-    @pytest.mark.asyncio
     async def test_launch_error_returns_tool_error(self, mock_gemini_client):
         """GIVEN API error WHEN launching THEN returns tool error."""
         mock_client = MagicMock()
@@ -214,7 +210,6 @@ class TestResearchWeb:
 
 
 class TestResearchWebStatus:
-    @pytest.mark.asyncio
     async def test_completed_returns_full_report(self, mock_gemini_client):
         """GIVEN completed interaction WHEN polling THEN returns report with sources."""
         interaction = _make_interaction(
@@ -229,9 +224,9 @@ class TestResearchWebStatus:
         mock_client.aio.interactions.get = AsyncMock(return_value=interaction)
         mock_gemini_client["get"].return_value = mock_client
 
-        _launch_times["test-interaction-123"] = time.time() - 600
+        _launch_times["test-interaction-123"] = {"time": time.time() - 600, "topic": "test topic"}
 
-        with patch("video_research_mcp.weaviate_store.deep_research.store_deep_research", new_callable=AsyncMock) as mock_store:
+        with patch("video_research_mcp.weaviate_store.store_deep_research", new_callable=AsyncMock) as mock_store:
             mock_store.return_value = "uuid-1"
             result = await research_web_status(interaction_id="test-interaction-123")
 
@@ -243,7 +238,6 @@ class TestResearchWebStatus:
         assert result["duration_seconds"] >= 600
         assert result["usage"]["total_tokens"] == 8500
 
-    @pytest.mark.asyncio
     async def test_in_progress_returns_status(self, mock_gemini_client):
         """GIVEN in-progress interaction WHEN polling THEN returns status only."""
         interaction = _make_interaction(status="in_progress")
@@ -256,7 +250,6 @@ class TestResearchWebStatus:
         assert result["status"] == "in_progress"
         assert "report_text" not in result
 
-    @pytest.mark.asyncio
     async def test_error_returns_tool_error(self, mock_gemini_client):
         """GIVEN API error WHEN polling THEN returns tool error."""
         mock_client = MagicMock()
@@ -269,7 +262,6 @@ class TestResearchWebStatus:
 
         assert "error" in result
 
-    @pytest.mark.asyncio
     async def test_completed_without_launch_time(self, mock_gemini_client):
         """GIVEN completed but no launch time WHEN polling THEN duration is None."""
         interaction = _make_interaction(
@@ -282,7 +274,7 @@ class TestResearchWebStatus:
 
         _launch_times.pop("orphan-id", None)
 
-        with patch("video_research_mcp.weaviate_store.deep_research.store_deep_research", new_callable=AsyncMock):
+        with patch("video_research_mcp.weaviate_store.store_deep_research", new_callable=AsyncMock):
             result = await research_web_status(interaction_id="orphan-id")
 
         assert result["status"] == "completed"
@@ -293,7 +285,6 @@ class TestResearchWebStatus:
 
 
 class TestResearchWebFollowup:
-    @pytest.mark.asyncio
     async def test_followup_returns_response(self, mock_gemini_client):
         """GIVEN completed interaction WHEN following up THEN returns response."""
         followup_interaction = _make_interaction(
@@ -306,7 +297,7 @@ class TestResearchWebFollowup:
         mock_client.aio.interactions.create = AsyncMock(return_value=followup_interaction)
         mock_gemini_client["get"].return_value = mock_client
 
-        with patch("video_research_mcp.weaviate_store.deep_research.store_deep_research_followup", new_callable=AsyncMock):
+        with patch("video_research_mcp.weaviate_store.store_deep_research_followup", new_callable=AsyncMock):
             result = await research_web_followup(
                 interaction_id="original-123",
                 question="What about the security implications?",
@@ -316,7 +307,6 @@ class TestResearchWebFollowup:
         assert result["previous_interaction_id"] == "original-123"
         assert "key distinction" in result["response"]
 
-    @pytest.mark.asyncio
     async def test_followup_uses_previous_interaction_id(self, mock_gemini_client):
         """GIVEN interaction_id WHEN following up THEN passes previous_interaction_id."""
         followup_interaction = _make_interaction(
@@ -327,7 +317,7 @@ class TestResearchWebFollowup:
         mock_client.aio.interactions.create = AsyncMock(return_value=followup_interaction)
         mock_gemini_client["get"].return_value = mock_client
 
-        with patch("video_research_mcp.weaviate_store.deep_research.store_deep_research_followup", new_callable=AsyncMock):
+        with patch("video_research_mcp.weaviate_store.store_deep_research_followup", new_callable=AsyncMock):
             await research_web_followup(
                 interaction_id="prev-id-456",
                 question="Elaborate on finding 3",
@@ -337,7 +327,6 @@ class TestResearchWebFollowup:
         assert call_kwargs["previous_interaction_id"] == "prev-id-456"
         assert call_kwargs["input"] == "Elaborate on finding 3"
 
-    @pytest.mark.asyncio
     async def test_followup_error_returns_tool_error(self, mock_gemini_client):
         """GIVEN API error WHEN following up THEN returns tool error."""
         mock_client = MagicMock()
@@ -368,6 +357,7 @@ class TestModels:
     def test_result_model_serializes(self):
         m = DeepResearchResult(
             interaction_id="x",
+            topic="test topic",
             report_text="Report",
             sources=[DeepResearchSource(url="https://a.com", title="A")],
             source_count=1,

@@ -30,6 +30,7 @@ class DeepResearchResult(BaseModel):
 
     interaction_id: str
     status: str = "completed"
+    topic: str = ""
     report_text: str = ""
     sources: list[DeepResearchSource] = Field(default_factory=list)
     source_count: int = 0
