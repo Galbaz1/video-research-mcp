@@ -8,6 +8,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ...types import KnowledgeCollection
+from ...tracing import trace
 from . import knowledge_server
 from .helpers import SCHEMA_COLLECTIONS
 
@@ -20,6 +21,7 @@ from .helpers import SCHEMA_COLLECTIONS
         openWorldHint=False,
     )
 )
+@trace(name="knowledge_schema", span_type="TOOL")
 async def knowledge_schema(
     collection: Annotated[
         KnowledgeCollection | None,
