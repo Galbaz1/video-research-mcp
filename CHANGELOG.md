@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.9] - 2026-03-05
+
+### Fixed
+
+- **AskUserQuestion YAML examples** — aligned all 4 code block examples across commands/skills with actual tool schema (`questions` array with `multiSelect` boolean)
+
 ## [0.3.8] - 2026-03-05
 
 ### Improved

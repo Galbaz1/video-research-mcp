@@ -15,17 +15,19 @@ If `$ARGUMENTS` is empty, ask the user:
 
 ```
 AskUserQuestion:
-  question: "What do you want to add to the knowledge store?"
-  header: "Ingest"
-  options:
-    - label: "Add a finding or insight"
-      description: "Store a research finding, insight, or fact with evidence tier"
-    - label: "Add content analysis"
-      description: "Store an analysis of a document, URL, or text"
-    - label: "Add a concept"
-      description: "Store a concept with its definition and relationships"
-    - label: "Describe what to add"
-      description: "Free-form description — I'll pick the right collection"
+  questions:
+    - question: "What do you want to add to the knowledge store?"
+      header: "Ingest"
+      multiSelect: false
+      options:
+        - label: "Add a finding or insight"
+          description: "Store a research finding, insight, or fact with evidence tier"
+        - label: "Add content analysis"
+          description: "Store an analysis of a document, URL, or text"
+        - label: "Add a concept"
+          description: "Store a concept with its definition and relationships"
+        - label: "Describe what to add"
+          description: "Free-form description — I'll pick the right collection"
 ```
 
 ## Phase 1: Pick Collection
