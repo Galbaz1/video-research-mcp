@@ -1,6 +1,6 @@
 # PR & Distribution Plan
 
-Last updated: 2026-03-05 20:05 CET
+Last updated: 2026-03-05 20:09 CET
 
 Generated 2026-03-05. v0.3.3 release.
 
@@ -10,7 +10,7 @@ Generated 2026-03-05. v0.3.3 release.
 |----------|--------|------|
 | awesome-mcp-servers | PR open | https://github.com/punkpeye/awesome-mcp-servers/pull/2772 |
 | mcp.so | Live | https://mcp.so/server/video-research-mcp |
-| glama.ai | Submitted for review | Pending auto-index |
+| glama.ai | Live + Claimed | https://glama.ai/mcp/servers/@Galbaz1/video-research-mcp |
 | smithery.ai | Skipped | Requires remote HTTP endpoint (we run stdio) |
 
 ## Registries
