@@ -144,7 +144,7 @@ async def my_tool(
 
 ### New Agents
 
-Frontmatter: `name` (required), `description` (required), `tools` (CSV), `model` (opus/sonnet), `color`, `memory` (project/user), `maxTurns`, `skills` (preload list). Body: persona + workflow + output format. Read-only agents should restrict `tools` to Read + MCP query tools.
+Frontmatter: `name` (required), `description` (required), `tools` (CSV), `model` (sonnet default, opus for complex reasoning), `color`, `memory` (project/user), `maxTurns`, `skills` (preload list). Body: persona + workflow + output format. Read-only agents should restrict `tools` to only the MCP query tools they need.
 
 ### New Skills
 

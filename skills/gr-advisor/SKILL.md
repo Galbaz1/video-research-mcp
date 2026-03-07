@@ -1,13 +1,13 @@
 ---
 name: gr-advisor
-description: Recommends the optimal /gr command for Gemini-powered topic research, YouTube video analysis, web/document content extraction, or knowledge store queries. Activates when the user wants to investigate an external topic, analyze a video, or process URLs/documents — not for code editing, debugging, testing, or git operations.
+description: Recommends the optimal /gr command when the user asks about Gemini-powered research, YouTube video analysis, web content extraction, or Weaviate knowledge queries. Activates only when the request matches /gr plugin capabilities and no specific /gr command was already chosen — not for code editing, debugging, testing, git operations, or general questions.
 allowed-tools: mcp__video-research__knowledge_search
-model: opus
+model: sonnet
 ---
 
 # GR Workflow Advisor
 
-Last updated: 2026-03-07 12:28 CET
+Last updated: 2026-03-07 12:34 CET
 
 Recommend the right `/gr` command before executing research, video analysis, or content tasks.
 
@@ -20,7 +20,7 @@ Activate when the user expresses intent to:
 - Search the web for current information
 - Find or manage past research/knowledge
 
-Do NOT activate for: code tasks, git operations, file editing, non-/gr work, or when the user already specified a `/gr` command.
+Do NOT activate for: code tasks, git operations, file editing, general questions, non-/gr work, or when the user already specified a `/gr` command. Never recommend `/gr:advisor` — if intent is unclear, ask a clarifying question.
 
 ## Workflow
 

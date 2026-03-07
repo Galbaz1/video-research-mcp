@@ -2,12 +2,12 @@
 description: Get workflow advice — which /gr command best fits your task
 argument-hint: <what you want to accomplish>
 allowed-tools: mcp__video-research__knowledge_search, mcp__video-research__knowledge_stats, Read, Glob
-model: opus
+model: sonnet
 ---
 
 # Workflow Advisor: $ARGUMENTS
 
-Last updated: 2026-03-07 12:17 CET
+Last updated: 2026-03-07 12:34 CET
 
 Recommend the optimal `/gr` command for this task. Do NOT execute anything.
 
@@ -52,6 +52,9 @@ Use this quick-reference to select the right command:
 | Find past work | `/gr:recall` | free, instant |
 | Save to knowledge store | `/gr:ingest` | free, instant |
 | Check setup | `/gr:doctor` | free, instant |
+| View/change model preset | `/gr:models` | free, instant |
+| Debug MLflow traces | `/gr:traces` | free, instant |
+| First-time setup guide | `/gr:getting-started` | free, instant |
 
 Present your recommendation in this format:
 
