@@ -142,6 +142,18 @@ async def my_tool(
 
 > Full walkthrough: `docs/tutorials/ADDING_A_TOOL.md`
 
+### New Agents
+
+Frontmatter: `name` (required), `description` (required), `tools` (CSV), `model` (opus/sonnet), `color`, `memory` (project/user), `maxTurns`, `skills` (preload list). Body: persona + workflow + output format. Read-only agents should restrict `tools` to Read + MCP query tools.
+
+### New Skills
+
+Frontmatter: `name` (required), `description` (required — controls auto-trigger), `allowed-tools`, `model`, `disable-model-invocation` (true for side-effect skills). Body loaded only after trigger. Description must include domain-anchor and negative qualifiers to prevent false positives. Use `${CLAUDE_SKILL_DIR}` to reference bundled scripts.
+
+### New Commands
+
+Frontmatter: `description`, `argument-hint`, `allowed-tools`, `model`. Body uses `$ARGUMENTS` for user input. Commands are explicit `/gr:name` invocations — always add to `FILE_MAP` in `bin/lib/copy.js`.
+
 ### Docstrings
 
 Google-style. Required on every module, public class, public function/method, and non-obvious private helpers. Be concise and factual — one-liner is enough when name + signature are self-explanatory. Args/Returns/Raises only when non-obvious. Pydantic models: document purpose and which tool uses them; don't duplicate `Field(description=...)`. Docstrings do NOT count toward file size limits.

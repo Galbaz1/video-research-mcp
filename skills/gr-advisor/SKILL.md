@@ -1,11 +1,13 @@
 ---
 name: gr-advisor
 description: Recommends the optimal /gr command for Gemini-powered topic research, YouTube video analysis, web/document content extraction, or knowledge store queries. Activates when the user wants to investigate an external topic, analyze a video, or process URLs/documents — not for code editing, debugging, testing, or git operations.
+allowed-tools: mcp__video-research__knowledge_search
+model: opus
 ---
 
 # GR Workflow Advisor
 
-Last updated: 2026-03-07 12:20 CET
+Last updated: 2026-03-07 12:28 CET
 
 Recommend the right `/gr` command before executing research, video analysis, or content tasks.
 
