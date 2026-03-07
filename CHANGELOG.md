@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-03-07
+
+### Added
+
+- **`/gr:advisor` command** — workflow advisor that recommends the optimal `/gr` command for any task. Checks prior work via knowledge store before recommending. Three invocation channels: explicit command, auto-invoked skill, and spawnable agent
+- **`gr-advisor` skill** — auto-triggers when the user expresses research, video, or content analysis intent without specifying a `/gr` command. Prevents suboptimal tool choices (e.g., `/gr:research-deep` for quick questions)
+- **`gr-advisor` agent** — sonnet-powered subagent for programmatic workflow routing within agent teams
+- **Agent/Skill/Command conventions** in CLAUDE.md — documents required frontmatter fields for plugin contributors
+
+### Changed
+
+- **CLAUDE.md** — added minimal `/gr Plugin Routing` section: recall-first pattern and cost-awareness for `/gr:research-deep`
+
 ## [0.3.9] - 2026-03-05
 
 ### Fixed
