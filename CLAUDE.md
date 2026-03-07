@@ -51,6 +51,11 @@ Priority when multiple states can apply:
 2. `pr`
 3. `commits`
 
+## /gr Plugin Routing
+
+Check `/gr:recall` first (already researched?). Unsure which /gr command? Use `/gr:advisor`.
+NEVER use `/gr:research-deep` for quick questions (costs $2-5, 10-20 min) — use `/gr:search` instead.
+
 ## Architecture
 
 `server.py` mounts 7 sub-servers onto a root `FastMCP("video-research")`:

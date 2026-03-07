@@ -23,6 +23,7 @@ const FILE_MAP = {
   'commands/ingest.md':        'commands/gr/ingest.md',
   'commands/getting-started.md': 'commands/gr/getting-started.md',
   'commands/research-deep.md':   'commands/gr/research-deep.md',
+  'commands/advisor.md':         'commands/gr/advisor.md',
 
   'commands/explainer.md':      'commands/ve/explainer.md',
   'commands/explain-video.md':  'commands/ve/explain-video.md',
@@ -38,6 +39,7 @@ const FILE_MAP = {
   'skills/weaviate-setup/SKILL.md':                             'skills/weaviate-setup/SKILL.md',
   'skills/mlflow-traces/SKILL.md':                              'skills/mlflow-traces/SKILL.md',
   'skills/research-brief-builder/SKILL.md':                      'skills/research-brief-builder/SKILL.md',
+  'skills/gr-advisor/SKILL.md':                                  'skills/gr-advisor/SKILL.md',
 
   'agents/researcher.md':      'agents/researcher.md',
   'agents/video-analyst.md':   'agents/video-analyst.md',
@@ -45,6 +47,7 @@ const FILE_MAP = {
   'agents/comment-analyst.md': 'agents/comment-analyst.md',
   'agents/video-producer.md':    'agents/video-producer.md',
   'agents/content-to-video.md':  'agents/content-to-video.md',
+  'agents/gr-advisor.md':        'agents/gr-advisor.md',
 };
 
 /** Directories to clean up during uninstall (deepest first). */
@@ -56,6 +59,7 @@ const CLEANUP_DIRS = [
   'skills/weaviate-setup',
   'skills/mlflow-traces',
   'skills/research-brief-builder',
+  'skills/gr-advisor',
   'commands/gr',
   'commands/ve',
 ];
