@@ -17,14 +17,14 @@ The npm package contains zero Python code. The PyPI package contains zero JavaSc
 
 ### What it does
 
-`bin/install.js` copies 31 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `.mcp.json`. That's it — no runtime, no daemon.
+`bin/install.js` copies 34 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `.mcp.json`. That's it — no runtime, no daemon.
 
 ```
 npx video-research-mcp@latest
         │
-        ├── Copies 16 commands   → ~/.claude/commands/gr/ and commands/ve/
-        ├── Copies 9 skill files → ~/.claude/skills/
-        ├── Copies 6 agents    → ~/.claude/agents/
+        ├── Copies 17 commands   → ~/.claude/commands/gr/ and commands/ve/
+        ├── Copies 10 skill files → ~/.claude/skills/
+        ├── Copies 7 agents    → ~/.claude/agents/
         ├── Writes .mcp.json   → MCP server registration (3 servers)
         └── Writes manifest    → for upgrades/uninstall
 ```
@@ -46,7 +46,7 @@ Every file distributed by the plugin must be listed in `bin/lib/copy.js`:
 
 ```js
 const FILE_MAP = {
-  // Commands → /gr:* slash commands (13)
+  // Commands → /gr:* slash commands (14)
   'commands/video.md':        'commands/gr/video.md',
   'commands/video-chat.md':   'commands/gr/video-chat.md',
   'commands/research.md':     'commands/gr/research.md',
@@ -60,13 +60,14 @@ const FILE_MAP = {
   'commands/getting-started.md': 'commands/gr/getting-started.md',
   'commands/research-doc.md': 'commands/gr/research-doc.md',
   'commands/ingest.md':       'commands/gr/ingest.md',
+  'commands/advisor.md':      'commands/gr/advisor.md',
 
   // Commands → /ve:* slash commands (3)
   'commands/explainer.md':      'commands/ve/explainer.md',
   'commands/explain-video.md':  'commands/ve/explain-video.md',
   'commands/explain-status.md': 'commands/ve/explain-status.md',
 
-  // Skills → context injection (9 files across 6 skills)
+  // Skills → context injection (10 files across 7 skills)
   'skills/video-research/SKILL.md':                              'skills/video-research/SKILL.md',
   'skills/gemini-visualize/SKILL.md':                             'skills/gemini-visualize/SKILL.md',
   'skills/gemini-visualize/templates/video-concept-map.md':       'skills/gemini-visualize/templates/video-concept-map.md',
@@ -76,14 +77,16 @@ const FILE_MAP = {
   'skills/weaviate-setup/SKILL.md':                               'skills/weaviate-setup/SKILL.md',
   'skills/mlflow-traces/SKILL.md':                                'skills/mlflow-traces/SKILL.md',
   'skills/research-brief-builder/SKILL.md':                       'skills/research-brief-builder/SKILL.md',
+  'skills/gr-advisor/SKILL.md':                                   'skills/gr-advisor/SKILL.md',
 
-  // Agents → sub-agents (6)
+  // Agents → sub-agents (7)
   'agents/researcher.md':       'agents/researcher.md',
   'agents/video-analyst.md':    'agents/video-analyst.md',
   'agents/visualizer.md':       'agents/visualizer.md',
   'agents/comment-analyst.md':  'agents/comment-analyst.md',
   'agents/video-producer.md':   'agents/video-producer.md',
   'agents/content-to-video.md': 'agents/content-to-video.md',
+  'agents/gr-advisor.md':       'agents/gr-advisor.md',
 };
 ```
 
@@ -224,7 +227,7 @@ These run as background or foreground processes with their own tool restrictions
 
 ## Current Plugin Inventory
 
-### Commands (16)
+### Commands (17)
 
 | File | Slash Command | Tools | Model |
 |------|---------------|-------|-------|
@@ -244,8 +247,9 @@ These run as background or foreground processes with their own tool restrictions
 | `commands/explainer.md` | `/ve:explainer` | All 15 explainer tools, Read/Write/Glob | sonnet |
 | `commands/explain-video.md` | `/ve:explain-video` | video_analyze, research_deep, content_analyze, web_search + explainer tools | sonnet |
 | `commands/explain-status.md` | `/ve:explain-status` | explainer_status, explainer_list | haiku |
+| `commands/advisor.md` | `/gr:advisor` | knowledge_search, knowledge_stats, Read, Glob | sonnet |
 
-### Skills (6)
+### Skills (7)
 
 | Skill | Purpose |
 |-------|---------|
@@ -255,8 +259,9 @@ These run as background or foreground processes with their own tool restrictions
 | `weaviate-setup` | Interactive onboarding wizard for Weaviate connection |
 | `mlflow-traces` | MLflow trace debugging, field paths, `extract_fields` discipline |
 | `research-brief-builder` | Interview framework for high-signal deep-research briefs |
+| `gr-advisor` | Workflow advisor — recommends optimal /gr command for a task |
 
-### Agents (6)
+### Agents (7)
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
@@ -266,6 +271,7 @@ These run as background or foreground processes with their own tool restrictions
 | `comment-analyst` | haiku | Background YouTube comment analysis |
 | `video-producer` | sonnet | Full pipeline orchestrator for explainer videos |
 | `content-to-video` | sonnet | Bridge agent — research analysis to explainer video |
+| `gr-advisor` | sonnet | Workflow advisor — recommends optimal /gr command |
 
 ---
 
@@ -277,7 +283,7 @@ USER: npx video-research-mcp@latest
          ▼
     bin/install.js (Node.js)
          │
-         ├── Copy 31 markdown files to ~/.claude/
+         ├── Copy 34 markdown files to ~/.claude/
          ├── Write .mcp.json (register MCP servers)
          └── Write manifest (for future upgrades)
 

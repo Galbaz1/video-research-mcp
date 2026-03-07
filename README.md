@@ -16,7 +16,7 @@ Claude Code can't process video. Gemini 3.1 Pro can. This plugin bridges the two
 
 ## What's in the box
 
-A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 16 slash commands, 6 skills, and 6 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
+A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 17 slash commands, 7 skills, and 7 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -30,7 +30,7 @@ npx video-research-mcp@latest
 export GEMINI_API_KEY="your-key-here"
 ```
 
-One install. One API key. The installer copies 16 commands, 6 skills, and 6 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
+One install. One API key. The installer copies 17 commands, 7 skills, and 7 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
 
 ```bash
 npx video-research-mcp@latest --check     # show install status
@@ -140,6 +140,7 @@ The tools are standard MCP. Any MCP client can call them -- no Claude Code requi
 | `/gr:explain-status <project>` | Check render progress and pipeline state |
 | `/gr:traces [filter]` | Query, debug, and evaluate MLflow traces |
 | `/gr:doctor [quick\|full]` | Diagnose MCP wiring, API keys, Weaviate, and MLflow connectivity |
+| `/gr:advisor <task>` | Get workflow advice — which /gr command fits your task |
 
 ### How a command runs
 
@@ -315,7 +316,7 @@ node bin/install.js --global
 ```bash
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
-uv run pytest tests/ -v        # 540 tests, all mocked
+uv run pytest tests/ -v        # 728 tests, all mocked
 uv run ruff check src/ tests/  # lint
 ```
 
