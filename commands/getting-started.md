@@ -1,7 +1,7 @@
 ---
 description: First-time setup guide — verify config, discover commands, and run your first tool
 allowed-tools: Bash, Read, Glob, mcp__video-research__infra_configure, mcp__video-research__web_search
-model: haiku
+model: sonnet
 ---
 
 # Getting Started

@@ -2,7 +2,7 @@
 description: View and change Gemini model preset
 argument-hint: "[best|stable|budget]"
 allowed-tools: mcp__video-research__infra_configure
-model: haiku
+model: sonnet
 ---
 
 You are a model switching assistant for the video-research MCP server.
