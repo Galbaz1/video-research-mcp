@@ -13,6 +13,7 @@ from video_research_mcp.models.research_web import (
     DeepResearchSource,
 )
 from video_research_mcp.tools.research_web import (
+    _ACTIVE_TTL_SECONDS,
     _MAX_TRACKED,
     _TTL_SECONDS,
     _evict_stale,
@@ -120,6 +121,26 @@ class TestExtractReport:
         assert "Part 1" in text
         assert "Part 2" in text
 
+    def test_extracts_direct_turn_text(self):
+        """GIVEN turn with text attr and no content WHEN extracting THEN text is captured."""
+        turn = SimpleNamespace(text="# Full Report\n\nDetailed findings here.", content=None)
+        interaction = _make_interaction(outputs=[turn])
+        text, sources = _extract_report(interaction)
+        assert "Full Report" in text
+        assert "Detailed findings" in text
+        assert sources == []
+
+    def test_extracts_both_turn_text_and_content(self):
+        """GIVEN turn with both text attr and content array WHEN extracting THEN both captured."""
+        turn = SimpleNamespace(
+            text="Direct text from turn",
+            content=[_make_text_content("Content array text")],
+        )
+        interaction = _make_interaction(outputs=[turn])
+        text, _ = _extract_report(interaction)
+        assert "Direct text from turn" in text
+        assert "Content array text" in text
+
 
 # ── _extract_usage ────────────────────────────────────────────────────────
 
@@ -196,6 +217,34 @@ class TestResearchWeb:
         assert call_kwargs["agent"] == "custom-agent-v2"
         _launch_times.pop("dr-custom", None)
 
+    async def test_launch_blocked_when_active_task(self, mock_gemini_client):
+        """GIVEN active interaction <30 min old WHEN launching THEN returns error."""
+        _launch_times["active-task-1"] = {"time": time.time() - 300, "topic": "active"}
+
+        result = await research_web(topic="New topic that should be blocked by guard")
+
+        assert "error" in result
+        assert "already in progress" in result["error"]
+        assert "active-task-1" in result["error"]
+        _launch_times.pop("active-task-1", None)
+
+    async def test_launch_allowed_after_stale_task(self, mock_gemini_client):
+        """GIVEN stale interaction >30 min old WHEN launching THEN proceeds normally."""
+        _launch_times["stale-task-1"] = {
+            "time": time.time() - _ACTIVE_TTL_SECONDS - 1, "topic": "stale",
+        }
+        mock_interaction = _make_interaction(interaction_id="new-task-1", status="in_progress")
+        mock_client = MagicMock()
+        mock_client.aio.interactions.create = AsyncMock(return_value=mock_interaction)
+        mock_gemini_client["get"].return_value = mock_client
+
+        result = await research_web(topic="Topic that should succeed because stale")
+
+        assert result["interaction_id"] == "new-task-1"
+        assert result["status"] == "in_progress"
+        _launch_times.pop("new-task-1", None)
+        _launch_times.pop("stale-task-1", None)
+
     async def test_launch_error_returns_tool_error(self, mock_gemini_client):
         """GIVEN API error WHEN launching THEN returns tool error."""
         mock_client = MagicMock()
@@ -265,6 +314,39 @@ class TestResearchWebStatus:
         result = await research_web_status(interaction_id="nonexistent-id")
 
         assert "error" in result
+
+    async def test_status_retries_on_transient_403(self, mock_gemini_client):
+        """GIVEN 403 on first attempt WHEN polling THEN retries and succeeds."""
+        interaction = _make_interaction(status="in_progress")
+        mock_client = MagicMock()
+        mock_client.aio.interactions.get = AsyncMock(
+            side_effect=[RuntimeError("403 Forbidden"), interaction],
+        )
+        mock_gemini_client["get"].return_value = mock_client
+
+        with patch("video_research_mcp.tools.research_web.asyncio.sleep", new_callable=AsyncMock):
+            result = await research_web_status(interaction_id="retry-test-123")
+
+        assert result["status"] == "in_progress"
+        assert mock_client.aio.interactions.get.call_count == 2
+
+    async def test_status_gives_up_after_3_403s(self, mock_gemini_client):
+        """GIVEN 3x 403 WHEN polling THEN returns tool error."""
+        mock_client = MagicMock()
+        mock_client.aio.interactions.get = AsyncMock(
+            side_effect=[
+                RuntimeError("403 Forbidden"),
+                RuntimeError("403 Forbidden"),
+                RuntimeError("403 Forbidden"),
+            ],
+        )
+        mock_gemini_client["get"].return_value = mock_client
+
+        with patch("video_research_mcp.tools.research_web.asyncio.sleep", new_callable=AsyncMock):
+            result = await research_web_status(interaction_id="give-up-test")
+
+        assert "error" in result
+        assert "403" in result["error"]
 
     async def test_completed_without_launch_time(self, mock_gemini_client):
         """GIVEN completed but no launch time WHEN polling THEN duration is None."""
