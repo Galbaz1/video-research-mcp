@@ -2,7 +2,7 @@
 description: Diagnose /gr plugin setup, MCP wiring, and API connectivity
 argument-hint: "[quick|full]"
 allowed-tools: mcp__video-research__infra_configure, mcp__video-research__video_metadata, mcp__video-research__knowledge_stats, mcp__mlflow-mcp__search_traces, Glob, Read, Bash
-model: haiku
+model: sonnet
 ---
 
 # Doctor: $ARGUMENTS
@@ -21,6 +21,13 @@ Run a deterministic health check for the video-research plugin and MCP server.
 - Never run broad repository searches. Only inspect exact paths listed below.
 - Extract only the required keys from config/env files.
 - If you need details, include one short line: `Run /gr:doctor full for deep diagnostics`.
+
+## Tool discipline (mandatory)
+
+Only use the tools listed in `allowed-tools`. In particular:
+- **File reading**: use `Read` (Claude Code built-in), never `plugin:serena:serena - Read File` or any other MCP file-reading tool.
+- **File search**: use `Glob` (Claude Code built-in), never Serena's `find_file` or `list_dir`.
+- **Shell**: use `Bash` (Claude Code built-in), never Serena's `execute_shell_command`.
 
 ## 1) Discover active config
 
