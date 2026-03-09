@@ -61,11 +61,28 @@ def trace(
     return mlflow.trace(func, name=name, span_type=span_type, attributes=attributes)
 
 
+def _tracking_server_reachable(uri: str, timeout: float = 2.0) -> bool:
+    """Fast check whether the MLflow tracking server accepts connections."""
+    import socket
+    from urllib.parse import urlparse
+
+    parsed = urlparse(uri)
+    host = parsed.hostname or "127.0.0.1"
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except (OSError, socket.timeout):
+        return False
+
+
 def setup() -> None:
     """Configure MLflow tracking and enable Gemini autologging.
 
-    No-op when ``is_enabled()`` returns False. Failures are logged and
-    swallowed — tracing must never prevent the server from starting.
+    No-op when ``is_enabled()`` returns False. Skips setup when the
+    tracking server is unreachable (2 s probe) to prevent blocking the
+    MCP server startup. Failures are logged and swallowed — tracing must
+    never prevent the server from starting.
     """
     if not is_enabled():
         return
@@ -75,6 +92,13 @@ def setup() -> None:
     cfg = get_config()
     tracking_uri = cfg.mlflow_tracking_uri
     experiment = cfg.mlflow_experiment_name
+
+    if not _tracking_server_reachable(tracking_uri):
+        logger.warning(
+            "MLflow tracking server unreachable (%s) — tracing disabled",
+            tracking_uri,
+        )
+        return
 
     try:
         mlflow.set_tracking_uri(tracking_uri)

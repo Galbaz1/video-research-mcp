@@ -92,7 +92,10 @@ class TestSetup:
             mod.mlflow.gemini = mock_gemini
 
             cfg = _make_config()
-            with patch("video_research_mcp.config.get_config", return_value=cfg):
+            with (
+                patch("video_research_mcp.config.get_config", return_value=cfg),
+                patch.object(mod, "_tracking_server_reachable", return_value=True),
+            ):
                 mod.setup()
 
             mock_mlflow.set_tracking_uri.assert_called_once_with("http://127.0.0.1:5001")
@@ -140,10 +143,42 @@ class TestSetup:
             mod.mlflow.gemini = mock_gemini
 
             cfg = _make_config()
-            with patch("video_research_mcp.config.get_config", return_value=cfg):
+            with (
+                patch("video_research_mcp.config.get_config", return_value=cfg),
+                patch.object(mod, "_tracking_server_reachable", return_value=True),
+            ):
                 mod.setup()  # should not raise
 
             mock_gemini.autolog.assert_not_called()  # never reached
+        finally:
+            mod._HAS_MLFLOW = original_has
+            if original_mlflow is not None:
+                mod.mlflow = original_mlflow
+
+    def test_setup_skips_when_server_unreachable(self):
+        """GIVEN tracking server unreachable THEN setup returns early, no MLflow calls."""
+        mock_mlflow = MagicMock()
+        mock_gemini = MagicMock()
+
+        import video_research_mcp.tracing as mod
+
+        original_has = mod._HAS_MLFLOW
+        original_mlflow = getattr(mod, "mlflow", None)
+        try:
+            mod._HAS_MLFLOW = True
+            mod.mlflow = mock_mlflow
+            mod.mlflow.gemini = mock_gemini
+
+            cfg = _make_config()
+            with (
+                patch("video_research_mcp.config.get_config", return_value=cfg),
+                patch.object(mod, "_tracking_server_reachable", return_value=False),
+            ):
+                mod.setup()
+
+            mock_mlflow.set_tracking_uri.assert_not_called()
+            mock_mlflow.set_experiment.assert_not_called()
+            mock_gemini.autolog.assert_not_called()
         finally:
             mod._HAS_MLFLOW = original_has
             if original_mlflow is not None:
@@ -167,7 +202,10 @@ class TestSetup:
                 mlflow_tracking_uri="http://my-server:5000",
                 mlflow_experiment_name="custom-experiment",
             )
-            with patch("video_research_mcp.config.get_config", return_value=cfg):
+            with (
+                patch("video_research_mcp.config.get_config", return_value=cfg),
+                patch.object(mod, "_tracking_server_reachable", return_value=True),
+            ):
                 mod.setup()
 
             mock_mlflow.set_tracking_uri.assert_called_once_with("http://my-server:5000")
