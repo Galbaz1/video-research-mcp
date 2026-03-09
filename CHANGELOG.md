@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-03-09
+
+### Fixed
+
+- **MCP server startup hang** — added 2-second TCP reachability probe before MLflow setup. Prevents indefinite hang when `MLFLOW_TRACKING_URI` points to an unreachable server (e.g., stopped MLflow instance)
+- **`__init__.__version__`** — synced with `pyproject.toml` (was stuck on `0.3.9`)
+
 ## [0.4.0] - 2026-03-07
 
 ### Added
