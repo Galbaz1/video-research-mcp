@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-03-09
+
+### Fixed
+
+- **`_extract_report` turn.text fallback** — Deep Research reports delivered via `turn.text` (instead of `turn.content[].text`) were silently lost; now both formats are captured
+- **Transient 403 retry in `research_web_status`** — polling now retries up to 3 times with backoff on transient 403 errors instead of failing immediately
+- **Concurrency guard on `research_web`** — prevents launching a second Deep Research task while one is active (API allows only 1 concurrent task per key); returns actionable error with the active interaction ID
+- **Timeout heuristic in `/gr:research-deep`** — skill now warns after 20 min and suggests cancel+retry after 30 min of polling without completion
+
 ## [0.4.2] - 2026-03-09
 
 ### Fixed
@@ -201,7 +210,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.3.9...v0.4.0

@@ -8,6 +8,7 @@ autonomous web-grounded research.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 from typing import Annotated
@@ -35,6 +36,9 @@ _MAX_TRACKED = 100
 _TTL_SECONDS = 7200  # 2 hours
 
 
+_ACTIVE_TTL_SECONDS = 1800  # 30 min — max reasonable Deep Research runtime
+
+
 def _evict_stale() -> None:
     """Remove launch entries older than TTL and cap total size."""
     now = time.time()
@@ -44,6 +48,15 @@ def _evict_stale() -> None:
     while len(_launch_times) > _MAX_TRACKED:
         oldest = min(_launch_times, key=lambda k: _launch_times[k]["time"])
         _launch_times.pop(oldest)
+
+
+def _find_active_interaction() -> str | None:
+    """Return interaction_id of a likely-active task, or None."""
+    now = time.time()
+    for iid, meta in _launch_times.items():
+        if now - meta["time"] < _ACTIVE_TTL_SECONDS:
+            return iid
+    return None
 
 
 def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
@@ -59,6 +72,11 @@ def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
     sources: list[DeepResearchSource] = []
 
     for turn in getattr(interaction, "outputs", []) or []:
+        # Check direct text field (Deep Research format)
+        direct_text = getattr(turn, "text", "")
+        if direct_text:
+            report_parts.append(direct_text)
+        # Also check content array (standard Interactions format)
         for content in getattr(turn, "content", []) or []:
             content_type = getattr(content, "type", "")
             if content_type == "text":
@@ -123,6 +141,14 @@ async def research_web(
     try:
         _evict_stale()
 
+        # API allows only 1 concurrent Deep Research task per key
+        active = _find_active_interaction()
+        if active:
+            return make_tool_error(RuntimeError(
+                f"Deep Research task already in progress: {active}. "
+                "Poll with research_web_status or cancel with research_web_cancel first."
+            ))
+
         prompt = topic
         if output_format:
             prompt = f"{topic}\n\nOutput format:\n{output_format}"
@@ -170,7 +196,22 @@ async def research_web_status(
     """
     try:
         client = GeminiClient.get()
-        interaction = await client.aio.interactions.get(interaction_id)
+
+        # Retry on transient 403s (API occasionally returns 403 during polling)
+        interaction = None
+        for attempt in range(3):
+            try:
+                interaction = await client.aio.interactions.get(interaction_id)
+                break
+            except Exception as exc:
+                if "403" in str(exc).lower() and attempt < 2:
+                    logger.warning(
+                        "Transient 403 on status poll (attempt %d/3), retrying...",
+                        attempt + 1,
+                    )
+                    await asyncio.sleep(5 * (attempt + 1))
+                else:
+                    raise
 
         status = getattr(interaction, "status", "unknown") or "unknown"
 
