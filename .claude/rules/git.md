@@ -10,9 +10,39 @@ Extends `~/.claude/rules/git.md`. Project-specific rules take precedence.
 
 `main` is protected. Direct pushes are blocked; all changes go through PRs.
 
-**Merging PRs**: use `--admin` to bypass protection rules (required status checks,
-up-to-date branch requirement). This is intentional — you have owner privileges
-on this repo.
+**Ruleset name**: "Protect main"
+**Owner bypass**: Galbaz1 has `bypass_mode: always` — full admin rights on all rules.
+
+### Required Status Checks
+
+A PR must pass all four checks before merge:
+
+| Check | Description |
+|-------|-------------|
+| `lint` | ruff linter |
+| `test (3.11)` | pytest on Python 3.11 |
+| `test (3.12)` | pytest on Python 3.12 |
+| `test (3.13)` | pytest on Python 3.13 |
+
+Required signatures are also enforced on `main`, which is why `--admin` is always
+needed to merge (it bypasses the signature requirement for squash merges).
+
+### CI Workflows
+
+Two Claude workflows exist — they behave differently:
+
+| Workflow | File | Trigger | Expected on normal PRs |
+|----------|------|---------|----------------------|
+| `claude-review` | `claude-code-review.yml` | PR events (automated) | PASS or FAIL |
+| `claude` | `claude.yml` | `@claude` mentions only (interactive) | **SKIPPED** |
+
+`claude` showing **SKIPPED** is normal and expected for every PR that does not
+mention `@claude`. It is NOT an error; do not treat it as a blocking failure.
+
+### Merging PRs
+
+Use `--squash --admin` unconditionally. The `--admin` flag bypasses required
+signatures and any pending checks — this is intentional given owner privileges.
 
 ```bash
 gh pr merge <N> --squash --admin
