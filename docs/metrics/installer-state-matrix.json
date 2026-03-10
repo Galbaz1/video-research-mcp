@@ -1,0 +1,265 @@
+{
+  "generated_at": "2026-03-10T08:24:13.872783+00:00",
+  "quality_gates": {
+    "min_scenario_count": 20,
+    "actual_scenario_count": 22,
+    "scenario_count_pass": true,
+    "file_map_integrity_pass": true
+  },
+  "file_map_integrity": {
+    "entry_count": 34,
+    "missing_source_count": 0,
+    "missing_sources": [],
+    "duplicate_destination_count": 0,
+    "duplicate_destinations": [],
+    "categories": {
+      "commands": 17,
+      "skills": 10,
+      "agents": 7
+    },
+    "integrity_pass": true
+  },
+  "scenario_summary": {
+    "total": 22,
+    "by_category": {
+      "config_merge": 4,
+      "install": 5,
+      "integrity": 2,
+      "uninstall": 4,
+      "upgrade": 7
+    },
+    "by_risk": {
+      "critical": 4,
+      "high": 9,
+      "low": 1,
+      "medium": 8
+    }
+  },
+  "scenarios": [
+    {
+      "id": "fresh_global_install",
+      "category": "install",
+      "risk": "high",
+      "description": "Install globally into an empty ~/.claude tree.",
+      "expected": [
+        "files_copied",
+        "manifest_created",
+        "mcp_servers_registered"
+      ]
+    },
+    {
+      "id": "fresh_local_install",
+      "category": "install",
+      "risk": "medium",
+      "description": "Install locally into project .claude directory.",
+      "expected": [
+        "files_copied",
+        "manifest_created",
+        "mcp_servers_registered"
+      ]
+    },
+    {
+      "id": "global_install_without_existing_mcp_json",
+      "category": "install",
+      "risk": "medium",
+      "description": "Create .mcp.json when none exists.",
+      "expected": [
+        "mcp_json_created",
+        "servers_registered"
+      ]
+    },
+    {
+      "id": "global_install_with_existing_mcp_json",
+      "category": "install",
+      "risk": "high",
+      "description": "Merge with existing .mcp.json preserving user-managed server entries.",
+      "expected": [
+        "user_entries_preserved",
+        "managed_entries_updated"
+      ]
+    },
+    {
+      "id": "local_install_permissions_error",
+      "category": "install",
+      "risk": "high",
+      "description": "Handle write-permission errors without partial state corruption.",
+      "expected": [
+        "clean_failure",
+        "actionable_error"
+      ]
+    },
+    {
+      "id": "upgrade_unmodified",
+      "category": "upgrade",
+      "risk": "high",
+      "description": "Upgrade when all managed files are unmodified.",
+      "expected": [
+        "safe_overwrite",
+        "obsolete_cleanup",
+        "manifest_updated"
+      ]
+    },
+    {
+      "id": "upgrade_with_user_edits",
+      "category": "upgrade",
+      "risk": "critical",
+      "description": "Upgrade with user-modified managed files.",
+      "expected": [
+        "edited_files_preserved",
+        "conflict_reported",
+        "force_required"
+      ]
+    },
+    {
+      "id": "force_upgrade_with_user_edits",
+      "category": "upgrade",
+      "risk": "high",
+      "description": "Force upgrade replacing user-modified files.",
+      "expected": [
+        "edited_files_overwritten",
+        "manifest_updated"
+      ]
+    },
+    {
+      "id": "upgrade_removes_obsolete_files",
+      "category": "upgrade",
+      "risk": "medium",
+      "description": "Remove obsolete files listed in old manifest but not current FILE_MAP.",
+      "expected": [
+        "obsolete_files_removed",
+        "cleanup_completed"
+      ]
+    },
+    {
+      "id": "upgrade_with_corrupt_manifest",
+      "category": "upgrade",
+      "risk": "high",
+      "description": "Recover gracefully when manifest JSON is malformed.",
+      "expected": [
+        "manifest_rebuilt_or_error",
+        "no_unbounded_deletes"
+      ]
+    },
+    {
+      "id": "upgrade_when_manifest_missing",
+      "category": "upgrade",
+      "risk": "medium",
+      "description": "Upgrade in environments where manifest was deleted manually.",
+      "expected": [
+        "best_effort_update",
+        "manifest_recreated"
+      ]
+    },
+    {
+      "id": "upgrade_cross_platform_path_separators",
+      "category": "upgrade",
+      "risk": "medium",
+      "description": "Verify path normalization for unix/windows style separators.",
+      "expected": [
+        "path_normalization",
+        "no_duplicate_targets"
+      ]
+    },
+    {
+      "id": "uninstall_clean",
+      "category": "uninstall",
+      "risk": "high",
+      "description": "Uninstall when managed files match manifest hashes.",
+      "expected": [
+        "managed_files_removed",
+        "empty_dirs_cleaned",
+        "manifest_removed"
+      ]
+    },
+    {
+      "id": "uninstall_with_user_edits",
+      "category": "uninstall",
+      "risk": "critical",
+      "description": "Uninstall when managed files were user modified.",
+      "expected": [
+        "user_files_preserved",
+        "safety_warnings_emitted"
+      ]
+    },
+    {
+      "id": "uninstall_without_manifest",
+      "category": "uninstall",
+      "risk": "medium",
+      "description": "Uninstall when manifest is already missing.",
+      "expected": [
+        "no_crash",
+        "best_effort_cleanup"
+      ]
+    },
+    {
+      "id": "uninstall_partial_files_missing",
+      "category": "uninstall",
+      "risk": "low",
+      "description": "Uninstall when some managed files are already deleted.",
+      "expected": [
+        "idempotent_remove",
+        "warnings_optional"
+      ]
+    },
+    {
+      "id": "mcp_merge_preserves_custom_env",
+      "category": "config_merge",
+      "risk": "high",
+      "description": "Preserve existing env values for unrelated servers.",
+      "expected": [
+        "foreign_env_preserved",
+        "managed_servers_present"
+      ]
+    },
+    {
+      "id": "mcp_merge_updates_managed_server_args",
+      "category": "config_merge",
+      "risk": "high",
+      "description": "Update managed server args to latest expected values.",
+      "expected": [
+        "managed_args_updated",
+        "json_valid"
+      ]
+    },
+    {
+      "id": "mcp_merge_with_empty_mcpServers",
+      "category": "config_merge",
+      "risk": "medium",
+      "description": "Handle configs with empty mcpServers object.",
+      "expected": [
+        "servers_inserted",
+        "json_valid"
+      ]
+    },
+    {
+      "id": "mcp_merge_with_additional_top_level_keys",
+      "category": "config_merge",
+      "risk": "medium",
+      "description": "Preserve non-mcp top-level keys during merge.",
+      "expected": [
+        "top_level_keys_preserved",
+        "managed_servers_present"
+      ]
+    },
+    {
+      "id": "file_map_missing_source_detection",
+      "category": "integrity",
+      "risk": "critical",
+      "description": "Detect missing source files referenced by FILE_MAP.",
+      "expected": [
+        "integrity_fail",
+        "missing_sources_reported"
+      ]
+    },
+    {
+      "id": "file_map_duplicate_destination_detection",
+      "category": "integrity",
+      "risk": "critical",
+      "description": "Detect duplicate destination collisions in FILE_MAP.",
+      "expected": [
+        "integrity_fail",
+        "duplicate_destinations_reported"
+      ]
+    }
+  ]
+}
