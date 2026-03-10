@@ -9,6 +9,8 @@ dist/
 .envrc
 .claude/*.local.md
 .claude/settings.local.json
+.claude/settings.json
+.claude/handoff.md
 .claude/research/
 node_modules/
 *.tgz
