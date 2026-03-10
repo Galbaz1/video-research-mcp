@@ -16,3 +16,7 @@ gr-file-manifest.json
 mlflow.db
 video_analysis/
 archive/
+output/
+.playwright-mcp/
+*.bak.*
+.mcp.json
