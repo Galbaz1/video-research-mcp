@@ -18,8 +18,9 @@ class TestWeaviateClientGet:
         with pytest.raises(ValueError, match="WEAVIATE_URL not configured"):
             WeaviateClient.get()
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_creates_client_when_configured(self, mock_connect, clean_config, monkeypatch):
+    def test_creates_client_when_configured(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """get() creates and returns a client when WEAVIATE_URL is set."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test-cluster.weaviate.network")
         monkeypatch.setenv("WEAVIATE_API_KEY", "test-key")
@@ -34,8 +35,9 @@ class TestWeaviateClientGet:
         assert result is mock_client
         mock_connect.assert_called_once()
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_returns_same_client_on_subsequent_calls(self, mock_connect, clean_config, monkeypatch):
+    def test_returns_same_client_on_subsequent_calls(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """get() returns the cached singleton on second call."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.weaviate_client import WeaviateClient
@@ -98,8 +100,9 @@ class TestWeaviateClientIsAvailable:
 class TestEnsureCollections:
     """Tests for ensure_collections()."""
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_skips_existing_collections(self, mock_connect, clean_config, monkeypatch):
+    def test_skips_existing_collections(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """ensure_collections() does not recreate existing collections."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.weaviate_client import WeaviateClient
@@ -303,8 +306,9 @@ class TestToProperty:
 class TestTimeoutConfig:
     """Tests for timeout configuration in _connect()."""
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_cloud_connection_passes_timeout(self, mock_connect, clean_config, monkeypatch):
+    def test_cloud_connection_passes_timeout(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """Cloud connection includes AdditionalConfig with timeouts."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         monkeypatch.setenv("WEAVIATE_API_KEY", "test-key")
@@ -319,8 +323,9 @@ class TestTimeoutConfig:
         call_kwargs = mock_connect.call_args[1]
         assert call_kwargs["additional_config"] is not None
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_local")
-    def test_local_connection_passes_timeout(self, mock_connect, clean_config, monkeypatch):
+    def test_local_connection_passes_timeout(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """Local connection includes AdditionalConfig with timeouts."""
         monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
         from video_research_mcp.weaviate_client import WeaviateClient
@@ -334,8 +339,9 @@ class TestTimeoutConfig:
         call_kwargs = mock_connect.call_args[1]
         assert call_kwargs["additional_config"] is not None
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_local")
-    def test_local_connection_passes_provider_headers(self, mock_connect, clean_config, monkeypatch):
+    def test_local_connection_passes_provider_headers(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """Local connection passes provider API key headers for vectorizer modules."""
         monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
         monkeypatch.setenv("OPENAI_API_KEY", "sk-local-test")
@@ -362,8 +368,9 @@ class TestTimeoutConfig:
 class TestV4PropertyAPI:
     """Tests for v4 Property API migration in ensure_collections."""
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_uses_create_not_create_from_dict(self, mock_connect, clean_config, monkeypatch):
+    def test_uses_create_not_create_from_dict(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """ensure_collections uses client.collections.create() not create_from_dict()."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.weaviate_client import WeaviateClient
@@ -377,8 +384,9 @@ class TestV4PropertyAPI:
         assert mock_client.collections.create.call_count == 12
         mock_client.collections.create_from_dict.assert_not_called()
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_create_passes_property_objects(self, mock_connect, clean_config, monkeypatch):
+    def test_create_passes_property_objects(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """ensure_collections passes Property objects (not dicts) to create()."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from weaviate.classes.config import Property
@@ -394,12 +402,30 @@ class TestV4PropertyAPI:
         props = first_call[1]["properties"]
         assert all(isinstance(p, Property) for p in props)
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
+    @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
+    def test_create_passes_source_properties(self, mock_connect, mock_migrate, clean_config, monkeypatch):
+        """ensure_collections passes vector_config with source_properties."""
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
+        from video_research_mcp.weaviate_client import WeaviateClient
+        WeaviateClient.reset()
+
+        mock_client = MagicMock()
+        mock_client.collections.list_all.return_value = {}
+        mock_connect.return_value = mock_client
+
+        WeaviateClient.get()
+        first_call = mock_client.collections.create.call_args_list[0]
+        vector_config = first_call[1]["vector_config"]
+        assert vector_config is not None
+
 
 class TestRerankerConfig:
     """Tests for reranker configuration in ensure_collections."""
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_passes_reranker_when_enabled(self, mock_connect, clean_config, monkeypatch):
+    def test_passes_reranker_when_enabled(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """ensure_collections passes reranker_config when reranker is enabled."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         monkeypatch.setenv("COHERE_API_KEY", "test-cohere-key")
@@ -415,8 +441,9 @@ class TestRerankerConfig:
         assert "reranker_config" in first_call[1]
         assert first_call[1]["reranker_config"] is not None
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_no_reranker_when_disabled(self, mock_connect, clean_config, monkeypatch):
+    def test_no_reranker_when_disabled(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """ensure_collections omits reranker_config when reranker is disabled."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         monkeypatch.delenv("COHERE_API_KEY", raising=False)
@@ -470,8 +497,9 @@ class TestProviderHeaders:
         from video_research_mcp.weaviate_client import _collect_provider_headers
         assert _collect_provider_headers() == {}
 
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
     @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
-    def test_cloud_connection_passes_headers(self, mock_connect, clean_config, monkeypatch):
+    def test_cloud_connection_passes_headers(self, mock_connect, mock_migrate, clean_config, monkeypatch):
         """Cloud connection passes provider headers to connect_to_weaviate_cloud."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         monkeypatch.setenv("WEAVIATE_API_KEY", "test-key")
@@ -486,6 +514,27 @@ class TestProviderHeaders:
         WeaviateClient.get()
         call_kwargs = mock_connect.call_args[1]
         assert call_kwargs["headers"] == {"X-OpenAI-Api-Key": "sk-test"}
+
+
+class TestMigrateIntegration:
+    """Tests for migrate_all_if_needed integration in ensure_collections."""
+
+    @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
+    @patch("video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud")
+    def test_ensure_collections_calls_migrate_all(self, mock_connect, mock_migrate, clean_config, monkeypatch):
+        """ensure_collections invokes migrate_all_if_needed as pass 3."""
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
+        from video_research_mcp.weaviate_client import WeaviateClient
+        WeaviateClient.reset()
+
+        mock_client = MagicMock()
+        mock_client.collections.list_all.return_value = {}
+        mock_connect.return_value = mock_client
+
+        WeaviateClient.get()
+        mock_migrate.assert_called_once()
+        call_args = mock_migrate.call_args
+        assert len(call_args[0][1]) == 12  # ALL_COLLECTIONS
 
 
 class TestAsyncConnect:

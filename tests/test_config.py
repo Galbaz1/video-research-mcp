@@ -53,6 +53,65 @@ class TestWeaviateUrlNormalization:
         assert cfg.weaviate_enabled is False
 
 
+class TestVectorizerConfig:
+    """Verify WEAVIATE_VECTORIZER and WEAVIATE_AUTO_MIGRATE config."""
+
+    def test_default_openai(self, monkeypatch):
+        """No env vars → openai vectorizer."""
+        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "openai"
+
+    def test_explicit_weaviate_override(self, monkeypatch):
+        """WEAVIATE_VECTORIZER=weaviate overrides auto-detection."""
+        monkeypatch.setenv("WEAVIATE_VECTORIZER", "weaviate")
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "weaviate"
+
+    def test_cloud_without_openai_autodetects_weaviate(self, monkeypatch):
+        """https URL + no OPENAI_API_KEY → weaviate vectorizer."""
+        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.cloud")
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "weaviate"
+
+    def test_cloud_with_openai_stays_openai(self, monkeypatch):
+        """https URL + OPENAI_API_KEY → openai vectorizer."""
+        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.cloud")
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "openai"
+
+    def test_local_always_openai(self, monkeypatch):
+        """http localhost URL → openai vectorizer."""
+        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
+        monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "openai"
+
+    def test_invalid_vectorizer_raises(self, monkeypatch):
+        """WEAVIATE_VECTORIZER=cohere → ValueError."""
+        monkeypatch.setenv("WEAVIATE_VECTORIZER", "cohere")
+        with pytest.raises(Exception, match="WEAVIATE_VECTORIZER must be"):
+            ServerConfig.from_env()
+
+    def test_auto_migrate_default_false(self, monkeypatch):
+        """No env var → auto_migrate is False."""
+        monkeypatch.delenv("WEAVIATE_AUTO_MIGRATE", raising=False)
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_auto_migrate is False
+
+    def test_auto_migrate_explicit_true(self, monkeypatch):
+        """WEAVIATE_AUTO_MIGRATE=true → True."""
+        monkeypatch.setenv("WEAVIATE_AUTO_MIGRATE", "true")
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_auto_migrate is True
+
+
 class TestDeepResearchAgentValidator:
     """Verify DEEP_RESEARCH_AGENT validation at config load."""
 

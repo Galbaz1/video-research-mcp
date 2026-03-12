@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from weaviate.classes.config import DataType, Property
 
 from .config import get_config
+from .weaviate_migrate import build_vector_config, migrate_all_if_needed
 from .weaviate_schema import CollectionDef, PropertyDef
 
 logger = logging.getLogger(__name__)
@@ -273,7 +274,7 @@ class WeaviateClient:
                     "name": col_def.name,
                     "description": col_def.description,
                     "properties": [_to_property(p) for p in col_def.properties],
-                    "vector_config": Configure.Vectors.text2vec_openai(),
+                    "vector_config": build_vector_config(col_def),
                 }
                 if reranker_cfg is not None:
                     create_kwargs["reranker_config"] = reranker_cfg
@@ -283,6 +284,9 @@ class WeaviateClient:
                 cls._evolve_collection(col_def)
 
         cls._ensure_references(ALL_COLLECTIONS)
+
+        # Pass 3: check vector config alignment (source_properties)
+        migrate_all_if_needed(_client, ALL_COLLECTIONS, cfg.weaviate_auto_migrate)
 
     @classmethod
     def _evolve_collection(cls, col_def: CollectionDef) -> None:

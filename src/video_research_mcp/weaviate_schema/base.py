@@ -37,7 +37,7 @@ class PropertyDef:
             result["description"] = self.description
         if self.skip_vectorization:
             result["moduleConfig"] = {
-                "text2vec-weaviate": {"skip": True},
+                "text2vec-openai": {"skip": True},
             }
         return result
 
@@ -59,6 +59,18 @@ class CollectionDef:
     description: str = ""
     properties: list[PropertyDef] = field(default_factory=list)
     references: list[ReferenceDef] = field(default_factory=list)
+
+    def vectorized_properties(self) -> list[str]:
+        """Return names of text properties included in vectorization.
+
+        Only text/text[] properties with skip_vectorization=False are included.
+        Used by build_vector_config() to set source_properties on the vectorizer.
+        """
+        text_types = {"text", "text[]"}
+        return [
+            p.name for p in self.properties
+            if not p.skip_vectorization and p.data_type[0] in text_types
+        ]
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to Weaviate REST API collection (class) format.

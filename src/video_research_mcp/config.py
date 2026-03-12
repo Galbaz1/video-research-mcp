@@ -123,6 +123,8 @@ class ServerConfig(BaseModel):
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
     deep_research_agent: str = Field(default="deep-research-pro-preview-12-2025")
+    weaviate_vectorizer: str = Field(default="openai")
+    weaviate_auto_migrate: bool = Field(default=False)
     infra_mutations_enabled: bool = Field(default=False)
     infra_admin_token: str = Field(default="")
 
@@ -164,6 +166,14 @@ class ServerConfig(BaseModel):
             raise ValueError("Retry delay must be > 0")
         return value
 
+    @field_validator("weaviate_vectorizer")
+    @classmethod
+    def validate_weaviate_vectorizer(cls, value: str) -> str:
+        v = value.strip().lower()
+        if v not in ("openai", "weaviate"):
+            raise ValueError(f"WEAVIATE_VECTORIZER must be 'openai' or 'weaviate', got '{value}'")
+        return v
+
     @field_validator("deep_research_agent")
     @classmethod
     def validate_deep_research_agent(cls, value: str) -> str:
@@ -184,6 +194,9 @@ class ServerConfig(BaseModel):
         weaviate_url = _normalize_weaviate_url(os.getenv("WEAVIATE_URL", ""))
         _cohere_key = os.environ.get("COHERE_API_KEY", "")
         _reranker_flag = os.getenv("RERANKER_ENABLED", "").lower()
+        _vectorizer_flag = os.getenv("WEAVIATE_VECTORIZER", "").strip().lower()
+        _is_cloud = weaviate_url.startswith("https://")
+        _has_openai = bool(os.environ.get("OPENAI_API_KEY", ""))
         return cls(
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
             default_model=os.getenv("GEMINI_MODEL", "gemini-3.1-pro-preview"),
@@ -224,6 +237,11 @@ class ServerConfig(BaseModel):
             ),
             local_file_access_root=local_file_access_root,
             deep_research_agent=os.getenv("DEEP_RESEARCH_AGENT", "deep-research-pro-preview-12-2025"),
+            weaviate_vectorizer=(
+                _vectorizer_flag
+                or ("weaviate" if _is_cloud and not _has_openai else "openai")
+            ),
+            weaviate_auto_migrate=os.getenv("WEAVIATE_AUTO_MIGRATE", "").lower() in ("1", "true", "yes"),
             infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
             infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
         )

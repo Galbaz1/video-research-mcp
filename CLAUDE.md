@@ -250,6 +250,8 @@ Canonical source: `config.py:ServerConfig`. Key variables:
 | `GEMINI_TRACING_ENABLED` | `""` | Enable MLflow tracing |
 | `MLFLOW_TRACKING_URI` | `""` | MLflow server URI |
 | `MLFLOW_EXPERIMENT_NAME` | `""` | MLflow experiment name |
+| `WEAVIATE_VECTORIZER` | `""` | "openai" or "weaviate"; auto-detects based on URL scheme + OPENAI_API_KEY |
+| `WEAVIATE_AUTO_MIGRATE` | `""` | Set "true" to auto-migrate collections when vector config changes |
 | `EXPLAINER_PATH` | `""` | Path to cloned video_explainer repo |
 | `EXPLAINER_TTS_PROVIDER` | `"mock"` | mock, elevenlabs, openai, gemini, edge |
 | `ELEVENLABS_API_KEY` | `""` | Required for elevenlabs TTS |

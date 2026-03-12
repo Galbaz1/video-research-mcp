@@ -8,11 +8,14 @@ from video_research_mcp.weaviate_schema import (
     COMMUNITY_REACTIONS,
     CONCEPT_KNOWLEDGE,
     CONTENT_ANALYSES,
+    DEEP_RESEARCH_REPORTS,
     RELATIONSHIP_EDGES,
     RESEARCH_FINDINGS,
     RESEARCH_PLANS,
     VIDEO_ANALYSES,
     VIDEO_METADATA,
+    CollectionDef,
+    PropertyDef,
 )
 
 
@@ -194,7 +197,7 @@ class TestVectorizeFlags:
         prop = next(p for p in RESEARCH_FINDINGS.properties if p.name == "created_at")
         d = prop.to_dict()
         assert "moduleConfig" in d
-        assert d["moduleConfig"]["text2vec-weaviate"]["skip"] is True
+        assert d["moduleConfig"]["text2vec-openai"]["skip"] is True
 
     def test_no_skip_vectorization_in_dict(self):
         """Properties with skip=False do NOT include moduleConfig."""
@@ -334,3 +337,67 @@ class TestNewCollections:
         assert len(ALLOWED_PROPERTIES) == 12
         for col in ALL_COLLECTIONS:
             assert col.name in ALLOWED_PROPERTIES, f"{col.name} missing from ALLOWED_PROPERTIES"
+
+
+class TestVectorizedProperties:
+    """Verify vectorized_properties() returns correct property lists."""
+
+    def test_excludes_skip_vectorization_fields(self):
+        """Properties with skip_vectorization=True are excluded."""
+        col = CollectionDef(
+            name="Test",
+            properties=[
+                PropertyDef("title", ["text"], "Title"),
+                PropertyDef("metadata", ["text"], "Meta", skip_vectorization=True),
+                PropertyDef("summary", ["text"], "Summary"),
+            ],
+        )
+        result = col.vectorized_properties()
+        assert "title" in result
+        assert "summary" in result
+        assert "metadata" not in result
+
+    def test_excludes_non_text_types(self):
+        """Non-text types (int, number, boolean, date) are excluded."""
+        col = CollectionDef(
+            name="Test",
+            properties=[
+                PropertyDef("title", ["text"], "Title"),
+                PropertyDef("count", ["int"], "Count"),
+                PropertyDef("score", ["number"], "Score"),
+                PropertyDef("active", ["boolean"], "Active"),
+                PropertyDef("created_at", ["date"], "Date", skip_vectorization=True),
+            ],
+        )
+        result = col.vectorized_properties()
+        assert result == ["title"]
+
+    def test_includes_text_arrays(self):
+        """text[] properties with skip_vectorization=False are included."""
+        col = CollectionDef(
+            name="Test",
+            properties=[
+                PropertyDef("tags", ["text[]"], "Tags"),
+                PropertyDef("ids", ["text[]"], "IDs", skip_vectorization=True),
+            ],
+        )
+        result = col.vectorized_properties()
+        assert "tags" in result
+        assert "ids" not in result
+
+    def test_research_findings_spot_check(self):
+        """ResearchFindings vectorized_properties includes semantic fields, excludes metadata."""
+        result = RESEARCH_FINDINGS.vectorized_properties()
+        for name in ("claim", "reasoning", "executive_summary", "topic",
+                      "supporting", "contradicting", "methodology_critique", "recommendations"):
+            assert name in result, f"{name} should be vectorized"
+        for name in ("scope", "evidence_tier", "report_uuid", "open_questions"):
+            assert name not in result, f"{name} should NOT be vectorized"
+
+    def test_deep_research_spot_check(self):
+        """DeepResearchReports vectorized_properties includes text, excludes JSON blobs."""
+        result = DEEP_RESEARCH_REPORTS.vectorized_properties()
+        for name in ("topic", "report_text"):
+            assert name in result, f"{name} should be vectorized"
+        for name in ("sources_json", "usage_json", "follow_ups_json"):
+            assert name not in result, f"{name} should NOT be vectorized"
