@@ -126,12 +126,10 @@ def _connect(url: str, api_key: str) -> weaviate.WeaviateClient:
 
     if is_local:
         port = parsed.port or 8080
-        grpc_port = port + 1  # convention: gRPC on HTTP port + 1
         headers = _collect_provider_headers()
         return wv.connect_to_local(
             host=host,
             port=port,
-            grpc_port=grpc_port,
             headers=headers or None,
             additional_config=additional_config,
         )
@@ -177,11 +175,9 @@ async def _aconnect(url: str, api_key: str) -> weaviate.WeaviateAsyncClient:
 
     if is_local:
         port = parsed.port or 8080
-        grpc_port = port + 1
         client = wv.use_async_with_local(
             host=host,
             port=port,
-            grpc_port=grpc_port,
             headers=headers or None,
             additional_config=additional_config,
         )

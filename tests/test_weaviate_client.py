@@ -508,7 +508,7 @@ class TestAsyncConnect:
         call_kwargs = mock_async_local.call_args[1]
         assert call_kwargs["host"] == "localhost"
         assert call_kwargs["port"] == 8080
-        assert call_kwargs["grpc_port"] == 8081
+        assert "grpc_port" not in call_kwargs  # uses default 50051
         assert call_kwargs["headers"] == {"X-OpenAI-Api-Key": "sk-async-test"}
 
     @patch("video_research_mcp.weaviate_client.weaviate.use_async_with_weaviate_cloud")
