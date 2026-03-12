@@ -283,10 +283,14 @@ class WeaviateClient:
             else:
                 cls._evolve_collection(col_def)
 
-        cls._ensure_references(ALL_COLLECTIONS)
-
-        # Pass 3: check vector config alignment (source_properties)
+        # Pass 2: migrate collections with mismatched vector config.
+        # Must run BEFORE _ensure_references so migrated (recreated)
+        # collections get their reference schemas back.
         migrate_all_if_needed(_client, ALL_COLLECTIONS, cfg.weaviate_auto_migrate)
+
+        # Pass 3: add cross-references (targets must exist first,
+        # and migrated collections need their references restored).
+        cls._ensure_references(ALL_COLLECTIONS)
 
     @classmethod
     def _evolve_collection(cls, col_def: CollectionDef) -> None:
