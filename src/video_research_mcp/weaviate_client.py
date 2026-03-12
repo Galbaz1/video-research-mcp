@@ -127,10 +127,12 @@ def _connect(url: str, api_key: str) -> weaviate.WeaviateClient:
     if is_local:
         port = parsed.port or 8080
         grpc_port = port + 1  # convention: gRPC on HTTP port + 1
+        headers = _collect_provider_headers()
         return wv.connect_to_local(
             host=host,
             port=port,
             grpc_port=grpc_port,
+            headers=headers or None,
             additional_config=additional_config,
         )
 
@@ -159,18 +161,37 @@ def _connect(url: str, api_key: str) -> weaviate.WeaviateClient:
 
 
 async def _aconnect(url: str, api_key: str) -> weaviate.WeaviateAsyncClient:
-    """Create and connect an async Weaviate client (cloud clusters only)."""
+    """Create and connect an async Weaviate client.
+
+    Supports local instances (use_async_with_local) and cloud clusters
+    (use_async_with_weaviate_cloud).
+    """
     wv = _weaviate()
     from weaviate.classes.init import Auth
 
     additional_config = _timeout_config()
     headers = _collect_provider_headers()
-    client = wv.use_async_with_weaviate_cloud(
-        cluster_url=url,
-        auth_credentials=Auth.api_key(api_key) if api_key else None,
-        headers=headers or None,
-        additional_config=additional_config,
-    )
+    parsed = urlparse(url)
+    host = parsed.hostname or ""
+    is_local = host in ("localhost", "127.0.0.1", "::1") or host.startswith("192.168.")
+
+    if is_local:
+        port = parsed.port or 8080
+        grpc_port = port + 1
+        client = wv.use_async_with_local(
+            host=host,
+            port=port,
+            grpc_port=grpc_port,
+            headers=headers or None,
+            additional_config=additional_config,
+        )
+    else:
+        client = wv.use_async_with_weaviate_cloud(
+            cluster_url=url,
+            auth_credentials=Auth.api_key(api_key) if api_key else None,
+            headers=headers or None,
+            additional_config=additional_config,
+        )
     await client.connect()
     return client
 
@@ -213,9 +234,9 @@ class WeaviateClient:
     async def aget(cls) -> weaviate.WeaviateAsyncClient:
         """Return (or create) the shared async Weaviate client.
 
-        For use with AsyncQueryAgent. Cloud clusters only (uses
-        use_async_with_weaviate_cloud). Schema is ensured via the sync
-        client — call get() first if collections may not exist yet.
+        For use with AsyncQueryAgent. Supports both local and cloud
+        instances. Schema is ensured via the sync client — call get()
+        first if collections may not exist yet.
 
         Raises:
             ValueError: If WEAVIATE_URL is not configured.
@@ -256,7 +277,7 @@ class WeaviateClient:
                     "name": col_def.name,
                     "description": col_def.description,
                     "properties": [_to_property(p) for p in col_def.properties],
-                    "vector_config": Configure.Vectors.text2vec_weaviate(),
+                    "vector_config": Configure.Vectors.text2vec_openai(),
                 }
                 if reranker_cfg is not None:
                     create_kwargs["reranker_config"] = reranker_cfg

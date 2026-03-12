@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -334,6 +334,22 @@ class TestTimeoutConfig:
         call_kwargs = mock_connect.call_args[1]
         assert call_kwargs["additional_config"] is not None
 
+    @patch("video_research_mcp.weaviate_client.weaviate.connect_to_local")
+    def test_local_connection_passes_provider_headers(self, mock_connect, clean_config, monkeypatch):
+        """Local connection passes provider API key headers for vectorizer modules."""
+        monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-local-test")
+        from video_research_mcp.weaviate_client import WeaviateClient
+        WeaviateClient.reset()
+
+        mock_client = MagicMock()
+        mock_client.collections.list_all.return_value = {}
+        mock_connect.return_value = mock_client
+
+        WeaviateClient.get()
+        call_kwargs = mock_connect.call_args[1]
+        assert call_kwargs["headers"] == {"X-OpenAI-Api-Key": "sk-local-test"}
+
     def test_timeout_values(self):
         """Timeout is configured with init=30, query=60, insert=120."""
         from video_research_mcp.weaviate_client import _timeout_config
@@ -470,3 +486,43 @@ class TestProviderHeaders:
         WeaviateClient.get()
         call_kwargs = mock_connect.call_args[1]
         assert call_kwargs["headers"] == {"X-OpenAI-Api-Key": "sk-test"}
+
+
+class TestAsyncConnect:
+    """Tests for _aconnect() and WeaviateClient.aget()."""
+
+    @patch("video_research_mcp.weaviate_client.weaviate.use_async_with_local")
+    async def test_aconnect_local(self, mock_async_local, clean_config, monkeypatch):
+        """_aconnect uses use_async_with_local for localhost URLs."""
+        monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-async-test")
+        from video_research_mcp.weaviate_client import WeaviateClient
+        WeaviateClient.reset()
+
+        mock_client = MagicMock()
+        mock_client.connect = AsyncMock()
+        mock_async_local.return_value = mock_client
+
+        result = await WeaviateClient.aget()
+        assert result is mock_client
+        call_kwargs = mock_async_local.call_args[1]
+        assert call_kwargs["host"] == "localhost"
+        assert call_kwargs["port"] == 8080
+        assert call_kwargs["grpc_port"] == 8081
+        assert call_kwargs["headers"] == {"X-OpenAI-Api-Key": "sk-async-test"}
+
+    @patch("video_research_mcp.weaviate_client.weaviate.use_async_with_weaviate_cloud")
+    async def test_aconnect_cloud(self, mock_async_cloud, clean_config, monkeypatch):
+        """_aconnect uses use_async_with_weaviate_cloud for HTTPS URLs."""
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
+        monkeypatch.setenv("WEAVIATE_API_KEY", "test-key")
+        from video_research_mcp.weaviate_client import WeaviateClient
+        WeaviateClient.reset()
+
+        mock_client = MagicMock()
+        mock_client.connect = AsyncMock()
+        mock_async_cloud.return_value = mock_client
+
+        result = await WeaviateClient.aget()
+        assert result is mock_client
+        mock_async_cloud.assert_called_once()
