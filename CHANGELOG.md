@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-03-13
+
+### Fixed
+
+- **Vectorizer auto-detect** — default without `OPENAI_API_KEY` is now `weaviate` (built-in embeddings) instead of `openai`, which silently failed for Docker users without an OpenAI key
+
+### Added
+
+- **Startup warning** — logs a warning when `WEAVIATE_VECTORIZER=openai` is active but `OPENAI_API_KEY` is not set
+- **Env template keys** — `WEAVIATE_VECTORIZER` and `WEAVIATE_AUTO_MIGRATE` added to the installer env template with documentation comments
+
+### Changed
+
+- **Weaviate setup skill** — Step 3 now shows deployment-specific env blocks (Docker vs Cloud) with vectorizer guidance
+- **Knowledge Store docs** — replaced broken `docker run` command with docker-compose snippet matching the setup skill
+
 ## [0.4.3] - 2026-03-09
 
 ### Fixed
@@ -210,7 +226,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.4...HEAD
+[0.4.4]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.0...v0.4.1

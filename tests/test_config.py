@@ -56,12 +56,12 @@ class TestWeaviateUrlNormalization:
 class TestVectorizerConfig:
     """Verify WEAVIATE_VECTORIZER and WEAVIATE_AUTO_MIGRATE config."""
 
-    def test_default_openai(self, monkeypatch):
-        """No env vars → openai vectorizer."""
+    def test_default_without_openai_autodetects_weaviate(self, monkeypatch):
+        """No env vars → weaviate vectorizer (zero-dependency default)."""
         monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         cfg = ServerConfig.from_env()
-        assert cfg.weaviate_vectorizer == "openai"
+        assert cfg.weaviate_vectorizer == "weaviate"
 
     def test_explicit_weaviate_override(self, monkeypatch):
         """WEAVIATE_VECTORIZER=weaviate overrides auto-detection."""
@@ -85,11 +85,19 @@ class TestVectorizerConfig:
         cfg = ServerConfig.from_env()
         assert cfg.weaviate_vectorizer == "openai"
 
-    def test_local_always_openai(self, monkeypatch):
-        """http localhost URL → openai vectorizer."""
+    def test_local_without_openai_autodetects_weaviate(self, monkeypatch):
+        """http localhost URL + no OPENAI_API_KEY → weaviate vectorizer."""
         monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
         monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        cfg = ServerConfig.from_env()
+        assert cfg.weaviate_vectorizer == "weaviate"
+
+    def test_local_with_openai_stays_openai(self, monkeypatch):
+        """http localhost URL + OPENAI_API_KEY → openai vectorizer."""
+        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
+        monkeypatch.setenv("WEAVIATE_URL", "http://localhost:8080")
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
         cfg = ServerConfig.from_env()
         assert cfg.weaviate_vectorizer == "openai"
 

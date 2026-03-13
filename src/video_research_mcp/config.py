@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from ipaddress import ip_address
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, field_validator
+
+logger = logging.getLogger(__name__)
 
 VALID_THINKING_LEVELS = {"minimal", "low", "medium", "high"}
 
@@ -195,7 +198,6 @@ class ServerConfig(BaseModel):
         _cohere_key = os.environ.get("COHERE_API_KEY", "")
         _reranker_flag = os.getenv("RERANKER_ENABLED", "").lower()
         _vectorizer_flag = os.getenv("WEAVIATE_VECTORIZER", "").strip().lower()
-        _is_cloud = weaviate_url.startswith("https://")
         _has_openai = bool(os.environ.get("OPENAI_API_KEY", ""))
         return cls(
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
@@ -239,7 +241,7 @@ class ServerConfig(BaseModel):
             deep_research_agent=os.getenv("DEEP_RESEARCH_AGENT", "deep-research-pro-preview-12-2025"),
             weaviate_vectorizer=(
                 _vectorizer_flag
-                or ("weaviate" if _is_cloud and not _has_openai else "openai")
+                or ("openai" if _has_openai else "weaviate")
             ),
             weaviate_auto_migrate=os.getenv("WEAVIATE_AUTO_MIGRATE", "").lower() in ("1", "true", "yes"),
             infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
@@ -259,19 +261,23 @@ def get_config() -> ServerConfig:
     """
     global _config
     if _config is None:
-        import logging
-
         from .dotenv import load_dotenv
 
         injected = load_dotenv()
         if injected:
-            logger = logging.getLogger(__name__)
             logger.info(
                 "Loaded %d var(s) from config: %s",
                 len(injected),
                 ", ".join(injected.keys()),
             )
         _config = ServerConfig.from_env()
+        if _config.weaviate_enabled and _config.weaviate_vectorizer == "openai":
+            if not os.environ.get("OPENAI_API_KEY", ""):
+                logger.warning(
+                    "WEAVIATE_VECTORIZER=openai but OPENAI_API_KEY not set — "
+                    "text2vec-openai will fail. Set OPENAI_API_KEY or use "
+                    "WEAVIATE_VECTORIZER=weaviate for built-in embeddings."
+                )
     return _config
 
 

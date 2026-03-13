@@ -40,22 +40,31 @@ The 8 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retri
 
 ### Option A: Local Weaviate (Docker)
 
-```bash
-docker run -d \
-  --name weaviate \
-  -p 8080:8080 \
-  -p 50051:50051 \
-  cr.weaviate.io/semitechnologies/weaviate:latest \
-  --host 0.0.0.0 \
-  --port 8080 \
-  --scheme http
+Create a `docker-compose.yml`:
+
+```yaml
+services:
+  weaviate:
+    image: cr.weaviate.io/semitechnologies/weaviate:1.28.4
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: text2vec-weaviate
+      ENABLE_MODULES: text2vec-weaviate
 ```
 
-Set the env var:
+Then `docker compose up -d` and set the env vars:
 
 ```bash
 export WEAVIATE_URL="http://localhost:8080"
+export WEAVIATE_VECTORIZER="weaviate"
 ```
+
+The `text2vec-weaviate` vectorizer uses Weaviate's built-in embedding service — no extra API key needed.
 
 ### Option B: Weaviate Cloud (WCS)
 

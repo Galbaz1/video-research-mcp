@@ -122,6 +122,8 @@ const ENV_TEMPLATE_KEYS = [
   'EXPLAINER_TTS_PROVIDER',
   'ELEVENLABS_API_KEY',
   'OPENAI_API_KEY',
+  'WEAVIATE_VECTORIZER',
+  'WEAVIATE_AUTO_MIGRATE',
 ];
 
 /**
@@ -162,6 +164,12 @@ function ensureEnvFile() {
       '# WEAVIATE_URL=',
       '# WEAVIATE_API_KEY=',
       '# WEAVIATE_GRPC_URL=',
+      '#',
+      '# Vectorizer: auto-detects based on OPENAI_API_KEY.',
+      '#   weaviate = built-in embeddings, no extra key (good for Docker)',
+      '#   openai   = text2vec-openai, requires OPENAI_API_KEY',
+      '# WEAVIATE_VECTORIZER=',
+      '# WEAVIATE_AUTO_MIGRATE=',
       '',
       '# Optional — MLflow tracing (leave commented to disable)',
       '# MLFLOW_TRACKING_URI=http://127.0.0.1:5001',

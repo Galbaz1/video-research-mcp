@@ -66,11 +66,22 @@ Once you have the URL (and optionally API key), tell the user to configure the s
 
 **Option A -- Shared config file (recommended for plugin users):**
 Edit `~/.config/video-research-mcp/.env`:
+
+**Docker deployment:**
 ```bash
 GEMINI_API_KEY=<their-gemini-key>
-WEAVIATE_URL=<their-url>
-WEAVIATE_API_KEY=<their-key-if-any>
+WEAVIATE_URL=http://localhost:8080
+WEAVIATE_VECTORIZER=weaviate
 ```
+
+**Cloud deployment:**
+```bash
+GEMINI_API_KEY=<their-gemini-key>
+WEAVIATE_URL=<cluster-url>
+WEAVIATE_API_KEY=<key>
+```
+
+The server auto-detects `WEAVIATE_VECTORIZER` based on `OPENAI_API_KEY`: if present → `openai`, otherwise → `weaviate` (built-in embeddings). Setting it explicitly avoids surprises.
 
 Notes:
 - Use a full URL with scheme (`https://...` for cloud, `http://localhost:8080` for local).

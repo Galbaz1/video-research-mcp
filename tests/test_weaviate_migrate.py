@@ -289,7 +289,7 @@ class TestVectorizerModuleDetection:
     def test_detects_vectorizer_mismatch(self, clean_config, monkeypatch, sample_col_def):
         """Detects when vectorizer module differs from config.
 
-        GIVEN: collection uses text2vec-weaviate, config wants text2vec-openai
+        GIVEN: collection uses text2vec-openai, config wants text2vec-weaviate (default)
         WHEN: needs_vector_migration is called
         THEN: returns True
         """
@@ -299,16 +299,16 @@ class TestVectorizerModuleDetection:
 
         col_config = _make_col_config(
             source_properties=["title", "summary"],
-            vectorizer_module="text2vec-weaviate",
+            vectorizer_module="text2vec-openai",
         )
         assert needs_vector_migration(col_config, sample_col_def) is True
 
     def test_no_migration_when_vectorizer_aligned(self, clean_config, monkeypatch, sample_col_def):
         """No migration when both source_properties and vectorizer match.
 
-        GIVEN: collection uses text2vec-openai with correct source_properties
+        GIVEN: collection uses text2vec-weaviate with correct source_properties
         WHEN: needs_vector_migration is called
-        THEN: returns False
+        THEN: returns False (default without OPENAI_API_KEY is weaviate)
         """
         monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
@@ -316,7 +316,7 @@ class TestVectorizerModuleDetection:
 
         col_config = _make_col_config(
             source_properties=["title", "summary"],
-            vectorizer_module="text2vec-openai",
+            vectorizer_module="text2vec-weaviate",
         )
         assert needs_vector_migration(col_config, sample_col_def) is False
 
@@ -348,7 +348,7 @@ class TestVectorizerModuleDetection:
     def test_migrates_on_vectorizer_change(self, clean_config, monkeypatch, sample_col_def):
         """migrate_all_if_needed triggers migration on vectorizer change.
 
-        GIVEN: source_properties match but vectorizer differs
+        GIVEN: source_properties match but vectorizer differs (openai vs default weaviate)
         WHEN: auto_migrate=True
         THEN: migrate_collection is called
         """
@@ -359,7 +359,7 @@ class TestVectorizerModuleDetection:
         mock_client = MagicMock()
         col_config = _make_col_config(
             source_properties=["title", "summary"],
-            vectorizer_module="text2vec-weaviate",
+            vectorizer_module="text2vec-openai",
         )
         mock_col = MagicMock()
         mock_col.config.get.return_value = col_config
