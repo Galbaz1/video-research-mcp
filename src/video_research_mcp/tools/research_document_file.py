@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 
 from ..config import get_config
+from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..url_policy import download_checked
 
 from .video_file import _file_content_hash, _upload_large_file
@@ -91,14 +92,26 @@ async def _prepare_all_documents(
     file_paths: list[str] | None,
     urls: list[str] | None,
 ) -> list[tuple[str, str, str]]:
+    """Backward-compatible wrapper returning only prepared documents."""
+    prepared, _issues = await _prepare_all_documents_with_issues(file_paths, urls)
+    return prepared
+
+
+async def _prepare_all_documents_with_issues(
+    file_paths: list[str] | None,
+    urls: list[str] | None,
+) -> tuple[list[tuple[str, str, str]], list[dict[str, str]]]:
     """Prepare all documents for the research pipeline.
 
     Downloads URL documents to temp files, then uploads everything via File API.
 
     Returns:
-        List of (file_uri, content_id, original_path_or_url) tuples.
+        Tuple of:
+        - prepared documents as (file_uri, content_id, original_path_or_url)
+        - preparation issues with source, phase, error_type, and error message
     """
     prepared: list[tuple[str, str, str]] = []
+    issues: list[dict[str, str]] = []
 
     # Download URL documents first
     downloaded: list[tuple[Path, str]] = []
@@ -109,6 +122,14 @@ async def _prepare_all_documents(
         for url, result in zip(urls, results):
             if isinstance(result, Exception):
                 logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                issues.append(
+                    {
+                        "source": url,
+                        "phase": "download",
+                        "error_type": type(result).__name__,
+                        "error": str(result),
+                    }
+                )
             else:
                 downloaded.append((result, url))
 
@@ -116,7 +137,7 @@ async def _prepare_all_documents(
     all_paths: list[tuple[Path, str]] = []
     if file_paths:
         for fp in file_paths:
-            p = Path(fp).expanduser().resolve()
+            p = enforce_local_access_root(resolve_path(fp))
             all_paths.append((p, fp))
     all_paths.extend(downloaded)
 
@@ -127,10 +148,18 @@ async def _prepare_all_documents(
 
     upload_tasks = [_upload(p, orig) for p, orig in all_paths]
     results = await asyncio.gather(*upload_tasks, return_exceptions=True)
-    for result in results:
+    for (_path, original), result in zip(all_paths, results):
         if isinstance(result, Exception):
             logger.warning("Failed to upload document: %s", result)
+            issues.append(
+                {
+                    "source": original,
+                    "phase": "upload",
+                    "error_type": type(result).__name__,
+                    "error": str(result),
+                }
+            )
         else:
             prepared.append(result)
 
-    return prepared
+    return prepared, issues

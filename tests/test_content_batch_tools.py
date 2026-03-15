@@ -73,6 +73,17 @@ class TestResolveFiles:
         assert len(files) == 2
         assert all(f.suffix == ".pdf" for f in files)
 
+    async def test_directory_outside_local_access_root(
+        self, sample_files, monkeypatch, clean_config,
+    ):
+        """Configured local access root blocks directory scans outside allowlist."""
+        allowed_root = sample_files / "allowed"
+        allowed_root.mkdir()
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(allowed_root))
+
+        with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+            _resolve_files(str(sample_files), None, "*", 20)
+
 
 class TestContentBatchAnalyze:
     @patch("video_research_mcp.tools.content_batch.store_content_analysis", new_callable=AsyncMock)

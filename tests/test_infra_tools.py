@@ -5,12 +5,17 @@ from __future__ import annotations
 import pytest
 
 import video_research_mcp.config as cfg_mod
-from video_research_mcp.tools.infra import infra_cache, infra_configure
+import video_research_mcp.tools.infra as infra_mod
+from tests.conftest import unwrap_tool
+
+infra_cache = unwrap_tool(infra_mod.infra_cache)
+infra_configure = unwrap_tool(infra_mod.infra_configure)
 
 
 @pytest.fixture(autouse=True)
 def _clean_config(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "test")
+    monkeypatch.setenv("INFRA_MUTATIONS_ENABLED", "true")
     cfg_mod._config = None
     yield
     cfg_mod._config = None
@@ -25,6 +30,21 @@ class TestInfraTools:
         assert cfg["default_thinking_level"] == "low"
         assert cfg["default_temperature"] == 0.7
         assert "gemini_api_key" not in cfg
+
+    @pytest.mark.asyncio
+    async def test_infra_configure_redacts_all_secret_fields(self, monkeypatch):
+        monkeypatch.setenv("YOUTUBE_API_KEY", "youtube-secret")
+        monkeypatch.setenv("WEAVIATE_API_KEY", "weaviate-secret")
+        monkeypatch.setenv("INFRA_ADMIN_TOKEN", "infra-secret")
+        cfg_mod._config = None
+
+        out = await infra_configure()
+        cfg = out["current_config"]
+
+        assert "gemini_api_key" not in cfg
+        assert "youtube_api_key" not in cfg
+        assert "weaviate_api_key" not in cfg
+        assert "infra_admin_token" not in cfg
 
     @pytest.mark.asyncio
     async def test_infra_configure_invalid_thinking_level_returns_error(self):
@@ -62,9 +82,60 @@ class TestInfraTools:
         assert out["active_preset"] == "best"  # default models match "best"
 
     @pytest.mark.asyncio
+    async def test_infra_configure_blocks_mutation_when_disabled(self, monkeypatch):
+        monkeypatch.setenv("INFRA_MUTATIONS_ENABLED", "false")
+        cfg_mod._config = None
+
+        out = await infra_configure(model="gemini-test")
+
+        assert out["category"] == "PERMISSION_DENIED"
+        assert out["retryable"] is False
+
+    @pytest.mark.asyncio
+    async def test_infra_configure_allows_read_only_when_disabled(self, monkeypatch):
+        monkeypatch.setenv("INFRA_MUTATIONS_ENABLED", "false")
+        cfg_mod._config = None
+
+        out = await infra_configure()
+
+        assert "current_config" in out
+        assert out["active_preset"] == "best"
+
+    @pytest.mark.asyncio
+    async def test_infra_configure_requires_token_when_configured(self, monkeypatch):
+        monkeypatch.setenv("INFRA_ADMIN_TOKEN", "top-secret")
+        cfg_mod._config = None
+
+        denied = await infra_configure(model="gemini-test")
+        assert denied["category"] == "PERMISSION_DENIED"
+
+        allowed = await infra_configure(model="gemini-test", auth_token="top-secret")
+        assert allowed["current_config"]["default_model"] == "gemini-test"
+
+    @pytest.mark.asyncio
     async def test_infra_cache_unknown_action(self):
         out = await infra_cache(action="wat")
         assert "Unknown action" in out["error"]
+
+    @pytest.mark.asyncio
+    async def test_infra_cache_clear_blocked_without_mutation_permission(self, monkeypatch):
+        monkeypatch.setenv("INFRA_MUTATIONS_ENABLED", "false")
+        cfg_mod._config = None
+
+        out = await infra_cache(action="clear", content_id="abc")
+        assert out["category"] == "PERMISSION_DENIED"
+
+    @pytest.mark.asyncio
+    async def test_infra_cache_clear_requires_token_when_configured(self, monkeypatch):
+        monkeypatch.setenv("INFRA_ADMIN_TOKEN", "cache-token")
+        cfg_mod._config = None
+        monkeypatch.setattr("video_research_mcp.tools.infra.cache_mod.clear", lambda _cid: 1)
+
+        denied = await infra_cache(action="clear", content_id="abc")
+        assert denied["category"] == "PERMISSION_DENIED"
+
+        allowed = await infra_cache(action="clear", content_id="abc", auth_token="cache-token")
+        assert allowed["removed"] == 1
 
     @pytest.mark.asyncio
     async def test_infra_cache_context_action(self):

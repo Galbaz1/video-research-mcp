@@ -9,12 +9,37 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from .. import cache as cache_mod
-from ..config import MODEL_PRESETS, update_config
+from ..config import MODEL_PRESETS, get_config, update_config
 from ..errors import make_tool_error
 from ..tracing import trace
 from ..types import CacheAction, ModelPreset, ThinkingLevel
 
 infra_server = FastMCP("infra")
+_SENSITIVE_CONFIG_FIELDS = {
+    "gemini_api_key",
+    "youtube_api_key",
+    "weaviate_api_key",
+    "infra_admin_token",
+}
+
+
+def _redacted_config() -> dict:
+    """Return runtime config with secret-bearing fields removed."""
+    return get_config().model_dump(exclude=_SENSITIVE_CONFIG_FIELDS)
+
+
+def _enforce_mutation_policy(auth_token: str | None) -> None:
+    """Gate mutating infra operations behind explicit policy + optional token."""
+    cfg = get_config()
+    if not cfg.infra_mutations_enabled:
+        raise PermissionError(
+            "Infra mutations are disabled by policy. "
+            "Set INFRA_MUTATIONS_ENABLED=true to enable mutating infra tools."
+        )
+    if cfg.infra_admin_token and auth_token != cfg.infra_admin_token:
+        raise PermissionError(
+            "Invalid or missing infra auth token for mutating operation."
+        )
 
 
 @infra_server.tool(
@@ -29,6 +54,9 @@ infra_server = FastMCP("infra")
 async def infra_cache(
     action: CacheAction = "stats",
     content_id: Annotated[str | None, Field(description="Scope clear to a specific content ID")] = None,
+    auth_token: Annotated[str | None, Field(
+        description="Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)",
+    )] = None,
 ) -> dict:
     """Manage the analysis cache — stats, list, clear, or inspect context cache state.
 
@@ -45,8 +73,12 @@ async def infra_cache(
     if action == "list":
         return {"entries": cache_mod.list_entries()}
     if action == "clear":
-        removed = cache_mod.clear(content_id)
-        return {"removed": removed}
+        try:
+            _enforce_mutation_policy(auth_token)
+            removed = cache_mod.clear(content_id)
+            return {"removed": removed}
+        except Exception as exc:
+            return make_tool_error(exc)
     if action == "context":
         from .. import context_cache
         return context_cache.diagnostics()
@@ -69,6 +101,9 @@ async def infra_configure(
     model: Annotated[str | None, Field(description="Gemini model ID override (takes precedence over preset)")] = None,
     thinking_level: ThinkingLevel | None = None,
     temperature: Annotated[float | None, Field(ge=0.0, le=2.0, description="Sampling temperature")] = None,
+    auth_token: Annotated[str | None, Field(
+        description="Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)",
+    )] = None,
 ) -> dict:
     """Reconfigure the server at runtime — preset, model, thinking level, or temperature.
 
@@ -102,7 +137,11 @@ async def infra_configure(
         if temperature is not None:
             overrides["default_temperature"] = temperature
 
-        cfg = update_config(**overrides)
+        if overrides:
+            _enforce_mutation_policy(auth_token)
+            cfg = update_config(**overrides)
+        else:
+            cfg = get_config()
 
         # Detect which preset (if any) matches current config
         active = None
@@ -112,7 +151,7 @@ async def infra_configure(
                 break
 
         return {
-            "current_config": cfg.model_dump(exclude={"gemini_api_key"}),
+            "current_config": _redacted_config(),
             "active_preset": active,
             "available_presets": {k: v["label"] for k, v in MODEL_PRESETS.items()},
         }

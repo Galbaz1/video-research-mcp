@@ -16,6 +16,7 @@ from ..client import GeminiClient
 from ..tracing import trace
 from ..errors import make_tool_error
 from ..models.content import ContentResult
+from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..prompts.content import STRUCTURED_EXTRACT
 from ..types import ThinkingLevel, coerce_json_param
 from ..url_policy import UrlPolicyError, validate_url
@@ -38,7 +39,7 @@ def _build_content_parts(
     description = ""
 
     if file_path:
-        p = Path(file_path)
+        p = enforce_local_access_root(resolve_path(file_path))
         if not p.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
         mime = "application/pdf" if p.suffix.lower() == ".pdf" else "text/plain"
@@ -109,7 +110,7 @@ async def content_analyze(
         else:
             use_url_context = False
             parts, desc = _build_content_parts(file_path=file_path, text=text)
-    except (FileNotFoundError, UrlPolicyError, ValueError) as exc:
+    except (FileNotFoundError, PermissionError, UrlPolicyError, ValueError) as exc:
         return make_tool_error(exc)
 
     try:

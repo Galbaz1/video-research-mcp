@@ -40,6 +40,16 @@ class TestBuildContentParts:
         assert len(parts) == 1
         assert "test.txt" in desc
 
+    def test_file_outside_local_access_root(self, tmp_path, monkeypatch, clean_config):
+        root = tmp_path / "allowed"
+        root.mkdir()
+        f = tmp_path / "test.txt"
+        f.write_text("content")
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(root))
+
+        with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+            _build_content_parts(file_path=str(f))
+
 
 class TestContentAnalyze:
     @pytest.mark.asyncio

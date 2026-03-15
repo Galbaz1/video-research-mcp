@@ -13,6 +13,7 @@ from google.genai import types
 
 from ..client import GeminiClient
 from ..config import get_config
+from ..local_path_policy import enforce_local_access_root, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +29,8 @@ SUPPORTED_VIDEO_EXTENSIONS: dict[str, str] = {
 }
 
 LARGE_FILE_THRESHOLD = 20 * 1024 * 1024  # 20 MB
+_UPLOAD_LOCKS: dict[str, asyncio.Lock] = {}
+_UPLOAD_LOCKS_GUARD = asyncio.Lock()
 
 
 def _video_mime_type(path: Path) -> str:
@@ -51,7 +54,7 @@ def _file_content_hash(path: Path) -> str:
 
 def _validate_video_path(file_path: str) -> tuple[Path, str]:
     """Validate path exists and has supported extension. Returns (path, mime)."""
-    p = Path(file_path).expanduser().resolve()
+    p = enforce_local_access_root(resolve_path(file_path))
     if not p.exists():
         raise FileNotFoundError(f"Video file not found: {file_path}")
     if not p.is_file():
@@ -132,7 +135,19 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
     """
     client = GeminiClient.get()
 
-    if content_hash:
+    if not content_hash:
+        uploaded = await client.aio.files.upload(
+            file=path,
+            config=types.UploadFileConfig(mime_type=mime_type),
+        )
+        logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
+        await _wait_for_active(client, uploaded.name)
+        return uploaded.uri
+
+    async with _UPLOAD_LOCKS_GUARD:
+        lock = _UPLOAD_LOCKS.setdefault(content_hash, asyncio.Lock())
+
+    async with lock:
         cached = _load_upload_cache(content_hash)
         if cached:
             try:
@@ -142,17 +157,14 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
             except (RuntimeError, TimeoutError, KeyError):
                 logger.debug("Stale upload cache for %s, re-uploading", path.name)
 
-    uploaded = await client.aio.files.upload(
-        file=path,
-        config=types.UploadFileConfig(mime_type=mime_type),
-    )
-    logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-    await _wait_for_active(client, uploaded.name)
-
-    if content_hash:
+        uploaded = await client.aio.files.upload(
+            file=path,
+            config=types.UploadFileConfig(mime_type=mime_type),
+        )
+        logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
+        await _wait_for_active(client, uploaded.name)
         _save_upload_cache(content_hash, uploaded.uri, uploaded.name)
-
-    return uploaded.uri
+        return uploaded.uri
 
 
 async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Content, str, str]:

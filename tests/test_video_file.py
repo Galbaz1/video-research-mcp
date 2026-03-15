@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock
@@ -89,6 +90,16 @@ class TestValidateVideoPath:
         f.write_text("hello")
         with pytest.raises(ValueError, match="Unsupported video extension"):
             _validate_video_path(str(f))
+
+    def test_rejects_path_outside_local_access_root(self, tmp_path, monkeypatch, clean_config):
+        root = tmp_path / "allowed"
+        root.mkdir()
+        outside = tmp_path / "outside.mp4"
+        outside.write_bytes(b"\x00" * 10)
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(root))
+
+        with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+            _validate_video_path(str(outside))
 
 
 class TestVideoFileContent:
@@ -293,3 +304,26 @@ class TestUploadCache:
         mock_gemini_client["client"].aio.files.upload.assert_called_once()
         # No cache file should exist
         assert list(self.cache_dir.glob("*.json")) == []
+
+    @pytest.mark.asyncio
+    async def test_concurrent_same_hash_uploads_once(self, tmp_path, mock_gemini_client):
+        """Concurrent uploads for same content hash should coalesce to one API upload."""
+        f = tmp_path / "video.mp4"
+        f.write_bytes(b"\x00" * 100)
+
+        uploaded = _mock_upload_result(uri="https://api.example/files/one", name="files/one")
+
+        async def _slow_upload(*_args, **_kwargs):
+            await asyncio.sleep(0.05)
+            return uploaded
+
+        mock_gemini_client["client"].aio.files.upload = AsyncMock(side_effect=_slow_upload)
+        mock_gemini_client["client"].aio.files.get = AsyncMock(return_value=MagicMock(state="ACTIVE"))
+
+        results = await asyncio.gather(
+            _upload_large_file(f, "video/mp4", content_hash="same_hash"),
+            _upload_large_file(f, "video/mp4", content_hash="same_hash"),
+        )
+
+        assert results == ["https://api.example/files/one", "https://api.example/files/one"]
+        mock_gemini_client["client"].aio.files.upload.assert_called_once()
