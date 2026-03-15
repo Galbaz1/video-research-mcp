@@ -565,3 +565,58 @@ Focus: Concurrency and resource exhaustion
 ### Post-Commit Scope Snapshot
 - After commit + push from detached iteration context:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 33, "pr_context": false, "pr_url": null}`
+
+---
+
+## Continuation Run (2026-03-15T19:06:35Z)
+
+### Scope Detection Snapshots
+- Before major transition (detached baseline context):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After major transition to detached `origin/codex/review/i07` context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 34, "pr_context": false, "pr_url": null}`
+- After this run's code changes:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 2, "ahead_commits": 34, "pr_context": false, "pr_url": null}`
+
+### EARS Run Requirements (Concise)
+1. When iteration state remains `current_iteration=8`, the run shall continue on the existing iteration branch context.
+2. If `content_batch_analyze` receives explicit `file_paths`, the tool shall enforce `max_files` as a fail-fast ingress limit before path resolution.
+3. If explicit list length exceeds `max_files`, the tool shall return structured tool error output and shall not invoke Gemini.
+4. The run shall persist findings, exploit reasoning, concrete fixes, validation evidence, lessons learned, and next-iteration hypotheses.
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F13
+- Area: Resource exhaustion via explicit path-list fan-in.
+- Evidence:
+  - Prior behavior in [`src/video_research_mcp/tools/content_batch.py`](/Users/fausto/.codex/worktrees/dc83/gemini-research-mcp/src/video_research_mcp/tools/content_batch.py) resolved all explicit `file_paths` and only truncated after resolution.
+  - Guard now rejects oversized lists before path resolution (`len(file_paths) > max_files`).
+  - Regression coverage in [`tests/test_content_batch_tools.py`](/Users/fausto/.codex/worktrees/dc83/gemini-research-mcp/tests/test_content_batch_tools.py).
+- Exploit reasoning: Oversized explicit lists can force avoidable path resolution and filesystem checks even when downstream file processing is capped, increasing CPU/IO pressure.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added fail-fast cardinality validation in `_resolve_files(...)` for explicit `file_paths`.
+- Kept deterministic bounded processing by iterating at most `file_paths[:max_files]` after validation.
+- Added focused regression test:
+  - `tests/test_content_batch_tools.py::TestResolveFiles::test_explicit_paths_exceed_max_files`
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/tools/content_batch.py tests/test_content_batch_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_content_batch_tools.py::TestResolveFiles::test_explicit_paths_exceed_max_files -q` -> pass (`1 passed`).
+- Residual test gap: a tool-level fail-fast assertion test encountered the known wrapper drift (`FunctionTool` callable mismatch); tracked under R-004 for iteration-9 harness stabilization.
+
+### Reflective Loop Update
+- Observe: Explicit-path resolution still processed full user-supplied lists before truncation.
+- Infer root cause: Output-level limits were in place, but ingress cardinality checks were not enforced symmetrically.
+- Propose strategy: Enforce fail-fast list-length validation at ingress.
+- Validate: Implemented guard and focused regression test with passing lint/pytest checks.
+- Confidence change: 1.00 -> 1.00.
+
+### Lessons Learned
+- Limiting processed outputs is not equivalent to enforcing ingress cardinality; both controls are required for resource-hardening.
+- For explicit list inputs, list-length validation should occur before any per-item path resolution or file system interaction.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 tool-wrapper drift so tool-level fail-fast tests run reliably in subset/full executions.
+2. Add cancellation/time-budget contracts for bounded fan-out paths and long-running model-call phases.

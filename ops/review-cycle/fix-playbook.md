@@ -253,3 +253,12 @@
   - `tests/test_content_tools.py::TestBuildContentParts::test_text_rejects_oversized_input`
   - `tests/test_content_tools.py::TestContentAnalyze::test_text_size_limit_helper_rejects_oversized_input`
   - `tests/test_content_tools.py::TestContentExtract::test_extract_size_limit_helper_rejects_oversized_input`
+
+## FP-014: Fail-fast explicit batch path cardinality
+- Context: Batch tools that accept explicit `file_paths` lists in untrusted MCP sessions.
+- Rule: Enforce list cardinality (`len(file_paths) <= max_files`) before path resolution and file metadata checks.
+- Why: Prevents oversized explicit lists from triggering avoidable filesystem traversal work even when downstream processing is capped.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/content_batch.py`
+- Regression coverage:
+  - `tests/test_content_batch_tools.py::TestResolveFiles::test_explicit_paths_exceed_max_files`

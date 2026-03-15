@@ -54,6 +54,16 @@ class TestResolveFiles:
         with pytest.raises(FileNotFoundError):
             _resolve_files(None, ["/nonexistent/file.pdf"], "*", 20)
 
+    async def test_explicit_paths_exceed_max_files(self, sample_files):
+        """GIVEN too many explicit paths WHEN resolving THEN fail-fast validation error."""
+        paths = [
+            str(sample_files / "doc1.pdf"),
+            str(sample_files / "doc2.pdf"),
+            str(sample_files / "notes.txt"),
+        ]
+        with pytest.raises(ValueError, match="exceeds max_files=2"):
+            _resolve_files(None, paths, "*", 2)
+
     async def test_max_files_limit(self, tmp_path):
         """GIVEN more files than max_files WHEN resolving THEN capped at limit."""
         for i in range(10):
@@ -177,6 +187,22 @@ class TestContentBatchAnalyze:
             instruction="test", directory="/nonexistent/path",
         )
         assert "error" in result
+
+    async def test_file_paths_limit_is_fail_fast(self, sample_files, mock_gemini_client):
+        """GIVEN oversized file_paths input WHEN tool runs THEN it rejects before model calls."""
+        result = await content_batch_mod.content_batch_analyze(
+            instruction="Compare",
+            file_paths=[
+                str(sample_files / "doc1.pdf"),
+                str(sample_files / "doc2.pdf"),
+                str(sample_files / "notes.txt"),
+            ],
+            max_files=2,
+        )
+        assert "error" in result
+        assert "exceeds max_files=2" in result["error"]
+        mock_gemini_client["generate"].assert_not_called()
+        mock_gemini_client["generate_structured"].assert_not_called()
 
     async def test_build_file_parts_rejects_oversized_file(self, tmp_path, monkeypatch, clean_config):
         """GIVEN an oversized local file WHEN compare helper builds parts THEN validation error."""

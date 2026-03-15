@@ -76,8 +76,13 @@ def _resolve_files(
         )
         return files[:max_files]
 
+    if file_paths is not None and len(file_paths) > max_files:
+        raise ValueError(
+            f"file_paths contains {len(file_paths)} entries, exceeds max_files={max_files}"
+        )
+
     resolved: list[Path] = []
-    for fp in file_paths:  # type: ignore[union-attr]
+    for fp in file_paths[:max_files]:  # type: ignore[union-attr]
         p = enforce_local_access_root(resolve_path(fp))
         if not p.exists():
             raise FileNotFoundError(f"File not found: {fp}")

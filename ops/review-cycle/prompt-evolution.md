@@ -135,3 +135,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When `content_analyze` or `content_extract` receives direct text input, the system shall enforce a validated `CONTENT_MAX_TEXT_CHARS` limit before prompt construction or model invocation.
 4. If direct text length exceeds the configured limit, the tool shall return structured tool error output and shall not call Gemini.
 5. The run shall persist scope snapshots, severity-ranked findings, implemented fixes, reflective confidence updates, and next-iteration hypotheses across all review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-15T19:06:35Z)
+1. When iteration state remains `current_iteration=8` on `codex/review/i07`, the run shall resume the existing iteration branch context and shall not create a new branch.
+2. When `content_batch_analyze` receives explicit `file_paths`, the system shall enforce `max_files` as a fail-fast ingress cardinality limit before path resolution and file inspection.
+3. If explicit `file_paths` length exceeds `max_files`, the tool shall return structured tool error output and shall not execute model calls.
+4. If iteration-8 lessons emphasize ingress guardrail parity, this run shall add at least one remediation that closes a residual cardinality-exhaustion gap.
+5. The run shall capture scope snapshots and persist findings, validation evidence, confidence updates, and next hypotheses in review-cycle artifacts.

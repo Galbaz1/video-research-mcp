@@ -173,3 +173,11 @@
 - Exploit reasoning: Attackers can submit very large direct text payloads to amplify memory and token usage despite existing file/URL size controls.
 - Status: Mitigated in this continuation by adding validated `CONTENT_MAX_TEXT_CHARS` and fail-fast guard enforcement before prompt/model execution.
 - Residual risk: Operator misconfiguration with overly high text cap can still increase runtime pressure; bounded by strict positive-int validation and secure default (`200000`).
+
+## R-024
+- Severity: Medium
+- Area: Resource exhaustion / explicit path cardinality
+- Evidence: Prior to this run, `src/video_research_mcp/tools/content_batch.py::_resolve_files` iterated the full `file_paths` input and only applied `max_files` truncation after resolution/filtering.
+- Exploit reasoning: Attackers can submit very large explicit path lists to force avoidable path-resolution and filesystem checks despite output/file-processing caps.
+- Status: Mitigated in this continuation by fail-fast enforcement of `len(file_paths) <= max_files` before path resolution.
+- Residual risk: Tool-level fail-fast regression remains partially constrained by R-004 wrapper/direct-call test harness instability in subset runs.

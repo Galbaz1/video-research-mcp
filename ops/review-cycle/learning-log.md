@@ -194,3 +194,15 @@
 ## Iteration 9 seed hypotheses (updated)
 - Resolve R-004 by normalizing wrapped-tool direct-call behavior in content tool tests and broader subset runs.
 - Add cancellation/time-budget contracts for long-running bounded gather paths.
+
+## Iteration 8 Continuation (Explicit file_paths Cardinality Guardrail) - 2026-03-15T19:06:35Z
+- Observation: `content_batch._resolve_files(...)` iterated all explicit `file_paths` and only sliced results after per-path resolution, so oversized lists could still induce avoidable filesystem work before truncation.
+- Inference: Existing `max_files` semantics limited output count but did not enforce ingress cardinality at the trust boundary, leaving a residual resource-exhaustion path.
+- Strategy: Add fail-fast `file_paths` length validation against `max_files` before path resolution, and preserve deterministic behavior by processing at most `file_paths[:max_files]`.
+- Validation: Implemented fail-fast check in `src/video_research_mcp/tools/content_batch.py` with focused regression test `tests/test_content_batch_tools.py::TestResolveFiles::test_explicit_paths_exceed_max_files`; `ruff` and targeted pytest passed.
+- Validation note: A new tool-level assertion test hit known wrapped-tool drift (`FunctionTool` not callable) in subset execution; risk R-004 remains open and this check remains documented for iteration 9.
+- Confidence change: 1.00 -> 1.00 (maintained, with improved ingress cardinality parity).
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve R-004 wrapper/direct-call instability so tool-level fail-fast guard tests are reliable in subset/full runs.
+- Add cancellation/time-budget coverage for bounded fan-out and long-running model-call paths.
