@@ -506,3 +506,7 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 wrapper/direct-call instability so broader regression suites remain trustworthy.
 2. Add cancellation and time-budget tests for stalled model calls in bounded gather pathways.
+
+### Post-Commit Scope Snapshot
+- After commit in detached iteration context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 31, "pr_context": false, "pr_url": null}`
