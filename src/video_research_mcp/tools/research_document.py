@@ -35,6 +35,18 @@ from .research import research_server
 from .research_document_file import _prepare_all_documents_with_issues
 
 logger = logging.getLogger(__name__)
+_DOC_PHASE_CONCURRENCY = 4
+
+
+async def _gather_bounded(items: list, coro_factory, concurrency: int) -> list:
+    """Run coroutines with a fixed concurrency cap, returning ordered results."""
+    semaphore = asyncio.Semaphore(concurrency)
+
+    async def _run(item):
+        async with semaphore:
+            return await coro_factory(item)
+
+    return list(await asyncio.gather(*[_run(item) for item in items]))
 
 
 @research_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
@@ -132,7 +144,8 @@ async def _phase_document_map(
     """Phase 1: Extract structure overview from each document."""
     prompt = DOCUMENT_MAP.format(instruction=instruction)
 
-    async def _map_one(part: types.Part, source: DocumentSource) -> DocumentMap:
+    async def _map_one(pair: tuple[types.Part, DocumentSource]) -> DocumentMap:
+        part, source = pair
         contents = types.Content(parts=[part, types.Part(text=prompt)])
         result = await GeminiClient.generate_structured(
             contents,
@@ -143,8 +156,11 @@ async def _phase_document_map(
         result.source_filename = source.filename
         return result
 
-    tasks = [_map_one(p, s) for p, s in zip(file_parts, sources)]
-    return list(await asyncio.gather(*tasks))
+    return await _gather_bounded(
+        list(zip(file_parts, sources)),
+        _map_one,
+        _DOC_PHASE_CONCURRENCY,
+    )
 
 
 async def _phase_evidence_extraction(
@@ -157,8 +173,9 @@ async def _phase_evidence_extraction(
     """Phase 2: Extract evidence-tiered findings from each document."""
 
     async def _extract_one(
-        part: types.Part, source: DocumentSource, doc_map: DocumentMap,
+        item: tuple[types.Part, DocumentSource, DocumentMap],
     ) -> DocumentFindingsContainer:
+        part, source, doc_map = item
         map_text = json.dumps(doc_map.model_dump(mode="json"), indent=2)
         prompt = DOCUMENT_EVIDENCE.format(instruction=instruction, document_map=map_text)
         contents = types.Content(parts=[part, types.Part(text=prompt)])
@@ -171,11 +188,11 @@ async def _phase_evidence_extraction(
         result.document = source.filename
         return result
 
-    tasks = [
-        _extract_one(p, s, m)
-        for p, s, m in zip(file_parts, sources, doc_maps)
-    ]
-    return list(await asyncio.gather(*tasks))
+    return await _gather_bounded(
+        list(zip(file_parts, sources, doc_maps)),
+        _extract_one,
+        _DOC_PHASE_CONCURRENCY,
+    )
 
 
 async def _phase_cross_reference(

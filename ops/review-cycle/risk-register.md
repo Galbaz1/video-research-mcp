@@ -86,3 +86,11 @@
 - Evidence: Prior `research_document_file._prepare_all_documents_with_issues(...)` executed unbounded `asyncio.gather` fan-out for URL downloads and uploads.
 - Exploit reasoning: Large source lists could trigger excessive parallel network/file operations and degrade service availability.
 - Status: Mitigated in iteration 8 by bounded concurrency (`_DOC_PREPARE_CONCURRENCY=4`) across download/upload phases with regression coverage.
+
+## R-013
+- Severity: Medium
+- Area: Concurrency/resource exhaustion
+- Evidence: Prior to this continuation run, `src/video_research_mcp/tools/research_document.py` used unbounded `asyncio.gather` in `_phase_document_map` and `_phase_evidence_extraction`.
+- Exploit reasoning: Large document batches can amplify simultaneous upstream model calls, increasing quota pressure and degrading service responsiveness.
+- Status: Mitigated in iteration 8 continuation via `_DOC_PHASE_CONCURRENCY` bounded phase execution.
+- Residual risk: Cap is static; future tuning may require config-driven limits per deployment profile.

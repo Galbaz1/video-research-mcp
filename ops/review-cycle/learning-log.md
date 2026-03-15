@@ -91,3 +91,14 @@
 ## Iteration 9 seed hypotheses
 - Fix direct-call test harness drift where decorated tools appear as `FunctionTool` in subset runs.
 - Add explicit callable-contract tests around `_unwrap_fastmcp_tools` behavior to prevent future regression blind spots.
+
+## Iteration 8 Continuation (Phase Fan-out Hardening) - 2026-03-15T04:20:00Z
+- Observation: While iteration-8 bounded download/upload fan-out in `research_document_file`, `research_document` still used unbounded `asyncio.gather` for per-document mapping/evidence model calls.
+- Inference: Resource controls were stage-local rather than pipeline-wide, leaving residual quota and latency-spike risk under large document sets.
+- Strategy: Reuse bounded concurrency pattern from iteration-8 ingestion helper inside phase executors via shared `_gather_bounded(...)`.
+- Validation: Added `_DOC_PHASE_CONCURRENCY=4` and bounded execution for `_phase_document_map` and `_phase_evidence_extraction`; added focused regression tests proving peak concurrency stays capped.
+- Confidence change: 0.84 -> 0.90 for iteration-8 objective completeness.
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve the existing tool-wrapper/direct-call harness instability (R-004) that causes hangs in full-module subset runs.
+- Add cancellability and backpressure tests for long-running async fan-out phases.

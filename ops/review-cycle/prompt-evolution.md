@@ -71,3 +71,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When second-pass schema reshaping consumes untrusted fetched content, the system shall delimit untrusted fields and instruct the model to ignore embedded instructions.
 4. When document preparation fans out downloads or uploads, the system shall apply bounded concurrency controls.
 5. The run shall persist severity-ranked findings, exploit reasoning, implemented fixes, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements
+1. When iteration state remains `current_iteration=8` with an open iteration PR, the run shall resume that branch and avoid creating a new iteration branch.
+2. When any document-research phase performs per-document model fan-out, the system shall enforce bounded concurrency.
+3. If focused concurrency tests exist, the run shall validate the new cap with deterministic peak-concurrency assertions.
+4. If full-module regression execution remains unstable due known harness drift, the run shall record that limitation in iteration notes and keep the risk open.
+5. The run shall persist updated findings, fixes, lessons, and confidence deltas to all review-cycle artifacts.

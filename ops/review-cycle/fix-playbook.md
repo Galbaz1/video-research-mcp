@@ -121,3 +121,13 @@
   - `src/video_research_mcp/tools/research_document_file.py`
 - Regression coverage:
   - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_downloads_use_bounded_concurrency`
+
+## FP-013: Bound per-phase Gemini fan-out in document research pipeline
+- Context: `research_document` executes per-document model calls in mapping and evidence phases.
+- Rule: Route high-fanout phase execution through bounded concurrency helper with a fixed semaphore cap.
+- Why: Prevents quota spikes and runtime instability for large multi-document requests.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/research_document.py`
+- Regression coverage:
+  - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_document_map_uses_bounded_concurrency`
+  - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_evidence_extraction_uses_bounded_concurrency`
