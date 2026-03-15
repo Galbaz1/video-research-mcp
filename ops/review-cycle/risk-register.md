@@ -133,3 +133,11 @@
 - Exploit reasoning: Repeated URL preparation workloads can accumulate temporary artifacts and consume local disk, degrading availability.
 - Status: Mitigated in iteration 8 continuation by scoping URL downloads to `TemporaryDirectory` and executing upload phase within cleanup scope.
 - Residual risk: Process crashes during active execution can still leave partial artifacts from in-flight operations; bounded by OS temp lifecycle and short-lived scoped directory usage.
+
+## R-019
+- Severity: Medium
+- Area: Resource exhaustion / request cardinality
+- Evidence: Prior to this run, `research_document` accepted unbounded combined `file_paths` + `urls`, allowing large source lists to enter preparation despite bounded concurrency.
+- Exploit reasoning: Attackers can supply very large source lists to induce prolonged queueing, network churn, and elevated memory pressure before downstream stage caps apply.
+- Status: Mitigated in this continuation by adding `DOC_MAX_SOURCES` config validation and fail-fast ingress enforcement in `research_document`.
+- Residual risk: Misconfigured high source caps can still increase runtime pressure; bounded by validation range `1..200` and secure default `20`.

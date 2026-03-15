@@ -258,6 +258,60 @@ Focus: Concurrency and resource exhaustion
 ### Continuation Validation
 - `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/content.py src/video_research_mcp/tools/content_batch.py tests/test_config.py tests/test_content_tools.py tests/test_content_batch_tools.py` -> pass.
 - `PYTHONPATH=src uv run pytest tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_env_override tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_rejects_non_positive tests/test_content_tools.py::TestContentAnalyze::test_parts_path_hardens_untrusted_content_prompt tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_compare_helper_rejects_oversized_aggregate_payload -v` -> pass (`4 passed`).
+
+---
+
+## Continuation Run (2026-03-15T13:08:42Z)
+
+### Scope Detection Snapshots
+- Before major git transition (detached on previous baseline commit):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After switching to detached `origin/codex/review/i07` context:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 133, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
+- Before commit (after this run's modifications):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 4, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F8
+- Area: Resource exhaustion via unbounded document source cardinality.
+- Evidence:
+  - No ingress cap previously enforced in `research_document(...)` before preparation.
+  - Config limit and validation now in [`src/video_research_mcp/config.py`](/Users/fausto/.codex/worktrees/9182/gemini-research-mcp/src/video_research_mcp/config.py).
+  - Fail-fast enforcement now in [`src/video_research_mcp/tools/research_document.py`](/Users/fausto/.codex/worktrees/9182/gemini-research-mcp/src/video_research_mcp/tools/research_document.py).
+  - Regression coverage in [`tests/test_config.py`](/Users/fausto/.codex/worktrees/9182/gemini-research-mcp/tests/test_config.py) and [`tests/test_research_document_tools.py`](/Users/fausto/.codex/worktrees/9182/gemini-research-mcp/tests/test_research_document_tools.py).
+- Exploit reasoning: A caller can provide very large source lists to induce prolonged prep/model workloads even when per-stage concurrency is bounded.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added `DOC_MAX_SOURCES` runtime config (default `20`) with validation range `1..200`.
+- Added `research_document` ingress check that rejects source counts above configured maximum before prep/model calls.
+- Added tests:
+  - `TestDocumentSourceLimitConfig::test_doc_max_sources_env_override`
+  - `TestDocumentSourceLimitConfig::test_doc_max_sources_rejects_out_of_range_values`
+  - `TestResearchDocument::test_rejects_source_count_above_config_limit`
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/research_document.py tests/test_config.py tests/test_research_document_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py -q` -> pass (`13 passed`).
+- `PYTHONPATH=src uv run pytest tests/test_research_document_tools.py -k source_count -q` -> timed out in this environment (known R-004 harness instability); manually validated callable path in a direct async invocation:
+  - Result contained error `"Document source count exceeds configured limit (20)..."`
+  - Preparation helper was not called (`await_count == 0`).
+
+### Reflective Loop Update
+- Observe: Per-stage bounded concurrency was already in place, but request fan-in remained unbounded at tool ingress.
+- Infer root cause: Earlier iteration-8 remediations focused on stage execution controls and omitted request cardinality limits.
+- Strategy: Add a preflight source-count guardrail via validated runtime config and fail fast before expensive preparation.
+- Validate: Implemented config + tool guard + focused tests and manual callable-path verification under harness timeout conditions.
+- Confidence change (continuation): 0.98 -> 0.99 for iteration-8 resource-exhaustion objective completeness.
+
+### Lessons Learned (Continuation)
+- End-to-end exhaustion hardening needs both fan-out limits and fan-in (input cardinality) limits.
+- Known test harness instability (R-004) should be treated as a first-class blocker for reliable full-module security verification.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Eliminate R-004 by standardizing wrapped-tool direct-call behavior across pytest subset/full runs.
+2. Add cancellation and time-budget tests for large-source document research requests.
 - Note: Full content tool modules still surface existing wrapper/direct-call drift (R-004), unchanged by this patch.
 
 ### Reflective Loop Update

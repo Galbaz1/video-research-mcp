@@ -106,3 +106,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When URL documents are downloaded for preparation, the system shall use a scoped temporary directory and shall clean it after upload processing completes.
 4. If cleanup controls are added to document preparation helpers, the run shall add deterministic regression tests proving cleanup occurs post-processing.
 5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, fixes, and confidence deltas in iteration artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (Source-Count Guardrail)
+1. When iteration state remains `current_iteration=8` with PR `#59` open, the run shall resume existing branch context and shall not create a new iteration branch.
+2. When `research_document` receives `file_paths` and/or `urls`, the system shall enforce a configured maximum number of total sources before preparation starts.
+3. If provided source count exceeds the configured maximum, the tool shall fail fast with structured tool error output and shall skip document preparation/model calls.
+4. If iteration-8 lessons emphasize ingress guardrails, this run shall add config validation plus regression coverage for the source-count limit.
+5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, fixes, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.

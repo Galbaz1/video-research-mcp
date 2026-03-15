@@ -71,6 +71,22 @@ class TestDocumentConcurrencyConfig:
             ServerConfig(doc_phase_concurrency=17)
 
 
+class TestDocumentSourceLimitConfig:
+    """Verify max source guardrail for document research ingress."""
+
+    def test_doc_max_sources_env_override(self, monkeypatch):
+        monkeypatch.setenv("DOC_MAX_SOURCES", "12")
+        cfg = ServerConfig.from_env()
+        assert cfg.doc_max_sources == 12
+
+    def test_doc_max_sources_rejects_out_of_range_values(self):
+        with pytest.raises(ValueError, match="doc_max_sources must be between 1 and 200"):
+            ServerConfig(doc_max_sources=0)
+
+        with pytest.raises(ValueError, match="doc_max_sources must be between 1 and 200"):
+            ServerConfig(doc_max_sources=201)
+
+
 class TestContentComparePayloadConfig:
     """Verify compare-mode aggregate payload guardrail config."""
 

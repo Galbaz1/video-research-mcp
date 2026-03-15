@@ -146,3 +146,14 @@
 ## Iteration 9 seed hypotheses (updated)
 - Resolve R-004 tool-wrapper direct-call instability so full regression modules are trustworthy.
 - Add cancellation/time-budget contracts for bounded gather helpers in document/content pipelines.
+
+## Iteration 8 Continuation (Document Source-Count Guardrail) - 2026-03-15T13:08:42Z
+- Observation: `research_document` bounded per-stage concurrency but accepted unbounded total source counts (`file_paths` + `urls`), allowing large fan-in workloads before guardrails applied.
+- Inference: Concurrency caps without ingress cardinality limits still permit avoidable memory/network pressure and long queue backlogs.
+- Strategy: Add a config-validated source-count limit at tool ingress and fail fast before preparation/model work.
+- Validation: Added `doc_max_sources` config + validation, enforced preflight cap in `research_document`, and added regression coverage (`tests/test_config.py`, `tests/test_research_document_tools.py`) plus manual callable-path validation due known R-004 harness timeout.
+- Confidence change: 0.98 -> 0.99 for iteration-8 resource-exhaustion objective completeness.
+
+## Iteration 9 seed hypotheses (refined)
+- Resolve R-004 pytest harness timeout around wrapped tool tests so full-module regressions become reliable.
+- Add cancellation/backpressure tests for large-source `research_document` runs to verify graceful timeout behavior.

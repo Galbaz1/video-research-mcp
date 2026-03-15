@@ -62,6 +62,25 @@ def mock_store():
 
 
 class TestResearchDocument:
+    async def test_rejects_source_count_above_config_limit(self, mock_gemini_client):
+        """Too many sources fail fast before preparation/model work."""
+        files = [f"/path/to/doc-{idx}.pdf" for idx in range(21)]
+        with patch(
+            "video_research_mcp.tools.research_document.get_config",
+            return_value=type("Cfg", (), {"doc_max_sources": 20})(),
+        ), patch(
+            "video_research_mcp.tools.research_document._prepare_all_documents_with_issues",
+            new_callable=AsyncMock,
+        ) as mock_prepare_docs:
+            result = await research_document(
+                instruction="test",
+                file_paths=files,
+            )
+
+        assert "error" in result
+        assert "source count exceeds configured limit" in result["error"]
+        mock_prepare_docs.assert_not_awaited()
+
     @patch(
         "video_research_mcp.tools.research_document.store_research_finding",
         new_callable=AsyncMock,

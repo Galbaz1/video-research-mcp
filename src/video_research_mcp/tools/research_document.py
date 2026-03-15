@@ -92,13 +92,20 @@ async def research_document(
     if not file_paths and not urls:
         return make_tool_error(ValueError("Provide at least one of: file_paths or urls"))
 
+    total_sources = len(file_paths or []) + len(urls or [])
+    max_sources = get_config().doc_max_sources
+    if total_sources > max_sources:
+        return make_tool_error(ValueError(
+            "Document source count exceeds configured limit "
+            f"({max_sources}). Reduce file_paths/urls before retrying."
+        ))
+
     try:
         prepared, prep_issue_dicts = await _prepare_all_documents_with_issues(file_paths, urls)
         prep_issues = [DocumentPreparationIssue(**issue) for issue in prep_issue_dicts]
         if not prepared:
-            total = len(file_paths or []) + len(urls or [])
             return make_tool_error(ValueError(
-                f"No documents could be prepared from {total} source(s). "
+                f"No documents could be prepared from {total_sources} source(s). "
                 "Check that file paths exist and URLs are publicly accessible."
             ))
 

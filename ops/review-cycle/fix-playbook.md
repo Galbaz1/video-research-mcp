@@ -187,3 +187,15 @@
   - `src/video_research_mcp/tools/research_document_file.py`
 - Regression coverage:
   - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_url_temp_directory_is_cleaned_after_preparation`
+
+## FP-019: Cap document source cardinality at ingress
+- Context: `research_document` accepted large combined `file_paths + urls` lists, so bounded per-stage fan-out still allowed oversized requests into preparation.
+- Rule: Enforce `DOC_MAX_SOURCES` preflight limit before any download/upload/model execution.
+- Why: Reduces resource-exhaustion risk by rejecting oversized workloads early.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/research_document.py`
+- Regression coverage:
+  - `tests/test_config.py::TestDocumentSourceLimitConfig::test_doc_max_sources_env_override`
+  - `tests/test_config.py::TestDocumentSourceLimitConfig::test_doc_max_sources_rejects_out_of_range_values`
+  - `tests/test_research_document_tools.py::TestResearchDocument::test_rejects_source_count_above_config_limit`
