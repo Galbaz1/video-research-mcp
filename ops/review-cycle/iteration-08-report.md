@@ -171,3 +171,49 @@ Focus: Concurrency and resource exhaustion
 - Residual-risk closure should include operability controls, not only code-path bounds.
 - After commit:
   - `{"mode":"commits","reason":"Branch is ahead of base with no local unstaged/uncommitted files.","branch":"HEAD","base_branch":"main","uncommitted_files":0,"ahead_commits":18,"pr_context":false,"pr_url":null}`
+
+---
+
+## Continuation Run (2026-03-15T08:06:16Z)
+
+### Scope Detection Snapshots
+- Run start on active iteration branch (`codex/review/i07`):
+  - `{"mode":"pr","reason":"Branch has an open pull request.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":0,"ahead_commits":17,"pr_context":true,"pr_url":"https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+- After implementing continuation fixes:
+  - `{"mode":"uncommitted","reason":"Working tree has local changes.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":4,"ahead_commits":17,"pr_context":true,"pr_url":"https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F5
+- Area: Resource exhaustion via oversized local content ingestion.
+- Evidence:
+  - `src/video_research_mcp/tools/content.py` now enforces size limits before reading local file bytes.
+  - `src/video_research_mcp/tools/content_batch.py` compare-path now reuses guarded content part builder.
+  - Regression coverage in `tests/test_content_tools.py::TestBuildContentParts::test_file_rejects_oversized_input` and `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_build_file_parts_rejects_oversized_file`.
+- Exploit reasoning: A caller could provide very large local files (single or batched), forcing full in-memory reads and increasing memory pressure/availability risk.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added configured file-size guard in `_build_content_parts(...)` using `DOC_MAX_DOWNLOAD_BYTES` as the local content ingress cap.
+- Routed compare-mode `_build_file_parts(...)` through `_build_content_parts(...)` so batch compare shares the same guardrails.
+- Added focused regression tests for oversized file rejection on both single-file and compare helper paths.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/tools/content.py src/video_research_mcp/tools/content_batch.py tests/test_content_tools.py tests/test_content_batch_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_content_tools.py::TestBuildContentParts::test_file_rejects_oversized_input tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_build_file_parts_rejects_oversized_file -q` -> pass (`2 passed`).
+- Note: Full module runs of `tests/test_content_tools.py` and `tests/test_content_batch_tools.py` still fail due known wrapper-direct-call harness drift tracked as R-004 (`FunctionTool` callable mismatch), unrelated to this patch.
+
+### Reflective Loop Update
+- Observe: Iteration-8 work previously bounded async fan-out, but local content ingestion still allowed unbounded per-file payload size.
+- Infer root cause: Resource-control hardening focused on concurrency count, not payload-size constraints at ingress boundaries.
+- Strategy: Extend shared trust-boundary guard patterns by enforcing size caps at the shared content-part builder and reusing that path in batch compare mode.
+- Validate: Added code guard + focused regression tests with deterministic failure condition.
+- Confidence change (continuation): 0.93 -> 0.95 for iteration-8 resource-exhaustion completeness.
+
+### Lessons Learned (Continuation)
+- Concurrency limits alone do not bound worst-case memory usage; payload-size constraints are a separate control plane.
+- Shared ingestion primitives should remain the single enforcement point so compare and individual modes cannot drift.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 by making FastMCP tool wrappers and direct-call tests deterministic across subset runs.
+2. Add test contracts that assert security-sensitive guards run before expensive read/model paths.

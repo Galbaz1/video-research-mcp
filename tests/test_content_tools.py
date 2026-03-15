@@ -51,6 +51,14 @@ class TestBuildContentParts:
         with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
             _build_content_parts(file_path=str(f))
 
+    def test_file_rejects_oversized_input(self, tmp_path, monkeypatch, clean_config):
+        f = tmp_path / "large.txt"
+        f.write_bytes(b"x" * 16)
+        monkeypatch.setenv("DOC_MAX_DOWNLOAD_BYTES", "8")
+
+        with pytest.raises(ValueError, match="configured size limit"):
+            _build_content_parts(file_path=str(f))
+
 
 class TestContentAnalyze:
     @pytest.mark.asyncio
@@ -136,6 +144,22 @@ class TestContentAnalyze:
 
         call_kwargs = mock_store.call_args.kwargs
         assert call_kwargs["local_filepath"] == str(f.resolve())
+
+    @pytest.mark.asyncio
+    async def test_file_rejects_oversized_input_before_model_call(
+        self, tmp_path, monkeypatch, clean_config, mock_gemini_client,
+    ):
+        """Oversized local files are rejected before Gemini invocation."""
+        f = tmp_path / "too_big.txt"
+        f.write_bytes(b"x" * 16)
+        monkeypatch.setenv("DOC_MAX_DOWNLOAD_BYTES", "8")
+
+        result = await content_analyze(file_path=str(f))
+
+        assert "error" in result
+        assert "configured size limit" in result["error"]
+        mock_gemini_client["generate"].assert_not_called()
+        mock_gemini_client["generate_structured"].assert_not_called()
 
     @pytest.mark.asyncio
     async def test_url_fallback_on_structured_failure(self, mock_gemini_client):

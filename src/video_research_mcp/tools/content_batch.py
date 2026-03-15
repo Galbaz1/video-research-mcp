@@ -87,10 +87,10 @@ def _build_file_parts(path: Path) -> list[types.Part]:
     Returns:
         List of Gemini Part objects (label + file data).
     """
-    mime = SUPPORTED_CONTENT_EXTENSIONS.get(path.suffix.lower(), "text/plain")
+    guarded_parts, _ = _build_content_parts(file_path=str(path))
     return [
         types.Part(text=f"--- File: {path.name} ---"),
-        types.Part.from_bytes(data=path.read_bytes(), mime_type=mime),
+        *guarded_parts,
     ]
 
 

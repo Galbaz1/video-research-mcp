@@ -85,3 +85,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If a configured document concurrency value is outside `1..16`, config loading shall fail with a validation error.
 4. When config-driven caps are introduced, the run shall add focused tests for env override parsing and out-of-range rejection.
 5. The run shall persist updated findings, exploit reasoning, fix status, and confidence deltas in iteration-8 artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (Local Payload Guardrail Supplement)
+1. When iteration state remains `current_iteration=8` and branch `codex/review/i07` is active, the run shall continue without creating a new iteration branch.
+2. If iteration-8 lessons identify remaining resource-exhaustion vectors, the run shall apply at least one ingress guard that limits worst-case memory usage.
+3. When local files are ingested for content analysis, the system shall reject files larger than configured `DOC_MAX_DOWNLOAD_BYTES` before reading bytes.
+4. When compare-mode batch content analysis builds file parts, the system shall reuse the same guarded ingestion path as single-file analysis.
+5. The run shall record scope snapshots, severity-ranked findings, validation evidence, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.

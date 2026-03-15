@@ -113,3 +113,14 @@
 ## Iteration 9 seed hypotheses (reconfirmed)
 - Close R-004 by making tool direct-call behavior deterministic across full and subset pytest runs.
 - Add regression contracts for cancellation/backpressure on long-running fan-out phases.
+
+## Iteration 8 Continuation (Local Payload Guardrail) - 2026-03-15T08:06:16Z
+- Observation: Iteration-8 fan-out controls were in place, but local content ingestion paths still read full file payloads without explicit size enforcement.
+- Inference: Resource-exhaustion protection remained incomplete because concurrency limits did not constrain per-task payload size.
+- Strategy: Reuse shared ingress boundary controls by enforcing `DOC_MAX_DOWNLOAD_BYTES` in `_build_content_parts(...)` and routing batch compare helper through the same guarded builder.
+- Validation: Added size guard in `content.py`, reused guard in `content_batch.py`, and added focused regression tests for oversized file rejection in both single-file and compare helper flows.
+- Confidence change: 0.93 -> 0.95 for iteration-8 resource-exhaustion completeness.
+
+## Iteration 9 seed hypotheses (refined)
+- Stabilize FastMCP wrapper/direct-call compatibility in tests (R-004) so full-module validation is trustworthy.
+- Add pre-execution guard-order tests to prove size/validation checks run before expensive file reads and model calls.

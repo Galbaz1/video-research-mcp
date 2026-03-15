@@ -6,6 +6,7 @@ import pytest
 from unittest.mock import AsyncMock, patch
 
 from video_research_mcp.tools.content_batch import (
+    _build_file_parts,
     content_batch_analyze,
     _resolve_files,
 )
@@ -173,3 +174,12 @@ class TestContentBatchAnalyze:
             instruction="test", directory="/nonexistent/path",
         )
         assert "error" in result
+
+    async def test_build_file_parts_rejects_oversized_file(self, tmp_path, monkeypatch, clean_config):
+        """GIVEN an oversized local file WHEN compare helper builds parts THEN validation error."""
+        f = tmp_path / "big.txt"
+        f.write_bytes(b"x" * 16)
+        monkeypatch.setenv("DOC_MAX_DOWNLOAD_BYTES", "8")
+
+        with pytest.raises(ValueError, match="configured size limit"):
+            _build_file_parts(f)

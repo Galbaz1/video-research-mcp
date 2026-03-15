@@ -13,6 +13,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..client import GeminiClient
+from ..config import get_config
 from ..tracing import trace
 from ..errors import make_tool_error
 from ..models.content import ContentResult
@@ -42,6 +43,12 @@ def _build_content_parts(
         p = enforce_local_access_root(resolve_path(file_path))
         if not p.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
+        max_bytes = get_config().doc_max_download_bytes
+        size_bytes = p.stat().st_size
+        if size_bytes > max_bytes:
+            raise ValueError(
+                f"File exceeds configured size limit ({max_bytes} bytes): {p.name}"
+            )
         mime = "application/pdf" if p.suffix.lower() == ".pdf" else "text/plain"
         data = p.read_bytes()
         parts.append(types.Part.from_bytes(data=data, mime_type=mime))

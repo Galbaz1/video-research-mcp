@@ -101,3 +101,11 @@
 - Evidence: Concurrency controls are now configurable per deployment and validated for range, but operator-selected values still influence latency/throughput tradeoffs.
 - Exploit reasoning: Non-malicious misconfiguration (for example maxing both caps in low-resource environments) can increase queueing or contention under load.
 - Status: Accepted with guardrails (range validation + secure defaults); monitor via operational telemetry.
+
+## R-015
+- Severity: Medium
+- Area: Resource exhaustion / local payload size
+- Evidence: Prior to this run, `content` ingestion paths (`content.py` file source and `content_batch.py` compare helper) read local files fully into memory without explicit size cap.
+- Exploit reasoning: Oversized local files can amplify memory pressure and degrade availability, even when concurrency is bounded.
+- Status: Mitigated in iteration 8 continuation by enforcing `DOC_MAX_DOWNLOAD_BYTES` pre-read checks and reusing guarded builder in batch compare path.
+- Residual risk: Limit currently reuses document-download cap; future tuning may require a dedicated content-ingestion limit.

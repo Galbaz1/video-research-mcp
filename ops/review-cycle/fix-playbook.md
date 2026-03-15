@@ -146,3 +146,14 @@
   - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_document_map_uses_bounded_concurrency`
   - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_evidence_extraction_uses_bounded_concurrency`
   - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_downloads_use_bounded_concurrency`
+
+## FP-015: Enforce local content payload size limits
+- Context: Local file ingestion for `content_analyze` and compare-mode batch content analysis.
+- Rule: Reject files larger than configured `DOC_MAX_DOWNLOAD_BYTES` before reading bytes into memory.
+- Why: Constrains memory-pressure abuse from oversized local payloads and keeps ingestion controls aligned across single/batch flows.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/content.py`
+  - `src/video_research_mcp/tools/content_batch.py`
+- Regression coverage:
+  - `tests/test_content_tools.py::TestBuildContentParts::test_file_rejects_oversized_input`
+  - `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_build_file_parts_rejects_oversized_file`
