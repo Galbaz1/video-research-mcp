@@ -70,11 +70,17 @@ def _resolve_files(
         dir_path = enforce_local_access_root(resolve_path(directory))
         if not dir_path.is_dir():
             raise FileNotFoundError(f"Not a directory: {directory}")
-        files = sorted(
-            f for f in dir_path.glob(glob_pattern)
-            if f.is_file() and f.suffix.lower() in SUPPORTED_CONTENT_EXTENSIONS
-        )
-        return files[:max_files]
+        files: list[Path] = []
+        for candidate in dir_path.glob(glob_pattern):
+            if not (candidate.is_file() and candidate.suffix.lower() in SUPPORTED_CONTENT_EXTENSIONS):
+                continue
+            files.append(candidate)
+            if len(files) > max_files:
+                raise ValueError(
+                    f"directory scan matched more than max_files={max_files}; "
+                    "narrow glob_pattern or increase max_files"
+                )
+        return sorted(files)
 
     if file_paths is not None and len(file_paths) > max_files:
         raise ValueError(
@@ -222,7 +228,7 @@ async def content_batch_analyze(
         mode: 'compare' or 'individual' analysis mode.
         output_schema: Optional JSON Schema dict for custom output shape.
         thinking_level: Gemini thinking depth.
-        max_files: Maximum number of files to process.
+        max_files: Maximum number of files to process (fails fast if directory/file list exceeds it).
 
     Returns:
         Dict with file counts, per-file items, and optional comparison result.

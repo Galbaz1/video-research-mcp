@@ -262,3 +262,12 @@
   - `src/video_research_mcp/tools/content_batch.py`
 - Regression coverage:
   - `tests/test_content_batch_tools.py::TestResolveFiles::test_explicit_paths_exceed_max_files`
+
+## FP-025: Fail-fast directory cardinality in batch content discovery
+- Context: Directory-driven batch tooling in untrusted MCP sessions.
+- Rule: Enforce `max_files` at discovery time and reject scans with more than `max_files` supported matches.
+- Why: Prevents oversized directory scans from consuming avoidable filesystem traversal/sort resources before processing caps apply.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/content_batch.py`
+- Regression coverage:
+  - `tests/test_content_batch_tools.py::TestResolveFiles::test_max_files_limit`

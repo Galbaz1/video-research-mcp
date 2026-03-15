@@ -142,3 +142,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If explicit `file_paths` length exceeds `max_files`, the tool shall return structured tool error output and shall not execute model calls.
 4. If iteration-8 lessons emphasize ingress guardrail parity, this run shall add at least one remediation that closes a residual cardinality-exhaustion gap.
 5. The run shall capture scope snapshots and persist findings, validation evidence, confidence updates, and next hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-15T20:08:26Z)
+1. When iteration state indicates `current_iteration=8`, the run shall continue on the active iteration branch context and shall not create a new branch.
+2. When `content_batch_analyze` resolves files from `directory`, the system shall enforce `max_files` as an ingress cardinality boundary before expensive per-file processing.
+3. If directory scanning matches more than `max_files` supported files, the tool shall fail fast with structured tool error output.
+4. If iteration-7 lessons require explicit trust boundaries for untrusted inputs, this run shall apply that boundary principle to filesystem fan-in by rejecting oversized directory matches early.
+5. The run shall persist scope snapshots, severity-ranked findings, validation evidence, confidence updates, and next hypotheses in review-cycle artifacts.

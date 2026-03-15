@@ -181,3 +181,11 @@
 - Exploit reasoning: Attackers can submit very large explicit path lists to force avoidable path-resolution and filesystem checks despite output/file-processing caps.
 - Status: Mitigated in this continuation by fail-fast enforcement of `len(file_paths) <= max_files` before path resolution.
 - Residual risk: Tool-level fail-fast regression remains partially constrained by R-004 wrapper/direct-call test harness instability in subset runs.
+
+## R-025
+- Severity: Medium
+- Area: Resource exhaustion / directory fan-in discovery
+- Evidence: Prior to this run, `src/video_research_mcp/tools/content_batch.py::_resolve_files` directory mode collected and sorted all supported matches before applying `max_files`.
+- Exploit reasoning: Large directory targets can force avoidable traversal and sort overhead before truncation, degrading CPU/IO availability.
+- Status: Mitigated in iteration 8 continuation by fail-fast rejection when supported matches exceed `max_files`.
+- Residual risk: `video_batch` retains truncation semantics for directory mode; consider parity review in iteration 9 after R-004 harness stabilization.

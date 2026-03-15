@@ -206,3 +206,15 @@
 ## Iteration 9 seed hypotheses (updated)
 - Resolve R-004 wrapper/direct-call instability so tool-level fail-fast guard tests are reliable in subset/full runs.
 - Add cancellation/time-budget coverage for bounded fan-out and long-running model-call paths.
+
+## Iteration 8 Continuation (Directory Fan-in Fail-fast) - 2026-03-15T20:08:26Z
+- Observation: `content_batch._resolve_files(...)` directory mode collected/sorted all supported matches before applying `max_files`.
+- Inference: Output truncation without ingress cardinality enforcement leaves avoidable filesystem work and sort overhead on large directories.
+- Strategy: Apply explicit-boundary lesson pattern (carried from iteration-7 trust-boundary work) to directory fan-in by failing fast once supported matches exceed `max_files`.
+- Validation: Added fail-fast directory guard + regression update in `tests/test_content_batch_tools.py::TestResolveFiles::test_max_files_limit`; targeted lint and pytest passed.
+- Validation note: subset run for `test_file_paths_limit_is_fail_fast` still hangs due known R-004 wrapper/direct-call instability.
+- Confidence change: 1.00 -> 1.00 (maintained, with reduced residual directory fan-in exposure).
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve R-004 wrapper/direct-call instability so subset/full test selection is deterministic.
+- Add cancellation/time-budget contracts for bounded gather/fan-out paths.

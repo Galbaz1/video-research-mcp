@@ -65,11 +65,11 @@ class TestResolveFiles:
             _resolve_files(None, paths, "*", 2)
 
     async def test_max_files_limit(self, tmp_path):
-        """GIVEN more files than max_files WHEN resolving THEN capped at limit."""
+        """GIVEN too many directory matches WHEN resolving THEN fail-fast validation error."""
         for i in range(10):
             (tmp_path / f"doc{i}.pdf").write_bytes(b"%PDF fake")
-        files = _resolve_files(str(tmp_path), None, "*", 3)
-        assert len(files) == 3
+        with pytest.raises(ValueError, match="more than max_files=3"):
+            _resolve_files(str(tmp_path), None, "*", 3)
 
     async def test_no_files_found(self, tmp_path):
         """GIVEN an empty directory WHEN resolving THEN empty list returned."""

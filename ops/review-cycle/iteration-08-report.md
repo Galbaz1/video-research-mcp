@@ -624,3 +624,60 @@ Focus: Concurrency and resource exhaustion
 ### Post-Commit Scope Snapshot
 - After commit + push from detached iteration context:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 35, "pr_context": false, "pr_url": null}`
+
+---
+
+## Continuation Run (2026-03-15T20:08:26Z)
+
+### Scope Detection Snapshots
+- Before major transition (detached baseline context):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After major transition to detached `origin/codex/review/i07` context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 36, "pr_context": false, "pr_url": null}`
+- After this run's code changes:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 2, "ahead_commits": 36, "pr_context": false, "pr_url": null}`
+
+### EARS Run Requirements (Concise)
+1. When iteration state indicates `current_iteration=8`, the run shall continue on existing branch context without creating a new iteration branch.
+2. When `content_batch_analyze` scans `directory`, it shall enforce `max_files` as a fail-fast ingress cardinality boundary.
+3. If supported file matches exceed `max_files`, the tool shall return structured error output before model invocation.
+4. If iteration-7 lessons require explicit trust boundaries, this run shall apply that principle to directory fan-in limits.
+5. The run shall persist findings, validation evidence, lessons learned, and confidence updates to review-cycle artifacts.
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F14
+- Area: Resource exhaustion via oversized directory match fan-in.
+- Evidence:
+  - Prior directory-mode `_resolve_files(...)` assembled and sorted all supported matches before slicing to `max_files` in [`src/video_research_mcp/tools/content_batch.py`](/Users/fausto/.codex/worktrees/5e34/gemini-research-mcp/src/video_research_mcp/tools/content_batch.py).
+  - New guard fails fast when supported directory matches exceed `max_files`.
+  - Regression coverage in [`tests/test_content_batch_tools.py`](/Users/fausto/.codex/worktrees/5e34/gemini-research-mcp/tests/test_content_batch_tools.py).
+- Exploit reasoning: Attackers can point the tool at large directories and force avoidable filesystem traversal/sort work prior to truncation, increasing CPU/IO pressure.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added fail-fast directory cardinality enforcement in `_resolve_files(...)`:
+  - Rejects directory scans that match more than `max_files` supported files.
+  - Preserves deterministic output ordering for accepted sets via `sorted(files)`.
+- Added regression update:
+  - `tests/test_content_batch_tools.py::TestResolveFiles::test_max_files_limit` now asserts fail-fast behavior.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/tools/content_batch.py tests/test_content_batch_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_content_batch_tools.py::TestResolveFiles::test_max_files_limit -q` -> pass (`1 passed`).
+- Validation note: `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_file_paths_limit_is_fail_fast` currently hangs in subset execution due known wrapper/direct-call instability (R-004).
+
+### Reflective Loop Update
+- Observe: Directory mode still applied `max_files` only after full match collection/sort.
+- Infer root cause: Resource controls emphasized processing limits but not early ingress boundaries for directory fan-in.
+- Strategy: Apply explicit-boundary pattern from iteration-7 lessons to filesystem fan-in by failing fast once matches exceed allowed cardinality.
+- Validate: Implemented fail-fast guard and updated focused regression test with passing lint/pytest.
+- Confidence change: 1.00 -> 1.00.
+
+### Lessons Learned
+- Truncating outputs after full scan is not equivalent to ingress boundary enforcement for resource-hardening.
+- Cardinality boundaries should be enforced at discovery time, not post-discovery.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 wrapper/direct-call instability so subset/full regression selection becomes deterministic.
+2. Add explicit cancellation/time-budget tests on bounded fan-out helper paths.
