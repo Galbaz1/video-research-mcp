@@ -157,3 +157,11 @@
 - Exploit reasoning: Untrusted content could include instruction-smuggling text that biases extraction behavior despite schema constraints.
 - Status: Mitigated in iteration 8 continuation by adding explicit security rules and untrusted-content framing in extraction prompt template and usage path.
 - Residual risk: Similar hardening must be applied to any future prompt templates that interpolate untrusted text.
+
+## R-022
+- Severity: Medium
+- Area: Resource exhaustion / ingress-downstream limit mismatch
+- Evidence: Prior to this continuation, `src/video_research_mcp/tools/research_document_file.py::_download_document` forwarded `DOC_MAX_DOWNLOAD_BYTES` directly to `download_checked`, while downstream `_prepare_document` enforces a fixed 50MB Gemini ingest ceiling.
+- Exploit reasoning: If operators set a high download limit, attackers can force large network/disk transfers that are deterministically rejected later, wasting resources and reducing availability.
+- Status: Mitigated in this continuation by capping effective download bytes to `min(DOC_MAX_DOWNLOAD_BYTES, DOC_MAX_SIZE)` before transfer.
+- Residual risk: Attackers can still exhaust resources within the allowed 50MB-per-source envelope; mitigated by existing source-count and concurrency caps.

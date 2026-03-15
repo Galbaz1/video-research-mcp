@@ -96,6 +96,19 @@ class TestDownloadDocument:
 
             assert mock_dl.call_args[1]["max_bytes"] == 50 * 1024 * 1024
 
+    async def test_caps_download_limit_to_gemini_file_size_ceiling(
+        self, tmp_path, clean_config, monkeypatch,
+    ):
+        """Configured download limit above 50MB is capped before network download."""
+        monkeypatch.setenv("DOC_MAX_DOWNLOAD_BYTES", str(120 * 1024 * 1024))
+        get_config()
+
+        with patch("video_research_mcp.tools.research_document_file.download_checked", new_callable=AsyncMock) as mock_dl:
+            mock_dl.return_value = tmp_path / "doc.pdf"
+            await _download_document("https://example.com/doc.pdf", tmp_path)
+
+            assert mock_dl.call_args[1]["max_bytes"] == 50 * 1024 * 1024
+
 
 class TestPrepareAllDocumentsWithIssues:
     """Tests for issue-aware document preparation helper."""

@@ -121,3 +121,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 4. If `BATCH_TOOL_CONCURRENCY` is unset, the system shall default to a safe cap of `3` and validate configured values in the range `1..16`.
 5. When `content_extract` builds extraction prompts from user-provided text, the prompt shall treat content as untrusted data and explicitly reject embedded instruction execution.
 6. The run shall persist severity-ranked findings, exploit reasoning, fixes, validation output, and confidence deltas to review-cycle artifacts before completion.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-15T15:04:01Z)
+1. When iteration state indicates `current_iteration=8` with branch `codex/review/i07` active, the run shall resume existing branch context and shall not create a new iteration branch.
+2. When URL document downloads are configured with a byte limit larger than Gemini's single-file ingest ceiling, the system shall cap effective download bytes to `50MB` before network transfer.
+3. If effective download bytes exceed the ingest ceiling, the tool shall fail fast during download rather than after expensive transfer/upload work.
+4. If iteration-7 lessons require explicit untrusted-data boundaries, document-research prompt templates shall instruct models to ignore command-like content embedded in documents and intermediate findings.
+5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, implemented fixes, validation outputs, and confidence deltas to review-cycle artifacts before completion.

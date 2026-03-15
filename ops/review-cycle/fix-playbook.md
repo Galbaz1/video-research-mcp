@@ -222,3 +222,21 @@
   - `src/video_research_mcp/tools/content.py`
 - Regression coverage:
   - `tests/test_content_prompts.py::TestStructuredExtractPrompt::test_includes_untrusted_content_guardrails`
+
+## FP-022: Align URL download ceiling with Gemini ingest limit
+- Context: URL document preparation previously allowed downloads above 50MB if `DOC_MAX_DOWNLOAD_BYTES` was configured larger, even though upload stage rejects files above Gemini's 50MB file ceiling.
+- Rule: Cap effective download bytes to `min(DOC_MAX_DOWNLOAD_BYTES, DOC_MAX_SIZE)` before network transfer.
+- Why: Prevents avoidable bandwidth/disk usage from workloads that are guaranteed to fail at upload time.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/research_document_file.py`
+- Regression coverage:
+  - `tests/test_research_document_file.py::TestDownloadDocument::test_caps_download_limit_to_gemini_file_size_ceiling`
+
+## FP-023: Carry forward explicit untrusted-data boundaries into document-research system prompt
+- Context: Iteration-7 lessons showed boundary text must be explicit wherever untrusted content is interpolated.
+- Rule: System prompt must state that instruction and document-derived intermediate text are untrusted and command-like content must be ignored.
+- Why: Reduces instruction-smuggling risk in multi-phase document-analysis flows.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/prompts/research_document.py`
+- Regression coverage:
+  - `tests/test_research_document_prompts.py::TestDocumentResearchPrompts::test_system_prompt_marks_intermediate_text_as_untrusted`

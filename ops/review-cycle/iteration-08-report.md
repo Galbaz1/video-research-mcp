@@ -448,3 +448,61 @@ Focus: Concurrency and resource exhaustion
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 26, "pr_context": false, "pr_url": null}`
 - After conflict resolution + validation commits:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 29, "pr_context": false, "pr_url": null}`
+
+---
+
+## Continuation Run (2026-03-15T15:04:01Z)
+
+### Scope Detection Snapshots
+- Run start on baseline detached `main` context:
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After major transition to detached `origin/codex/review/i07` context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 30, "pr_context": false, "pr_url": null}`
+- Before commit (this run's working tree):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 9, "ahead_commits": 30, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F10
+- Area: Resource exhaustion via ingress/downstream size-limit mismatch.
+- Evidence:
+  - Prior `_download_document(...)` forwarded `DOC_MAX_DOWNLOAD_BYTES` directly in [`src/video_research_mcp/tools/research_document_file.py`](/Users/fausto/.codex/worktrees/2a86/gemini-research-mcp/src/video_research_mcp/tools/research_document_file.py).
+  - Upload stage `_prepare_document(...)` enforces a fixed 50MB Gemini limit.
+  - Regression coverage added in [`tests/test_research_document_file.py`](/Users/fausto/.codex/worktrees/2a86/gemini-research-mcp/tests/test_research_document_file.py).
+- Exploit reasoning: If operators set high download limits, callers can force large transfers that are guaranteed to fail at upload time, consuming network/disk resources unnecessarily.
+- Fix status: Implemented in this continuation run.
+
+#### Medium
+- ID: I08-F11
+- Area: Prompt-injection/tool-misuse resistance in document research prompts.
+- Evidence:
+  - Added explicit untrusted-data and ignore-embedded-command rules in [`src/video_research_mcp/prompts/research_document.py`](/Users/fausto/.codex/worktrees/2a86/gemini-research-mcp/src/video_research_mcp/prompts/research_document.py).
+  - Regression coverage added in [`tests/test_research_document_prompts.py`](/Users/fausto/.codex/worktrees/2a86/gemini-research-mcp/tests/test_research_document_prompts.py).
+- Exploit reasoning: Multi-phase document pipelines process untrusted document-derived text; without explicit boundary rules, instruction-smuggling text can reduce model reliability.
+- Fix status: Implemented in this continuation run; directly derived from iteration-7 lesson on explicit untrusted boundaries.
+
+### Additional Implemented Changes
+- Capped URL download byte budget in document preparation helper:
+  - `max_bytes = min(DOC_MAX_DOWNLOAD_BYTES, DOC_MAX_SIZE)`.
+- Added focused regression test proving over-configured download budget is still capped to 50MB.
+- Strengthened document research system prompt with explicit untrusted-data handling instructions.
+- Added focused prompt regression test for document prompt boundary rules.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/prompts/research_document.py src/video_research_mcp/tools/research_document_file.py tests/test_research_document_prompts.py tests/test_research_document_file.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_research_document_prompts.py tests/test_research_document_file.py -q` -> pass (`18 passed`).
+
+### Reflective Loop Update
+- Observe: Download ingress limits could exceed deterministic downstream ingest constraints, and document-research prompts still lacked explicit anti-injection boundary language.
+- Infer root cause: Guardrails were applied in different layers without explicit cross-layer contract alignment.
+- Strategy: Align ingress byte budget with downstream Gemini file ceiling and propagate iteration-7 untrusted-boundary rules into document research templates.
+- Validate: Implemented helper + prompt patches and focused tests with passing lint/test outcomes.
+- Confidence change (continuation): 0.99 -> 1.00 for iteration-8 objective coverage.
+
+### Lessons Learned (Continuation)
+- Resource controls should be contract-aligned across every pipeline stage; otherwise safe downstream limits can still permit avoidable upstream exhaustion.
+- Prompt-injection guardrails are most reliable when encoded at shared template/system-prompt boundaries.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 wrapper/direct-call instability so broader regression suites remain trustworthy.
+2. Add cancellation and time-budget tests for stalled model calls in bounded gather pathways.

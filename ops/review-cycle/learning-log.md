@@ -168,3 +168,16 @@
 ## Iteration 9 seed hypotheses (updated)
 - Close R-004 by normalizing direct-call test harness behavior for decorated tools in subset runs.
 - Add cancellation/time-budget tests for bounded batch fan-out in video/content paths.
+
+## Iteration 8 Continuation (Download Ceiling Alignment + Research Prompt Boundary Follow-through) - 2026-03-15T15:04:01Z
+- Observation: `_download_document(...)` honored `DOC_MAX_DOWNLOAD_BYTES` directly, so deployments with values above 50MB could download oversized files that are guaranteed to fail later at Gemini upload limit checks.
+- Inference: Resource controls were not aligned across pipeline stages; ingress accepted work that downstream ingest contracts reject, creating avoidable bandwidth/disk pressure.
+- Strategy: Enforce an effective download ceiling with `min(DOC_MAX_DOWNLOAD_BYTES, DOC_MAX_SIZE)` and add regression coverage for over-limit config behavior.
+- Validation: Patched `research_document_file` download limit capping and added regression test `test_caps_download_limit_to_gemini_file_size_ceiling`; targeted lint/tests passed (`18 passed`).
+- Strategy (derived from iteration-7 lesson): Extend explicit untrusted-data boundary guidance to `DOCUMENT_RESEARCH_SYSTEM` so document/intermediate text is never treated as executable instruction.
+- Validation (derived strategy): Added prompt guardrail lines in `prompts/research_document.py` and regression test `tests/test_research_document_prompts.py::test_system_prompt_marks_intermediate_text_as_untrusted`.
+- Confidence change: 0.99 -> 1.00 for iteration-8 resource-exhaustion completeness under configured download ceilings.
+
+## Iteration 9 seed hypotheses (refined)
+- Resolve R-004 by normalizing decorated-tool direct-call behavior in broader subset/full pytest runs.
+- Add cancellation/time-budget coverage for document and batch fan-out helpers under stalled downstream model calls.

@@ -92,7 +92,9 @@ async def _download_document(url: str, tmp_dir: Path) -> Path:
     """Download a URL to a temp file with SSRF protection."""
     url = _normalize_document_url(url)
     cfg = get_config()
-    return await download_checked(url, tmp_dir, max_bytes=cfg.doc_max_download_bytes)
+    # Never download beyond Gemini's ingest ceiling to avoid wasted I/O and disk usage.
+    max_bytes = min(cfg.doc_max_download_bytes, DOC_MAX_SIZE)
+    return await download_checked(url, tmp_dir, max_bytes=max_bytes)
 
 
 async def _prepare_all_documents(
