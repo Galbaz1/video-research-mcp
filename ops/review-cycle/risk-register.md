@@ -165,3 +165,11 @@
 - Exploit reasoning: If operators set a high download limit, attackers can force large network/disk transfers that are deterministically rejected later, wasting resources and reducing availability.
 - Status: Mitigated in this continuation by capping effective download bytes to `min(DOC_MAX_DOWNLOAD_BYTES, DOC_MAX_SIZE)` before transfer.
 - Residual risk: Attackers can still exhaust resources within the allowed 50MB-per-source envelope; mitigated by existing source-count and concurrency caps.
+
+## R-023
+- Severity: Medium
+- Area: Resource exhaustion / direct text ingress
+- Evidence: Prior to this run, `src/video_research_mcp/tools/content.py` accepted unbounded `text`/`content` payloads for `content_analyze` and `content_extract`, then embedded full text in prompt content.
+- Exploit reasoning: Attackers can submit very large direct text payloads to amplify memory and token usage despite existing file/URL size controls.
+- Status: Mitigated in this continuation by adding validated `CONTENT_MAX_TEXT_CHARS` and fail-fast guard enforcement before prompt/model execution.
+- Residual risk: Operator misconfiguration with overly high text cap can still increase runtime pressure; bounded by strict positive-int validation and secure default (`200000`).

@@ -181,3 +181,16 @@
 ## Iteration 9 seed hypotheses (refined)
 - Resolve R-004 by normalizing decorated-tool direct-call behavior in broader subset/full pytest runs.
 - Add cancellation/time-budget coverage for document and batch fan-out helpers under stalled downstream model calls.
+
+## Iteration 8 Continuation (Direct Text Payload Guardrail) - 2026-03-15T18:16:56Z
+- Observation: `content_analyze(text=...)` and `content_extract(content=...)` accepted uncapped direct text payloads, while file/URL ingress already enforced byte ceilings.
+- Inference: Resource controls were still asymmetrical across ingress types, leaving a prompt-size exhaustion path for direct text requests.
+- Strategy: Extend ingress guardrail pattern with a config-validated text character cap and enforce it before prompt/model invocation.
+- Validation: Added `CONTENT_MAX_TEXT_CHARS` config + validators, enforced `_enforce_text_size_limit(...)` in content text paths, and added focused regression tests (`tests/test_config.py`, `tests/test_content_tools.py`); targeted lint/tests passed.
+- Strategy (derived from iteration-7 lesson): Preserve explicit trust-boundary handling by rejecting oversized untrusted text before it can influence prompt construction.
+- Validation (derived strategy): Added helper-level tests proving fail-fast behavior for `text` and `content` guard paths.
+- Confidence change: 1.00 -> 1.00 (maintained maximum confidence, with improved ingress parity).
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve R-004 by normalizing wrapped-tool direct-call behavior in content tool tests and broader subset runs.
+- Add cancellation/time-budget contracts for long-running bounded gather paths.

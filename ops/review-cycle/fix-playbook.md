@@ -240,3 +240,16 @@
   - `src/video_research_mcp/prompts/research_document.py`
 - Regression coverage:
   - `tests/test_research_document_prompts.py::TestDocumentResearchPrompts::test_system_prompt_marks_intermediate_text_as_untrusted`
+
+## FP-024: Enforce direct text payload ceiling before prompt assembly
+- Context: `content_analyze` and `content_extract` accept raw text directly from tool callers.
+- Rule: Enforce a validated max character ceiling (`CONTENT_MAX_TEXT_CHARS`) before constructing model prompts.
+- Why: Prevents oversized prompt payloads from exhausting memory/quota resources and aligns text ingress controls with existing file/URL guardrails.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/content.py`
+- Regression coverage:
+  - `tests/test_config.py::TestContentTextLimitConfig`
+  - `tests/test_content_tools.py::TestBuildContentParts::test_text_rejects_oversized_input`
+  - `tests/test_content_tools.py::TestContentAnalyze::test_text_size_limit_helper_rejects_oversized_input`
+  - `tests/test_content_tools.py::TestContentExtract::test_extract_size_limit_helper_rejects_oversized_input`

@@ -128,3 +128,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If effective download bytes exceed the ingest ceiling, the tool shall fail fast during download rather than after expensive transfer/upload work.
 4. If iteration-7 lessons require explicit untrusted-data boundaries, document-research prompt templates shall instruct models to ignore command-like content embedded in documents and intermediate findings.
 5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, implemented fixes, validation outputs, and confidence deltas to review-cycle artifacts before completion.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-15T18:16:56Z)
+1. When iteration state indicates `current_iteration=8` on the active continuation branch, the run shall prioritize remaining resource-exhaustion ingress gaps.
+2. If previous iteration-8 lessons highlight ingress/downstream guardrail asymmetry, the run shall implement at least one fail-fast limit on an unbounded direct-input path.
+3. When `content_analyze` or `content_extract` receives direct text input, the system shall enforce a validated `CONTENT_MAX_TEXT_CHARS` limit before prompt construction or model invocation.
+4. If direct text length exceeds the configured limit, the tool shall return structured tool error output and shall not call Gemini.
+5. The run shall persist scope snapshots, severity-ranked findings, implemented fixes, reflective confidence updates, and next-iteration hypotheses across all review-cycle artifacts.

@@ -100,6 +100,19 @@ class TestContentComparePayloadConfig:
             ServerConfig(content_compare_max_total_bytes=0)
 
 
+class TestContentTextLimitConfig:
+    """Verify direct text-size ingress guardrail config."""
+
+    def test_content_max_text_chars_env_override(self, monkeypatch):
+        monkeypatch.setenv("CONTENT_MAX_TEXT_CHARS", "1234")
+        cfg = ServerConfig.from_env()
+        assert cfg.content_max_text_chars == 1234
+
+    def test_content_max_text_chars_rejects_non_positive(self):
+        with pytest.raises(ValueError, match="content_max_text_chars must be >= 1"):
+            ServerConfig(content_max_text_chars=0)
+
+
 class TestBatchToolConcurrencyConfig:
     """Verify configurable fan-out controls for batch tools."""
 

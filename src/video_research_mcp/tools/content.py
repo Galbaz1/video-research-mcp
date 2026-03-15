@@ -26,6 +26,16 @@ logger = logging.getLogger(__name__)
 content_server = FastMCP("content")
 
 
+def _enforce_text_size_limit(text: str, *, field_name: str) -> None:
+    """Reject oversized direct-text payloads before prompt construction/model calls."""
+    max_chars = get_config().content_max_text_chars
+    if len(text) > max_chars:
+        raise ValueError(
+            f"{field_name} exceeds configured size limit ({max_chars} chars). "
+            "Reduce text payload size before retrying."
+        )
+
+
 def _build_content_parts(
     *,
     file_path: str | None = None,
@@ -57,6 +67,7 @@ def _build_content_parts(
         parts.append(types.Part(file_data=types.FileData(file_uri=url)))
         description = f"Content at URL: {url}"
     elif text:
+        _enforce_text_size_limit(text, field_name="text")
         parts.append(types.Part(text=text))
         description = "Provided text content"
     else:
@@ -271,6 +282,7 @@ async def content_extract(
     schema = coerce_json_param(schema, dict)
 
     try:
+        _enforce_text_size_limit(content, field_name="content")
         prompt = STRUCTURED_EXTRACT.format(
             content_json=json.dumps(content, ensure_ascii=True),
             schema_description=json.dumps(schema, indent=2),

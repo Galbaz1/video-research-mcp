@@ -119,6 +119,7 @@ class ServerConfig(BaseModel):
     mlflow_tracking_uri: str = Field(default="")
     mlflow_experiment_name: str = Field(default="video-research-mcp")
     doc_max_download_bytes: int = Field(default=50 * 1024 * 1024)
+    content_max_text_chars: int = Field(default=200_000)
     content_compare_max_total_bytes: int = Field(default=100 * 1024 * 1024)
     doc_max_sources: int = Field(default=20)
     batch_tool_concurrency: int = Field(default=3)
@@ -142,6 +143,13 @@ class ServerConfig(BaseModel):
     def validate_positive_ints(cls, value: int) -> int:
         if value < 1:
             raise ValueError("Configuration values must be >= 1")
+        return value
+
+    @field_validator("content_max_text_chars")
+    @classmethod
+    def validate_content_max_text_chars(cls, value: int) -> int:
+        if value < 1:
+            raise ValueError("content_max_text_chars must be >= 1")
         return value
 
     @field_validator("content_compare_max_total_bytes")
@@ -231,6 +239,7 @@ class ServerConfig(BaseModel):
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
             doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+            content_max_text_chars=int(os.getenv("CONTENT_MAX_TEXT_CHARS", "200000")),
             content_compare_max_total_bytes=int(
                 os.getenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", str(100 * 1024 * 1024))
             ),

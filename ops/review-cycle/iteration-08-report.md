@@ -510,3 +510,54 @@ Focus: Concurrency and resource exhaustion
 ### Post-Commit Scope Snapshot
 - After commit in detached iteration context:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 31, "pr_context": false, "pr_url": null}`
+
+---
+
+## Continuation Run (2026-03-15T18:16:56Z)
+
+### Scope Detection Snapshots
+- Before major transition (detached baseline context):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After major transition to detached `origin/codex/review/i07` (branch locked by another local worktree):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After implementing this run's changes:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 4, "ahead_commits": 32, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F12
+- Area: Resource exhaustion via uncapped direct text inputs.
+- Evidence:
+  - Before this run, direct text inputs for `content_analyze`/`content_extract` had no configurable ceiling in [`src/video_research_mcp/tools/content.py`](/Users/fausto/.codex/worktrees/8bc5/gemini-research-mcp/src/video_research_mcp/tools/content.py).
+  - Added validated `CONTENT_MAX_TEXT_CHARS` in [`src/video_research_mcp/config.py`](/Users/fausto/.codex/worktrees/8bc5/gemini-research-mcp/src/video_research_mcp/config.py).
+  - Added fail-fast `_enforce_text_size_limit(...)` before prompt construction/model calls.
+- Exploit reasoning: A caller can submit arbitrarily large raw text payloads to amplify memory/token consumption and degrade service availability despite existing file/URL guards.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added `content_max_text_chars` config (`CONTENT_MAX_TEXT_CHARS`, default `200000`) with strict positive-int validation.
+- Added shared helper `_enforce_text_size_limit(...)` and enforced it for:
+  - `content_analyze(..., text=...)` via `_build_content_parts(...)`
+  - `content_extract(content=...)` before extraction prompt generation
+- Added focused regression coverage in:
+  - [`tests/test_config.py`](/Users/fausto/.codex/worktrees/8bc5/gemini-research-mcp/tests/test_config.py)
+  - [`tests/test_content_tools.py`](/Users/fausto/.codex/worktrees/8bc5/gemini-research-mcp/tests/test_content_tools.py)
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/content.py tests/test_config.py tests/test_content_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py::TestContentTextLimitConfig tests/test_content_tools.py::TestBuildContentParts::test_text_rejects_oversized_input tests/test_content_tools.py::TestContentAnalyze::test_text_size_limit_helper_rejects_oversized_input tests/test_content_tools.py::TestContentExtract::test_extract_size_limit_helper_rejects_oversized_input -q` -> pass (`5 passed`).
+
+### Reflective Loop Update
+- Observe: Text ingress still lacked a hard limit despite prior file/URL constraints.
+- Infer root cause: Guardrails were path-specific and did not uniformly cover all accepted content modalities.
+- Strategy: Introduce one shared text-size invariant enforced at ingress before prompt assembly.
+- Validate: Implemented config + helper + targeted tests; lint/tests passed.
+- Confidence change (continuation): 1.00 -> 1.00.
+
+### Lessons Learned (Continuation)
+- Input modality parity matters: guarding file and URL paths is insufficient if direct text path remains unbounded.
+- Shared ingress invariants are easier to maintain than ad hoc checks per tool entrypoint.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 wrapped-tool direct-call instability to restore reliable broader regression execution.
+2. Add cancellation/time-budget tests for bounded fan-out and long-running model-call paths.

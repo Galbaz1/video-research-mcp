@@ -7,13 +7,22 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from video_research_mcp.models.content import ContentResult
+from video_research_mcp.tools import content as content_mod
 from video_research_mcp.tools.content import (
     _analyze_parts,
     _build_content_parts,
+    _enforce_text_size_limit,
     _reshape_to_schema,
-    content_analyze,
-    content_extract,
 )
+
+
+def _unwrap_tool(tool):
+    """Return underlying callable when FastMCP wraps tools as FunctionTool."""
+    return getattr(tool, "fn", tool)
+
+
+content_analyze = _unwrap_tool(content_mod.content_analyze)
+content_extract = _unwrap_tool(content_mod.content_extract)
 
 
 class TestBuildContentParts:
@@ -59,6 +68,11 @@ class TestBuildContentParts:
 
         with pytest.raises(ValueError, match="configured size limit"):
             _build_content_parts(file_path=str(f))
+
+    def test_text_rejects_oversized_input(self, monkeypatch, clean_config):
+        monkeypatch.setenv("CONTENT_MAX_TEXT_CHARS", "8")
+        with pytest.raises(ValueError, match="configured size limit"):
+            _build_content_parts(text="x" * 16)
 
 
 class TestContentAnalyze:
@@ -125,6 +139,12 @@ class TestContentAnalyze:
         )
 
         assert result["citations"] == ["Ref A"]
+
+    def test_text_size_limit_helper_rejects_oversized_input(self, monkeypatch, clean_config):
+        """Direct-text guardrail rejects oversized payloads at ingress."""
+        monkeypatch.setenv("CONTENT_MAX_TEXT_CHARS", "8")
+        with pytest.raises(ValueError, match="configured size limit"):
+            _enforce_text_size_limit("x" * 16, field_name="text")
 
     @pytest.mark.asyncio
     async def test_parts_path_hardens_untrusted_content_prompt(self, mock_gemini_client):
@@ -245,3 +265,9 @@ class TestContentExtract:
 
         assert "error" in result
         assert "raw_response" in result
+
+    def test_extract_size_limit_helper_rejects_oversized_input(self, monkeypatch, clean_config):
+        """Extraction path uses the same direct-text guardrail helper."""
+        monkeypatch.setenv("CONTENT_MAX_TEXT_CHARS", "8")
+        with pytest.raises(ValueError, match="configured size limit"):
+            _enforce_text_size_limit("x" * 16, field_name="content")
