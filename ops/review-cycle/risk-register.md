@@ -141,3 +141,19 @@
 - Exploit reasoning: Attackers can supply very large source lists to induce prolonged queueing, network churn, and elevated memory pressure before downstream stage caps apply.
 - Status: Mitigated in this continuation by adding `DOC_MAX_SOURCES` config validation and fail-fast ingress enforcement in `research_document`.
 - Residual risk: Misconfigured high source caps can still increase runtime pressure; bounded by validation range `1..200` and secure default `20`.
+
+## R-020
+- Severity: Medium
+- Area: Concurrency/resource exhaustion
+- Evidence: Prior to this run, `src/video_research_mcp/tools/content_batch.py` and `src/video_research_mcp/tools/video_batch.py` used fixed semaphore limits (`3`) in individual batch mode.
+- Exploit reasoning: Static fan-out can overrun constrained environments or underutilize larger hosts, increasing latency or contention during bursty workloads.
+- Status: Mitigated in iteration 8 continuation via validated `BATCH_TOOL_CONCURRENCY` (range `1..16`) and shared runtime config wiring across both tools.
+- Residual risk: Operator misconfiguration remains possible; bounded by strict validator and default `3`.
+
+## R-021
+- Severity: Medium
+- Area: Prompt-injection/tool-misuse resistance
+- Evidence: Prior `STRUCTURED_EXTRACT` prompt embedded raw content with no explicit anti-injection contract.
+- Exploit reasoning: Untrusted content could include instruction-smuggling text that biases extraction behavior despite schema constraints.
+- Status: Mitigated in iteration 8 continuation by adding explicit security rules and untrusted-content framing in extraction prompt template and usage path.
+- Residual risk: Similar hardening must be applied to any future prompt templates that interpolate untrusted text.

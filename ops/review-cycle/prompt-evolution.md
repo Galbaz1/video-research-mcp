@@ -113,3 +113,11 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If provided source count exceeds the configured maximum, the tool shall fail fast with structured tool error output and shall skip document preparation/model calls.
 4. If iteration-8 lessons emphasize ingress guardrails, this run shall add config validation plus regression coverage for the source-count limit.
 5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, fixes, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-15T14:17:05Z)
+1. When iteration state indicates `current_iteration=8`, the run shall prioritize concurrency and resource-exhaustion controls in batch analysis paths.
+2. If iteration 7 lessons require explicit untrusted-content boundaries, the run shall apply at least one prompt-hardening remediation in a remaining extraction path.
+3. When batch video/content analysis runs in individual mode, the system shall enforce configurable bounded concurrency via validated runtime configuration.
+4. If `BATCH_TOOL_CONCURRENCY` is unset, the system shall default to a safe cap of `3` and validate configured values in the range `1..16`.
+5. When `content_extract` builds extraction prompts from user-provided text, the prompt shall treat content as untrusted data and explicitly reject embedded instruction execution.
+6. The run shall persist severity-ranked findings, exploit reasoning, fixes, validation output, and confidence deltas to review-cycle artifacts before completion.

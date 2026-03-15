@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 import pytest
 from unittest.mock import AsyncMock, patch
 
+import video_research_mcp.tools.content_batch as content_batch_mod
 from video_research_mcp.tools.content_batch import (
     _compare_files,
     _build_file_parts,
@@ -201,3 +203,45 @@ class TestContentBatchAnalyze:
             )
         mock_gemini_client["generate"].assert_not_called()
         mock_gemini_client["generate_structured"].assert_not_called()
+
+    async def test_individual_mode_respects_configured_batch_concurrency(
+        self, tmp_path, monkeypatch, clean_config,
+    ):
+        """Configured batch concurrency cap limits simultaneous per-file analyze calls."""
+        monkeypatch.setenv("BATCH_TOOL_CONCURRENCY", "2")
+        files = []
+        for idx in range(6):
+            path = tmp_path / f"doc-{idx}.txt"
+            path.write_text("text")
+            files.append(path)
+
+        active = 0
+        peak = 0
+
+        async def _fake_analyze_parts(*_args, **_kwargs):
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.01)
+            active -= 1
+            return {"summary": "ok"}
+
+        with (
+            patch(
+                "video_research_mcp.tools.content_batch._build_content_parts",
+                return_value=([], "test"),
+            ),
+            patch(
+                "video_research_mcp.tools.content_batch._analyze_parts",
+                new=AsyncMock(side_effect=_fake_analyze_parts),
+            ),
+        ):
+            items = await content_batch_mod._individual_files(
+                files=files,
+                instruction="Summarize",
+                output_schema=None,
+                thinking_level="low",
+            )
+
+        assert len(items) == 6
+        assert peak <= 2

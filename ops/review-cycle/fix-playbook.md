@@ -199,3 +199,26 @@
   - `tests/test_config.py::TestDocumentSourceLimitConfig::test_doc_max_sources_env_override`
   - `tests/test_config.py::TestDocumentSourceLimitConfig::test_doc_max_sources_rejects_out_of_range_values`
   - `tests/test_research_document_tools.py::TestResearchDocument::test_rejects_source_count_above_config_limit`
+
+## FP-020: Make batch analysis fan-out configurable with strict bounds
+- Context: Individual-mode batch analysis in content/video tools previously used static semaphore limits.
+- Rule: Read fan-out cap from validated runtime config (`BATCH_TOOL_CONCURRENCY`, range `1..16`) with safe default `3`.
+- Why: Reduces availability risk from under/over-throttling across heterogeneous deployment resources.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/content_batch.py`
+  - `src/video_research_mcp/tools/video_batch.py`
+- Regression coverage:
+  - `tests/test_config.py::TestBatchToolConcurrencyConfig`
+  - `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_individual_mode_respects_configured_batch_concurrency`
+  - `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_uses_configurable_concurrency`
+
+## FP-021: Harden content extraction prompts with explicit untrusted-data boundaries
+- Context: `content_extract` transforms arbitrary user text into schema-constrained JSON via a model prompt.
+- Rule: Extraction prompt must explicitly treat source text as untrusted data and forbid command/role-change execution from content.
+- Why: Limits instruction-smuggling influence in extraction workflows and improves prompt-boundary consistency.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/prompts/content.py`
+  - `src/video_research_mcp/tools/content.py`
+- Regression coverage:
+  - `tests/test_content_prompts.py::TestStructuredExtractPrompt::test_includes_untrusted_content_guardrails`

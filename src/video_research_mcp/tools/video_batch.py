@@ -19,6 +19,16 @@ from .video_file import SUPPORTED_VIDEO_EXTENSIONS, _video_file_content
 
 from video_research_mcp.tracing import trace
 
+_BATCH_CONCURRENCY_DEFAULT = 3
+
+
+def _batch_tool_concurrency() -> int:
+    """Return configured batch fan-out cap with safe fallback."""
+    from ..config import get_config
+
+    cfg = get_config()
+    return cfg.batch_tool_concurrency or _BATCH_CONCURRENCY_DEFAULT
+
 
 @video_server.tool(
     annotations=ToolAnnotations(
@@ -47,7 +57,7 @@ async def video_batch_analyze(
 
     Scans the directory for supported video files (mp4, webm, mov, avi, mkv,
     mpeg, wmv, 3gpp), then analyzes each with the given instruction using
-    bounded concurrency (3 parallel Gemini calls).
+    bounded concurrency (configured via `BATCH_TOOL_CONCURRENCY`).
 
     Args:
         directory: Path to a directory containing video files.
@@ -82,7 +92,7 @@ async def video_batch_analyze(
             failed=0,
         ).model_dump(mode="json")
 
-    semaphore = asyncio.Semaphore(3)
+    semaphore = asyncio.Semaphore(_batch_tool_concurrency())
 
     async def _process(fp: Path) -> BatchVideoItem:
         async with semaphore:

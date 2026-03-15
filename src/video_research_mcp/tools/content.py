@@ -272,7 +272,7 @@ async def content_extract(
 
     try:
         prompt = STRUCTURED_EXTRACT.format(
-            content=content,
+            content_json=json.dumps(content, ensure_ascii=True),
             schema_description=json.dumps(schema, indent=2),
         )
         resp = await GeminiClient.generate(

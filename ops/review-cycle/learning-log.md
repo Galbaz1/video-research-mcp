@@ -157,3 +157,14 @@
 ## Iteration 9 seed hypotheses (refined)
 - Resolve R-004 pytest harness timeout around wrapped tool tests so full-module regressions become reliable.
 - Add cancellation/backpressure tests for large-source `research_document` runs to verify graceful timeout behavior.
+
+## Iteration 8 Continuation (Batch Fan-out Config + Extract Prompt Boundaries) - 2026-03-15T14:17:05Z
+- Observation: Batch individual-analysis paths (`video_batch`, `content_batch`) used fixed concurrency `3`, and `content_extract` prompt template accepted raw content without explicit untrusted-data guardrails.
+- Inference: Resource controls were bounded but not operator-tunable, and prompt-boundary controls were still inconsistent across content-analysis entrypoints.
+- Strategy: Externalize batch fan-out cap behind validated config (`BATCH_TOOL_CONCURRENCY`) and apply iteration-7 prompt-hardening pattern to extraction prompt templates.
+- Validation: Added config validator + env parsing, wired cap into both batch tools, hardened `STRUCTURED_EXTRACT` with explicit security rules/untrusted section, and added focused regression tests (`tests/test_config.py`, `tests/test_content_batch_tools.py`, `tests/test_video_tools.py`, `tests/test_content_prompts.py`); targeted lint/tests passed.
+- Confidence change: 0.98 -> 0.99 for iteration-8 completeness on resource controls + prompt-boundary consistency.
+
+## Iteration 9 seed hypotheses (updated)
+- Close R-004 by normalizing direct-call test harness behavior for decorated tools in subset runs.
+- Add cancellation/time-budget tests for bounded batch fan-out in video/content paths.

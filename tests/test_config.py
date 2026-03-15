@@ -98,3 +98,18 @@ class TestContentComparePayloadConfig:
     def test_content_compare_max_total_bytes_rejects_non_positive(self):
         with pytest.raises(ValueError, match="content_compare_max_total_bytes must be >= 1"):
             ServerConfig(content_compare_max_total_bytes=0)
+
+
+class TestBatchToolConcurrencyConfig:
+    """Verify configurable fan-out controls for batch tools."""
+
+    def test_batch_tool_concurrency_env_override(self, monkeypatch):
+        monkeypatch.setenv("BATCH_TOOL_CONCURRENCY", "2")
+        cfg = ServerConfig.from_env()
+        assert cfg.batch_tool_concurrency == 2
+
+    def test_batch_tool_concurrency_rejects_out_of_range_values(self):
+        with pytest.raises(ValueError, match="batch_tool_concurrency must be between 1 and 16"):
+            ServerConfig(batch_tool_concurrency=0)
+        with pytest.raises(ValueError, match="batch_tool_concurrency must be between 1 and 16"):
+            ServerConfig(batch_tool_concurrency=17)

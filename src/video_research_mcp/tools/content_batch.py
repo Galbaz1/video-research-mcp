@@ -21,6 +21,7 @@ from ..weaviate_store import store_content_analysis
 from .content import _analyze_parts, _build_content_parts, content_server
 
 logger = logging.getLogger(__name__)
+_BATCH_CONCURRENCY_DEFAULT = 3
 
 SUPPORTED_CONTENT_EXTENSIONS: dict[str, str] = {
     ".pdf": "application/pdf",
@@ -31,6 +32,12 @@ SUPPORTED_CONTENT_EXTENSIONS: dict[str, str] = {
     ".json": "application/json",
     ".csv": "text/csv",
 }
+
+
+def _batch_tool_concurrency() -> int:
+    """Return configured batch fan-out cap with safe fallback."""
+    cfg = get_config()
+    return cfg.batch_tool_concurrency or _BATCH_CONCURRENCY_DEFAULT
 
 
 def _resolve_files(
@@ -149,7 +156,7 @@ async def _individual_files(
     """
     from ..models.content import ContentResult
 
-    semaphore = asyncio.Semaphore(3)
+    semaphore = asyncio.Semaphore(_batch_tool_concurrency())
     schema = output_schema or ContentResult.model_json_schema()
 
     async def _process(path: Path) -> BatchContentItem:
@@ -200,7 +207,7 @@ async def content_batch_analyze(
 
     Supports two modes: 'compare' sends all files to Gemini in a single call
     for cross-document analysis, 'individual' analyzes each file separately
-    with bounded concurrency (3 parallel calls).
+    with bounded concurrency (configured via `BATCH_TOOL_CONCURRENCY`).
 
     Args:
         instruction: What to analyze or extract from the content.

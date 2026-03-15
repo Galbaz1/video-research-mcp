@@ -1,7 +1,6 @@
 """Tests for video tools and URL helpers."""
 
 from __future__ import annotations
-
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -353,6 +352,13 @@ class TestVideoBatchAnalyze:
         assert result["total_files"] == 2
         names = [i["file_name"] for i in result["items"]]
         assert "clip.webm" not in names
+
+    def test_batch_analyze_uses_configurable_concurrency(self, monkeypatch, clean_config):
+        """Batch helper reads configurable fan-out cap from runtime config."""
+        monkeypatch.setenv("BATCH_TOOL_CONCURRENCY", "2")
+        from video_research_mcp.tools import video_batch as video_batch_mod
+
+        assert video_batch_mod._batch_tool_concurrency() == 2
 
 
 def _make_yt_metadata(

@@ -378,3 +378,63 @@ Focus: Concurrency and resource exhaustion
 2. Add cancellation and timeout-behavior regression contracts for bounded fan-out helpers.
 - After commit + push:
   - `{"mode": "pr", "reason": "Branch has an open pull request.", "branch": "codex/review/i07", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 23, "pr_context": true, "pr_url": "https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+
+---
+
+## Continuation Run (2026-03-15T14:17:05Z)
+
+### Scope Detection Snapshots
+- Run start (after major transition into detached `codex/review/i07` context):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 133, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
+- Before commit (this run's working tree):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 15, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F8
+- Area: Concurrency/resource exhaustion in individual batch pipelines.
+- Evidence:
+  - Fixed fan-out previously hard-coded in `src/video_research_mcp/tools/content_batch.py` and `src/video_research_mcp/tools/video_batch.py`.
+  - Config-driven cap added via `src/video_research_mcp/config.py` (`BATCH_TOOL_CONCURRENCY`, validated `1..16`).
+  - Regression coverage in `tests/test_config.py`, `tests/test_content_batch_tools.py`, and `tests/test_video_tools.py`.
+- Exploit reasoning: Fixed fan-out cannot adapt to runtime capacity constraints and may increase contention/latency under heavy batch loads.
+- Fix status: Implemented in this continuation run.
+
+#### Medium
+- ID: I08-F9
+- Area: Prompt-injection/tool-misuse resistance in extraction prompt path.
+- Evidence:
+  - `src/video_research_mcp/prompts/content.py` now includes explicit anti-injection rules + `UNTRUSTED_CONTENT` boundary.
+  - `src/video_research_mcp/tools/content.py` now serializes extraction content via `content_json` template variable.
+  - Regression coverage in `tests/test_content_prompts.py`.
+- Exploit reasoning: Raw untrusted extraction content can carry instruction-smuggling payloads that degrade structured extraction integrity.
+- Fix status: Implemented in this continuation run; directly derived from iteration-7 lesson on explicit untrusted prompt boundaries.
+
+### Additional Implemented Changes
+- Added validated runtime config `BATCH_TOOL_CONCURRENCY` (default `3`, range `1..16`).
+- Wired configurable batch fan-out into:
+  - `content_batch` individual mode semaphore
+  - `video_batch` individual mode semaphore
+- Hardened structured extraction prompt contract:
+  - Added explicit security rules for untrusted content handling.
+  - Added `UNTRUSTED_CONTENT` section and JSON-serialized content injection.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/prompts/content.py src/video_research_mcp/tools/content.py src/video_research_mcp/tools/content_batch.py src/video_research_mcp/tools/video_batch.py tests/test_config.py tests/test_content_prompts.py tests/test_content_batch_tools.py tests/test_video_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py::TestBatchToolConcurrencyConfig tests/test_content_prompts.py tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_individual_mode_respects_configured_batch_concurrency tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_uses_configurable_concurrency -q` -> pass (`5 passed`).
+- Note: Direct-call wrapper drift (R-004) still appears in some targeted tool-call tests; this run avoids broad harness changes and keeps fixes scoped to iteration-8 objective.
+
+### Reflective Loop Update
+- Observe: Existing controls limited fan-out and payload sizes but missed deployment-tunable batch throttling and one extraction prompt boundary path.
+- Infer root cause: Controls were applied unevenly across adjacent code paths due phase-local hardening.
+- Strategy: Reuse validated runtime-cap pattern for fan-out and iteration-7 untrusted-boundary prompt pattern for extraction templates.
+- Validate: Implemented code/config updates and focused regression checks with passing lint/tests.
+- Confidence change (continuation): 0.98 -> 0.99 for iteration-8 objective completeness.
+
+### Lessons Learned (Continuation)
+- Safe defaults need operator-tunable bounds to remain effective across heterogeneous runtime capacities.
+- Prompt-injection resilience should be codified at template level so future callers inherit guardrails by default.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 by normalizing direct-call tool test contracts (or consistently unwrapping decorated tools) across subset runs.
+2. Add cancellation/time-budget regression tests for batch analyzers to validate bounded fan-out under stalled model calls.
