@@ -440,3 +440,11 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 by normalizing direct-call tool test contracts (or consistently unwrapping decorated tools) across subset runs.
 2. Add cancellation/time-budget regression tests for batch analyzers to validate bounded fan-out under stalled model calls.
+
+### Git Transition Note (Push Resume)
+- Before rebasing onto updated remote iteration branch:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 26, "pr_context": false, "pr_url": null}`
+- After switching to detached `origin/codex/review/i07` tip:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 26, "pr_context": false, "pr_url": null}`
+- After conflict resolution + validation commits:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 29, "pr_context": false, "pr_url": null}`
