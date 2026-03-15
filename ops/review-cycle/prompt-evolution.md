@@ -99,3 +99,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If total compare payload bytes exceed the configured ceiling, the tool shall fail fast with structured tool error output before any model call.
 4. If iteration-7 lessons require explicit untrusted-input boundaries, file/text analysis prompts shall include anti-injection guardrails and a tagged task-instruction boundary.
 5. The run shall capture pre/post transition review-scope snapshots and persist findings, fixes, confidence deltas, and next hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (Temp Artifact Cleanup)
+1. When iteration state remains `current_iteration=8` and iteration PR `#59` is open, the run shall resume `codex/review/i07` and avoid creating a new branch.
+2. If iteration-8 lessons show residual resource usage in helper layers, the run shall implement at least one cleanup control that bounds non-memory resource growth.
+3. When URL documents are downloaded for preparation, the system shall use a scoped temporary directory and shall clean it after upload processing completes.
+4. If cleanup controls are added to document preparation helpers, the run shall add deterministic regression tests proving cleanup occurs post-processing.
+5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, fixes, and confidence deltas in iteration artifacts.

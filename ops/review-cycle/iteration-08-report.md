@@ -273,3 +273,50 @@ Focus: Concurrency and resource exhaustion
 
 - After commit + push:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 21, "pr_context": false, "pr_url": null}`
+
+---
+
+## Continuation Run (2026-03-15T12:03:26Z)
+
+### Scope Detection Snapshots
+- Run start on active iteration branch:
+  - `{"mode": "pr", "reason": "Branch has an open pull request.", "branch": "codex/review/i07", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 22, "pr_context": true, "pr_url": "https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+- After implementing continuation fixes:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "codex/review/i07", "base_branch": "main", "uncommitted_files": 2, "ahead_commits": 22, "pr_context": true, "pr_url": "https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F8
+- Area: Resource exhaustion via temporary artifact accumulation.
+- Evidence:
+  - Prior implementation used `tempfile.mkdtemp(...)` without deterministic cleanup in `src/video_research_mcp/tools/research_document_file.py`.
+  - Scoped cleanup implemented with `tempfile.TemporaryDirectory(...)` and in-scope upload execution.
+  - Regression coverage: `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_url_temp_directory_is_cleaned_after_preparation`.
+- Exploit reasoning: Repeated URL document preparation could leave temp files/directories on disk and eventually degrade availability through filesystem pressure.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Refactored `_prepare_all_documents_with_issues(...)` to:
+  - Use a scoped `TemporaryDirectory` for URL downloads.
+  - Keep upload execution inside that scope.
+  - Ensure intermediate downloaded artifacts are cleaned after completion.
+- Added deterministic regression test to assert cleanup behavior after successful prepare/upload flow.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/tools/research_document_file.py tests/test_research_document_file.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_research_document_file.py -q` -> pass (`16 passed`).
+
+### Reflective Loop Update
+- Observe: Iteration-8 hardening bounded concurrency and payload size, but helper temp artifacts still had unbounded lifetime.
+- Infer root cause: Resource-exhaustion controls focused on execution-time bounds and did not include lifecycle cleanup of intermediary files.
+- Strategy: Apply deterministic scoped cleanup via context-managed temp directories and verify via regression.
+- Validate: Implemented cleanup refactor and test; targeted lint/tests passed.
+- Confidence change (continuation): 0.97 -> 0.98 for iteration-8 resource-exhaustion completeness.
+
+### Lessons Learned (Continuation)
+- Resource-exhaustion defenses must include lifecycle cleanup, not only concurrency and payload caps.
+- Helper-layer temp artifacts are part of the attack surface when workflows run repeatedly.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Close R-004 by standardizing direct-call wrapper behavior in content/research test modules.
+2. Add cancellation and timeout-behavior regression contracts for bounded fan-out helpers.

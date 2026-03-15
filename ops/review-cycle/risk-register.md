@@ -125,3 +125,11 @@
 - Exploit reasoning: Embedded adversarial instructions in content may reduce model adherence to requested task boundaries.
 - Status: Mitigated in this continuation by adding security guardrail instructions and `<TASK_INSTRUCTION>` boundary in prompt suffix.
 - Residual risk: Similar boundary contracts must be reused in future prompt-construction paths to avoid regression.
+
+## R-018
+- Severity: Medium
+- Area: Resource exhaustion / temporary artifact lifecycle
+- Evidence: Prior `research_document_file._prepare_all_documents_with_issues(...)` created URL temp directories via `tempfile.mkdtemp(...)` without deterministic cleanup.
+- Exploit reasoning: Repeated URL preparation workloads can accumulate temporary artifacts and consume local disk, degrading availability.
+- Status: Mitigated in iteration 8 continuation by scoping URL downloads to `TemporaryDirectory` and executing upload phase within cleanup scope.
+- Residual risk: Process crashes during active execution can still leave partial artifacts from in-flight operations; bounded by OS temp lifecycle and short-lived scoped directory usage.

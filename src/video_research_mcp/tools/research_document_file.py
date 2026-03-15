@@ -132,57 +132,61 @@ async def _prepare_all_documents_with_issues(
 
         return await asyncio.gather(*[_run(item) for item in items])
 
-    # Download URL documents first
-    downloaded: list[tuple[Path, str]] = []
-    if urls:
-        tmp_dir = Path(tempfile.mkdtemp(prefix="research_doc_"))
+    async def _upload_all(all_paths: list[tuple[Path, str]]) -> None:
+        """Upload all local/downloaded paths and append results/issues in place."""
+        async def _upload(path: Path, original: str) -> tuple[str, str, str]:
+            uri, cid = await _prepare_document(path)
+            return uri, cid, original
+
         results = await _gather_bounded(
-            urls,
-            lambda u: _download_document(u, tmp_dir),
+            all_paths,
+            lambda po: _upload(po[0], po[1]),
         )
-        for url, result in zip(urls, results):
+        for (_path, original), result in zip(all_paths, results):
             if isinstance(result, Exception):
-                logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                logger.warning("Failed to upload document: %s", result)
                 issues.append(
                     {
-                        "source": url,
-                        "phase": "download",
+                        "source": original,
+                        "phase": "upload",
                         "error_type": type(result).__name__,
                         "error": str(result),
                     }
                 )
             else:
-                downloaded.append((result, url))
+                prepared.append(result)
 
-    # Collect all local paths
+    # Collect local file paths first.
     all_paths: list[tuple[Path, str]] = []
     if file_paths:
         for fp in file_paths:
             p = enforce_local_access_root(resolve_path(fp))
             all_paths.append((p, fp))
-    all_paths.extend(downloaded)
 
-    # Upload all via File API (parallel)
-    async def _upload(path: Path, original: str) -> tuple[str, str, str]:
-        uri, cid = await _prepare_document(path)
-        return uri, cid, original
-
-    results = await _gather_bounded(
-        all_paths,
-        lambda po: _upload(po[0], po[1]),
-    )
-    for (_path, original), result in zip(all_paths, results):
-        if isinstance(result, Exception):
-            logger.warning("Failed to upload document: %s", result)
-            issues.append(
-                {
-                    "source": original,
-                    "phase": "upload",
-                    "error_type": type(result).__name__,
-                    "error": str(result),
-                }
+    # Download URL documents into a scoped temp directory so intermediates are cleaned up.
+    if urls:
+        with tempfile.TemporaryDirectory(prefix="research_doc_") as tmp_dir_raw:
+            tmp_dir = Path(tmp_dir_raw)
+            downloaded: list[tuple[Path, str]] = []
+            results = await _gather_bounded(
+                urls,
+                lambda u: _download_document(u, tmp_dir),
             )
-        else:
-            prepared.append(result)
+            for url, result in zip(urls, results):
+                if isinstance(result, Exception):
+                    logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                    issues.append(
+                        {
+                            "source": url,
+                            "phase": "download",
+                            "error_type": type(result).__name__,
+                            "error": str(result),
+                        }
+                    )
+                else:
+                    downloaded.append((result, url))
+            await _upload_all(all_paths + downloaded)
+    else:
+        await _upload_all(all_paths)
 
     return prepared, issues

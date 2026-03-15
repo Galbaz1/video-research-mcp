@@ -165,3 +165,54 @@ class TestPrepareAllDocumentsWithIssues:
             )
 
         assert peak <= get_config().doc_prepare_concurrency
+
+    async def test_url_temp_directory_is_cleaned_after_preparation(self, tmp_path):
+        """Downloaded URL temp directory is removed after upload processing finishes."""
+        temp_dir = tmp_path / "research_doc_temp"
+        downloaded_file = temp_dir / "doc.pdf"
+        cleanup_called = False
+
+        class _FakeTempDir:
+            def __init__(self, *args, **kwargs):
+                pass
+
+            def __enter__(self):
+                temp_dir.mkdir()
+                return str(temp_dir)
+
+            def __exit__(self, exc_type, exc, tb):
+                nonlocal cleanup_called
+                cleanup_called = True
+                for child in temp_dir.glob("*"):
+                    child.unlink()
+                temp_dir.rmdir()
+                return False
+
+        async def _fake_download(_url: str, _tmp_dir):
+            downloaded_file.write_bytes(b"%PDF-1.4")
+            return downloaded_file
+
+        with (
+            patch(
+                "video_research_mcp.tools.research_document_file.tempfile.TemporaryDirectory",
+                _FakeTempDir,
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file._download_document",
+                side_effect=_fake_download,
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file._prepare_document",
+                new_callable=AsyncMock,
+            ) as mock_prepare,
+        ):
+            mock_prepare.return_value = ("gs://ok", "hash-ok")
+            prepared, issues = await _prepare_all_documents_with_issues(
+                file_paths=None,
+                urls=["https://example.com/doc.pdf"],
+            )
+
+        assert prepared == [("gs://ok", "hash-ok", "https://example.com/doc.pdf")]
+        assert issues == []
+        assert cleanup_called is True
+        assert not temp_dir.exists()

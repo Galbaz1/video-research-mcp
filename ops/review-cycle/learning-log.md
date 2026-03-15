@@ -135,3 +135,14 @@
 ## Iteration 9 seed hypotheses (refined)
 - Close R-004 by standardizing direct-call/unwrapped-tool test invocation contracts in content/research test modules.
 - Add guard-order tests proving payload and policy checks execute before expensive model calls in all entry tools.
+
+## Iteration 8 Continuation (Temp Artifact Cleanup) - 2026-03-15T12:03:26Z
+- Observation: URL document preparation used temporary directories without deterministic cleanup, leaving residual artifacts across repeated runs.
+- Inference: Resource-hardening remained incomplete because lifecycle cleanup for intermediary files was not treated as a first-class guardrail.
+- Strategy: Replace unmanaged temp-dir creation with scoped `TemporaryDirectory` and keep upload processing within the cleanup scope.
+- Validation: Refactored `research_document_file` temp-dir handling and added deterministic regression test proving cleanup after successful flow; targeted lint/tests passed.
+- Confidence change: 0.97 -> 0.98 for iteration-8 resource-exhaustion objective completeness.
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve R-004 tool-wrapper direct-call instability so full regression modules are trustworthy.
+- Add cancellation/time-budget contracts for bounded gather helpers in document/content pipelines.

@@ -178,3 +178,12 @@
   - `src/video_research_mcp/tools/content.py`
 - Regression coverage:
   - `tests/test_content_tools.py::TestContentAnalyze::test_parts_path_hardens_untrusted_content_prompt`
+
+## FP-018: Scope temporary download artifacts to deterministic cleanup
+- Context: URL document preparation in `research_document_file` creates temporary files before File API upload.
+- Rule: Use `TemporaryDirectory` scope for download artifacts and keep upload processing inside that scope.
+- Why: Prevents temp-artifact accumulation that can degrade availability under repeated runs.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/research_document_file.py`
+- Regression coverage:
+  - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_url_temp_directory_is_cleaned_after_preparation`
