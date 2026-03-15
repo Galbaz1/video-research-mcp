@@ -5,6 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+from tests.conftest import unwrap_tool
 from video_research_mcp.models.video import VideoResult
 from video_research_mcp.models.youtube import VideoMetadata as YTVideoMetadata
 from video_research_mcp.tools.video import (
@@ -17,6 +18,10 @@ from video_research_mcp.tools.video_url import (
     _extract_video_id,
     _normalize_youtube_url,
 )
+
+video_analyze = unwrap_tool(video_analyze)
+video_batch_analyze = unwrap_tool(video_batch_analyze)
+video_create_session = unwrap_tool(video_create_session)
 
 
 class TestUrlHelpers:
@@ -322,18 +327,24 @@ class TestVideoBatchAnalyze:
 
     @pytest.mark.asyncio
     async def test_batch_analyze_respects_max_files(self, tmp_path, mock_gemini_client):
-        """max_files limits the number of processed files."""
+        """Oversized directories fail fast instead of truncating silently."""
         for i in range(5):
             (tmp_path / f"v{i}.mp4").write_bytes(b"\x00" * 50)
 
         mock_gemini_client["generate_structured"].return_value = VideoResult(title="X")
 
-        result = await video_batch_analyze(
-            directory=str(tmp_path),
-            max_files=2,
-        )
+        with patch(
+            "video_research_mcp.tools.video_batch._video_file_content",
+            new_callable=AsyncMock,
+        ) as mock_video_file_content:
+            result = await video_batch_analyze(
+                directory=str(tmp_path),
+                max_files=2,
+            )
 
-        assert result["total_files"] == 2
+        assert "error" in result
+        assert "more than max_files=2" in result["error"]
+        mock_video_file_content.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_batch_analyze_glob_pattern(self, tmp_path, mock_gemini_client):

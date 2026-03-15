@@ -189,3 +189,11 @@
 - Exploit reasoning: Large directory targets can force avoidable traversal and sort overhead before truncation, degrading CPU/IO availability.
 - Status: Mitigated in iteration 8 continuation by fail-fast rejection when supported matches exceed `max_files`.
 - Residual risk: `video_batch` retains truncation semantics for directory mode; consider parity review in iteration 9 after R-004 harness stabilization.
+
+## R-026
+- Severity: Medium
+- Area: Resource exhaustion / video batch directory fan-in
+- Evidence: Prior to this run, `src/video_research_mcp/tools/video_batch.py` discovered/sorted supported matches and truncated to `max_files`, instead of rejecting oversized match sets at ingress.
+- Exploit reasoning: Large directory inputs can force avoidable discovery/filter overhead before truncation, increasing CPU/IO pressure.
+- Status: Mitigated in iteration 8 continuation by fail-fast supported-match cardinality enforcement with structured error return.
+- Residual risk: Deterministic subset/full verification is still constrained by R-004 test-harness instability; queue final closure after iteration-9 harness stabilization.

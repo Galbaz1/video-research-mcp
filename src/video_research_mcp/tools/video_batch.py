@@ -79,10 +79,18 @@ async def video_batch_analyze(
     except PermissionError as exc:
         return make_tool_error(exc)
 
-    video_files = sorted(
-        f for f in dir_path.glob(glob_pattern)
-        if f.is_file() and f.suffix.lower() in SUPPORTED_VIDEO_EXTENSIONS
-    )[:max_files]
+    video_files: list[Path] = []
+    for matched in sorted(dir_path.glob(glob_pattern)):
+        if not matched.is_file() or matched.suffix.lower() not in SUPPORTED_VIDEO_EXTENSIONS:
+            continue
+        video_files.append(matched)
+        if len(video_files) > max_files:
+            return make_tool_error(
+                ValueError(
+                    f"Directory has more than max_files={max_files} supported video files; "
+                    "refine glob_pattern or increase max_files."
+                )
+            )
 
     if not video_files:
         return BatchVideoResult(

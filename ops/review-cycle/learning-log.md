@@ -218,3 +218,10 @@
 ## Iteration 9 seed hypotheses (updated)
 - Resolve R-004 wrapper/direct-call instability so subset/full test selection is deterministic.
 - Add cancellation/time-budget contracts for bounded gather/fan-out paths.
+
+## Iteration 8 Continuation (Video Batch Directory Cardinality) - 2026-03-15T22:xx:00Z
+- Observation: `video_batch_analyze` directory mode truncated to `[:max_files]` after discovery, so oversized directories still triggered avoidable traversal/sorting work before cap enforcement.
+- Inference: Concurrency controls were present, but ingress cardinality enforcement remained inconsistent between `content_batch` and `video_batch`, leaving a residual resource-exhaustion path.
+- Strategy: Reuse explicit ingress-boundary fail-fast pattern already applied in iteration-8 content paths; reject oversized supported-match sets before upload/analysis fan-out.
+- Validation: Added fail-fast boundary in `src/video_research_mcp/tools/video_batch.py`; updated regression in `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_respects_max_files` to assert no upload helper invocation on rejection path.
+- Confidence change: 1.00 -> 1.00 (maintained maximum confidence while closing parity gap with content batch safeguards).

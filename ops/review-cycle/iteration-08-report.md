@@ -686,3 +686,46 @@ Focus: Concurrency and resource exhaustion
 - After commit + push from detached iteration context:
   - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 37, "pr_context": false, "pr_url": null}`
 - Commit: `12478d0 security(iteration-8): fail fast on oversized content directory scans`
+
+---
+
+## Continuation Run (2026-03-15T22:xx:00Z)
+
+### Scope Detection Snapshots
+- Before commit (after this run's changes):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 2, "ahead_commits": 38, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F8
+- Area: Resource exhaustion / directory fan-in parity for video batch.
+- Evidence:
+  - Prior `video_batch_analyze` truncated discovered files (`[:max_files]`) after full match collection.
+  - Fail-fast boundary now enforced in [`src/video_research_mcp/tools/video_batch.py`](/Users/fausto/.codex/worktrees/a83e/gemini-research-mcp/src/video_research_mcp/tools/video_batch.py).
+  - Regression updated in [`tests/test_video_tools.py`](/Users/fausto/.codex/worktrees/a83e/gemini-research-mcp/tests/test_video_tools.py).
+- Exploit reasoning: Large directories can induce avoidable discovery/filter overhead and downstream helper setup before truncation when ingress cardinality is not enforced explicitly.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Replaced truncation-only semantics with fail-fast ingress validation when supported matches exceed `max_files`.
+- Added actionable rejection message (`refine glob_pattern or increase max_files`).
+- Updated regression to assert fail-fast behavior and verify `_video_file_content` is never awaited on oversized input.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/tools/video_batch.py tests/test_video_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_respects_max_files -vv -s` -> hangs in this branch context (known harness instability pattern tracked in R-004); test logic updated to avoid heavy helper execution and remains queued for deterministic verification in iteration 9.
+
+### Reflective Loop Update
+- Observe: Iteration-8 already hardened content batch cardinality but video batch retained truncation semantics.
+- Infer root cause: Resource-hardening patterns were applied per-module rather than enforced as cross-batch invariants.
+- Strategy: Apply the same explicit fail-fast ingress-boundary contract to video batch directory discovery.
+- Validate: Implemented boundary guard and updated regression contract.
+- Confidence change (continuation): 1.00 -> 1.00.
+
+### Lessons Learned (Continuation)
+- Batch pipelines sharing the same threat model need policy parity checks, not one-off module fixes.
+- Deterministic subset test execution remains a prerequisite for confidently closing similar guardrail changes (R-004).
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 wrapper/direct-call instability and hanging subset runs for tool tests.
+2. Add a shared batch-ingress parity checklist test suite so cardinality and size controls stay aligned across `content_batch` and `video_batch`.

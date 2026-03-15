@@ -271,3 +271,12 @@
   - `src/video_research_mcp/tools/content_batch.py`
 - Regression coverage:
   - `tests/test_content_batch_tools.py::TestResolveFiles::test_max_files_limit`
+
+## FP-010: Fail-fast directory cardinality for video batch
+- Context: `video_batch_analyze` directory discovery in high-fan-in local folders.
+- Rule: During supported file discovery, reject when count exceeds `max_files` instead of truncating silently.
+- Why: Prevents avoidable filesystem traversal/filter overhead and blocks downstream upload/analysis setup on oversized requests.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/video_batch.py`
+- Regression coverage:
+  - `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_respects_max_files`

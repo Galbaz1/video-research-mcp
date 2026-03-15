@@ -149,3 +149,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If directory scanning matches more than `max_files` supported files, the tool shall fail fast with structured tool error output.
 4. If iteration-7 lessons require explicit trust boundaries for untrusted inputs, this run shall apply that boundary principle to filesystem fan-in by rejecting oversized directory matches early.
 5. The run shall persist scope snapshots, severity-ranked findings, validation evidence, confidence updates, and next hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation (Video Batch Cardinality Guardrail) - 2026-03-15
+1. When `video_batch_analyze` scans a directory, the tool shall fail fast if supported matches exceed `max_files`.
+2. If the supported match count exceeds `max_files`, the tool shall return structured `make_tool_error()` output and shall not start upload/analysis helpers.
+3. When fail-fast cardinality rejection occurs, the response shall include remediation guidance to refine `glob_pattern` or increase `max_files`.
+4. The run shall record severity-ranked findings, exploit reasoning, applied fix strategy, and confidence delta in iteration artifacts.
+5. If iteration-7 trust-boundary lessons emphasize explicit ingress constraints, iteration-8 continuation shall apply the same explicit-boundary pattern to video batch directory discovery.
