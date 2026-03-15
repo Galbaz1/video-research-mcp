@@ -694,6 +694,8 @@ Focus: Concurrency and resource exhaustion
 ### Scope Detection Snapshots
 - Before commit (after this run's changes):
   - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 2, "ahead_commits": 38, "pr_context": false, "pr_url": null}`
+- After commit + push:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 39, "pr_context": false, "pr_url": null}`
 
 ### Additional Findings By Severity
 #### Medium
