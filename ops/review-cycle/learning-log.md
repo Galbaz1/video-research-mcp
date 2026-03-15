@@ -225,3 +225,15 @@
 - Strategy: Reuse explicit ingress-boundary fail-fast pattern already applied in iteration-8 content paths; reject oversized supported-match sets before upload/analysis fan-out.
 - Validation: Added fail-fast boundary in `src/video_research_mcp/tools/video_batch.py`; updated regression in `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_respects_max_files` to assert no upload helper invocation on rejection path.
 - Confidence change: 1.00 -> 1.00 (maintained maximum confidence while closing parity gap with content batch safeguards).
+
+## Iteration 8 Continuation (Directory Scan Entry Guardrail) - 2026-03-16T00:xx:00Z
+- Observation: Batch directory discovery still permitted large sparse-match traversals because `max_files` only constrains supported matches, not total scanned entries.
+- Inference: Cardinality controls on matched outputs do not fully protect against traversal-heavy patterns (`glob_pattern` over large trees with mostly unsupported entries).
+- Strategy: Derive from iteration-7/8 explicit-boundary lesson and add a configurable fail-fast scan-entry cap shared by `content_batch` and `video_batch`.
+- Validation: Added `batch_scan_max_entries` config + validators, enforced scan guardrails in both batch scanners, and added focused regression coverage (`tests/test_config.py`, `tests/test_content_batch_tools.py`, `tests/test_video_tools.py`).
+- Validation note: `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_fails_fast_on_scan_entry_limit` hangs in this workspace due known R-004 harness instability; content/config validations pass.
+- Confidence change: 1.00 -> 1.00 (maintained, with stronger ingress traversal bounds).
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve R-004 wrapped-tool/direct-call instability so deterministic subset/full validation can close remaining batch-tool checks.
+- Add shared ingress parity contracts that assert `max_files`, aggregate-size, and scan-entry boundaries stay aligned across batch tools.

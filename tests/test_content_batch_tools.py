@@ -87,6 +87,15 @@ class TestResolveFiles:
         assert len(files) == 2
         assert all(f.suffix == ".pdf" for f in files)
 
+    async def test_directory_scan_entry_limit(self, tmp_path, monkeypatch, clean_config):
+        """GIVEN many candidate entries WHEN resolving THEN scan guard fails fast."""
+        monkeypatch.setenv("BATCH_SCAN_MAX_ENTRIES", "2")
+        for i in range(4):
+            (tmp_path / f"n{i}.txt").write_text("x")
+
+        with pytest.raises(ValueError, match="scan exceeded configured entry limit"):
+            _resolve_files(str(tmp_path), None, "*", 20)
+
     async def test_directory_outside_local_access_root(
         self, sample_files, monkeypatch, clean_config,
     ):

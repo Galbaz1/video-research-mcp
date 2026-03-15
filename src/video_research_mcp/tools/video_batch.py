@@ -20,6 +20,7 @@ from .video_file import SUPPORTED_VIDEO_EXTENSIONS, _video_file_content
 from video_research_mcp.tracing import trace
 
 _BATCH_CONCURRENCY_DEFAULT = 3
+_BATCH_SCAN_MAX_ENTRIES_DEFAULT = 5000
 
 
 def _batch_tool_concurrency() -> int:
@@ -28,6 +29,14 @@ def _batch_tool_concurrency() -> int:
 
     cfg = get_config()
     return cfg.batch_tool_concurrency or _BATCH_CONCURRENCY_DEFAULT
+
+
+def _batch_scan_max_entries() -> int:
+    """Return configured maximum directory entries scanned per batch request."""
+    from ..config import get_config
+
+    cfg = get_config()
+    return cfg.batch_scan_max_entries or _BATCH_SCAN_MAX_ENTRIES_DEFAULT
 
 
 @video_server.tool(
@@ -80,7 +89,17 @@ async def video_batch_analyze(
         return make_tool_error(exc)
 
     video_files: list[Path] = []
+    scanned_entries = 0
+    max_scan_entries = _batch_scan_max_entries()
     for matched in sorted(dir_path.glob(glob_pattern)):
+        scanned_entries += 1
+        if scanned_entries > max_scan_entries:
+            return make_tool_error(
+                ValueError(
+                    "Directory scan exceeded configured entry limit "
+                    f"({max_scan_entries}); narrow glob_pattern."
+                )
+            )
         if not matched.is_file() or matched.suffix.lower() not in SUPPORTED_VIDEO_EXTENSIONS:
             continue
         video_files.append(matched)

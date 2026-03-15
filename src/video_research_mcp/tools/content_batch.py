@@ -22,6 +22,7 @@ from .content import _analyze_parts, _build_content_parts, content_server
 
 logger = logging.getLogger(__name__)
 _BATCH_CONCURRENCY_DEFAULT = 3
+_BATCH_SCAN_MAX_ENTRIES_DEFAULT = 5000
 
 SUPPORTED_CONTENT_EXTENSIONS: dict[str, str] = {
     ".pdf": "application/pdf",
@@ -38,6 +39,12 @@ def _batch_tool_concurrency() -> int:
     """Return configured batch fan-out cap with safe fallback."""
     cfg = get_config()
     return cfg.batch_tool_concurrency or _BATCH_CONCURRENCY_DEFAULT
+
+
+def _batch_scan_max_entries() -> int:
+    """Return configured maximum directory entries scanned per batch request."""
+    cfg = get_config()
+    return cfg.batch_scan_max_entries or _BATCH_SCAN_MAX_ENTRIES_DEFAULT
 
 
 def _resolve_files(
@@ -71,7 +78,15 @@ def _resolve_files(
         if not dir_path.is_dir():
             raise FileNotFoundError(f"Not a directory: {directory}")
         files: list[Path] = []
+        scanned_entries = 0
+        max_scan_entries = _batch_scan_max_entries()
         for candidate in dir_path.glob(glob_pattern):
+            scanned_entries += 1
+            if scanned_entries > max_scan_entries:
+                raise ValueError(
+                    "directory scan exceeded configured entry limit "
+                    f"({max_scan_entries}); narrow glob_pattern"
+                )
             if not (candidate.is_file() and candidate.suffix.lower() in SUPPORTED_CONTENT_EXTENSIONS):
                 continue
             files.append(candidate)

@@ -731,3 +731,62 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 wrapper/direct-call instability and hanging subset runs for tool tests.
 2. Add a shared batch-ingress parity checklist test suite so cardinality and size controls stay aligned across `content_batch` and `video_batch`.
+
+---
+
+## Continuation Run (2026-03-16T00:xx:00Z)
+
+### Scope Detection Snapshots
+- Before major transition (detached baseline context):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After major transition to detached `origin/codex/review/i07` context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 40, "pr_context": false, "pr_url": null}`
+- After this run's code changes:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 6, "ahead_commits": 40, "pr_context": false, "pr_url": null}`
+
+### EARS Run Requirements (Concise)
+1. When iteration state remains `current_iteration=8`, the run shall continue on existing iteration branch context.
+2. When batch tools scan directories from untrusted `glob_pattern` input, the system shall enforce a configured scan-entry ceiling before expensive processing.
+3. If scanned entry count exceeds `BATCH_SCAN_MAX_ENTRIES`, tools shall fail fast with structured error output and shall not invoke upload/model helpers.
+4. If iteration-8 lessons require explicit ingress boundaries, this run shall apply that boundary pattern to sparse-match traversal paths in both batch tools.
+5. The run shall persist findings, exploit reasoning, concrete fixes, validation evidence, lessons learned, and confidence updates.
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F15
+- Area: Resource exhaustion via sparse-match directory traversal.
+- Evidence:
+  - Added config + validation at [`src/video_research_mcp/config.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/src/video_research_mcp/config.py).
+  - Fail-fast scan guards in [`src/video_research_mcp/tools/content_batch.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/src/video_research_mcp/tools/content_batch.py) and [`src/video_research_mcp/tools/video_batch.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/src/video_research_mcp/tools/video_batch.py).
+  - Regression coverage in [`tests/test_config.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/tests/test_config.py), [`tests/test_content_batch_tools.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/tests/test_content_batch_tools.py), and [`tests/test_video_tools.py`](/Users/fausto/.codex/worktrees/dbe6/gemini-research-mcp/tests/test_video_tools.py).
+- Exploit reasoning: Large trees with broad glob patterns and few supported files can still force high filesystem iteration cost before `max_files` is reached.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added `BATCH_SCAN_MAX_ENTRIES` runtime config with validation range `1..1000000`.
+- Enforced fail-fast scan-entry boundaries in `content_batch` and `video_batch` directory loops.
+- Added focused regression tests:
+  - `TestBatchScanEntryConfig` for env/validation behavior.
+  - `TestResolveFiles::test_directory_scan_entry_limit` for content batch.
+  - `TestVideoBatchAnalyze::test_batch_analyze_fails_fast_on_scan_entry_limit` for video batch.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/video_batch.py src/video_research_mcp/tools/content_batch.py tests/test_config.py tests/test_video_tools.py tests/test_content_batch_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py -k 'BatchScanEntryConfig' -q` -> pass (`2 passed`).
+- `PYTHONPATH=src uv run pytest tests/test_content_batch_tools.py::TestResolveFiles::test_directory_scan_entry_limit -vv -s` -> pass (`1 passed`).
+- `PYTHONPATH=src uv run pytest tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_fails_fast_on_scan_entry_limit -vv -s` -> hangs in this workspace (known R-004 wrapped-tool/direct-call instability).
+
+### Reflective Loop Update
+- Observe: Existing `max_files` guardrails did not cap total directory traversal in sparse-match cases.
+- Infer root cause: Cardinality contracts were defined on supported matches rather than on discovery workload.
+- Strategy: Reuse explicit ingress-boundary pattern from prior iteration-8 fixes and enforce a shared scan-entry ceiling across batch tools.
+- Validate: Implemented config+guards and passing focused config/content regressions; documented the remaining video-tool harness limitation under R-004.
+- Confidence change: 1.00 -> 1.00.
+
+### Lessons Learned
+- Output cardinality limits are not sufficient without discovery-workload limits.
+- Shared boundary controls across sibling tools reduce policy drift risk.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve R-004 wrapper/direct-call test-harness instability to make subset/full validation deterministic.
+2. Add shared ingress parity tests to assert batch-tool guardrails remain aligned (`max_files`, aggregate-size, scan-entry bounds).

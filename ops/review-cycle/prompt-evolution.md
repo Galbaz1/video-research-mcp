@@ -156,3 +156,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When fail-fast cardinality rejection occurs, the response shall include remediation guidance to refine `glob_pattern` or increase `max_files`.
 4. The run shall record severity-ranked findings, exploit reasoning, applied fix strategy, and confidence delta in iteration artifacts.
 5. If iteration-7 trust-boundary lessons emphasize explicit ingress constraints, iteration-8 continuation shall apply the same explicit-boundary pattern to video batch directory discovery.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (2026-03-16T00:xx:00Z)
+1. When iteration state remains `current_iteration=8` with active branch context on `codex/review/i07`, the run shall continue the existing iteration branch and shall not create a new branch.
+2. When batch tools scan directories with user-provided `glob_pattern`, the system shall enforce a configured upper bound on scanned directory entries before per-file processing.
+3. If scanned directory entries exceed `BATCH_SCAN_MAX_ENTRIES`, the tool shall fail fast with structured tool error output and shall not invoke upload or model-analysis helpers.
+4. If iteration-8 lessons emphasize explicit ingress boundaries, this run shall apply that same boundary contract to sparse-match directory traversal in both `content_batch` and `video_batch`.
+5. The run shall persist scope snapshots, severity-ranked findings, exploit reasoning, implemented fixes, validation evidence, and confidence updates in review-cycle artifacts.

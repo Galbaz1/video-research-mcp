@@ -364,6 +364,26 @@ class TestVideoBatchAnalyze:
         names = [i["file_name"] for i in result["items"]]
         assert "clip.webm" not in names
 
+    @pytest.mark.asyncio
+    async def test_batch_analyze_fails_fast_on_scan_entry_limit(self, tmp_path, monkeypatch, clean_config):
+        """Directory scan guard rejects oversized candidate traversal before file processing."""
+        monkeypatch.setenv("BATCH_SCAN_MAX_ENTRIES", "2")
+        for i in range(4):
+            (tmp_path / f"note-{i}.txt").write_text("not a video")
+
+        with patch(
+            "video_research_mcp.tools.video_batch._video_file_content",
+            new_callable=AsyncMock,
+        ) as mock_video_file_content:
+            result = await video_batch_analyze(
+                directory=str(tmp_path),
+                glob_pattern="*",
+            )
+
+        assert "error" in result
+        assert "Directory scan exceeded configured entry limit" in result["error"]
+        mock_video_file_content.assert_not_awaited()
+
     def test_batch_analyze_uses_configurable_concurrency(self, monkeypatch, clean_config):
         """Batch helper reads configurable fan-out cap from runtime config."""
         monkeypatch.setenv("BATCH_TOOL_CONCURRENCY", "2")

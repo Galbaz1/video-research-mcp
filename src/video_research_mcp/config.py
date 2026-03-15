@@ -123,6 +123,7 @@ class ServerConfig(BaseModel):
     content_compare_max_total_bytes: int = Field(default=100 * 1024 * 1024)
     doc_max_sources: int = Field(default=20)
     batch_tool_concurrency: int = Field(default=3)
+    batch_scan_max_entries: int = Field(default=5000)
     doc_prepare_concurrency: int = Field(default=4)
     doc_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -170,6 +171,13 @@ class ServerConfig(BaseModel):
     def validate_batch_tool_concurrency(cls, value: int) -> int:
         if value < 1 or value > 16:
             raise ValueError("batch_tool_concurrency must be between 1 and 16")
+        return value
+
+    @field_validator("batch_scan_max_entries")
+    @classmethod
+    def validate_batch_scan_max_entries(cls, value: int) -> int:
+        if value < 1 or value > 1_000_000:
+            raise ValueError("batch_scan_max_entries must be between 1 and 1000000")
         return value
 
     @field_validator("doc_prepare_concurrency", "doc_phase_concurrency")
@@ -244,6 +252,7 @@ class ServerConfig(BaseModel):
                 os.getenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", str(100 * 1024 * 1024))
             ),
             batch_tool_concurrency=int(os.getenv("BATCH_TOOL_CONCURRENCY", "3")),
+            batch_scan_max_entries=int(os.getenv("BATCH_SCAN_MAX_ENTRIES", "5000")),
             doc_max_sources=int(os.getenv("DOC_MAX_SOURCES", "20")),
             doc_prepare_concurrency=int(os.getenv("DOC_PREPARE_CONCURRENCY", "4")),
             doc_phase_concurrency=int(os.getenv("DOC_PHASE_CONCURRENCY", "4")),

@@ -197,3 +197,11 @@
 - Exploit reasoning: Large directory inputs can force avoidable discovery/filter overhead before truncation, increasing CPU/IO pressure.
 - Status: Mitigated in iteration 8 continuation by fail-fast supported-match cardinality enforcement with structured error return.
 - Residual risk: Deterministic subset/full verification is still constrained by R-004 test-harness instability; queue final closure after iteration-9 harness stabilization.
+
+## R-027
+- Severity: Medium
+- Area: Resource exhaustion / directory traversal fan-in
+- Evidence: Prior to this run, batch directory scanners enforced `max_files` by supported-match count only, allowing large sparse-match traversal before rejection.
+- Exploit reasoning: Adversarial or accidental broad `glob_pattern` over large trees can cause avoidable filesystem iteration and CPU/IO pressure while producing few supported files.
+- Status: Mitigated in iteration 8 continuation by adding validated `BATCH_SCAN_MAX_ENTRIES` and fail-fast entry-count guardrails in `content_batch` and `video_batch`.
+- Residual risk: Deterministic tool-level verification in `tests/test_video_tools.py` remains constrained by R-004 harness instability in this workspace.

@@ -126,3 +126,18 @@ class TestBatchToolConcurrencyConfig:
             ServerConfig(batch_tool_concurrency=0)
         with pytest.raises(ValueError, match="batch_tool_concurrency must be between 1 and 16"):
             ServerConfig(batch_tool_concurrency=17)
+
+
+class TestBatchScanEntryConfig:
+    """Verify configurable directory-scan entry guardrail for batch tools."""
+
+    def test_batch_scan_max_entries_env_override(self, monkeypatch):
+        monkeypatch.setenv("BATCH_SCAN_MAX_ENTRIES", "123")
+        cfg = ServerConfig.from_env()
+        assert cfg.batch_scan_max_entries == 123
+
+    def test_batch_scan_max_entries_rejects_out_of_range_values(self):
+        with pytest.raises(ValueError, match="batch_scan_max_entries must be between 1 and 1000000"):
+            ServerConfig(batch_scan_max_entries=0)
+        with pytest.raises(ValueError, match="batch_scan_max_entries must be between 1 and 1000000"):
+            ServerConfig(batch_scan_max_entries=1_000_001)

@@ -280,3 +280,16 @@
   - `src/video_research_mcp/tools/video_batch.py`
 - Regression coverage:
   - `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_respects_max_files`
+
+## FP-026: Bound directory scan traversal entries in batch tooling
+- Context: Batch directory modes with caller-controlled `glob_pattern` can traverse many filesystem entries before reaching supported-file cardinality limits.
+- Rule: Enforce a validated scan-entry ceiling (`BATCH_SCAN_MAX_ENTRIES`) during directory iteration before expensive helper/model paths.
+- Why: Prevents traversal-heavy sparse-match inputs from causing avoidable CPU/IO pressure even when `max_files` is low.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/content_batch.py`
+  - `src/video_research_mcp/tools/video_batch.py`
+- Regression coverage:
+  - `tests/test_config.py::TestBatchScanEntryConfig`
+  - `tests/test_content_batch_tools.py::TestResolveFiles::test_directory_scan_entry_limit`
+  - `tests/test_video_tools.py::TestVideoBatchAnalyze::test_batch_analyze_fails_fast_on_scan_entry_limit`
