@@ -134,29 +134,39 @@ async def download_checked(url: str, tmp_dir: Path, *, max_bytes: int) -> Path:
             detected, or the response exceeds max_bytes.
         httpx.HTTPStatusError: If the server returns an error status.
     """
-    await validate_url(url)
-
     url_path = url.rsplit("/", 1)[-1].split("?")[0]
     filename = url_path if "." in url_path else "document.pdf"
     local = tmp_dir / filename
+    current_url = url
+    max_redirects = 5
 
-    async with httpx.AsyncClient(follow_redirects=True, max_redirects=5, timeout=60) as client:
-        async with client.stream("GET", url) as resp:
-            _verify_peer_ip(resp)
-            # Validate final URL after redirects (blocks scheme downgrade / private hosts)
-            final_url = str(resp.url)
-            if final_url != url:
-                await validate_url(final_url)
-            resp.raise_for_status()
-            accumulated = 0
-            with local.open("wb") as f:
-                async for chunk in resp.aiter_bytes():
-                    accumulated += len(chunk)
-                    if accumulated > max_bytes:
-                        raise UrlPolicyError(
-                            f"Response exceeds size limit ({max_bytes} bytes)"
-                        )
-                    f.write(chunk)
+    async with httpx.AsyncClient(follow_redirects=False, timeout=60) as client:
+        for redirect_count in range(max_redirects + 1):
+            await validate_url(current_url)
 
-    logger.info("Downloaded %s (%d bytes) to %s", url, accumulated, local)
-    return local
+            async with client.stream("GET", current_url) as resp:
+                _verify_peer_ip(resp)
+
+                if resp.is_redirect:
+                    if redirect_count >= max_redirects:
+                        raise UrlPolicyError(f"Redirect limit exceeded ({max_redirects})")
+                    location = resp.headers.get("location")
+                    if not location:
+                        raise UrlPolicyError("Redirect response missing Location header")
+                    current_url = str(resp.url.join(location))
+                    continue
+
+                resp.raise_for_status()
+                accumulated = 0
+                with local.open("wb") as f:
+                    async for chunk in resp.aiter_bytes():
+                        accumulated += len(chunk)
+                        if accumulated > max_bytes:
+                            raise UrlPolicyError(
+                                f"Response exceeds size limit ({max_bytes} bytes)"
+                            )
+                        f.write(chunk)
+                logger.info("Downloaded %s (%d bytes) to %s", current_url, accumulated, local)
+                return local
+
+    raise UrlPolicyError("Unexpected redirect handling state")

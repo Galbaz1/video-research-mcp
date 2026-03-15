@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+import httpx
 
 from video_research_mcp.url_policy import (
     UrlPolicyError,
@@ -54,18 +55,36 @@ class _AsyncIterBytes:
 class _FakeResponse:
     """Minimal httpx response mock with async streaming."""
 
-    def __init__(self, chunks: list[bytes], *, peer_ip: str | None = None):
+    def __init__(
+        self,
+        chunks: list[bytes],
+        *,
+        peer_ip: str | None = None,
+        status_code: int = 200,
+        headers: dict[str, str] | None = None,
+    ):
         self._chunks = chunks
-        self.url: str = ""  # Set by _FakeClient.stream or test
+        self.url = httpx.URL("https://example.com/doc.pdf")
         self.extensions: dict = {}
+        self.status_code = status_code
+        self.headers = headers or {}
         if peer_ip:
             self.extensions["network_stream"] = _FakeNetworkStream(peer_ip)
 
     def raise_for_status(self):
-        pass
+        if self.status_code >= 400:
+            raise httpx.HTTPStatusError(
+                f"HTTP {self.status_code}",
+                request=httpx.Request("GET", self.url),
+                response=httpx.Response(self.status_code, request=httpx.Request("GET", self.url)),
+            )
 
     def aiter_bytes(self):
         return _AsyncIterBytes(self._chunks)
+
+    @property
+    def is_redirect(self) -> bool:
+        return 300 <= self.status_code < 400 and "location" in self.headers
 
 
 class _FakeStreamCtx:
@@ -84,13 +103,20 @@ class _FakeStreamCtx:
 class _FakeClient:
     """Minimal httpx.AsyncClient mock."""
 
-    def __init__(self, resp: _FakeResponse):
-        self._resp = resp
+    def __init__(self, responses: _FakeResponse | list[_FakeResponse]):
+        if isinstance(responses, list):
+            self._responses = responses
+        else:
+            self._responses = [responses]
+        self._cursor = 0
 
     def stream(self, method, url):
-        if not self._resp.url:
-            self._resp.url = url
-        return _FakeStreamCtx(self._resp)
+        if self._cursor >= len(self._responses):
+            raise AssertionError("No more fake responses configured")
+        resp = self._responses[self._cursor]
+        self._cursor += 1
+        resp.url = httpx.URL(url)
+        return _FakeStreamCtx(resp)
 
     async def __aenter__(self):
         return self
@@ -230,7 +256,7 @@ class TestDownloadChecked:
                 )
 
     async def test_follows_redirects_with_limit(self, tmp_path: Path):
-        """Client is created with follow_redirects=True and max_redirects=5."""
+        """Client uses manual redirect handling (follow_redirects=False)."""
         resp = _FakeResponse([b"content"])
         client = _FakeClient(resp)
         mock_cls = MagicMock(return_value=client)
@@ -242,16 +268,20 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=True, max_redirects=5, timeout=60)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60)
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
         WHEN download_checked runs,
         THEN it calls validate_url on the final redirected URL.
         """
-        resp = _FakeResponse([b"content"])
-        resp.url = "https://cdn.example.com/doc.pdf"
-        client = _FakeClient(resp)
+        redirect = _FakeResponse(
+            [],
+            status_code=302,
+            headers={"location": "https://cdn.example.com/doc.pdf"},
+        )
+        final = _FakeResponse([b"content"])
+        client = _FakeClient([redirect, final])
 
         validate_calls = []
         original_validate = AsyncMock(side_effect=lambda url: validate_calls.append(url))

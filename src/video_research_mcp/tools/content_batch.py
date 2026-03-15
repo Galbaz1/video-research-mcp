@@ -15,7 +15,7 @@ from ..errors import make_tool_error
 from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..models.content_batch import BatchContentItem, BatchContentResult
 from ..tracing import trace
-from ..types import ThinkingLevel, coerce_json_param
+from ..types import ThinkingLevel, coerce_json_param, coerce_string_list_param
 from ..weaviate_store import store_content_analysis
 from .content import _analyze_parts, _build_content_parts, content_server
 
@@ -206,8 +206,12 @@ async def content_batch_analyze(
     Returns:
         Dict with file counts, per-file items, and optional comparison result.
     """
-    file_paths = coerce_json_param(file_paths, list)
     output_schema = coerce_json_param(output_schema, dict)
+
+    try:
+        file_paths = coerce_string_list_param(file_paths, param_name="file_paths")
+    except ValueError as exc:
+        return make_tool_error(exc)
 
     try:
         files = _resolve_files(directory, file_paths, glob_pattern, max_files)

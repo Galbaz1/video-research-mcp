@@ -157,6 +157,15 @@ class TestResearchDocument:
         result = await research_document(instruction="test")
         assert "error" in result
 
+    async def test_rejects_non_list_urls(self, mock_gemini_client):
+        """GIVEN urls is a plain string WHEN calling THEN validation error is returned."""
+        result = await research_document(
+            instruction="test",
+            urls="https://example.com/paper.pdf",
+        )
+        assert "error" in result
+        assert "list of strings" in result["error"]
+
     async def test_preparation_failure(self, mock_gemini_client):
         """GIVEN file prep fails WHEN calling THEN error returned."""
         with patch(
