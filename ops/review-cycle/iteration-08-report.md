@@ -561,3 +561,7 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 wrapped-tool direct-call instability to restore reliable broader regression execution.
 2. Add cancellation/time-budget tests for bounded fan-out and long-running model-call paths.
+
+### Post-Commit Scope Snapshot
+- After commit + push from detached iteration context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 33, "pr_context": false, "pr_url": null}`
