@@ -67,3 +67,49 @@
 ## Iteration 7 seed hypotheses
 - Evaluate prompt-injection and instruction-smuggling resistance across tools that combine untrusted content with system prompts.
 - Add negative tests that prove malicious document/content strings cannot override tool safety constraints or policy gates.
+
+## Iteration 7 (Prompt Injection and Tool Misuse Resistance) - 2026-03-01T16:03:02Z
+- Observation: `knowledge` Flash post-processing built prompts by embedding query and hit properties directly in free-form text (`src/video_research_mcp/tools/knowledge/summarize.py`) without explicit untrusted-data framing.
+- Inference: Untrusted retrieval content could attempt instruction smuggling (for example "ignore previous instructions") and reduce reliability of summary/property-selection outputs.
+- Strategy: Apply iteration-6 lesson ("make implicit integrity boundaries explicit") to prompt boundaries by introducing explicit untrusted-data delimiters and hard model instructions to ignore embedded commands.
+- Validation: Hardened `_build_prompt(...)` with `UNTRUSTED_QUERY`/`UNTRUSTED_HIT` wrappers and added adversarial regression coverage in `tests/test_knowledge_summarize.py::test_prompt_hardens_untrusted_query_and_properties`; focused lint + tests passed.
+- Confidence change: 0.58 -> 0.81 for prompt-boundary robustness in knowledge summarization path.
+- Delivery confidence: 0.81 -> 0.86 after targeted tests passed on branch `codex/review/i07`.
+
+## Iteration 8 seed hypotheses
+- Audit concurrency/resource-exhaustion risks in batch/document pipelines (`asyncio.gather` fan-out, upload/download parallelism) and add bounded concurrency controls where needed.
+- Add negative tests covering adversarially large batch inputs to validate graceful degradation instead of resource spikes.
+
+## Iteration 8 (Concurrency and Resource Exhaustion) - 2026-03-15T01:04:48Z
+- Observation: `research_document_file._prepare_all_documents_with_issues(...)` used unbounded `asyncio.gather` for both URL downloads and File API uploads, and iteration-7 residual risk remained open for `_reshape_to_schema` prompt boundaries.
+- Inference: Reliability controls were uneven across parallel paths; batch tools had semaphores while document preparation helpers and one multi-pass prompt path did not.
+- Strategy: Apply one shared bounded-concurrency primitive to document preparation fan-out and apply iteration-7 untrusted-data boundary pattern to second-pass schema reshaping.
+- Validation: Added bounded gather with `_DOC_PREPARE_CONCURRENCY=4`, hardened `_reshape_to_schema(...)` with untrusted delimiters/rules, and added focused regression coverage (`test_downloads_use_bounded_concurrency`, `test_url_fallback_hardens_untrusted_reshape_prompt`); targeted lint/tests passed.
+- Confidence change: 0.61 -> 0.84 for iteration-8 objective coverage.
+- Delivery confidence: 0.84 -> 0.89 after focused validations passed on `codex/review/i07`.
+
+## Iteration 9 seed hypotheses
+- Fix direct-call test harness drift where decorated tools appear as `FunctionTool` in subset runs.
+- Add explicit callable-contract tests around `_unwrap_fastmcp_tools` behavior to prevent future regression blind spots.
+
+## Iteration 8 Continuation (Phase Fan-out Hardening) - 2026-03-15T04:20:00Z
+- Observation: While iteration-8 bounded download/upload fan-out in `research_document_file`, `research_document` still used unbounded `asyncio.gather` for per-document mapping/evidence model calls.
+- Inference: Resource controls were stage-local rather than pipeline-wide, leaving residual quota and latency-spike risk under large document sets.
+- Strategy: Reuse bounded concurrency pattern from iteration-8 ingestion helper inside phase executors via shared `_gather_bounded(...)`.
+- Validation: Added `_DOC_PHASE_CONCURRENCY=4` and bounded execution for `_phase_document_map` and `_phase_evidence_extraction`; added focused regression tests proving peak concurrency stays capped.
+- Confidence change: 0.84 -> 0.90 for iteration-8 objective completeness.
+
+## Iteration 9 seed hypotheses (updated)
+- Resolve the existing tool-wrapper/direct-call harness instability (R-004) that causes hangs in full-module subset runs.
+- Add cancellability and backpressure tests for long-running async fan-out phases.
+
+## Iteration 8 Continuation (Configurable Concurrency Caps) - 2026-03-15T04:03:39Z
+- Observation: Iteration-8 fan-out limits were enforced but remained hard-coded (`4`) across preparation and phase execution, leaving R-013 residual risk open for deployment mismatch.
+- Inference: Safety controls without validated operator tuning create a second-order reliability risk under heterogeneous runtime quotas/resources.
+- Strategy: Preserve bounded execution but move caps to validated runtime config (`DOC_PREPARE_CONCURRENCY`, `DOC_PHASE_CONCURRENCY`, range `1..16`) and consume via `get_config()`.
+- Validation: Added config fields/validators and targeted tests for env parsing + bounds, while keeping bounded concurrency assertions green in document pipeline tests.
+- Confidence change: 0.90 -> 0.93 for iteration-8 objective closure quality.
+
+## Iteration 9 seed hypotheses (reconfirmed)
+- Close R-004 by making tool direct-call behavior deterministic across full and subset pytest runs.
+- Add regression contracts for cancellation/backpressure on long-running fan-out phases.

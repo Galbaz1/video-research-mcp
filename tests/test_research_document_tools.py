@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -281,3 +282,73 @@ class TestResearchDocument:
                     "error": "Blocked hostname",
                 }
             ]
+
+    async def test_phase_document_map_uses_bounded_concurrency(self):
+        """Document mapping fan-out is bounded to avoid unbounded parallel model calls."""
+        parts = [research_document_mod.types.Part(text=f"doc-{idx}") for idx in range(8)]
+        sources = [
+            research_document_mod.DocumentSource(
+                filename=f"doc-{idx}.pdf",
+                original_path=f"/tmp/doc-{idx}.pdf",
+            )
+            for idx in range(8)
+        ]
+        active = 0
+        peak = 0
+
+        async def _fake_generate_structured(*_args, **_kwargs):
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.01)
+            active -= 1
+            return DocumentMap(title="Doc")
+
+        with patch(
+            "video_research_mcp.tools.research_document.GeminiClient.generate_structured",
+            side_effect=_fake_generate_structured,
+        ):
+            await research_document_mod._phase_document_map(
+                parts,
+                sources,
+                "map docs",
+                "low",
+            )
+
+        assert peak <= research_document_mod._doc_phase_concurrency()
+
+    async def test_phase_evidence_extraction_uses_bounded_concurrency(self):
+        """Evidence extraction fan-out is bounded to avoid resource spikes."""
+        parts = [research_document_mod.types.Part(text=f"doc-{idx}") for idx in range(8)]
+        sources = [
+            research_document_mod.DocumentSource(
+                filename=f"doc-{idx}.pdf",
+                original_path=f"/tmp/doc-{idx}.pdf",
+            )
+            for idx in range(8)
+        ]
+        doc_maps = [DocumentMap(title=f"Doc {idx}") for idx in range(8)]
+        active = 0
+        peak = 0
+
+        async def _fake_generate_structured(*_args, **_kwargs):
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.01)
+            active -= 1
+            return DocumentFindingsContainer(findings=[])
+
+        with patch(
+            "video_research_mcp.tools.research_document.GeminiClient.generate_structured",
+            side_effect=_fake_generate_structured,
+        ):
+            await research_document_mod._phase_evidence_extraction(
+                parts,
+                sources,
+                "extract evidence",
+                doc_maps,
+                "low",
+            )
+
+        assert peak <= research_document_mod._doc_phase_concurrency()
