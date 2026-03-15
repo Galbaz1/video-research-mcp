@@ -92,5 +92,12 @@
 - Area: Concurrency/resource exhaustion
 - Evidence: Prior to this continuation run, `src/video_research_mcp/tools/research_document.py` used unbounded `asyncio.gather` in `_phase_document_map` and `_phase_evidence_extraction`.
 - Exploit reasoning: Large document batches can amplify simultaneous upstream model calls, increasing quota pressure and degrading service responsiveness.
-- Status: Mitigated in iteration 8 continuation via `_DOC_PHASE_CONCURRENCY` bounded phase execution.
-- Residual risk: Cap is static; future tuning may require config-driven limits per deployment profile.
+- Status: Mitigated in iteration 8 continuation via bounded phase execution and config-driven cap controls (`DOC_PHASE_CONCURRENCY`, `DOC_PREPARE_CONCURRENCY`) added in 2026-03-15 continuation run.
+- Residual risk: Misconfigured caps (too high/too low) can still degrade availability; bounded by validation range `1..16`.
+
+## R-014
+- Severity: Low
+- Area: Operational tuning / availability
+- Evidence: Concurrency controls are now configurable per deployment and validated for range, but operator-selected values still influence latency/throughput tradeoffs.
+- Exploit reasoning: Non-malicious misconfiguration (for example maxing both caps in low-resource environments) can increase queueing or contention under load.
+- Status: Accepted with guardrails (range validation + secure defaults); monitor via operational telemetry.

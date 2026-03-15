@@ -131,3 +131,18 @@
 - Regression coverage:
   - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_document_map_uses_bounded_concurrency`
   - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_evidence_extraction_uses_bounded_concurrency`
+
+## FP-014: Validate and externalize document fan-out caps
+- Context: Document preparation and phase execution were bounded but static (`4`) across deployments.
+- Rule: Source concurrency caps from validated runtime config (`DOC_PREPARE_CONCURRENCY`, `DOC_PHASE_CONCURRENCY`) with strict numeric bounds.
+- Why: Maintains secure-by-default throttling while allowing safe tuning to environment-specific quota and resource ceilings.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/research_document.py`
+  - `src/video_research_mcp/tools/research_document_file.py`
+- Regression coverage:
+  - `tests/test_config.py::TestDocumentConcurrencyConfig::test_doc_concurrency_env_overrides_are_applied`
+  - `tests/test_config.py::TestDocumentConcurrencyConfig::test_doc_concurrency_rejects_out_of_range_values`
+  - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_document_map_uses_bounded_concurrency`
+  - `tests/test_research_document_tools.py::TestResearchDocument::test_phase_evidence_extraction_uses_bounded_concurrency`
+  - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_downloads_use_bounded_concurrency`

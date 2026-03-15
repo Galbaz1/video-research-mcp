@@ -12,6 +12,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..client import GeminiClient
+from ..config import get_config
 from ..errors import make_tool_error
 from ..tracing import trace
 from ..models.research_document import (
@@ -35,7 +36,13 @@ from .research import research_server
 from .research_document_file import _prepare_all_documents_with_issues
 
 logger = logging.getLogger(__name__)
-_DOC_PHASE_CONCURRENCY = 4
+_DOC_PHASE_CONCURRENCY_DEFAULT = 4
+
+
+def _doc_phase_concurrency() -> int:
+    """Return configured phase fan-out cap with safe fallback."""
+    cfg = get_config()
+    return cfg.doc_phase_concurrency or _DOC_PHASE_CONCURRENCY_DEFAULT
 
 
 async def _gather_bounded(items: list, coro_factory, concurrency: int) -> list:
@@ -159,7 +166,7 @@ async def _phase_document_map(
     return await _gather_bounded(
         list(zip(file_parts, sources)),
         _map_one,
-        _DOC_PHASE_CONCURRENCY,
+        _doc_phase_concurrency(),
     )
 
 
@@ -191,7 +198,7 @@ async def _phase_evidence_extraction(
     return await _gather_bounded(
         list(zip(file_parts, sources, doc_maps)),
         _extract_one,
-        _DOC_PHASE_CONCURRENCY,
+        _doc_phase_concurrency(),
     )
 
 

@@ -25,7 +25,13 @@ SUPPORTED_DOC_EXTENSIONS: dict[str, str] = {
 }
 
 DOC_MAX_SIZE = 50 * 1024 * 1024  # 50 MB Gemini limit
-_DOC_PREPARE_CONCURRENCY = 4
+_DOC_PREPARE_CONCURRENCY_DEFAULT = 4
+
+
+def _doc_prepare_concurrency() -> int:
+    """Return configured preparation fan-out cap with safe fallback."""
+    cfg = get_config()
+    return cfg.doc_prepare_concurrency or _DOC_PREPARE_CONCURRENCY_DEFAULT
 
 
 def _doc_mime_type(path: Path) -> str:
@@ -115,7 +121,7 @@ async def _prepare_all_documents_with_issues(
     issues: list[dict[str, str]] = []
 
     async def _gather_bounded(items: list, coro_factory):
-        semaphore = asyncio.Semaphore(_DOC_PREPARE_CONCURRENCY)
+        semaphore = asyncio.Semaphore(_doc_prepare_concurrency())
 
         async def _run(item):
             async with semaphore:

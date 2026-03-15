@@ -5,11 +5,11 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, patch
 
+from video_research_mcp.config import get_config
 from video_research_mcp.tools.research_document_file import (
-    _DOC_PREPARE_CONCURRENCY,
     _prepare_all_documents_with_issues,
-    _normalize_document_url,
     _download_document,
+    _normalize_document_url,
 )
 
 
@@ -164,4 +164,4 @@ class TestPrepareAllDocumentsWithIssues:
                 urls=urls,
             )
 
-        assert peak <= _DOC_PREPARE_CONCURRENCY
+        assert peak <= get_config().doc_prepare_concurrency

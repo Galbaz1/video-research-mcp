@@ -126,3 +126,46 @@ Focus: Concurrency and resource exhaustion
 2. Add explicit per-tool stress-contract tests for max fan-out and cancellation behavior across async phases.
 - After commit on `codex/review/i07`:
   - `{"mode":"pr","reason":"Branch has an open pull request.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":0,"ahead_commits":16,"pr_context":true,"pr_url":"https://github.com/Galbaz1/video-research-mcp/pull/59"}`
+
+---
+
+## Continuation Run (2026-03-15T04:03:39Z)
+
+### Scope Detection Snapshots
+- After resuming iteration branch commit context in detached mode:
+  - `{"mode":"commits","reason":"Branch is ahead of base with no local unstaged/uncommitted files.","branch":"HEAD","base_branch":"main","uncommitted_files":0,"ahead_commits":17,"pr_context":false,"pr_url":null}`
+- Before commit (after this run's changes):
+  - `{"mode":"uncommitted","reason":"Working tree has local changes.","branch":"HEAD","base_branch":"main","uncommitted_files":12,"ahead_commits":17,"pr_context":false,"pr_url":null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F4
+- Area: Static concurrency caps in document pipeline.
+- Evidence:
+  - Prior hard-coded caps in `research_document.py` and `research_document_file.py` prevented deployment-specific quota tuning.
+  - Config-driven caps now wired through [`src/video_research_mcp/config.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/src/video_research_mcp/config.py), [`src/video_research_mcp/tools/research_document.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/src/video_research_mcp/tools/research_document.py), and [`src/video_research_mcp/tools/research_document_file.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/src/video_research_mcp/tools/research_document_file.py).
+  - Regression coverage added in [`tests/test_config.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/tests/test_config.py), [`tests/test_research_document_tools.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/tests/test_research_document_tools.py), and [`tests/test_research_document_file.py`](/Users/fausto/.codex/worktrees/ad1d/gemini-research-mcp/tests/test_research_document_file.py).
+- Exploit reasoning: Fixed caps can under-throttle on constrained hosts or over-throttle on larger hosts, creating either availability spikes or prolonged resource occupation.
+- Fix status: Implemented in this continuation run.
+
+### Additional Implemented Changes
+- Added `DOC_PREPARE_CONCURRENCY` and `DOC_PHASE_CONCURRENCY` runtime config with validation range `1..16`.
+- Replaced hard-coded phase/preparation caps with `get_config()` lookups and safe defaults.
+- Added config parsing and bounds tests for document concurrency settings.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/research_document.py src/video_research_mcp/tools/research_document_file.py tests/test_config.py tests/test_research_document_tools.py tests/test_research_document_file.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py -k 'DocumentConcurrencyConfig' -q` -> pass (`2 passed`).
+- `PYTHONPATH=src uv run pytest tests/test_research_document_tools.py -k bounded_concurrency -q` -> pass (`2 passed`).
+- `PYTHONPATH=src uv run pytest tests/test_research_document_file.py -k downloads_use_bounded_concurrency -q` -> pass (`1 passed`).
+
+### Reflective Loop Update
+- Observe: Residual risk R-013 remained open because caps were still static.
+- Infer root cause: Initial remediation prioritized immediate safety but did not externalize control for varied deployment limits.
+- Strategy: Reuse bounded-concurrency enforcement while moving cap values into validated runtime configuration.
+- Validate: Implemented config-backed controls plus focused config and concurrency regression tests.
+- Confidence change (continuation): 0.90 -> 0.93 for iteration-8 concurrency objective completeness.
+
+### Lessons Learned (Continuation)
+- Hardening is stronger when safeguards are both present and tunable under strict validation constraints.
+- Residual-risk closure should include operability controls, not only code-path bounds.

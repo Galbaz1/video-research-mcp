@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from video_research_mcp.config import ServerConfig
 
 
@@ -49,3 +51,21 @@ class TestWeaviateUrlNormalization:
         cfg = ServerConfig.from_env()
         assert cfg.weaviate_url == ""
         assert cfg.weaviate_enabled is False
+
+
+class TestDocumentConcurrencyConfig:
+    """Verify configurable fan-out controls for document pipelines."""
+
+    def test_doc_concurrency_env_overrides_are_applied(self, monkeypatch):
+        monkeypatch.setenv("DOC_PREPARE_CONCURRENCY", "6")
+        monkeypatch.setenv("DOC_PHASE_CONCURRENCY", "5")
+        cfg = ServerConfig.from_env()
+        assert cfg.doc_prepare_concurrency == 6
+        assert cfg.doc_phase_concurrency == 5
+
+    def test_doc_concurrency_rejects_out_of_range_values(self):
+        with pytest.raises(ValueError, match="Document concurrency values"):
+            ServerConfig(doc_prepare_concurrency=0)
+
+        with pytest.raises(ValueError, match="Document concurrency values"):
+            ServerConfig(doc_phase_concurrency=17)

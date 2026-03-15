@@ -78,3 +78,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. If focused concurrency tests exist, the run shall validate the new cap with deterministic peak-concurrency assertions.
 4. If full-module regression execution remains unstable due known harness drift, the run shall record that limitation in iteration notes and keep the risk open.
 5. The run shall persist updated findings, fixes, lessons, and confidence deltas to all review-cycle artifacts.
+
+## Iteration 8 Continuation (Configurable Caps) Mission Rewritten as EARS Requirements
+1. When iteration state remains `current_iteration=8` and R-013 residual risk is open, the run shall prioritize configurable concurrency controls over additional fixed-cap changes.
+2. When document preparation or document phase execution initializes concurrency limits, the system shall read limits from runtime config instead of hard-coded constants.
+3. If a configured document concurrency value is outside `1..16`, config loading shall fail with a validation error.
+4. When config-driven caps are introduced, the run shall add focused tests for env override parsing and out-of-range rejection.
+5. The run shall persist updated findings, exploit reasoning, fix status, and confidence deltas in iteration-8 artifacts.

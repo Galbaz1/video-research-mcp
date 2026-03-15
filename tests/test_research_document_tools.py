@@ -306,7 +306,7 @@ class TestResearchDocument:
                 "low",
             )
 
-        assert peak <= research_document_mod._DOC_PHASE_CONCURRENCY
+        assert peak <= research_document_mod._doc_phase_concurrency()
 
     async def test_phase_evidence_extraction_uses_bounded_concurrency(self):
         """Evidence extraction fan-out is bounded to avoid resource spikes."""
@@ -342,4 +342,4 @@ class TestResearchDocument:
                 "low",
             )
 
-        assert peak <= research_document_mod._DOC_PHASE_CONCURRENCY
+        assert peak <= research_document_mod._doc_phase_concurrency()

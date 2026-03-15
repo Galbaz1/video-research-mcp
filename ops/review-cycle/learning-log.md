@@ -102,3 +102,14 @@
 ## Iteration 9 seed hypotheses (updated)
 - Resolve the existing tool-wrapper/direct-call harness instability (R-004) that causes hangs in full-module subset runs.
 - Add cancellability and backpressure tests for long-running async fan-out phases.
+
+## Iteration 8 Continuation (Configurable Concurrency Caps) - 2026-03-15T04:03:39Z
+- Observation: Iteration-8 fan-out limits were enforced but remained hard-coded (`4`) across preparation and phase execution, leaving R-013 residual risk open for deployment mismatch.
+- Inference: Safety controls without validated operator tuning create a second-order reliability risk under heterogeneous runtime quotas/resources.
+- Strategy: Preserve bounded execution but move caps to validated runtime config (`DOC_PREPARE_CONCURRENCY`, `DOC_PHASE_CONCURRENCY`, range `1..16`) and consume via `get_config()`.
+- Validation: Added config fields/validators and targeted tests for env parsing + bounds, while keeping bounded concurrency assertions green in document pipeline tests.
+- Confidence change: 0.90 -> 0.93 for iteration-8 objective closure quality.
+
+## Iteration 9 seed hypotheses (reconfirmed)
+- Close R-004 by making tool direct-call behavior deterministic across full and subset pytest runs.
+- Add regression contracts for cancellation/backpressure on long-running fan-out phases.
