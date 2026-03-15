@@ -14,6 +14,10 @@
     - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "codex/review/i01", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 2, "pr_context": false, "pr_url": null}`
   - Post-change snapshot:
     - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "codex/review/i01", "base_branch": "main", "uncommitted_files": 11, "ahead_commits": 2, "pr_context": false, "pr_url": null}`
+  - Pre-commit snapshot:
+    - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "codex/review/i01", "base_branch": "main", "uncommitted_files": 17, "ahead_commits": 2, "pr_context": false, "pr_url": null}`
+  - Post-commit snapshot:
+    - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "codex/review/i01", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 3, "pr_context": false, "pr_url": null}`
 
 ## Mission Rewritten as Concise EARS (Prompt-Optimizer)
 1. The automation shall load prior review-cycle memory files before selecting the current iteration plan.
