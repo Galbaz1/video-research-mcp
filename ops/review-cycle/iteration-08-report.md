@@ -169,3 +169,5 @@ Focus: Concurrency and resource exhaustion
 ### Lessons Learned (Continuation)
 - Hardening is stronger when safeguards are both present and tunable under strict validation constraints.
 - Residual-risk closure should include operability controls, not only code-path bounds.
+- After commit:
+  - `{"mode":"commits","reason":"Branch is ahead of base with no local unstaged/uncommitted files.","branch":"HEAD","base_branch":"main","uncommitted_files":0,"ahead_commits":18,"pr_context":false,"pr_url":null}`
