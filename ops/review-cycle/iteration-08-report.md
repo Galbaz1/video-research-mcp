@@ -681,3 +681,8 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 wrapper/direct-call instability so subset/full regression selection becomes deterministic.
 2. Add explicit cancellation/time-budget tests on bounded fan-out helper paths.
+
+### Post-Commit Scope Snapshot
+- After commit + push from detached iteration context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 37, "pr_context": false, "pr_url": null}`
+- Commit: `12478d0 security(iteration-8): fail fast on oversized content directory scans`
