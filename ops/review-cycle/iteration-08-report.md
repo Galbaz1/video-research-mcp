@@ -790,3 +790,10 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 wrapper/direct-call test-harness instability to make subset/full validation deterministic.
 2. Add shared ingress parity tests to assert batch-tool guardrails remain aligned (`max_files`, aggregate-size, scan-entry bounds).
+
+### Post-Commit Scope Snapshot
+- Latest pre-commit snapshot with artifact updates:
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 12, "ahead_commits": 40, "pr_context": false, "pr_url": null}`
+- After commit + push from detached iteration context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 41, "pr_context": false, "pr_url": null}`
+- Commit: `762de5b security(iteration-8): bound batch directory scan traversal`
