@@ -620,3 +620,7 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 tool-wrapper drift so tool-level fail-fast tests run reliably in subset/full executions.
 2. Add cancellation/time-budget contracts for bounded fan-out paths and long-running model-call phases.
+
+### Post-Commit Scope Snapshot
+- After commit + push from detached iteration context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 35, "pr_context": false, "pr_url": null}`
