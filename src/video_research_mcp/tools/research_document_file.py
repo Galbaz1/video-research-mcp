@@ -25,6 +25,7 @@ SUPPORTED_DOC_EXTENSIONS: dict[str, str] = {
 }
 
 DOC_MAX_SIZE = 50 * 1024 * 1024  # 50 MB Gemini limit
+_DOC_PREPARE_CONCURRENCY = 4
 
 
 def _doc_mime_type(path: Path) -> str:
@@ -113,12 +114,26 @@ async def _prepare_all_documents_with_issues(
     prepared: list[tuple[str, str, str]] = []
     issues: list[dict[str, str]] = []
 
+    async def _gather_bounded(items: list, coro_factory):
+        semaphore = asyncio.Semaphore(_DOC_PREPARE_CONCURRENCY)
+
+        async def _run(item):
+            async with semaphore:
+                try:
+                    return await coro_factory(item)
+                except Exception as exc:
+                    return exc
+
+        return await asyncio.gather(*[_run(item) for item in items])
+
     # Download URL documents first
     downloaded: list[tuple[Path, str]] = []
     if urls:
         tmp_dir = Path(tempfile.mkdtemp(prefix="research_doc_"))
-        download_tasks = [_download_document(u, tmp_dir) for u in urls]
-        results = await asyncio.gather(*download_tasks, return_exceptions=True)
+        results = await _gather_bounded(
+            urls,
+            lambda u: _download_document(u, tmp_dir),
+        )
         for url, result in zip(urls, results):
             if isinstance(result, Exception):
                 logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
@@ -146,8 +161,10 @@ async def _prepare_all_documents_with_issues(
         uri, cid = await _prepare_document(path)
         return uri, cid, original
 
-    upload_tasks = [_upload(p, orig) for p, orig in all_paths]
-    results = await asyncio.gather(*upload_tasks, return_exceptions=True)
+    results = await _gather_bounded(
+        all_paths,
+        lambda po: _upload(po[0], po[1]),
+    )
     for (_path, original), result in zip(all_paths, results):
         if isinstance(result, Exception):
             logger.warning("Failed to upload document: %s", result)

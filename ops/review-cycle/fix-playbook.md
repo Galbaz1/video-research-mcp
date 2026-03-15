@@ -100,6 +100,24 @@
 - Rule: Wrap query/hit payloads in explicit untrusted-data markers and instruct model to ignore embedded instructions in those payloads.
 - Why: Reduces prompt-injection/tool-misuse risk from instruction smuggling in retrieved content.
 - Applied in iteration 7:
-  - `src/video_research_mcp/tools/knowledge/summarize.py`
+- `src/video_research_mcp/tools/knowledge/summarize.py`
 - Regression coverage:
-  - `tests/test_knowledge_summarize.py::TestSummarizeHits::test_prompt_hardens_untrusted_query_and_properties`
+- `tests/test_knowledge_summarize.py::TestSummarizeHits::test_prompt_hardens_untrusted_query_and_properties`
+
+## FP-011: Delimit untrusted content in second-pass schema reshaping
+- Context: Multi-pass URL analysis where first-pass unstructured model output is fed into a second-pass structured extraction prompt.
+- Rule: Wrap instruction/content in explicit untrusted-data markers and include hard anti-injection + schema-only response rules.
+- Why: Prevents instruction-smuggling payloads in fetched content from steering reshape behavior.
+- Applied in iteration 8:
+  - `src/video_research_mcp/tools/content.py`
+- Regression coverage:
+  - `tests/test_content_tools.py::TestContentAnalyze::test_url_fallback_hardens_untrusted_reshape_prompt`
+
+## FP-012: Bound parallel document preparation fan-out
+- Context: `research_document` pre-processing pipeline downloading/uploading many sources in parallel.
+- Rule: Use bounded concurrency for both download and upload stages in `_prepare_all_documents_with_issues(...)`.
+- Why: Reduces socket/memory pressure and availability degradation under large source lists.
+- Applied in iteration 8:
+  - `src/video_research_mcp/tools/research_document_file.py`
+- Regression coverage:
+  - `tests/test_research_document_file.py::TestPrepareAllDocumentsWithIssues::test_downloads_use_bounded_concurrency`

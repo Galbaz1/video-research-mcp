@@ -64,3 +64,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When query text or retrieved properties are inserted into model prompts, the system shall mark those values as untrusted and instruct the model to ignore embedded instructions.
 4. If adversarial text attempts instruction override (for example "ignore previous instructions"), regression tests shall verify hardened prompt contracts remain present.
 5. The run shall record severity-ranked findings, exploit reasoning, implemented or patch-ready remediations, and confidence deltas in review-cycle artifacts.
+
+## Iteration 8 Mission Rewritten as EARS Requirements
+1. When iteration state indicates `current_iteration=8`, the run shall prioritize concurrency and resource-exhaustion risks.
+2. If iteration 7 lessons identify untrusted prompt-boundary gaps, iteration 8 shall implement at least one remediation directly derived from those lessons.
+3. When second-pass schema reshaping consumes untrusted fetched content, the system shall delimit untrusted fields and instruct the model to ignore embedded instructions.
+4. When document preparation fans out downloads or uploads, the system shall apply bounded concurrency controls.
+5. The run shall persist severity-ranked findings, exploit reasoning, implemented fixes, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.

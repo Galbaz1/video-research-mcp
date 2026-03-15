@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 from unittest.mock import AsyncMock, patch
 
 from video_research_mcp.tools.research_document_file import (
+    _DOC_PREPARE_CONCURRENCY,
     _prepare_all_documents_with_issues,
     _normalize_document_url,
     _download_document,
@@ -129,3 +131,37 @@ class TestPrepareAllDocumentsWithIssues:
                     "error": "fetch failed",
                 }
             ]
+
+    async def test_downloads_use_bounded_concurrency(self, tmp_path):
+        """Download fan-out is bounded to avoid unbounded resource spikes."""
+        urls = [f"https://example.com/doc-{i}.pdf" for i in range(8)]
+        active = 0
+        peak = 0
+
+        async def _fake_download(url: str, _tmp_dir):
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.01)
+            active -= 1
+            suffix = url.rsplit("-", maxsplit=1)[-1]
+            return tmp_path / f"doc-{suffix}"
+
+        with (
+            patch(
+                "video_research_mcp.tools.research_document_file._download_document",
+                side_effect=_fake_download,
+            ),
+            patch(
+                "video_research_mcp.tools.research_document_file._prepare_document",
+                new_callable=AsyncMock,
+            ) as mock_prepare,
+        ):
+            mock_prepare.return_value = ("gs://ok", "hash-ok")
+
+            await _prepare_all_documents_with_issues(
+                file_paths=None,
+                urls=urls,
+            )
+
+        assert peak <= _DOC_PREPARE_CONCURRENCY

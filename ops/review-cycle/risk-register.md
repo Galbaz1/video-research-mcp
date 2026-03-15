@@ -70,12 +70,19 @@
 - Area: Prompt-injection/tool-misuse resistance
 - Evidence: Iterations 1-6 focused on trust boundaries, validation, idempotency, auth, cache integrity, and fault isolation; no dedicated adversarial prompt-injection review artifacts yet.
 - Exploit reasoning: Untrusted content merged into model prompts may induce policy bypass attempts without explicit adversarial coverage tests.
-- Status: Partially mitigated in iteration 7 with untrusted-data prompt delimiters + adversarial test coverage in `src/video_research_mcp/tools/knowledge/summarize.py`.
-- Residual risk: Other text-recomposition flows (for example `content._reshape_to_schema`) still interpolate untrusted model output without equivalent explicit anti-injection framing.
+- Status: Mitigated in iterations 7-8 with untrusted-data prompt delimiters + adversarial test coverage in both `tools/knowledge/summarize.py` and `tools/content.py::_reshape_to_schema`.
+- Residual risk: Future prompt-building paths may regress unless anti-injection prompt contracts are reused systematically.
 
 ## R-011
 - Severity: Medium
 - Area: Prompt-injection/tool-misuse resistance
 - Evidence: `src/video_research_mcp/tools/content.py:208` and `src/video_research_mcp/tools/content.py:216` pass raw `unstructured` model output directly into second-pass schema reshaping prompts.
 - Exploit reasoning: Adversarial instructions embedded in fetched/parsed content can influence second-pass behavior and reduce schema/summary reliability.
-- Status: Open (queued for iteration 8 alongside broader resource/concurrency hardening).
+- Status: Mitigated in iteration 8 by untrusted-data delimiters and explicit anti-injection prompt constraints in `_reshape_to_schema(...)`.
+
+## R-012
+- Severity: Medium
+- Area: Concurrency/resource exhaustion
+- Evidence: Prior `research_document_file._prepare_all_documents_with_issues(...)` executed unbounded `asyncio.gather` fan-out for URL downloads and uploads.
+- Exploit reasoning: Large source lists could trigger excessive parallel network/file operations and degrade service availability.
+- Status: Mitigated in iteration 8 by bounded concurrency (`_DOC_PREPARE_CONCURRENCY=4`) across download/upload phases with regression coverage.

@@ -79,3 +79,15 @@
 ## Iteration 8 seed hypotheses
 - Audit concurrency/resource-exhaustion risks in batch/document pipelines (`asyncio.gather` fan-out, upload/download parallelism) and add bounded concurrency controls where needed.
 - Add negative tests covering adversarially large batch inputs to validate graceful degradation instead of resource spikes.
+
+## Iteration 8 (Concurrency and Resource Exhaustion) - 2026-03-15T01:04:48Z
+- Observation: `research_document_file._prepare_all_documents_with_issues(...)` used unbounded `asyncio.gather` for both URL downloads and File API uploads, and iteration-7 residual risk remained open for `_reshape_to_schema` prompt boundaries.
+- Inference: Reliability controls were uneven across parallel paths; batch tools had semaphores while document preparation helpers and one multi-pass prompt path did not.
+- Strategy: Apply one shared bounded-concurrency primitive to document preparation fan-out and apply iteration-7 untrusted-data boundary pattern to second-pass schema reshaping.
+- Validation: Added bounded gather with `_DOC_PREPARE_CONCURRENCY=4`, hardened `_reshape_to_schema(...)` with untrusted delimiters/rules, and added focused regression coverage (`test_downloads_use_bounded_concurrency`, `test_url_fallback_hardens_untrusted_reshape_prompt`); targeted lint/tests passed.
+- Confidence change: 0.61 -> 0.84 for iteration-8 objective coverage.
+- Delivery confidence: 0.84 -> 0.89 after focused validations passed on `codex/review/i07`.
+
+## Iteration 9 seed hypotheses
+- Fix direct-call test harness drift where decorated tools appear as `FunctionTool` in subset runs.
+- Add explicit callable-contract tests around `_unwrap_fastmcp_tools` behavior to prevent future regression blind spots.
