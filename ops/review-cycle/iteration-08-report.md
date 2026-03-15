@@ -12,6 +12,8 @@ Focus: Concurrency and resource exhaustion
   - `{"mode":"commits","reason":"Branch is ahead of base with no local unstaged/uncommitted files.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":0,"ahead_commits":13,"pr_context":false,"pr_url":null}`
 - After changes (working tree):
   - `{"mode":"uncommitted","reason":"Working tree has local changes.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":2,"ahead_commits":13,"pr_context":false,"pr_url":null}`
+- After commit + PR creation:
+  - `{"mode":"pr","reason":"Branch has an open pull request.","branch":"codex/review/i07","base_branch":"main","uncommitted_files":0,"ahead_commits":14,"pr_context":true,"pr_url":"https://github.com/Galbaz1/video-research-mcp/pull/59"}`
 
 ## EARS Run Requirements (Concise)
 1. When iteration state indicates `current_iteration=8`, the run shall prioritize concurrency and resource-exhaustion risks.
