@@ -270,6 +270,8 @@ Focus: Concurrency and resource exhaustion
   - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 133, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
 - Before commit (after this run's modifications):
   - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 4, "ahead_commits": 24, "pr_context": false, "pr_url": null}`
+- After commit and push to `codex/review/i07`:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 25, "pr_context": false, "pr_url": null}`
 
 ### Additional Findings By Severity
 #### Medium
