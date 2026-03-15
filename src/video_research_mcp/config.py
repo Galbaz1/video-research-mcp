@@ -234,7 +234,6 @@ class ServerConfig(BaseModel):
             content_compare_max_total_bytes=int(
                 os.getenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", str(100 * 1024 * 1024))
             ),
-            doc_max_sources=int(os.getenv("DOC_MAX_SOURCES", "20")),
             batch_tool_concurrency=int(os.getenv("BATCH_TOOL_CONCURRENCY", "3")),
             doc_max_sources=int(os.getenv("DOC_MAX_SOURCES", "20")),
             doc_prepare_concurrency=int(os.getenv("DOC_PREPARE_CONCURRENCY", "4")),
