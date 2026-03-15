@@ -214,3 +214,13 @@ class TestResearchAssessEvidence:
         )
 
         assert "error" in result
+
+    @pytest.mark.asyncio
+    async def test_assess_evidence_rejects_non_list_sources(self, mock_gemini_client):
+        """GIVEN sources is a plain string WHEN calling THEN validation error is returned."""
+        result = await research_assess_evidence(
+            claim="test claim",
+            sources="single-source",
+        )
+        assert "error" in result
+        assert "list of strings" in result["error"]

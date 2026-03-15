@@ -20,3 +20,15 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 ## Quality delta
 - Before: Broad multi-step instruction set with implicit control flow.
 - After: Testable run-time requirements with explicit triggers and stop conditions.
+
+## Iteration 2 Mission Rewritten as EARS Requirements
+1. The system shall load all review-cycle memory artifacts before selecting iteration work.
+2. When iteration 2 runs, the system shall review validation and schema contracts and produce severity-ranked findings.
+3. When a git-state transition is about to occur, the system shall run `scripts/detect_review_scope.py --json` before and after and record outputs.
+4. When list-typed inputs cross tool boundaries, the system shall enforce strict `list[str]` validation at ingress.
+5. If redirect-following downloads are used, the system shall validate each redirect hop and block policy-violating targets.
+6. The system shall persist learning outcomes, confidence deltas, and next-iteration hypotheses at run end.
+
+## Quality delta (iteration 2)
+- Before: validation checks were distributed and permissive for malformed JSON-RPC list inputs.
+- After: explicit ingress validation rules are codified, reusable, and test-backed.

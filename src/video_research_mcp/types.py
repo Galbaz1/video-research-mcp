@@ -31,6 +31,47 @@ def coerce_json_param(value: str | dict | list | None, expected_type: type) -> d
         pass
     return value
 
+
+def coerce_string_list_param(
+    value: str | list | None,
+    *,
+    param_name: str,
+    allow_empty: bool = True,
+) -> list[str] | None:
+    """Coerce and validate a tool parameter as a list of non-empty strings.
+
+    Args:
+        value: Raw MCP parameter value, possibly JSON-stringified.
+        param_name: Parameter name for human-readable validation errors.
+        allow_empty: Whether an empty list is accepted.
+
+    Returns:
+        Validated list of stripped strings, or ``None`` when unset.
+
+    Raises:
+        ValueError: If the value is not a list of non-empty strings.
+    """
+    if value is None:
+        return None
+
+    coerced = coerce_json_param(value, list)
+    if not isinstance(coerced, list):
+        raise ValueError(f"'{param_name}' must be a list of strings")
+
+    values: list[str] = []
+    for idx, item in enumerate(coerced):
+        if not isinstance(item, str):
+            raise ValueError(f"'{param_name}[{idx}]' must be a string")
+        item = item.strip()
+        if not item:
+            raise ValueError(f"'{param_name}[{idx}]' must not be empty")
+        values.append(item)
+
+    if not allow_empty and not values:
+        raise ValueError(f"'{param_name}' must contain at least one item")
+
+    return values
+
 # ── Literal enums ────────────────────────────────────────────────────────────
 
 ThinkingLevel = Literal["minimal", "low", "medium", "high"]

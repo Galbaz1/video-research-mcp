@@ -146,6 +146,18 @@ class TestKnowledgeSearch:
         assert result["total_results"] == 5
         assert len(result["results"]) == 5
 
+    async def test_rejects_non_list_collections(
+        self, mock_weaviate_client, clean_config, monkeypatch
+    ):
+        """GIVEN collections is a plain string WHEN calling THEN validation error is returned."""
+        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
+        from video_research_mcp.tools.knowledge import knowledge_search
+
+        result = await knowledge_search(query="test", collections="VideoAnalyses")
+
+        assert "error" in result
+        assert "list of strings" in result["error"]
+
 
 class TestKnowledgeRelated:
     """Tests for knowledge_related tool."""

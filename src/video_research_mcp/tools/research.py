@@ -28,7 +28,7 @@ from ..prompts.research import (
     SCOPE_DEFINITION,
     SYNTHESIS,
 )
-from ..types import Scope, ThinkingLevel, TopicParam, coerce_json_param
+from ..types import Scope, ThinkingLevel, TopicParam, coerce_string_list_param
 
 logger = logging.getLogger(__name__)
 research_server = FastMCP("research")
@@ -176,7 +176,14 @@ async def research_assess_evidence(
     Returns:
         Dict with claim, tier, confidence, and reasoning.
     """
-    sources = coerce_json_param(sources, list)
+    try:
+        sources = coerce_string_list_param(
+            sources,
+            param_name="sources",
+            allow_empty=False,
+        )
+    except ValueError as exc:
+        return make_tool_error(exc)
 
     try:
         sources_text = "\n".join(f"- {s}" for s in sources)

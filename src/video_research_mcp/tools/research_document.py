@@ -28,7 +28,7 @@ from ..prompts.research_document import (
     DOCUMENT_RESEARCH_SYSTEM,
     DOCUMENT_SYNTHESIS,
 )
-from ..types import Scope, ThinkingLevel, coerce_json_param
+from ..types import Scope, ThinkingLevel, coerce_string_list_param
 from ..weaviate_store import store_research_finding
 from .research import research_server
 from .research_document_file import _prepare_all_documents
@@ -66,11 +66,13 @@ async def research_document(
     Returns:
         Dict with document_sources, executive_summary, findings, cross_references.
     """
-    file_paths = coerce_json_param(file_paths, list)
-    urls = coerce_json_param(urls, list)
-
-    if not file_paths and not urls:
-        return make_tool_error(ValueError("Provide at least one of: file_paths or urls"))
+    try:
+        file_paths = coerce_string_list_param(file_paths, param_name="file_paths")
+        urls = coerce_string_list_param(urls, param_name="urls")
+        if not file_paths and not urls:
+            raise ValueError("Provide at least one of: file_paths or urls")
+    except ValueError as exc:
+        return make_tool_error(exc)
 
     try:
         prepared = await _prepare_all_documents(file_paths, urls)

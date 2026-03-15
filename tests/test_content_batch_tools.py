@@ -162,3 +162,12 @@ class TestContentBatchAnalyze:
             instruction="test", directory="/nonexistent/path",
         )
         assert "error" in result
+
+    async def test_rejects_non_list_file_paths(self, mock_gemini_client):
+        """GIVEN file_paths is a plain string WHEN calling THEN validation error is returned."""
+        result = await content_batch_analyze(
+            instruction="test",
+            file_paths="/tmp/doc.pdf",
+        )
+        assert "error" in result
+        assert "list of strings" in result["error"]

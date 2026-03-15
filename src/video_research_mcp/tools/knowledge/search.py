@@ -12,7 +12,7 @@ from weaviate.classes.query import MetadataQuery
 from ...config import get_config
 from ...errors import make_tool_error
 from ...models.knowledge import KnowledgeHit, KnowledgeSearchResult
-from ...types import KnowledgeCollection, coerce_json_param
+from ...types import KnowledgeCollection, coerce_string_list_param
 from ...weaviate_client import WeaviateClient
 from ..knowledge_filters import build_collection_filter
 from . import knowledge_server
@@ -73,7 +73,10 @@ async def knowledge_search(
     if not get_config().weaviate_enabled:
         return KnowledgeSearchResult(query=query).model_dump(mode="json")
 
-    collections = coerce_json_param(collections, list)
+    try:
+        collections = coerce_string_list_param(collections, param_name="collections")
+    except ValueError as exc:
+        return make_tool_error(exc)
 
     try:
         cfg = get_config()
