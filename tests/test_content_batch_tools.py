@@ -6,9 +6,10 @@ import pytest
 from unittest.mock import AsyncMock, patch
 
 from video_research_mcp.tools.content_batch import (
+    _compare_files,
     _build_file_parts,
-    content_batch_analyze,
     _resolve_files,
+    content_batch_analyze,
 )
 
 
@@ -183,3 +184,20 @@ class TestContentBatchAnalyze:
 
         with pytest.raises(ValueError, match="configured size limit"):
             _build_file_parts(f)
+
+    async def test_compare_helper_rejects_oversized_aggregate_payload(
+        self, sample_files, monkeypatch, clean_config, mock_gemini_client,
+    ):
+        """GIVEN low aggregate cap WHEN compare helper runs THEN it errors before model call."""
+        monkeypatch.setenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", "16")
+
+        files = _resolve_files(str(sample_files), None, "*", 20)
+        with pytest.raises(ValueError, match="Combined compare payload exceeds configured size limit"):
+            await _compare_files(
+                files=files,
+                instruction="Compare these docs",
+                output_schema=None,
+                thinking_level="medium",
+            )
+        mock_gemini_client["generate"].assert_not_called()
+        mock_gemini_client["generate_structured"].assert_not_called()

@@ -69,3 +69,16 @@ class TestDocumentConcurrencyConfig:
 
         with pytest.raises(ValueError, match="Document concurrency values"):
             ServerConfig(doc_phase_concurrency=17)
+
+
+class TestContentComparePayloadConfig:
+    """Verify compare-mode aggregate payload guardrail config."""
+
+    def test_content_compare_max_total_bytes_env_override(self, monkeypatch):
+        monkeypatch.setenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", "4096")
+        cfg = ServerConfig.from_env()
+        assert cfg.content_compare_max_total_bytes == 4096
+
+    def test_content_compare_max_total_bytes_rejects_non_positive(self):
+        with pytest.raises(ValueError, match="content_compare_max_total_bytes must be >= 1"):
+            ServerConfig(content_compare_max_total_bytes=0)

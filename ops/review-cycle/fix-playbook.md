@@ -157,3 +157,24 @@
 - Regression coverage:
   - `tests/test_content_tools.py::TestBuildContentParts::test_file_rejects_oversized_input`
   - `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_build_file_parts_rejects_oversized_file`
+
+## FP-016: Cap aggregate compare-mode content payload
+- Context: `content_batch_analyze` compare mode combines many files into one model call.
+- Rule: Enforce a pre-assembly aggregate byte ceiling (`CONTENT_COMPARE_MAX_TOTAL_BYTES`) before building combined prompt/file parts.
+- Why: Prevents high-memory payload amplification from large multi-file compare requests.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/config.py`
+  - `src/video_research_mcp/tools/content_batch.py`
+- Regression coverage:
+  - `tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_env_override`
+  - `tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_rejects_non_positive`
+  - `tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_compare_helper_rejects_oversized_aggregate_payload`
+
+## FP-017: Harden file/text analysis prompt boundaries
+- Context: Direct file/text analysis path (`_analyze_parts`) appended user instruction without explicit untrusted-content boundary contract.
+- Rule: Inject explicit anti-injection guardrails and tagged task-instruction boundary in analysis prompt suffix.
+- Why: Reduces instruction-smuggling risk from untrusted file/text content and reuses iteration-7 boundary lessons.
+- Applied in iteration 8 continuation:
+  - `src/video_research_mcp/tools/content.py`
+- Regression coverage:
+  - `tests/test_content_tools.py::TestContentAnalyze::test_parts_path_hardens_untrusted_content_prompt`

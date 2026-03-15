@@ -119,6 +119,7 @@ class ServerConfig(BaseModel):
     mlflow_tracking_uri: str = Field(default="")
     mlflow_experiment_name: str = Field(default="video-research-mcp")
     doc_max_download_bytes: int = Field(default=50 * 1024 * 1024)
+    content_compare_max_total_bytes: int = Field(default=100 * 1024 * 1024)
     doc_prepare_concurrency: int = Field(default=4)
     doc_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -139,6 +140,13 @@ class ServerConfig(BaseModel):
     def validate_positive_ints(cls, value: int) -> int:
         if value < 1:
             raise ValueError("Configuration values must be >= 1")
+        return value
+
+    @field_validator("content_compare_max_total_bytes")
+    @classmethod
+    def validate_content_compare_max_total_bytes(cls, value: int) -> int:
+        if value < 1:
+            raise ValueError("content_compare_max_total_bytes must be >= 1")
         return value
 
     @field_validator("doc_prepare_concurrency", "doc_phase_concurrency")
@@ -208,6 +216,9 @@ class ServerConfig(BaseModel):
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
             doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+            content_compare_max_total_bytes=int(
+                os.getenv("CONTENT_COMPARE_MAX_TOTAL_BYTES", str(100 * 1024 * 1024))
+            ),
             doc_prepare_concurrency=int(os.getenv("DOC_PREPARE_CONCURRENCY", "4")),
             doc_phase_concurrency=int(os.getenv("DOC_PHASE_CONCURRENCY", "4")),
             local_file_access_root=local_file_access_root,

@@ -12,6 +12,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..errors import make_tool_error
+from ..config import get_config
 from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..models.content_batch import BatchContentItem, BatchContentResult
 from ..tracing import trace
@@ -112,6 +113,14 @@ async def _compare_files(
         Parsed result dict from Gemini.
     """
     from ..models.content import ContentResult
+
+    total_bytes = sum(f.stat().st_size for f in files)
+    max_total = get_config().content_compare_max_total_bytes
+    if total_bytes > max_total:
+        raise ValueError(
+            "Combined compare payload exceeds configured size limit "
+            f"({max_total} bytes) for {len(files)} file(s)."
+        )
 
     all_parts: list[types.Part] = []
     for f in files:

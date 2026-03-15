@@ -92,3 +92,10 @@ Run an hourly security-focused review loop with branch discipline, reflective le
 3. When local files are ingested for content analysis, the system shall reject files larger than configured `DOC_MAX_DOWNLOAD_BYTES` before reading bytes.
 4. When compare-mode batch content analysis builds file parts, the system shall reuse the same guarded ingestion path as single-file analysis.
 5. The run shall record scope snapshots, severity-ranked findings, validation evidence, confidence deltas, and iteration-9 hypotheses in review-cycle artifacts.
+
+## Iteration 8 Continuation Mission Rewritten as EARS Requirements (Aggregate Payload and Prompt-Boundary Extension)
+1. When iteration state remains `current_iteration=8` with PR `#59` open, the run shall resume the existing iteration branch context and shall not create a new iteration branch.
+2. When compare-mode content analysis aggregates multiple local files, the system shall enforce a configured aggregate payload ceiling before reading/assembling model parts.
+3. If total compare payload bytes exceed the configured ceiling, the tool shall fail fast with structured tool error output before any model call.
+4. If iteration-7 lessons require explicit untrusted-input boundaries, file/text analysis prompts shall include anti-injection guardrails and a tagged task-instruction boundary.
+5. The run shall capture pre/post transition review-scope snapshots and persist findings, fixes, confidence deltas, and next hypotheses in review-cycle artifacts.

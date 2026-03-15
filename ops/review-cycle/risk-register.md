@@ -109,3 +109,19 @@
 - Exploit reasoning: Oversized local files can amplify memory pressure and degrade availability, even when concurrency is bounded.
 - Status: Mitigated in iteration 8 continuation by enforcing `DOC_MAX_DOWNLOAD_BYTES` pre-read checks and reusing guarded builder in batch compare path.
 - Residual risk: Limit currently reuses document-download cap; future tuning may require a dedicated content-ingestion limit.
+
+## R-016
+- Severity: Medium
+- Area: Resource exhaustion / aggregate compare payload
+- Evidence: Prior to this run, `content_batch` compare mode could assemble a large combined payload across many files without an aggregate-size guard.
+- Exploit reasoning: Attackers can submit multiple near-limit files so aggregate in-memory payload becomes disproportionate even when single-file caps pass.
+- Status: Mitigated in this continuation by enforcing `CONTENT_COMPARE_MAX_TOTAL_BYTES` before compare assembly.
+- Residual risk: Operator misconfiguration of aggregate cap can still increase memory pressure; bounded by positive-int validation and secure default.
+
+## R-017
+- Severity: Medium
+- Area: Prompt-injection/tool-misuse resistance
+- Evidence: Prior to this run, `_analyze_parts(...)` passed free-form instruction alongside untrusted file/text content without explicit anti-injection guardrail text.
+- Exploit reasoning: Embedded adversarial instructions in content may reduce model adherence to requested task boundaries.
+- Status: Mitigated in this continuation by adding security guardrail instructions and `<TASK_INSTRUCTION>` boundary in prompt suffix.
+- Residual risk: Similar boundary contracts must be reused in future prompt-construction paths to avoid regression.

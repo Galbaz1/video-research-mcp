@@ -124,3 +124,14 @@
 ## Iteration 9 seed hypotheses (refined)
 - Stabilize FastMCP wrapper/direct-call compatibility in tests (R-004) so full-module validation is trustworthy.
 - Add pre-execution guard-order tests to prove size/validation checks run before expensive file reads and model calls.
+
+## Iteration 8 Continuation (Aggregate Payload + Prompt Boundary Follow-through) - 2026-03-15T10:04:11Z
+- Observation: Compare-mode batch analysis still had a high aggregate-memory path, and file/text analysis prompt suffix lacked explicit anti-injection boundaries.
+- Inference: Resource controls and prompt-boundary controls were still unevenly applied across adjacent content-analysis paths.
+- Strategy: Add a config-validated aggregate compare payload cap and apply iteration-7 boundary hardening pattern to `_analyze_parts(...)`.
+- Validation: Implemented `CONTENT_COMPARE_MAX_TOTAL_BYTES`, fail-fast check in `_compare_files(...)`, prompt guardrails with `<TASK_INSTRUCTION>`, plus focused regression tests and lint pass.
+- Confidence change: 0.95 -> 0.97 for iteration-8 completeness on resource-exhaustion + prompt-boundary continuity.
+
+## Iteration 9 seed hypotheses (refined)
+- Close R-004 by standardizing direct-call/unwrapped-tool test invocation contracts in content/research test modules.
+- Add guard-order tests proving payload and policy checks execute before expensive model calls in all entry tools.

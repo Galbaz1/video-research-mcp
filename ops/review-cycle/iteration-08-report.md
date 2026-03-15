@@ -217,3 +217,56 @@ Focus: Concurrency and resource exhaustion
 ### Next-Iteration Hypotheses (Iteration 9)
 1. Resolve R-004 by making FastMCP tool wrappers and direct-call tests deterministic across subset runs.
 2. Add test contracts that assert security-sensitive guards run before expensive read/model paths.
+
+---
+
+## Continuation Run (2026-03-15T10:04:11Z)
+
+### Scope Detection Snapshots
+- Before major git transition (initial detached run context on `main` commit):
+  - `{"mode": "none", "reason": "No local changes and no ahead commits to review.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 0, "pr_context": false, "pr_url": null}`
+- After switching to detached `codex/review/i07` commit context:
+  - `{"mode": "commits", "reason": "Branch is ahead of base with no local unstaged/uncommitted files.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 0, "ahead_commits": 20, "pr_context": false, "pr_url": null}`
+- Before commit (working tree updated):
+  - `{"mode": "uncommitted", "reason": "Working tree has local changes.", "branch": "HEAD", "base_branch": "main", "uncommitted_files": 6, "ahead_commits": 20, "pr_context": false, "pr_url": null}`
+
+### Additional Findings By Severity
+#### Medium
+- ID: I08-F6
+- Area: Resource exhaustion via aggregate compare payload.
+- Evidence:
+  - Aggregate limit added via `content_compare_max_total_bytes` in [`src/video_research_mcp/config.py`](/Users/fausto/.codex/worktrees/383b/gemini-research-mcp/src/video_research_mcp/config.py).
+  - Fail-fast compare guard in [`src/video_research_mcp/tools/content_batch.py`](/Users/fausto/.codex/worktrees/383b/gemini-research-mcp/src/video_research_mcp/tools/content_batch.py).
+  - Regression coverage in [`tests/test_content_batch_tools.py`](/Users/fausto/.codex/worktrees/383b/gemini-research-mcp/tests/test_content_batch_tools.py).
+- Exploit reasoning: Multiple near-limit files can amplify memory use in compare mode despite per-file limits.
+- Fix status: Implemented in this continuation run.
+
+#### Medium
+- ID: I08-F7
+- Area: Prompt-injection/tool-misuse resistance for file/text analysis path.
+- Evidence:
+  - Prompt guardrails and task boundary added in [`src/video_research_mcp/tools/content.py`](/Users/fausto/.codex/worktrees/383b/gemini-research-mcp/src/video_research_mcp/tools/content.py).
+  - Regression coverage in [`tests/test_content_tools.py`](/Users/fausto/.codex/worktrees/383b/gemini-research-mcp/tests/test_content_tools.py).
+- Exploit reasoning: Untrusted content can embed instruction-smuggling text if prompt boundary contracts are implicit.
+- Fix status: Implemented in this continuation run; directly derived from iteration-7 lesson on explicit untrusted boundaries.
+
+### Additional Implemented Changes
+- Added runtime config `CONTENT_COMPARE_MAX_TOTAL_BYTES` (default 100MB) with validation.
+- Enforced aggregate compare payload check before compare-mode part assembly.
+- Hardened `_analyze_parts(...)` prompt suffix with anti-injection rules and `<TASK_INSTRUCTION>` tagging.
+
+### Continuation Validation
+- `uv run ruff check src/video_research_mcp/config.py src/video_research_mcp/tools/content.py src/video_research_mcp/tools/content_batch.py tests/test_config.py tests/test_content_tools.py tests/test_content_batch_tools.py` -> pass.
+- `PYTHONPATH=src uv run pytest tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_env_override tests/test_config.py::TestContentComparePayloadConfig::test_content_compare_max_total_bytes_rejects_non_positive tests/test_content_tools.py::TestContentAnalyze::test_parts_path_hardens_untrusted_content_prompt tests/test_content_batch_tools.py::TestContentBatchAnalyze::test_compare_helper_rejects_oversized_aggregate_payload -v` -> pass (`4 passed`).
+- Note: Full content tool modules still surface existing wrapper/direct-call drift (R-004), unchanged by this patch.
+
+### Reflective Loop Update
+- Observe: Remaining iteration-8 gap was aggregate compare payload and inconsistent prompt-boundary framing in adjacent analysis path.
+- Infer root cause: Controls were applied per-path rather than as shared invariants across all content analysis entry points.
+- Strategy: Add aggregate-size invariant and reuse iteration-7 untrusted-boundary pattern.
+- Validate: Implemented code + focused tests + lint; no regressions in touched verification scope.
+- Confidence change (continuation): 0.95 -> 0.97.
+
+### Next-Iteration Hypotheses (Iteration 9)
+1. Resolve direct-call `FunctionTool` instability (R-004) to restore reliable full-module validation.
+2. Add pre-execution guard-order tests for file/text/url entry points to ensure controls trigger before model invocation.
