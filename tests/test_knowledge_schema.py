@@ -24,12 +24,12 @@ class TestKnowledgeSchema:
             assert "description" in p
 
     async def test_schema_all_collections(self):
-        """knowledge_schema returns all 12 collections when no filter given."""
+        """knowledge_schema returns all 13 collections when no filter given."""
         from video_research_mcp.tools.knowledge import knowledge_schema
 
         result = await knowledge_schema()
-        assert result["total_collections"] == 12
-        assert len(result["schemas"]) == 12
+        assert result["total_collections"] == 13
+        assert len(result["schemas"]) == 13
 
     async def test_schema_no_weaviate(self):
         """knowledge_schema works without Weaviate configured."""

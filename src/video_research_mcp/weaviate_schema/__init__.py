@@ -10,6 +10,7 @@ Re-exports all types and collection constants so existing imports like
 
 from __future__ import annotations
 
+from .academic import ACADEMIC_PAPERS
 from .base import CollectionDef, PropertyDef, ReferenceDef, _common_properties
 from .calls import CALL_NOTES
 from .deep_research import DEEP_RESEARCH_REPORTS
@@ -38,9 +39,11 @@ ALL_COLLECTIONS: list[CollectionDef] = [
     RELATIONSHIP_EDGES,
     CALL_NOTES,
     DEEP_RESEARCH_REPORTS,
+    ACADEMIC_PAPERS,
 ]
 
 __all__ = [
+    "ACADEMIC_PAPERS",
     "ALL_COLLECTIONS",
     "CALL_NOTES",
     "COMMUNITY_REACTIONS",

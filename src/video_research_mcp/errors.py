@@ -33,6 +33,8 @@ class ErrorCategory(str, Enum):
     QUALITY_GATE_FAILED = "QUALITY_GATE_FAILED"
     ARTIFACT_GENERATION_FAILED = "ARTIFACT_GENERATION_FAILED"
     SCHEMA_VALIDATION_FAILED = "SCHEMA_VALIDATION_FAILED"
+    S2_RATE_LIMITED = "S2_RATE_LIMITED"
+    S2_NOT_FOUND = "S2_NOT_FOUND"
     UNKNOWN = "UNKNOWN"
 
 
@@ -71,6 +73,17 @@ def categorize_error(error: Exception) -> tuple[ErrorCategory, str]:
         )
 
     s = str(error).lower()
+
+    if "semantic" in s and "scholar" in s and "429" in s:
+        return (
+            ErrorCategory.S2_RATE_LIMITED,
+            "Semantic Scholar rate limit — wait 1-5 seconds and retry, or set S2_API_KEY for higher limits",
+        )
+    if "semantic" in s and "scholar" in s and "404" in s:
+        return (
+            ErrorCategory.S2_NOT_FOUND,
+            "Paper not found on Semantic Scholar — check the paper ID, DOI, or ArXiv ID",
+        )
 
     if "403" in s and "permission" in s:
         return (
@@ -163,6 +176,7 @@ def make_tool_error(error: Exception) -> dict:
         ErrorCategory.API_QUOTA_EXCEEDED,
         ErrorCategory.NETWORK_ERROR,
         ErrorCategory.WEAVIATE_CONNECTION,
+        ErrorCategory.S2_RATE_LIMITED,
     }
     return ToolError(
         error=str(error),

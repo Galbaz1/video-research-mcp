@@ -31,11 +31,11 @@ class TestKnowledgeSearch:
     async def test_searches_all_collections_by_default(
         self, mock_weaviate_client, clean_config, monkeypatch
     ):
-        """knowledge_search queries all 12 collections when none specified."""
+        """knowledge_search queries all 13 collections when none specified."""
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.tools.knowledge import knowledge_search
         await knowledge_search(query="test")
-        assert mock_weaviate_client["client"].collections.get.call_count == 12
+        assert mock_weaviate_client["client"].collections.get.call_count == 13
 
     async def test_respects_collection_filter(
         self, mock_weaviate_client, clean_config, monkeypatch
@@ -202,8 +202,8 @@ class TestKnowledgeStats:
 
         from video_research_mcp.tools.knowledge import knowledge_stats
         result = await knowledge_stats()
-        assert len(result["collections"]) == 12
-        assert result["total_objects"] == 60
+        assert len(result["collections"]) == 13
+        assert result["total_objects"] == 65
 
     async def test_returns_stats_for_single_collection(
         self, mock_weaviate_client, clean_config, monkeypatch
@@ -462,7 +462,7 @@ class TestMCPSerialization:
         monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
         from video_research_mcp.tools.knowledge import knowledge_search
         await knowledge_search(query="test", collections=None)
-        assert mock_weaviate_client["client"].collections.get.call_count == 12
+        assert mock_weaviate_client["client"].collections.get.call_count == 13
 
     async def test_ingest_properties_from_json_string(
         self, mock_weaviate_client, clean_config, monkeypatch

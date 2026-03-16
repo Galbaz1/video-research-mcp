@@ -8,6 +8,7 @@ Re-exports all store functions so existing imports like
 ``from .weaviate_store import store_video_analysis`` keep working.
 """
 
+from .academic import store_academic_paper, store_academic_papers_batch
 from .calls import store_call_notes
 from .community import store_community_reaction
 from .deep_research import store_deep_research, store_deep_research_followup
@@ -20,6 +21,8 @@ from .session import store_session_turn
 from .video import store_video_analysis, store_video_metadata
 
 __all__ = [
+    "store_academic_paper",
+    "store_academic_papers_batch",
     "store_call_notes",
     "store_deep_research",
     "store_deep_research_followup",

@@ -20,11 +20,11 @@ from video_research_mcp.weaviate_schema import (
 
 
 class TestCollectionDefinitions:
-    """Verify all 12 collections are defined correctly."""
+    """Verify all 13 collections are defined correctly."""
 
     def test_all_collections_count(self):
-        """ALL_COLLECTIONS contains exactly 12 collections."""
-        assert len(ALL_COLLECTIONS) == 12
+        """ALL_COLLECTIONS contains exactly 13 collections."""
+        assert len(ALL_COLLECTIONS) == 13
 
     def test_collection_names(self):
         """All expected collection names are present."""
@@ -33,7 +33,7 @@ class TestCollectionDefinitions:
             "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
             "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
             "CommunityReactions", "ConceptKnowledge", "RelationshipEdges", "CallNotes",
-            "DeepResearchReports",
+            "DeepResearchReports", "AcademicPapers",
         }
         assert names == expected
 
@@ -331,10 +331,10 @@ class TestNewCollections:
             prop_names = [p.name for p in col.properties]
             assert "updated_at" in prop_names, f"{col.name} missing updated_at"
 
-    def test_allowed_properties_includes_all_12(self):
-        """ALLOWED_PROPERTIES auto-derived from ALL_COLLECTIONS includes all 12."""
+    def test_allowed_properties_includes_all_13(self):
+        """ALLOWED_PROPERTIES auto-derived from ALL_COLLECTIONS includes all 13."""
         from video_research_mcp.tools.knowledge.helpers import ALLOWED_PROPERTIES
-        assert len(ALLOWED_PROPERTIES) == 12
+        assert len(ALLOWED_PROPERTIES) == 13
         for col in ALL_COLLECTIONS:
             assert col.name in ALLOWED_PROPERTIES, f"{col.name} missing from ALLOWED_PROPERTIES"
 

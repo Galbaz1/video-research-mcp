@@ -130,6 +130,7 @@ class ServerConfig(BaseModel):
     weaviate_auto_migrate: bool = Field(default=False)
     infra_mutations_enabled: bool = Field(default=False)
     infra_admin_token: str = Field(default="")
+    s2_api_key: str = Field(default="")
 
     @field_validator("default_thinking_level")
     @classmethod
@@ -246,6 +247,7 @@ class ServerConfig(BaseModel):
             weaviate_auto_migrate=os.getenv("WEAVIATE_AUTO_MIGRATE", "").lower() in ("1", "true", "yes"),
             infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
             infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
+            s2_api_key=os.environ.get("S2_API_KEY", os.environ.get("SEMANTIC_SCHOLAR_API_KEY", "")),
         )
 
 

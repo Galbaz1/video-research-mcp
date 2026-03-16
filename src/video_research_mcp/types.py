@@ -41,7 +41,7 @@ KnowledgeCollection = Literal[
     "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
     "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
     "CommunityReactions", "ConceptKnowledge", "RelationshipEdges", "CallNotes",
-    "DeepResearchReports",
+    "DeepResearchReports", "AcademicPapers",
 ]
 
 # ── Annotated aliases ────────────────────────────────────────────────────────

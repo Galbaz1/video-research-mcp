@@ -218,3 +218,12 @@ def _ensure_web_tools() -> None:
     Called by server.py alongside _ensure_document_tool.
     """
     from . import research_web  # noqa: F401
+
+
+def _ensure_academic_tools() -> None:
+    """Import academic to register Semantic Scholar tools on research_server.
+
+    Deferred to avoid circular import — academic imports from this module.
+    Called by server.py alongside _ensure_document_tool.
+    """
+    from . import academic  # noqa: F401

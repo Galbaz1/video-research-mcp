@@ -115,7 +115,7 @@ class TestEnsureCollections:
                 "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
                 "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
                 "CommunityReactions", "ConceptKnowledge", "RelationshipEdges", "CallNotes",
-                "DeepResearchReports",
+                "DeepResearchReports", "AcademicPapers",
             ]
         }
         mock_client.collections.list_all.return_value = existing
@@ -381,7 +381,7 @@ class TestV4PropertyAPI:
         mock_connect.return_value = mock_client
 
         WeaviateClient.get()
-        assert mock_client.collections.create.call_count == 12
+        assert mock_client.collections.create.call_count == 13
         mock_client.collections.create_from_dict.assert_not_called()
 
     @patch("video_research_mcp.weaviate_client.migrate_all_if_needed")
@@ -534,7 +534,7 @@ class TestMigrateIntegration:
         WeaviateClient.get()
         mock_migrate.assert_called_once()
         call_args = mock_migrate.call_args
-        assert len(call_args[0][1]) == 12  # ALL_COLLECTIONS
+        assert len(call_args[0][1]) == 13  # ALL_COLLECTIONS
 
 
 class TestAsyncConnect:
