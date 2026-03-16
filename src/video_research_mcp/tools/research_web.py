@@ -244,8 +244,14 @@ async def research_web_status(
             usage=usage,
         ).model_dump(mode="json")
 
-        from ..weaviate_store import store_deep_research
+        from ..weaviate_store import store_deep_research, extract_and_store_graph
         await store_deep_research(result)
+        await extract_and_store_graph(
+            result,
+            original_topic or interaction_id,
+            source_tool="research_web",
+            source_category="research",
+        )
 
         return result
 

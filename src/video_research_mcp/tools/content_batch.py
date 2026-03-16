@@ -238,6 +238,7 @@ async def content_batch_analyze(
                 failed=len(items) - successful, mode=mode, items=items,
             )
 
+        from ..weaviate_store import extract_and_store_graph
         for item in result.items:
             if item.result or result.comparison:
                 data = item.result if mode == "individual" else result.comparison
@@ -246,6 +247,9 @@ async def content_batch_analyze(
                     item.file_path,
                     instruction,
                     local_filepath=item.file_path,
+                )
+                await extract_and_store_graph(
+                    data, item.file_path, source_tool="content_batch_analyze",
                 )
 
         return result.model_dump(mode="json")

@@ -105,7 +105,7 @@ async def analyze_video(
     result["source"] = source_label
     if use_cache:
         cache_save(content_id, "video_analyze", cfg.default_model, result, instruction=instruction)
-    from ..weaviate_store import store_video_analysis
+    from ..weaviate_store import store_video_analysis, extract_and_store_graph
     await store_video_analysis(
         result,
         content_id,
@@ -113,5 +113,8 @@ async def analyze_video(
         source_label,
         local_filepath=local_filepath,
         screenshot_dir=screenshot_dir,
+    )
+    await extract_and_store_graph(
+        result, source_label, source_tool="video_analyze", source_category="video",
     )
     return result

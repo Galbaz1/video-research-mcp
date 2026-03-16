@@ -19,111 +19,12 @@ from ..tracing import trace
 from ..errors import make_tool_error
 from ..models.content import ContentResult
 from ..local_path_policy import enforce_local_access_root, resolve_path
-from ..prompts.content import CONTENT_ANALYSIS_SYSTEM, GRAPH_EXTRACT_SYSTEM, STRUCTURED_EXTRACT
+from ..prompts.content import CONTENT_ANALYSIS_SYSTEM, STRUCTURED_EXTRACT
 from ..types import ThinkingLevel, coerce_json_param
 from ..url_policy import UrlPolicyError, validate_url
 
 logger = logging.getLogger(__name__)
 content_server = FastMCP("content")
-
-
-_GRAPH_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "concepts": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "name": {"type": "string"},
-                    "description": {"type": "string"},
-                    "state": {"type": "string", "enum": ["know", "fuzzy", "unknown"]},
-                },
-                "required": ["name", "description", "state"],
-            },
-        },
-        "relationships": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "from_concept": {"type": "string"},
-                    "to_concept": {"type": "string"},
-                    "type": {
-                        "type": "string",
-                        "enum": ["enables", "example_of", "builds_on", "contradicts", "related_to"],
-                    },
-                },
-                "required": ["from_concept", "to_concept", "type"],
-            },
-        },
-    },
-    "required": ["concepts", "relationships"],
-}
-
-
-async def _extract_and_store_graph(result: dict, source: str, source_category: str = "analysis") -> None:
-    """Extract concepts + relationships from an analysis result and store them.
-
-    Fire-and-forget: failures are logged but never propagate.
-    Uses a low-cost Gemini call on the already-available result dict.
-    """
-    try:
-        summary = result.get("summary", "")
-        key_points = result.get("key_points", [])
-        title = result.get("title", "")
-        entities = result.get("entities", [])
-        if not summary:
-            return
-
-        prompt = (
-            f"Title: {title}\n"
-            f"Summary: {summary}\n"
-            f"Key points: {json.dumps(key_points)}\n"
-            f"Entities mentioned: {json.dumps(entities)}\n\n"
-            "Extract the knowledge graph from this analysis."
-        )
-        raw = await GeminiClient.generate(
-            prompt,
-            thinking_level="low",
-            system_instruction=GRAPH_EXTRACT_SYSTEM,
-            response_schema=_GRAPH_SCHEMA,
-        )
-        graph = json.loads(raw)
-
-        from ..weaviate_store import store_concept_knowledge, store_relationship_edges
-
-        for concept in graph.get("concepts", []):
-            await store_concept_knowledge({
-                "concept_name": concept["name"],
-                "state": concept.get("state", "unknown"),
-                "source_url": source,
-                "source_title": title,
-                "source_category": source_category,
-                "source_tool": "content_analyze",
-                "description": concept.get("description", ""),
-            })
-
-        edges = [
-            {
-                "from_concept": rel["from_concept"],
-                "to_concept": rel["to_concept"],
-                "relationship_type": rel["type"],
-                "source_url": source,
-                "source_category": source_category,
-                "source_tool": "content_analyze",
-            }
-            for rel in graph.get("relationships", [])
-        ]
-        if edges:
-            await store_relationship_edges(edges)
-
-        n_concepts = len(graph.get("concepts", []))
-        n_edges = len(edges)
-        logger.info("Graph extracted: %d concepts, %d edges from %s", n_concepts, n_edges, source)
-
-    except Exception as exc:
-        logger.warning("Graph extraction failed (non-fatal): %s", exc)
 
 
 def _build_content_parts(
@@ -232,7 +133,8 @@ async def content_analyze(
             instruction,
             local_filepath=local_filepath,
         )
-        await _extract_and_store_graph(result, source)
+        from ..weaviate_store import extract_and_store_graph
+        await extract_and_store_graph(result, source, source_tool="content_analyze")
         return result
 
     except Exception as exc:

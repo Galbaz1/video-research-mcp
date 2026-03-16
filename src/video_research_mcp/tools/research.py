@@ -95,8 +95,11 @@ async def research_deep(
             open_questions=synthesis.open_questions,
             methodology_critique=synthesis.methodology_critique,
         ).model_dump(mode="json")
-        from ..weaviate_store import store_research_finding
+        from ..weaviate_store import store_research_finding, extract_and_store_graph
         await store_research_finding(report)
+        await extract_and_store_graph(
+            report, topic, source_tool="research_deep", source_category="research",
+        )
         return report
 
     except Exception as exc:

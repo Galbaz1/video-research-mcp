@@ -259,6 +259,10 @@ async def _phase_synthesis(
     result = synthesis.model_dump(mode="json")
 
     await store_research_finding(result)
+    from ..weaviate_store import extract_and_store_graph
+    await extract_and_store_graph(
+        result, instruction, source_tool="research_document", source_category="research",
+    )
 
     return result
 
@@ -294,6 +298,10 @@ async def _quick_synthesis(
     result = report.model_dump(mode="json")
 
     await store_research_finding(result)
+    from ..weaviate_store import extract_and_store_graph
+    await extract_and_store_graph(
+        result, instruction, source_tool="research_document", source_category="research",
+    )
 
     return result
 

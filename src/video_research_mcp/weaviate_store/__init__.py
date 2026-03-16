@@ -12,6 +12,7 @@ from .calls import store_call_notes
 from .community import store_community_reaction
 from .deep_research import store_deep_research, store_deep_research_followup
 from .concepts import store_concept_knowledge, store_relationship_edges
+from .graph import extract_and_store_graph
 from .content import store_content_analysis
 from .research import store_evidence_assessment, store_research_finding, store_research_plan
 from .search import store_web_search
@@ -25,6 +26,7 @@ __all__ = [
     "store_community_reaction",
     "store_concept_knowledge",
     "store_content_analysis",
+    "extract_and_store_graph",
     "store_evidence_assessment",
     "store_relationship_edges",
     "store_research_finding",
