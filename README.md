@@ -20,7 +20,7 @@ A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 too
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
-| **video-research-mcp** | 28 | Video analysis, deep research, content extraction, web search, knowledge store |
+| **video-research-mcp** | 33 | Video analysis, deep research, content extraction, web search, knowledge store, academic research |
 | **video-creation** | 17 | Synthesize explainer videos from research — project setup, pipeline, quality, audio, and parallel scene generation (wraps [video_explainer](https://github.com/prajwal-y/video_explainer) + [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk)) |
 
 ## Install
@@ -174,13 +174,15 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 ## Tools
 
 <details>
-<summary><strong>video-research-mcp -- 28 tools</strong></summary>
+<summary><strong>video-research-mcp -- 33 tools</strong></summary>
 
 **Video** (4): `video_analyze`, `video_create_session`, `video_continue_session`, `video_batch_analyze`
 
 **YouTube** (3): `video_metadata`, `video_comments`, `video_playlist`
 
 **Research** (8): `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`, `research_web`, `research_web_status`, `research_web_followup`, `research_web_cancel`
+
+**Academic Research** (5): `research_paper_search`, `research_paper_details`, `research_paper_citations`, `research_paper_recommendations`, `research_author_search`
 
 **Content** (3): `content_analyze`, `content_batch_analyze`, `content_extract`
 
@@ -211,7 +213,7 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 
 Connect Weaviate, and everything you learn gets stored -- searchable across projects, across sessions. Without it, the plugin works the same; you just don't get persistent semantic search.
 
-Twelve collections are created on first connection:
+Thirteen collections are created on first connection:
 
 | Collection | Filled by |
 |------------|-----------|
@@ -227,6 +229,11 @@ Twelve collections are created on first connection:
 | `ConceptKnowledge` | concept extraction from analyses |
 | `RelationshipEdges` | relationship mapping between concepts |
 | `CallNotes` | meeting/call analysis notes |
+| `AcademicPapers` | `research_paper_search`, `research_paper_details`, `research_paper_citations`, `research_paper_recommendations` |
+
+### Knowledge graph
+
+Analysis tools (`content_analyze`, `video_analyze`, `research_deep`, `research_web`, `research_document`, `content_batch_analyze`) automatically extract concepts and relationships from their results. Extracted data is stored in the `ConceptKnowledge` and `RelationshipEdges` collections -- no manual step required. Over time this builds a queryable knowledge graph of entities, topics, and how they relate across all your research.
 
 Eight knowledge tools let you query this data: hybrid search with optional Cohere reranking, semantic similarity, fetch by UUID, manual ingest, schema introspection, and collection stats. `knowledge_ask` uses Weaviate's QueryAgent for AI-generated answers with source citations (requires the `weaviate-agents` package).
 
@@ -263,6 +270,7 @@ export WEAVIATE_API_KEY="your-key"
 | `GEMINI_SESSION_MAX_TURNS` | `24` | Max turns per session |
 | `GEMINI_SESSION_DB` | `""` | SQLite path for session persistence (empty = in-memory) |
 | `YOUTUBE_API_KEY` | `""` | YouTube Data API key (falls back to `GEMINI_API_KEY`) |
+| `S2_API_KEY` / `SEMANTIC_SCHOLAR_API_KEY` | `""` | Semantic Scholar API key for academic research tools (higher rate limits) |
 | `WEAVIATE_URL` | `""` | Weaviate URL (empty = knowledge store disabled) |
 | `WEAVIATE_API_KEY` | `""` | Required for Weaviate Cloud |
 | `MLFLOW_TRACKING_URI` | `""` | MLflow server URL (empty = tracing disabled) |

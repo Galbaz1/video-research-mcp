@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-03-17
+
+### Added
+
+- **Semantic Scholar integration** — 5 new tools: `research_paper_search`, `research_paper_details`, `research_paper_citations`, `research_paper_recommendations`, `research_author_search`
+- **AcademicPapers Weaviate collection** with deterministic UUIDs
+- **Auto knowledge graph extraction** — `content_analyze`, `video_analyze`, `research_deep`, `research_web`, `research_document`, `content_batch_analyze` now auto-extract concepts and relationships
+- **ConceptKnowledge + RelationshipEdges** collections populated automatically
+- **S2-specific error categories** (`S2_RATE_LIMITED`, `S2_NOT_FOUND`)
+
+### Changed
+
+- Collection count: 12 → 13 (AcademicPapers)
+- Tool count: 28 → 33
+
+### Fixed
+
+- Weaviate vectorizer config mismatch (`text2vec-weaviate` → `text2vec-openai`)
+
 ## [0.4.4] - 2026-03-13
 
 ### Fixed
@@ -226,7 +245,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.4...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.4...v0.5.0
 [0.4.4]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.1...v0.4.2
