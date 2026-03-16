@@ -16,6 +16,7 @@ from pydantic import Field
 from ..academic_client import SemanticScholarClient
 from ..errors import make_tool_error
 from ..models.academic import (
+    AcademicPaper,
     AuthorSearchResult,
     CitationResult,
     PaperSearchResult,
@@ -27,6 +28,20 @@ from ..types import coerce_json_param
 from .research import research_server
 
 logger = logging.getLogger(__name__)
+
+
+async def _store_papers(papers: list[dict]) -> None:
+    """Fire-and-forget batch store of paper dicts to Weaviate."""
+    try:
+        from ..weaviate_store import store_academic_papers_batch
+        await store_academic_papers_batch(papers)
+    except Exception as exc:
+        logger.warning("Weaviate store failed (non-fatal): %s", exc)
+
+
+def _dump_papers(papers: list[AcademicPaper]) -> list[dict]:
+    """Serialize a list of AcademicPaper models to JSON-safe dicts."""
+    return [p.model_dump(mode="json") for p in papers]
 
 
 @research_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
@@ -73,18 +88,13 @@ async def research_paper_search(
         )
 
         papers = [paper_from_api(p) for p in data.get("data", [])]
+        paper_dicts = _dump_papers(papers)
         result = PaperSearchResult(
             total=data.get("total", len(papers)),
             papers=papers,
         ).model_dump(mode="json")
 
-        # Fire-and-forget Weaviate store
-        try:
-            from ..weaviate_store import store_academic_papers_batch
-            await store_academic_papers_batch([p.model_dump(mode="json") for p in papers])
-        except Exception as exc:
-            logger.warning("Weaviate store failed (non-fatal): %s", exc)
-
+        await _store_papers(paper_dicts)
         return result
 
     except Exception as exc:
@@ -112,10 +122,8 @@ async def research_paper_details(
     """
     try:
         data = await SemanticScholarClient.get_paper(paper_id)
-        paper = paper_from_api(data)
-        result = paper.model_dump(mode="json")
+        result = paper_from_api(data).model_dump(mode="json")
 
-        # Fire-and-forget Weaviate store
         try:
             from ..weaviate_store import store_academic_paper
             await store_academic_paper(result)
@@ -156,27 +164,22 @@ async def research_paper_citations(
         else:
             data = await SemanticScholarClient.get_citations(paper_id, limit=limit)
 
-        # Citations/references API wraps each paper in a nested object
-        raw_papers = []
-        for item in data.get("data", []):
-            nested = item.get("citingPaper" if direction == "citations" else "citedPaper")
-            if nested:
-                raw_papers.append(nested)
+        # S2 API wraps each paper in a nested "citingPaper" or "citedPaper" key
+        nested_key = "citingPaper" if direction == "citations" else "citedPaper"
+        raw_papers = [
+            item[nested_key] for item in data.get("data", [])
+            if item.get(nested_key)
+        ]
 
         papers = [paper_from_api(p) for p in raw_papers]
+        paper_dicts = _dump_papers(papers)
         result = CitationResult(
             paper_id=paper_id,
             direction=direction,
             papers=papers,
         ).model_dump(mode="json")
 
-        # Fire-and-forget Weaviate store
-        try:
-            from ..weaviate_store import store_academic_papers_batch
-            await store_academic_papers_batch([p.model_dump(mode="json") for p in papers])
-        except Exception as exc:
-            logger.warning("Weaviate store failed (non-fatal): %s", exc)
-
+        await _store_papers(paper_dicts)
         return result
 
     except Exception as exc:
@@ -212,18 +215,13 @@ async def research_paper_recommendations(
         )
 
         papers = [paper_from_api(p) for p in data.get("recommendedPapers", [])]
+        paper_dicts = _dump_papers(papers)
         result = RecommendationResult(
             seed_paper_ids=seed_paper_ids,
             papers=papers,
         ).model_dump(mode="json")
 
-        # Fire-and-forget Weaviate store
-        try:
-            from ..weaviate_store import store_academic_papers_batch
-            await store_academic_papers_batch([p.model_dump(mode="json") for p in papers])
-        except Exception as exc:
-            logger.warning("Weaviate store failed (non-fatal): %s", exc)
-
+        await _store_papers(paper_dicts)
         return result
 
     except Exception as exc:
@@ -250,9 +248,8 @@ async def research_author_search(
     """
     try:
         data = await SemanticScholarClient.search_authors(query=query, limit=limit)
-        authors = data.get("data", [])
         return AuthorSearchResult(
-            authors=authors,
+            authors=data.get("data", []),
         ).model_dump(mode="json")
 
     except Exception as exc:

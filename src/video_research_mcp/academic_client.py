@@ -52,16 +52,10 @@ class SemanticScholarClient:
         return cls._client
 
     @classmethod
-    def _get_semaphore(cls) -> asyncio.Semaphore:
-        if cls._semaphore is None:
-            cls._semaphore = asyncio.Semaphore(1)
-        return cls._semaphore
-
-    @classmethod
     async def _request(cls, method: str, path: str, **kwargs: Any) -> dict:
         """Rate-limited HTTP request with retry on 429/503/timeout."""
         client = cls._get_client()
-        sem = cls._get_semaphore()
+        sem = cls._semaphore  # always set by _get_client()
 
         async def _do_request() -> dict:
             async with sem:

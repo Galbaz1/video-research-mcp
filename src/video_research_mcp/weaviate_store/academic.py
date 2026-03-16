@@ -15,6 +15,29 @@ from ..weaviate_client import WeaviateClient
 from ._base import _is_enabled, _now, logger
 
 
+def _paper_properties(paper: dict) -> dict:
+    """Build the Weaviate properties dict for an AcademicPapers insert/replace."""
+    authors = paper.get("authors", [])
+    return {
+        "created_at": _now(),
+        "source_tool": "research_paper_search",
+        "paper_id": paper.get("paper_id", ""),
+        "title": paper.get("title", ""),
+        "abstract": paper.get("abstract", ""),
+        "authors_json": json.dumps(authors) if isinstance(authors, list) else str(authors),
+        "year": paper.get("year") or 0,
+        "venue": paper.get("venue", ""),
+        "citation_count": paper.get("citation_count", 0),
+        "fields_of_study": paper.get("fields_of_study", []),
+        "doi": paper.get("doi", ""),
+        "arxiv_id": paper.get("arxiv_id", ""),
+        "tldr": paper.get("tldr", ""),
+        "is_open_access": paper.get("is_open_access", False),
+        "open_access_pdf_url": paper.get("open_access_pdf_url", ""),
+        "url": paper.get("url", ""),
+    }
+
+
 async def store_academic_paper(paper: dict) -> str | None:
     """Persist a paper to AcademicPapers. Deterministic UUID from paper_id.
 
@@ -31,25 +54,8 @@ async def store_academic_paper(paper: dict) -> str | None:
             client = WeaviateClient.get()
             col = client.collections.get("AcademicPapers")
             paper_id = paper.get("paper_id", "")
-            authors = paper.get("authors", [])
-            props = {
-                "created_at": _now(),
-                "source_tool": "research_paper_search",
-                "paper_id": paper_id,
-                "title": paper.get("title", ""),
-                "abstract": paper.get("abstract", ""),
-                "authors_json": json.dumps(authors) if isinstance(authors, list) else str(authors),
-                "year": paper.get("year") or 0,
-                "venue": paper.get("venue", ""),
-                "citation_count": paper.get("citation_count", 0),
-                "fields_of_study": paper.get("fields_of_study", []),
-                "doi": paper.get("doi", ""),
-                "arxiv_id": paper.get("arxiv_id", ""),
-                "tldr": paper.get("tldr", ""),
-                "is_open_access": paper.get("is_open_access", False),
-                "open_access_pdf_url": paper.get("open_access_pdf_url", ""),
-                "url": paper.get("url", ""),
-            }
+            props = _paper_properties(paper)
+
             if paper_id:
                 det_uuid = weaviate.util.generate_uuid5(f"s2:{paper_id}")
                 try:
