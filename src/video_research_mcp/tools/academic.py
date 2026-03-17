@@ -8,7 +8,7 @@ stored to Weaviate for knowledge graph integration.
 from __future__ import annotations
 
 import logging
-from typing import Annotated
+from typing import Annotated, Literal
 
 from mcp.types import ToolAnnotations
 from pydantic import Field
@@ -143,7 +143,7 @@ async def research_paper_citations(
         min_length=1,
         description="Paper ID (S2, DOI:, or ArXiv:)",
     )],
-    direction: Annotated[str, Field(
+    direction: Annotated[Literal["citations", "references"], Field(
         description="'citations' (papers citing this) or 'references' (papers this cites)",
     )] = "citations",
     limit: Annotated[int, Field(ge=1, le=1000, description="Max papers to return")] = 20,
