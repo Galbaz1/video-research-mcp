@@ -265,8 +265,9 @@ class TestMigrateAllIfNeeded:
             migrate_all_if_needed(mock_client, [sample_col_def], auto_migrate=True)
             mock_migrate.assert_called_once_with(mock_client, sample_col_def)
 
-    def test_skips_aligned_collections(self, sample_col_def):
+    def test_skips_aligned_collections(self, sample_col_def, clean_config, monkeypatch):
         """Collections with matching source_properties are skipped."""
+        monkeypatch.setenv("WEAVIATE_VECTORIZER", "openai")
         from video_research_mcp.weaviate_migrate import migrate_all_if_needed
 
         mock_client = MagicMock()
