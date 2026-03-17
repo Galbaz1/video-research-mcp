@@ -70,6 +70,22 @@ def _isolate_dotenv(tmp_path, monkeypatch):
 
 
 @pytest.fixture(autouse=True)
+def _disable_graph_extraction():
+    """Prevent graph extraction from interfering with tool-level assertions.
+
+    The extra GeminiClient.generate() call from extract_and_store_graph()
+    breaks call-count and call-args assertions in tool tests.
+    Patches both the source module and the re-export in __init__.
+    """
+    mock = AsyncMock()
+    with (
+        patch("video_research_mcp.weaviate_store.graph.extract_and_store_graph", mock),
+        patch("video_research_mcp.weaviate_store.extract_and_store_graph", mock),
+    ):
+        yield
+
+
+@pytest.fixture(autouse=True)
 def _isolate_upload_cache(tmp_path, monkeypatch):
     """Point upload cache to a temp directory so tests never share filesystem state."""
     cache_dir = tmp_path / "upload_cache"
