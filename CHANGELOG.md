@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-03-25
+
+### Added
+
+- **Media production skills** — 5 new plugin skills for end-to-end AI video production:
+  - `tts-production` — ElevenLabs TTS voice-over with API patterns, voice presets, and FFmpeg audio recipes
+  - `ffmpeg-production` — Video/audio processing reference with post-processing chain, platform presets, and codec selection
+  - `video-generation` — Provider-agnostic video generation (Veo/Sora) with selection matrix and draft-to-final workflow
+  - `video-production` — Cinematic multi-shot orchestration with style anchors, 4 chaining patterns, and frame-level QA
+  - `image-generation` — Style anchor and prompt optimization for mcp-image (Subject-Context-Style structure)
+- Token-conscious skill design: all descriptions <200 chars with negative qualifiers, bodies <2,000 words, heavy content in `references/` (Level 3 progressive disclosure)
+
+### Changed
+
+- Plugin skill count: 7 → 12
+- FILE_MAP entries: 34 → 42
+
 ## [0.5.0] - 2026-03-17
 
 ### Added
