@@ -165,12 +165,30 @@ e1l.5: production-logging
 
 ---
 
-## Beslispunten voor gebruiker
+## Architectuurbeslissing: één plugin (vastgesteld)
 
-1. **design-to-video** — in plugin of global houden? Het mixt Stitch met video productie. Als het in de plugin komt, moet Stitch MCP als optionele dependency gedocumenteerd worden.
+**Besluit:** Eén plugin, token-bewust ontworpen. Niet splitsen.
 
-2. **hub-transcribe** — audio transcriptie past conceptueel bij een "media production" plugin, maar draait nu als standalone background agent. Verplaatsen of laten?
+**Onderbouwing (deep research 2026-03-25):**
 
-3. **agents (ElevenLabs)** — voice bots bouwen is een ander domein dan media produceren, maar ElevenLabs integratie zit ook in tts-production. Overlapping of apart houden?
+- Token budget: 140 skills over 25 plugins = 37.108 chars (186% van ~20.000 soft budget). 5 nieuwe skills voegen ~1.250 chars toe (+6%) — niet significant
+- Precedent: GSD (38 commands + 15 agents) en claude-api (17 skills) werken als monoliet
+- Splitsen kost: twee npm packages, geen dependency declaration, dubbele install, versie sync probleem, bridge agent toewijzing
+- MCP tools zijn globaal toegankelijk — splitsen geeft geen isolatie voordeel
+- Progressive disclosure (Level 1/2/3) maakt skillcount beheersbaar mits descriptions kort en bodies onder 2.000 woorden
 
-4. **PRODUCTION-LOG pattern (e1l.5)** — als skill (kennis/guidance), als command (`/gr:production-log`), of als beide?
+**Token-optimalisatie regels voor nieuwe skills:**
+
+1. Description max 200 chars, met negatieve qualifiers
+2. SKILL.md body max 2.000 woorden — zware content in `references/`
+3. Dedup mlflow-traces / mlflow-mcp-traces
+4. Trim video-research SKILL.md: tool-per-tool details naar references/
+
+---
+
+## Beslispunten (open)
+
+1. **design-to-video** — in plugin of global houden? Mixt Stitch met video productie. Als het in de plugin komt: Stitch MCP als optionele dependency
+2. **hub-transcribe** — past bij "media production" maar draait standalone. Verplaatsen of laten?
+3. **agents (ElevenLabs)** — voice bots ≠ media productie, maar ElevenLabs overlap met tts-production
+4. **PRODUCTION-LOG (e1l.5)** — skill, command (`/gr:production-log`), of beide?

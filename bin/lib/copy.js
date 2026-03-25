@@ -40,6 +40,8 @@ const FILE_MAP = {
   'skills/mlflow-traces/SKILL.md':                              'skills/mlflow-traces/SKILL.md',
   'skills/research-brief-builder/SKILL.md':                      'skills/research-brief-builder/SKILL.md',
   'skills/gr-advisor/SKILL.md':                                  'skills/gr-advisor/SKILL.md',
+  'skills/tts-production/SKILL.md':                              'skills/tts-production/SKILL.md',
+  'skills/tts-production/references/ffmpeg-audio-recipes.md':    'skills/tts-production/references/ffmpeg-audio-recipes.md',
 
   'agents/researcher.md':      'agents/researcher.md',
   'agents/video-analyst.md':   'agents/video-analyst.md',
@@ -60,6 +62,8 @@ const CLEANUP_DIRS = [
   'skills/mlflow-traces',
   'skills/research-brief-builder',
   'skills/gr-advisor',
+  'skills/tts-production/references',
+  'skills/tts-production',
   'commands/gr',
   'commands/ve',
 ];
