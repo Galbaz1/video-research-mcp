@@ -24,7 +24,7 @@ Python >= 3.11.
 
 ```bash
 uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"
-uv run pytest tests/ -v
+uv run pytest tests/ -v          # 781 tests
 uv run pytest tests/ -k "video_analyze" -v
 uv run ruff check src/ tests/
 GEMINI_API_KEY=... uv run video-research-mcp
@@ -140,6 +140,60 @@ Main variables:
 - `FLASH_SUMMARIZE` (default true)
 - `GEMINI_TRACING_ENABLED` (default false)
 - `MLFLOW_TRACKING_URI`, `MLFLOW_EXPERIMENT_NAME`
+
+## Media Production Skills (v0.6.0)
+
+Five production skills are available as Claude Code skills in `skills/`. For Codex agents working on media production tasks, the key patterns are summarized here.
+
+### TTS Production (ElevenLabs)
+
+Use direct API calls (curl), NOT MCP tools — MCP `Text_To_Speech` returns 404.
+
+```bash
+curl -s -X POST "https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/with-timestamps" \
+  -H "xi-api-key: ${ELEVENLABS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "...", "model_id": "eleven_multilingual_v2", "voice_settings": {"stability": 0.75, "similarity_boost": 0.80, "style": 0.40}}' \
+  --output /tmp/tts-response.json
+```
+
+Models: `eleven_multilingual_v2` (production), `eleven_flash_v2_5` (drafts). Speed param is ignored by multilingual model — use FFmpeg `atempo` (max 1.35x). Use cosine-ease ducking, not hard step (causes clicks).
+
+### FFmpeg Post-Processing
+
+Canonical filter order (load-bearing): temporal denoise → scale → sharpen → color grade → curves → grain → encode. Grain before denoise is destroyed. Interpolation after grain causes tearing.
+
+### Video Generation (Veo/Sora)
+
+| Need | Provider |
+|------|----------|
+| Photorealistic, cinematic | Veo 3.1 |
+| Stylized, animated | Sora |
+| Style reference matching | Veo 3.1 (`generate_video_with_style`) |
+| Video extension | Veo 3.1 or Sora |
+
+Draft with fast models, finalize with quality models. Always start from an anchor image, never from text alone.
+
+### Video Production Workflow
+
+Five phases: **Concept → Style Anchor → Generate → QA → Assemble**
+
+Style anchor system: generate one perfect hero still with `mcp-image`, use it as visual anchor for all clips. Four chaining patterns: Animate & Propagate (multiple scenes, same identity), Frame-Forward Chain (continuous motion), Parallel Variants (same scene, different moods), Extend Chain (single long shot).
+
+QA: extract frames at 10fps via FFmpeg, inspect with Read tool for composition drift, lighting consistency, object integrity, motion quality, color temperature.
+
+### Image Generation
+
+Subject-Context-Style prompt structure for `mcp-image`. Video style anchor pipeline: generate at 4K quality with character consistency enabled, iterate with `inputImagePath` until perfect.
+
+### Full Skill References
+
+For complete patterns, recipes, and provider details, see the SKILL.md files in `skills/`:
+- `skills/tts-production/` (+ `references/ffmpeg-audio-recipes.md`)
+- `skills/ffmpeg-production/` (+ `references/platform-presets.md`)
+- `skills/video-generation/` (+ `references/provider-details.md`)
+- `skills/video-production/` (+ `references/workflow-patterns.md`)
+- `skills/image-generation/`
 
 ## Key Docs
 
