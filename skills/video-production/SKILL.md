@@ -1,6 +1,6 @@
 ---
 name: video-production
-description: Cinematic AI video production — style anchors, multi-shot montage, chaining patterns, frame-level QA, assembly. Not for video analysis, research, provider settings, or encoding.
+description: Orchestrate multi-clip AI video projects — style anchors, chaining patterns, frame-level QA, montage assembly. Not for video analysis, research, provider settings, or FFmpeg encoding.
 ---
 
 # Video Production Pipeline
@@ -53,12 +53,7 @@ This ensures visual continuity: each scene's endpoint feeds the next scene's ent
 
 Animate the anchor into video clips. The prompt describes **motion and environment only** — not appearance (the image handles that).
 
-**Prompt structure:**
-```
-[Camera+Lens]: [Subject with physical detail] [Action with force verbs],
-in [Setting with atmosphere], lit by [Named physical light source].
-Style: [Texture micro-details, film grain].
-```
+**Prompt structure:** See the prompt template in `video-generation` skill. Key rule: prompt describes **motion and environment only** — the anchor image handles appearance. Never paraphrase character descriptions across shots.
 
 Never leave lighting vague. Map scenes to concrete physical lights:
 
@@ -204,16 +199,9 @@ Unsure                                          --> Pattern 1 (most versatile)
 6. **Max 5-6 chained scenes before a quality checkpoint.** Visual drift accumulates
 7. **Prompt describes motion, not appearance.** The anchor image handles visual identity
 
-## Post-Processing Chain Order
+## Post-Processing
 
-This sequence is load-bearing, not advisory:
-
-```
-Raw AI clip -> [1] Temporal denoising -> [2] Upscale -> [3] Sharpen
--> [4] Color grade (LUT) -> [5] Curves/EQ -> [6] Film grain -> [7] Encode
-```
-
-Grain before denoising is destroyed. Interpolation after grain causes tearing.
+See `ffmpeg-production` for the canonical post-processing chain order (temporal denoise → upscale → sharpen → color grade → grain → encode). The sequence is load-bearing — grain before denoising is destroyed, interpolation after grain causes tearing.
 
 ## Related Skills
 
@@ -221,8 +209,8 @@ Grain before denoising is destroyed. Interpolation after grain causes tearing.
 |------|-------|
 | Hero image prompt optimization | `image-generation` |
 | Provider tools and settings | `video-generation` |
-| FFmpeg encoding and filters | `ffmpeg` |
-| Prompt iteration on QA failures | `prompt-optimizer` |
+| FFmpeg encoding and filters | `ffmpeg-production` |
+| Voice-over and audio mixing | `tts-production` |
 
 ## Deep Reference
 

@@ -1,6 +1,6 @@
 ---
 name: tts-production
-description: Produce voice-over audio with ElevenLabs TTS API. Use when generating TTS clips, tuning voice settings, mixing voice into video, or building multilingual narration — not for voice AI agents, transcription, or music.
+description: Produces voiceover audio via ElevenLabs TTS API. Activates for TTS generation, voice tuning, audio ducking, or multilingual narration — not for voice AI agents, transcription, or music.
 ---
 
 # TTS Production with ElevenLabs

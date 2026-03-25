@@ -169,7 +169,6 @@ Rules:
 
 ## Related Skills
 
-- **ai-video-pipeline** -- full 4-phase production workflow (pre-gen, generation, post, QA)
-- **image-generation** -- hero image generation for style anchors
-- **sora** -- full Sora API reference and production runbook
-- **veo-video-generation** -- full Veo MCP tool reference and prompt rules
+- **video-production** — multi-shot orchestration, chaining patterns, QA workflow
+- **image-generation** — hero image generation for style anchors
+- **ffmpeg-production** — post-processing, encoding, platform export

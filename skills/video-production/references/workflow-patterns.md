@@ -286,25 +286,7 @@ When generating 3-4 variants per shot:
 
 ## Post-Processing Pipeline
 
-### Chain order (load-bearing)
-
-```
-Raw AI clip
-    |
-[1] Temporal denoising     -- remove inter-frame shimmer/flicker
-    |
-[2] Upscale (if needed)    -- scale before sharpening avoids halos
-    |
-[3] Sharpening             -- recover edge detail lost in generation/upscale
-    |
-[4] Color grade (LUT)      -- normalize AI's often over-saturated palette
-    |
-[5] Curves/EQ              -- fine-tune contrast and shadow lift
-    |
-[6] Film grain synthesis   -- LAST before encode; never before denoising
-    |
-[7] Encode with grain-tune -- libx265 -tune grain or AV1 FGS
-```
+See `ffmpeg-production` SKILL.md for the canonical chain order and codec selection. The sequence below covers video-production-specific recipes only.
 
 ### FFmpeg post-processing commands
 
