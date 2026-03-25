@@ -17,16 +17,16 @@ The npm package contains zero Python code. The PyPI package contains zero JavaSc
 
 ### What it does
 
-`bin/install.js` copies 34 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `.mcp.json`. That's it — no runtime, no daemon.
+`bin/install.js` copies 42 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `.mcp.json`. That's it — no runtime, no daemon.
 
 ```
 npx video-research-mcp@latest
         │
-        ├── Copies 17 commands   → ~/.claude/commands/gr/ and commands/ve/
-        ├── Copies 10 skill files → ~/.claude/skills/
-        ├── Copies 7 agents    → ~/.claude/agents/
-        ├── Writes .mcp.json   → MCP server registration (3 servers)
-        └── Writes manifest    → for upgrades/uninstall
+        ├── Copies 17 commands    → ~/.claude/commands/gr/ and commands/ve/
+        ├── Copies 18 skill files → ~/.claude/skills/ (12 skills + templates + references)
+        ├── Copies 7 agents       → ~/.claude/agents/
+        ├── Writes .mcp.json      → MCP server registration (3 servers)
+        └── Writes manifest       → for upgrades/uninstall
 ```
 
 ### Key files
@@ -67,7 +67,7 @@ const FILE_MAP = {
   'commands/explain-video.md':  'commands/ve/explain-video.md',
   'commands/explain-status.md': 'commands/ve/explain-status.md',
 
-  // Skills → context injection (10 files across 7 skills)
+  // Skills → context injection (18 files across 12 skills)
   'skills/video-research/SKILL.md':                              'skills/video-research/SKILL.md',
   'skills/gemini-visualize/SKILL.md':                             'skills/gemini-visualize/SKILL.md',
   'skills/gemini-visualize/templates/video-concept-map.md':       'skills/gemini-visualize/templates/video-concept-map.md',
@@ -78,6 +78,15 @@ const FILE_MAP = {
   'skills/mlflow-traces/SKILL.md':                                'skills/mlflow-traces/SKILL.md',
   'skills/research-brief-builder/SKILL.md':                       'skills/research-brief-builder/SKILL.md',
   'skills/gr-advisor/SKILL.md':                                   'skills/gr-advisor/SKILL.md',
+  'skills/tts-production/SKILL.md':                               'skills/tts-production/SKILL.md',
+  'skills/tts-production/references/ffmpeg-audio-recipes.md':     'skills/tts-production/references/ffmpeg-audio-recipes.md',
+  'skills/ffmpeg-production/SKILL.md':                            'skills/ffmpeg-production/SKILL.md',
+  'skills/ffmpeg-production/references/platform-presets.md':      'skills/ffmpeg-production/references/platform-presets.md',
+  'skills/video-generation/SKILL.md':                             'skills/video-generation/SKILL.md',
+  'skills/video-generation/references/provider-details.md':       'skills/video-generation/references/provider-details.md',
+  'skills/video-production/SKILL.md':                             'skills/video-production/SKILL.md',
+  'skills/video-production/references/workflow-patterns.md':      'skills/video-production/references/workflow-patterns.md',
+  'skills/image-generation/SKILL.md':                             'skills/image-generation/SKILL.md',
 
   // Agents → sub-agents (7)
   'agents/researcher.md':       'agents/researcher.md',

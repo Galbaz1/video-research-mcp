@@ -16,7 +16,7 @@ Claude Code can't process video. Gemini 3.1 Pro can. This plugin bridges the two
 
 ## What's in the box
 
-A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 17 slash commands, 7 skills, and 7 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
+A **Claude Code plugin** -- not just MCP servers, but a full integration: 45 tools, 17 slash commands, 12 skills, and 7 sub-agents that work together out of the box. The MCP servers provide the tools, the commands give you quick workflows (`/gr:video`, `/gr:research`), the skills teach Claude how to use everything correctly, and the agents handle background tasks like parallel research and visualization.
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -30,7 +30,7 @@ npx video-research-mcp@latest
 export GEMINI_API_KEY="your-key-here"
 ```
 
-One install. One API key. The installer copies 17 commands, 7 skills, and 7 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
+One install. One API key. The installer copies 17 commands, 12 skills, and 7 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
 
 ```bash
 npx video-research-mcp@latest --check     # show install status
@@ -209,6 +209,25 @@ Files are also saved to Claude's project memory for `/gr:recall`.
 
 </details>
 
+## Skills
+
+Skills teach Claude how to use tools and workflows correctly. They load automatically when relevant.
+
+| Skill | What it teaches |
+|-------|----------------|
+| **video-research** | All 28 video-research-mcp tools — selection, caching, error handling |
+| **video-explainer** | The 15 explainer tools — pipeline order, rendering, TTS config |
+| **tts-production** | ElevenLabs TTS voice-over — API patterns, voice presets, audio mixing |
+| **ffmpeg-production** | FFmpeg processing — post-processing chain, encoding, platform presets |
+| **video-generation** | AI video with Veo/Sora — provider selection, draft-to-final workflow |
+| **video-production** | Cinematic multi-shot — style anchors, chaining patterns, frame-level QA |
+| **image-generation** | Style anchors and prompt optimization for mcp-image |
+| **gemini-visualize** | Interactive HTML visualizations from analysis results |
+| **weaviate-setup** | Guided Weaviate onboarding and connection setup |
+| **mlflow-traces** | MLflow trace querying, debugging, and evaluation |
+| **research-brief-builder** | Structured research briefs for deep research |
+| **gr-advisor** | Recommends the right `/gr` command for your task |
+
 ## Knowledge store
 
 Connect Weaviate, and everything you learn gets stored -- searchable across projects, across sessions. Without it, the plugin works the same; you just don't get persistent semantic search.
@@ -324,7 +343,7 @@ node bin/install.js --global
 ```bash
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
-uv run pytest tests/ -v        # 728 tests, all mocked
+uv run pytest tests/ -v        # 781 tests, all mocked
 uv run ruff check src/ tests/  # lint
 ```
 
