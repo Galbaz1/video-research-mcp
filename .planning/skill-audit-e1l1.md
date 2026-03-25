@@ -73,15 +73,15 @@
 
 ### IN de plugin (5 nieuwe skills)
 
-| Nieuwe skill | Bron(nen) | Geschatte regels | Maps naar Beads taak |
-|-------------|-----------|-------------------|---------------------|
-| **`tts-production`** | elevenlabs-tts + generieke delen newton-voice-over | ~200 | e1l.2 |
-| **`video-generation`** | sora + veo-video-generation + provider-selectie uit ai-video-pipeline | ~250 | e1l.4 |
-| **`video-production`** | ai-video-pipeline + cinematic-iteration + chained-video-production (dedup) | ~300 | e1l.4 |
-| **`ffmpeg-production`** | ffmpeg (trim ~50%: drop Remotion-specifiek, drop obsolete codecs) | ~300 | e1l.3 |
-| **`image-generation`** | image-generation (move as-is) | ~150 | e1l.4 |
+| Nieuwe skill | Bron(nen) | Regels (SKILL+refs) | Maps naar Beads taak |
+|-------------|-----------|---------------------|---------------------|
+| **`tts-production`** | elevenlabs-tts + generieke delen newton-voice-over | 127 + 133 = 260 | e1l.2 |
+| **`video-generation`** | sora + veo-video-generation + provider-selectie uit ai-video-pipeline | 175 + 377 = 552 | e1l.4 |
+| **`video-production`** | ai-video-pipeline + cinematic-iteration + chained-video-production (dedup) | 229 + 481 = 710 | e1l.4 |
+| **`ffmpeg-production`** | ffmpeg (trim: drop Remotion, drop ducking/mixing, drop obsolete codecs) | 240 + 236 = 476 | e1l.3 |
+| **`image-generation`** | image-generation (adapted with frontmatter + negative qualifiers) | 142 | e1l.4 |
 
-**Totaal nieuw:** ~1.200 regels (was 2.581 verspreid → 53% reductie)
+**Totaal nieuw:** 2.140 regels over 5 skills + 4 references (was 2.581 verspreid). Progressive disclosure zorgt dat alleen ~913 regels SKILL.md bodies in Level 2 laden; 1.227 regels zitten in Level 3 references.
 
 #### Detail per skill
 
@@ -143,25 +143,20 @@
 
 ---
 
-## Implementatievolgorde (maps naar Beads taken)
+## Implementatiestatus
 
-```
-e1l.2: tts-production
-  └─ Schrijf skill, test triggering, update FILE_MAP
+| Beads | Skill | Status | Commit | Regels (SKILL + refs) |
+|-------|-------|--------|--------|-----------------------|
+| e1l.2 | tts-production | **DONE** | `ea211ee` | 127 + 133 = 260 |
+| e1l.3 | ffmpeg-production | **DONE** | `e80d8fd` | 240 + 236 = 476 |
+| e1l.4 | video-generation | **DONE** | `e80d8fd` | 175 + 377 = 552 |
+| e1l.4 | video-production | **DONE** | `e80d8fd` | 229 + 481 = 710 |
+| e1l.4 | image-generation | **DONE** | `e80d8fd` | 142 |
+| e1l.5 | production-logging | **OPEN** | — | — |
 
-e1l.3: ffmpeg-production
-  └─ Schrijf skill, trim content, test triggering, update FILE_MAP
+**Totaal geschreven:** 5 skills, 2.140 regels (was 2.581 verspreid → 17% reductie in regels, maar nu met references/ en proper progressive disclosure)
 
-e1l.4: video-generation + video-production + image-generation
-  └─ Schrijf 3 skills, test triggering, update FILE_MAP
-  └─ Zwaarste taak: meeste dedup werk in video-production
-
-e1l.5: production-logging
-  └─ Ontwerp logging pattern (geïnspireerd door Newton PRODUCTION-LOG)
-  └─ Implementeer als plugin component (skill of command)
-```
-
-**Kritisch pad:** e1l.2 en e1l.3 zijn onafhankelijk en kunnen parallel. e1l.4 hangt af van image-generation (style anchors). e1l.5 is onafhankelijk.
+**Description char budget:** 5 × ~188 avg = ~940 chars always-on overhead (binnen budget)
 
 ---
 
