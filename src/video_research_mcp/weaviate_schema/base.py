@@ -36,9 +36,10 @@ class PropertyDef:
         if self.description:
             result["description"] = self.description
         if self.skip_vectorization:
-            result["moduleConfig"] = {
-                "text2vec-openai": {"skip": True},
-            }
+            import os
+            _vz = os.getenv("WEAVIATE_VECTORIZER", "openai").strip().lower()
+            _module = {"weaviate": "text2vec-weaviate", "ollama": "text2vec-ollama"}.get(_vz, "text2vec-openai")
+            result["moduleConfig"] = {_module: {"skip": True}}
         return result
 
 

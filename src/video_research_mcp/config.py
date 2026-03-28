@@ -174,8 +174,8 @@ class ServerConfig(BaseModel):
     @classmethod
     def validate_weaviate_vectorizer(cls, value: str) -> str:
         v = value.strip().lower()
-        if v not in ("openai", "weaviate"):
-            raise ValueError(f"WEAVIATE_VECTORIZER must be 'openai' or 'weaviate', got '{value}'")
+        if v not in ("openai", "weaviate", "ollama"):
+            raise ValueError(f"WEAVIATE_VECTORIZER must be 'openai', 'weaviate', or 'ollama', got '{value}'")
         return v
 
     @field_validator("deep_research_agent")
