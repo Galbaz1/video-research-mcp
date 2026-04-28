@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/galbaz1-video-research-mcp-badge.png)](https://mseep.ai/app/galbaz1-video-research-mcp)
+
 # video-research-mcp
 
 Claude Code can't process video or generate media. Gemini 3.1 Pro and ElevenLabs can. This plugin bridges them all -- giving Claude access to video understanding, deep research, web search, and a full media production toolkit through MCP.
