@@ -1,6 +1,6 @@
 services:
   weaviate:
-    image: cr.weaviate.io/semitechnologies/weaviate:1.30.4
+    image: cr.weaviate.io/semitechnologies/weaviate:1.37.4
     command:
       - --host
       - 0.0.0.0
@@ -19,7 +19,17 @@ services:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
       ENABLE_MODULES: "text2vec-openai"
-      CLUSTER_HOSTNAME: "node1"
+      DEFAULT_VECTORIZER_MODULE: "text2vec-openai"
+      # Pinned to the auto-hostname that the pre-1.37 container had baked into
+      # its Raft state ("Voter ID: 63df32957676"). Without this pin, the new
+      # container starts with a different auto-hostname and Raft can't match
+      # its own persisted voter record → schema/data loads as empty (0 classes).
+      # See research/2026-05-15 upgrade notes.
+      CLUSTER_HOSTNAME: "63df32957676"
 
 volumes:
   weaviate_data:
+    external: true
+    # Points to the pre-existing top-level `weaviate_data` volume (62.5 MB,
+    # 14 collections, 2754 objects as of 2026-05-15 pre-upgrade). Pre-upgrade
+    # backup: ~/weaviate-backups/weaviate-1.28.4-pre-upgrade-2026-05-15-1103.tar.gz
