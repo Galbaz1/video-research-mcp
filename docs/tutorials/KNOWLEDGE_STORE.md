@@ -45,7 +45,7 @@ Create a `docker-compose.yml`:
 ```yaml
 services:
   weaviate:
-    image: cr.weaviate.io/semitechnologies/weaviate:1.28.4
+    image: cr.weaviate.io/semitechnologies/weaviate:1.37.4
     ports:
       - "8080:8080"
       - "50051:50051"
