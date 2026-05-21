@@ -8,6 +8,8 @@ cloud-to-local migration, or vectorizer provider changes).
 
 from __future__ import annotations
 
+import os
+
 import logging
 from typing import TYPE_CHECKING, Any
 
@@ -36,6 +38,16 @@ def build_vector_config(col_def: CollectionDef) -> Any:
     source_props = col_def.vectorized_properties() or None
     if cfg.weaviate_vectorizer == "weaviate":
         return Configure.Vectors.text2vec_weaviate(source_properties=source_props)
+    if cfg.weaviate_vectorizer == "ollama":
+        api_endpoint = os.environ.get(
+            "WEAVIATE_OLLAMA_API_ENDPOINT", "http://host.docker.internal:11434"
+        )
+        model = os.environ.get("WEAVIATE_OLLAMA_MODEL", "nomic-embed-text")
+        return Configure.Vectors.text2vec_ollama(
+            source_properties=source_props,
+            api_endpoint=api_endpoint,
+            model=model,
+        )
     return Configure.Vectors.text2vec_openai(source_properties=source_props)
 
 
@@ -88,7 +100,8 @@ def _get_current_vectorizer_module(col_config: Any) -> str | None:
 def _desired_vectorizer_module() -> str:
     """Return the vectorizer module name matching current config."""
     cfg = get_config()
-    return "text2vec-weaviate" if cfg.weaviate_vectorizer == "weaviate" else "text2vec-openai"
+    mapping = {"weaviate": "text2vec-weaviate", "ollama": "text2vec-ollama"}
+    return mapping.get(cfg.weaviate_vectorizer, "text2vec-openai")
 
 
 def needs_vector_migration(col_config: Any, col_def: CollectionDef) -> bool:
