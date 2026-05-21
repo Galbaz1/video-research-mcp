@@ -1,6 +1,6 @@
 {
   "name": "video-research-mcp",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Claude Code plugin — 51 tools for video analysis, deep research, content extraction, media production, and explainer video creation. Powered by Gemini 3.5 Flash",
   "bin": {
     "video-research-mcp": "bin/install.js"

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-05-21
+
+### Changed
+
+- **Default Gemini model: `gemini-3.5-flash`** with `thinking_level="medium"` (previously `gemini-3.1-pro-preview` / `high`). Both `default_model` and `flash_model` point at 3.5 Flash; preset opt-ins (`best`, `stable`, `budget`) remain available for Pro 3.1, Pro 3, and the legacy 3-flash-preview. Rationale: 3.5 Flash beats 3.1 Pro on Google's published benchmarks at ~4× speed and <½ cost.
+- **`.claude-plugin/plugin.json` version sync** — was 12 versions stale at 0.3.3; now part of the documented version-sync policy in `docs/PUBLISHING.md` alongside `pyproject.toml` and `package.json`.
+
+### Added
+
+- **Ollama vectorizer** for Weaviate (`text2vec-ollama`) — local embedding alternative to OpenAI / built-in (#61, community contribution).
+- **`.github/workflows/release.yml`** — auto-creates GitHub Release with CHANGELOG section on any `v*.*.*` tag push. Fills the gap that left v0.4.0 through v0.6.0 without release pages (now backfilled).
+
+### Security
+
+- **31 Dependabot alerts resolved** (3 critical, 10 high, 14 medium, 4 low) via `uv lock --upgrade`. Includes fastmcp 3.0.2 → 3.3.1 (Gemini-CLI command injection), python-multipart 0.0.22 → 0.0.29 (DoS), python-dotenv 1.2.1 → 1.2.2 (symlink following), cryptography 46.0.5 → 48.0.0 (buffer overflow), authlib 1.6.8 → 1.7.2 (CSRF + OIDC). google-genai bumped 1.65 → 2.5.0 (major; API stable for our usage, 781 tests pass).
+
 ## [0.6.0] - 2026-03-25
 
 ### Added
