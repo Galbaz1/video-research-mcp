@@ -16,6 +16,8 @@ node_modules/
 *.tgz
 gr-file-manifest.json
 mlflow.db
+mlruns/
+.claude/mlflow/
 video_analysis/
 archive/
 output/
