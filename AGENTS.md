@@ -129,8 +129,9 @@ Canonical source: `config.py:ServerConfig`.
 
 Main variables:
 - `GEMINI_API_KEY` (required)
-- `GEMINI_MODEL` (default `gemini-3.1-pro-preview`)
-- `GEMINI_FLASH_MODEL` (default `gemini-3-flash-preview`)
+- `GEMINI_MODEL` (default `gemini-3.5-flash`)
+- `GEMINI_FLASH_MODEL` (default `gemini-3.5-flash`)
+- `GEMINI_THINKING_LEVEL` (default `medium`)
 - `DEEP_RESEARCH_AGENT` (default `deep-research-pro-preview-12-2025`)
 - `WEAVIATE_URL` (empty disables knowledge store)
 - `WEAVIATE_API_KEY`

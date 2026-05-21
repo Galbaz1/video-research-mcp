@@ -289,8 +289,8 @@ export WEAVIATE_API_KEY="your-key"
 | Variable | Default | What it does |
 |----------|---------|-------------|
 | `GEMINI_API_KEY` | **(required)** | Google AI API key |
-| `GEMINI_MODEL` | `gemini-3.1-pro-preview` | Primary model |
-| `GEMINI_FLASH_MODEL` | `gemini-3-flash-preview` | Fast model for search and summaries |
+| `GEMINI_MODEL` | `gemini-3.5-flash` | Primary model |
+| `GEMINI_FLASH_MODEL` | `gemini-3.5-flash` | Same as `GEMINI_MODEL` by default; `infra_configure` presets unlock Pro |
 | `DEEP_RESEARCH_AGENT` | `deep-research-pro-preview-12-2025` | Interactions API agent |
 | `WEAVIATE_URL` | `""` | Weaviate URL (empty = knowledge store disabled) |
 | `WEAVIATE_API_KEY` | `""` | Required for Weaviate Cloud |
@@ -308,7 +308,7 @@ export WEAVIATE_API_KEY="your-key"
 
 | Variable | Default | What it does |
 |----------|---------|-------------|
-| `GEMINI_THINKING_LEVEL` | `high` | Thinking depth (minimal / low / medium / high) |
+| `GEMINI_THINKING_LEVEL` | `medium` | Thinking depth (minimal / low / medium / high) |
 | `GEMINI_TEMPERATURE` | `1.0` | Sampling temperature |
 | `GEMINI_CACHE_DIR` | `~/.cache/video-research-mcp/` | Cache directory |
 | `GEMINI_CACHE_TTL_DAYS` | `30` | Cache expiry |

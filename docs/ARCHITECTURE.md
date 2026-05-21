@@ -1028,7 +1028,7 @@ Default: `~/.cache/video-research-mcp/`. Configurable via `GEMINI_CACHE_DIR`.
   "cached_at": "2026-02-27T10:30:00",
   "content_id": "dQw4w9WgXcQ",
   "tool": "video_analyze",
-  "model": "gemini-3.1-pro-preview",
+  "model": "gemini-3.5-flash",
   "analysis": { ... }
 }
 ```
@@ -1092,10 +1092,10 @@ All configuration is resolved from environment variables via `ServerConfig.from_
 | Env Variable | Field | Default | Validation |
 |-------------|-------|---------|------------|
 | `GEMINI_API_KEY` | `gemini_api_key` | `""` (required at runtime) | -- |
-| `GEMINI_MODEL` | `default_model` | `gemini-3.1-pro-preview` | -- |
-| `GEMINI_FLASH_MODEL` | `flash_model` | `gemini-3-flash-preview` | -- |
+| `GEMINI_MODEL` | `default_model` | `gemini-3.5-flash` | -- |
+| `GEMINI_FLASH_MODEL` | `flash_model` | `gemini-3.5-flash` | Same as `default_model`; presets unlock Pro |
 | `DEEP_RESEARCH_AGENT` | `deep_research_agent` | `deep-research-pro-preview-12-2025` | Must not be empty |
-| `GEMINI_THINKING_LEVEL` | `default_thinking_level` | `high` | Must be in `{minimal, low, medium, high}` |
+| `GEMINI_THINKING_LEVEL` | `default_thinking_level` | `medium` | Must be in `{minimal, low, medium, high}` |
 | `GEMINI_TEMPERATURE` | `default_temperature` | `1.0` | -- |
 | `GEMINI_CACHE_DIR` | `cache_dir` | `~/.cache/video-research-mcp/` | -- |
 | `GEMINI_CACHE_TTL_DAYS` | `cache_ttl_days` | `30` | >= 1 |

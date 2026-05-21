@@ -79,7 +79,7 @@ class TestInfraTools:
         out = await infra_configure()
         assert "available_presets" in out
         assert set(out["available_presets"]) == {"best", "stable", "budget"}
-        assert out["active_preset"] == "best"  # default models match "best"
+        assert out["active_preset"] is None  # default models (3.5 Flash) match no preset; presets are explicit opt-in
 
     @pytest.mark.asyncio
     async def test_infra_configure_blocks_mutation_when_disabled(self, monkeypatch):
@@ -99,7 +99,7 @@ class TestInfraTools:
         out = await infra_configure()
 
         assert "current_config" in out
-        assert out["active_preset"] == "best"
+        assert out["active_preset"] is None  # default (3.5 Flash) matches no preset
 
     @pytest.mark.asyncio
     async def test_infra_configure_requires_token_when_configured(self, monkeypatch):

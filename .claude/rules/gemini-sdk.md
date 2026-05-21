@@ -38,6 +38,6 @@ paths: "src/**/*.py"
 
 ## Models
 
-- Default: `gemini-3.1-pro-preview` (config.py)
-- Flash: `gemini-3-flash-preview` — used by knowledge/summarize.py for post-processing
-- Model strings are preview/beta — this is intentional, we track latest Gemini
+- Default: `gemini-3.5-flash` (config.py) — both `default_model` and `flash_model` point here; thinking_level is the dial
+- Stable name is `gemini-3.5-flash`; the legacy `gemini-3-flash-preview` alias still resolves but new code should use the stable name
+- Opt-in alternates via `infra_configure(preset="best"|"stable"|"budget")` for Pro 3.1 / Pro 3 / old Flash

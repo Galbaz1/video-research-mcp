@@ -395,7 +395,7 @@ class TestContinueSessionCache:
             "general",
             video_title="Test",
             cache_name=TEST_CACHE_NAME,
-            model="gemini-3.1-pro-preview",
+            model="gemini-3.5-flash",
         )
         return session
 
@@ -437,7 +437,7 @@ class TestContinueSessionCache:
         assert config.cached_content == TEST_CACHE_NAME
         # Verify model matches what the cache was created for
         model_used = call_kwargs.kwargs.get("model")
-        assert model_used == "gemini-3.1-pro-preview"
+        assert model_used == "gemini-3.5-flash"
 
     async def test_continue_session_uses_session_model_not_default(
         self, _mock_session_store

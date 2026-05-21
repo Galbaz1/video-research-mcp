@@ -471,7 +471,7 @@ export FLASH_SUMMARIZE=false
 
 ### How it works
 
-The summarizer (`tools/knowledge/summarize.py`) batches up to 20 hits and sends them to Gemini Flash (`gemini-3-flash-preview`) with `thinking_level="minimal"` for fast processing.
+The summarizer (`tools/knowledge/summarize.py`) batches up to 20 hits and sends them to Gemini Flash (`gemini-3.5-flash`) with `thinking_level="minimal"` for fast processing.
 
 The `HitSummaryBatch` model structures Flash's output:
 

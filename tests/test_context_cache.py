@@ -448,14 +448,14 @@ class TestSessionCacheFields:
             "https://youtube.com/watch?v=abc", "general",
             video_title="Test",
             cache_name="cachedContents/persist-test",
-            model="gemini-3.1-pro-preview",
+            model="gemini-3.5-flash",
         )
 
         store2 = SessionStore(db_path=db_path)
         recovered = store2.get(session.session_id)
         assert recovered is not None
         assert recovered.cache_name == "cachedContents/persist-test"
-        assert recovered.model == "gemini-3.1-pro-preview"
+        assert recovered.model == "gemini-3.5-flash"
 
     def test_migration_adds_columns(self, tmp_path):
         """GIVEN a DB without cache columns WHEN SessionDB opened THEN migrates."""

@@ -238,8 +238,9 @@ Canonical source: `config.py:ServerConfig`. Key variables:
 | Variable | Default | Notes |
 |----------|---------|-------|
 | `GEMINI_API_KEY` | (required) | Also used as YouTube fallback |
-| `GEMINI_MODEL` | `gemini-3.1-pro-preview` | |
-| `GEMINI_FLASH_MODEL` | `gemini-3-flash-preview` | |
+| `GEMINI_MODEL` | `gemini-3.5-flash` | |
+| `GEMINI_FLASH_MODEL` | `gemini-3.5-flash` | Same default as `GEMINI_MODEL`; thinking_level is the dial |
+| `GEMINI_THINKING_LEVEL` | `medium` | `minimal` / `low` / `medium` / `high` |
 | `DEEP_RESEARCH_AGENT` | `deep-research-pro-preview-12-2025` | Interactions API agent ID |
 | `WEAVIATE_URL` | `""` | Empty = knowledge store disabled |
 | `WEAVIATE_API_KEY` | `""` | Required for Weaviate Cloud |
