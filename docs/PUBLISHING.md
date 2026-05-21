@@ -89,7 +89,14 @@ git tag v0.X.Y
 git push origin v0.X.Y
 ```
 
-Create a GitHub release from the tag with the CHANGELOG section as the body.
+The GitHub Release is created automatically by `.github/workflows/release.yml`
+when a `v*.*.*` tag is pushed — it extracts the matching CHANGELOG section as
+the release body. If the workflow fails or you want to back-fill an existing
+tag, do it manually:
+
+```bash
+gh release create v0.X.Y --title "v0.X.Y" --notes-file release-notes.md --verify-tag
+```
 
 ## Troubleshooting
 

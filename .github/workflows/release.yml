@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  github-release:
+    name: Create GitHub Release from CHANGELOG
+    runs-on: ubuntu-latest
+    env:
+      REF_NAME: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Extract CHANGELOG section
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${REF_NAME#v}"
+          export VERSION
+          python3 - <<'PYEOF' > release-notes.md
+          import os
+          import pathlib
+          import re
+
+          version = os.environ["VERSION"]
+          src = pathlib.Path("CHANGELOG.md").read_text()
+          pat = rf"## \[{re.escape(version)}\][^\n]*\n(.*?)(?=\n## \[|\Z)"
+          m = re.search(pat, src, re.S)
+          if m:
+              print(m.group(1).strip())
+          else:
+              print(f"_No CHANGELOG section found for {version!r} — release notes empty._")
+          PYEOF
+          echo "--- release-notes.md ---"
+          cat release-notes.md
+          echo "--- end ---"
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release create "${REF_NAME}" \
+            --title "${REF_NAME}" \
+            --notes-file release-notes.md \
+            --verify-tag
