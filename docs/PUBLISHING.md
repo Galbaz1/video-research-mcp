@@ -11,11 +11,18 @@ Both packages must always have the **same version number**.
 
 ## Version sync policy
 
-`pyproject.toml` → `version` is the **source of truth**. When bumping a version:
+`pyproject.toml` → `version` is the **source of truth**. Three files MUST be kept in lockstep:
 
-1. Update `pyproject.toml` `version`
+1. Update `pyproject.toml` `version` (source of truth)
 2. Update `package.json` `version` to match
-3. Verify: `python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])"` must equal `node -e "console.log(require('./package.json').version)"`
+3. Update `.claude-plugin/plugin.json` `version` to match
+4. Verify all three:
+   ```bash
+   python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])"
+   node -e "console.log(require('./package.json').version)"
+   node -e "console.log(require('./.claude-plugin/plugin.json').version)"
+   ```
+   All three must return the same string. `.claude-plugin/plugin.json` was historically forgotten — keep it explicit.
 
 ## Pre-publish checklist
 

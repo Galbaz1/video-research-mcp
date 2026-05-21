@@ -1,6 +1,6 @@
 # video-research-mcp
 
-Claude Code can't process video or generate media. Gemini 3.1 Pro and ElevenLabs can. This plugin bridges them all -- giving Claude access to video understanding, deep research, web search, and a full media production toolkit through MCP.
+Claude Code can't process video or generate media. Gemini 3.5 Flash and ElevenLabs can. This plugin bridges them all -- giving Claude access to video understanding, deep research, web search, and a full media production toolkit through MCP.
 
 [![CI](https://github.com/Galbaz1/video-research-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Galbaz1/video-research-mcp/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/video-research-mcp)](https://pypi.org/project/video-research-mcp/)
