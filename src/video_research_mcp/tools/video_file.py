@@ -29,6 +29,12 @@ SUPPORTED_VIDEO_EXTENSIONS: dict[str, str] = {
 }
 
 LARGE_FILE_THRESHOLD = 20 * 1024 * 1024  # 20 MB
+# Gemini File API: large videos can need several minutes of server-side
+# processing before reaching ACTIVE. Wait generously, and persist the
+# upload-cache entry BEFORE waiting (see _upload_large_file) so a client-side
+# timeout never forces a re-upload of a multi-GB file.
+_UPLOAD_ACTIVE_TIMEOUT = 600.0
+_CACHE_REVALIDATE_TIMEOUT = 120.0
 _UPLOAD_LOCKS: dict[str, asyncio.Lock] = {}
 _UPLOAD_LOCKS_GUARD = asyncio.Lock()
 
@@ -131,7 +137,8 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
 
     When ``content_hash`` is provided, checks an on-disk cache first. If the
     cached file is still ACTIVE on the server, the upload is skipped entirely.
-    This prevents re-upload loops when MCP clients retry after a timeout.
+    The cache entry is written BEFORE waiting for ACTIVE, so a wait timeout on a
+    multi-GB upload never forces a re-upload — a retry reuses the uploaded file.
     """
     client = GeminiClient.get()
 
@@ -141,7 +148,7 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
             config=types.UploadFileConfig(mime_type=mime_type),
         )
         logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
+        await _wait_for_active(client, uploaded.name, timeout=_UPLOAD_ACTIVE_TIMEOUT)
         return uploaded.uri
 
     async with _UPLOAD_LOCKS_GUARD:
@@ -151,7 +158,9 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
         cached = _load_upload_cache(content_hash)
         if cached:
             try:
-                await _wait_for_active(client, cached["file_name"], timeout=10)
+                await _wait_for_active(
+                    client, cached["file_name"], timeout=_CACHE_REVALIDATE_TIMEOUT
+                )
                 logger.info("Upload cache hit for %s → %s", path.name, cached["file_uri"])
                 return cached["file_uri"]
             except (RuntimeError, TimeoutError, KeyError):
@@ -162,8 +171,10 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
             config=types.UploadFileConfig(mime_type=mime_type),
         )
         logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
+        # Persist the cache entry BEFORE waiting for ACTIVE: a multi-GB upload
+        # that times out here must not be repeated — a retry reuses this file.
         _save_upload_cache(content_hash, uploaded.uri, uploaded.name)
+        await _wait_for_active(client, uploaded.name, timeout=_UPLOAD_ACTIVE_TIMEOUT)
         return uploaded.uri
 
 

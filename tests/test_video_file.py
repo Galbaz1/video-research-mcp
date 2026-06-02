@@ -375,3 +375,26 @@ class TestUploadCache:
 
         assert results == ["https://api.example/files/one", "https://api.example/files/one"]
         mock_gemini_client["client"].aio.files.upload.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_cache_saved_before_active_wait(self, tmp_path, mock_gemini_client, monkeypatch):
+        """Cache persists even if the file never reaches ACTIVE, so a retry reuses the upload."""
+        f = tmp_path / "big.mp4"
+        f.write_bytes(b"\x00" * 100)
+        uploaded = _mock_upload_result(uri="https://api.example/files/slow", name="files/slow")
+        mock_gemini_client["client"].aio.files.upload = AsyncMock(return_value=uploaded)
+
+        async def _never_active(*_args, **_kwargs):
+            raise TimeoutError("not active")
+
+        monkeypatch.setattr(
+            "video_research_mcp.tools.video_file._wait_for_active", _never_active
+        )
+
+        with pytest.raises(TimeoutError):
+            await _upload_large_file(f, "video/mp4", content_hash="slow_hash")
+
+        # Cache was written before the (failed) wait → retry reuses the upload.
+        cache_file = self.cache_dir / "slow_hash.json"
+        assert cache_file.exists()
+        assert json.loads(cache_file.read_text())["file_name"] == "files/slow"
