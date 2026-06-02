@@ -119,6 +119,42 @@ class TestAnalyzeVideo:
         assert call_kwargs["local_filepath"] == "/tmp/video.mp4"
         assert call_kwargs["screenshot_dir"] == "/tmp/screens/vid123"
 
+    @pytest.mark.asyncio
+    async def test_cache_discriminator_prevents_window_collision(
+        self, mock_gemini_client, tmp_path, monkeypatch
+    ):
+        """Same content_id+instruction but different windows must not share a cache entry."""
+        from video_research_mcp import cache
+        from video_research_mcp.config import ServerConfig
+
+        monkeypatch.setattr(cache, "_cache_dir", lambda: tmp_path)
+        # Seed a cache entry for window A only.
+        cache.save(
+            "disc_id", "video_analyze", "test-model",
+            {"title": "Window A"},
+            instruction="test|win:0s-27m@1.0",
+        )
+        mock_gemini_client["generate_structured"].return_value = VideoResult(title="Window B")
+        cfg = ServerConfig(gemini_api_key="test-key-not-real", default_model="test-model")
+
+        with patch("video_research_mcp.tools.video_core.get_config", return_value=cfg):
+            hit = await analyze_video(
+                _make_video_content(), instruction="test", content_id="disc_id",
+                source_label="src", use_cache=True,
+                cache_discriminator="|win:0s-27m@1.0",
+            )
+            miss = await analyze_video(
+                _make_video_content(), instruction="test", content_id="disc_id",
+                source_label="src", use_cache=True,
+                cache_discriminator="|win:27m-54m@1.0",
+            )
+
+        assert hit["title"] == "Window A"
+        assert hit["cached"] is True
+        # Different window → cache miss → fresh Gemini call returns Window B.
+        assert miss["title"] == "Window B"
+        mock_gemini_client["generate_structured"].assert_called_once()
+
 
 class TestEnrichPrompt:
     def test_replaces_text_part(self):

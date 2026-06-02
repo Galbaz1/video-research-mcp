@@ -29,6 +29,12 @@ SUPPORTED_VIDEO_EXTENSIONS: dict[str, str] = {
 }
 
 LARGE_FILE_THRESHOLD = 20 * 1024 * 1024  # 20 MB
+# Gemini File API: large videos can need several minutes of server-side
+# processing before reaching ACTIVE. Wait generously, and persist the
+# upload-cache entry BEFORE waiting (see _upload_large_file) so a client-side
+# timeout never forces a re-upload of a multi-GB file.
+_UPLOAD_ACTIVE_TIMEOUT = 600.0
+_CACHE_REVALIDATE_TIMEOUT = 120.0
 _UPLOAD_LOCKS: dict[str, asyncio.Lock] = {}
 _UPLOAD_LOCKS_GUARD = asyncio.Lock()
 
@@ -131,7 +137,8 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
 
     When ``content_hash`` is provided, checks an on-disk cache first. If the
     cached file is still ACTIVE on the server, the upload is skipped entirely.
-    This prevents re-upload loops when MCP clients retry after a timeout.
+    The cache entry is written BEFORE waiting for ACTIVE, so a wait timeout on a
+    multi-GB upload never forces a re-upload — a retry reuses the uploaded file.
     """
     client = GeminiClient.get()
 
@@ -141,7 +148,7 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
             config=types.UploadFileConfig(mime_type=mime_type),
         )
         logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
+        await _wait_for_active(client, uploaded.name, timeout=_UPLOAD_ACTIVE_TIMEOUT)
         return uploaded.uri
 
     async with _UPLOAD_LOCKS_GUARD:
@@ -151,7 +158,9 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
         cached = _load_upload_cache(content_hash)
         if cached:
             try:
-                await _wait_for_active(client, cached["file_name"], timeout=10)
+                await _wait_for_active(
+                    client, cached["file_name"], timeout=_CACHE_REVALIDATE_TIMEOUT
+                )
                 logger.info("Upload cache hit for %s → %s", path.name, cached["file_uri"])
                 return cached["file_uri"]
             except (RuntimeError, TimeoutError, KeyError):
@@ -162,16 +171,37 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
             config=types.UploadFileConfig(mime_type=mime_type),
         )
         logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
+        # Persist the cache entry BEFORE waiting for ACTIVE: a multi-GB upload
+        # that times out here must not be repeated — a retry reuses this file.
         _save_upload_cache(content_hash, uploaded.uri, uploaded.name)
+        await _wait_for_active(client, uploaded.name, timeout=_UPLOAD_ACTIVE_TIMEOUT)
         return uploaded.uri
 
 
-async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Content, str, str]:
+async def _video_file_content(
+    file_path: str,
+    prompt: str,
+    *,
+    fps: float | None = None,
+    start_offset: str | None = None,
+    end_offset: str | None = None,
+) -> tuple[types.Content, str, str]:
     """Build Content for a local video file.
 
     Small files (<20 MB) use inline Part.from_bytes.
     Large files are uploaded via the File API.
+
+    When any of ``fps``/``start_offset``/``end_offset`` is set, a
+    ``types.VideoMetadata`` is attached to the video Part so Gemini samples
+    only the requested time window / frame rate. This enables windowed
+    analysis of long videos that would otherwise exceed the context budget.
+
+    Args:
+        file_path: Path to the local video file.
+        prompt: Text prompt for analysis.
+        fps: Frames per second to sample. Lower = faster, higher = more detail.
+        start_offset: Start of the analysis window (e.g. "0s", "27m").
+        end_offset: End of the analysis window (e.g. "27m", "1640s").
 
     Returns:
         (content, content_id, file_uri) where content_id is the SHA-256 hash
@@ -183,14 +213,20 @@ async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Conten
 
     if size >= LARGE_FILE_THRESHOLD:
         file_uri = await _upload_large_file(p, mime, content_hash=content_id)
-        parts = [types.Part(file_data=types.FileData(file_uri=file_uri))]
+        video_part = types.Part(file_data=types.FileData(file_uri=file_uri))
     else:
         file_uri = ""
         data = await asyncio.to_thread(p.read_bytes)
-        parts = [types.Part.from_bytes(data=data, mime_type=mime)]
+        video_part = types.Part.from_bytes(data=data, mime_type=mime)
 
-    parts.append(types.Part(text=prompt))
-    return types.Content(parts=parts), content_id, file_uri
+    if fps is not None or start_offset is not None or end_offset is not None:
+        video_part.video_metadata = types.VideoMetadata(
+            fps=fps,
+            start_offset=start_offset,
+            end_offset=end_offset,
+        )
+
+    return types.Content(parts=[video_part, types.Part(text=prompt)]), content_id, file_uri
 
 
 async def _video_file_uri(file_path: str) -> tuple[str, str]:

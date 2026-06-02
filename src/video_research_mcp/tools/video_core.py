@@ -48,6 +48,7 @@ async def analyze_video(
     metadata_context: str | None = None,
     local_filepath: str = "",
     screenshot_dir: str = "",
+    cache_discriminator: str = "",
 ) -> dict:
     """Run the video analysis pipeline shared by video_analyze and video_batch_analyze.
 
@@ -62,14 +63,18 @@ async def analyze_video(
         metadata_context: Optional video metadata context to prepend to the prompt.
         local_filepath: Local filesystem path to the analyzed/downloaded video.
         screenshot_dir: Local filesystem path to extracted screenshots.
+        cache_discriminator: Extra cache-key salt (e.g. a time window). Two calls
+            with the same content_id and instruction but different windows must
+            pass distinct discriminators to avoid returning each other's result.
 
     Returns:
         Dict matching VideoResult schema (default) or the custom output_schema.
     """
     cfg = get_config()
 
+    cache_instruction = f"{instruction}{cache_discriminator}"
     if use_cache:
-        cached = cache_load(content_id, "video_analyze", cfg.default_model, instruction=instruction)
+        cached = cache_load(content_id, "video_analyze", cfg.default_model, instruction=cache_instruction)
         if cached:
             cached["cached"] = True
             return cached
@@ -104,7 +109,7 @@ async def analyze_video(
 
     result["source"] = source_label
     if use_cache:
-        cache_save(content_id, "video_analyze", cfg.default_model, result, instruction=instruction)
+        cache_save(content_id, "video_analyze", cfg.default_model, result, instruction=cache_instruction)
     from ..weaviate_store import store_video_analysis, extract_and_store_graph
     await store_video_analysis(
         result,
