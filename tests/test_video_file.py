@@ -142,6 +142,54 @@ class TestVideoFileContent:
         with pytest.raises(FileNotFoundError):
             await _video_file_content("/nonexistent/video.mp4", "test")
 
+    @pytest.mark.asyncio
+    async def test_window_metadata_on_small_inline(self, tmp_path, mock_gemini_client):
+        """fps/start/end attach VideoMetadata to an inline (small-file) video part."""
+        f = tmp_path / "small.mp4"
+        f.write_bytes(b"\x00" * 100)
+
+        content, _, _ = await _video_file_content(
+            str(f), "analyze", fps=1.0, start_offset="0s", end_offset="27m",
+        )
+
+        vm = content.parts[0].video_metadata
+        assert vm is not None
+        assert vm.fps == 1.0
+        assert vm.start_offset == "0s"
+        assert vm.end_offset == "27m"
+
+    @pytest.mark.asyncio
+    async def test_window_metadata_on_large_upload(self, tmp_path, mock_gemini_client):
+        """fps/start/end attach VideoMetadata to an uploaded (large-file) video part."""
+        f = tmp_path / "big.mp4"
+        f.write_bytes(b"\x00" * LARGE_FILE_THRESHOLD)
+        uploaded = _mock_upload_result()
+        mock_gemini_client["client"].aio.files.upload = AsyncMock(return_value=uploaded)
+        mock_gemini_client["client"].aio.files.get = AsyncMock(
+            return_value=MagicMock(state="ACTIVE")
+        )
+
+        content, _, file_uri = await _video_file_content(
+            str(f), "analyze", start_offset="27m", end_offset="54m",
+        )
+
+        assert content.parts[0].file_data.file_uri == uploaded.uri
+        assert file_uri == uploaded.uri
+        vm = content.parts[0].video_metadata
+        assert vm is not None
+        assert vm.start_offset == "27m"
+        assert vm.end_offset == "54m"
+
+    @pytest.mark.asyncio
+    async def test_no_window_leaves_metadata_unset(self, tmp_path, mock_gemini_client):
+        """Without window params the video part carries no VideoMetadata (unchanged)."""
+        f = tmp_path / "small.mp4"
+        f.write_bytes(b"\x00" * 100)
+
+        content, _, _ = await _video_file_content(str(f), "summarize")
+
+        assert content.parts[0].video_metadata is None
+
 
 class TestVideoFileUri:
     @pytest.mark.asyncio

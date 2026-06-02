@@ -125,6 +125,21 @@ async def video_analyze(
     )] = None,
     thinking_level: ThinkingLevel = "high",
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
+    fps: Annotated[float | None, Field(
+        gt=0,
+        description="Local files only: frames per second to sample. Lower = "
+        "faster/cheaper, higher = captures more on-screen detail. "
+        "Default lets Gemini choose."
+    )] = None,
+    start_offset: Annotated[str | None, Field(
+        description="Local files only: start of the analysis window, e.g. '0s', "
+        "'27m'. Pair with end_offset to analyze a long video in segments that "
+        "each fit the context budget."
+    )] = None,
+    end_offset: Annotated[str | None, Field(
+        description="Local files only: end of the analysis window, e.g. '27m', "
+        "'1640s'."
+    )] = None,
     strict_contract: Annotated[bool, Field(
         description="Enable strict contract pipeline with quality gates, "
         "artifact rendering, and semantic validation. Produces richer output "
@@ -141,6 +156,11 @@ async def video_analyze(
     strict Pydantic models, parallel strategy/concept-map generation, artifact
     rendering, and quality gates. Returns richer output but takes longer.
 
+    For a long local video that exceeds the context budget in a single pass,
+    analyze it in segments by calling repeatedly with ``start_offset``/
+    ``end_offset`` windows (and optionally a higher ``fps`` to capture more
+    on-screen detail), then synthesize the per-window results.
+
     Args:
         url: YouTube video URL.
         file_path: Path to a local video file.
@@ -148,6 +168,9 @@ async def video_analyze(
         output_schema: Optional JSON Schema dict for custom output shape.
         thinking_level: Gemini thinking depth.
         use_cache: Whether to use cached results.
+        fps: Local files only — frames per second to sample.
+        start_offset: Local files only — start of the analysis window.
+        end_offset: Local files only — end of the analysis window.
         strict_contract: Run strict contract pipeline with quality gates.
 
     Returns:
@@ -175,6 +198,14 @@ async def video_analyze(
     except ValueError as exc:
         return make_tool_error(exc)
 
+    has_window = fps is not None or start_offset is not None or end_offset is not None
+    if url is not None and has_window:
+        return make_tool_error(ValueError(
+            "fps/start_offset/end_offset apply to local files only (file_path), "
+            "not YouTube URLs."
+        ))
+    cache_discriminator = f"|win:{start_offset}-{end_offset}@{fps}" if has_window else ""
+
     try:
         metadata_context = None
         local_filepath = ""
@@ -195,7 +226,13 @@ async def video_analyze(
             else:
                 contents = _video_content(clean_url, instruction)
         else:
-            contents, content_id, file_uri = await _video_file_content(file_path, instruction)
+            contents, content_id, file_uri = await _video_file_content(
+                file_path,
+                instruction,
+                fps=fps,
+                start_offset=start_offset,
+                end_offset=end_offset,
+            )
             source_label = file_path
             local_filepath = str(Path(file_path).expanduser().resolve())
 
@@ -223,6 +260,7 @@ async def video_analyze(
             metadata_context=metadata_context,
             local_filepath=local_filepath,
             screenshot_dir=screenshot_dir,
+            cache_discriminator=cache_discriminator,
         )
         result["local_filepath"] = local_filepath
         result["screenshot_dir"] = screenshot_dir

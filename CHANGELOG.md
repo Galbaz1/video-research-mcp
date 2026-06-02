@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Windowed analysis of local videos** — `video_analyze` now accepts `fps`, `start_offset`, and `end_offset` for local `file_path` videos, attaching `types.VideoMetadata` to the video part. A long recording that exceeds the single-pass context budget can be analyzed in time-window segments (e.g. four 27-minute windows) while keeping on-screen detail legible. Per-window results are cache-isolated via a window-aware cache key (`analyze_video(cache_discriminator=...)`), so re-running a window hits cache and different windows never collide. Window params are local-file-only and fail fast if combined with a YouTube URL.
+
 ## [0.6.1] - 2026-05-21
 
 ### Changed

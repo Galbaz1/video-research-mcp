@@ -167,11 +167,30 @@ async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "")
         return uploaded.uri
 
 
-async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Content, str, str]:
+async def _video_file_content(
+    file_path: str,
+    prompt: str,
+    *,
+    fps: float | None = None,
+    start_offset: str | None = None,
+    end_offset: str | None = None,
+) -> tuple[types.Content, str, str]:
     """Build Content for a local video file.
 
     Small files (<20 MB) use inline Part.from_bytes.
     Large files are uploaded via the File API.
+
+    When any of ``fps``/``start_offset``/``end_offset`` is set, a
+    ``types.VideoMetadata`` is attached to the video Part so Gemini samples
+    only the requested time window / frame rate. This enables windowed
+    analysis of long videos that would otherwise exceed the context budget.
+
+    Args:
+        file_path: Path to the local video file.
+        prompt: Text prompt for analysis.
+        fps: Frames per second to sample. Lower = faster, higher = more detail.
+        start_offset: Start of the analysis window (e.g. "0s", "27m").
+        end_offset: End of the analysis window (e.g. "27m", "1640s").
 
     Returns:
         (content, content_id, file_uri) where content_id is the SHA-256 hash
@@ -183,14 +202,20 @@ async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Conten
 
     if size >= LARGE_FILE_THRESHOLD:
         file_uri = await _upload_large_file(p, mime, content_hash=content_id)
-        parts = [types.Part(file_data=types.FileData(file_uri=file_uri))]
+        video_part = types.Part(file_data=types.FileData(file_uri=file_uri))
     else:
         file_uri = ""
         data = await asyncio.to_thread(p.read_bytes)
-        parts = [types.Part.from_bytes(data=data, mime_type=mime)]
+        video_part = types.Part.from_bytes(data=data, mime_type=mime)
 
-    parts.append(types.Part(text=prompt))
-    return types.Content(parts=parts), content_id, file_uri
+    if fps is not None or start_offset is not None or end_offset is not None:
+        video_part.video_metadata = types.VideoMetadata(
+            fps=fps,
+            start_offset=start_offset,
+            end_offset=end_offset,
+        )
+
+    return types.Content(parts=[video_part, types.Part(text=prompt)]), content_id, file_uri
 
 
 async def _video_file_uri(file_path: str) -> tuple[str, str]:
