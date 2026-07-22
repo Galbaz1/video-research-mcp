@@ -130,7 +130,7 @@ async def _check_infra_mutation_gate_disabled() -> CheckResult:
     """Ensure infra mutation is denied when policy toggle is disabled."""
     expectation = "category=PERMISSION_DENIED"
     with _with_env({"INFRA_MUTATIONS_ENABLED": "false", "INFRA_ADMIN_TOKEN": None}):
-        result = await INFRA_CONFIGURE(model="gemini-3.5-flash")
+        result = await INFRA_CONFIGURE(model="gemini-3.6-flash")
     if isinstance(result, dict) and result.get("category") == "PERMISSION_DENIED":
         return CheckResult("infra_mutation_gate_disabled", "PASS", expectation, _as_error(result))
     return CheckResult("infra_mutation_gate_disabled", "FAIL", expectation, str(result))
@@ -140,9 +140,9 @@ async def _check_infra_token_gate() -> CheckResult:
     """Ensure infra mutation token policy denies bad token and accepts valid token."""
     expectation = "wrong token denied + valid token accepted"
     with _with_env({"INFRA_MUTATIONS_ENABLED": "true", "INFRA_ADMIN_TOKEN": "live-check-token"}):
-        denied = await INFRA_CONFIGURE(model="gemini-3.5-flash", auth_token="wrong")
+        denied = await INFRA_CONFIGURE(model="gemini-3.6-flash", auth_token="wrong")
         allowed = await INFRA_CONFIGURE(
-            model="gemini-3.5-flash",
+            model="gemini-3.6-flash",
             auth_token="live-check-token",
         )
     denied_ok = isinstance(denied, dict) and denied.get("category") == "PERMISSION_DENIED"

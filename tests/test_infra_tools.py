@@ -56,8 +56,8 @@ class TestInfraTools:
     async def test_preset_sets_both_models(self):
         out = await infra_configure(preset="stable")
         cfg = out["current_config"]
-        assert cfg["default_model"] == "gemini-3-pro-preview"
-        assert cfg["flash_model"] == "gemini-3-flash-preview"
+        assert cfg["default_model"] == "gemini-3.6-flash"
+        assert cfg["flash_model"] == "gemini-3.6-flash"
         assert out["active_preset"] == "stable"
 
     @pytest.mark.asyncio
@@ -65,7 +65,7 @@ class TestInfraTools:
         out = await infra_configure(preset="stable", model="gemini-3-pro-exp-override")
         cfg = out["current_config"]
         assert cfg["default_model"] == "gemini-3-pro-exp-override"
-        assert cfg["flash_model"] == "gemini-3-flash-preview"
+        assert cfg["flash_model"] == "gemini-3.6-flash"
         assert out["active_preset"] is None  # no exact preset match
 
     @pytest.mark.asyncio
@@ -79,7 +79,7 @@ class TestInfraTools:
         out = await infra_configure()
         assert "available_presets" in out
         assert set(out["available_presets"]) == {"best", "stable", "budget"}
-        assert out["active_preset"] is None  # default models (3.5 Flash) match no preset; presets are explicit opt-in
+        assert out["active_preset"] == "stable"
 
     @pytest.mark.asyncio
     async def test_infra_configure_blocks_mutation_when_disabled(self, monkeypatch):
@@ -99,7 +99,7 @@ class TestInfraTools:
         out = await infra_configure()
 
         assert "current_config" in out
-        assert out["active_preset"] is None  # default (3.5 Flash) matches no preset
+        assert out["active_preset"] == "stable"
 
     @pytest.mark.asyncio
     async def test_infra_configure_requires_token_when_configured(self, monkeypatch):

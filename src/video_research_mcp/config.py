@@ -16,18 +16,18 @@ VALID_THINKING_LEVELS = {"minimal", "low", "medium", "high"}
 MODEL_PRESETS: dict[str, dict[str, str]] = {
     "best": {
         "default_model": "gemini-3.1-pro-preview",
-        "flash_model": "gemini-3-flash-preview",
-        "label": "Max quality — 3.1 Pro + 3 Flash (preview, lowest rate limits)",
+        "flash_model": "gemini-3.6-flash",
+        "label": "Max quality — 3.1 Pro + 3.6 Flash",
     },
     "stable": {
-        "default_model": "gemini-3-pro-preview",
-        "flash_model": "gemini-3-flash-preview",
-        "label": "Fallback — 3 Pro + 3 Flash (higher rate limits, 3 Pro EOL 2026-03-09)",
+        "default_model": "gemini-3.6-flash",
+        "flash_model": "gemini-3.6-flash",
+        "label": "Current GA standard — 3.6 Flash",
     },
     "budget": {
-        "default_model": "gemini-3-flash-preview",
-        "flash_model": "gemini-3-flash-preview",
-        "label": "Cost-optimized — 3 Flash for everything (highest rate limits)",
+        "default_model": "gemini-3.5-flash-lite",
+        "flash_model": "gemini-3.5-flash-lite",
+        "label": "Lowest cost — 3.5 Flash-Lite",
     },
 }
 
@@ -96,8 +96,8 @@ class ServerConfig(BaseModel):
     """Runtime configuration resolved from environment."""
 
     gemini_api_key: str = Field(default="")
-    default_model: str = Field(default="gemini-3.5-flash")
-    flash_model: str = Field(default="gemini-3.5-flash")
+    default_model: str = Field(default="gemini-3.6-flash")
+    flash_model: str = Field(default="gemini-3.6-flash")
     default_thinking_level: str = Field(default="medium")
     default_temperature: float = Field(default=1.0)
     cache_dir: str = Field(default="")
@@ -202,8 +202,8 @@ class ServerConfig(BaseModel):
         _has_openai = bool(os.environ.get("OPENAI_API_KEY", ""))
         return cls(
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
-            default_model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"),
-            flash_model=os.getenv("GEMINI_FLASH_MODEL", "gemini-3.5-flash"),
+            default_model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+            flash_model=os.getenv("GEMINI_FLASH_MODEL", "gemini-3.6-flash"),
             default_thinking_level=os.getenv("GEMINI_THINKING_LEVEL", "medium"),
             default_temperature=float(os.getenv("GEMINI_TEMPERATURE", "1.0")),
             cache_dir=os.getenv("GEMINI_CACHE_DIR", cache_default),

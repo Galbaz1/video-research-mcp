@@ -88,4 +88,4 @@ Before tagging a release:
 1. Run Step 2 and Step 3.
 2. Attach output snippets to the release PR.
 3. If Step 2 fails, block release and open a remediation PR.
-4. In Step 3, block release on policy check FAILs. For `online_extract`, retry once with `GEMINI_MODEL=gemini-3.5-flash`; if still `SKIP` due transient provider availability, log it in the PR and continue.
+4. In Step 3, block release on policy check FAILs. For `online_extract`, retry once with `GEMINI_MODEL=gemini-3.6-flash`; if still `SKIP` due transient provider availability, log it in the PR and continue.

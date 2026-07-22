@@ -5,7 +5,7 @@ description: Teaches Claude how to effectively use the 28 video-research-mcp too
 
 # Video Research MCP — Tool Usage Guide
 
-You have access to the `video-research-mcp` MCP server, which exposes 28 tools powered by Gemini 3.1 Pro and the YouTube Data API. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
+You have access to the `video-research-mcp` MCP server, which exposes 28 tools powered by Gemini 3.6 Flash and the YouTube Data API. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
 
 ## Core Principle
 

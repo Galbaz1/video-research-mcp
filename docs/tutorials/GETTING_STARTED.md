@@ -35,10 +35,10 @@ Create a `.env` file or export directly. Only `GEMINI_API_KEY` is required -- ev
 export GEMINI_API_KEY="your-gemini-api-key"
 
 # Optional -- shown with defaults
-export GEMINI_MODEL="gemini-3.5-flash"
-export GEMINI_FLASH_MODEL="gemini-3.5-flash"
+export GEMINI_MODEL="gemini-3.6-flash"
+export GEMINI_FLASH_MODEL="gemini-3.6-flash"
 export GEMINI_THINKING_LEVEL="medium"        # minimal | low | medium | high
-export GEMINI_TEMPERATURE="1.0"
+export GEMINI_TEMPERATURE="1.0"              # Pre-3.6 models only
 export GEMINI_CACHE_DIR="$HOME/.cache/video-research-mcp/"
 export GEMINI_CACHE_TTL_DAYS="30"
 export GEMINI_MAX_SESSIONS="50"

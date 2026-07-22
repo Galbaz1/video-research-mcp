@@ -38,6 +38,6 @@ paths: "src/**/*.py"
 
 ## Models
 
-- Default: `gemini-3.5-flash` (config.py) — both `default_model` and `flash_model` point here; thinking_level is the dial
-- Stable name is `gemini-3.5-flash`; the legacy `gemini-3-flash-preview` alias still resolves but new code should use the stable name
-- Opt-in alternates via `infra_configure(preset="best"|"stable"|"budget")` for Pro 3.1 / Pro 3 / old Flash
+- Default: `gemini-3.6-flash` (config.py) — both `default_model` and `flash_model` point here; thinking_level is the dial
+- Gemini 3.6 Flash does not accept `temperature`, `top_p`, or `top_k`; omit sampling parameters for this model
+- Opt-in alternates via `infra_configure(preset="best"|"stable"|"budget")` for Pro 3.1, the 3.6 Flash standard, or 3.5 Flash-Lite
