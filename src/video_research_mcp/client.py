@@ -65,16 +65,16 @@ class GeminiClient:
     ) -> str:
         """Generate text via Gemini with thinking support and optional structured output.
 
-        Builds a GenerateContentConfig from resolved model/thinking/temperature
-        defaults, delegates to the async API with retry, and strips thinking
-        parts from the response.
+        Builds a GenerateContentConfig from resolved model and thinking defaults,
+        delegates to the async API with retry, and strips thinking parts from the
+        response. Sampling parameters are omitted for Gemini 3.6 Flash.
 
         Args:
             contents: Prompt contents (text, multimodal parts, or conversation history).
             model: Override model ID (defaults to config's default_model).
             thinking_level: Override thinking level (defaults to config's default).
             response_schema: JSON schema dict to constrain output format.
-            temperature: Override temperature (defaults to config's default).
+            temperature: Override temperature for pre-3.6 models.
             system_instruction: System-level instruction prepended to the prompt.
             tools: Gemini tool wiring (e.g. GoogleSearch, UrlContext).
             **kwargs: Forwarded to the underlying generate_content call.
@@ -90,8 +90,9 @@ class GeminiClient:
 
         config = types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_level=resolved_thinking),
-            temperature=temperature if temperature is not None else cfg.default_temperature,
         )
+        if resolved_model != "gemini-3.6-flash":
+            config.temperature = temperature if temperature is not None else cfg.default_temperature
         if system_instruction:
             config.system_instruction = system_instruction
         if response_schema:

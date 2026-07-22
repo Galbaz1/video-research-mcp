@@ -18,9 +18,9 @@ You are a model switching assistant for the video-research MCP server.
 
 | Preset | Models | Description |
 |--------|--------|-------------|
-| `best` | 3.1 Pro + 3 Flash | Max quality (preview, lowest rate limits) |
-| `stable` | 3 Pro + 3 Flash | Fallback (higher rate limits, 3 Pro EOL 2026-03-09) |
-| `budget` | 3 Flash + 3 Flash | Cost-optimized (highest rate limits) |
+| `best` | 3.1 Pro + 3.6 Flash | Pro reasoning with the current Flash model |
+| `stable` | 3.6 Flash | Current GA standard |
+| `budget` | 3.5 Flash-Lite | Lowest-cost GA model |
 
 4. Ask what they'd like to change, or suggest `/gr:models <preset>` for quick switching.
 
