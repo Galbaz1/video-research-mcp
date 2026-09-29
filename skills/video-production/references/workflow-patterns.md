@@ -2,180 +2,27 @@
 
 Detailed walkthroughs for each chaining pattern, QA protocol, and post-processing pipeline. This supplements the main `SKILL.md` with copy-paste-ready commands and exhaustive checklists.
 
-## Pattern 1: Animate & Propagate (Full Walkthrough)
+## Pattern 1: Animate and Propagate
 
-The recommended default. One hero still branches into multiple clips sharing visual DNA.
+Use one inspected subject/environment reference for distinct scenes. Prepare a separate motion/camera prompt per shot, then pass references through the actual provider schema. Veo's asset references are not a `style` mode; follow `video-generation/references/provider-details.md`. Generate within the declared attempt/concurrency budget and check identity in each result before assembly.
 
-### Step-by-step
+## Pattern 2: Frame-Forward Chain
 
-1. **Generate hero still** with `mcp-image`:
-   - `quality: "quality"`, `imageSize: "4K"`, `purpose: "cinematic video keyframe"`
-   - `maintainCharacterConsistency: true` for multi-scene sets
-   - Iterate with `inputImagePath` until perfect
+Generate the first shot, choose its accepted endpoint, and extract a bridge frame:
 
-2. **First clip** — animate the hero:
-   ```
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Subtle movement: [describe motion]. Camera holds still."
-     duration: 8
-     number_of_videos: 4
-     aspect_ratio: "16:9"
-     model: "veo-3.1-generate-preview"
-     negative_prompt: "text, watermark, logo, blurry, distorted, deformed,
-                       low quality, overexposed, underexposed, glitch"
-   ```
+```bash
+ffmpeg -sseof -0.1 -i clip_1.mp4 -frames:v 1 -q:v 2 bridge_1.jpg
+```
 
-3. **Subsequent clips** — use hero as style reference:
-   ```
-   generate_video_with_style:
-     prompt: "[new scene description with motion]"
-     reference_image_paths: ["/path/to/hero.png"]
-     reference_types: ["style"]
-     duration: 8
-     number_of_videos: 4
-   ```
+Inspect that frame for identity, geometry, and lighting before using it as the next shot's image input. A bad endpoint propagates drift. Check the joined sequence after each link; restart from the last good reference only within the existing budget.
 
-4. **QA each clip** (see QA Protocol below)
+## Pattern 3: Parallel Variants
 
-5. **Assemble** with FFmpeg montage
+Hold the anchor, motion, duration, and provider settings fixed while changing one requested treatment. Give every worker a separate directory and a bounded attempt count. Compare the actual outputs against the same QA criteria and join all workers before selecting or assembling.
 
-### When to use
+## Pattern 4: Extension
 
-- Central character recognizable across multiple distinct scenes
-- Same factory/environment in different states
-- Hero product shown in different contexts
-
-## Pattern 2: Frame-Forward Chain (Full Walkthrough)
-
-Each clip's endpoint becomes the next clip's starting point.
-
-### Step-by-step
-
-1. **Generate hero still** (same as Pattern 1)
-
-2. **First clip** — animate the hero:
-   ```
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Camera slowly tracks right. [describe initial motion]."
-     duration: 8
-     number_of_videos: 4
-   ```
-
-3. **Extract last frame** from the winning variant:
-   ```bash
-   ffmpeg -sseof -0.1 -i clip_1_winner.mp4 -frames:v 1 -q:v 2 bridge_frame_1.jpg
-   ```
-
-4. **Visually verify** the bridge frame with Read tool. If the gap between this frame and the next scene's intended composition is too large, generate intermediate anchor images with mcp-image.
-
-5. **Next clip** — animate from the bridge frame:
-   ```
-   animate_image:
-     image_path: /path/to/bridge_frame_1.jpg
-     prompt: "Continuing motion. [describe next segment]."
-     duration: 8
-     number_of_videos: 4
-   ```
-
-6. **Repeat** steps 3-5 for each link in the chain
-
-7. **Assemble** with concat or xfade
-
-### Drift mitigation
-
-Motion drift accumulates after 3-4 links. Countermeasures:
-- Trim each clip to its first 3-4 strong seconds before extracting the last frame
-- After 4 links, pause and assemble what you have for a quality checkpoint
-- If drift is visible, restart the chain from the last good bridge frame with a corrective prompt
-
-### When to use
-
-- Walking through a factory, zooming into a machine
-- Journey through time or space
-- Any continuous camera movement
-
-## Pattern 3: Parallel Variants (Full Walkthrough)
-
-One anchor, multiple independent clips with different treatments.
-
-### Step-by-step
-
-1. **Generate hero still** (same as Pattern 1)
-
-2. **Generate variants** — each with a different mood/treatment:
-   ```
-   # Dawn version
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Golden dawn light washes across the scene. Gentle warmth."
-     number_of_videos: 4
-
-   # Dusk version
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Deep blue dusk, warm interior light spills from windows."
-     number_of_videos: 4
-
-   # Storm version
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Heavy rain, dramatic clouds, flashes of distant lightning."
-     number_of_videos: 4
-   ```
-
-3. **QA each variant set** independently
-
-4. **Pick best** from each set, or combine into a time-lapse montage
-
-### When to use
-
-- Same scene in different moods or lighting
-- Time-of-day treatments
-- A/B visual tests for stakeholder review
-
-## Pattern 4: Extend Chain (Full Walkthrough)
-
-Single continuous shot beyond the generation time limit.
-
-### Step-by-step
-
-1. **Generate hero still** (same as Pattern 1)
-
-2. **First segment** (8s):
-   ```
-   animate_image:
-     image_path: /path/to/hero.png
-     prompt: "Slow cinematic reveal. Camera drifts forward."
-     duration: 8
-     number_of_videos: 4
-   ```
-
-3. **Extend** from the winning clip:
-   ```
-   extend_video_clip:
-     video_path: /path/to/clip_1_winner.mp4
-     prompt: "Continue the slow forward drift. Same lighting and atmosphere."
-     duration: 8
-   ```
-
-4. **Extend again** if needed (max 2 extensions = ~24s total)
-
-5. **QA the full continuous clip** — pay special attention to extension seams
-
-### Degradation limits
-
-- After 1 extension (~16s): usually good
-- After 2 extensions (~24s): quality starts degrading
-- After 3+ extensions: not recommended — plan the most important content in the first 8s
-
-### When to use
-
-- Slow reveals
-- Continuous pans
-- Atmospheric holds
-- Any single unbroken shot > 8s
+Check whether the provider accepts the source video, its origin, duration, and resolution. An arbitrary local MP4 is not automatically extendable. Keep the operation/source ID, request a single supported extension, and inspect the seam plus the new material. Repeat only if the next extension was authorized and remains inside the budget; drift is measured per artifact rather than assumed at a fixed number of seconds.
 
 ## QA Protocol: Frame Extraction and Inspection
 
@@ -247,11 +94,11 @@ ffmpeg -i input.mp4 \
   -vsync vfr scene_%04d.jpg
 ```
 
-If a clip has internal scene changes, split it at the detected cut or account for it in xfade timing.
+Inspect detected timestamps: scene detection is heuristic. Split only at confirmed cuts or account for them in transition timing.
 
 ## Multi-Take Variant Selection Protocol
 
-When generating 3-4 variants per shot:
+When the budget authorizes multiple variants per shot:
 
 ### Rapid triage (30 seconds per variant)
 
@@ -401,22 +248,9 @@ ffmpeg -i clip_a.mp4 -i clip_b.mp4 -filter_complex \
   -map "[vout]" output.mp4
 ```
 
-## Prompt-Optimizer Integration on QA Failures
+## Bounded QA Repair
 
-When variants fail QA, feed specific feedback to the `/prompt-optimizer` skill:
-
-1. **Current prompt** text
-2. **Specific frame failures**: "frame 15-20 show lighting flip from left to right"
-3. **Hero image** as visual reference
-4. **Composition reference** (if using Stitch mockups)
-
-The optimizer rewrites the prompt targeting the specific failure. Regenerate 4 new variants and return to QA.
-
-**Iteration limit**: 3 rounds max on the same prompt approach. After that, simplify:
-- Reduce motion complexity
-- Shorten duration
-- Split into sub-scenes
-- Use a static or zoom-only camera instead of tracking
+Record the current prompt, reference, and exact failed timestamp. Change one relevant variable and permit one repair within the agreed budget. Preserve the earlier clip. After a repeated infrastructure failure or exhausted attempt budget, stop and return the defect; do not launch an automatic new cohort. A prompt optimizer is optional and must be available before using it.
 
 ## Frame Interpolation
 
@@ -446,7 +280,7 @@ project/
 +-- assets/
 |   +-- style-anchors/       # Hero images + descriptors.md
 |   +-- anchors/              # Start/end anchor images per scene
-|   +-- variants/             # Raw output (4 per generation)
+|   +-- variants/             # Raw output (authorized attempt count)
 |   |   +-- scene-1/
 |   |   |   +-- iteration-1/
 |   |   |   +-- iteration-2/

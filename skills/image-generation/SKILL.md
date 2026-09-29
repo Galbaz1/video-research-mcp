@@ -1,9 +1,13 @@
 ---
 name: image-generation
-description: Enhances image generation prompts with Subject-Context-Style structure, style anchors, character consistency, mcp-image workflows. Not for video generation, TTS, FFmpeg, audio, or design-to-code.
+description: Enhances image generation prompts with Subject-Context-Style structure, style anchors, character consistency, and reference-based editing. Not for video generation, TTS, FFmpeg, audio, or design-to-code.
 ---
 
 # Image Generation Prompt Best Practices
+
+This plugin does not bundle an image-generation tool. Discover the active provider, inspect its schema, and confirm spend/attempt limits before requesting images. Provider-specific parameter names such as `inputImagePath` are not portable.
+
+Verified on 2026-09-29: Google documents `gemini-3.1-flash-image` for general generation/editing, `gemini-3.1-flash-lite-image` for inexpensive 1K work, and `gemini-3-pro-image` for complex design. See [official image guidance](https://ai.google.dev/gemini-api/docs/image-generation) for exact API, supported references, sizes, and pricing; use the provider available to the session.
 
 ## Prompt Structure
 
@@ -36,7 +40,7 @@ The visual treatment.
 ## Core Principles
 
 - **Preserve intent** -- Enrich the user's original vision, never override it
-- **Positive descriptions only** -- Describe what should be present; rephrase any exclusion as an inclusion
+- **Preserve constraints** -- Describe desired elements positively and retain explicit exclusions using supported instructions or a negative-prompt field
 - **Specific over vague** -- "golden hour sunlight at 15 degree angle" beats "nice lighting"
 - **Natural flow** -- Weave elements into a single flowing description, not a bullet list
 
@@ -85,7 +89,7 @@ When the same character must be recognizable across multiple images:
 - Include **at least 3 recognizable visual markers** (distinctive scar, signature clothing, unique hairstyle, characteristic accessory)
 - Use anchoring words: "distinctive", "signature", "always wears", "always has"
 - Be specific: "round tortoiseshell glasses" not just "glasses"
-- Use `inputImagePath` to iterate on a base character image until all markers are locked in, then use that locked image as the reference for subsequent generations
+- Use the active provider's reference-image field to edit the base character image; inspect the resulting markers before using it as a reference
 
 ### Compositional Integration (Multi-Element Blending)
 
@@ -114,15 +118,15 @@ Tailor the prompt to the intended use:
 | Presentation slide | Bold composition, clear focal point, text-friendly layout |
 | Social media | Eye-catching, vibrant, crop-friendly aspect ratio |
 | Book/album cover | Typography space, dramatic mood, symbolic elements |
-| **Video style anchor** | Highest quality, 4K resolution, named physical light source, fine surface textures, film-like grain. This image becomes the visual reference for downstream video generation -- maximize detail and lighting consistency |
+| **Video style anchor** | Supported resolution sufficient for delivery, named physical light source, required surface/identity details, and inspected composition. Reuse the accepted reference downstream |
 
 ### Video Style Anchor Pipeline
 
 When generating images that will serve as style references for AI video production:
 
-1. **Use highest quality**: request maximum quality and 4K resolution -- the anchor conditions all downstream video
+1. **Match delivery needs**: choose a supported size that preserves the required details; use 4K only when its added cost serves the output
 2. **Character consistency**: maintain character consistency when generating multiple hero images for the same scene or character
-3. **Iterate before committing**: use `inputImagePath` to refine the hero image until lighting, texture, and composition are exactly right
+3. **Inspect before reuse**: verify lighting, texture, composition, and identity; allow one targeted repair within the authorized budget
 4. **Blend for composites**: combine reference photography with branded elements when building composite anchors
 5. **Match video prompt lighting**: use the exact same physical light source description in the image prompt that will appear in the video prompt -- shadow direction must be consistent across the chain
 
@@ -140,3 +144,7 @@ When modifying an existing image:
 **Input:** "A happy dog in a park"
 
 **Enhanced:** "Golden retriever mid-leap catching a red frisbee, ears flying, tongue out in joy, in a sunlit urban park. Soft morning light filtering through oak trees creates dappled shadows on emerald grass. Background shows families on picnic blankets, slightly out of focus. Shot from low angle emphasizing the dog's athletic movement, with motion blur on the paws suggesting speed."
+
+## Completion
+
+Inspect the actual image at full resolution for subject fidelity, text, required exclusions, and editing boundaries. Return its path, provider/model, reference provenance, and unresolved defects. A successful tool response or a larger requested resolution does not prove the image meets the brief.
