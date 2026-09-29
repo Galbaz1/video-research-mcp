@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Annotated
 
 from fastmcp import FastMCP
@@ -82,9 +83,15 @@ async def explainer_inject(
                 FileNotFoundError(f"Project not found: {project_id}")
             )
 
-        input_dir = project_dir / "input"
+        if Path(filename).name != filename or filename in {"", ".", ".."}:
+            raise ValueError("filename must be a single filename within input/")
+        project_dir = project_dir.resolve()
+        project_dir.relative_to(cfg.resolved_projects_path.resolve())
+        input_dir = (project_dir / "input").resolve()
+        input_dir.relative_to(project_dir)
         input_dir.mkdir(exist_ok=True)
-        target = input_dir / filename
+        target = (input_dir / filename).resolve()
+        target.relative_to(input_dir)
         target.write_text(content)
 
         return InjectResult(

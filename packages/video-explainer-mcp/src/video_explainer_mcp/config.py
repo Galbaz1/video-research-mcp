@@ -50,9 +50,9 @@ class ServerConfig(BaseModel):
     def resolved_projects_path(self) -> Path:
         """Return the projects directory, defaulting to explainer_path/projects."""
         if self.projects_path:
-            return Path(self.projects_path)
+            return Path(self.projects_path).expanduser().resolve()
         if self.explainer_path:
-            return Path(self.explainer_path) / "projects"
+            return Path(self.explainer_path).expanduser().resolve() / "projects"
         return Path.cwd() / "projects"
 
     @classmethod

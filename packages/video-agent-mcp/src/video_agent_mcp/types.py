@@ -8,7 +8,12 @@ from typing import Annotated
 from pydantic import Field
 
 # Annotated type for project IDs used across tool parameters.
-ProjectId = Annotated[str, Field(description="Explainer project ID (directory name under EXPLAINER_PATH)")]
+ProjectId = Annotated[str, Field(
+    min_length=1,
+    max_length=100,
+    pattern=r"^[a-zA-Z0-9_-]+$",
+    description="Project identifier under the explainer projects directory",
+)]
 
 
 @dataclass(frozen=True)

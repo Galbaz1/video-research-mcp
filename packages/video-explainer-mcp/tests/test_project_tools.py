@@ -135,3 +135,40 @@ class TestExplainerList:
         monkeypatch.delenv("EXPLAINER_PATH", raising=False)
         result = await explainer_list()
         assert "error" in result
+
+
+@pytest.mark.parametrize("filename", ["../outside.md", "/tmp/outside.md", "", ".", ".."])
+async def test_inject_rejects_filename_escape(filename, monkeypatch, mock_project_dir):
+    """Untrusted filenames cannot write outside the project's input directory."""
+    project = mock_project_dir()
+    monkeypatch.setenv("EXPLAINER_PATH", str(project.parent.parent))
+    monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project.parent))
+    result = await explainer_inject(project.name, "test", filename=filename)
+    assert "error" in result
+    assert "single filename" in result["error"]
+    assert not (project / "outside.md").exists()
+
+
+@pytest.mark.parametrize("escape", ["project", "input", "file"])
+async def test_inject_rejects_symlink_escape(escape, monkeypatch, mock_project_dir, tmp_path):
+    """Symlinked projects, input directories, and files cannot escape the configured root."""
+    project = mock_project_dir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    if escape == "project":
+        project.rmdir()
+        project.symlink_to(outside, target_is_directory=True)
+    elif escape == "input":
+        (project / "input").symlink_to(outside, target_is_directory=True)
+    else:
+        (project / "input").mkdir()
+        (outside / "content.md").write_text("original")
+        (project / "input" / "content.md").symlink_to(outside / "content.md")
+    monkeypatch.setenv("EXPLAINER_PATH", str(project.parent.parent))
+    monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project.parent))
+    result = await explainer_inject(project.name, "replaced")
+    assert "error" in result
+    if escape == "file":
+        assert (outside / "content.md").read_text() == "original"
+    else:
+        assert not (outside / "content.md").exists()

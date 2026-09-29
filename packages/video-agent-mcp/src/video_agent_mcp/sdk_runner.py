@@ -1,20 +1,9 @@
-"""Core Agent SDK wrapper — single and parallel query execution.
-
-Provides ``run_agent_query()`` for individual queries and
-``run_parallel_queries()`` for bounded concurrent execution via
-``asyncio.gather()`` + ``Semaphore``.
-
-Critical: The CLAUDECODE env variable must be cleared before spawning
-nested Claude instances to prevent recursive agent loops. This guard
-is applied once at the orchestration level in ``run_parallel_queries()``,
-not per-query.
-"""
+"""Execute text-only Agent SDK queries with bounded concurrency and timeouts."""
 
 from __future__ import annotations
 
 import asyncio
 import logging
-import os
 import time
 
 import claude_agent_sdk
@@ -33,77 +22,66 @@ async def run_agent_query(
     max_turns: int | None = None,
     timeout: int | None = None,
 ) -> AgentResult:
-    """Execute a single Agent SDK query.
+    """Generate text without granting the scene model tools or workspace access.
 
     Args:
-        prompt: The user prompt to send.
-        system_prompt: Optional system prompt override.
-        model: Claude model ID. Defaults to config.agent_model.
-        max_turns: Max conversation turns. Defaults to config.agent_max_turns.
-        timeout: Query timeout in seconds. Defaults to config.agent_timeout.
+        prompt: Scene generation request.
+        system_prompt: Scene instructions.
+        model: Override the configured Claude model.
+        max_turns: Override the configured turn limit.
+        timeout: Override the configured timeout in seconds.
 
     Returns:
-        AgentResult with the response text, success status, and timing.
+        Text and terminal success or error, including elapsed time.
     """
     cfg = get_config()
-    model = model or cfg.agent_model
-    max_turns = max_turns if max_turns is not None else cfg.agent_max_turns
     timeout = timeout if timeout is not None else cfg.agent_timeout
-
     options = claude_agent_sdk.ClaudeAgentOptions(
-        max_turns=max_turns,
-        model=model,
+        max_turns=max_turns if max_turns is not None else cfg.agent_max_turns,
+        model=model or cfg.agent_model,
+        system_prompt=system_prompt,
+        tools=[],
+        strict_mcp_config=True,
+        setting_sources=[],
+        # Override only the child environment; concurrent calls retain the parent context.
+        env={"CLAUDECODE": ""},
     )
-    if system_prompt:
-        options.system_prompt = system_prompt
-
     start = time.monotonic()
     text_parts: list[str] = []
-
+    terminal: claude_agent_sdk.ResultMessage | None = None
+    error = None
     try:
         async with asyncio.timeout(timeout):
-            async for message in claude_agent_sdk.query(
-                prompt=prompt,
-                options=options,
-            ):
-                if hasattr(message, "content"):
-                    for block in message.content:
-                        if hasattr(block, "text"):
-                            text_parts.append(block.text)
-
-        elapsed = time.monotonic() - start
-        full_text = "\n".join(text_parts)
-
-        if not full_text.strip():
-            return AgentResult(
-                text="",
-                success=False,
-                duration_seconds=elapsed,
-                error="Empty response from agent",
-            )
-
-        return AgentResult(
-            text=full_text,
-            success=True,
-            duration_seconds=elapsed,
-        )
-
+            async for message in claude_agent_sdk.query(prompt=prompt, options=options):
+                if isinstance(message, claude_agent_sdk.AssistantMessage):
+                    if message.error:
+                        error = f"Agent response error: {message.error}"
+                    text_parts.extend(
+                        block.text for block in message.content
+                        if isinstance(block, claude_agent_sdk.TextBlock)
+                    )
+                elif isinstance(message, claude_agent_sdk.ResultMessage):
+                    terminal = message
+                    if message.is_error or message.subtype != "success":
+                        error = "; ".join(message.errors or []) or message.result or message.subtype
+                    elif message.terminal_reason in {"aborted_streaming", "aborted_tools"}:
+                        error = f"Agent query ended: {message.terminal_reason}"
     except TimeoutError:
-        elapsed = time.monotonic() - start
-        return AgentResult(
-            text="",
-            success=False,
-            duration_seconds=elapsed,
-            error=f"Agent query timed out after {timeout}s",
-        )
+        error = f"Agent query timed out after {timeout}s"
     except Exception as exc:
-        elapsed = time.monotonic() - start
-        return AgentResult(
-            text="",
-            success=False,
-            duration_seconds=elapsed,
-            error=str(exc),
-        )
+        error = str(exc)
+
+    full_text = (terminal.result if terminal and terminal.result else "\n".join(text_parts))
+    if error is None and terminal is None:
+        error = "Agent query ended without a terminal result"
+    if error is None and not full_text.strip():
+        error = "Empty response from agent"
+    return AgentResult(
+        text="" if error else full_text,
+        success=error is None,
+        duration_seconds=time.monotonic() - start,
+        error=error,
+    )
 
 
 async def run_parallel_queries(
@@ -111,52 +89,24 @@ async def run_parallel_queries(
     *,
     concurrency: int | None = None,
 ) -> list[AgentResult]:
-    """Run multiple agent queries in parallel with bounded concurrency.
-
-    Clears the CLAUDECODE env var once before spawning to prevent nested
-    agent recursion, then restores it in a finally block.
+    """Run bounded queries and preserve input order, including failed results.
 
     Args:
-        queries: List of dicts with keys matching ``run_agent_query()`` params
-            (``prompt`` required; ``system_prompt``, ``model``, ``max_turns``,
-            ``timeout`` optional).
-        concurrency: Max parallel queries. Defaults to config.agent_concurrency.
+        queries: Keyword arguments accepted by ``run_agent_query``.
+        concurrency: Override the configured maximum number of active queries.
 
     Returns:
-        List of AgentResult in the same order as input queries.
+        One result per input query, in input order.
     """
-    cfg = get_config()
-    concurrency = concurrency or cfg.agent_concurrency
+    concurrency = concurrency if concurrency is not None else get_config().agent_concurrency
+    if not 1 <= concurrency <= 10:
+        raise ValueError("concurrency must be between 1 and 10")
     semaphore = asyncio.Semaphore(concurrency)
 
-    # Guard: remove CLAUDECODE to prevent nested agent loops
-    saved_claudecode = os.environ.pop("CLAUDECODE", None)
-
     async def _run_with_semaphore(query_kwargs: dict) -> AgentResult:
+        """Acquire a query slot before starting the SDK subprocess."""
         async with semaphore:
             return await run_agent_query(**query_kwargs)
 
-    try:
-        logger.info(
-            "Starting %d parallel queries (concurrency=%d)",
-            len(queries),
-            concurrency,
-        )
-        start = time.monotonic()
-        results = await asyncio.gather(
-            *[_run_with_semaphore(q) for q in queries],
-            return_exceptions=False,
-        )
-        elapsed = time.monotonic() - start
-        succeeded = sum(1 for r in results if r.success)
-        logger.info(
-            "Parallel queries done: %d/%d succeeded in %.1fs",
-            succeeded,
-            len(queries),
-            elapsed,
-        )
-        return list(results)
-    finally:
-        # Restore CLAUDECODE if it was set
-        if saved_claudecode is not None:
-            os.environ["CLAUDECODE"] = saved_claudecode
+    logger.info("Starting %d queries (concurrency=%d)", len(queries), concurrency)
+    return list(await asyncio.gather(*[_run_with_semaphore(q) for q in queries]))

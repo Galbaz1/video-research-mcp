@@ -59,7 +59,7 @@ class TestRunCli:
         monkeypatch.setenv("EXPLAINER_PATH", str(mock_explainer_venv))
         proc = AsyncMock()
         proc.returncode = -15
-        proc.communicate = AsyncMock(side_effect=asyncio.TimeoutError())
+        proc.communicate = AsyncMock(side_effect=TimeoutError())
         proc.terminate = lambda: None
         proc.kill = lambda: None
 
@@ -70,7 +70,7 @@ class TestRunCli:
             nonlocal call_count
             call_count += 1
             if call_count <= 2:
-                raise asyncio.TimeoutError()
+                raise TimeoutError()
             return (b"", b"")
 
         proc.communicate = smart_communicate
@@ -120,3 +120,17 @@ class TestRunCli:
             assert "CLAUDECODE" not in env
             assert "CLAUDE_CODE_SESSION" not in env
             assert "HOME" in env
+
+
+async def test_cancelled_cli_terminates_process(mock_subprocess, mock_explainer_venv, monkeypatch):
+    """Cancelling a background task stops and reaps its CLI process."""
+    monkeypatch.setenv("EXPLAINER_PATH", str(mock_explainer_venv))
+    proc = mock_subprocess()
+    proc.communicate.side_effect = [asyncio.CancelledError(), (b"", b"")]
+    with (
+        patch("asyncio.create_subprocess_exec", AsyncMock(return_value=proc)),
+        pytest.raises(asyncio.CancelledError),
+    ):
+        await run_cli("render", "test")
+    proc.terminate.assert_called_once()
+    assert proc.communicate.await_count == 2

@@ -1,175 +1,149 @@
-"""Tests for sdk_runner — single and parallel agent query execution."""
+"""Mocked SDK tests for terminal evidence, isolation, and bounded execution."""
 
 from __future__ import annotations
 
 import asyncio
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
+from claude_agent_sdk import ResultMessage
 
 from video_agent_mcp.sdk_runner import run_agent_query, run_parallel_queries
+from video_agent_mcp.types import AgentResult
 
 from .conftest import MockAsyncIterator, make_mock_message
 
-
-SAMPLE_TSX = """import React from "react";
-import { AbsoluteFill } from "remotion";
-
-export const HookScene: React.FC = () => {
-  return <AbsoluteFill><div>Hook</div></AbsoluteFill>;
-};"""
+SAMPLE_TSX = 'import React from "react";\nexport const HookScene = () => null;'
 
 
-# ---------------------------------------------------------------------------
-# run_agent_query
-# ---------------------------------------------------------------------------
+def result_message(**overrides) -> ResultMessage:
+    """Build the SDK terminal message required to prove completion."""
+    fields = dict(
+        subtype="success", duration_ms=1, duration_api_ms=1,
+        is_error=False, num_turns=1, session_id="test-session", result=SAMPLE_TSX,
+    )
+    fields.update(overrides)
+    return ResultMessage(**fields)
 
 
-@pytest.mark.asyncio
-async def test_query_success():
-    """GIVEN a normal agent response WHEN querying THEN returns success."""
-    mock_msg = make_mock_message(SAMPLE_TSX)
-
-    with patch("video_agent_mcp.sdk_runner.claude_agent_sdk") as mock_sdk:
-        mock_sdk.ClaudeAgentOptions = MagicMock
-        mock_sdk.query.return_value = MockAsyncIterator([mock_msg])
-
+async def test_query_success_and_isolation(monkeypatch):
+    """Single and parallel paths isolate child tools, MCP servers, and nesting guard."""
+    monkeypatch.setenv("CLAUDECODE", "parent-session")
+    messages = [make_mock_message(SAMPLE_TSX), result_message()]
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+        return_value=MockAsyncIterator(messages),
+    ) as sdk_query:
         result = await run_agent_query("Generate a scene")
-
     assert result.success is True
-    assert "HookScene" in result.text
-    assert result.duration_seconds > 0
+    assert result.text == SAMPLE_TSX
     assert result.error is None
+    options = sdk_query.call_args.kwargs["options"]
+    assert options.tools == []
+    assert options.strict_mcp_config is True
+    assert options.setting_sources == []
+    assert options.env == {"CLAUDECODE": ""}
+    assert os.environ["CLAUDECODE"] == "parent-session"
 
 
-@pytest.mark.asyncio
 async def test_query_timeout():
-    """GIVEN a query that exceeds timeout WHEN querying THEN returns timeout error."""
-
-    async def slow_generator(*args, **kwargs):
+    """Timeout cancels an incomplete stream and reports failure."""
+    async def slow_generator():
         yield make_mock_message("starting...")
-        await asyncio.sleep(10)  # Will be cancelled by timeout
-        yield make_mock_message("done")
-
-    with patch("video_agent_mcp.sdk_runner.claude_agent_sdk") as mock_sdk:
-        mock_sdk.ClaudeAgentOptions = MagicMock
-        mock_sdk.query.return_value = slow_generator()
-
+        await asyncio.sleep(10)
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query", return_value=slow_generator(),
+    ):
         result = await run_agent_query("Generate a scene", timeout=0)
-
     assert result.success is False
     assert "timed out" in result.error
 
 
-@pytest.mark.asyncio
 async def test_query_empty_response():
-    """GIVEN an empty agent response WHEN querying THEN returns error."""
-    mock_msg = make_mock_message("")
-
-    with patch("video_agent_mcp.sdk_runner.claude_agent_sdk") as mock_sdk:
-        mock_sdk.ClaudeAgentOptions = MagicMock
-        mock_sdk.query.return_value = MockAsyncIterator([mock_msg])
-
+    """An empty terminal result cannot prove a generated scene."""
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+        return_value=MockAsyncIterator([result_message(result="")]),
+    ):
         result = await run_agent_query("Generate a scene")
-
     assert result.success is False
     assert "Empty response" in result.error
 
 
-@pytest.mark.asyncio
-async def test_query_exception():
-    """GIVEN an SDK exception WHEN querying THEN returns error gracefully."""
-    with patch("video_agent_mcp.sdk_runner.claude_agent_sdk") as mock_sdk:
-        mock_sdk.ClaudeAgentOptions = MagicMock
-        mock_sdk.query.side_effect = RuntimeError("SDK connection failed")
-
+async def test_query_missing_terminal_result():
+    """Partial text is not accepted after a truncated stream."""
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+        return_value=MockAsyncIterator([make_mock_message(SAMPLE_TSX)]),
+    ):
         result = await run_agent_query("Generate a scene")
+    assert result.success is False
+    assert "terminal result" in result.error
+    assert result.text == ""
 
+
+@pytest.mark.parametrize("terminal", [
+    result_message(subtype="error_max_turns", is_error=True, errors=["turn budget exhausted"]),
+    result_message(is_error=True, result="billing error"),
+    result_message(terminal_reason="aborted_streaming"),
+])
+async def test_terminal_error_overrides_partial_text(terminal):
+    """SDK errors must not become successful files because prior text was nonempty."""
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+        return_value=MockAsyncIterator([make_mock_message(SAMPLE_TSX), terminal]),
+    ):
+        result = await run_agent_query("Generate a scene")
+    assert result.success is False
+    assert result.error
+    assert result.text == ""
+
+
+async def test_query_exception():
+    """SDK exceptions become failed results instead of escaping the tool boundary."""
+    with patch(
+        "video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+        side_effect=RuntimeError("SDK connection failed"),
+    ):
+        result = await run_agent_query("Generate a scene")
     assert result.success is False
     assert "SDK connection failed" in result.error
 
 
-# ---------------------------------------------------------------------------
-# run_parallel_queries
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.asyncio
-async def test_parallel_concurrency():
-    """GIVEN 5 queries with concurrency=2 WHEN running THEN respects limit."""
-    active = {"count": 0, "max": 0}
-
-    async def mock_query(*args, **kwargs):
-        yield make_mock_message("ok")
-
-    original_run = run_agent_query
-
-    async def counting_query(**kwargs):
-        active["count"] += 1
-        active["max"] = max(active["max"], active["count"])
-        # Simulate some work
+async def test_parallel_concurrency_and_order():
+    """Concurrency is bounded while results retain their input order."""
+    active = 0
+    maximum = 0
+    async def counting_query(prompt):
+        nonlocal active, maximum
+        active += 1
+        maximum = max(maximum, active)
         await asyncio.sleep(0.01)
-        result = await original_run(**kwargs)
-        active["count"] -= 1
-        return result
-
-    queries = [{"prompt": f"Scene {i}"} for i in range(5)]
-
-    with (
-        patch("video_agent_mcp.sdk_runner.claude_agent_sdk") as mock_sdk,
-        patch("video_agent_mcp.sdk_runner.run_agent_query", side_effect=counting_query),
-    ):
-        mock_sdk.ClaudeAgentOptions = MagicMock
-        mock_sdk.query.return_value = MockAsyncIterator([make_mock_message("ok")])
-
-        results = await run_parallel_queries(queries, concurrency=2)
-
-    assert len(results) == 5
-    assert active["max"] <= 2
+        active -= 1
+        return AgentResult(text=prompt, success=True, duration_seconds=0.01)
+    with patch("video_agent_mcp.sdk_runner.run_agent_query", side_effect=counting_query):
+        results = await run_parallel_queries(
+            [{"prompt": f"Scene {i}"} for i in range(5)], concurrency=2,
+        )
+    assert maximum == 2
+    assert [r.text for r in results] == [f"Scene {i}" for i in range(5)]
 
 
-@pytest.mark.asyncio
-async def test_parallel_env_guard():
-    """GIVEN CLAUDECODE is set WHEN running parallel THEN it's cleared during execution."""
-    os.environ["CLAUDECODE"] = "/path/to/claude"
-    captured_env: list[str | None] = []
-
-    async def capture_env_query(**kwargs):
-        captured_env.append(os.environ.get("CLAUDECODE"))
-        return MagicMock(success=True, text="ok", error=None, duration_seconds=0.1)
-
-    queries = [{"prompt": "test"}]
-
-    with patch("video_agent_mcp.sdk_runner.run_agent_query", side_effect=capture_env_query):
-        await run_parallel_queries(queries, concurrency=1)
-
-    # CLAUDECODE should have been cleared during execution
-    assert captured_env[0] is None
-    # And restored after
-    assert os.environ.get("CLAUDECODE") == "/path/to/claude"
-    # Cleanup
-    del os.environ["CLAUDECODE"]
+@pytest.mark.parametrize("concurrency", [0, -1, 11])
+async def test_parallel_invalid_concurrency(concurrency):
+    """Reject invalid limits instead of deadlocking the semaphore."""
+    with pytest.raises(ValueError, match="between 1 and 10"):
+        await run_parallel_queries([{"prompt": "test"}], concurrency=concurrency)
 
 
-@pytest.mark.asyncio
 async def test_parallel_partial_failure():
-    """GIVEN some queries fail WHEN running parallel THEN all results returned."""
-    call_count = {"n": 0}
-
-    async def alternating_query(**kwargs):
-        call_count["n"] += 1
-        if call_count["n"] % 2 == 0:
-            return MagicMock(success=False, text="", error="Failed", duration_seconds=0.1)
-        return MagicMock(success=True, text="ok", error=None, duration_seconds=0.1)
-
-    queries = [{"prompt": f"Scene {i}"} for i in range(4)]
-
-    with patch("video_agent_mcp.sdk_runner.run_agent_query", side_effect=alternating_query):
-        results = await run_parallel_queries(queries, concurrency=4)
-
-    assert len(results) == 4
-    succeeded = sum(1 for r in results if r.success)
-    failed = sum(1 for r in results if not r.success)
-    assert succeeded == 2
-    assert failed == 2
+    """Keep failed scenes in the output denominator."""
+    async def query(prompt):
+        return AgentResult(
+            text=prompt if prompt != "fail" else "", success=prompt != "fail",
+            error="Failed" if prompt == "fail" else None, duration_seconds=0.1,
+        )
+    with patch("video_agent_mcp.sdk_runner.run_agent_query", side_effect=query):
+        results = await run_parallel_queries([{"prompt": "ok"}, {"prompt": "fail"}])
+    assert [r.success for r in results] == [True, False]

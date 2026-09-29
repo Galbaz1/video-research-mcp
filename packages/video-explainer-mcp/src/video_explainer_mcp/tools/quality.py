@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 quality_server = FastMCP("quality")
 
 
-@quality_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+@quality_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_refine(
     project_id: ProjectId,
     phase: Annotated[RefinePhase, Field(description="Which phase to refine")],
@@ -69,7 +69,7 @@ async def explainer_feedback(
         return make_tool_error(exc)
 
 
-@quality_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=False))
+@quality_server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
 async def explainer_factcheck(
     project_id: ProjectId,
 ) -> dict:

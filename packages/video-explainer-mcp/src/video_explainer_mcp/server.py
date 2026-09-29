@@ -7,10 +7,10 @@ from contextlib import asynccontextmanager
 
 from fastmcp import FastMCP
 
-from .tools.project import project_server
-from .tools.pipeline import pipeline_server
-from .tools.quality import quality_server
 from .tools.audio import audio_server
+from .tools.pipeline import cancel_background_renders, pipeline_server
+from .tools.project import project_server
+from .tools.quality import quality_server
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,10 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def _lifespan(server: FastMCP):
     """Startup/shutdown hook."""
-    yield {}
+    try:
+        yield {}
+    finally:
+        await cancel_background_renders()
     logger.info("Lifespan shutdown: video-explainer-mcp")
 
 

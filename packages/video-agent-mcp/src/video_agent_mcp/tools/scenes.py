@@ -33,7 +33,7 @@ from ..prompts.scene_templates import (
     generate_styles_content,
 )
 from ..sdk_runner import run_agent_query, run_parallel_queries
-from ..types import ProjectId, SceneResult
+from ..types import AgentResult, ProjectId, SceneResult
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +143,7 @@ def _write_infrastructure(scenes_dir: Path, project_title: str) -> None:
 
 def _process_scene_result(
     prompt_info: dict,
-    result: "AgentResult",  # noqa: F821
+    result: AgentResult,
     scenes_dir: Path,
 ) -> SceneResult:
     """Extract TSX from an AgentResult and write the scene file.
@@ -267,9 +267,7 @@ async def agent_generate_scenes(
         # Load voiceover timestamps
         timestamps_by_scene = _read_voiceover_manifest(project_dir)
 
-        # Write template files (styles.ts, Reference.tsx)
         project_title = script.get("title", "Untitled")
-        _write_infrastructure(scenes_dir, project_title)
 
         # Build per-scene prompts
         scene_prompts: list[dict] = []
@@ -280,6 +278,12 @@ async def agent_generate_scenes(
             word_timestamps = timestamps_by_scene.get(scene_id, [])
 
             info = _build_scene_prompt(scene, scene_num, scenes_dir, word_timestamps)
+            if any(
+                info["filename"] == previous["filename"]
+                or info["scene_key"] == previous["scene_key"]
+                for previous in prompt_infos
+            ):
+                raise ValueError("Scene titles must produce unique component filenames and keys")
             prompt_infos.append(info)
             scene_prompts.append({
                 "prompt": info["prompt"],
@@ -293,6 +297,8 @@ async def agent_generate_scenes(
                 "wall_clock_seconds": 0,
                 "scenes_dir": str(scenes_dir),
             }
+
+        _write_infrastructure(scenes_dir, project_title)
 
         # Run all scenes in parallel
         start = time.monotonic()

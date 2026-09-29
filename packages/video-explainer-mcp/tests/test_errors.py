@@ -112,3 +112,17 @@ class TestMakeToolError:
         """Timeout errors are marked retryable."""
         result = make_tool_error(TimeoutError("timed out"))
         assert result["retryable"] is True
+
+
+def test_render_missing_artifact_has_render_hint():
+    """An absent new render is classified as a render failure, not missing CLI setup."""
+    result = make_tool_error(FileNotFoundError(
+        "Render exited successfully but produced no new nonempty video"
+    ))
+    assert result["category"] == "RENDER_FAILED"
+    assert "fresh video" in result["hint"]
+
+
+def test_empty_timeout_exception_is_classified():
+    """Timeout exceptions need no message to receive the actionable timeout category."""
+    assert make_tool_error(TimeoutError())["category"] == "SUBPROCESS_TIMEOUT"

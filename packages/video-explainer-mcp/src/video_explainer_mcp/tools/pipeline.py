@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+from pathlib import Path
 from typing import Annotated
 
 from fastmcp import FastMCP
@@ -15,7 +16,7 @@ from ..config import get_config
 from ..errors import make_tool_error
 from ..jobs import JobStatus, create_job, get_job, update_job
 from ..models.pipeline import RenderResult, StepResult
-from ..runner import run_cli
+from ..runner import SubprocessResult, run_cli
 from ..types import PipelineStep, ProjectId, RenderResolution
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,7 @@ pipeline_server = FastMCP("pipeline")
 # Prevent background render tasks from being garbage-collected mid-execution.
 # See: https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task
 _background_tasks: set[asyncio.Task] = set()
+_active_render_projects: set[Path] = set()
 
 
 def _tts_args(subcommand: str) -> list[str]:
@@ -47,7 +49,54 @@ def _tts_args(subcommand: str) -> list[str]:
     return []
 
 
-@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+def _render_outputs(output_dir: Path) -> dict[Path, tuple[int, int]]:
+    """Snapshot regular, nonempty video artifacts by modification time and size."""
+    outputs = {}
+    for path in output_dir.glob("*"):
+        if path.suffix.lower() not in {".mp4", ".webm"} or path.is_symlink() or not path.is_file():
+            continue
+        stamp = path.stat()
+        if stamp.st_size > 0:
+            outputs[path] = (stamp.st_mtime_ns, stamp.st_size)
+    return outputs
+
+
+async def _run_render(
+    project_id: str, resolution: str, fast: bool,
+) -> tuple[SubprocessResult, str]:
+    """Run the CLI and require a new or updated nonempty video artifact."""
+    cfg = get_config()
+    project_dir = (cfg.resolved_projects_path / project_id).resolve()
+    if project_dir in _active_render_projects:
+        raise RuntimeError(f"Render already in progress for project: {project_id}")
+    # Admission is atomic until the first await; both render tools share this guard.
+    _active_render_projects.add(project_dir)
+    try:
+        output_dir = project_dir / "output"
+        before = _render_outputs(output_dir)
+        args = ["render", project_id, "-r", resolution]
+        if fast:
+            args.append("--fast")
+        result = await run_cli(*args, timeout=cfg.render_timeout)
+        after = _render_outputs(output_dir)
+        changed = [path for path, stamp in after.items() if before.get(path) != stamp]
+        if not changed:
+            raise FileNotFoundError("Render exited successfully but produced no new nonempty video")
+        output_file = max(changed, key=lambda path: after[path][0])
+        return result, str(output_file)
+    finally:
+        _active_render_projects.remove(project_dir)
+
+
+async def cancel_background_renders() -> None:
+    """Cancel and join render tasks during server shutdown."""
+    tasks = list(_background_tasks)
+    for task in tasks:
+        task.cancel()
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+
+@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_generate(
     project_id: ProjectId,
     from_step: Annotated[str | None, Field(description="Start from this step")] = None,
@@ -86,7 +135,7 @@ async def explainer_generate(
         return make_tool_error(exc)
 
 
-@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_step(
     project_id: ProjectId,
     step: Annotated[PipelineStep, Field(description="Pipeline step to run")],
@@ -135,19 +184,7 @@ async def explainer_render(
         RenderResult with output file path and duration.
     """
     try:
-        cfg = get_config()
-        args = ["render", project_id, "-r", resolution]
-        if fast:
-            args.append("--fast")
-
-        result = await run_cli(*args, timeout=cfg.render_timeout)
-        output_dir = cfg.resolved_projects_path / project_id / "output"
-        output_file = ""
-        if output_dir.is_dir():
-            for f in output_dir.iterdir():
-                if f.suffix in {".mp4", ".webm"}:
-                    output_file = str(f)
-                    break
+        result, output_file = await _run_render(project_id, resolution, fast)
 
         return RenderResult(
             project_id=project_id,
@@ -186,19 +223,7 @@ async def explainer_render_start(
         async def _render_background():
             start = time.monotonic()
             try:
-                cfg = get_config()
-                args = ["render", project_id, "-r", resolution]
-                if fast:
-                    args.append("--fast")
-                await run_cli(*args, timeout=cfg.render_timeout)
-
-                output_file = ""
-                output_dir = cfg.resolved_projects_path / project_id / "output"
-                if output_dir.is_dir():
-                    for f in output_dir.iterdir():
-                        if f.suffix in {".mp4", ".webm"}:
-                            output_file = str(f)
-                            break
+                _, output_file = await _run_render(project_id, resolution, fast)
 
                 update_job(
                     job.job_id,
@@ -214,9 +239,15 @@ async def explainer_render_start(
                     duration_seconds=round(time.monotonic() - start, 2),
                 )
 
+        def _render_done(task: asyncio.Task) -> None:
+            """Record cancellation even when the task never reached its first await."""
+            _background_tasks.discard(task)
+            if task.cancelled():
+                update_job(job.job_id, status=JobStatus.FAILED, error="Render cancelled on shutdown")
+
         task = asyncio.create_task(_render_background())
         _background_tasks.add(task)
-        task.add_done_callback(_background_tasks.discard)
+        task.add_done_callback(_render_done)
         return {
             "job_id": job.job_id,
             "project_id": project_id,
@@ -259,7 +290,7 @@ async def explainer_render_poll(
         return make_tool_error(exc)
 
 
-@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+@pipeline_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_short(
     project_id: ProjectId,
 ) -> dict:

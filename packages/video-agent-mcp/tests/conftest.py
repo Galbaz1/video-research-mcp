@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import pytest
+from claude_agent_sdk import AssistantMessage, TextBlock
 
 from video_agent_mcp.config import reset_config
 
@@ -15,7 +15,9 @@ from video_agent_mcp.config import reset_config
 def _clean_env(monkeypatch):
     """Ensure clean environment for every test."""
     monkeypatch.setenv("EXPLAINER_PATH", "/tmp/test-explainer")
-    monkeypatch.setenv("AGENT_MODEL", "claude-sonnet-4-5-20250514")
+    monkeypatch.delenv("EXPLAINER_PROJECTS_PATH", raising=False)
+    monkeypatch.setattr("video_agent_mcp.dotenv.DEFAULT_ENV_PATH", Path("/nonexistent/test.env"))
+    monkeypatch.setenv("AGENT_MODEL", "claude-sonnet-5-5")
     monkeypatch.setenv("AGENT_CONCURRENCY", "3")
     monkeypatch.setenv("AGENT_TIMEOUT", "60")
     monkeypatch.setenv("AGENT_MAX_TURNS", "1")
@@ -99,13 +101,9 @@ def project_dir(tmp_path, sample_script, sample_manifest) -> Path:
     return project
 
 
-def make_mock_message(text: str) -> MagicMock:
-    """Create a mock Agent SDK message with a text block."""
-    block = MagicMock()
-    block.text = text
-    msg = MagicMock()
-    msg.content = [block]
-    return msg
+def make_mock_message(text: str) -> AssistantMessage:
+    """Create an SDK assistant message with a text block."""
+    return AssistantMessage(content=[TextBlock(text)], model="test-model")
 
 
 class MockAsyncIterator:

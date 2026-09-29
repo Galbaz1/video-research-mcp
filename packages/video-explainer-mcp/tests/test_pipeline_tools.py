@@ -130,11 +130,14 @@ class TestExplainerRender:
         project = projects / "test"
         output = project / "output"
         output.mkdir(parents=True)
-        (output / "video.mp4").write_text("")
+
         monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
         monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
 
-        with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
+        async def render(*args, **kwargs):
+            (output / "video.mp4").write_bytes(b"rendered-video")
+            return _mock_cli_result()
+        with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
             result = await explainer_render(project_id="test", resolution="1080p")
         assert result["success"] is True
         assert result["output_file"].endswith(".mp4")
@@ -174,15 +177,18 @@ class TestExplainerRenderStart:
         project = projects / "test"
         output = project / "output"
         output.mkdir(parents=True)
-        (output / "video.mp4").write_text("")
+
         monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
         monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
 
         # Patch must stay active while the background task runs
-        with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
+        async def render(*args, **kwargs):
+            (output / "video.mp4").write_bytes(b"rendered-video")
+            return _mock_cli_result()
+        with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
             result = await explainer_render_start(project_id="test")
-            # Let the background task complete within the patch scope
-            await asyncio.sleep(0.1)
+            from video_explainer_mcp.tools.pipeline import _background_tasks
+            await asyncio.gather(*list(_background_tasks))
         job = get_job(result["job_id"])
         assert job is not None
         assert job.status == JobStatus.COMPLETED
@@ -216,7 +222,7 @@ class TestExplainerRenderPoll:
 
     async def test_poll_existing_job(self):
         """Returns job status."""
-        from video_explainer_mcp.jobs import create_job, update_job, JobStatus
+        from video_explainer_mcp.jobs import JobStatus, create_job, update_job
         job = create_job("test")
         update_job(job.job_id, status=JobStatus.COMPLETED, output_file="/out.mp4")
         result = await explainer_render_poll(job_id=job.job_id)
@@ -233,3 +239,183 @@ class TestExplainerShort:
         with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
             result = await explainer_short(project_id="test")
         assert result["success"] is True
+
+
+@pytest.mark.parametrize("artifact", ["missing", "empty", "stale"])
+async def test_render_requires_fresh_nonempty_artifact(artifact, monkeypatch, tmp_path):
+    """Exit zero cannot prove a render when output is missing, empty, or from an earlier job."""
+    output = tmp_path / "projects" / "test" / "output"
+    output.mkdir(parents=True)
+    if artifact == "stale":
+        (output / "old.mp4").write_bytes(b"old-render")
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    async def render(*args, **kwargs):
+        if artifact == "empty":
+            (output / "empty.mp4").touch()
+        return _mock_cli_result()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
+        result = await explainer_render("test")
+    assert "error" in result
+    assert "no new nonempty video" in result["error"]
+
+
+async def test_background_render_requires_artifact(monkeypatch, tmp_path):
+    """The background path uses the same artifact gate as the blocking path."""
+    from video_explainer_mcp.tools.pipeline import _background_tasks
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
+        result = await explainer_render_start("test")
+        await asyncio.gather(*list(_background_tasks))
+    job = get_job(result["job_id"])
+    assert job.status == JobStatus.FAILED
+    assert "no new nonempty video" in job.error
+
+
+@pytest.mark.parametrize("wait_until_started", [False, True])
+async def test_shutdown_cancels_and_joins_background_render(
+    wait_until_started, monkeypatch, tmp_path,
+):
+    """Shutdown leaves a terminal failed job and no task running in the background."""
+    from video_explainer_mcp.server import _lifespan, app
+    from video_explainer_mcp.tools.pipeline import _background_tasks
+    started = asyncio.Event()
+    async def slow_render(*args, **kwargs):
+        started.set()
+        await asyncio.Event().wait()
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=slow_render):
+        async with _lifespan(app):
+            result = await explainer_render_start("test")
+            if wait_until_started:
+                await started.wait()
+    assert not _background_tasks
+    assert get_job(result["job_id"]).status == JobStatus.FAILED
+    assert "cancelled" in get_job(result["job_id"]).error
+
+
+@pytest.mark.parametrize("first_background", [False, True])
+@pytest.mark.parametrize("second_background", [False, True])
+async def test_overlapping_same_project_renders_are_rejected(
+    first_background, second_background, monkeypatch, tmp_path,
+):
+    """A second resolution cannot claim the first render's video in either tool path."""
+    from video_explainer_mcp.tools.pipeline import _background_tasks, _active_render_projects
+    output = tmp_path / "projects" / "test" / "output"
+    output.mkdir(parents=True)
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    started = asyncio.Event()
+    release = asyncio.Event()
+    async def render(*args, **kwargs):
+        started.set()
+        await release.wait()
+        (output / "video.mp4").write_bytes(b"first-resolution")
+        return _mock_cli_result()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render) as cli:
+        if first_background:
+            first_reply = await explainer_render_start("test", resolution="720p")
+            first_task = next(iter(_background_tasks))
+        else:
+            first_task = asyncio.create_task(explainer_render("test", resolution="720p"))
+        await started.wait()
+        try:
+            if second_background:
+                second = await explainer_render_start("test", resolution="1080p")
+                await asyncio.sleep(0)
+                failed = get_job(second["job_id"])
+                assert failed.status == JobStatus.FAILED
+                assert "already in progress" in failed.error
+            else:
+                second = await explainer_render("test", resolution="1080p")
+                assert "already in progress" in second["error"]
+            assert cli.call_count == 1
+        finally:
+            release.set()
+            first_result = await first_task
+        if first_background:
+            assert get_job(first_reply["job_id"]).status == JobStatus.COMPLETED
+        else:
+            assert first_result["success"] is True
+    assert not _active_render_projects
+
+
+async def test_resolved_project_aliases_share_render_admission(monkeypatch, tmp_path):
+    """Different IDs pointing at the same real project cannot render concurrently."""
+    from video_explainer_mcp.tools.pipeline import _run_render
+    project = tmp_path / "projects" / "test"
+    project.mkdir(parents=True)
+    (project.parent / "alias").symlink_to(project, target_is_directory=True)
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    started = asyncio.Event()
+    async def render(*args, **kwargs):
+        started.set()
+        await asyncio.Event().wait()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render) as cli:
+        first = asyncio.create_task(_run_render("test", "720p", True))
+        await started.wait()
+        try:
+            with pytest.raises(RuntimeError, match="already in progress"):
+                await _run_render("alias", "1080p", True)
+            assert cli.call_count == 1
+        finally:
+            first.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await first
+
+
+async def test_different_projects_can_render_concurrently(monkeypatch, tmp_path):
+    """Project admission does not serialize independent video work."""
+    from video_explainer_mcp.tools.pipeline import _run_render
+    projects = tmp_path / "projects"
+    for name in ["one", "two"]:
+        (projects / name / "output").mkdir(parents=True)
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    both_started = asyncio.Event()
+    active = 0
+    async def render(*args, **kwargs):
+        nonlocal active
+        active += 1
+        if active == 2:
+            both_started.set()
+        await both_started.wait()
+        (projects / args[1] / "output" / "video.mp4").write_bytes(b"rendered")
+        return _mock_cli_result()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
+        results = await asyncio.wait_for(asyncio.gather(
+            _run_render("one", "720p", True), _run_render("two", "1080p", True),
+        ), timeout=1)
+    assert len(results) == 2
+
+
+@pytest.mark.parametrize("background", [False, True])
+async def test_cancelled_render_releases_project_admission(background, monkeypatch, tmp_path):
+    """Cancellation frees the project so a later render can produce its own output."""
+    from video_explainer_mcp.tools.pipeline import (
+        _active_render_projects, _background_tasks, _run_render, cancel_background_renders,
+    )
+    output = tmp_path / "projects" / "test" / "output"
+    output.mkdir(parents=True)
+    monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
+    started = asyncio.Event()
+    async def slow_render(*args, **kwargs):
+        started.set()
+        await asyncio.Event().wait()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=slow_render):
+        if background:
+            await explainer_render_start("test")
+        else:
+            task = asyncio.create_task(_run_render("test", "720p", True))
+        await started.wait()
+        if background:
+            await cancel_background_renders()
+            assert not _background_tasks
+        else:
+            task.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await task
+    assert not _active_render_projects
+    async def render(*args, **kwargs):
+        (output / "video.mp4").write_bytes(b"retry-render")
+        return _mock_cli_result()
+    with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
+        result = await explainer_render("test", resolution="1080p")
+    assert result["success"] is True
