@@ -5,7 +5,7 @@ description: Teaches Claude how to use the 15 video explainer tools to create ex
 
 # Video Explainer MCP — Tool Usage Guide
 
-You have access to the `video-explainer-mcp` MCP server, which wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI to synthesize explainer videos from text content.
+First verify that the optional `video-explainer-mcp` server is connected and `EXPLAINER_PATH` points to the external checkout. It wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI to synthesize explainer videos from text content.
 
 ## Core Concept
 
@@ -89,13 +89,15 @@ After generating the pipeline:
 
 ## TTS Provider Selection
 
-| Provider | Quality | Cost | Timestamps | Status |
-|----------|---------|------|------------|--------|
-| `mock` | None | Free | N/A | **Default** — for testing |
-| `elevenlabs` | Excellent | $165-330/1M chars | Native | **Recommended** |
-| `openai` | Good | $15/1M chars | Whisper | Budget alternative |
-| `gemini` | Good | ~$16/1M chars | Whisper | Experimental |
-| `edge` | Variable | Free | Native | **Deprecated** — auth issues |
+The external `video_explainer` CLI owns provider implementations and model settings. This wrapper passes the selected provider; inspect that checkout before assuming current model/endpoint compatibility.
+
+| Provider | Verification needed |
+|---|---|
+| `mock` | Preview/testing only; inspect placeholder audio |
+| `elevenlabs` | Credential, voice/model compatibility, timing, and current pricing |
+| `openai` | Current speech model, output format, timing method, and pricing |
+| `gemini` | Current speech model and schema; latest Gemini TTS returns WAV by default |
+| `edge` | Upstream support and authentication; not a guaranteed production path |
 
 Set via `EXPLAINER_TTS_PROVIDER` in `~/.config/video-research-mcp/.env`.
 
@@ -137,3 +139,7 @@ Common categories:
 - `FFMPEG_NOT_FOUND` — Install FFmpeg
 - `TTS_FAILED` — Check TTS provider and API key
 - `RENDER_FAILED` — Check Remotion installation
+
+## Completion gate
+
+A completed pipeline step or render job is not a verified video. Inspect the actual output file, duration, dimensions, frame rate, required shots, narration, and transitions. Mock TTS is a preview limitation. Keep source claims/citations through synthesis, and fact-check decisive claims against primary material. Allow one targeted repair per observed defect inside the generation budget; preserve failed/refused/missing outputs and stop on repeated infrastructure failure. Return the exact playable artifact and remaining limitations.

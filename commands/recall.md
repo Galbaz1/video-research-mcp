@@ -3,7 +3,6 @@ description: Search and browse past research, video notes, and analyses
 argument-hint: "[topic|category|fuzzy|unknown|ask \"question\"]"
 allowed-tools: mcp__video-research__knowledge_search, mcp__video-research__knowledge_stats, mcp__video-research__knowledge_related, mcp__video-research__knowledge_fetch, mcp__video-research__knowledge_ask, Glob, Grep, Read
 note: knowledge_query is deprecated — use knowledge_search for all retrieval needs. knowledge_ask remains the preferred tool for AI-powered Q&A.
-model: sonnet
 ---
 
 # Recall: $ARGUMENTS

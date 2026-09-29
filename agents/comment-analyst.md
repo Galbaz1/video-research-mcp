@@ -1,8 +1,7 @@
 ---
 name: comment-analyst
 description: Fetch YouTube video comments and analyze them via Gemini Flash for sentiment and key opinions (runs in background)
-tools: Read, Write, Glob, Bash, mcp__jina__read_url, mcp__video-research__content_analyze, mcp__video-research__video_metadata, mcp__video-research__video_comments
-model: opus
+tools: Read, Write, Glob, Bash, mcp__video-research__content_analyze, mcp__video-research__video_metadata, mcp__video-research__video_comments
 color: orange
 ---
 
@@ -40,29 +39,11 @@ mcp__video-research__video_comments(url="<video_url>", max_comments=200)
 
 Returns `{"video_id": "...", "comments": [{"text": "...", "likes": N, "author": "..."}], "count": N}`.
 
-**If this returns an error** (API not enabled, 403, quota exceeded), fall through to Method B.
+**If this returns an error** (API not enabled, 403, quota exceeded), preserve the failure and skip comment analysis. An optional external reader may be used only if actually connected; do not claim page text is a representative comment sample.
 
-#### Method B: Jina read_url (fallback)
+#### Unavailable comments
 
-Use the `mcp__jina__read_url` tool to fetch the YouTube page. This gets visible comments but not all of them.
-
-```
-mcp__jina__read_url(url="<video_url>")
-```
-
-Parse the returned content for comment text. Format as JSON array: `[{"text": "...", "likes": 0, "author": "..."}]`
-
-#### Method C: Skip (final fallback)
-
-If both methods fail, write a brief note to analysis.md:
-```markdown
-## Community Reaction  <!-- <YYYY-MM-DD HH:MM> -->
-
-> Comment analysis unavailable — YouTube Data API not enabled and Jina fallback did not return comments.
-> To enable: visit https://console.cloud.google.com/apis/library/youtube.googleapis.com
-```
-
-Then stop — never block the main analysis over comments.
+If comments are disabled, absent, or inaccessible, append a brief availability note and stop. Do not block the main analysis or invent a sentiment distribution.
 
 ### 2. Format Comments for Gemini Flash
 
@@ -88,16 +69,20 @@ content_analyze(
 1. Sentiment distribution: percentage positive, negative, neutral
 2. Top 3-5 supportive themes with the most representative quote and like count for each
 3. Top 3-5 critical themes with the most representative quote and like count for each
-4. Notable expert or credible opinions if identifiable (check for verified accounts, industry names, detailed technical responses)
+4. Notable detailed technical opinions, without inferring identity or credentials from display names
 5. Overall consensus assessment: is the community in agreement or divided? On what points?
 Keep quotes verbatim. Attribute by author name.",
     thinking_level="low"
 )
 ```
 
-**Why `content_analyze`?** It routes to Gemini Flash, which has a 1M token context window and is optimized for text classification. Haiku's job is orchestration — fetch, format, delegate, write.
+**Why `content_analyze`?** It delegates classification to the configured analysis model. The orchestration agent inherits the session model; inspect `infra_configure()` if the active provider model matters.
 
-### 4. Append to analysis.md
+### 4. Return owned output
+
+Write the section to a separate `community-reaction.md` beside the analysis and return it to the parent for merging after all workers join. Do not append concurrently to a shared analysis file. State sample count, retrieval method, ordering, and coverage; a relevance-ranked subset cannot establish population-wide consensus. Verify quoted text against fetched comments and sentiment totals against classified sample counts.
+
+The parent appends this format to analysis.md:
 
 Read the current `analysis.md` and append the Community Reaction section based on the `content_analyze` response:
 

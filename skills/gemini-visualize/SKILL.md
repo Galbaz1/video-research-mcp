@@ -1,11 +1,11 @@
 ---
 name: gemini-visualize
-description: Generates interactive HTML visualizations (concept maps, evidence networks, knowledge graphs) from Gemini analysis results. Triggers automatically after /gr:video, /gr:research, /gr:analyze.
+description: Generates interactive HTML visualizations (concept maps, evidence networks, knowledge graphs) from Gemini analysis results. Use when the user requests a concept map, evidence network, or knowledge graph from completed analysis.
 ---
 
 # Gemini Visualize — Interactive Analysis Visualization
 
-Generate a single-file interactive HTML visualization after every `/gr:*` analysis, then capture a Playwright screenshot. The agent decides enrichment depth autonomously but respects user steering ("skip visualization", "deeper on X").
+Generate a single-file interactive HTML visualization when requested or when it materially clarifies the completed analysis, then verify it in an available browser. The agent decides enrichment depth autonomously but respects user steering ("skip visualization", "deeper on X").
 
 ## Template Selection
 
@@ -66,19 +66,12 @@ This lets users cycle knowledge states, then generate a targeted prompt to paste
 
 After generating and saving the HTML file:
 
-1. **Start HTTP server**: `lsof -ti:18923 | xargs kill -9 2>/dev/null; python3 -m http.server 18923 --directory <artifact-dir> &`
-   - Use the specific artifact directory (e.g., `gr/video/<slug>/`)
-   - Port 18923 — kill any prior instance first to avoid address-in-use errors
-2. **Navigate**: `mcp__playwright__browser_navigate` to `http://localhost:18923/<viz-filename>`
-   - `concept-map.html` for video/video-chat
-   - `evidence-net.html` for research
-   - `knowledge-graph.html` for analyze
-3. **Wait**: `mcp__playwright__browser_wait_for` with 2-second timeout for canvas/SVG render
-4. **Screenshot**: `mcp__playwright__browser_take_screenshot` — save raw bytes
-5. **Save PNG**: Write screenshot data to `<artifact-dir>/screenshot.png`
-6. **Cleanup**: Kill HTTP server process, `mcp__playwright__browser_close`
+1. Start a loopback-only HTTP server on an available port, serving only the artifact directory; retain its PID. Do not kill another listener.
+2. Navigate the available browser tool to the exact HTML file. Inspect rendering, source links, search, filters, and detail controls using its actual schema.
+3. Capture and save `screenshot.png` only after rendering succeeds. Stop only the server process owned by this run.
+4. Return the actual paths and browser-check result. If a browser is unavailable or fails, keep the HTML and mark it unverified; a saved file alone does not prove the interaction works.
 
-If Playwright fails (not installed, browser error), skip screenshot gracefully — the HTML visualization is the primary artifact. Log the failure but don't block the workflow.
+Escape source text before inserting it into HTML/JavaScript. Inferred edges must be labeled and distinguishable from source-supported relationships. When running as a worker, write owned HTML/screenshot files and return the section to the parent; merge shared analysis notes only after workers join.
 
 ## Agent Autonomy & User Steering
 

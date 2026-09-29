@@ -2,13 +2,12 @@
 description: Deep research on any topic with evidence-tier labeling
 argument-hint: <topic>
 allowed-tools: mcp__video-research__web_search, mcp__video-research__research_deep, mcp__video-research__research_plan, mcp__video-research__research_assess_evidence, Write, Glob, Read, Bash
-model: sonnet
 ---
 
 # Research: $ARGUMENTS
 
 > For web-grounded deep research with the Gemini Deep Research Agent ($2-5/task, 10-20 min),
-> use `/gr:research-deep` instead. This command uses offline analysis (free, instant).
+> use `/gr:research-deep` instead. This command uses model-driven analysis (provider billing applies).
 
 Run a multi-phase deep research analysis with progressive memory saving and automatic evidence-network visualization.
 

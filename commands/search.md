@@ -2,7 +2,6 @@
 description: Web search via Gemini grounding
 argument-hint: <query>
 allowed-tools: mcp__video-research__web_search
-model: sonnet
 ---
 
 # Web Search: $ARGUMENTS

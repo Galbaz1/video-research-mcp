@@ -2,7 +2,6 @@
 description: View and change Gemini model preset
 argument-hint: "[best|stable|budget]"
 allowed-tools: mcp__video-research__infra_configure
-model: sonnet
 ---
 
 You are a model switching assistant for the video-research MCP server.
@@ -18,10 +17,10 @@ You are a model switching assistant for the video-research MCP server.
 
 | Preset | Models | Description |
 |--------|--------|-------------|
-| `best` | 3.1 Pro + 3 Flash | Max quality (preview, lowest rate limits) |
-| `stable` | 3 Pro + 3 Flash | Fallback (higher rate limits, 3 Pro EOL 2026-03-09) |
-| `budget` | 3 Flash + 3 Flash | Cost-optimized (highest rate limits) |
+| `best` | Gemini 3.1 Pro preview + Gemini 3.8 Flash | Explicit Pro option; verify lifecycle and quota |
+| `stable` | Gemini 3.8 Flash for both routes | Current stable default |
+| `budget` | Gemini 3.5 Flash-Lite for both routes | Lower-cost option |
 
-4. Ask what they'd like to change, or suggest `/gr:models <preset>` for quick switching.
+4. Report supported thinking levels from the active model: Gemini 3.8 Flash accepts `low`, `medium`, and `high`; `minimal` is only valid on explicitly selected compatible models. Presets are runtime settings, not persisted environment changes.
 
 Keep responses concise. Highlight the active preset if one matches.

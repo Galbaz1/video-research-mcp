@@ -1,143 +1,43 @@
 ---
-description: Diagnose /gr plugin setup, MCP wiring, and API connectivity
+description: Diagnose /gr plugin setup, active MCP wiring, and optional integrations
 argument-hint: "[quick|full]"
 allowed-tools: mcp__video-research__infra_configure, mcp__video-research__video_metadata, mcp__video-research__knowledge_stats, mcp__mlflow-mcp__search_traces, Glob, Read, Bash
-model: sonnet
 ---
 
 # Doctor: $ARGUMENTS
 
-Run a deterministic health check for the video-research plugin and MCP server.
+Default to `quick`; use `full` for installed-file and manifest drift. Keep quick output compact. Never print credentials, raw environment/config files, tool payloads, or stack traces.
 
-## Mode
+## 1. Active Registration
 
-- Default mode is `quick`.
-- If `$ARGUMENTS` contains `full`, run extra checks for agent/manifest drift.
+Inspect the client's active `/mcp` state first. Claude Code user registrations live in `~/.claude.json`; project registrations live in `./.mcp.json`. A file's presence alone does not prove which server/process is active. Use `claude mcp list` when available; retain config paths as candidates when runtime state cannot be inspected.
 
-## Context Discipline (mandatory)
+Check the shared `~/.config/video-research-mcp/.env` and process environment using a script that outputs only booleans for non-empty `GEMINI_API_KEY`, `YOUTUBE_API_KEY`, and `WEAVIATE_URL`. Parse values locally; do not read or print the entire file into model context. Determine command/args and whether a server `env` block exists without emitting its values. Environment substitutions are supported client features; validate resolution rather than recommending deletion of every placeholder.
 
-- Keep `quick` mode output compact: target <= 220 tokens.
-- Never print raw tool payloads, JSON blobs, full file contents, or stack traces.
-- Never run broad repository searches. Only inspect exact paths listed below.
-- Extract only the required keys from config/env files.
-- If you need details, include one short line: `Run /gr:doctor full for deep diagnostics`.
+Completion: active registration identified, or uncertainty stated with the exact client check needed.
 
-## Tool discipline (mandatory)
+## 2. Runtime Settings
 
-Only use the tools listed in `allowed-tools`. In particular:
-- **File reading**: use `Read` (Claude Code built-in), never `plugin:serena:serena - Read File` or any other MCP file-reading tool.
-- **File search**: use `Glob` (Claude Code built-in), never Serena's `find_file` or `list_dir`.
-- **Shell**: use `Bash` (Claude Code built-in), never Serena's `execute_shell_command`.
+Call `infra_configure()` without arguments. Report model IDs, thinking level, and whether optional integrations are enabled. This proves the MCP process responds; it does not prove inference or provider access. Do not mutate presets during diagnostics.
 
-## 1) Discover active config
+Completion: current runtime settings returned or the error category/hint recorded.
 
-Use `Glob` + `Read` to inspect:
-- `./.mcp.json`
-- `~/.claude/.mcp.json`
-- `~/.config/video-research-mcp/.env`
-- `./.env` (optional)
+## 3. Independent Integration Checks
 
-Determine active server config:
-- If `./.mcp.json` has `mcpServers.video-research`, treat it as active.
-- Otherwise use `~/.claude/.mcp.json`.
+Call only tools actually available in the session. Omit optional checks when disabled:
 
-Capture and report:
-- Active config path
-- `video-research` command + args
-- Whether an `env` block exists under `mcpServers.video-research`
-- Whether shared config file exists and contains:
-  - `GEMINI_API_KEY`
-  - `YOUTUBE_API_KEY` (optional)
-  - `WEAVIATE_URL` (optional)
+- YouTube: `video_metadata(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")`. Pass requires a non-empty `video_id` and no `error`. A Gemini key fallback does not prove that YouTube Data API is enabled.
+- Weaviate: `knowledge_stats()`. Disabled is informational; a configured connection failure is a failed integration.
+- MLflow: `search_traces(experiment_id="0", max_results=1, extract_fields="info.trace_id")`. A missing experiment differs from connection failure; use the configured experiment if discoverable. MLflow is optional.
 
-If the active `.mcp.json` contains unresolved placeholders (for example `${WEAVIATE_URL}`), flag it as a warning and recommend removing the `env` block in favor of `~/.config/video-research-mcp/.env`.
+Provider inference is a separate authorized smoke. Do not silently send user documents or start paid research to turn an MCP connection check into an inference claim. Changes to shared environment require an MCP restart before retesting. After one controlled fix, retry only the failed check; preserve repeated failures.
 
-## 2) Runtime config check
+Completion: each enabled integration has an observed result, with unavailable/disabled distinguished from failure.
 
-Call `infra_configure()` with no arguments to inspect live server settings.
-Never pass `preset` unless it is exactly one of: `best`, `stable`, `budget`.
-Do not call `infra_configure(preset="")`.
+## 4. Full Mode
 
-Report:
-- `current_config.default_model`
-- `current_config.youtube_api_key` present/empty
-- `current_config.weaviate_url` (masked if needed)
-- `current_config.weaviate_enabled`
+Inspect the installed `comment-analyst.md` and file manifest in the install scope. Confirm the YouTube comments tool is in `tools:` and compare the installed SHA-256 against its manifest entry. Report user modifications before suggesting `--force`; the installer deliberately preserves them. Do not edit config or overwrite skills during a diagnostic request.
 
-Interpretation rules for YouTube key status:
-- If `youtube_api_key` is present: PASS.
-- If `youtube_api_key` is empty but `GEMINI_API_KEY` exists in shared config/env: INFO only (fallback path is active).
-- Warn only when both keys appear missing.
+## Output
 
-If runtime `weaviate_url` is non-empty and does not start with `http://` or `https://`, mark as fail and provide exact fix.
-
-## 3) Smoke tests
-
-### YouTube API
-
-Call:
-`video_metadata(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")`
-
-- PASS: non-empty `video_id` and no `error`
-- FAIL: has `error` (show `category`, `hint`, and concrete fix)
-
-### Weaviate
-
-Call:
-`knowledge_stats()`
-
-- PASS: response has `collections`
-- WARN: error indicates not configured/disabled
-- FAIL: connection or validation error
-
-For failures, include exact remediation text (URL format, API key, restart requirement).
-If any env file values are changed (for example `~/.config/video-research-mcp/.env`), explicitly require a Claude Code restart before retest.
-
-### MLflow Tracing
-
-Call:
-`search_traces(experiment_id="0", max_results=1, extract_fields="info.trace_id")`
-
-Use the `mcp__mlflow-mcp__search_traces` tool.
-
-- PASS: returns a result (MLflow MCP server connected)
-- WARN: connection refused or timeout (MLflow server not running — `mlflow server --port 5001`)
-- INFO: tool not available (mlflow-mcp not installed — run the plugin installer)
-
-Do not fail the overall health check for MLflow issues — it is an optional component.
-
-## 4) Full mode extras
-
-If mode is `full`, also:
-
-1. Inspect comment-analyst definitions (project first, then global):
-   - `./.claude/agents/comment-analyst.md`
-   - `~/.claude/agents/comment-analyst.md`
-2. Verify `tools:` includes `mcp__video-research__video_comments`.
-3. If `~/.claude/gr-file-manifest.json` exists, compare manifest hash for `agents/comment-analyst.md` against current file hash using:
-   `shasum -a 256 ~/.claude/agents/comment-analyst.md`
-4. If mismatched, warn that installer upgrades may skip this file unless user runs with `--force`.
-
-## Output format (strict)
-
-For `quick` mode, produce exactly 4 short sections:
-
-1. `Summary`: `PASS`, `PASS with warnings`, or `FAIL`
-2. `Checks` (no table; 6 bullets only):
-   - Active MCP config
-   - Shared env file
-   - Runtime config
-   - YouTube API smoke test
-   - Weaviate smoke test
-   - MLflow tracing smoke test
-3. `Fixes`:
-   - If none: `None`
-   - If needed: numbered command-ready steps (max 3)
-4. `Retest`: one line with `/gr:doctor` and any failing smoke test command
-
-For `full` mode, include:
-- Full checks table
-- Comment-agent wiring row
-- Expanded remediation details
-
-Never claim healthy if any smoke test failed.
+Return overall `PASS`, `PASS with optional limitations`, or `FAIL`; compact check results; exact fixes for failed checks; and the smallest retest. Distinguish configuration, MCP connection, provider metadata access, and inference. Do not call the whole setup healthy when an enabled integration failed, and do not call optional absence a core failure.

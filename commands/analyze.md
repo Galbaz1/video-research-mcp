@@ -2,7 +2,6 @@
 description: Analyze any content — URL, file, or pasted text
 argument-hint: <url|file-path|text>
 allowed-tools: mcp__video-research__content_analyze, mcp__video-research__content_extract, mcp__video-research__content_batch_analyze, Write, Glob, Read, Bash
-model: sonnet
 ---
 
 # Content Analysis: $ARGUMENTS

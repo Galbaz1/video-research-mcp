@@ -1,11 +1,11 @@
 ---
 name: video-research
-description: Teaches Claude how to effectively use the 28 video-research-mcp tools. Activates when working with video analysis, deep research, content extraction, web search, or knowledge store via the video-research MCP server.
+description: Use video-research MCP tools for evidence-aware video/document analysis, cited research, academic discovery, and knowledge queries when that server is connected.
 ---
 
 # Video Research MCP — Tool Usage Guide
 
-You have access to the `video-research-mcp` MCP server, which exposes 28 tools powered by Gemini 3.1 Pro and the YouTube Data API. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
+Discover whether the `video-research-mcp` server is connected before calling it. Its 34 registered tools use the configured Gemini models, YouTube Data API, Semantic Scholar, and optional Weaviate. Inspect `infra_configure()` for live models; the default is Gemini 3.8 Flash. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
 
 ## Core Principle
 
@@ -32,7 +32,9 @@ Tools accept an `instruction` parameter instead of fixed modes. Write specific, 
 | Deep research grounded in documents | `research_document` |
 | Search the web for current info | `web_search` |
 | Check or clear the cache | `infra_cache` |
-| Change model/thinking/temperature | `infra_configure` |
+| Inspect or change model/thinking settings | `infra_configure` |
+| Search papers or authors | `research_paper_search`, `research_author_search` |
+| Fetch paper metadata, citations, or recommendations | `research_paper_details`, `research_paper_citations`, `research_paper_recommendations` |
 | Find past analyses and research | `/gr:recall "topic"` (semantic search when Weaviate configured) |
 | Get AI answer from past work | `/gr:recall ask "question"` (requires Weaviate + weaviate-agents) |
 | Browse knowledge gaps | `/gr:recall fuzzy` or `/gr:recall unknown` |
@@ -74,7 +76,7 @@ video_analyze(
   file_path: str | None = None, # Local video file
   instruction: str = "...",     # What to analyze (default: comprehensive analysis)
   output_schema: dict | None,   # Custom JSON Schema for response shape
-  thinking_level: str = "high", # minimal | low | medium | high
+  thinking_level: str = "high", # low | medium | high for the default model
   use_cache: bool = True        # Cache results by instruction hash
 )
 ```
@@ -183,9 +185,9 @@ content_batch_analyze(
 ```
 content_extract(content: str, schema: dict)
 ```
-Use when you have a specific JSON Schema and want guaranteed structured extraction.
+Use when you have a specific JSON Schema and need schema-constrained extraction; still check error responses and validate required evidence.
 
-### Research Tools (8)
+### Research Tools (13, including 5 academic tools)
 
 #### `research_deep` — Multi-phase deep research
 ```
@@ -259,6 +261,10 @@ research_assess_evidence(claim: str, sources: list[str], context: str = "")
 ```
 Returns `{claim, tier, confidence, supporting[], contradicting[], reasoning}`.
 
+### Academic Discovery
+
+The Semantic Scholar tools search metadata/abstracts, fetch details, follow citations/references, recommend papers, and search authors. They do not read full papers automatically. Fetch primary full text before making methodology claims; distinguish abstract-only evidence and missing papers. Read current tool schemas for filters, identifier formats, pagination, and limits.
+
 ### Search Tool (1)
 
 #### `web_search` — Google Search via Gemini grounding
@@ -283,9 +289,9 @@ infra_configure(model=None, thinking_level=None, temperature=None)
 
 ### Research a topic end-to-end
 1. `research_plan(topic)` > orchestration blueprint
-2. Run IN PARALLEL (independent calls, different models):
+2. Run independent calls in parallel within the available worker/provider budget:
    - `web_search(query)` > gather current sources (Gemini Flash)
-   - `research_deep(topic, scope="deep")` > full analysis with evidence tiers (Gemini Pro)
+   - `research_deep(topic, scope="deep")` > full analysis with evidence tiers (configured analysis model)
 3. `research_assess_evidence(claim, sources)` > verify specific claims — call multiple claims IN PARALLEL
 
 ### Analyze a YouTube video with community context
@@ -337,7 +343,7 @@ All tools return error dicts instead of raising:
 ```json
 {"error": "message", "category": "API_QUOTA_EXCEEDED", "hint": "wait a minute", "retryable": true}
 ```
-Always check for `"error"` key in the response before processing results. If `retryable` is true, wait and retry.
+Always check for `"error"` key in the response before processing results. The runtime already retries transient Gemini failures. After a retryable result, permit at most one controlled retry for an idempotent call within the authorized budget; retain repeated failure and stop. For background research, retain and poll the existing interaction ID rather than launching a duplicate.
 
 ## Caching
 
@@ -347,7 +353,13 @@ Results are cached by `{content_id}_{tool}_{instruction_hash}_{model_hash}`. Dif
 
 | Level | When to use |
 |-------|-------------|
-| `minimal` | Simple extraction (title, basic facts) |
+| `minimal` | Only explicitly selected compatible models; rejected by the default Gemini 3.8 Flash |
 | `low` | Quick summaries, simple tasks |
 | `medium` | Content analysis (default for content tools) |
 | `high` | Video analysis, research, complex reasoning (default for video/research) |
+
+## Completion and Evidence
+
+Before declaring completion, verify the exact input and requested coverage, non-empty required fields, source/timestamp/page pointers, and the saved artifact. Label model inference, abstract-only evidence, sampled/condensed transcripts, and uncertain speaker identities. A structured schema does not establish truth; inspect primary evidence for decision-critical claims.
+
+For batches, retain successes, failures, refusals, and omissions in the denominator. Write-through Weaviate storage is non-fatal: report persistence separately from analysis, and do not infer storage from tool success. A cached result is evidence from its original generation, not a fresh provider call. Stop at terminal failure or exhausted repair budget with a concrete next cause-finding step.

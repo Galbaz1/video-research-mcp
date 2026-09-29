@@ -2,12 +2,9 @@
 name: gr-advisor
 description: Recommends the optimal /gr command when the user asks about Gemini-powered research, YouTube video analysis, web content extraction, or Weaviate knowledge queries. Activates only when the request matches /gr plugin capabilities and no specific /gr command was already chosen — not for code editing, debugging, testing, git operations, or general questions.
 allowed-tools: mcp__video-research__knowledge_search
-model: sonnet
 ---
 
 # GR Workflow Advisor
-
-Last updated: 2026-03-07 12:34 CET
 
 Recommend the right `/gr` command before executing research, video analysis, or content tasks.
 
@@ -35,15 +32,15 @@ Do NOT activate for: code tasks, git operations, file editing, general questions
 RECOMMENDED: /gr:<command> "<args>"
 WHY: <one sentence>
 ALTERNATIVE: /gr:<other>
-COST: free|$2-5 | TIME: instant|10-20 min
+COST: check provider pricing | TIME: depends on scope
 NEXT STEP: <follow-up action>
 ```
 
 ## Key Routing Rules
 
-- Quick question → `/gr:search` (free, instant) — NEVER `/gr:research-deep`
+- Quick question → `/gr:search` (provider billing applies) — NEVER `/gr:research-deep`
 - Video URL → `/gr:video` or `/gr:video-chat`
 - Document/URL → `/gr:analyze` or `/gr:research-doc`
-- Topic research → `/gr:research` (free) or `/gr:research-deep` ($2-5, 10-20 min)
+- Topic research → `/gr:research` (provider billing) or `/gr:research-deep` (long-running; provider billing)
 - Prior work exists → suggest `/gr:recall` first
 - After research → suggest `/gr:ingest` to persist

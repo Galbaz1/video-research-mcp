@@ -2,7 +2,6 @@
 description: Check status of explainer video projects
 argument-hint: "[project-id]"
 allowed-tools: mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_list
-model: sonnet
 ---
 
 # Explainer Status: $ARGUMENTS

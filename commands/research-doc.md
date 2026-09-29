@@ -2,7 +2,6 @@
 description: Deep document research with evidence tiers and cross-referencing
 argument-hint: <file-path(s) or directory>
 allowed-tools: mcp__video-research__research_document, mcp__video-research__content_batch_analyze, Write, Glob, Read, Bash
-model: sonnet
 ---
 
 # Document Research: $ARGUMENTS

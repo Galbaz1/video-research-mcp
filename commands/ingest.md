@@ -2,7 +2,6 @@
 description: Manually add knowledge to the Weaviate store
 argument-hint: "[collection] [text or file path]"
 allowed-tools: mcp__video-research__knowledge_ingest, mcp__video-research__knowledge_schema, mcp__video-research__knowledge_stats, mcp__video-research__knowledge_search, Read
-model: sonnet
 ---
 
 # Ingest: $ARGUMENTS
