@@ -446,20 +446,20 @@ graph TD
     REPO["gemini-research-mcp<br/>(monorepo)"]:::root
 
     subgraph "Root: video-research-mcp"
-        ROOT_PKG["video-research-mcp<br/>28 tools | 7 sub-servers<br/>PyPI + npm (plugin installer)"]:::pkg
-        ROOT_DEPS["google-genai >=1.57<br/>fastmcp >=3.0.2<br/>weaviate-client >=4.19.2<br/>pydantic >=2.0"]:::dep
+        ROOT_PKG["video-research-mcp<br/>34 tools | 7 sub-servers<br/>PyPI + npm (plugin installer)"]:::pkg
+        ROOT_DEPS["google-genai >=2.25.0,<3<br/>fastmcp >=4.0.10,<5<br/>weaviate-client >=4.23.1,<5<br/>pydantic >=2.13.5,<3"]:::dep
         ROOT_PKG --- ROOT_DEPS
     end
 
     subgraph "packages/video-agent-mcp"
         AGENT_PKG["video-agent-mcp<br/>2 tools | 1 sub-server<br/>Parallel scene generation"]:::pkg
-        AGENT_DEPS["claude-agent-sdk >=0.1.0<br/>fastmcp >=3.0.2<br/>pydantic >=2.0"]:::dep
+        AGENT_DEPS["claude-agent-sdk >=0.2.162,<0.3<br/>fastmcp >=4.0.10,<5<br/>pydantic >=2.13.5,<3"]:::dep
         AGENT_PKG --- AGENT_DEPS
     end
 
     subgraph "packages/video-explainer-mcp"
         EXPLAINER_PKG["video-explainer-mcp<br/>15 tools | 4 sub-servers<br/>Video synthesis pipeline"]:::pkg
-        EXPLAINER_DEPS["fastmcp >=3.0.2<br/>pydantic >=2.0"]:::dep
+        EXPLAINER_DEPS["fastmcp >=4.0.10,<5<br/>pydantic >=2.13.5,<3"]:::dep
         EXPLAINER_PKG --- EXPLAINER_DEPS
     end
 

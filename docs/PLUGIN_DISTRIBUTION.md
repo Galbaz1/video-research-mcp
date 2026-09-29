@@ -17,15 +17,15 @@ The npm package contains zero Python code. The PyPI package contains zero JavaSc
 
 ### What it does
 
-`bin/install.js` copies 42 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `.mcp.json`. That's it — no runtime, no daemon.
+`bin/install.js` copies 44 markdown files into `~/.claude/` (global) or `.claude/` (local), then writes MCP server config to `~/.claude.json` (user) or `.mcp.json` (project). That's it — no runtime, no daemon.
 
 ```
 npx video-research-mcp@latest
         │
         ├── Copies 17 commands    → ~/.claude/commands/gr/ and commands/ve/
-        ├── Copies 18 skill files → ~/.claude/skills/ (12 skills + templates + references)
+        ├── Copies 20 skill files → ~/.claude/skills/ (13 skills + templates + references)
         ├── Copies 7 agents       → ~/.claude/agents/
-        ├── Writes .mcp.json      → MCP server registration (3 servers)
+        ├── Writes client config  → research + optional Playwright/MLflow registration
         └── Writes manifest       → for upgrades/uninstall
 ```
 
@@ -67,7 +67,7 @@ const FILE_MAP = {
   'commands/explain-video.md':  'commands/ve/explain-video.md',
   'commands/explain-status.md': 'commands/ve/explain-status.md',
 
-  // Skills → context injection (18 files across 12 skills)
+  // Skills → context injection (20 files across 13 skills)
   'skills/video-research/SKILL.md':                              'skills/video-research/SKILL.md',
   'skills/gemini-visualize/SKILL.md':                             'skills/gemini-visualize/SKILL.md',
   'skills/gemini-visualize/templates/video-concept-map.md':       'skills/gemini-visualize/templates/video-concept-map.md',
@@ -87,6 +87,7 @@ const FILE_MAP = {
   'skills/video-production/SKILL.md':                             'skills/video-production/SKILL.md',
   'skills/video-production/references/workflow-patterns.md':      'skills/video-production/references/workflow-patterns.md',
   'skills/image-generation/SKILL.md':                             'skills/image-generation/SKILL.md',
+  'skills/plugin-maintenance/SKILL.md':                           'skills/plugin-maintenance/SKILL.md',
 
   // Agents → sub-agents (7)
   'agents/researcher.md':       'agents/researcher.md',
@@ -108,33 +109,32 @@ The installer writes `~/.claude/gr-file-manifest.json` containing SHA-256 hashes
 - **Upgrade detection**: only overwrite files that haven't been user-modified
 - **User modification protection**: if the user edited a skill, `--force` is required to overwrite
 - **Clean uninstall**: only remove files whose hash matches the manifest
-- **Obsolete file cleanup**: when a file is removed from FILE_MAP, it's deleted on upgrade
+- **Obsolete file cleanup**: removed FILE_MAP entries are deleted only when their installed hashes still match the previous manifest
 
 ### MCP config merge
 
-`bin/lib/config.js` writes three MCP server entries to `.mcp.json`:
+`bin/lib/config.js` registers the published research server and optional utility servers. It preserves existing environment values and unrelated server configuration. The explainer and scene-agent packages require local source registration (see [onboarding](tutorials/GETTING_STARTED.md)). Generated defaults:
 
 ```json
 {
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp[tracing]"]
+      "args": ["--refresh", "video-research-mcp[tracing]"]
     },
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@0.0.68", "--headless", "--caps=vision,pdf"]
+      "args": ["@playwright/mcp@0.0.83", "--headless", "--caps=vision,pdf"]
     },
     "mlflow-mcp": {
       "command": "uvx",
-      "args": ["--with", "mlflow[mcp]>=3.5.1", "mlflow", "mcp", "run"],
-      "env": { "MLFLOW_TRACKING_URI": "${MLFLOW_TRACKING_URI}" }
+      "args": ["--with", "mlflow[mcp]>=3.16.1,<4", "mlflow", "mcp", "run"]
     }
   }
 }
 ```
 
-Config location: `~/.claude/.mcp.json` (global) or `./.mcp.json` (local, project root).
+Config location: `~/.claude.json` (global) or `./.mcp.json` (local, project root).
 
 ---
 
@@ -142,7 +142,7 @@ Config location: `~/.claude/.mcp.json` (global) or `./.mcp.json` (local, project
 
 The Python package (defined in `pyproject.toml`) is the actual MCP server. Users never install it manually — `uvx` handles it when Claude Code reads `.mcp.json`.
 
-The server exposes 28 tools across 7 sub-servers. See the Architecture section in the root `CLAUDE.md`.
+The server exposes 34 tools across 7 sub-servers. See the Architecture section in the root `CLAUDE.md`.
 
 ---
 
@@ -172,7 +172,6 @@ Structure:
 description: "Short description shown in autocomplete"
 argument-hint: "<url or path>"
 allowed-tools: [video_analyze, video_metadata, Write, Read]
-model: sonnet
 ---
 
 Your prompt template here. Use $ARGUMENTS for user input.
@@ -182,23 +181,23 @@ Your prompt template here. Use $ARGUMENTS for user input.
 |-------------|---------|
 | `description` | Shown in command picker / autocomplete |
 | `argument-hint` | Placeholder text after the command name |
-| `allowed-tools` | Restricts which MCP tools + built-in tools the command can use |
-| `model` | Which Claude model runs the command (sonnet, haiku, opus) |
+| `allowed-tools` | Pre-approves the listed tools for this invocation; does not install missing tools |
+| `model` | Optional session-model override; bundled workflows omit it to inherit the active model |
 
 When a user types `/gr:video https://youtube.com/...`:
 1. Claude Code loads `commands/gr/video.md`
 2. Replaces `$ARGUMENTS` with the user's input
-3. Restricts tool usage to `allowed-tools`
-4. Executes with the specified `model`
+3. Applies the declared tool permissions
+4. Uses the active session model unless explicitly overridden
 
 ### Skills → Context Injection
 
-A `skills/<name>/SKILL.md` provides domain knowledge that Claude loads when relevant. This is the **anti-hallucination mechanism** — it overrides the model's training knowledge with correct, project-specific API syntax.
+A `skills/<name>/SKILL.md` provides domain knowledge that Claude loads when relevant. The skill supplies a workflow and evidence/completion requirements. Runtime schemas remain authoritative for arguments and capabilities.
 
 ```markdown
 ---
 name: video-research
-description: "Teaches Claude how to use the 28 video-research-mcp tools"
+description: "Teaches Claude how to use video-research MCP workflows"
 ---
 
 ## Tool Signatures
@@ -223,7 +222,6 @@ An `agents/<name>.md` defines a specialized agent that can be launched via the `
 ---
 name: researcher
 color: blue
-model: sonnet
 tools: [research_plan, web_search, research_deep, Write, Read]
 ---
 
@@ -240,47 +238,53 @@ These run as background or foreground processes with their own tool restrictions
 
 | File | Slash Command | Tools | Model |
 |------|---------------|-------|-------|
-| `commands/video.md` | `/gr:video` | video_analyze, video_batch, video_session, video_metadata, video_playlist | sonnet |
-| `commands/video-chat.md` | `/gr:video-chat` | video_create_session, video_continue_session | sonnet |
-| `commands/research.md` | `/gr:research` | web_search, research_deep, research_plan, research_assess_evidence | sonnet |
-| `commands/research-deep.md` | `/gr:research-deep` | research_web, research_web_status, research_web_followup, research_web_cancel, web_search, knowledge_search | opus |
-| `commands/analyze.md` | `/gr:analyze` | content_analyze, content_extract | sonnet |
-| `commands/search.md` | `/gr:search` | web_search | sonnet |
-| `commands/recall.md` | `/gr:recall` | Glob, Grep, Read (filesystem only) | sonnet |
-| `commands/models.md` | `/gr:models` | infra_configure | haiku |
-| `commands/getting-started.md` | `/gr:getting-started` | doctor + baseline setup checks | sonnet |
-| `commands/traces.md` | `/gr:traces` | mlflow-mcp search_traces, get_trace, set_trace_tag, log_feedback, evaluate_traces | sonnet |
-| `commands/doctor.md` | `/gr:doctor` (`quick` compact, `full` detailed) | infra_configure, video_metadata, knowledge_stats, mlflow-mcp search_traces, Read/Glob/Bash | haiku |
-| `commands/research-doc.md` | `/gr:research-doc` | research_document, content_batch_analyze, Write/Glob/Read/Bash | sonnet |
-| `commands/ingest.md` | `/gr:ingest` | knowledge_ingest, knowledge_stats, knowledge_search, Read | sonnet |
-| `commands/explainer.md` | `/ve:explainer` | All 15 explainer tools, Read/Write/Glob | sonnet |
-| `commands/explain-video.md` | `/ve:explain-video` | video_analyze, research_deep, content_analyze, web_search + explainer tools | sonnet |
-| `commands/explain-status.md` | `/ve:explain-status` | explainer_status, explainer_list | haiku |
-| `commands/advisor.md` | `/gr:advisor` | knowledge_search, knowledge_stats, Read, Glob | sonnet |
+| `commands/video.md` | `/gr:video` | video_analyze, video_batch_analyze, video_create_session, video_continue_session, video_metadata, video_playlist | inherited |
+| `commands/video-chat.md` | `/gr:video-chat` | video_create_session, video_continue_session | inherited |
+| `commands/research.md` | `/gr:research` | web_search, research_deep, research_plan, research_assess_evidence | inherited |
+| `commands/research-deep.md` | `/gr:research-deep` | research_web, research_web_status, research_web_followup, research_web_cancel, web_search, knowledge_search | inherited |
+| `commands/analyze.md` | `/gr:analyze` | content_analyze, content_extract | inherited |
+| `commands/search.md` | `/gr:search` | web_search | inherited |
+| `commands/recall.md` | `/gr:recall` | Glob, Grep, Read (filesystem only) | inherited |
+| `commands/models.md` | `/gr:models` | infra_configure | inherited |
+| `commands/getting-started.md` | `/gr:getting-started` | doctor + baseline setup checks | inherited |
+| `commands/traces.md` | `/gr:traces` | mlflow-mcp search_traces, get_trace, set_trace_tag, log_feedback, evaluate_traces | inherited |
+| `commands/doctor.md` | `/gr:doctor` (`quick` compact, `full` detailed) | infra_configure, video_metadata, knowledge_stats, mlflow-mcp search_traces, Read/Glob/Bash | inherited |
+| `commands/research-doc.md` | `/gr:research-doc` | research_document, content_batch_analyze, Write/Glob/Read/Bash | inherited |
+| `commands/ingest.md` | `/gr:ingest` | knowledge_ingest, knowledge_stats, knowledge_search, Read | inherited |
+| `commands/explainer.md` | `/ve:explainer` | All 15 explainer tools, Read/Write/Glob | inherited |
+| `commands/explain-video.md` | `/ve:explain-video` | video_analyze, research_deep, content_analyze, web_search + explainer tools | inherited |
+| `commands/explain-status.md` | `/ve:explain-status` | explainer_status, explainer_list | inherited |
+| `commands/advisor.md` | `/gr:advisor` | knowledge_search, knowledge_stats, Read, Glob | inherited |
 
-### Skills (7)
+### Skills (13)
 
 | Skill | Purpose |
 |-------|---------|
-| `video-research` | Tool signatures, workflows, caching for 28 tools |
+| `video-research` | Tool signatures, workflows, caching for 34 tools |
 | `gemini-visualize` | HTML visualization generation + 3 templates |
 | `video-explainer` | Tool signatures and workflows for 15 explainer tools |
 | `weaviate-setup` | Interactive onboarding wizard for Weaviate connection |
 | `mlflow-traces` | MLflow trace debugging, field paths, `extract_fields` discipline |
 | `research-brief-builder` | Interview framework for high-signal deep-research briefs |
 | `gr-advisor` | Workflow advisor — recommends optimal /gr command for a task |
+| `tts-production` | Current speech API settings, alignment, and audio QA |
+| `ffmpeg-production` | Encoding, filters, and export recipes |
+| `video-generation` | Provider discovery, current model constraints, and bounded generation |
+| `video-production` | Continuity, shot QA, repair budgets, and assembly |
+| `image-generation` | Reference prompts and inspected edits |
+| `plugin-maintenance` | Repeatable bounded audit and modernization loop |
 
 ### Agents (7)
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
-| `researcher` | sonnet | Multi-phase research with evidence tiers |
-| `video-analyst` | sonnet | Video analysis and Q&A sessions |
-| `visualizer` | sonnet | Background HTML visualization + screenshot |
-| `comment-analyst` | haiku | Background YouTube comment analysis |
-| `video-producer` | sonnet | Full pipeline orchestrator for explainer videos |
-| `content-to-video` | sonnet | Bridge agent — research analysis to explainer video |
-| `gr-advisor` | sonnet | Workflow advisor — recommends optimal /gr command |
+| `researcher` | inherited | Multi-phase research with evidence tiers |
+| `video-analyst` | inherited | Video analysis and Q&A sessions |
+| `visualizer` | inherited | Background HTML visualization + screenshot |
+| `comment-analyst` | inherited | Background YouTube comment analysis |
+| `video-producer` | inherited | Full pipeline orchestrator for explainer videos |
+| `content-to-video` | inherited | Bridge agent — research analysis to explainer video |
+| `gr-advisor` | inherited | Workflow advisor — recommends optimal /gr command |
 
 ---
 
@@ -292,14 +296,14 @@ USER: npx video-research-mcp@latest
          ▼
     bin/install.js (Node.js)
          │
-         ├── Copy 34 markdown files to ~/.claude/
-         ├── Write .mcp.json (register MCP servers)
+         ├── Copy 44 markdown files to ~/.claude/
+         ├── Write ~/.claude.json or project .mcp.json
          └── Write manifest (for future upgrades)
 
 USER: starts Claude Code
          │
-         ├── Read .mcp.json
-         │    └── Start: uvx video-research-mcp  ← Python server from PyPI
+         ├── Read active user/project MCP registrations
+         │    └── Start: uvx --refresh video-research-mcp  ← Python server from PyPI
          │
          ├── Scan ~/.claude/commands/
          │    └── Register /gr:video, /gr:research, etc.
@@ -316,6 +320,10 @@ USER: /gr:research "quantum computing"
          ├── Load skills/video-research/SKILL.md (context)
          ├── Call research_plan → research_deep via MCP server
          ├── Server calls Gemini API
-         ├── Server stores result in Weaviate (write-through)
+         ├── Server attempts non-fatal Weaviate write-through when configured
          └── Claude returns structured response
 ```
+
+## Client portability
+
+The installer targets Claude Code. Other standard MCP clients can register the same stdio runtime using their own configuration schema. Native Codex packaging requires a supported manifest; this repository does not currently ship one. See [Claude Code skills](https://code.claude.com/docs/en/skills) and [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins), checked 2026-09-29, before adding platform-specific distribution claims.

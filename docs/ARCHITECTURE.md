@@ -8,7 +8,7 @@ Technical reference for the `video-research-mcp` codebase. Covers the system des
 2. [Composite Server Pattern](#2-composite-server-pattern)
 3. [GeminiClient Pipeline](#3-geminiclient-pipeline)
 4. [Tool Conventions](#4-tool-conventions)
-5. [Tool Reference (28 tools)](#5-tool-reference-28-tools)
+5. [Tool Reference (34 tools)](#5-tool-reference-34-tools)
 6. [Singletons](#6-singletons)
 7. [Weaviate Integration](#7-weaviate-integration)
 8. [Session Management](#8-session-management)
@@ -25,20 +25,20 @@ Technical reference for the `video-research-mcp` codebase. Covers the system des
 
 ## 1. System Overview
 
-`video-research-mcp` is an MCP (Model Context Protocol) server that exposes 28 tools for video analysis, deep research, content extraction, web search, and knowledge management. It communicates over **stdio transport** using **FastMCP** (`fastmcp>=3.0.2`) and is powered by **Gemini 3.1 Pro** via the `google-genai` SDK.
+`video-research-mcp` is an MCP (Model Context Protocol) server that exposes 34 tools for video analysis, deep research, content extraction, web search, and knowledge management. It communicates over **stdio transport** using **FastMCP** (`fastmcp>=4.0.10,<5`) and is powered by the configured Gemini model (default **Gemini 3.8 Flash**) via the `google-genai` SDK.
 
 ### Core Dependencies
 
 | Package | Purpose |
 |---------|---------|
-| `fastmcp>=3.0.2` | MCP server framework — v3.x preserves tool callability |
-| `google-genai>=1.57` | Gemini API client — 1.56 added ThinkingConfig; 1.57 added Gemini 3 model support |
-| `google-api-python-client>=2.100` | YouTube Data API v3 |
-| `pydantic>=2.0` | Schema validation, structured output models |
-| `weaviate-client>=4.19.2` | Vector database for knowledge persistence |
-| `weaviate-agents>=1.2.0` | *(optional)* QueryAgent for AI-powered knowledge Q&A |
+| `fastmcp>=4.0.10,<5` | MCP server framework; mounted tools and lifespan verified against v4 |
+| `google-genai>=2.25.0,<3` | Current Gemini SDK; generation, caching, uploads, and Interactions contracts |
+| `google-api-python-client>=2.200.0,<3` | YouTube Data API v3 |
+| `pydantic>=2.13.5,<3` | Schema validation, structured output models |
+| `weaviate-client>=4.23.1,<5` | Vector database for knowledge persistence |
+| `weaviate-agents>=1.8.0,<2` | *(optional)* QueryAgent for AI-powered knowledge Q&A |
 
-**Dev dependencies**: `pytest>=8.0`, `pytest-asyncio>=1.0`, `ruff>=0.9`
+**Dev dependencies**: See the `dev` extra in `pyproject.toml` for the current tested test/lint constraints.
 
 ### Build & Runtime
 
@@ -110,6 +110,7 @@ src/video_research_mcp/
     research.py          research_server (3 core tools + deferred registrations)
     research_document.py research_document tool + 4-phase orchestration (split from research.py)
     research_web.py      Deep Research Agent tools (`research_web*`)
+    academic.py          Semantic Scholar paper/author tools
     research_document_file.py Document File API upload + URL download helpers
     content.py           content_server (3 tools)
     content_batch.py     content_batch_analyze tool (split from content.py)
@@ -126,7 +127,7 @@ src/video_research_mcp/
       ingest.py          knowledge_ingest, knowledge_fetch, knowledge_stats
 ```
 
-**Tool count**: 4 + 3 + 8 + 3 + 1 + 2 + 7 = **28 tools** across 7 sub-servers.
+**Tool count**: 4 + 3 + 13 + 3 + 1 + 2 + 8 = **34 tools** across 7 sub-servers.
 
 ---
 
@@ -142,14 +143,15 @@ app = FastMCP("video-research", instructions="...", lifespan=_lifespan)
 app.mount(video_server)       # tools/video.py       4 tools
 _ensure_document_tool()       # deferred: research_document registers on research_server
 _ensure_web_tools()           # deferred: research_web* registers on research_server
-app.mount(research_server)    # tools/research.py     8 tools total
+_ensure_academic_tools()      # deferred: Semantic Scholar tools
+app.mount(research_server)    # tools/research.py     13 tools total
 _ensure_batch_tool()          # deferred: content_batch_analyze registers on content_server
 app.mount(content_server)     # tools/content.py      3 tools
 app.mount(search_server)      # tools/search.py       1 tool
 app.mount(infra_server)       # tools/infra.py        2 tools
 app.mount(youtube_server)     # tools/youtube.py      3 tools
 app.mount(knowledge_server)   # tools/knowledge/       8 tools
-#                                                     ── 28 tools total
+#                                                     ── 34 tools total
 ```
 
 ### Lifespan Hook
@@ -403,7 +405,7 @@ Tools not in this table (`content_extract`, `video_comments`, `video_playlist`, 
 
 ---
 
-## 5. Tool Reference (28 tools)
+## 5. Tool Reference (34 tools)
 
 ### Video Server (4 tools)
 
@@ -480,7 +482,7 @@ Returns: dict with `video_id`, `comments` list (text, like count, author), and `
 
 Returns: `PlaylistInfo` dict. Costs 1 YouTube API unit per page.
 
-### Research Server (8 tools)
+### Research Server (13 tools)
 
 **`research_deep`** -- Run multi-phase deep research with evidence-tier labeling.
 
@@ -561,6 +563,8 @@ Returns: follow-up response with a new `interaction_id`. Appends Q&A to `DeepRes
 | `interaction_id` | `str` | (required) | Interaction ID to cancel |
 
 Returns: cancellation status response.
+
+**Academic tools** share `research_server`: `research_paper_search`, `research_paper_details`, `research_paper_citations`, `research_paper_recommendations`, and `research_author_search`. They return Semantic Scholar metadata, abstracts, citations/references, recommendations, or author records; full text requires separate retrieval. Exact argument contracts live in the generated [tool manifest](metrics/tool-contract-manifest.json).
 
 ### Content Server (3 tools)
 
@@ -1028,7 +1032,7 @@ Default: `~/.cache/video-research-mcp/`. Configurable via `GEMINI_CACHE_DIR`.
   "cached_at": "2026-02-27T10:30:00",
   "content_id": "dQw4w9WgXcQ",
   "tool": "video_analyze",
-  "model": "gemini-3.5-flash",
+  "model": "gemini-3.8-flash",
   "analysis": { ... }
 }
 ```
@@ -1092,10 +1096,10 @@ All configuration is resolved from environment variables via `ServerConfig.from_
 | Env Variable | Field | Default | Validation |
 |-------------|-------|---------|------------|
 | `GEMINI_API_KEY` | `gemini_api_key` | `""` (required at runtime) | -- |
-| `GEMINI_MODEL` | `default_model` | `gemini-3.5-flash` | -- |
-| `GEMINI_FLASH_MODEL` | `flash_model` | `gemini-3.5-flash` | Same as `default_model`; presets unlock Pro |
-| `DEEP_RESEARCH_AGENT` | `deep_research_agent` | `deep-research-pro-preview-12-2025` | Must not be empty |
-| `GEMINI_THINKING_LEVEL` | `default_thinking_level` | `medium` | Must be in `{minimal, low, medium, high}` |
+| `GEMINI_MODEL` | `default_model` | `gemini-3.8-flash` | -- |
+| `GEMINI_FLASH_MODEL` | `flash_model` | `gemini-3.8-flash` | Same as `default_model`; presets unlock Pro |
+| `DEEP_RESEARCH_AGENT` | `deep_research_agent` | `deep-research-preview-04-2026` | Must not be empty |
+| `GEMINI_THINKING_LEVEL` | `default_thinking_level` | `medium` | Model-aware validation; default Flash accepts `{low, medium, high}` |
 | `GEMINI_TEMPERATURE` | `default_temperature` | `1.0` | -- |
 | `GEMINI_CACHE_DIR` | `cache_dir` | `~/.cache/video-research-mcp/` | -- |
 | `GEMINI_CACHE_TTL_DAYS` | `cache_ttl_days` | `30` | >= 1 |
@@ -1125,9 +1129,11 @@ Three presets are available via `infra_configure`:
 
 | Preset | Default Model | Flash Model | Description |
 |--------|---------------|-------------|-------------|
-| `best` | `gemini-3.1-pro-preview` | `gemini-3-flash-preview` | Max quality (lowest rate limits) |
-| `stable` | `gemini-3-pro-preview` | `gemini-3-flash-preview` | Fallback (higher rate limits) |
-| `budget` | `gemini-3-flash-preview` | `gemini-3-flash-preview` | Cost-optimized (highest rate limits) |
+| `best` | `gemini-3.1-pro-preview` | `gemini-3.8-flash` | Explicit Pro preview option |
+| `stable` | `gemini-3.8-flash` | `gemini-3.8-flash` | Stable default |
+| `budget` | `gemini-3.5-flash-lite` | `gemini-3.5-flash-lite` | Lower-cost option |
+
+Gemini 3.8 Flash accepts `low`, `medium`, and `high` thinking. `minimal` is rejected for this model and remains available only for explicitly selected compatible models. Sampling parameters such as temperature are omitted from Gemini 3.6+ Flash requests. Deep Research uses Interactions `steps`, `annotations`, and `output_text`; regular generation retains GenerateContent for explicit context-cache support.
 
 ### Runtime Updates
 
@@ -1418,7 +1424,7 @@ When `FLASH_SUMMARIZE` is not `false` (default: enabled), Gemini Flash post-proc
 
 **Pipeline**:
 1. Build a prompt with truncated hit properties (max 500 chars per property, max 20 hits)
-2. Call `GeminiClient.generate_structured()` with the Flash model and `thinking_level="minimal"`
+2. Call `GeminiClient.generate_structured()` with the configured Flash model and `thinking_level="low"`
 3. Merge summaries back into hits: replace `properties` with only `useful_properties`, add `summary` field
 
 **Best-effort**: If Flash fails (timeout, quota, parsing error), the original raw hits are returned unchanged. This ensures search always succeeds even when the Flash call fails.

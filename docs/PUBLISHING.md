@@ -1,5 +1,31 @@
 # Publishing Guide
 
+
+## GitHub source releases
+
+GitHub publication and registry upload are separate operations. A verified source
+release includes Python wheels/sdists and the npm installer archive; it does not
+change what `uvx` or `npx ...@latest` resolves from PyPI/npm.
+
+For an authorized GitHub release, run the locked root and companion suites, lint,
+installer journeys, offline security checks, builds and metadata checks. Keep
+`pyproject.toml`, `package.json`, `.claude-plugin/plugin.json` and the CHANGELOG
+section synchronized; `uv run python scripts/check_release.py` checks that
+contract. Commit explicit owned files and push the verified review branch before
+tagging that exact commit:
+
+```bash
+git tag vX.Y.Z <verified-commit>
+git push origin vX.Y.Z
+```
+
+The release workflow runs CI before creating the GitHub release, requires matching
+tag/version/notes, builds all three Python packages and the installer, and checks
+Python metadata. A tag outside `main` is a prerelease. Inspect the exact workflow
+run and download/compare asset hashes before claiming publication succeeded. A
+failed workflow or a pushed tag is not a release. Merging a PR and uploading to
+registries require their own user authority.
+
 This project ships as two packages on two registries under the same name:
 
 | Registry | Package | What it contains | Install command |
@@ -89,7 +115,7 @@ git tag v0.X.Y
 git push origin v0.X.Y
 ```
 
-The GitHub Release is created automatically by `.github/workflows/release.yml`
+For registry-backed releases, the GitHub Release is created automatically by `.github/workflows/release.yml`
 when a `v*.*.*` tag is pushed — it extracts the matching CHANGELOG section as
 the release body. If the workflow fails or you want to back-fill an existing
 tag, do it manually:
