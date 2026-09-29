@@ -430,11 +430,10 @@ async def video_continue_session(
 
     from google.genai import types
 
-    use_cache, contents, config_kwargs = await prepare_cached_request(session, prompt)
-    user_content = contents[-1]  # last entry is the user message we just built
-    model = config_kwargs.pop("_model")
-
     try:
+        _, contents, config_kwargs = await prepare_cached_request(session, prompt)
+        user_content = contents[-1]
+        model = config_kwargs.pop("_model")
         client = GeminiClient.get()
 
         response = await with_retry(
@@ -444,13 +443,11 @@ async def video_continue_session(
                 config=types.GenerateContentConfig(**config_kwargs),
             )
         )
-        parts = response.candidates[0].content.parts if response.candidates else []
+        if not response.candidates or response.candidates[0].content is None:
+            raise ValueError("Gemini returned no content for this session turn")
+        model_content = response.candidates[0].content
+        parts = model_content.parts or []
         text = "\n".join(p.text for p in parts if p.text and not getattr(p, "thought", False))
-
-        model_content = types.Content(
-            role="model",
-            parts=[types.Part(text=text)],
-        )
         turn = session_store.add_turn(session_id, user_content, model_content)
         from ..weaviate_store import store_session_turn
         await store_session_turn(

@@ -110,10 +110,13 @@ def categorize_error(error: Exception) -> tuple[ErrorCategory, str]:
             ErrorCategory.API_INVALID_ARGUMENT,
             "Bad request — check input format",
         )
-    if "invalid mode" in s or "invalid thinking level" in s:
+    if any(message in s for message in (
+        "invalid mode", "invalid thinking level", "does not support minimal thinking",
+        "does not support temperature",
+    )):
         return (
             ErrorCategory.API_INVALID_ARGUMENT,
-            "Invalid input parameter — check mode and thinking level values",
+            "Invalid input parameter — check the selected model's supported settings",
         )
     if "404" in s:
         return (

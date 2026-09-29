@@ -2,7 +2,7 @@
 paths: "src/**/*.py"
 ---
 
-# Google GenAI SDK Patterns (>=1.57)
+# Google GenAI SDK Patterns (v2)
 
 ## Client
 
@@ -19,8 +19,8 @@ paths: "src/**/*.py"
 ## Thinking
 
 - All calls include `ThinkingConfig(thinking_level=...)` via config
-- Levels: "minimal", "low", "medium", "high"
-- Strip thinking parts from responses: `getattr(p, "thought", False)` — this is intentional defensive code, not a compat shim
+- Levels for the default model: "low", "medium", "high"; reject unsupported "minimal" with a validation error
+- Preserve complete SDK contents and thought signatures in session history; exclude thinking from user-visible text: `getattr(p, "thought", False)` — this is intentional defensive code, not a compat shim
 
 ## Context Caching
 
@@ -38,6 +38,6 @@ paths: "src/**/*.py"
 
 ## Models
 
-- Default: `gemini-3.5-flash` (config.py) — both `default_model` and `flash_model` point here; thinking_level is the dial
-- Stable name is `gemini-3.5-flash`; the legacy `gemini-3-flash-preview` alias still resolves but new code should use the stable name
-- Opt-in alternates via `infra_configure(preset="best"|"stable"|"budget")` for Pro 3.1 / Pro 3 / old Flash
+- Default: `gemini-3.8-flash` (config.py) — both `default_model` and `flash_model` point here; thinking_level is the dial
+- Verify current model IDs and capabilities against official provider docs before changing defaults
+- Opt-in alternates via `infra_configure(preset="best"|"stable"|"budget")` for configured Pro / current stable Flash / budget Flash-Lite

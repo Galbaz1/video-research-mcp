@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import time
-from types import SimpleNamespace
+import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+from google.genai import interactions
 
 from video_research_mcp.models.research_web import (
     DeepResearchFollowup,
@@ -30,42 +33,29 @@ from video_research_mcp.tools.research_web import (
 def _make_interaction(
     interaction_id: str = "test-interaction-123",
     status: str = "completed",
-    outputs: list | None = None,
+    steps: list | None = None,
     usage: object | None = None,
 ):
-    """Build a mock Interaction object."""
-    return SimpleNamespace(
-        id=interaction_id,
-        status=status,
-        outputs=outputs or [],
-        usage=usage,
-    )
+    """Build a concrete current-SDK Interaction, with no legacy outputs field."""
+    return interactions.Interaction(id=interaction_id, status=status, steps=steps, usage=usage)
 
 
 def _make_text_content(text: str):
-    return SimpleNamespace(type="text", text=text)
+    return interactions.TextContent(text=text)
 
 
 def _make_search_result_content(url: str, title: str = ""):
-    return SimpleNamespace(
-        type="googleSearchResult",
-        result=SimpleNamespace(url=url, title=title),
-    )
-
-
-def _make_url_context_content(url: str, status: str = "ok"):
-    return SimpleNamespace(
-        type="urlContextResult",
-        result=SimpleNamespace(url=url, status=status),
-    )
+    return interactions.TextContent(text="", annotations=[
+        interactions.URLCitation(url=url, title=title),
+    ])
 
 
 def _make_turn(contents: list):
-    return SimpleNamespace(content=contents, role="model")
+    return interactions.ModelOutputStep(content=contents)
 
 
 def _make_usage(input_tokens=100, output_tokens=200, total=300, thought=50):
-    return SimpleNamespace(
+    return interactions.Usage(
         total_input_tokens=input_tokens,
         total_output_tokens=output_tokens,
         total_tokens=total,
@@ -73,74 +63,57 @@ def _make_usage(input_tokens=100, output_tokens=200, total=300, thought=50):
     )
 
 
-# ── _extract_report ───────────────────────────────────────────────────────
-
-
 class TestExtractReport:
-    def test_extracts_text_and_sources(self):
-        """GIVEN outputs with text and search results WHEN extracting THEN both are returned."""
-        interaction = _make_interaction(outputs=[
+    def test_extracts_text_citations_and_url_context(self):
+        """GIVEN current SDK steps WHEN extracting THEN unique sources and final text survive."""
+        interaction = _make_interaction(steps=[
+            interactions.URLContextResultStep(call_id="url-1", result=[
+                interactions.URLContextResult(url="https://other.com", status="success"),
+            ]),
+            interactions.GoogleSearchResultStep(call_id="search-1", result=[
+                interactions.GoogleSearchResult(search_suggestions="Search suggestions"),
+            ]),
             _make_turn([
-                _make_text_content("# Report Title"),
+                _make_text_content("# Report Title\n\n"),
                 _make_search_result_content("https://example.com", "Example"),
                 _make_text_content("## Section 1"),
-                _make_url_context_content("https://other.com", "ok"),
+                _make_search_result_content("https://example.com", "Example"),
             ]),
         ])
         text, sources = _extract_report(interaction)
 
-        assert "# Report Title" in text
-        assert "## Section 1" in text
+        assert text == "# Report Title\n\n## Section 1"
         assert len(sources) == 2
-        assert sources[0].url == "https://example.com"
-        assert sources[0].title == "Example"
-        assert sources[1].url == "https://other.com"
-        assert sources[1].status == "ok"
+        assert sources[0].url == "https://other.com"
+        assert sources[0].status == "success"
+        assert sources[1].title == "Example"
 
-    def test_empty_outputs(self):
-        """GIVEN no outputs WHEN extracting THEN empty results."""
-        interaction = _make_interaction(outputs=[])
-        text, sources = _extract_report(interaction)
-        assert text == ""
-        assert sources == []
+    @pytest.mark.parametrize("steps", [None, []])
+    def test_empty_steps(self, steps):
+        assert _extract_report(_make_interaction(steps=steps)) == ("", [])
 
-    def test_none_outputs(self):
-        """GIVEN None outputs WHEN extracting THEN empty results."""
-        interaction = _make_interaction(outputs=None)
-        text, sources = _extract_report(interaction)
-        assert text == ""
-        assert sources == []
-
-    def test_multiple_turns(self):
-        """GIVEN multiple turns WHEN extracting THEN all text is concatenated."""
-        interaction = _make_interaction(outputs=[
-            _make_turn([_make_text_content("Part 1")]),
-            _make_turn([_make_text_content("Part 2")]),
+    @pytest.mark.parametrize("boundary", [
+        interactions.ThoughtStep(summary=[_make_text_content("Private summary")]),
+        interactions.GoogleSearchResultStep(call_id="search-boundary", result=[]),
+    ])
+    def test_final_model_output_excludes_thoughts_user_input_and_earlier_outputs(self, boundary):
+        interaction = _make_interaction(steps=[
+            interactions.UserInputStep(content=[_make_text_content("User prompt")]),
+            _make_turn([_make_text_content("Intermediate analysis")]),
+            boundary,
+            _make_turn([_make_text_content("Final report")]),
         ])
         text, _ = _extract_report(interaction)
-        assert "Part 1" in text
-        assert "Part 2" in text
+        assert text == "Final report"
 
-    def test_extracts_direct_turn_text(self):
-        """GIVEN turn with text attr and no content WHEN extracting THEN text is captured."""
-        turn = SimpleNamespace(text="# Full Report\n\nDetailed findings here.", content=None)
-        interaction = _make_interaction(outputs=[turn])
-        text, sources = _extract_report(interaction)
-        assert "Full Report" in text
-        assert "Detailed findings" in text
-        assert sources == []
-
-    def test_extracts_both_turn_text_and_content(self):
-        """GIVEN turn with both text attr and content array WHEN extracting THEN both captured."""
-        turn = SimpleNamespace(
-            text="Direct text from turn",
-            content=[_make_text_content("Content array text")],
-        )
-        interaction = _make_interaction(outputs=[turn])
-        text, _ = _extract_report(interaction)
-        assert "Direct text from turn" in text
-        assert "Content array text" in text
-
+    def test_consecutive_final_outputs_are_preserved_exactly(self):
+        """GIVEN a split final answer WHEN extracting THEN all trailing output text survives."""
+        interaction = _make_interaction(steps=[
+            _make_turn([_make_text_content("First half. ")]),
+            _make_turn([_make_text_content("Second half.")]),
+        ])
+        assert interaction.output_text == "First half. Second half."
+        assert _extract_report(interaction) == ("First half. Second half.", [])
 
 # ── _extract_usage ────────────────────────────────────────────────────────
 
@@ -161,6 +134,32 @@ class TestExtractUsage:
 
 
 class TestResearchWeb:
+    async def test_concurrent_launches_make_only_one_billable_request(self, mock_gemini_client):
+        """GIVEN overlapping launches WHEN transport yields THEN local guard stays atomic."""
+        _launch_times.clear()
+        started = asyncio.Event()
+        release = asyncio.Event()
+
+        async def create(**kwargs):
+            started.set()
+            await release.wait()
+            return _make_interaction(interaction_id="one-launch", status="queued")
+
+        client = MagicMock()
+        client.aio.interactions.create = AsyncMock(side_effect=create)
+        mock_gemini_client["get"].return_value = client
+        first = asyncio.create_task(research_web("First detailed research brief"))
+        await started.wait()
+        second = asyncio.create_task(research_web("Second detailed research brief"))
+        release.set()
+        try:
+            first_result, second_result = await asyncio.gather(first, second)
+            assert first_result["interaction_id"] == "one-launch"
+            assert "already in progress" in second_result["error"]
+            assert client.aio.interactions.create.await_count == 1
+        finally:
+            _launch_times.clear()
+
     async def test_launch_returns_interaction_id(self, mock_gemini_client):
         """GIVEN valid topic WHEN launching THEN returns interaction_id and status."""
         mock_interaction = _make_interaction(
@@ -181,6 +180,9 @@ class TestResearchWeb:
         assert "dr-abc-123" in _launch_times
         assert "time" in _launch_times["dr-abc-123"]
         assert "topic" in _launch_times["dr-abc-123"]
+        request = mock_client.aio.interactions.create.call_args.kwargs
+        assert request["store"] is True
+        assert request["background"] is True
         _launch_times.pop("dr-abc-123", None)  # cleanup
 
     async def test_launch_with_output_format(self, mock_gemini_client):
@@ -263,12 +265,43 @@ class TestResearchWeb:
 
 
 class TestResearchWebStatus:
+    @pytest.mark.parametrize("status", ["queued", "in_progress"])
+    async def test_active_status_keeps_launch_guard(self, status, mock_gemini_client):
+        interaction = _make_interaction(interaction_id="active", status=status)
+        mock_client = MagicMock()
+        mock_client.aio.interactions.get = AsyncMock(return_value=interaction)
+        mock_gemini_client["get"].return_value = mock_client
+        _launch_times["active"] = {"time": time.time(), "topic": "Research brief"}
+        try:
+            result = await research_web_status("active")
+            assert result["status"] == status
+            assert "active" in _launch_times
+        finally:
+            _launch_times.pop("active", None)
+
+    @pytest.mark.parametrize("status", ["failed", "cancelled", "incomplete", "requires_action"])
+    async def test_terminal_status_releases_guard_and_returns_sdk_errors(self, status, mock_gemini_client):
+        interaction = interactions.Interaction(
+            id="terminal", status=status,
+            errors=[interactions.Error(code="test", message="Provider result")],
+        )
+        mock_client = MagicMock()
+        mock_client.aio.interactions.get = AsyncMock(return_value=interaction)
+        mock_gemini_client["get"].return_value = mock_client
+        _launch_times["terminal"] = {"time": time.time(), "topic": "Research brief"}
+        result = await research_web_status("terminal")
+        assert result["status"] == status
+        assert result["errors"][0]["message"] == "Provider result"
+        assert "terminal" not in _launch_times
+
     async def test_completed_returns_full_report(self, mock_gemini_client):
         """GIVEN completed interaction WHEN polling THEN returns report with sources."""
         interaction = _make_interaction(
-            outputs=[_make_turn([
-                _make_text_content("# Deep Research Report\n\nFindings here."),
+            steps=[_make_turn([
+                _make_text_content("# Deep Research Report\n\n"),
                 _make_search_result_content("https://source1.com", "Source 1"),
+            ]), _make_turn([
+                _make_text_content("Findings here."),
                 _make_search_result_content("https://source2.com", "Source 2"),
             ])],
             usage=_make_usage(500, 8000, 8500, 200),
@@ -284,7 +317,8 @@ class TestResearchWebStatus:
             result = await research_web_status(interaction_id="test-interaction-123")
 
         assert result["status"] == "completed"
-        assert "Deep Research Report" in result["report_text"]
+        assert result["report_text"] == "# Deep Research Report\n\nFindings here."
+        assert mock_store.call_args.args[0]["report_text"] == result["report_text"]
         assert result["source_count"] == 2
         assert result["sources"][0]["url"] == "https://source1.com"
         assert result["duration_seconds"] is not None
@@ -352,7 +386,7 @@ class TestResearchWebStatus:
         """GIVEN completed but no launch time WHEN polling THEN duration is None."""
         interaction = _make_interaction(
             interaction_id="orphan-id",
-            outputs=[_make_turn([_make_text_content("Report")])],
+            steps=[_make_turn([_make_text_content("Report")])],
         )
         mock_client = MagicMock()
         mock_client.aio.interactions.get = AsyncMock(return_value=interaction)
@@ -375,8 +409,10 @@ class TestResearchWebFollowup:
         """GIVEN completed interaction WHEN following up THEN returns response."""
         followup_interaction = _make_interaction(
             interaction_id="followup-789",
-            outputs=[_make_turn([
-                _make_text_content("The key distinction is..."),
+            steps=[_make_turn([
+                _make_text_content("The key distinction "),
+            ]), _make_turn([
+                _make_text_content("is..."),
             ])],
         )
         mock_client = MagicMock()
@@ -405,7 +441,7 @@ class TestResearchWebFollowup:
         """GIVEN interaction_id WHEN following up THEN passes previous_interaction_id."""
         followup_interaction = _make_interaction(
             interaction_id="followup-new",
-            outputs=[_make_turn([_make_text_content("Answer")])],
+            steps=[_make_turn([_make_text_content("Answer")])],
         )
         mock_client = MagicMock()
         mock_client.aio.interactions.create = AsyncMock(return_value=followup_interaction)
@@ -420,6 +456,7 @@ class TestResearchWebFollowup:
         call_kwargs = mock_client.aio.interactions.create.call_args.kwargs
         assert call_kwargs["previous_interaction_id"] == "prev-id-456"
         assert call_kwargs["input"] == "Elaborate on finding 3"
+        assert call_kwargs["generation_config"]["thinking_level"] == "medium"
 
     async def test_followup_error_returns_tool_error(self, mock_gemini_client):
         """GIVEN API error WHEN following up THEN returns tool error."""

@@ -2,7 +2,7 @@
 
 Applies to source files under `src/`.
 
-## FastMCP Patterns (v3.x)
+## FastMCP Patterns (v4.x)
 
 - Use one `FastMCP` instance per sub-server, mounted on the root app.
 - Register tools with `@server.tool(annotations=ToolAnnotations(...))`.
@@ -37,7 +37,7 @@ Key usage:
 ## Thinking and Caching
 
 - Include `ThinkingConfig(thinking_level=...)` through project config.
-- Valid thinking levels: `minimal`, `low`, `medium`, `high`.
+- The default model supports `low`, `medium`, `high`; reject unsupported `minimal` with an actionable validation error.
 - Keep defensive attribute checks such as `getattr(..., "thought", False)` and grounding metadata checks.
 - Use cached content in `GenerateContentConfig`; prewarm and lookup through context cache helpers.
 
