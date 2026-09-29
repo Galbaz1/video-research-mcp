@@ -24,3 +24,6 @@ output/
 .playwright-mcp/
 *.bak.*
 .mcp.json
+
+# Local cloud agent state and video session content
+.codex/

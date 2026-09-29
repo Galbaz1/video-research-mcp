@@ -220,7 +220,7 @@ async function install(mode, force) {
   // Write manifest — preserve old hash for user-modified files so uninstall
   // can still detect the modification and skip removal.
   const userModified = new Set(
-    actions.toSkip.filter((s) => s.reason === 'user modified').map((s) => s.dest),
+    actions.toSkip.filter((s) => s.reason.startsWith('user modified')).map((s) => s.dest),
   );
   const newManifest = {
     version: VERSION,
@@ -228,10 +228,11 @@ async function install(mode, force) {
     installedAt: new Date().toISOString(),
     files: {},
   };
+  for (const destRel of userModified) {
+    if (manifest.files[destRel]) newManifest.files[destRel] = manifest.files[destRel];
+  }
   for (const destRel of Object.values(FILE_MAP)) {
-    if (userModified.has(destRel) && manifest.files[destRel]) {
-      newManifest.files[destRel] = manifest.files[destRel];
-    } else {
+    if (!userModified.has(destRel)) {
       const hash = hashFile(path.join(targetDir, destRel));
       if (hash) newManifest.files[destRel] = { hash };
     }
@@ -258,7 +259,7 @@ async function install(mode, force) {
     stepNum++;
     ui.step(`${stepNum}. Paste it in the config file:`);
     ui.step('   ~/.config/video-research-mcp/.env');
-    ui.step('   (This file stays on your machine — never uploaded or shared)');
+    ui.step('   (Credentials stay in local config and authenticate provider requests)');
     ui.blank();
     stepNum++;
   }
@@ -287,6 +288,7 @@ async function uninstall(mode) {
 
   let removed = 0;
   let skipped = 0;
+  const retainedFiles = {};
   const dirsToClean = new Set();
 
   for (const [destRel, entry] of Object.entries(manifest.files)) {
@@ -298,6 +300,7 @@ async function uninstall(mode) {
     if (currentHash !== entry.hash) {
       ui.warn(`Kept ${destRel} (user modified)`);
       skipped++;
+      retainedFiles[destRel] = entry;
     } else {
       try {
         fs.unlinkSync(destPath);
@@ -306,6 +309,7 @@ async function uninstall(mode) {
         dirsToClean.add(path.dirname(destRel));
       } catch {
         skipped++;
+        retainedFiles[destRel] = entry;
       }
     }
   }
@@ -321,7 +325,11 @@ async function uninstall(mode) {
     // Config file might not exist
   }
 
-  deleteManifest(targetDir);
+  if (skipped > 0) {
+    writeManifest(targetDir, { ...manifest, files: retainedFiles });
+  } else {
+    deleteManifest(targetDir);
+  }
 
   ui.blank();
   ui.step(`${removed} removed, ${skipped} kept`);

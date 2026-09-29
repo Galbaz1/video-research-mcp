@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T08:24:13.872783+00:00",
+  "generated_at": "2026-09-29T21:10:13.715564+00:00",
   "quality_gates": {
     "min_scenario_count": 20,
     "actual_scenario_count": 22,
@@ -7,14 +7,14 @@
     "file_map_integrity_pass": true
   },
   "file_map_integrity": {
-    "entry_count": 34,
+    "entry_count": 44,
     "missing_source_count": 0,
     "missing_sources": [],
     "duplicate_destination_count": 0,
     "duplicate_destinations": [],
     "categories": {
       "commands": 17,
-      "skills": 10,
+      "skills": 20,
       "agents": 7
     },
     "integrity_pass": true

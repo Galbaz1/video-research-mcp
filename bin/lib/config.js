@@ -15,15 +15,15 @@ const ui = require('./ui');
 const MCP_SERVERS = {
   'video-research': {
     command: 'uvx',
-    args: ['video-research-mcp[tracing]'],
+    args: ['--refresh', 'video-research-mcp[tracing]'],
   },
   playwright: {
     command: 'npx',
-    args: ['@playwright/mcp@0.0.68', '--headless', '--caps=vision,pdf'],
+    args: ['@playwright/mcp@0.0.83', '--headless', '--caps=vision,pdf'],
   },
   'mlflow-mcp': {
     command: 'uvx',
-    args: ['--with', 'mlflow[mcp]>=3.5.1', 'mlflow', 'mcp', 'run'],
+    args: ['--with', 'mlflow[mcp]>=3.16.1,<4', 'mlflow', 'mcp', 'run'],
   },
 };
 
@@ -36,7 +36,7 @@ const DEPRECATED_SERVERS = ['video-explainer', 'video-agent'];
 
 /**
  * Return the path to the MCP config file.
- * Global: ~/.claude/.mcp.json
+ * Global: ~/.claude.json (Claude Code user scope)
  * Local:  ./.mcp.json (project root, not inside .claude/)
  */
 function getConfigPath(mode) {
@@ -47,7 +47,7 @@ function getConfigPath(mode) {
         'Cannot determine home directory: HOME and USERPROFILE are both unset',
       );
     }
-    return path.join(home, '.claude', '.mcp.json');
+    return path.join(home, '.claude.json');
   }
   return path.join(process.cwd(), '.mcp.json');
 }
@@ -74,16 +74,20 @@ function mergeConfig(configPath) {
   existing.mcpServers = existing.mcpServers || {};
 
   for (const [name, config] of Object.entries(MCP_SERVERS)) {
-    existing.mcpServers[name] = config;
+    existing.mcpServers[name] = { ...existing.mcpServers[name], ...config };
   }
 
   // Remove deprecated servers left by older installer versions
   for (const name of DEPRECATED_SERVERS) {
-    delete existing.mcpServers[name];
+    const entry = existing.mcpServers[name];
+    if (entry?.command === 'uvx' && entry.args?.length === 1 &&
+        entry.args[0].startsWith(`${name}-mcp`)) {
+      delete existing.mcpServers[name];
+    }
   }
 
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
-  fs.writeFileSync(configPath, JSON.stringify(existing, null, 2) + '\n');
+  fs.writeFileSync(configPath, JSON.stringify(existing, null, 2) + '\n', { mode: 0o600 });
   return existing;
 }
 
@@ -94,7 +98,7 @@ function removeFromConfig(configPath) {
 
   let removed = false;
   for (const name of Object.keys(MCP_SERVERS)) {
-    if (existing.mcpServers[name]) {
+    if (JSON.stringify(existing.mcpServers[name]) === JSON.stringify(MCP_SERVERS[name])) {
       delete existing.mcpServers[name];
       removed = true;
     }
@@ -112,6 +116,10 @@ function removeFromConfig(configPath) {
  */
 const ENV_TEMPLATE_KEYS = [
   'GEMINI_API_KEY',
+  'GEMINI_MODEL',
+  'GEMINI_FLASH_MODEL',
+  'GEMINI_THINKING_LEVEL',
+  'DEEP_RESEARCH_AGENT',
   'YOUTUBE_API_KEY',
   'WEAVIATE_URL',
   'WEAVIATE_API_KEY',
@@ -145,17 +153,21 @@ function ensureEnvFile() {
       '# video-research-mcp shared configuration',
       '# ─────────────────────────────────────────────────────────────',
       '# This file is read by the MCP server at startup.',
-      '# It lives on YOUR machine only — it is NOT uploaded anywhere.',
+      '# Credentials are stored locally and sent to their configured providers.',
       '# Process env vars always take precedence over values here.',
       '#',
       '# Security:',
       '#   - This file is stored in your user config dir (chmod 600 recommended)',
-      '#   - It is never committed to git or sent to any remote service',
-      '#   - The server reads it locally at startup, that\'s it',
+      '#   - Never commit this file or share its values',
+      '#   - Analysis requests send your selected content to the provider',
       '# ─────────────────────────────────────────────────────────────',
       '',
       '# Required — get yours at https://aistudio.google.com/apikey',
       '# GEMINI_API_KEY=',
+      '# GEMINI_MODEL=gemini-3.8-flash',
+      '# GEMINI_FLASH_MODEL=gemini-3.8-flash',
+      '# GEMINI_THINKING_LEVEL=medium',
+      '# DEEP_RESEARCH_AGENT=',
       '',
       '# Optional — falls back to GEMINI_API_KEY if not set',
       '# YOUTUBE_API_KEY=',
@@ -168,6 +180,7 @@ function ensureEnvFile() {
       '# Vectorizer: auto-detects based on OPENAI_API_KEY.',
       '#   weaviate = built-in embeddings, no extra key (good for Docker)',
       '#   openai   = text2vec-openai, requires OPENAI_API_KEY',
+      '#   ollama   = local embeddings; configure Ollama and its model first',
       '# WEAVIATE_VECTORIZER=',
       '# WEAVIATE_AUTO_MIGRATE=',
       '',

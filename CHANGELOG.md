@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-09-29
+
+### Changed
+
+- Default research and summary models now use stable Gemini 3.8 Flash. Unsupported
+  minimal thinking requests return an actionable validation error. Explicit-cache workflows retain
+  Google's supported generateContent endpoint.
+- Upgrade all three Python packages to current stable dependencies, including
+  FastMCP 4 and Google GenAI SDK 2, with explicit API-major bounds and refreshed
+  locks. Expand locked CI to companion packages and Python 3.14.
+- Global installer registration now uses Claude Code user scope in
+  `~/.claude.json`, preserves custom environment/settings and local companion
+  servers, and refreshes the server package during resolution. Update Playwright
+  MCP and use maintained Node runtimes.
+- Audit and simplify skill/provider guides, align onboarding with the actual
+  installed servers, inherit configured orchestration models and remove obsolete
+  media API instructions. Add a bounded plugin-maintenance skill.
+- GitHub release creation now requires passing CI, synchronized versions,
+  matching release notes and valid build artifacts. Tags outside main publish
+  as prereleases. GitHub source publication does not upload to PyPI or npm.
+
+### Fixed
+
+- Preserve SDK thought signatures and full content through video-session
+  history and SQLite serialization.
+- Read current Deep Research interaction steps, citations and error lists;
+  preserve typed failures rather than treating absent legacy outputs as success.
+- Reject malformed or escaping installer manifests, preserve unowned/customized
+  files and retain ownership evidence for modified obsolete files.
+- Companion scene generation now isolates child settings, enforces terminal SDK
+  success and budgets, and uses a valid configurable Claude model.
+- Companion render acceptance requires a fresh nonempty artifact; cancellation
+  stops and joins subprocess work. Injection filenames cannot escape projects.
+- Remove committed documentation conflict markers and unsafe visualization
+  cleanup of user directories or unrelated local processes.
+
 ## [Unreleased]
 
 ## [0.6.1] - 2026-05-21

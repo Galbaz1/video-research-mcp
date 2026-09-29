@@ -1,0 +1,151 @@
+[
+  {
+    "package": "claude-agent-sdk",
+    "version": "0.2.162",
+    "python": ">=3.10",
+    "project_urls": {
+      "Documentation": "https://docs.anthropic.com/en/docs/claude-code/sdk",
+      "Homepage": "https://github.com/anthropics/claude-agent-sdk-python",
+      "Issues": "https://github.com/anthropics/claude-agent-sdk-python/issues"
+    }
+  },
+  {
+    "package": "fastmcp",
+    "version": "4.0.10",
+    "python": ">=3.10",
+    "project_urls": {
+      "Documentation": "https://gofastmcp.com",
+      "Homepage": "https://gofastmcp.com",
+      "Repository": "https://github.com/PrefectHQ/fastmcp"
+    }
+  },
+  {
+    "package": "google-api-python-client",
+    "version": "2.200.0",
+    "python": ">=3.10",
+    "project_urls": {
+      "Homepage": "https://github.com/googleapis/google-api-python-client/"
+    }
+  },
+  {
+    "package": "google-genai",
+    "version": "2.25.0",
+    "python": ">=3.10",
+    "project_urls": {
+      "Homepage": "https://github.com/googleapis/python-genai"
+    }
+  },
+  {
+    "package": "hatchling",
+    "version": "1.32.4",
+    "python": ">=3.10",
+    "project_urls": {
+      "History": "https://hatch.pypa.io/dev/history/hatchling/",
+      "Homepage": "https://hatch.pypa.io/latest/",
+      "Source": "https://github.com/pypa/hatch/tree/master/backend",
+      "Sponsor": "https://github.com/sponsors/ofek",
+      "Tracker": "https://github.com/pypa/hatch/issues"
+    }
+  },
+  {
+    "package": "httpx",
+    "version": "0.28.1",
+    "python": ">=3.8",
+    "project_urls": {
+      "Changelog": "https://github.com/encode/httpx/blob/master/CHANGELOG.md",
+      "Documentation": "https://www.python-httpx.org",
+      "Homepage": "https://github.com/encode/httpx",
+      "Source": "https://github.com/encode/httpx"
+    }
+  },
+  {
+    "package": "jsonschema",
+    "version": "4.26.0",
+    "python": ">=3.10",
+    "project_urls": {
+      "Changelog": "https://github.com/python-jsonschema/jsonschema/blob/main/CHANGELOG.rst",
+      "Documentation": "https://python-jsonschema.readthedocs.io/",
+      "Funding": "https://github.com/sponsors/Julian",
+      "Homepage": "https://github.com/python-jsonschema/jsonschema",
+      "Issues": "https://github.com/python-jsonschema/jsonschema/issues/",
+      "Source": "https://github.com/python-jsonschema/jsonschema",
+      "Tidelift": "https://tidelift.com/subscription/pkg/pypi-jsonschema?utm_source=pypi-jsonschema&utm_medium=referral&utm_campaign=pypi-link"
+    }
+  },
+  {
+    "package": "mlflow-tracing",
+    "version": "3.16.1",
+    "python": ">=3.10",
+    "project_urls": {
+      "documentation": "https://mlflow.org/docs/latest",
+      "homepage": "https://mlflow.org",
+      "issues": "https://github.com/mlflow/mlflow/issues",
+      "repository": "https://github.com/mlflow/mlflow"
+    }
+  },
+  {
+    "package": "pydantic",
+    "version": "2.13.5",
+    "python": ">=3.9",
+    "project_urls": {
+      "Changelog": "https://docs.pydantic.dev/latest/changelog/",
+      "Documentation": "https://docs.pydantic.dev",
+      "Funding": "https://github.com/sponsors/samuelcolvin",
+      "Homepage": "https://github.com/pydantic/pydantic",
+      "Source": "https://github.com/pydantic/pydantic"
+    }
+  },
+  {
+    "package": "pytest",
+    "version": "9.1.1",
+    "python": ">=3.10",
+    "project_urls": {
+      "Changelog": "https://docs.pytest.org/en/stable/changelog.html",
+      "Contact": "https://docs.pytest.org/en/stable/contact.html",
+      "Funding": "https://docs.pytest.org/en/stable/sponsor.html",
+      "Homepage": "https://docs.pytest.org/en/latest/",
+      "Source": "https://github.com/pytest-dev/pytest",
+      "Tracker": "https://github.com/pytest-dev/pytest/issues"
+    }
+  },
+  {
+    "package": "pytest-asyncio",
+    "version": "1.4.0",
+    "python": ">=3.10",
+    "project_urls": {
+      "Bug Tracker": "https://github.com/pytest-dev/pytest-asyncio/issues",
+      "Changelog": "https://pytest-asyncio.readthedocs.io/en/stable/reference/changelog.html",
+      "Documentation": "https://pytest-asyncio.readthedocs.io",
+      "Homepage": "https://github.com/pytest-dev/pytest-asyncio",
+      "Source Code": "https://github.com/pytest-dev/pytest-asyncio"
+    }
+  },
+  {
+    "package": "ruff",
+    "version": "0.16.9",
+    "python": ">=3.7",
+    "project_urls": {
+      "Changelog": "https://github.com/astral-sh/ruff/blob/main/CHANGELOG.md",
+      "Documentation": "https://docs.astral.sh/ruff/",
+      "Homepage": "https://docs.astral.sh/ruff",
+      "Repository": "https://github.com/astral-sh/ruff"
+    }
+  },
+  {
+    "package": "weaviate-agents",
+    "version": "1.8.0",
+    "python": ">=3.9",
+    "project_urls": null
+  },
+  {
+    "package": "weaviate-client",
+    "version": "4.23.1",
+    "python": ">=3.10",
+    "project_urls": {
+      "Documentation": "https://weaviate-python-client.readthedocs.io",
+      "Homepage": "https://github.com/weaviate/weaviate-python-client",
+      "Source": "https://github.com/weaviate/weaviate-python-client",
+      "Tracker": "https://github.com/weaviate/weaviate-python-client/issues"
+    }
+  }
+]

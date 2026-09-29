@@ -2,54 +2,66 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/**']
   pull_request:
-    branches: [main]
+  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
-        with:
-          version: "latest"
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-      - run: uv pip install -e ".[dev]" --system
-      - run: ruff check src/ tests/
-
-  security-smoke:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
-        with:
-          version: "latest"
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-      - run: uv pip install -e ".[dev]" --system
-      - run: ./scripts/run_security_smoke.sh
-
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python: ['3.11', '3.12', '3.13', '3.14']
     steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
-          version: "latest"
-      - uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-      - run: uv pip install -e ".[dev]" --system
-      - run: pytest tests/ -v
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --extra dev
+      - run: uv run --locked pytest tests/ -q
         env:
-          GEMINI_API_KEY: "test-key-not-real"
+          GEMINI_API_KEY: test-key-not-real
+      - run: uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py
+
+  companion-packages:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.14']
+        package: [video-explainer-mcp, video-agent-mcp]
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --extra dev
+      - run: uv run --locked pytest tests/ -q
+      - run: uv run --locked ruff check src/ tests/
+
+  release-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: '3.11'
+      - run: uv sync --locked --extra dev
+      - run: node --test tests/installer.test.js
+      - run: ./scripts/run_security_smoke.sh
+      - run: PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py
+      - run: uv run --locked python scripts/check_release.py
+      - run: uv build
+      - run: uv run --locked python scripts/smoke_built_mcp.py dist/*.whl
+      - run: npm pack --dry-run

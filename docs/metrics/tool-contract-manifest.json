@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-03-09T21:26:17.276112+00:00",
-  "tool_count": 29,
+  "generated_at": "2026-09-29T21:10:14.585254+00:00",
+  "tool_count": 34,
   "tools": [
     {
       "name": "content_analyze",
-      "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.\n\nArgs:\n    instruction: What to analyze or extract from the content.\n    file_path: Path to a local PDF or text file.\n    url: URL to fetch and analyze.\n    text: Raw text content.\n    output_schema: Optional JSON Schema dict for custom output shape.\n    thinking_level: Gemini thinking depth.\n\nReturns:\n    Dict matching ContentResult schema (default) or the custom output_schema.",
+      "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -77,7 +77,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           }
         },
         "type": "object"
@@ -89,13 +90,13 @@
     },
     {
       "name": "content_batch_analyze",
-      "description": "Analyze multiple content files from a directory or explicit file list.\n\nSupports two modes: 'compare' sends all files to Gemini in a single call\nfor cross-document analysis, 'individual' analyzes each file separately\nwith bounded concurrency (3 parallel calls).\n\nArgs:\n    instruction: What to analyze or extract from the content.\n    directory: Directory to scan for content files.\n    file_paths: Explicit list of file paths to analyze.\n    glob_pattern: Glob to filter files in directory mode.\n    mode: 'compare' or 'individual' analysis mode.\n    output_schema: Optional JSON Schema dict for custom output shape.\n    thinking_level: Gemini thinking depth.\n    max_files: Maximum number of files to process.\n\nReturns:\n    Dict with file counts, per-file items, and optional comparison result.",
+      "description": "Analyze multiple content files from a directory or explicit file list.\n\nSupports two modes: 'compare' sends all files to Gemini in a single call\nfor cross-document analysis, 'individual' analyzes each file separately\nwith bounded concurrency (3 parallel calls).",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -167,7 +168,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           },
           "max_files": {
             "default": 20,
@@ -186,13 +188,13 @@
     },
     {
       "name": "content_extract",
-      "description": "Extract structured data from content using a JSON Schema.\n\nUses Gemini's response_json_schema for guaranteed structured output.\n\nArgs:\n    content: Source text to extract data from.\n    schema: JSON Schema describing the desired output structure.\n\nReturns:\n    Dict matching the provided schema, or error dict on parse failure.",
+      "description": "Extract structured data from content using a JSON Schema.\n\nUses Gemini's response_json_schema for guaranteed structured output.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -221,13 +223,13 @@
     },
     {
       "name": "infra_cache",
-      "description": "Manage the analysis cache — stats, list, clear, or inspect context cache state.\n\nArgs:\n    action: Cache operation — \"stats\", \"list\", \"clear\", or \"context\".\n    content_id: When action is \"clear\", limit deletion to this content ID.\n\nReturns:\n    Dict with operation-specific results (file_count, entries, removed count,\n    or context cache diagnostics).",
+      "description": "Manage the analysis cache — stats, list, clear, or inspect context cache state.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": true,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -240,7 +242,8 @@
               "clear",
               "context"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Cache operation — \"stats\", \"list\", \"clear\", or \"context\"."
           },
           "content_id": {
             "anyOf": [
@@ -276,13 +279,13 @@
     },
     {
       "name": "infra_configure",
-      "description": "Reconfigure the server at runtime — preset, model, thinking level, or temperature.\n\nChanges take effect immediately for all subsequent tool calls.\n\nArgs:\n    preset: Named model preset — resolves to a default_model + flash_model pair.\n    model: Gemini model ID (takes precedence over preset's default_model).\n    thinking_level: Thinking depth — \"minimal\", \"low\", \"medium\", or \"high\".\n    temperature: Sampling temperature (0.0–2.0).\n\nReturns:\n    Dict with current_config, active_preset, and available_presets.",
+      "description": "Reconfigure the server at runtime — preset, model, thinking level, or temperature.\n\nChanges take effect immediately for all subsequent tool calls.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -331,7 +334,8 @@
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "description": "Thinking depth — \"minimal\", \"low\", \"medium\", or \"high\"."
           },
           "temperature": {
             "anyOf": [
@@ -345,7 +349,7 @@
               }
             ],
             "default": null,
-            "description": "Sampling temperature"
+            "description": "Sampling temperature for models that support it (not 3.6+ Flash)"
           },
           "auth_token": {
             "anyOf": [
@@ -369,13 +373,13 @@
     },
     {
       "name": "knowledge_ask",
-      "description": "Ask a question and get an AI-generated answer grounded in stored knowledge.\n\nUses Weaviate AsyncQueryAgent in ask mode to synthesize an answer from\nobjects across knowledge collections, with source citations.\n\nArgs:\n    query: Natural language question.\n    collections: Which collections to search (default: all).\n\nReturns:\n    Dict matching KnowledgeAskResult schema, or error dict.",
+      "description": "Ask a question and get an AI-generated answer grounded in stored knowledge.\n\nUses Weaviate AsyncQueryAgent in ask mode to synthesize an answer from\nobjects across knowledge collections, with source citations.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -401,7 +405,8 @@
                     "ConceptKnowledge",
                     "RelationshipEdges",
                     "CallNotes",
-                    "DeepResearchReports"
+                    "DeepResearchReports",
+                    "AcademicPapers"
                   ],
                   "type": "string"
                 },
@@ -427,13 +432,13 @@
     },
     {
       "name": "knowledge_fetch",
-      "description": "Fetch a single object by UUID from a knowledge collection.\n\nArgs:\n    object_id: UUID of the object to retrieve.\n    collection: Collection the object belongs to.\n\nReturns:\n    Dict matching KnowledgeFetchResult schema.",
+      "description": "Fetch a single object by UUID from a knowledge collection.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -456,9 +461,11 @@
               "ConceptKnowledge",
               "RelationshipEdges",
               "CallNotes",
-              "DeepResearchReports"
+              "DeepResearchReports",
+              "AcademicPapers"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Collection the object belongs to."
           }
         },
         "required": [
@@ -474,13 +481,13 @@
     },
     {
       "name": "knowledge_ingest",
-      "description": "Manually insert data into a knowledge collection.\n\nProperties are validated against the collection schema — unknown keys\nare rejected with allowed name:type pairs.\n\nTip: call knowledge_schema(collection=...) first to see expected properties.\n\nArgs:\n    collection: Target collection name.\n    properties: Dict of property values matching the collection schema.\n\nReturns:\n    Dict matching KnowledgeIngestResult schema.",
+      "description": "Manually insert data into a knowledge collection.\n\nProperties are validated against the collection schema — unknown keys\nare rejected with allowed name:type pairs.\n\nTip: call knowledge_schema(collection=...) first to see expected properties.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": false,
-        "openWorldHint": false
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -498,9 +505,11 @@
               "ConceptKnowledge",
               "RelationshipEdges",
               "CallNotes",
-              "DeepResearchReports"
+              "DeepResearchReports",
+              "AcademicPapers"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Target collection name."
           },
           "properties": {
             "type": "object",
@@ -521,13 +530,13 @@
     },
     {
       "name": "knowledge_query",
-      "description": "[DEPRECATED] Search knowledge store using natural language.\n\nDeprecated: Use knowledge_search instead, which now includes Cohere reranking\nand Flash summarization for better results with lower token usage.\n\nUses Weaviate AsyncQueryAgent in search mode for intelligent object retrieval.\n\nArgs:\n    query: Natural language search query.\n    collections: Which collections to search (default: all).\n    limit: Maximum number of results.\n\nReturns:\n    Dict matching KnowledgeQueryResult schema, or error dict.",
+      "description": "[DEPRECATED] Search knowledge store using natural language.\n\nDeprecated: Use knowledge_search instead, which now includes Cohere reranking\nand Flash summarization for better results with lower token usage.\n\nUses Weaviate AsyncQueryAgent in search mode for intelligent object retrieval.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -553,7 +562,8 @@
                     "ConceptKnowledge",
                     "RelationshipEdges",
                     "CallNotes",
-                    "DeepResearchReports"
+                    "DeepResearchReports",
+                    "AcademicPapers"
                   ],
                   "type": "string"
                 },
@@ -586,13 +596,13 @@
     },
     {
       "name": "knowledge_related",
-      "description": "Find semantically related objects using near-object vector search.\n\nArgs:\n    object_id: UUID of the source object.\n    collection: Collection the source object belongs to.\n    limit: Maximum number of related results.\n\nReturns:\n    Dict matching KnowledgeRelatedResult schema.",
+      "description": "Find semantically related objects using near-object vector search.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -615,9 +625,11 @@
               "ConceptKnowledge",
               "RelationshipEdges",
               "CallNotes",
-              "DeepResearchReports"
+              "DeepResearchReports",
+              "AcademicPapers"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Collection the source object belongs to."
           },
           "limit": {
             "default": 5,
@@ -640,13 +652,13 @@
     },
     {
       "name": "knowledge_schema",
-      "description": "Return property schemas for knowledge collections.\n\nReads from local CollectionDef objects — no Weaviate connection needed.\nUse this before knowledge_ingest to discover expected property names and types.\n\nArgs:\n    collection: Single collection name, or None for all collections.\n\nReturns:\n    Dict mapping collection names to lists of {name, type, description}.",
+      "description": "Return property schemas for knowledge collections.\n\nReads from local CollectionDef objects — no Weaviate connection needed.\nUse this before knowledge_ingest to discover expected property names and types.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -666,7 +678,8 @@
                   "ConceptKnowledge",
                   "RelationshipEdges",
                   "CallNotes",
-                  "DeepResearchReports"
+                  "DeepResearchReports",
+                  "AcademicPapers"
                 ],
                 "type": "string"
               },
@@ -687,13 +700,13 @@
     },
     {
       "name": "knowledge_search",
-      "description": "Search across knowledge collections using hybrid, semantic, or keyword mode.\n\nSearches specified or all collections. Results are merged and sorted by score.\nFilters are collection-aware: conditions are skipped for collections\nthat lack the relevant property.\n\nArgs:\n    query: Text to search for.\n    collections: Which collections to search (default: all).\n    search_type: Search algorithm — hybrid, semantic (near_text), or keyword (BM25).\n    limit: Maximum total results to return.\n    alpha: Hybrid balance (only used when search_type=\"hybrid\").\n    evidence_tier: Filter ResearchFindings by evidence tier.\n    source_tool: Filter any collection by originating tool.\n    date_from: Filter objects created on or after this ISO date.\n    date_to: Filter objects created on or before this ISO date.\n    category: Filter VideoMetadata by category label.\n    video_id: Filter by video_id field.\n\nReturns:\n    Dict matching KnowledgeSearchResult schema.",
+      "description": "Search across knowledge collections using hybrid, semantic, or keyword mode.\n\nSearches specified or all collections. Results are merged and sorted by score.\nFilters are collection-aware: conditions are skipped for collections\nthat lack the relevant property.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -719,7 +732,8 @@
                     "ConceptKnowledge",
                     "RelationshipEdges",
                     "CallNotes",
-                    "DeepResearchReports"
+                    "DeepResearchReports",
+                    "AcademicPapers"
                   ],
                   "type": "string"
                 },
@@ -841,13 +855,13 @@
     },
     {
       "name": "knowledge_stats",
-      "description": "Get object counts per collection, optionally grouped by a property.\n\nArgs:\n    collection: Single collection name, or None for all collections.\n    group_by: Text property name to group counts by.\n\nReturns:\n    Dict matching KnowledgeStatsResult schema.",
+      "description": "Get object counts per collection, optionally grouped by a property.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -867,7 +881,8 @@
                   "ConceptKnowledge",
                   "RelationshipEdges",
                   "CallNotes",
-                  "DeepResearchReports"
+                  "DeepResearchReports",
+                  "AcademicPapers"
                 ],
                 "type": "string"
               },
@@ -900,13 +915,13 @@
     },
     {
       "name": "research_assess_evidence",
-      "description": "Assess a claim against sources, returning evidence tier and confidence.\n\nArgs:\n    claim: Statement to verify.\n    sources: List of evidence sources.\n    context: Optional background for the assessment.\n\nReturns:\n    Dict with claim, tier, confidence, and reasoning.",
+      "description": "Assess a claim against sources, returning evidence tier and confidence.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -942,14 +957,51 @@
       }
     },
     {
-      "name": "research_deep",
-      "description": "Run multi-phase deep research with evidence-tier labeling.\n\nPhases: Scope Definition -> Evidence Collection -> Synthesis.\nEvery claim is labeled CONFIRMED, STRONG INDICATOR, INFERENCE,\nSPECULATION, or UNKNOWN.\n\nArgs:\n    topic: Research question or subject area.\n    scope: Research depth — \"quick\", \"moderate\", \"deep\", or \"comprehensive\".\n    thinking_level: Gemini thinking depth.\n\nReturns:\n    Dict with topic, scope, executive_summary, findings, open_questions.",
+      "name": "research_author_search",
+      "description": "Search for academic authors on Semantic Scholar.\n\nReturns author profiles with affiliation, paper count, citation count,\nand h-index.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "description": "Author name to search",
+            "maxLength": 200,
+            "minLength": 2,
+            "type": "string"
+          },
+          "limit": {
+            "default": 5,
+            "description": "Max authors to return",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_deep",
+      "description": "Run multi-phase deep research with evidence-tier labeling.\n\nPhases: Scope Definition -> Evidence Collection -> Synthesis.\nEvery claim is labeled CONFIRMED, STRONG INDICATOR, INFERENCE,\nSPECULATION, or UNKNOWN.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -968,7 +1020,8 @@
               "deep",
               "comprehensive"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Research depth — \"quick\", \"moderate\", \"deep\", or \"comprehensive\"."
           },
           "thinking_level": {
             "default": "high",
@@ -978,7 +1031,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           }
         },
         "required": [
@@ -993,13 +1047,13 @@
     },
     {
       "name": "research_document",
-      "description": "Run multi-phase deep research grounded in source documents.\n\nPhases: Document Mapping -> Evidence Extraction -> Cross-Reference -> Synthesis.\nEvery claim is labeled with evidence tiers and cited back to source documents.\n\nArgs:\n    instruction: Research question or what to analyze across documents.\n    file_paths: Local paths to PDF or text files.\n    urls: URLs to downloadable documents.\n    scope: Research depth -- quick, moderate, deep, comprehensive.\n    thinking_level: Gemini thinking depth.\n\nReturns:\n    Dict with document_sources, executive_summary, findings, cross_references.",
+      "description": "Run multi-phase deep research grounded in source documents.\n\nPhases: Document Mapping -> Evidence Extraction -> Cross-Reference -> Synthesis.\nEvery claim is labeled with evidence tiers and cited back to source documents.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1046,7 +1100,8 @@
               "deep",
               "comprehensive"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Research depth -- quick, moderate, deep, comprehensive."
           },
           "thinking_level": {
             "default": "high",
@@ -1056,7 +1111,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           }
         },
         "required": [
@@ -1070,14 +1126,196 @@
       }
     },
     {
-      "name": "research_plan",
-      "description": "Generate a multi-agent research orchestration plan.\n\nReturns a phased blueprint with task decomposition and model assignments.\nDoes NOT spawn agents — provides the blueprint for the caller.\n\nArgs:\n    topic: Research question or subject area.\n    scope: Research depth.\n    available_agents: Number of agents the caller can deploy (1-50).\n\nReturns:\n    Dict with topic, scope, phases, and task_decomposition.",
+      "name": "research_paper_citations",
+      "description": "Get citations or references for a paper.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "paper_id": {
+            "description": "Paper ID (S2, DOI:, or ArXiv:)",
+            "minLength": 1,
+            "type": "string"
+          },
+          "direction": {
+            "default": "citations",
+            "description": "'citations' (papers citing this) or 'references' (papers this cites)",
+            "enum": [
+              "citations",
+              "references"
+            ],
+            "type": "string"
+          },
+          "limit": {
+            "default": 20,
+            "description": "Max papers to return",
+            "maximum": 1000,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "paper_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_paper_details",
+      "description": "Get detailed metadata for a specific paper.\n\nAccepts Semantic Scholar IDs, DOIs (prefix with DOI:), or ArXiv IDs\n(prefix with ArXiv:).",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "paper_id": {
+            "description": "Paper ID: S2 ID, DOI (prefix 'DOI:10.xxx'), or ArXiv (prefix 'ArXiv:2301.xxx')",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "paper_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_paper_recommendations",
+      "description": "Get paper recommendations based on seed papers.\n\nUses Semantic Scholar's recommendation engine to find related papers.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "seed_paper_ids": {
+            "description": "List of S2 paper IDs to base recommendations on",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "limit": {
+            "default": 10,
+            "description": "Max papers to return",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "seed_paper_ids"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_paper_search",
+      "description": "Search academic papers on Semantic Scholar.\n\nReturns papers with metadata, abstracts, citation counts, and TL;DR\nsummaries. Supports filtering by field of study, year range, and\nopen access availability.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "description": "Search query for academic papers",
+            "maxLength": 500,
+            "minLength": 2,
+            "type": "string"
+          },
+          "fields_of_study": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Filter by fields (e.g. Computer Science, Medicine)"
+          },
+          "year_range": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Year filter: '2020' for single year, '2020-2024' for range, '2020-' for since"
+          },
+          "open_access_only": {
+            "default": false,
+            "description": "Only return open access papers",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 10,
+            "description": "Max papers to return",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_plan",
+      "description": "Generate a multi-agent research orchestration plan.\n\nReturns a phased blueprint with task decomposition and model assignments.\nDoes NOT spawn agents — provides the blueprint for the caller.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1096,7 +1334,8 @@
               "deep",
               "comprehensive"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Research depth."
           },
           "available_agents": {
             "default": 10,
@@ -1118,13 +1357,13 @@
     },
     {
       "name": "research_web",
-      "description": "Launch a Gemini Deep Research Agent for autonomous web-grounded research.\n\nThe agent plans its own research, searches the web (~80-160 queries),\nreads sources, and produces a cited markdown report. Runs in background;\npoll with research_web_status. Costs $2-5 per task, takes 10-20 minutes.\n\nArgs:\n    topic: Research brief — include specific questions, scope, hypotheses.\n    output_format: Optional report structure instructions.\n\nReturns:\n    Dict with interaction_id and status, or error via make_tool_error().",
+      "description": "Launch a Gemini Deep Research Agent for autonomous web-grounded research.\n\nThe agent plans its own research, searches the web (~80-160 queries),\nreads sources, and produces a cited markdown report. Runs in background;\npoll with research_web_status. Provider usage is billed; runtime varies.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1153,13 +1392,13 @@
     },
     {
       "name": "research_web_cancel",
-      "description": "Cancel a running Deep Research task.\n\nSends a cancel request to the Interactions API and cleans up local\ntracking state. Useful for aborting expensive ($2-5) tasks early.\n\nArgs:\n    interaction_id: The interaction ID from research_web.\n\nReturns:\n    Dict with interaction_id and status, or error via make_tool_error().",
+      "description": "Cancel a running Deep Research task.\n\nSends a cancel request to the Interactions API and cleans up local\ntracking state. Useful for stopping a task before further provider usage.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1182,13 +1421,13 @@
     },
     {
       "name": "research_web_followup",
-      "description": "Ask a follow-up question about a completed Deep Research report.\n\nUses previous_interaction_id to maintain context from the original\nresearch. Synchronous — follow-ups are fast (no background needed).\n\nArgs:\n    interaction_id: The completed interaction ID.\n    question: Follow-up question.\n\nReturns:\n    Dict with new interaction_id, previous_interaction_id, and response.",
+      "description": "Ask a follow-up question about a completed Deep Research report.\n\nUses previous_interaction_id to maintain context from the original\nresearch. Synchronous — follow-ups are fast (no background needed).",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1218,13 +1457,13 @@
     },
     {
       "name": "research_web_status",
-      "description": "Poll or retrieve a Deep Research task.\n\nReturns the full report with sources when completed, or current status\nif still in progress. Auto-stores completed reports to Weaviate.\n\nArgs:\n    interaction_id: The interaction ID from research_web.\n\nReturns:\n    Dict with status and report (if completed), or error.",
+      "description": "Poll or retrieve a Deep Research task.\n\nReturns the full report with sources when completed, or current status\nif still in progress. Auto-stores completed reports to Weaviate.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1247,13 +1486,13 @@
     },
     {
       "name": "video_analyze",
-      "description": "Analyze a video (YouTube URL or local file) with any instruction.\n\nProvide exactly one of url or file_path. Uses Gemini's structured output\nfor reliable JSON responses. Pass a custom output_schema to control the\nresponse shape, or use the default VideoResult schema.\n\nWhen strict_contract=True, runs the full contract pipeline: analysis with\nstrict Pydantic models, parallel strategy/concept-map generation, artifact\nrendering, and quality gates. Returns richer output but takes longer.\n\nArgs:\n    url: YouTube video URL.\n    file_path: Path to a local video file.\n    instruction: What to analyze or extract from the video.\n    output_schema: Optional JSON Schema dict for custom output shape.\n    thinking_level: Gemini thinking depth.\n    use_cache: Whether to use cached results.\n    strict_contract: Run strict contract pipeline with quality gates.\n\nReturns:\n    Dict matching VideoResult schema (default), custom output_schema,\n    or strict contract output with analysis, strategy, concept_map, artifacts.",
+      "description": "Analyze a video (YouTube URL or local file) with any instruction.\n\nProvide exactly one of url or file_path. Uses Gemini's structured output\nfor reliable JSON responses. Pass a custom output_schema to control the\nresponse shape, or use the default VideoResult schema.\n\nWhen strict_contract=True, runs the full contract pipeline: analysis with\nstrict Pydantic models, parallel strategy/concept-map generation, artifact\nrendering, and quality gates. Returns richer output but takes longer.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1269,7 +1508,8 @@
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "description": "YouTube video URL."
           },
           "file_path": {
             "anyOf": [
@@ -1282,7 +1522,8 @@
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "description": "Path to a local video file."
           },
           "instruction": {
             "default": "Provide a comprehensive analysis of this video.",
@@ -1310,7 +1551,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           },
           "use_cache": {
             "default": true,
@@ -1332,13 +1574,13 @@
     },
     {
       "name": "video_batch_analyze",
-      "description": "Analyze all video files in a directory concurrently.\n\nScans the directory for supported video files (mp4, webm, mov, avi, mkv,\nmpeg, wmv, 3gpp), then analyzes each with the given instruction using\nbounded concurrency (3 parallel Gemini calls).\n\nArgs:\n    directory: Path to a directory containing video files.\n    instruction: What to analyze in each video.\n    glob_pattern: Glob to filter files (default \"*\" matches all).\n    output_schema: Optional JSON Schema dict for each result.\n    thinking_level: Gemini thinking depth.\n    max_files: Maximum number of files to process.\n\nReturns:\n    Dict with directory, counts, and per-file results.",
+      "description": "Analyze all video files in a directory concurrently.\n\nScans the directory for supported video files (mp4, webm, mov, avi, mkv,\nmpeg, wmv, 3gpp), then analyzes each with the given instruction using\nbounded concurrency (3 parallel Gemini calls).",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
       },
       "parameters": {
         "additionalProperties": false,
@@ -1379,7 +1621,8 @@
               "medium",
               "high"
             ],
-            "type": "string"
+            "type": "string",
+            "description": "Gemini thinking depth."
           },
           "max_files": {
             "default": 20,
@@ -1401,13 +1644,13 @@
     },
     {
       "name": "video_comments",
-      "description": "Fetch top YouTube comments sorted by relevance.\n\nReturns comment text, like count, and author for each comment.\nCosts 1+ YouTube API units, 0 Gemini units.\n\nArgs:\n    url: YouTube video URL.\n    max_comments: Maximum number of comments to return.\n\nReturns:\n    Dict with video_id, comments list, and count, or error via make_tool_error().",
+      "description": "Fetch top YouTube comments sorted by relevance.\n\nReturns comment text, like count, and author for each comment.\nCosts 1+ YouTube API units, 0 Gemini units.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1437,13 +1680,13 @@
     },
     {
       "name": "video_continue_session",
-      "description": "Continue analysis within an existing video session.\n\nArgs:\n    session_id: Session ID returned by video_create_session.\n    prompt: Follow-up question about the video.\n\nReturns:\n    Dict with response text and turn_count.",
+      "description": "Continue analysis within an existing video session.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": false,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1472,13 +1715,13 @@
     },
     {
       "name": "video_create_session",
-      "description": "Create a persistent session for multi-turn video exploration.\n\nProvide exactly one of url or file_path. When ``download=True`` and the\nsource is YouTube, the video is downloaded via yt-dlp, uploaded to the\nGemini File API, and context-cached for fast multi-turn use.\n\nArgs:\n    url: YouTube video URL.\n    file_path: Path to a local video file.\n    description: Optional focus area for the session.\n    download: Download YouTube video for cached sessions.\n\nReturns:\n    Dict with session_id, status, video_title, source_type, cache/download status,\n    and optional local_filepath when a local file is available.",
+      "description": "Create a persistent session for multi-turn video exploration.\n\nProvide exactly one of url or file_path. When ``download=True`` and the\nsource is YouTube, the video is downloaded via yt-dlp, uploaded to the\nGemini File API, and context-cached for fast multi-turn use.",
       "annotations": {
         "title": null,
-        "readOnlyHint": false,
-        "destructiveHint": false,
-        "idempotentHint": false,
-        "openWorldHint": true
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1494,7 +1737,8 @@
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "description": "YouTube video URL."
           },
           "file_path": {
             "anyOf": [
@@ -1507,7 +1751,8 @@
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "description": "Path to a local video file."
           },
           "description": {
             "default": "",
@@ -1529,13 +1774,13 @@
     },
     {
       "name": "video_metadata",
-      "description": "Fetch YouTube video metadata without Gemini analysis.\n\nReturns title, description, view/like/comment counts, duration,\ntags, channel info, category, and language. Costs 1 YouTube API\nunit, 0 Gemini units.\n\nArgs:\n    url: YouTube video URL.\n\nReturns:\n    Dict matching VideoMetadata schema.",
+      "description": "Fetch YouTube video metadata without Gemini analysis.\n\nReturns title, description, view/like/comment counts, duration,\ntags, channel info, category, and language. Costs 1 YouTube API\nunit, 0 Gemini units.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1558,13 +1803,13 @@
     },
     {
       "name": "video_playlist",
-      "description": "Get video IDs and titles from a YouTube playlist.\n\nResults can be passed to video_analyze for batch analysis.\nCosts 1 YouTube API unit per page (max 50 items/page).\n\nArgs:\n    url: YouTube playlist URL.\n    max_items: Maximum number of playlist items to return.\n\nReturns:\n    Dict matching PlaylistInfo schema.",
+      "description": "Get video IDs and titles from a YouTube playlist.\n\nResults can be passed to video_analyze for batch analysis.\nCosts 1 YouTube API unit per page (max 50 items/page).",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -1594,13 +1839,13 @@
     },
     {
       "name": "web_search",
-      "description": "Search the web using Gemini's built-in Google Search grounding.\n\nArgs:\n    query: Search terms.\n    num_results: How many results to return (1-20).\n\nReturns:\n    Dict with query, response text, and grounding sources.",
+      "description": "Search the web using Gemini's built-in Google Search grounding.",
       "annotations": {
         "title": null,
-        "readOnlyHint": true,
-        "destructiveHint": null,
-        "idempotentHint": null,
-        "openWorldHint": true
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,

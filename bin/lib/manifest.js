@@ -16,13 +16,49 @@ function hashFile(filePath) {
   }
 }
 
-/** Read the install manifest from targetDir. Returns empty structure if missing. */
+/** Reject escaping paths and symlink ancestors before touching managed files. */
+function validatePath(targetDir, rel) {
+  const components = rel.split('/');
+  if (!/^(commands|skills|agents)\//.test(rel) || rel.includes('\\') ||
+      components.some((part) => !part || part === '.' || part === '..')) {
+    throw new Error(`Unsafe install manifest path: ${rel}`);
+  }
+  let current = path.resolve(targetDir);
+  for (const component of components) {
+    current = path.join(current, component);
+    try {
+      if (fs.lstatSync(current).isSymbolicLink()) {
+        throw new Error(`Unsafe symlink in install path: ${rel}`);
+      }
+    } catch (err) {
+      if (err.code === 'ENOENT') break;
+      throw err;
+    }
+  }
+}
+
+/** Validate ownership evidence supplied by the install manifest. */
+function validateManifest(targetDir, manifest) {
+  if (!manifest.files || typeof manifest.files !== 'object' || Array.isArray(manifest.files)) {
+    throw new Error('Invalid install manifest: files must be an object');
+  }
+  for (const rel of Object.keys(manifest.files)) {
+    validatePath(targetDir, rel);
+    if (!/^[a-f0-9]{64}$/.test(manifest.files[rel]?.hash || '')) {
+      throw new Error(`Invalid install manifest hash: ${rel}`);
+    }
+  }
+  return manifest;
+}
+
+/** Read the manifest; malformed state fails safely instead of adopting existing files. */
 function readManifest(targetDir) {
   const manifestPath = path.join(targetDir, MANIFEST_FILE);
   try {
-    return JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  } catch {
-    return { version: null, files: {}, installedAt: null, mode: null };
+    return validateManifest(targetDir, JSON.parse(fs.readFileSync(manifestPath, 'utf8')));
+  } catch (err) {
+    if (err.code === 'ENOENT') return { version: null, files: {}, installedAt: null, mode: null };
+    throw err;
   }
 }
 
@@ -50,11 +86,13 @@ function deleteManifest(targetDir) {
  * Returns { toCopy, toSkip, toRemove } arrays describing what to do for each file.
  */
 function computeActions(sourceDir, targetDir, fileMap, manifest, force) {
+  validateManifest(targetDir, manifest);
   const toCopy = [];
   const toSkip = [];
   const toRemove = [];
 
   for (const [srcRel, destRel] of Object.entries(fileMap)) {
+    validatePath(targetDir, destRel);
     const srcPath = path.join(sourceDir, srcRel);
     const destPath = path.join(targetDir, destRel);
     const srcHash = hashFile(srcPath);
@@ -71,7 +109,7 @@ function computeActions(sourceDir, targetDir, fileMap, manifest, force) {
       toCopy.push({ src: srcRel, dest: destRel, reason: 'new' });
     } else if (destHash === srcHash) {
       toSkip.push({ dest: destRel, reason: 'up to date' });
-    } else if (manifestHash && destHash !== manifestHash && !force) {
+    } else if ((!manifestHash || destHash !== manifestHash) && !force) {
       toSkip.push({ dest: destRel, reason: 'user modified' });
     } else {
       toCopy.push({ src: srcRel, dest: destRel, reason: 'updated' });
