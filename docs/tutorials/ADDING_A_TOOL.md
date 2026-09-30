@@ -9,12 +9,12 @@ The server uses a **composite FastMCP** architecture. The root server (`server.p
 ```
 server.py (root)
   +-- tools/video.py      -> video_server    (4 tools)
-  +-- tools/youtube.py     -> youtube_server  (2 tools)
-  +-- tools/research.py    -> research_server (3 tools)
-  +-- tools/content.py     -> content_server  (2 tools)
+  +-- tools/youtube.py     -> youtube_server  (3 tools)
+  +-- tools/research.py    -> research_server (13 tools including deferred registrations)
+  +-- tools/content.py     -> content_server  (3 tools including batch)
   +-- tools/search.py      -> search_server   (1 tool)
   +-- tools/infra.py       -> infra_server    (2 tools)
-  +-- tools/knowledge.py   -> knowledge_server(4 tools)
+  +-- tools/knowledge/     -> knowledge_server(8 tools)
 ```
 
 ## Step 1: Choose a Sub-Server
@@ -31,7 +31,7 @@ If your tool fits an existing domain, add it to that sub-server's file. If it in
 | Analyze files/URLs/text | `tools/content.py` (content_server) |
 | Web search | `tools/search.py` (search_server) |
 | Server config/cache | `tools/infra.py` (infra_server) |
-| Knowledge store queries | `tools/knowledge.py` (knowledge_server) |
+| Knowledge store queries | `tools/knowledge/` (knowledge_server) |
 | Something entirely new | Create a new sub-server (see Step 2b) |
 
 ## Step 2a: Add to an Existing Sub-Server

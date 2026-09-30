@@ -12,9 +12,9 @@ This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-ba
 
 ## What This Is
 
-A monorepo with 3 MCP servers (45 tools total):
+A monorepo with 3 MCP servers (51 tools total):
 
-1. **video-research-mcp** (root) — 28 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai`) and YouTube Data API v3.
+1. **video-research-mcp** (root) — 34 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini Flash (`google-genai`) and YouTube Data API v3.
 2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos.
 3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools for parallel scene generation via Claude Agent SDK.
 
@@ -24,7 +24,7 @@ Python >= 3.11.
 
 ```bash
 uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"
-uv run pytest tests/ -v          # 781 tests
+uv run pytest tests/ -v
 uv run pytest tests/ -k "video_analyze" -v
 uv run ruff check src/ tests/
 GEMINI_API_KEY=... uv run video-research-mcp
@@ -90,18 +90,9 @@ Aim for ~300 lines of executable production code per file (excluding docstrings/
 
 Pin to the major version actually used. Do not use cross-major constraints where APIs differ.
 
-Key constraints in this project:
-- `fastmcp >=3.0.2`
-- `google-genai >=1.57`
-- `google-api-python-client >=2.100`
-- `httpx >=0.27`
-- `pydantic >=2.0`
-- `weaviate-client >=4.19.2`
-- `mlflow-tracing >=3.0` (optional [tracing])
-- `weaviate-agents >=1.2.0` (optional [agents])
-- `pytest >=8.0`
-- `pytest-asyncio >=1.0`
-- `ruff >=0.9`
+The current API-major constraints live in `pyproject.toml`; exact tested versions
+live in each package's `uv.lock`. Use `uv sync --locked --extra dev`. Do not
+maintain an independently editable version table here.
 
 When updating dependencies:
 1. Update `pyproject.toml`
@@ -129,10 +120,10 @@ Canonical source: `config.py:ServerConfig`.
 
 Main variables:
 - `GEMINI_API_KEY` (required)
-- `GEMINI_MODEL` (default `gemini-3.5-flash`)
-- `GEMINI_FLASH_MODEL` (default `gemini-3.5-flash`)
+- `GEMINI_MODEL` (default `gemini-3.8-flash`)
+- `GEMINI_FLASH_MODEL` (default `gemini-3.8-flash`)
 - `GEMINI_THINKING_LEVEL` (default `medium`)
-- `DEEP_RESEARCH_AGENT` (default `deep-research-pro-preview-12-2025`)
+- `DEEP_RESEARCH_AGENT` (default `deep-research-preview-04-2026`)
 - `WEAVIATE_URL` (empty disables knowledge store)
 - `WEAVIATE_API_KEY`
 - `GEMINI_SESSION_DB` (empty means in-memory sessions)
@@ -142,59 +133,24 @@ Main variables:
 - `GEMINI_TRACING_ENABLED` (default false)
 - `MLFLOW_TRACKING_URI`, `MLFLOW_EXPERIMENT_NAME`
 
-## Media Production Skills (v0.6.0)
+## Media Production Skills
 
-Five production skills are available as Claude Code skills in `skills/`. For Codex agents working on media production tasks, the key patterns are summarized here.
+Use the current production skills as the canonical workflows; verify provider
+availability and the installed tool surface before generation. The research MCP
+does not provide image, TTS, or clip-generation tools. Companion wrappers depend
+on a separately installed upstream video_explainer checkout.
 
-### TTS Production (ElevenLabs)
+- [TTS production](skills/tts-production/SKILL.md) and audio recipes
+- [FFmpeg production](skills/ffmpeg-production/SKILL.md) and platform presets
+- [Video generation](skills/video-generation/SKILL.md) and provider capabilities
+- [Video production](skills/video-production/SKILL.md) and chaining patterns
+- [Image generation](skills/image-generation/SKILL.md)
+- [Plugin maintenance](skills/plugin-maintenance/SKILL.md) for a bounded update loop
 
-Use direct API calls (curl), NOT MCP tools — MCP `Text_To_Speech` returns 404.
-
-```bash
-curl -s -X POST "https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/with-timestamps" \
-  -H "xi-api-key: ${ELEVENLABS_API_KEY}" \
-  -H "Content-Type: application/json" \
-  -d '{"text": "...", "model_id": "eleven_multilingual_v2", "voice_settings": {"stability": 0.75, "similarity_boost": 0.80, "style": 0.40}}' \
-  --output /tmp/tts-response.json
-```
-
-Models: `eleven_multilingual_v2` (production), `eleven_flash_v2_5` (drafts). Speed param is ignored by multilingual model — use FFmpeg `atempo` (max 1.35x). Use cosine-ease ducking, not hard step (causes clicks).
-
-### FFmpeg Post-Processing
-
-Canonical filter order (load-bearing): temporal denoise → scale → sharpen → color grade → curves → grain → encode. Grain before denoise is destroyed. Interpolation after grain causes tearing.
-
-### Video Generation (Veo/Sora)
-
-| Need | Provider |
-|------|----------|
-| Photorealistic, cinematic | Veo 3.1 |
-| Stylized, animated | Sora |
-| Style reference matching | Veo 3.1 (`generate_video_with_style`) |
-| Video extension | Veo 3.1 or Sora |
-
-Draft with fast models, finalize with quality models. Always start from an anchor image, never from text alone.
-
-### Video Production Workflow
-
-Five phases: **Concept → Style Anchor → Generate → QA → Assemble**
-
-Style anchor system: generate one perfect hero still with `mcp-image`, use it as visual anchor for all clips. Four chaining patterns: Animate & Propagate (multiple scenes, same identity), Frame-Forward Chain (continuous motion), Parallel Variants (same scene, different moods), Extend Chain (single long shot).
-
-QA: extract frames at 10fps via FFmpeg, inspect with Read tool for composition drift, lighting consistency, object integrity, motion quality, color temperature.
-
-### Image Generation
-
-Subject-Context-Style prompt structure for `mcp-image`. Video style anchor pipeline: generate at 4K quality with character consistency enabled, iterate with `inputImagePath` until perfect.
-
-### Full Skill References
-
-For complete patterns, recipes, and provider details, see the SKILL.md files in `skills/`:
-- `skills/tts-production/` (+ `references/ffmpeg-audio-recipes.md`)
-- `skills/ffmpeg-production/` (+ `references/platform-presets.md`)
-- `skills/video-generation/` (+ `references/provider-details.md`)
-- `skills/video-production/` (+ `references/workflow-patterns.md`)
-- `skills/image-generation/`
+Provider model IDs and capabilities belong in dated skill references and runtime
+configuration rather than duplicated instructions. Generating an artifact,
+verifying its quality, publishing source and installing a registry version are
+separate acceptance claims.
 
 ## Key Docs
 

@@ -14,7 +14,7 @@ A step-by-step guide to installing, configuring, and running the video-research-
 Clone the repo and install in development mode:
 
 ```bash
-git clone https://github.com/<org>/video-research-mcp.git
+git clone https://github.com/Galbaz1/video-research-mcp.git
 cd video-research-mcp
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
@@ -23,22 +23,22 @@ uv pip install -e ".[dev]"
 Verify the installation:
 
 ```bash
-video-research-mcp --help
+uv run python scripts/export_tool_contract_manifest.py --output /tmp/video-research-tools.json
 ```
 
 ## Environment Variables
 
-Create a `.env` file or export directly. Only `GEMINI_API_KEY` is required -- everything else has sensible defaults.
+Use the shared configuration file below or export directly. A checkout `.env` is not automatically loaded. Only `GEMINI_API_KEY` is required -- everything else has sensible defaults.
 
 ```bash
 # Required
 export GEMINI_API_KEY="your-gemini-api-key"
 
 # Optional -- shown with defaults
-export GEMINI_MODEL="gemini-3.5-flash"
-export GEMINI_FLASH_MODEL="gemini-3.5-flash"
-export GEMINI_THINKING_LEVEL="medium"        # minimal | low | medium | high
-export GEMINI_TEMPERATURE="1.0"
+export GEMINI_MODEL="gemini-3.8-flash"
+export GEMINI_FLASH_MODEL="gemini-3.8-flash"
+export GEMINI_THINKING_LEVEL="medium"        # low | medium | high for the default model
+export GEMINI_TEMPERATURE="1.0"            # omitted from Gemini 3.6+ Flash API requests
 export GEMINI_CACHE_DIR="$HOME/.cache/video-research-mcp/"
 export GEMINI_CACHE_TTL_DAYS="30"
 export GEMINI_MAX_SESSIONS="50"
@@ -66,7 +66,7 @@ The server auto-loads `~/.config/video-research-mcp/.env` at startup, so keys ar
 2. `~/.config/video-research-mcp/.env` config file
 3. Built-in defaults in `ServerConfig`
 
-**Security**: This file lives on your machine only. It is never uploaded, committed to git, or sent to any remote service. The server reads it locally at startup — that's it. We recommend `chmod 600` so only your user can read it.
+**Security**: The server reads the configuration file locally. Its credential values authenticate calls to configured providers; analysis prompts and uploaded media are processed remotely. Keep the file out of git, use `chmod 600`, and report only key-presence checks in diagnostics.
 
 Create the file manually or let the npm installer generate a template:
 
@@ -112,28 +112,31 @@ video-research-mcp
 
 ## Connecting from Claude Code
 
-Add the server to your MCP configuration. For global access across all projects, edit `~/.claude/.mcp.json`:
+Register the published runtime using Claude Code's supported CLI:
 
-```json
-{
-  "mcpServers": {
-    "video-research": {
-      "command": "uv",
-      "args": [
-        "--directory", "/path/to/video-research-mcp",
-        "run", "video-research-mcp"
-      ],
-      "env": {
-        "GEMINI_API_KEY": "your-key"
-      }
-    }
-  }
-}
+```bash
+claude mcp add --scope user video-research -- uvx --refresh 'video-research-mcp[tracing]'
+claude mcp list
 ```
 
-For project-local configuration, create `.mcp.json` in the project root with the same structure.
+User registrations live in `~/.claude.json`; project scope uses `.mcp.json`. The shared environment file supplies credentials without copying them into registration commands. For a source checkout, use `claude mcp add --scope local video-research -- uv --directory /absolute/path/to/video-research-mcp run video-research-mcp`.
 
-After saving, restart Claude Code. All 28 tools will appear automatically in Claude's tool list.
+Restart the client, inspect `/mcp`, and call `infra_configure()` without arguments. Confirm the actual model IDs and process connection before analysis. The registered runtime has 34 tools; see the generated [tool manifest](../metrics/tool-contract-manifest.json) for exact contracts. These counts do not imply the optional companion servers are installed.
+
+### Other MCP clients, including Codex
+
+The server uses standard stdio MCP. Configure `uvx` with arguments `--refresh`, `video-research-mcp[tracing]`, or use `uv --directory <checkout> run video-research-mcp` for an exact source revision. Follow the client's current configuration schema. The npm installer targets Claude Code; it does not install a Codex plugin manifest. Skills can be reused in clients supporting `SKILL.md`, but Claude slash commands/agent frontmatter are client-specific. See [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins) before claiming native Codex distribution.
+
+### Optional companion servers from source
+
+The explainer and scene-agent packages are not registered by the default installer. Install their declared development environments, configure the external `video_explainer` checkout and provider credentials, then register their local entry points:
+
+```bash
+claude mcp add --scope local video-explainer -- uv --directory /absolute/path/to/video-research-mcp/packages/video-explainer-mcp run video-explainer-mcp
+claude mcp add --scope local video-agent -- uv --directory /absolute/path/to/video-research-mcp/packages/video-agent-mcp run video-agent-mcp
+```
+
+A successful registration is separate from an executable pipeline. Verify `EXPLAINER_PATH`, prerequisite binaries, writable project directories, and provider availability before generation. Default mock TTS produces a preview, not production narration.
 
 ## First Tool Calls
 
@@ -189,9 +192,9 @@ Use video_analyze on <url> with instruction "List all recipes" and output_schema
 Switch between quality/cost trade-offs at runtime:
 
 ```
-Use infra_configure with preset "best"    # Gemini 3.1 Pro (highest quality)
-Use infra_configure with preset "stable"  # Gemini 3 Pro (higher rate limits)
-Use infra_configure with preset "budget"  # Gemini 3 Flash (fastest, cheapest)
+Use infra_configure with preset "best"    # Gemini 3.1 Pro preview + Gemini 3.8 Flash
+Use infra_configure with preset "stable"  # Gemini 3.8 Flash for both routes
+Use infra_configure with preset "budget"  # Gemini 3.5 Flash-Lite for both routes
 ```
 
 The change takes effect immediately for all subsequent tool calls.
@@ -231,7 +234,7 @@ All YouTube tools (`video_metadata`, `video_comments`, `video_playlist`) require
 
 1. **AI Studio key restriction** -- Keys from [Google AI Studio](https://aistudio.google.com/apikey) are often restricted to `generativelanguage.googleapis.com` only. They work for Gemini but not YouTube Data API.
 2. **YouTube Data API v3 not enabled** -- The API must be explicitly enabled in your GCP project.
-3. **Different keys in different contexts** -- If you use direnv/dotenv, the key in your `.env` may differ from the one in your shell profile (`~/.zshrc`). The MCP server gets the key from Claude Code's process environment, not from `.env`.
+3. **Different keys in different contexts** -- If you use direnv/dotenv, the key in your `.env` may differ from the one in your shell profile (`~/.zshrc`). The MCP server prioritizes process environment over the shared configuration; a project `.env` requires explicit loading.
 
 **Fix:**
 
@@ -241,13 +244,13 @@ All YouTube tools (`video_metadata`, `video_comments`, `video_playlist`) require
 
 ### Rate limit / quota errors
 
-Switch to a cheaper model preset:
+Inspect the error category and your provider quota first. If the task permits a lower-cost model, use:
 
 ```
 Use infra_configure with preset "budget"
 ```
 
-Or wait and retry -- the server returns `retryable: true` with `retry_after_seconds: 60` for quota errors.
+The server applies configured backoff for transient errors. Do not stack unbounded client retries on it: allow one controlled retry of an idempotent call, preserve the error, and stop when quota or infrastructure remains unavailable.
 
 ### Video analysis returns cached results
 

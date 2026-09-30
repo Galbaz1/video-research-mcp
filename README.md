@@ -1,6 +1,6 @@
 # video-research-mcp
 
-Claude Code can't process video or generate media. Gemini 3.5 Flash and ElevenLabs can. This plugin bridges them all -- giving Claude access to video understanding, deep research, web search, and a full media production toolkit through MCP.
+A research MCP server and workflow bundle for video understanding, document analysis, cited web research, academic discovery, and optional knowledge storage. The runtime defaults to Gemini 3.8 Flash; Claude Code workflows orchestrate tools using the active session model.
 
 [![CI](https://github.com/Galbaz1/video-research-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Galbaz1/video-research-mcp/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/video-research-mcp)](https://pypi.org/project/video-research-mcp/)
@@ -17,7 +17,7 @@ Claude Code can't process video or generate media. Gemini 3.5 Flash and ElevenLa
 
 ## What's in the box
 
-A **Claude Code plugin** with 51 tools, 17 slash commands, 12 skills, and 7 sub-agents. The MCP servers provide the tools. The commands give you quick workflows (`/gr:video`, `/gr:research`). The skills teach Claude how to use everything -- from research to cinematic video production. The agents handle background tasks like parallel research and visualization.
+A **Claude Code workflow bundle** with 51 tools across the monorepo, 17 slash commands, 13 skills, and 7 sub-agents. The MCP servers provide the tools. The commands give you quick workflows (`/gr:video`, `/gr:research`). The skills teach Claude how to use everything -- from research to cinematic video production. The agents handle bounded independent tasks such as research and visualization. The default installer connects the published research runtime, Playwright, and MLflow; the two video companion servers require local source setup.
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -32,7 +32,7 @@ npx video-research-mcp@latest
 export GEMINI_API_KEY="your-key-here"
 ```
 
-One command. One API key. The installer copies 17 commands, 12 skills, and 7 agents to `~/.claude/` and configures the MCP servers to run via `uvx` from PyPI.
+One command. One API key. The installer copies commands, skills, and agents to `~/.claude/` and registers the published research runtime in `~/.claude.json`. Set the API key in `~/.config/video-research-mcp/.env` so GUI clients can load it, restart the client, then run `/gr:doctor quick` to inspect the active setup. Shell exports apply only to clients launched from that shell.
 
 ```bash
 npx video-research-mcp@latest --check     # show install status
@@ -40,7 +40,9 @@ npx video-research-mcp@latest --uninstall  # clean removal
 npx video-research-mcp@latest --local      # install for this project only
 ```
 
-Requires Python >= 3.11, [uv](https://docs.astral.sh/uv/), [Node.js](https://nodejs.org/) >= 16, and a [Google AI API key](https://aistudio.google.com/apikey).
+Requires Python >= 3.11, [uv](https://docs.astral.sh/uv/), [Node.js](https://nodejs.org/) >= 22, and a [Google AI API key](https://aistudio.google.com/apikey).
+
+Source releases and registry packages are separate: `npx ...@latest` and `uvx` resolve published registry artifacts. See [source onboarding](docs/tutorials/GETTING_STARTED.md) to run a specific checkout, including the optional companion servers. Installation and local tests do not establish a live provider smoke.
 
 ## What it does
 
@@ -51,7 +53,7 @@ Requires Python >= 3.11, [uv](https://docs.astral.sh/uv/), [Node.js](https://nod
 > "Create meeting minutes in Dutch. Screenshot every shared screen."
 ```
 
-Gemini watches the full video and pulls out timestamps, decisions, and action items. For local files, ffmpeg extracts frames at key visual moments. Files over 20MB are uploaded to Gemini's File API and context-cached -- follow-up questions reuse the cache instead of re-uploading.
+Gemini analyzes the supplied video and returns timestamps, decisions, and action items; verify requested coverage and transcript fidelity against the original when accuracy matters. For local files, ffmpeg extracts frames at key visual moments. Files over 20MB are uploaded to Gemini's File API and context-cached -- follow-up questions reuse the cache instead of re-uploading.
 
 ### Analyze a YouTube tutorial
 
@@ -104,7 +106,7 @@ Google Search via Gemini grounding with source citations.
 /gr:recall ask "what do I know about X?"  # AI-powered Q&A with source citations
 ```
 
-Nothing gets lost. Every analysis and research finding is stored automatically. Weeks later, in a different project, you just ask. When Weaviate is configured, searches use semantic matching. Without it, recall falls back to exact keyword grep over saved files.
+Analysis tools attempt write-through storage when Weaviate is configured; storage failures are non-fatal and must be checked separately. Commands also save local notes when their workflow runs. Weeks later, in a different project, you just ask. When Weaviate is configured, searches use semantic matching. Without it, recall falls back to exact keyword grep over saved files.
 
 ### Use it as a standalone MCP server
 
@@ -218,7 +220,7 @@ output/project-kickoff-2026-02-28/
 
 ## Skills
 
-Skills teach Claude how to use tools and workflows correctly. They load automatically when relevant -- you never invoke them manually.
+Skills provide repeatable workflows and load when relevant or explicitly invoked. Provider guidance does not install external image, video, or TTS connectors.
 
 ### Research & analysis
 
@@ -231,6 +233,7 @@ Skills teach Claude how to use tools and workflows correctly. They load automati
 | **mlflow-traces** | MLflow trace querying, debugging, and evaluation |
 | **research-brief-builder** | Structured research briefs for deep research |
 | **gr-advisor** | Recommends the right `/gr` command for your task |
+| **plugin-maintenance** | Bounded audit, modernization, verification, and publication loop |
 
 ### Media production (new in v0.6.0)
 
@@ -238,9 +241,9 @@ Skills teach Claude how to use tools and workflows correctly. They load automati
 |-------|----------------|
 | **tts-production** | ElevenLabs TTS -- API patterns, voice presets, cosine-ease ducking, multilingual narration |
 | **ffmpeg-production** | Post-processing chain order, codec selection, platform export presets |
-| **video-generation** | AI video with Veo or Sora -- provider selection matrix, draft-to-final workflow |
+| **video-generation** | AI video with current providers -- capability checks and bounded draft-to-final workflow |
 | **video-production** | Cinematic multi-shot -- style anchors, 4 chaining patterns, frame-level QA |
-| **image-generation** | Style anchor prompt optimization for mcp-image (Subject-Context-Style) |
+| **image-generation** | Provider-independent reference prompts and editing QA (Subject-Context-Style) |
 
 The production skills use [progressive disclosure](https://en.wikipedia.org/wiki/Progressive_disclosure): core patterns load when triggered (~1,000 words each), detailed recipes and reference tables live in `references/` and load on demand.
 
@@ -289,18 +292,19 @@ export WEAVIATE_API_KEY="your-key"
 | Variable | Default | What it does |
 |----------|---------|-------------|
 | `GEMINI_API_KEY` | **(required)** | Google AI API key |
-| `GEMINI_MODEL` | `gemini-3.5-flash` | Primary model |
-| `GEMINI_FLASH_MODEL` | `gemini-3.5-flash` | Same as `GEMINI_MODEL` by default; `infra_configure` presets unlock Pro |
-| `DEEP_RESEARCH_AGENT` | `deep-research-pro-preview-12-2025` | Interactions API agent |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Primary model |
+| `GEMINI_FLASH_MODEL` | `gemini-3.8-flash` | Same as `GEMINI_MODEL` by default; `infra_configure` presets unlock Pro |
+| `DEEP_RESEARCH_AGENT` | `deep-research-preview-04-2026` | Interactions API agent |
 | `WEAVIATE_URL` | `""` | Weaviate URL (empty = knowledge store disabled) |
 | `WEAVIATE_API_KEY` | `""` | Required for Weaviate Cloud |
 | `COHERE_API_KEY` | `""` | Enables Cohere reranker in knowledge search |
 | `ELEVENLABS_API_KEY` | `""` | For TTS voice-over production |
-| `OPENAI_API_KEY` | `""` | For Sora video generation and OpenAI TTS |
+| `OPENAI_API_KEY` | `""` | Optional OpenAI integrations/TTS; Sora API retired on 2026-09-24 |
 | `YOUTUBE_API_KEY` | `""` | YouTube Data API key (falls back to `GEMINI_API_KEY`) |
 | `S2_API_KEY` | `""` | Semantic Scholar API key (higher rate limits) |
 | `MLFLOW_TRACKING_URI` | `""` | MLflow server URL (empty = tracing disabled) |
 | `EXPLAINER_PATH` | `""` | Path to cloned video_explainer repo |
+| `EXPLAINER_PROJECTS_PATH` | `<EXPLAINER_PATH>/projects` | Optional companion project-directory override |
 | `EXPLAINER_TTS_PROVIDER` | `"mock"` | TTS provider: mock, elevenlabs, openai, gemini, edge |
 
 <details>
@@ -308,8 +312,8 @@ export WEAVIATE_API_KEY="your-key"
 
 | Variable | Default | What it does |
 |----------|---------|-------------|
-| `GEMINI_THINKING_LEVEL` | `medium` | Thinking depth (minimal / low / medium / high) |
-| `GEMINI_TEMPERATURE` | `1.0` | Sampling temperature |
+| `GEMINI_THINKING_LEVEL` | `medium` | Thinking depth (low / medium / high for the default model) |
+| `GEMINI_TEMPERATURE` | `1.0` | Sampling temperature (omitted for Gemini 3.6+ Flash) |
 | `GEMINI_CACHE_DIR` | `~/.cache/video-research-mcp/` | Cache directory |
 | `GEMINI_CACHE_TTL_DAYS` | `30` | Cache expiry |
 | `GEMINI_MAX_SESSIONS` | `50` | Max concurrent video sessions |
@@ -395,7 +399,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines. 
 
 ## Credits
 
-- **[Google Gemini](https://ai.google.dev/)** (`google-genai` SDK) -- Gemini 3.1 Pro provides native video understanding, thinking mode, context caching, and the 1M token window that makes all of this work.
+- **[Google Gemini](https://ai.google.dev/)** (`google-genai` SDK) -- The configured Gemini models provide video understanding, structured outputs, search grounding, and context caching; feature support is checked per model.
 - **[FastMCP](https://github.com/jlowin/fastmcp)** -- MCP server framework. The composable sub-server pattern (`app.mount()`) keeps 51 tools organized across 3 servers.
 - **[Weaviate](https://weaviate.io/)** -- vector database powering the knowledge store. Thirteen collections, hybrid search, and the [Weaviate Claude Code skill](https://github.com/weaviate/weaviate-claude-code-skill) that inspired the knowledge architecture.
 - **[ElevenLabs](https://elevenlabs.io/)** -- text-to-speech with word-level timestamps for voiceover generation.

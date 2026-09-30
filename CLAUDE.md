@@ -8,9 +8,9 @@ Do not import `AGENTS.md` (for example via `@AGENTS.md` or `@../AGENTS.md`) from
 
 A monorepo with three MCP servers (51 tools total):
 
-1. **video-research-mcp** (root) — 34 tools for video analysis, deep research, academic papers, content extraction, web search, and context caching. Powered by Gemini 3.1 Pro (`google-genai` SDK) and YouTube Data API v3.
+1. **video-research-mcp** (root) — 34 tools for video analysis, deep research, academic papers, content extraction, web search, and context caching. Powered by the configured Gemini model (`google-genai` SDK) and YouTube Data API v3.
 2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos from research content. Wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI.
-3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools providing an autonomous research agent orchestrator. Wraps video-research-mcp tools with planning and execution loops.
+3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools for bounded parallel scene generation through the Claude Agent SDK.
 
 All servers share `~/.config/video-research-mcp/.env` for configuration. Built with Pydantic v2, hatchling. Python >= 3.11.
 
@@ -108,15 +108,14 @@ NEVER use `/gr:research-deep` for quick questions (costs $2-5, 10-20 min) — us
 
 ### video-agent-mcp Architecture
 
-`packages/video-agent-mcp/` — autonomous research agent orchestrator.
+`packages/video-agent-mcp/` generates scene definitions through bounded SDK calls.
 
 | Sub-server | Tools | File |
 |------------|-------|------|
-| agent | `agent_research`, `agent_status` | `tools/agent.py` |
+| scenes | `agent_generate_scenes`, `agent_generate_single_scene` | `tools/scenes.py` |
 
-**Key patterns:**
-- **Plan-execute loop** — decomposes research goals into tool-call sequences, executes against video-research-mcp
-- **Shared config** — same `~/.config/video-research-mcp/.env` as the parent server
+The SDK process has explicit budgets, isolated child configuration and no built-in
+tools. Results must be validated before writing scene artifacts.
 
 ## Conventions
 
@@ -144,15 +143,15 @@ async def my_tool(
 
 ### New Agents
 
-Frontmatter: `name` (required), `description` (required), `tools` (CSV), `model` (sonnet default, opus for complex reasoning), `color`, `memory` (project/user), `maxTurns`, `skills` (preload list). Body: persona + workflow + output format. Read-only agents should restrict `tools` to only the MCP query tools they need.
+Frontmatter: `name` (required), `description` (required), `tools` (CSV), `color`, `memory` (project/user), `maxTurns`, `skills` (preload list). Body: persona + workflow + output format. Read-only agents should restrict `tools` to only the MCP query tools they need.
 
 ### New Skills
 
-Frontmatter: `name` (required), `description` (required — controls auto-trigger), `allowed-tools`, `model`, `disable-model-invocation` (true for side-effect skills). Body loaded only after trigger. Description must include domain-anchor and negative qualifiers to prevent false positives. Use `${CLAUDE_SKILL_DIR}` to reference bundled scripts.
+Frontmatter: `name` (required), `description` (required — controls auto-trigger), `allowed-tools`, `disable-model-invocation` (true for side-effect skills). Body loaded only after trigger. Description must include domain-anchor and negative qualifiers to prevent false positives. Use `${CLAUDE_SKILL_DIR}` to reference bundled scripts.
 
 ### New Commands
 
-Frontmatter: `description`, `argument-hint`, `allowed-tools`, `model`. Body uses `$ARGUMENTS` for user input. Commands are explicit `/gr:name` invocations — always add to `FILE_MAP` in `bin/lib/copy.js`.
+Frontmatter: `description`, `argument-hint`, `allowed-tools`. Body uses `$ARGUMENTS` for user input. Commands are explicit `/gr:name` invocations — always add to `FILE_MAP` in `bin/lib/copy.js`.
 
 ### Docstrings
 
@@ -170,19 +169,12 @@ Pin to the **major version we actually use**. No cross-major constraints — a c
 
 **Format:** `>=MAJOR.MINOR` where MINOR is the lowest version whose API surface we actually use. Never `>=MAJOR.0` unless we've verified compatibility with the .0 release.
 
-### Pinned Dependencies
+### Verified Dependencies
 
-| Package | Constraint | Installed | API Surface We Use | Rationale |
-|---------|-----------|-----------|-------------------|-----------|
-| `fastmcp` | `>=3.0.2` | 3.0.2 | `FastMCP`, `.mount()`, `.tool()`, `.run()`, `@asynccontextmanager` lifespan | 3.x preserves tool callability; 2.x wraps in non-callable `FunctionTool` |
-| `google-genai` | `>=1.57` | 1.65.0 | `genai.Client`, `ThinkingConfig`, `cached_content`, Gemini 3.1 model strings, async `generate_content` | 1.56 added ThinkingConfig; 1.57 added Gemini 3 model support. Preview/beta SDK versions are fine for this project |
-| `google-api-python-client` | `>=2.100` | 2.190.0 | YouTube Data API v3 via `build("youtube", "v3")` | Pure REST wrapper; API stable within v2. `>=2.100` is fine |
-| `pydantic` | `>=2.0` | 2.12.5 | v2 only: `BaseModel`, `Field`, `model_validator`, `ConfigDict`, `model_dump()` | No v1 patterns anywhere. v3 doesn't exist yet. `>=2.0` is correct |
-| `weaviate-client` | `>=4.19.2` | 4.20.1 | v4 collections API: `client.collections.get()`, `weaviate.classes.*`, `AsyncQueryAgent` | v4 is a complete rewrite from v3. Constraint correctly pins v4 |
-| `pytest` | `>=8.0` | 9.0.2 | Standard API | pytest 9.x is backwards compatible. `>=8.0` is fine |
-| `pytest-asyncio` | `>=1.0` | 1.3.0 | `asyncio_mode = "auto"` (pyproject.toml) | Major rewrite in 1.0 (from 0.x). `asyncio_mode=auto` is 0.18+ but 1.x API is cleaner. Update constraint to `>=1.0` |
-| `mlflow-tracing` | `>=3.0` | — | `@trace()` decorator, `MlflowClient` | Optional `[tracing]` extra; graceful no-op when absent |
-| `ruff` | `>=0.9` | 0.15.4 | CLI linter/formatter | Pre-1.0; minor versions may change rules. Acceptable |
+`pyproject.toml` declares the supported API majors; each `uv.lock` records the
+exact tested versions. Use `uv sync --locked --extra dev` for verification.
+Upgrade from current PyPI metadata, then resolve all three package locks and
+verify the affected APIs. Do not maintain a second installed-version table here.
 
 ### Known Defensive Patterns (Legitimate)
 
@@ -203,13 +195,14 @@ When bumping a dependency:
 
 ## Agent Teams
 
-Default model for all subagent teams: **Claude Opus 4.6** (`model: "opus"`). This is a hard project requirement — do not use a lighter model for team agents unless the user explicitly requests it.
+Inherit the active configured model for agents. Use bounded, independent lanes
+with explicit write ownership and join them before integration.
 
 Agent configuration: `.claude/rules/` contains project-specific conventions that agents inherit automatically via path-filtered frontmatter.
 
 ## Testing
 
-781 tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits the real API.
+Unit tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits the real API.
 
 **Key fixtures** (`conftest.py`): `mock_gemini_client` (mocks `.get()`, `.generate()`, `.generate_structured()`), `clean_config` (isolates config), `mock_weaviate_client`, `mock_weaviate_disabled`, `_unwrap_fastmcp_tools` (session-scoped, ensures tool callability), autouse `GEMINI_API_KEY=test-key-not-real`, `_disable_tracing`, `_isolate_dotenv`, `_isolate_upload_cache`.
 
@@ -238,10 +231,10 @@ Canonical source: `config.py:ServerConfig`. Key variables:
 | Variable | Default | Notes |
 |----------|---------|-------|
 | `GEMINI_API_KEY` | (required) | Also used as YouTube fallback |
-| `GEMINI_MODEL` | `gemini-3.5-flash` | |
-| `GEMINI_FLASH_MODEL` | `gemini-3.5-flash` | Same default as `GEMINI_MODEL`; thinking_level is the dial |
-| `GEMINI_THINKING_LEVEL` | `medium` | `minimal` / `low` / `medium` / `high` |
-| `DEEP_RESEARCH_AGENT` | `deep-research-pro-preview-12-2025` | Interactions API agent ID |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | |
+| `GEMINI_FLASH_MODEL` | `gemini-3.8-flash` | Same default as `GEMINI_MODEL`; thinking_level is the dial |
+| `GEMINI_THINKING_LEVEL` | `medium` | `low` / `medium` / `high`; `minimal` is rejected for models that do not support it |
+| `DEEP_RESEARCH_AGENT` | `deep-research-preview-04-2026` | Interactions API agent ID |
 | `WEAVIATE_URL` | `""` | Empty = knowledge store disabled |
 | `WEAVIATE_API_KEY` | `""` | Required for Weaviate Cloud |
 | `GEMINI_SESSION_DB` | `""` | Empty = in-memory only |
