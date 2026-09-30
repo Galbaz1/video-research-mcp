@@ -42,6 +42,12 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/video_explainer_mcp"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/video_explainer_mcp/job_store.py" = "video_explainer_mcp/job_store.py"
+
+[tool.hatch.build.targets.sdist.force-include]
+"../../src/video_research_mcp/job_store.py" = "src/video_explainer_mcp/job_store.py"
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]

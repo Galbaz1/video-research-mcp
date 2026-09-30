@@ -5,9 +5,11 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import signal
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 from .config import ServerConfig, get_config
 from .errors import SubprocessError
@@ -16,6 +18,32 @@ from .redaction import redact_text
 logger = logging.getLogger(__name__)
 
 SIGTERM_GRACE_SECONDS = 5
+SIGKILL_REAP_SECONDS = 5
+
+
+async def _stop_owned_process(proc: asyncio.subprocess.Process) -> None:
+    """Stop the owned group even after its leader exits, with bounded pipe joins."""
+    try:
+        if os.name == "posix":
+            os.killpg(proc.pid, signal.SIGTERM)
+        elif proc.returncode is None:
+            proc.terminate()
+    except ProcessLookupError:
+        pass
+    try:
+        await asyncio.wait_for(proc.communicate(), timeout=SIGTERM_GRACE_SECONDS)
+    except TimeoutError:
+        try:
+            if os.name == "posix":
+                os.killpg(proc.pid, signal.SIGKILL)
+            elif proc.returncode is None:
+                proc.kill()
+        except ProcessLookupError:
+            pass
+        try:
+            await asyncio.wait_for(proc.communicate(), timeout=SIGKILL_REAP_SECONDS)
+        except TimeoutError as exc:
+            raise RuntimeError("Owned CLI cleanup unverified: process pipes did not close") from exc
 
 
 def _resolve_cli(cfg: ServerConfig) -> str:
@@ -44,10 +72,49 @@ class SubprocessResult:
     command: list[str]
 
 
+async def _invoke_cli(
+    cmd: list[str],
+    cwd: str | None,
+    timeout: int,
+    process_started: Callable[[int], None] | None,
+) -> tuple[bytes, bytes, int]:
+    """Hold process ownership across spawn, callbacks, timeout and cancellation."""
+    env = {
+        k: v
+        for k, v in os.environ.items()
+        if k != "CLAUDECODE" and not k.startswith("CLAUDE_CODE_")
+    }
+    spawn = asyncio.create_task(
+        asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=cwd,
+            env=env,
+            start_new_session=os.name == "posix",
+        )
+    )
+    try:
+        proc = await asyncio.shield(spawn)
+    except asyncio.CancelledError:
+        proc = await spawn
+        await _stop_owned_process(proc)
+        raise
+    try:
+        if process_started:
+            process_started(proc.pid)
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+        return stdout, stderr, proc.returncode or 0
+    except (Exception, asyncio.CancelledError):
+        await _stop_owned_process(proc)
+        raise
+
+
 async def run_cli(
     *args: str,
     timeout: int | None = None,
     cwd: str | None = None,
+    process_started: Callable[[int], None] | None = None,
 ) -> SubprocessResult:
     """Run the explainer CLI with the given arguments.
 
@@ -59,6 +126,7 @@ async def run_cli(
         *args: CLI arguments (e.g. ``"create"``, ``"my-project"``).
         timeout: Max seconds to wait. Defaults to ``config.timeout``.
         cwd: Working directory. Defaults to ``config.explainer_path``.
+        process_started: Persist the operation identity after obtaining the owned Process.
 
     Returns:
         SubprocessResult with stdout, stderr, returncode, duration.
@@ -79,33 +147,7 @@ async def run_cli(
     logger.info("Running: %s (timeout=%ds)", " ".join(cmd), timeout)
     start = time.monotonic()
 
-    env = {
-        k: v
-        for k, v in os.environ.items()
-        if k != "CLAUDECODE" and not k.startswith("CLAUDE_CODE_")
-    }
-    proc = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-        cwd=cwd,
-        env=env,
-    )
-
-    try:
-        stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout
-        )
-    except (TimeoutError, asyncio.CancelledError):
-        logger.warning("Process interrupted, sending SIGTERM")
-        proc.terminate()
-        try:
-            await asyncio.wait_for(proc.communicate(), timeout=SIGTERM_GRACE_SECONDS)
-        except TimeoutError:
-            logger.warning("Process did not exit after SIGTERM, sending SIGKILL")
-            proc.kill()
-            await proc.communicate()
-        raise
+    stdout_bytes, stderr_bytes, returncode = await _invoke_cli(cmd, cwd, timeout, process_started)
 
     elapsed = time.monotonic() - start
     stdout = redact_text(stdout_bytes.decode("utf-8", errors="replace"))
@@ -114,7 +156,7 @@ async def run_cli(
     result = SubprocessResult(
         stdout=stdout,
         stderr=stderr,
-        returncode=proc.returncode or 0,
+        returncode=returncode,
         duration_seconds=round(elapsed, 2),
         command=cmd,
     )

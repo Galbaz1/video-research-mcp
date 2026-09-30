@@ -1,106 +1,85 @@
-"""In-memory render job tracking."""
+"""Durable render requests using the monorepo's canonical SQLite job store."""
 
 from __future__ import annotations
 
 import uuid
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
+from pathlib import Path
+
+from .config import get_config
+from .job_store import JobStore
+from .render_artifacts import file_revision, project_revision, render_outputs
 
 
-class JobStatus(str, Enum):
-    """Render job lifecycle states."""
-
-    PENDING = "pending"
-    RUNNING = "running"
-    COMPLETED = "completed"
-    FAILED = "failed"
-
-
-@dataclass
-class RenderJob:
-    """Tracks a background render operation."""
-
-    job_id: str
-    project_id: str
-    status: JobStatus = JobStatus.PENDING
-    started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
-    completed_at: datetime | None = None
-    output_file: str = ""
-    error: str = ""
-    duration_seconds: float = 0.0
+def adapter_revision() -> dict:
+    """Bind queued execution to the actual worker, runner and shared store bytes."""
+    package = Path(__file__).parent
+    return {
+        name: file_revision((package / name).resolve())["sha256"]
+        for name in (
+            "jobs.py",
+            "render_worker.py",
+            "render_artifacts.py",
+            "runner.py",
+            "job_store.py",
+        )
+    }
 
 
-# Module-level job registry
-_jobs: dict[str, RenderJob] = {}
+def create_job(project_id: str, resolution: str = "720p", fast: bool = True) -> dict:
+    """Freeze source, render settings and existing output before admitting a job."""
+    cfg = get_config()
+    project_dir = (cfg.resolved_projects_path / project_id).resolve()
+    if not project_dir.is_relative_to(cfg.resolved_projects_path):
+        raise ValueError("Render project resolves outside configured projects directory")
+    source = project_revision(project_dir)
+    cli = Path(cfg.explainer_path).expanduser().resolve() / ".venv/bin/video-explainer"
+    request = {
+        "project_id": project_id,
+        "project_dir": str(project_dir),
+        "resolution": resolution,
+        "fast": fast,
+        "render_timeout": cfg.render_timeout,
+        "explainer_path": str(Path(cfg.explainer_path).expanduser().resolve()),
+        "source": source,
+        "before_outputs": render_outputs(project_dir / "output"),
+        "execution_token": uuid.uuid4().hex,
+        "adapter_revision": adapter_revision(),
+        "cli_revision": file_revision(cli) if cli.is_file() else None,
+    }
+    try:
+        return JobStore().create(
+            "render",
+            request,
+            source["sha256"],
+            job_id=uuid.uuid4().hex[:12],
+            exclusive_key="render:" + str(project_dir),
+        )
+    except ValueError as exc:
+        raise RuntimeError(
+            f"Render already in progress or unverified for project: {project_id}"
+        ) from exc
 
 
-def create_job(project_id: str) -> RenderJob:
-    """Create and register a new render job.
-
-    Args:
-        project_id: The project being rendered.
-
-    Returns:
-        The newly created RenderJob.
-    """
-    job_id = uuid.uuid4().hex[:12]
-    job = RenderJob(job_id=job_id, project_id=project_id)
-    _jobs[job_id] = job
-    return job
+def get_job(job_id: str) -> dict | None:
+    """Read back a render row without accepting records from another job kind."""
+    row = JobStore().get(job_id)
+    return row if row and row["kind"] == "render" else None
 
 
-def get_job(job_id: str) -> RenderJob | None:
-    """Look up a render job by ID.
-
-    Args:
-        job_id: The 12-char hex job identifier.
-
-    Returns:
-        The RenderJob if found, None otherwise.
-    """
-    return _jobs.get(job_id)
-
-
-def update_job(
-    job_id: str,
-    *,
-    status: JobStatus | None = None,
-    output_file: str | None = None,
-    error: str | None = None,
-    duration_seconds: float | None = None,
-) -> RenderJob | None:
-    """Update fields on an existing render job.
-
-    Args:
-        job_id: The job to update.
-        status: New status.
-        output_file: Path to rendered output.
-        error: Error message on failure.
-        duration_seconds: Elapsed render time.
-
-    Returns:
-        The updated RenderJob, or None if not found.
-    """
-    job = _jobs.get(job_id)
-    if job is None:
-        return None
-
-    if status is not None:
-        job.status = status
-        if status in {JobStatus.COMPLETED, JobStatus.FAILED}:
-            job.completed_at = datetime.now(timezone.utc)
-    if output_file is not None:
-        job.output_file = output_file
-    if error is not None:
-        job.error = error
-    if duration_seconds is not None:
-        job.duration_seconds = duration_seconds
-    return job
-
-
-def clear_jobs() -> int:
-    """Remove all tracked jobs. Returns count cleared."""
-    count = len(_jobs)
-    _jobs.clear()
-    return count
+def reconcile_job(job_id: str) -> dict | None:
+    """Preserve stale process state as unknown; never rerun or signal an old PID."""
+    row = get_job(job_id)
+    if not row or row["status"] not in {"running", "unknown", "cancel_requested"}:
+        return row
+    owner = "reconcile:" + uuid.uuid4().hex
+    claimed = JobStore().claim(job_id, owner)
+    if claimed:
+        status = "cancel_requested" if row["status"] == "cancel_requested" else "unknown"
+        JobStore().checkpoint(
+            job_id,
+            owner,
+            status=status,
+            release=True,
+            error="Process ownership unavailable after restart; termination and output are unverified",
+        )
+    return get_job(job_id)

@@ -46,7 +46,18 @@ class GeminiClient:
         if not key:
             raise ValueError("No Gemini API key — set GEMINI_API_KEY or pass api_key explicitly")
         if key not in cls._clients:
-            cls._clients[key] = genai.Client(api_key=key)
+            from google.genai import types
+
+            client = genai.Client(
+                api_key=key,
+                http_options=types.HttpOptions(
+                    retry_options=types.HttpRetryOptions(attempts=1),
+                ),
+            )
+            # Interactions interprets attempts=1 as one retry; launches have no idempotency key.
+            client.aio.interactions.sdk_configuration.retry_config = None
+            client.interactions.sdk_configuration.retry_config = None
+            cls._clients[key] = client
             logger.info("Created Gemini client")
         return cls._clients[key]
 
@@ -115,14 +126,24 @@ class GeminiClient:
                 )
             response = await budget.generate(client, resolved_model, contents, config)
         else:
-            response = await with_retry(
-                lambda: client.aio.models.generate_content(
+            from .job_execution import single_submission
+
+            if single_submission.get():
+                response = await client.aio.models.generate_content(
                     model=resolved_model,
                     contents=contents,
                     config=config,
                     **kwargs,
                 )
-            )
+            else:
+                response = await with_retry(
+                    lambda: client.aio.models.generate_content(
+                        model=resolved_model,
+                        contents=contents,
+                        config=config,
+                        **kwargs,
+                    )
+                )
 
         # Strip thinking parts — only return user-visible text
         content = response.candidates[0].content if response.candidates else None

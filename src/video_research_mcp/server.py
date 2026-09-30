@@ -25,6 +25,7 @@ from .tools.infra import infra_server
 from .tools.youtube import youtube_server
 from .tools.knowledge import knowledge_server
 from .tools.media import media_server
+from .tools.jobs import jobs_server
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,7 @@ app.mount(infra_server)
 app.mount(youtube_server)
 app.mount(knowledge_server)
 app.mount(media_server)
+app.mount(jobs_server)
 
 
 def main() -> None:

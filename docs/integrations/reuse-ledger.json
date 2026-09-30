@@ -1287,7 +1287,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_core.py",
-          "target_sha256": "918b46340fca64034ef611550d390d571ae2fe37b0cf3489b904d9ebc037b5b9"
+          "target_sha256": "618e482c8d5d83140eda6fec5979c38aeded7c825cb02f0a1a406e199eff7f26"
         }
       ]
     },
@@ -1375,10 +1375,31 @@
       "component": "oxbshw/watch-skill@f1317c8fe64744a606c31867b05fbbe3144268c6",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/video_jobs.py",
+          "target_sha256": "78e0386e473204dfb44779d57f6f2973b8d9e90bf9cc3ab30315cc290012fe90",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_batch.py",
+          "target_sha256": "1d0e4abb94fb8aa6108842aaf3aee4b2a2565e5daa3e9c8483bb1f2c0cdcb320",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/job_execution.py",
+          "target_sha256": "341996f98443b8850dfae523b953cc7719df84821e853af07a99cd5a7e22463c",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/jobs.py",
+          "target_sha256": "bc50d461db9df2c3f4c7764711993d36138a1f4cda7a36555be4650f09f56c54",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        }
+      ]
     },
     {
       "unit_key": "direct.budgets",
@@ -1398,7 +1419,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/client.py",
-          "target_sha256": "37b9c70d112509abc5f92c22eaa2c840e915fc92c4f2c1e82d3826f484545362"
+          "target_sha256": "4d0ed23945d4195d99b290473da06fe075076a1eb3b87167e3f64c54c44c19ba"
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
@@ -1959,10 +1980,61 @@
       "component": "langchain-ai/deepagents@1756bbe1eb348e20b925598ed49665b0d34b4b2d",
       "audited_reuse_mode": "reimplement",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/job_store.py",
+          "target_sha256": "63772de768c36058529f7e3cfed23c99da16d130ac4ed955b57752f857056e35",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_jobs.py",
+          "target_sha256": "43a13a10b25882e38c79df5599d0d68ca33334f8867509230f227016acfb2766",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_operations.py",
+          "target_sha256": "ec2ab7fb271dbb9cf88c64c419dcd85bec6440a6fc3965fe2a5c27e4b1786cb1",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_poll.py",
+          "target_sha256": "625611fb60ebc70bbf94c0c2c7de3a633a36ab81023a6a09aa25fcb178eb006e",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/research_web.py",
+          "target_sha256": "4434973da04c9c10ea08ecaa1c527688895816aa31a36facd59eb9e2bca77955",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/job_store.py",
+          "target_sha256": "63772de768c36058529f7e3cfed23c99da16d130ac4ed955b57752f857056e35",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
+          "target_sha256": "3efe1b6907292a66bee2452e169cc1fa739b322e692aa66f53783744c87c5cb7",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
+          "target_sha256": "30f5d40eebcebbc76364dbf9d10448eb35efa1ba366c2fd164be16c8cc2f8a69",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
+          "target_sha256": "9f51b5e075918dd29809e478c6f455756a8bce168fb18a62ad1813dc070065d3",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
+          "target_sha256": "9d3d2cb84b5460710b913247c961a4684e6f351e5b9878fb7343c44589001c40",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        }
+      ]
     },
     {
       "unit_key": "adj_corpus_retrieval",
@@ -2343,10 +2415,95 @@
       "component": "Galbaz1/video-research-mcp@000434257e09dfd4eef93546442de2d6c597a53d",
       "audited_reuse_mode": "evaluate-and-adapt",
       "permitted_route": "own-source",
-      "adoption": "not-adopted",
-      "transfers": [],
+      "adoption": "adopted",
+      "transfers": [
+        {
+          "source_path": "src/video_research_mcp/client.py",
+          "source_sha256": "5fca0719a65e89e244b097b1922d735499f147141a5a01b2afde26d733357852",
+          "source_revision": "000434257e09dfd4eef93546442de2d6c597a53d",
+          "excerpts": {
+            "_interaction_input": {
+              "sha256": "dc3962cea4b26bb682f01dd344934e393fab47f5b524c81ce3d0288c9fa3f80a",
+              "first_line": 35,
+              "last_line": 91
+            },
+            "interact": {
+              "sha256": "58dc0248f626ea72fdaf01b17992d4484e29c2bdc7b7fc181ddab8549e557f54",
+              "first_line": 153,
+              "last_line": 190
+            }
+          },
+          "target_path": "tests/test_interactions_compatibility.py",
+          "target_sha256": "24f35128bbf4f461bcdfec94b45aafec9defc956f04498f38a349a3a54a7b9d5",
+          "license": "MIT",
+          "license_source": "Galbaz1/video-research-mcp@000434257e09dfd4eef93546442de2d6c597a53d:LICENSE",
+          "license_text": "MIT License",
+          "copyright": "Copyright (c) 2026 Fausto Albers",
+          "change_notice": "Changes remove MCP decorators and add isolated\nmock fixtures; no experimental implementation replaces the production route.",
+          "commercial_redistribution": true,
+          "scope": "Test-only exact bodies; production transfers empty"
+        },
+        {
+          "source_path": "src/video_research_mcp/persistence.py",
+          "source_sha256": "e36a433e21b6b8297461a25ce786c586eb1e9d552927724f13ad3c118bdd589b",
+          "source_revision": "000434257e09dfd4eef93546442de2d6c597a53d",
+          "excerpts": {
+            "_content_to_dict": {
+              "sha256": "1659ce2c5b936fe1edde1ac3ea69bccdbfee7ee66ad76aedd0b2336081756607",
+              "first_line": 146,
+              "last_line": 161
+            },
+            "_dict_to_content": {
+              "sha256": "b55380a9a2bff911bea9794d6ce4269dc31f187457627ed99d561e6092a947a1",
+              "first_line": 164,
+              "last_line": 180
+            }
+          },
+          "target_path": "tests/test_interactions_compatibility.py",
+          "target_sha256": "24f35128bbf4f461bcdfec94b45aafec9defc956f04498f38a349a3a54a7b9d5",
+          "license": "MIT",
+          "license_source": "Galbaz1/video-research-mcp@000434257e09dfd4eef93546442de2d6c597a53d:LICENSE",
+          "license_text": "MIT License",
+          "copyright": "Copyright (c) 2026 Fausto Albers",
+          "change_notice": "Changes remove MCP decorators and add isolated\nmock fixtures; no experimental implementation replaces the production route.",
+          "commercial_redistribution": true,
+          "scope": "Test-only exact bodies; production transfers empty"
+        },
+        {
+          "source_path": "src/video_research_mcp/tools/video.py",
+          "source_sha256": "c4cbee1eaaa23827763340e82304ba27daf1a77146672a9b7fe58d1eb1b62cb5",
+          "source_revision": "000434257e09dfd4eef93546442de2d6c597a53d",
+          "excerpts": {
+            "video_continue_session": {
+              "sha256": "873f34f211a6fb1940e81683ce57aca3d7a7bdca006294a97f6180dbb8d3638a",
+              "first_line": 433,
+              "last_line": 497
+            }
+          },
+          "target_path": "tests/test_interactions_compatibility.py",
+          "target_sha256": "24f35128bbf4f461bcdfec94b45aafec9defc956f04498f38a349a3a54a7b9d5",
+          "license": "MIT",
+          "license_source": "Galbaz1/video-research-mcp@000434257e09dfd4eef93546442de2d6c597a53d:LICENSE",
+          "license_text": "MIT License",
+          "copyright": "Copyright (c) 2026 Fausto Albers",
+          "change_notice": "Changes remove MCP decorators and add isolated\nmock fixtures; no experimental implementation replaces the production route.",
+          "commercial_redistribution": true,
+          "scope": "Test-only exact bodies; production transfers empty"
+        }
+      ],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/INTERACTIONS_EVALUATION.md",
+          "target_sha256": "f966b16f6b3eeb79d671e500d69b1bda65de0b6a1044e3a832184779bcef6aaa",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        },
+        {
+          "target_path": "tests/test_interactions_compatibility.py",
+          "target_sha256": "24f35128bbf4f461bcdfec94b45aafec9defc956f04498f38a349a3a54a7b9d5",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+        }
+      ]
     },
     {
       "unit_key": "own.analysis-cache-contract",
@@ -2371,7 +2528,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_core.py",
-          "target_sha256": "918b46340fca64034ef611550d390d571ae2fe37b0cf3489b904d9ebc037b5b9"
+          "target_sha256": "618e482c8d5d83140eda6fec5979c38aeded7c825cb02f0a1a406e199eff7f26"
         }
       ]
     },
@@ -2435,7 +2592,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "dbc6eb6df2aa70c0708b678b082cdc133d77babd9811194fd4d9f9afafe56111",
+          "target_sha256": "287bdf9ddbed0c96bfebde2e87241c5120570613f65a1b64fb6a8f1487f1c08f",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2450,7 +2607,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "709c0ebcf9001013980b14389b97d7ff0239fa05e61e6462d309ec0e23cbf96f",
+          "target_sha256": "47e042a668dab3e75ddea3cb1e3f64f4b8f99ad9de731b069fcaaec28aa048b7",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {

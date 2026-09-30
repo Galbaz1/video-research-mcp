@@ -11,6 +11,12 @@ source revisions, selected routes, blocked operations and locked Python dependen
 receipts are recorded in `docs/integrations/reuse-ledger.json`. A planned route is
 not an imported-file receipt.
 
+Own MIT test excerpts from experiment `000434257e09dfd4eef93546442de2d6c597a53d`
+retain the original function bodies. Changes remove MCP decorators and add isolated
+mock fixtures; no experimental implementation replaces the production route.
+The root MIT License and Copyright (c) 2026 Fausto Albers apply. Exact source-file
+and excerpt hashes appear in the reuse ledger.
+
 Dependencies are resolved as separate packages from the three exact `uv.lock`
 files. Their grants remain applicable to those packages; this project's MIT
 license does not replace them. Commercial service, generated-output, recording,

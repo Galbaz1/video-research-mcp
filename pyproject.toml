@@ -57,6 +57,9 @@ packages = ["src/video_research_mcp"]
 "THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
 "docs/integrations/reuse-ledger.json" = "reuse-ledger.json"
 
+[tool.hatch.build.targets.sdist]
+exclude = ["packages/video-explainer-mcp/src/video_explainer_mcp/job_store.py"]
+
 [tool.hatch.build.targets.sdist.force-include]
 "THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
 "docs/integrations/reuse-ledger.json" = "docs/integrations/reuse-ledger.json"

@@ -126,9 +126,10 @@ async def _optional_storage(
 ) -> None:
     """Bounded comparison calls omit optional external enrichment and writes."""
     from ..execution_budget import current_budget
+    from ..job_execution import single_submission
     from ..weaviate_store import extract_and_store_graph, store_video_analysis
 
-    if current_budget() is None:
+    if current_budget() is None and not single_submission.get():
         await store_video_analysis(
             result,
             content_id,

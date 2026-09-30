@@ -83,7 +83,11 @@ The frozen evaluation protocol and stronger root security boundaries now have
 exact independently authored file-hash receipts for `adj_research_eval`,
 `adj_video_eval`, `direct.security`, `own.strict-evidence-semantics` and
 `adj_evidence_packet`, `qwen_reuse_manifest`, `direct.providers`,
-`own.analysis-cache-contract`, `direct.identity` and `direct.budgets`.
+`own.analysis-cache-contract`, `direct.identity`, `direct.budgets`,
+`adj_durable_jobs` and `direct.batch_jobs`. The native Interactions evaluation
+also has exact test/doc receipts under `own.interactions-compatibility`; three
+own MIT source files supply five frozen test excerpts, with source/fragment and
+target hashes, copyright and change notices. Production transfers remain empty.
 The source/claim/production packet, controller-supplied
 coverage and native/text crop extension now have exact own-source file receipts.
 Offline doctor, atomic install/checkpoint/restore and the disabled Qwen capability
@@ -91,7 +95,7 @@ manifest also have exact implementation receipts. No managed binary or external
 capability runtime is bundled or activated.
 Their pinned external sources remain
 design/evidence references. No upstream implementation, model weight, source
-asset or optional runtime was copied or imported. Held-out fixture rights and
+asset or optional runtime was copied or imported from an external project. Held-out fixture rights and
 provider/model terms stay separate from source-code reuse clearance.
 
 A later edit to a receipted implementation must refresh its target hash before

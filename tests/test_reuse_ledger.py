@@ -25,7 +25,9 @@ def receipt_root(tmp_path):
         "packages/video-explainer-mcp/uv.lock",
     ]
     data = json.loads((ROOT / LEDGER).read_text())
-    paths += [receipt["target_path"] for unit in data["units"] for receipt in unit["implementations"]]
+    paths += [
+        receipt["target_path"] for unit in data["units"] for receipt in unit["implementations"]
+    ]
     for name in paths:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -63,12 +65,28 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     assert len(data["dependency_locks"]) == 3
     assert len(data["dependency_packages"]) == 114
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
-        "adj_research_eval", "adj_video_eval", "direct.security",
-        "own.strict-evidence-semantics", "adj_evidence_packet",
-        "qwen_reuse_manifest", "direct.providers",
-        "own.analysis-cache-contract", "direct.identity", "direct.budgets",
+        "adj_research_eval",
+        "adj_video_eval",
+        "direct.security",
+        "own.strict-evidence-semantics",
+        "adj_evidence_packet",
+        "qwen_reuse_manifest",
+        "direct.providers",
+        "own.analysis-cache-contract",
+        "direct.identity",
+        "direct.budgets",
+        "own.interactions-compatibility",
+        "adj_durable_jobs",
+        "direct.batch_jobs",
     }
-    assert all(not u["transfers"] and not u["imports"] for u in data["units"])
+    assert all(not u["imports"] for u in data["units"])
+    transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]
+    assert len(transfers) == 3
+    assert all(
+        u["unit_key"] == "own.interactions-compatibility"
+        and receipt["scope"] == "Test-only exact bodies; production transfers empty"
+        for u, receipt in transfers
+    )
     assert data["bundled_assets"] == []
     assert data["optional_runtime_receipts"] == []
 
@@ -150,7 +168,12 @@ def test_operational_block_cannot_be_omitted(receipt_root, ledger):
 def test_verified_dependency_grant_must_be_distributed_in_full(receipt_root, ledger):
     """GIVEN a BSD title/copyright without its terms THEN the notice is incomplete."""
     path = receipt_root / "THIRD_PARTY_NOTICES.md"
-    path.write_text("Copyright (c) 2025, Weaviate\nBSD 3-Clause License\n")
+    grant = next(
+        item for item in ledger["dependency_packages"] if item["name"] == "weaviate-agents"
+    )["source_grant"]["text"].strip()
+    notices = path.read_text()
+    assert grant in notices
+    path.write_text(notices.replace(grant, "Copyright (c) 2025, Weaviate\nBSD 3-Clause License"))
     with pytest.raises(ValueError, match="Missing full verified dependency grant"):
         validate_ledger(receipt_root, ledger)
 

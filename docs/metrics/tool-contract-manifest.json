@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T12:30:41.484881+00:00",
-  "tool_count": 35,
+  "generated_at": "2026-09-30T13:35:47.049815+00:00",
+  "tool_count": 37,
   "tools": [
     {
       "name": "content_analyze",
@@ -548,6 +548,66 @@
             "description": "Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)"
           }
         },
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "job_cancel",
+      "description": "Cancel queued video work or request its owner stop at the next checkpoint.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "job_id": {
+            "description": "Durable video batch ID",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "job_status",
+      "description": "Read retained job identity, outcomes and current byte attestation.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "job_id": {
+            "description": "Recorded durable job ID",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
         "type": "object"
       },
       "output_schema": {
@@ -1562,6 +1622,18 @@
             "default": "",
             "description": "Report structure/format instructions (e.g. 'executive summary + data tables')",
             "type": "string"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Resume a recorded launch without resubmitting provider work"
           }
         },
         "required": [
@@ -1626,6 +1698,18 @@
             "maxLength": 5000,
             "minLength": 3,
             "type": "string"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Resume a recorded follow-up without repeating inference"
           }
         },
         "required": [
@@ -1866,6 +1950,25 @@
             "default": 20,
             "description": "Maximum files to process",
             "maximum": 50,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Resume this exact batch without repeating completed or ambiguous submissions"
+          },
+          "max_concurrency": {
+            "default": 3,
+            "description": "Maximum concurrent item submissions",
+            "maximum": 3,
             "minimum": 1,
             "type": "integer"
           }
