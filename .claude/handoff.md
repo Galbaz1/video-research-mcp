@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T18:48+02:00
+date: 2026-09-30T20:31+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,8 +21,10 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted source is `e593770ba1623787435cceee78ea6e587f434800`
-(inspectable native images/video, decoded PTS and bounded source views), following
+Current accepted feature source is `6dcf3444e68823f7b075001d6717d875043f2ed4`
+(local/YouTube window analysis and canonical upload recovery), following
+`e593770ba1623787435cceee78ea6e587f434800`
+(inspectable native images/video, decoded PTS and bounded source views),
 `c1d80736cb0cbbd0ec586d9d62a1eb293fda8927`
 (bounded media acquisition, channel discovery and exact-byte asset lifecycle), and `b0e78163f8f73dcb2109bb0e00eece995a8be0b5` (durable research/batch/render jobs
 and Interactions evaluation) and `cb2699f88e8b86deffac4d71634c58ab74ddddf5`
@@ -234,18 +236,60 @@ corrected 1548-test suite. The archive harness initially counted uv's hidden `.g
 as an archive; exact archive selection corrected this without rebuilding source.
 All initial construction, guard, serialization and RED regressions remain evidence.
 
-Current claimed leaf: **`vrm-0e8.3.1`**, local windows, long-video sampling and
-retry-safe upload recovery. Both prerequisites (`.2.4`, `.3.2`) are closed and fresh
-Beads readiness precedes the claim. Read the existing explicit budget/window/cache
-behavior before adding another path. Compare own source `e326fde`/`bd980e8` against
-current code and reapply focused behavior, preserving two dirty originals. Keep
-uploaded URI/name on processing timeout and reuse it on retry; preserve complete
-content/settings/window cache identities. Mocked SDK requests must carry actual
-window/FPS metadata. Long-duration windows must be contiguous and continuation
-must retain covered/source/model/schema/settings while budget stops remain partial.
-`.3.3` and `.3.6` are also now dependency-ready. `.2.5` remains blocked by `.6.7`
-and `.7.7`. Root owns common schemas/server/config/ledger; assign concrete disjoint
-ownership before implementation. No new provider/upload authority follows readiness.
+Window/upload reconciliation `vrm-0e8.3.1` is closed at `6dcf344`. Exact 28-file
+Git blob/tree receipt: `local-windowing/group-receipt.committed.json`, SHA256
+`34805955ea99272937065332d4be1a0374bc16fc717b5934b4c5a8bab1314202`.
+Local offsets normalize to milliseconds with typed STATIC VideoMetadata, original
+source timestamp instructions and window/FPS cache isolation. Additive
+`video_analyze_windows` handles local bytes or a canonical YouTube locator, freezes
+sampling/runtime/account/schema and splits at most 256 contiguous half-open windows.
+Count and generation each consume calls/windows/frames; clean budget stops retain
+partial progress and one deterministic child. Interrupted dispatch stays unknown.
+File API resources persist URI/name before waits and revalidate exact identity;
+processing timeout and unknown identity never authorize another upload.
+
+One original 25-file review found two P2s. Owner regressions repaired post-count
+cancellation/lease loss (one count, zero generation; fresh-owner row unchanged) and
+wrong/missing File API name/URI (same unknown resource through repeated GETs, one
+upload). No second independent repaired-source PASS. Root persisted the returned
+original probe code/output after review, without rerunning it. Original RED and
+private harness/fixture failures remain in exact scoped receipts.
+
+Final 1657 root tests, 71 affected integration checks, Ruff, protected 34/15/2
+contracts compatible with 50/16/2, three locks/five protected files/original two
+unrelated dirty files, 85 units/74 packages, 18 adopted/114 locked dependencies,
+nine security and five offline entrypoints pass. Fresh wheel/sdist contain all139
+runtime Python files byte-for-byte. Repaired source and private installed wheel
+each pass actual two-process MCP discovery/restart:50 schemas,14 calls,13 mocked
+SDK transmissions and zero guarded network/foreign-process attempts. Initial final
+suite1654pass/3 stale test expectations was repaired at the central policy patch,
+exact18-unit fixture and valid SDK File identity; focused71 and final1657 pass.
+A wrong no-isolation build option lacked root-venv hatchling; the standard cached
+offline isolated declared backend succeeded, without dependencies/locks changing.
+Private version0.7.1; no provider quality, human, comparison or registry release.
+File API preparation is excluded from five inference/count limits; resource-lifetime
+logical counts are separate, while wire retries/hard wallclock/body freshness and
+charges remain unknown. Python guards are not OS-wide egress enforcement.
+
+Current claimed leaf: **`vrm-0e8.3.3`**, image/frame crop, annotation, cutout, OCR,
+conversion and durable exports; native prerequisite `.3.2` is closed. Fresh readiness
+preceded the claim. Pinned Qwen seven bodies and concrete imports are now read back:
+`image-frame-preparation/receipt.frozen.json`, SHA256
+`c3b4d7227bf643bda6395044a1f31377cc7d15b1bee6f2ead1ef85b7b5dfb4b8`;
+behavior notes SHA256`9f8e04f66f154f320355b7a1306fe215b7084afe3508e5c1d97b9f4abfea55dd`.
+Crop has pixel and normalized coordinates; annotation includes boxes/circles/arrows/
+badges/text and bounded close-ups. Cutout has explicit rings and seeded background
+flood; preserve actual alpha masks, coverage/border/component/hole warnings, without
+claiming simplified polygon replay preserves holes. OCR includes bounded localization.
+Qwen save_view exports images, not encoded clips; programme clip scope is separate.
+No upstream path/overwrite/time labels/runtime bodies may replace accepted fences,
+measured PTS, bounded processes and immutable source/artifact hashes. Add durable
+manifests and readback; reuse media_snapshot/media_frames/native transport first.
+Root owns registration/config/dependencies/ledger; assign concrete exclusive paths.
+Pillow/Tesseract/native Vision were not installed or executed in the read-only prep.
+Missing dependencies are honest; positive optional-runtime acceptance needs actual
+verified entry points. `.3.6` and other ready leaves remain eligible; `.2.5` awaits
+`.6.7` and `.7.7`. No provider/upload/publication authority follows readiness.
 
 The completed transcription/PDF/Word/mail work stays outside scope. Human development
 and independent held-out audits remain pending at final comparison under the user's
