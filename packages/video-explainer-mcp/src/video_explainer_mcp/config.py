@@ -35,7 +35,7 @@ class ServerConfig(BaseModel):
     @field_validator("tts_provider")
     @classmethod
     def validate_tts_provider(cls, value: str) -> str:
-        allowed = {"mock", "elevenlabs", "openai", "gemini", "edge"}
+        allowed = {"mock", "elevenlabs", "edge"}
         v = value.strip().lower()
         if v not in allowed:
             raise ValueError(f"Invalid TTS provider '{value}'. Allowed: {', '.join(sorted(allowed))}")

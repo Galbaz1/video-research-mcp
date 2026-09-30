@@ -9,6 +9,7 @@ from fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
+from ..config import get_config
 from ..errors import make_tool_error
 from ..runner import run_cli
 from ..types import ProjectId, RefinePhase
@@ -26,13 +27,16 @@ async def explainer_refine(
 
     Args:
         project_id: Target project.
-        phase: One of: script, narration, scenes.
+        phase: Script refinement.
 
     Returns:
         Dict with success status and refinement details.
     """
     try:
-        result = await run_cli("refine", project_id, "--phase", phase)
+        result = await run_cli(
+            "refine", project_id, "--phase", phase,
+            "--projects-dir", str(get_config().resolved_projects_path),
+        )
         return {
             "project_id": project_id,
             "phase": phase,

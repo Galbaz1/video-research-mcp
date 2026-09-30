@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from video_explainer_mcp.config import ServerConfig
 from video_explainer_mcp.tools.project import (
     explainer_create,
     explainer_inject,
@@ -19,10 +20,10 @@ pytestmark = pytest.mark.unit
 class TestExplainerCreate:
     """Tests for explainer_create tool."""
 
-    async def test_not_configured(self, monkeypatch):
-        """Returns error when EXPLAINER_PATH is not set."""
-        monkeypatch.delenv("EXPLAINER_PATH", raising=False)
-        result = await explainer_create(project_id="test")
+    async def test_not_configured(self):
+        """Returns error when no upstream checkout is configured."""
+        with patch("video_explainer_mcp.tools.project.get_config", return_value=ServerConfig()):
+            result = await explainer_create(project_id="test")
         assert "error" in result
 
     async def test_success(self, monkeypatch, tmp_path):
@@ -111,10 +112,10 @@ class TestExplainerStatus:
         result = await explainer_status(project_id="nope")
         assert "error" in result
 
-    async def test_not_configured(self, monkeypatch):
-        """Returns error when EXPLAINER_PATH is not set."""
-        monkeypatch.delenv("EXPLAINER_PATH", raising=False)
-        result = await explainer_status(project_id="test")
+    async def test_not_configured(self):
+        """Returns error when no upstream checkout is configured."""
+        with patch("video_explainer_mcp.tools.project.get_config", return_value=ServerConfig()):
+            result = await explainer_status(project_id="test")
         assert "error" in result
 
 
@@ -130,10 +131,10 @@ class TestExplainerList:
         result = await explainer_list()
         assert result["total"] == 2
 
-    async def test_not_configured(self, monkeypatch):
+    async def test_not_configured(self):
         """Returns error when not configured."""
-        monkeypatch.delenv("EXPLAINER_PATH", raising=False)
-        result = await explainer_list()
+        with patch("video_explainer_mcp.tools.project.get_config", return_value=ServerConfig()):
+            result = await explainer_list()
         assert "error" in result
 
 

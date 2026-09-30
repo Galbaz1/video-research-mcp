@@ -66,11 +66,15 @@ not the projects directory. The CLI runs directly without a shell, receives
 `--projects-dir`, and inherits provider credentials while recursive Claude Code
 guard variables are removed from its child environment.
 
-Wrapper TTS selectors are `mock`, `elevenlabs`, `openai`, `gemini`, and `edge`.
+Wrapper TTS selectors are `mock`, `elevenlabs`, and `edge`.
 The default `mock` avoids paid TTS; other generation steps can still call paid
 providers. A selector is usable only if the upstream CLI supports it and its
 credentials are configured. Updating this wrapper does not update that checkout
 or add upstream provider support.
+
+The wrapper exposes `script` refinement and render presets `720p`, `1080p`, and
+`4k`. These choices match the supported upstream CLI contract. Pipeline steps
+remain `script`, `narration`, `scenes`, `voiceover`, and `storyboard`.
 
 ## First project and render
 

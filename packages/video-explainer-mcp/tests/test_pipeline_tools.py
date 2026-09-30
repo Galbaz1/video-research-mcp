@@ -6,6 +6,7 @@ import asyncio
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from fastmcp.exceptions import ValidationError
 
 from video_explainer_mcp.jobs import JobStatus, clear_jobs, get_job
 from video_explainer_mcp.tools.pipeline import (
@@ -15,6 +16,7 @@ from video_explainer_mcp.tools.pipeline import (
     explainer_render_start,
     explainer_short,
     explainer_step,
+    pipeline_server,
 )
 
 pytestmark = pytest.mark.unit
@@ -81,33 +83,39 @@ class TestExplainerGenerate:
 class TestExplainerStep:
     """Tests for explainer_step tool."""
 
-    async def test_single_step(self, monkeypatch):
-        """Runs a single step."""
+    @pytest.mark.parametrize("step", ["script", "narration", "scenes", "voiceover", "storyboard"])
+    async def test_single_step(self, monkeypatch, step):
+        """Keep every supported pipeline step accepted and forwarded unchanged."""
         monkeypatch.setenv("EXPLAINER_PATH", "/fake")
-        with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
-            result = await explainer_step(project_id="test", step="script")
-        assert result["step"] == "script"
+        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", "mock")
+        tool = await pipeline_server.get_tool("explainer_step")
+        with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()) as mock_cli:
+            reply = await tool.run({"project_id": "test", "step": step})
+        result = reply.structured_content
+        assert result["step"] == step
         assert result["success"] is True
+        flags = ["--mock"] if step == "voiceover" else []
+        mock_cli.assert_awaited_once_with(step, "test", *flags)
 
-    async def test_tts_provider_args(self, monkeypatch):
-        """Passes --provider for voiceover step."""
+    @pytest.mark.parametrize("provider", ["mock", "elevenlabs", "edge"])
+    async def test_tts_provider_args(self, monkeypatch, provider):
+        """Forward only the supported voiceover provider switches."""
         monkeypatch.setenv("EXPLAINER_PATH", "/fake")
-        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", "elevenlabs")
+        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", provider)
         with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()) as mock_cli:
             await explainer_step(project_id="test", step="voiceover")
-        call_args = mock_cli.call_args.args
-        assert "--provider" in call_args
-        assert "elevenlabs" in call_args
+        flags = ["--mock"] if provider == "mock" else ["--provider", provider]
+        mock_cli.assert_awaited_once_with("voiceover", "test", *flags)
 
-    async def test_tts_args_generate(self, monkeypatch):
-        """Passes --voice-provider for generate subcommand."""
+    @pytest.mark.parametrize("provider", ["mock", "elevenlabs", "edge"])
+    async def test_tts_args_generate(self, monkeypatch, provider):
+        """Forward only the supported pipeline voice provider switches."""
         monkeypatch.setenv("EXPLAINER_PATH", "/fake")
-        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", "elevenlabs")
+        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", provider)
         with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()) as mock_cli:
             await explainer_generate(project_id="test")
-        call_args = mock_cli.call_args.args
-        assert "--voice-provider" in call_args
-        assert "elevenlabs" in call_args
+        flags = ["--mock"] if provider == "mock" else ["--voice-provider", provider]
+        mock_cli.assert_awaited_once_with("generate", "test", *flags)
 
     async def test_tts_args_script_no_tts(self, monkeypatch):
         """Script step does not receive TTS args."""
@@ -124,8 +132,9 @@ class TestExplainerStep:
 class TestExplainerRender:
     """Tests for explainer_render tool."""
 
-    async def test_blocking_render(self, monkeypatch, tmp_path):
-        """Blocking render completes and finds output."""
+    @pytest.mark.parametrize("resolution", ["720p", "1080p", "4k"])
+    async def test_blocking_render(self, monkeypatch, tmp_path, resolution):
+        """Forward supported resolutions unchanged and require a fresh output."""
         projects = tmp_path / "projects"
         project = projects / "test"
         output = project / "output"
@@ -137,10 +146,24 @@ class TestExplainerRender:
         async def render(*args, **kwargs):
             (output / "video.mp4").write_bytes(b"rendered-video")
             return _mock_cli_result()
-        with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render):
-            result = await explainer_render(project_id="test", resolution="1080p")
+        tool = await pipeline_server.get_tool("explainer_render")
+        with patch("video_explainer_mcp.tools.pipeline.run_cli", side_effect=render) as mock_cli:
+            reply = await tool.run({"project_id": "test", "resolution": resolution})
+        result = reply.structured_content
         assert result["success"] is True
         assert result["output_file"].endswith(".mp4")
+        mock_cli.assert_awaited_once_with(
+            "render", "test", "-r", resolution, "--fast", timeout=1800
+        )
+
+    @pytest.mark.parametrize("tool_name", ["explainer_render", "explainer_render_start"])
+    async def test_unsupported_resolution(self, tool_name):
+        """Reject unsupported render presets before blocking or background work starts."""
+        tool = await pipeline_server.get_tool(tool_name)
+        with patch("video_explainer_mcp.tools.pipeline._run_render") as mock_render:
+            with pytest.raises(ValidationError):
+                await tool.run({"project_id": "test", "resolution": "360p"})
+        mock_render.assert_not_awaited()
 
     async def test_fast_flag(self, monkeypatch):
         """Passes --fast by default."""

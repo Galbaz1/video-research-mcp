@@ -21,6 +21,10 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   include their rewritten READMEs.
 - Removed model-specific claims from package descriptions and server discovery
   instructions; configured model selection remains the runtime authority.
+- Repaired the upstream renderer submodule's public clone URL and pinned revision.
+  Aligned companion refinement, rendering, and TTS selectors with that CLI.
+  The core PyPI 0.7.1 archives were published before this source-only and companion
+  follow-up; their immutable files remain unchanged.
 
 ### Security
 

@@ -9,10 +9,10 @@ from pydantic import Field
 # ── Literal enums ────────────────────────────────────────────────────────────
 
 PipelineStep = Literal["script", "narration", "scenes", "voiceover", "storyboard"]
-RefinePhase = Literal["script", "narration", "scenes"]
+RefinePhase = Literal["script"]
 SoundAction = Literal["analyze", "generate"]
-RenderResolution = Literal["360p", "720p", "1080p", "4k"]
-TtsProvider = Literal["mock", "elevenlabs", "openai", "gemini", "edge"]
+RenderResolution = Literal["720p", "1080p", "4k"]
+TtsProvider = Literal["mock", "elevenlabs", "edge"]
 
 # ── Annotated aliases ────────────────────────────────────────────────────────
 

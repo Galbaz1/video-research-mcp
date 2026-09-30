@@ -50,10 +50,23 @@ class TestServerConfig:
         assert cfg.timeout == 600
         assert cfg.render_timeout == 1800
 
-    def test_invalid_tts_provider(self):
-        """Invalid TTS provider raises ValueError."""
+    @pytest.mark.parametrize("provider", ["invalid", "openai", "gemini"])
+    def test_invalid_tts_provider(self, provider):
+        """Reject providers unsupported by the upstream voiceover CLI."""
         with pytest.raises(ValueError, match="Invalid TTS provider"):
-            ServerConfig(tts_provider="invalid")
+            ServerConfig(tts_provider=provider)
+
+    @pytest.mark.parametrize("provider", ["mock", "elevenlabs", "edge"])
+    def test_supported_tts_provider(self, provider):
+        """Keep supported provider values normalized for CLI forwarding."""
+        assert ServerConfig(tts_provider=f" {provider.upper()} ").tts_provider == provider
+
+    @pytest.mark.parametrize("provider", ["openai", "gemini"])
+    def test_unsupported_tts_provider_from_env(self, monkeypatch, provider):
+        """Reject unsupported environment configuration before spawning the CLI."""
+        monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", provider)
+        with pytest.raises(ValueError, match="Invalid TTS provider"):
+            ServerConfig.from_env()
 
     def test_invalid_timeout(self):
         """Non-positive timeout raises ValueError."""
@@ -89,5 +102,5 @@ class TestGetConfig:
     def test_update_config(self, monkeypatch, tmp_path):
         """update_config patches live config."""
         monkeypatch.setattr("video_explainer_mcp.dotenv.DEFAULT_ENV_PATH", tmp_path / "nope.env")
-        updated = update_config(tts_provider="openai")
-        assert updated.tts_provider == "openai"
+        updated = update_config(tts_provider="edge")
+        assert updated.tts_provider == "edge"
