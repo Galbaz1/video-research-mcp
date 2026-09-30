@@ -9,7 +9,9 @@
     "bin",
     "commands",
     "skills",
-    "agents"
+    "agents",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/integrations/reuse-ledger.json"
   ],
   "engines": {
     "node": ">=22"
