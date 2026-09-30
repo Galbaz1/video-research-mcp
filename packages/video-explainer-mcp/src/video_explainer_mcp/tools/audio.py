@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 audio_server = FastMCP("audio")
 
 
-@audio_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+@audio_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_sound(
     project_id: ProjectId,
     action: Annotated[SoundAction, Field(description="'analyze' scenes or 'generate' sound effects")],
@@ -45,7 +45,7 @@ async def explainer_sound(
         return make_tool_error(exc)
 
 
-@audio_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
+@audio_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
 async def explainer_music(
     project_id: ProjectId,
 ) -> dict:

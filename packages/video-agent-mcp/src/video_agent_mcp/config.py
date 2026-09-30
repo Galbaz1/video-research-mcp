@@ -14,10 +14,11 @@ class ServerConfig(BaseModel):
 
     explainer_path: str = Field(
         default="",
-        description="Root directory containing explainer projects",
+        description="Root directory of the upstream video_explainer checkout",
     )
+    projects_path: str = Field(default="", description="Override the explainer projects directory")
     agent_model: str = Field(
-        default="claude-sonnet-4-5-20250514",
+        default="claude-sonnet-5-5",
         description="Claude model for agent queries",
     )
     agent_concurrency: int = Field(
@@ -30,7 +31,8 @@ class ServerConfig(BaseModel):
     )
     agent_max_turns: int = Field(
         default=1,
-        description="Max turns per agent query (1 = single response, no tools)",
+        ge=1,
+        description="Max turns per agent query (tools are disabled)",
     )
 
     @field_validator("agent_concurrency")
@@ -52,7 +54,8 @@ class ServerConfig(BaseModel):
         """Build config from environment variables."""
         return cls(
             explainer_path=os.getenv("EXPLAINER_PATH", ""),
-            agent_model=os.getenv("AGENT_MODEL", "claude-sonnet-4-5-20250514"),
+            projects_path=os.getenv("EXPLAINER_PROJECTS_PATH", ""),
+            agent_model=os.getenv("AGENT_MODEL", "claude-sonnet-5-5"),
             agent_concurrency=int(os.getenv("AGENT_CONCURRENCY", "5")),
             agent_timeout=int(os.getenv("AGENT_TIMEOUT", "300")),
             agent_max_turns=int(os.getenv("AGENT_MAX_TURNS", "1")),
@@ -70,14 +73,16 @@ class ServerConfig(BaseModel):
         Raises:
             FileNotFoundError: If EXPLAINER_PATH is unset or project doesn't exist.
         """
-        if not self.explainer_path:
+        if not self.explainer_path and not self.projects_path:
             raise FileNotFoundError(
-                "EXPLAINER_PATH not set — configure it to point at the explainer projects root"
+                "Set EXPLAINER_PATH to the upstream checkout or EXPLAINER_PROJECTS_PATH to its projects"
             )
         if not project_id.strip():
             raise FileNotFoundError("Project not found: project_id cannot be empty")
 
-        explainer_root = Path(self.explainer_path).expanduser().resolve()
+        explainer_root = (
+            Path(self.projects_path) if self.projects_path else Path(self.explainer_path) / "projects"
+        ).expanduser().resolve()
         project_dir = (explainer_root / project_id).resolve()
         try:
             project_dir.relative_to(explainer_root)

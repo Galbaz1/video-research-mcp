@@ -53,7 +53,7 @@ def check_prereqs() -> PrereqReport:
         name="node",
         available=node_path is not None,
         path=node_path or "",
-        message="" if node_path else "Node.js not found — install via 'nvm install 20'",
+        message="" if node_path else "Node.js not found — install the version required by the upstream checkout",
     ))
 
     # FFmpeg

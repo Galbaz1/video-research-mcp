@@ -1,9 +1,10 @@
 [project]
 name = "video-explainer-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for synthesizing explainer videos — wraps prajwal-y/video_explainer CLI"
+readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "Fausto" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -15,8 +16,8 @@ classifiers = [
     "Intended Audience :: Developers",
 ]
 dependencies = [
-    "fastmcp>=3.0.2",
-    "pydantic>=2.0",
+    "fastmcp>=4.0.10,<5",
+    "pydantic>=2.13.5,<3",
 ]
 
 [project.urls]
@@ -25,16 +26,16 @@ Repository = "https://github.com/Galbaz1/video-research-mcp"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=1.0",
-    "ruff>=0.9",
+    "pytest>=9.1.1,<10",
+    "pytest-asyncio>=1.4.0,<2",
+    "ruff>=0.16.9,<0.17",
 ]
 
 [project.scripts]
 video-explainer-mcp = "video_explainer_mcp.server:main"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.32.4,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
@@ -48,3 +49,6 @@ markers = ["unit: fast isolated unit tests (mocked deps)"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

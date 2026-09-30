@@ -23,7 +23,7 @@ def _resolve_cli(cfg: ServerConfig) -> str:
         raise FileNotFoundError(
             "EXPLAINER_PATH not set — configure in ~/.config/video-research-mcp/.env"
         )
-    script = Path(cfg.explainer_path) / ".venv" / "bin" / "video-explainer"
+    script = Path(cfg.explainer_path).expanduser().resolve() / ".venv" / "bin" / "video-explainer"
     if not script.is_file():
         raise FileNotFoundError(
             f"Console script not found: {script}\n"
@@ -71,7 +71,7 @@ async def run_cli(
     if timeout is None:
         timeout = cfg.timeout
     if cwd is None:
-        cwd = cfg.explainer_path or None
+        cwd = str(Path(cfg.explainer_path).expanduser().resolve()) if cfg.explainer_path else None
 
     script = _resolve_cli(cfg)
     cmd = [script, "--projects-dir", str(cfg.resolved_projects_path), *args]
@@ -95,12 +95,12 @@ async def run_cli(
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout
         )
-    except asyncio.TimeoutError:
-        logger.warning("Process timed out after %ds, sending SIGTERM", timeout)
+    except (TimeoutError, asyncio.CancelledError):
+        logger.warning("Process interrupted, sending SIGTERM")
         proc.terminate()
         try:
             await asyncio.wait_for(proc.communicate(), timeout=SIGTERM_GRACE_SECONDS)
-        except asyncio.TimeoutError:
+        except TimeoutError:
             logger.warning("Process did not exit after SIGTERM, sending SIGKILL")
             proc.kill()
             await proc.communicate()

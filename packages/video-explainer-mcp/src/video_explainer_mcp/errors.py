@@ -84,7 +84,7 @@ def categorize_error(error: Exception) -> tuple[ErrorCategory, str]:
         if "node" in combined and "not found" in combined:
             return (
                 ErrorCategory.NODE_NOT_FOUND,
-                "Node.js not found — install Node.js 20+ via nvm",
+                "Node.js not found — install the Node.js version required by the upstream checkout",
             )
         if "tts" in combined or "voice" in combined or "elevenlabs" in combined:
             return (
@@ -106,10 +106,15 @@ def categorize_error(error: Exception) -> tuple[ErrorCategory, str]:
             f"CLI command failed (exit {error.returncode}) — check stderr for details",
         )
 
-    if "timeout" in s or "timed out" in s:
+    if isinstance(error, TimeoutError) or "timeout" in s or "timed out" in s:
         return (
             ErrorCategory.SUBPROCESS_TIMEOUT,
             "Operation timed out — increase timeout or use background render",
+        )
+    if "render exited successfully" in s:
+        return (
+            ErrorCategory.RENDER_FAILED,
+            "CLI reported success but no fresh video was produced — inspect the render output",
         )
     if "no such file" in s or "not found" in s or isinstance(error, FileNotFoundError):
         return (

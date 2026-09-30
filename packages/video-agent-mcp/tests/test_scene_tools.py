@@ -24,7 +24,6 @@ from video_agent_mcp.tools.scenes import (
 )
 from video_agent_mcp.types import AgentResult
 
-
 # ---------------------------------------------------------------------------
 # Helper function tests
 # ---------------------------------------------------------------------------
@@ -279,7 +278,7 @@ class TestAgentGenerateScenes:
     @pytest.mark.asyncio
     async def test_happy_path(self, project_dir, monkeypatch):
         """GIVEN a valid project WHEN generating scenes THEN writes all files."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -311,7 +310,7 @@ class TestAgentGenerateScenes:
     @pytest.mark.asyncio
     async def test_partial_failure(self, project_dir, monkeypatch):
         """GIVEN some scenes fail WHEN generating THEN reports both successes and errors."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -346,7 +345,7 @@ class TestAgentGenerateScenes:
     @pytest.mark.asyncio
     async def test_existing_scenes_without_force(self, project_dir, monkeypatch):
         """GIVEN existing scenes WHEN force=False THEN returns error."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -380,7 +379,7 @@ class TestAgentGenerateSingleScene:
     @pytest.mark.asyncio
     async def test_single_scene_success(self, project_dir, monkeypatch):
         """GIVEN a valid project WHEN generating scene 1 THEN writes the file."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -406,7 +405,7 @@ class TestAgentGenerateSingleScene:
     @pytest.mark.asyncio
     async def test_single_scene_retry_rebuilds_index(self, project_dir, monkeypatch):
         """GIVEN a partial run WHEN retrying one scene THEN index.ts includes retried scene."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -450,7 +449,7 @@ class TestAgentGenerateSingleScene:
     @pytest.mark.asyncio
     async def test_single_scene_out_of_range(self, project_dir, monkeypatch):
         """GIVEN scene_number > total scenes WHEN generating THEN returns error."""
-        monkeypatch.setenv("EXPLAINER_PATH", str(project_dir.parent))
+        monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
 
         from video_agent_mcp.config import reset_config
         reset_config()
@@ -461,3 +460,21 @@ class TestAgentGenerateSingleScene:
         )
 
         assert "error" in result
+
+
+async def test_duplicate_scene_names_fail_before_queries(project_dir, monkeypatch):
+    """Title collisions are rejected before paid work or silent file overwrites."""
+    import json
+
+    from video_agent_mcp.config import reset_config
+    script_file = project_dir / "script" / "script.json"
+    script = json.loads(script_file.read_text())
+    script["scenes"][1]["title"] = script["scenes"][0]["title"]
+    script_file.write_text(json.dumps(script))
+    monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project_dir.parent))
+    reset_config()
+    with patch("video_agent_mcp.tools.scenes.run_parallel_queries") as query:
+        result = await agent_generate_scenes(project_dir.name)
+    query.assert_not_called()
+    assert "unique component filenames and keys" in result["error"]
+    assert not (project_dir / "scenes").exists()
