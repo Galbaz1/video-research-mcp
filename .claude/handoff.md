@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T12:42+02:00
+date: 2026-09-30T14:16+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,8 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted runtime/infrastructure source is `8a914ae`
+Current accepted source is `a310f63` (onboarding), following `990e4b6`
+(evidence/native MCP contract) and `8a914ae` (readiness)
 on `codex/multimodal-capability-programme` in the implementation worktree below.
 This supersedes the earlier preparation-only checkpoint. Licensing commit
 `fd054d05cf26bcae98fe40e7f8fab611170c09d9` implements per-unit/component reuse,
@@ -68,11 +69,39 @@ Six development-only drafts share a proposed USD10/10generation-attempt/25HTTP/
 concurrency1 boundary; no live authority is conferred. Exact account, source-upload,
 output/cleanup permission, prices and hard charge bound are still required at launch.
 
-Current implementation leaf: **`vrm-0e8.2.8` evidence/MCP extension contract**.
-Independent **`vrm-0e8.2.11` optional onboarding/doctor** is also claimed. Continue
-these through Beads dependencies. The completed transcription/PDF/Word/mail work
-stays outside scope. Human development and independent heldout audits remain
-pending at final comparison; implementation continues under the explicit user
+Evidence/MCP contract `vrm-0e8.2.8` is closed at `990e4b6`. Thirty exact committed
+source/test/doc files preserve original hashes/revisions, observed/requested spans,
+claim lineage and atomic structural artifacts. Factual support, timestamp correctness,
+media review and human review remain separate pending gates. The additive native PNG
+`image_crop` tool supplies the same typed metadata through native and text-only MCP
+responses. Published baseline remains 34/15/2; this candidate is 35/15/2, with unchanged
+locks and protected original files. Fresh final root/explainer suites are 1018/170;
+82 affected metadata/baseline/reuse checks and independent contract review passed.
+Exact source receipt: `contract-onboarding/contract-receipt.committed.json`.
+
+Optional onboarding `vrm-0e8.2.11` is closed at `a310f63`. Eight frozen worker files
+and four shared metadata/test files match exact Git blobs. Verification includes
+31 installer tests, 27 reuse tests, five independent preservation regressions and
+12 actual packed CLI steps (fresh install/update/uninstall/restore, modified user
+files/credentials/later settings, and abrupt exit77 recovery). Five actual current
+candidate archives pass exact notices/ledger clearance. An isolated installed core
+wheel passes stdio discovery35/configuration/redaction plus native/text crop transport
+using existing locked dependencies. The standard offline `uv --with` launcher lacked
+cached registry metadata; its failure is retained, and the isolated wheel-install
+intervention passed with every installed source byte checked against the archive.
+Client examples parse; real client display and provider/runtime/account availability
+remain unverified. Fourteen Qwen capabilities remain external-disabled with audited
+source/index commitments; no foreign code/assets/weights were bundled.
+Exact receipt: `contract-onboarding/onboarding-receipt.committed.json`.
+
+Current claimed implementation leaves: `vrm-0e8.2.2` (cache/source identity) and
+`vrm-0e8.2.4` (execution budgets and bounded output views). One cache worker owns
+cache/media identity/video core and narrowly scoped file-hash/context invalidation;
+the coordinator owns client/public video/budget/shared integration. The output-view
+worker has frozen two new files with 44 tests and a seven-page Unicode replay;
+full budget/caller acceptance remains open. Continue through current Beads readiness.
+The completed transcription/PDF/Word/mail work stays outside scope. Human development
+and independent heldout audits remain pending at final comparison under the user's
 stage-order correction. No live comparative/product/registry-release claim exists.
 
 Protocol receipt:
@@ -86,8 +115,8 @@ oracle outputs with evaluator `4a70de13bebde39cbf2236a655256e4e2844b2b933c27af78
 The public manifest commits both original and supplemental receipts. This is
 label-derived oracle proof, with **zero candidate/provider executions**.
 
-The completed baseline/readiness/security lanes have joined. New contract and
-onboarding work continues under one coordinator with disjoint ownership. No
+The completed baseline/readiness/security lanes have joined. New cache and
+budget work continues under one coordinator with disjoint ownership. No
 provider operation, scheduler or duplicate coordinator exists. The main epic, integrated product acceptance, powered held-out comparison,
 human media review and verified release remain open. Source commit/push receipts
 are separate from any runtime/registry release claim. GitHub rejected the first
