@@ -15,6 +15,7 @@ classifiers = [
     "Topic :: Multimedia :: Video",
     "Intended Audience :: Developers",
 ]
+# The renderer CLI is installed separately at EXPLAINER_PATH.
 dependencies = [
     "fastmcp>=4.0.10,<5",
     "pydantic>=2.13.5,<3",
