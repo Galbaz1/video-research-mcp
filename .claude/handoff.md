@@ -1,10 +1,10 @@
 ---
-date: 2026-09-30T09:16+02:00
+date: 2026-09-30T09:32+02:00
 thread: plugin-modernization-release
 session_id: 01a0f119-eabd-7c13-a784-1db70d6dbc33
 session_id_source: CODEX_THREAD_ID
-topic: publication-followup-complete
-domains: [runtime, documentation, distribution, release]
+topic: publication-and-landscape-complete
+domains: [runtime, documentation, distribution, release, research]
 status: closed
 ---
 
@@ -12,12 +12,22 @@ status: closed
 
 The modernization, documentation rewrite, submodule repair, and all authorized registry publications are complete. Beads epic `vrm-jua` and its release follow-ups are closed. This is the single repository session handoff; Beads remains the tracker.
 
+## Open-source landscape research
+
+- The user requested an investigation team to compare Qwen video plugins and other open-source alternatives. Three read-only lanes covered Qwen, direct video/research MCPs, and adjacent research/production systems; all lanes completed and were joined.
+- Durable report: `docs/research/2026-09-30-open-source-landscape.md`, linked from `docs/README.md`. Beads task `vrm-59c` records this research. Own baseline is verified public main `a3d75f6`; source-versus-registry gaps and license boundaries are explicit in the report.
+- Official Qwen target: `QwenLM/Qwen-MM-Plugins`, source `07736672525443c7f8a3f6405eed37d2236f023f`; fourteen capability families. Ten direct/adjacent comparables plus one narrower community Qwen wrapper were checked against primary code/metadata.
+- Conclusion: the project's combined video/document/web/academic/knowledge/explanation workflow is a credible distinction. Qwen and several direct tools offer more explicit source frames/windows, reusable video memory, or concrete output workflows. Outcome quality, cost and latency remain unbenchmarked.
+- Priorities are inspectable video evidence, reproducible outcome evaluation, claim/source continuity into explanations, bounded long-video/corpus reuse, and portable onboarding. These are research recommendations; no product implementation or provider run occurred.
+- The pinned renderer's README claims MIT but no license file was found at `c033e28`; VideoRAG's current integrated implementation is noncommercial. These observed reuse boundaries are preserved rather than resolved by inference.
+- Research documentation lives on `codex/oss-video-landscape`, locally committed without publishing the report or changing the public release. No remaining execution is required for this research task. Future experiments, product changes or publication are separate work.
+
 ## Current source and authority
 
 - User explicitly authorized continuation and full pushes in this fresh session. Both checkouts reported effective `no-git-ops: false`; no active developer Git prohibition was present. The older restriction in the preserved handoff is historical.
 - GitHub main: `a3d75f6ab87bd893c7d167394fb5bace717f23ec`. Source repair: `7abc0c1599b926ed6e330dbf3ff3ed22152c1aa2`. The later commit adds one factual companion manifest comment to refresh the hosted graph; it does not change package behavior.
 - Release tag `v0.7.1` stays at `7abc0c1`. Published history, tag identity, and package archives were not rewritten.
-- Implementation checkout: `/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`, branch `codex/main-publication-verification`. A handoff-only commit follows the validated source on that branch and is pushed separately; it is not a new runtime release.
+- Implementation checkout: `/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`, now branch `codex/oss-video-landscape`. The previous `codex/main-publication-verification` branch retains its pushed handoff-only commit after validated source; neither branch creates a new runtime release.
 - Original checkout remains branch `feat/local-video-windowing`, HEAD `bd980e834929c291ca3766180fb1a44d1f615efd`, with the two unrelated dirty documentation files preserved. All five files in `protected.json` retain their recorded hashes. Its canonical local handoff was updated separately.
 - Source pushes used the repository's existing administrator bypass. The new local commits are unsigned; protection rules were not weakened. GitHub rejected the first unpublished commit for email privacy; only that unpublished commit was corrected to the account's no-reply email.
 
