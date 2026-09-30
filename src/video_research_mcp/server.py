@@ -23,9 +23,11 @@ from .tools.content import content_server, _ensure_batch_tool
 from .tools.search import search_server
 from .tools.infra import infra_server
 from .tools.youtube import youtube_server
+from .tools import youtube_channels  # noqa: F401 — registers channel tools
 from .tools.knowledge import knowledge_server
 from .tools.media import media_server
 from .tools.jobs import jobs_server
+from .tools.media_assets import media_assets_server
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +68,7 @@ app.mount(youtube_server)
 app.mount(knowledge_server)
 app.mount(media_server)
 app.mount(jobs_server)
+app.mount(media_assets_server)
 
 
 def main() -> None:

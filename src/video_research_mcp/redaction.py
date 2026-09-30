@@ -6,11 +6,11 @@ import os
 import re
 from urllib.parse import quote, quote_plus, urlsplit, urlunsplit
 
-_SECRET_NAME = r"(?:[\w-]*(?:api[_-]?key|token|secret|password)|cookie|authorization)"
+_SECRET_NAME = r"(?<![\w-])(?:[\w-]*(?:api[_-]?key|token|secret|password)|cookie|authorization)"
 _QUOTED_SECRET = re.compile(rf"(['\"]?{_SECRET_NAME}['\"]?\s*[:=]\s*)(['\"])(.*?)\2", re.I)
 _PLAIN_SECRET = re.compile(rf"({_SECRET_NAME}\s*[:=]\s*)[^\s,;\}}]+", re.I)
 _HEADERS = re.compile(r"(\b(?:authorization|cookie|set-cookie)\s*[:=]\s*)[^\r\n]+", re.I)
-_URL = re.compile(r"\b[a-z][a-z0-9+.-]*://[^\s\"'<>]+", re.I)
+_URL = re.compile(r"\b[a-z][a-z0-9+.-]{0,63}://[^\s\"'<>]+", re.I)
 
 
 def _redact_url(match: re.Match) -> str:

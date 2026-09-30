@@ -283,7 +283,7 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False)
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
@@ -402,3 +402,32 @@ class TestDownloadChecked:
 
         # Verify no document file was written
         assert not (tmp_path / "doc.pdf").exists()
+
+
+@pytest.mark.parametrize('ip', ['100.64.0.1', '0.0.0.0', '::', '192.0.0.8'])
+async def test_non_global_addresses_never_establish_a_public_fetch(ip):
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=_mock_getaddrinfo(ip)):
+        with pytest.raises(UrlPolicyError, match='blocked IP range'):
+            await validate_url('https://nonpublic.example/video')
+    with pytest.raises(UrlPolicyError, match='blocked range'):
+        _verify_peer_ip(_FakeResponse([], peer_ip=ip))
+
+
+async def test_rejected_download_does_not_delete_existing_sibling(tmp_path):
+    sentinel = tmp_path / 'original.pdf'
+    sentinel.write_bytes(b'keep original')
+    with pytest.raises(UrlPolicyError):
+        await download_checked('http://example.org/original.pdf', tmp_path, max_bytes=10)
+    assert sentinel.read_bytes() == b'keep original'
+
+
+async def test_checked_download_never_overwrites_existing_file(tmp_path):
+    sentinel = tmp_path / 'original.pdf'
+    sentinel.write_bytes(b'keep original')
+    with (
+        patch('video_research_mcp.url_policy.validate_url', new_callable=AsyncMock),
+        patch('video_research_mcp.url_policy.httpx.AsyncClient', return_value=_FakeClient(_FakeResponse([b'new']))),
+    ):
+        with pytest.raises(FileExistsError):
+            await download_checked('https://example.org/original.pdf', tmp_path, max_bytes=10)
+    assert sentinel.read_bytes() == b'keep original'

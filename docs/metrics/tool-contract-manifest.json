@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T13:35:47.049815+00:00",
-  "tool_count": 37,
+  "generated_at": "2026-09-30T14:38:29.807556+00:00",
+  "tool_count": 44,
   "tools": [
     {
       "name": "content_analyze",
@@ -1158,6 +1158,159 @@
       }
     },
     {
+      "name": "media_acquire",
+      "description": "Acquire bounded media into private owned storage with exact byte identity.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "description": "Local video path, YouTube/Loom URL, or HTTPS direct video/HLS URL",
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "source"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_asset_remove",
+      "description": "Remove one verified owned asset and invalidate its source-dependent caches.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "asset_id": {
+            "description": "Full SHA-256 asset identity returned by media_acquire; paths are forbidden",
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "asset_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_assets_list",
+      "description": "List a bounded page with fresh byte checks and explicit unhealthy states.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "offset": {
+            "default": 0,
+            "description": "Offset into SHA-256 ordered owned assets",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Maximum asset records returned",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_metadata",
+      "description": "Retrieve explicit metadata without downloading video, inference or upload.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "description": "Local video path, YouTube/Loom URL, or HTTPS direct video/HLS URL",
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "source"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_source_inspect",
+      "description": "Inspect source syntax and capabilities without contacting or downloading it.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "description": "Local video path, YouTube/Loom URL, or HTTPS direct video/HLS URL",
+            "maxLength": 8192,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "source"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "research_assess_evidence",
       "description": "Assess a claim against sources, returning evidence tier and confidence.",
       "annotations": {
@@ -2206,6 +2359,82 @@
         },
         "required": [
           "query"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "youtube_channel_catalog",
+      "description": "List one channel uploads page and retain any continuation token.\n\nA channel video count and playlist reported total are provider metadata. The\nreturned items establish this page's coverage; no video bytes are fetched.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "reference": {
+            "description": "YouTube UC channel ID, @handle or canonical channel URL",
+            "type": "string"
+          },
+          "max_items": {
+            "default": 20,
+            "description": "Maximum upload entries in this API page",
+            "maximum": 50,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page_token": {
+            "anyOf": [
+              {
+                "maxLength": 1024,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional next_page_token from a prior response"
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "youtube_channel_inspect",
+      "description": "Inspect channel metadata through YouTube Data API without downloading media.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "reference": {
+            "description": "YouTube UC channel ID, @handle or canonical channel URL",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference"
         ],
         "type": "object"
       },

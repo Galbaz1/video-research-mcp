@@ -259,10 +259,11 @@ class TestCreateSessionCache:
         assert session.cache_name == ""
 
     async def test_download_true_creates_cached_session(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download=True WHEN video_create_session called THEN downloads, uploads, caches."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -276,20 +277,26 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
                 new_callable=AsyncMock,
                 return_value=FILE_API_URI,
-            ),
+            ) as upload,
             patch("video_research_mcp.context_cache.GeminiClient.get", return_value=mock_client),
         ):
             result = await video_create_session(url=TEST_URL, download=True)
 
+        import hashlib
+
+        digest = hashlib.sha256(downloaded_file.read_bytes()).hexdigest()
+        upload.assert_awaited_once_with(downloaded_file, "video/mp4", content_hash=digest)
+        assert any(key[0] == digest for key in cc_mod._registry)
+        assert all(key[0] != TEST_VIDEO_ID for key in cc_mod._registry)
         assert result["cache_status"] == "cached"
         assert result["download_status"] == "downloaded"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
         session = _mock_session_store.get(result["session_id"])
         assert session.cache_name == TEST_CACHE_NAME
         # Session URL should be the File API URI, not the YouTube URL
@@ -312,10 +319,11 @@ class TestCreateSessionCache:
         assert result["download_status"] == "unavailable"
 
     async def test_download_true_upload_fails_gracefully(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download succeeds but upload fails WHEN download=True THEN fails gracefully."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -323,7 +331,7 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
@@ -335,13 +343,14 @@ class TestCreateSessionCache:
 
         assert result["cache_status"] == "uncached"
         assert result["download_status"] == "failed"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
 
     async def test_download_true_cache_fails_but_upload_succeeds(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download+upload succeed but cache creation fails THEN session uses File API URI uncached."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -352,7 +361,7 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
@@ -366,7 +375,7 @@ class TestCreateSessionCache:
         # Cache failed but download+upload succeeded — still uses File API URI
         assert result["cache_status"] == "uncached"
         assert result["download_status"] == "downloaded"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
         session = _mock_session_store.get(result["session_id"])
         # Session should use File API URI even without cache
         assert session.url == FILE_API_URI

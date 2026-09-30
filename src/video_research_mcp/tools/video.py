@@ -6,6 +6,7 @@ Batch analysis lives in video_batch.py, registered via side-effect import.
 from __future__ import annotations
 
 import logging
+import asyncio
 from pathlib import Path
 from typing import Annotated
 
@@ -31,7 +32,7 @@ from .video_cache import ensure_session_cache, prewarm_cache, prepare_cached_req
 from .video_core import analyze_video
 from .video_execution import cache_bypass_effects, execute_bounded_video
 from .video_plan import plan_video
-from .video_file import _upload_large_file, _video_file_content, _video_file_uri
+from .video_file import _file_content_hash, _upload_large_file, _video_file_content, _video_file_uri
 from .video_url import (
     _extract_video_id,
     _normalize_youtube_url,
@@ -359,8 +360,9 @@ async def _download_and_cache(
         return "", "", status, "", ""
 
     try:
+        content_digest = await asyncio.to_thread(_file_content_hash, local_path)
         file_uri = await _upload_large_file(
-            local_path, "video/mp4", content_hash=video_id
+            local_path, "video/mp4", content_hash=content_digest
         )
     except Exception as exc:
         logger.warning("File API upload failed for %s: %s", video_id, exc)
@@ -372,7 +374,7 @@ async def _download_and_cache(
     try:
         file_part = types.Part(file_data=types.FileData(file_uri=file_uri))
         cache_name = await context_cache.get_or_create(
-            video_id, [file_part], cfg.default_model
+            content_digest, [file_part], cfg.default_model
         )
         if cache_name:
             return cache_name, cfg.default_model, "downloaded", file_uri, str(local_path)

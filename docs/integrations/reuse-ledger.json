@@ -1126,10 +1126,111 @@
       "component": "guimatheus92/mcp-video-analyzer@9e476c02f8426f5c277ed5e7f5729c1aee75b31a",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/MEDIA_ACQUISITION.md",
+          "target_sha256": "28da8871ef8c6cca85b87becbdc199cbdfca7797398ac7338f559d92eb365d72",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "846c99dc3c67d0c7dc253101ac97b49964ab0035f8ced8e201bbde6626940312",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_acquisition.py",
+          "target_sha256": "1ba5420eacef17b3734ad41948338d0b3fcd78686a8266f5bcefbef62c2ed552",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_assets.py",
+          "target_sha256": "f4b0f3aac7e2d952beff8a6c6152d966c1ce96121275aea5c29e8830d9977745",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_fetch.py",
+          "target_sha256": "789a14e22b103a66fe35c04e044c01672c2d18006e0f33d59d30fde77bc62b0f",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_hls.py",
+          "target_sha256": "3cf4e0efb3cb86f803f82f13c9606febd0b91759fde27d6d82b9f096f027d6c2",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_hls_manifest.py",
+          "target_sha256": "aba76f137f09d5101743cc21b97207721ad55239c4b9af8ddf99380924382a2a",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_process.py",
+          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_sources.py",
+          "target_sha256": "501ded08650a736b3d97a26e924ecd12f211b63fd8dff9f4c91e92f4d55cb178",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "aee1ec4e8041d069d7fa0b107504c63717c98975c4c05d60c8284819ef3f1356",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/media_assets.py",
+          "target_sha256": "1bc9eff1b61804ace395657311dbcb6ef5bb5124e6e66dcd4002bd0382aacc46",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video.py",
+          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/youtube.py",
+          "target_sha256": "c2918546be75df643deefb20279b695462b2988400d5936afa81453387fa1574",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/youtube_channels.py",
+          "target_sha256": "fa6c9bbae849d6c3fc61717805ebe9509ccd5d979539991b4bb3bbbe8910ba16",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/youtube_download.py",
+          "target_sha256": "61241af5137a2fba5cf4e5b7ac64c272c8331bf7cf9df5384d9aac929ccf448f",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/url_policy.py",
+          "target_sha256": "015d2b0af8f5463bd98d1fe5af46c7f4570494a77331fafe463d7af9f02eddb9",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/youtube_channels.py",
+          "target_sha256": "e5790452af29498dcf64c265f23bf8ac8aeaaf9f834975d16cd36b0176581948",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_asset_receipts.py",
+          "target_sha256": "6184b61d1fb4b8720577297ebd407c6e7ef63a2961c915e3bff31b5fc8066850",
+          "provenance": "Own-source bounded acquisition receipt handling, local byte IO or credential-redaction repair; no external source body, asset, weight, executable or dependency copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_local_io.py",
+          "target_sha256": "85721b6f283b05cbb64cbb91be5299814885bc4dd86644d34a3d67deb32fb5b4",
+          "provenance": "Own-source bounded acquisition receipt handling, local byte IO or credential-redaction repair; no external source body, asset, weight, executable or dependency copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/redaction.py",
+          "target_sha256": "6d9d5d9535f7b2e5dc3a0e4f110a592a4c5ec6174d7f5858ab937939e27e332a",
+          "provenance": "Own-source bounded acquisition receipt handling, local byte IO or credential-redaction repair; no external source body, asset, weight, executable or dependency copied/imported."
+        }
+      ]
     },
     {
       "unit_key": "direct.speech",
@@ -1435,7 +1536,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "d4e9e9a340cafb93f5a618164b762f40c8fadccdd36ea5e5fced6ea5aaed0e91"
+          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_plan.py",
@@ -1670,7 +1771,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/redaction.py",
-          "target_sha256": "60f130eb52449fd6857b89ee6c8866189b4d548d5e4b424d51176a8d87e1473b",
+          "target_sha256": "6d9d5d9535f7b2e5dc3a0e4f110a592a4c5ec6174d7f5858ab937939e27e332a",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -1690,7 +1791,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "943393a87cb8c3cd0902308a6a0d231f3591ed31fb4836b112b6f62d0139a3e3",
+          "target_sha256": "015d2b0af8f5463bd98d1fe5af46c7f4570494a77331fafe463d7af9f02eddb9",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -1700,7 +1801,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/youtube_download.py",
-          "target_sha256": "93b5b38095d68d1cb66032723841e4c8a9c1a203c58df72fecca64f2e0c0b693",
+          "target_sha256": "61241af5137a2fba5cf4e5b7ac64c272c8331bf7cf9df5384d9aac929ccf448f",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -2592,7 +2693,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "287bdf9ddbed0c96bfebde2e87241c5120570613f65a1b64fb6a8f1487f1c08f",
+          "target_sha256": "aee1ec4e8041d069d7fa0b107504c63717c98975c4c05d60c8284819ef3f1356",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2607,7 +2708,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "47e042a668dab3e75ddea3cb1e3f64f4b8f99ad9de731b069fcaaec28aa048b7",
+          "target_sha256": "8e17fe64301583b59d0bd1106363a70154fbac394dda49c3371c52f453315f98",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2617,7 +2718,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "d4e9e9a340cafb93f5a618164b762f40c8fadccdd36ea5e5fced6ea5aaed0e91",
+          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae",
           "provenance": "Own public metadata clarification; input names/defaults/constraints/annotations unchanged."
         }
       ]

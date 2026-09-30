@@ -1,9 +1,11 @@
 """Credential leaks through upstream exceptions and configuration endpoints."""
 
 import pytest
+import sys
 
 from video_research_mcp.errors import make_tool_error
 from video_research_mcp.redaction import redact_text
+from video_research_mcp.media_process import run_media_process
 
 
 @pytest.mark.parametrize(
@@ -43,3 +45,14 @@ def test_url_retains_resource_and_strips_all_query_values():
     assert redact_text("Fetch https://example.org/report?odd_signed_field=private#secret.") == (
         "Fetch https://example.org/report?[redacted]#[redacted]."
     )
+
+
+async def test_long_untrusted_metadata_redaction_is_bounded_in_owned_process():
+    script = """from video_research_mcp.redaction import redact_text
+for value in ('x'*60000, 'a-'*30000, 'x'*60000+'token=private'):
+    result=redact_text(value)
+    assert 'private' not in result
+print('bounded')
+"""
+    stdout, _ = await run_media_process([sys.executable, '-c', script], 2)
+    assert stdout == b'bounded\n'
