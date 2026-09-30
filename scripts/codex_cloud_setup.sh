@@ -21,12 +21,11 @@ bashrc = Path.home() / ".bashrc"
 start = "# >>> video-research-mcp codex defaults >>>"
 end = "# <<< video-research-mcp codex defaults <<<"
 block = f"""{start}
-export GEMINI_SESSION_DB="${{GEMINI_SESSION_DB:-/workspace/video-research-mcp/.codex/gemini_sessions.db}}"
-export GEMINI_MODEL="${{GEMINI_MODEL:-gemini-3.1-pro-preview}}"
-export GEMINI_FLASH_MODEL="${{GEMINI_FLASH_MODEL:-gemini-3-flash-preview}}"
-export DEEP_RESEARCH_AGENT="${{DEEP_RESEARCH_AGENT:-deep-research-pro-preview-12-2025}}"
-export GEMINI_THINKING_LEVEL="${{GEMINI_THINKING_LEVEL:-high}}"
-export GEMINI_TEMPERATURE="${{GEMINI_TEMPERATURE:-1.0}}"
+export GEMINI_SESSION_DB="${{GEMINI_SESSION_DB:-{Path.cwd() / '.codex' / 'gemini_sessions.db'}}}"
+export GEMINI_MODEL="${{GEMINI_MODEL:-gemini-3.8-flash}}"
+export GEMINI_FLASH_MODEL="${{GEMINI_FLASH_MODEL:-gemini-3.8-flash}}"
+export DEEP_RESEARCH_AGENT="${{DEEP_RESEARCH_AGENT:-deep-research-preview-04-2026}}"
+export GEMINI_THINKING_LEVEL="${{GEMINI_THINKING_LEVEL:-medium}}"
 export FLASH_SUMMARIZE="${{FLASH_SUMMARIZE:-true}}"
 {end}
 """
@@ -43,6 +42,4 @@ else:
     bashrc.write_text("\n\n".join(pieces) + "\n")
 PY
 
-uv venv
-source .venv/bin/activate
-uv pip install -e ".[dev]"
+uv sync --locked --extra dev

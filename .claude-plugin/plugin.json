@@ -1,12 +1,20 @@
 {
   "name": "gr",
-  "version": "0.6.1",
-  "description": "Claude Code plugin for video analysis, deep research, content extraction, web search, and explainer video creation — powered by Gemini 3.5 Flash.",
+  "version": "0.7.0",
+  "description": "Claude Code plugin for video analysis, deep research, content extraction, web search, and explainer video creation \u2014 powered by Gemini 3.8 Flash.",
   "author": {
     "name": "Fausto Albers"
   },
   "homepage": "https://github.com/Galbaz1/video-research-mcp",
   "repository": "https://github.com/Galbaz1/video-research-mcp",
   "license": "MIT",
-  "keywords": ["gemini", "research", "video-analysis", "content-extraction", "web-search", "mcp", "claude-code-plugin"]
+  "keywords": [
+    "gemini",
+    "research",
+    "video-analysis",
+    "content-extraction",
+    "web-search",
+    "mcp",
+    "claude-code-plugin"
+  ]
 }

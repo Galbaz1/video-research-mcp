@@ -1,7 +1,7 @@
 {
   "name": "video-research-mcp",
-  "version": "0.6.1",
-  "description": "Claude Code plugin — 51 tools for video analysis, deep research, content extraction, media production, and explainer video creation. Powered by Gemini 3.5 Flash",
+  "version": "0.7.0",
+  "description": "Claude Code plugin \u2014 51 tools for video analysis, deep research, content extraction, media production, and explainer video creation. Powered by Gemini 3.8 Flash",
   "bin": {
     "video-research-mcp": "bin/install.js"
   },
@@ -12,7 +12,7 @@
     "agents"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=22"
   },
   "keywords": [
     "claude-code",
@@ -26,5 +26,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Galbaz1/video-research-mcp"
+  },
+  "scripts": {
+    "test": "node --test tests/installer.test.js"
   }
 }

@@ -30,6 +30,7 @@ const FILE_MAP = {
   'commands/explain-status.md': 'commands/ve/explain-status.md',
 
   'skills/video-research/SKILL.md':                              'skills/video-research/SKILL.md',
+  'skills/plugin-maintenance/SKILL.md':                          'skills/plugin-maintenance/SKILL.md',
   'skills/gemini-visualize/SKILL.md':                             'skills/gemini-visualize/SKILL.md',
   'skills/gemini-visualize/templates/video-concept-map.md':       'skills/gemini-visualize/templates/video-concept-map.md',
   'skills/gemini-visualize/templates/research-evidence-net.md':   'skills/gemini-visualize/templates/research-evidence-net.md',

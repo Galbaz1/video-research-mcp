@@ -2,51 +2,72 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    tags: ['v*.*.*']
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
   github-release:
-    name: Create GitHub Release from CHANGELOG
+    needs: verify
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       REF_NAME: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Extract CHANGELOG section
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: '3.11'
+      - name: Validate version and extract release notes
         shell: bash
         run: |
           set -euo pipefail
-          VERSION="${REF_NAME#v}"
-          export VERSION
-          python3 - <<'PYEOF' > release-notes.md
+          uv run --locked python scripts/check_release.py
+          uv run --locked python - <<'PYEOF' > release-notes.md
           import os
           import pathlib
           import re
+          import tomllib
 
-          version = os.environ["VERSION"]
-          src = pathlib.Path("CHANGELOG.md").read_text()
-          pat = rf"## \[{re.escape(version)}\][^\n]*\n(.*?)(?=\n## \[|\Z)"
-          m = re.search(pat, src, re.S)
-          if m:
-              print(m.group(1).strip())
-          else:
-              print(f"_No CHANGELOG section found for {version!r} — release notes empty._")
+          version = os.environ['REF_NAME'].removeprefix('v')
+          metadata = tomllib.loads(pathlib.Path('pyproject.toml').read_text())
+          if metadata['project']['version'] != version:
+              raise SystemExit('Release tag differs from package version')
+          src = pathlib.Path('CHANGELOG.md').read_text()
+          match = re.search(rf'## \[{re.escape(version)}\][^\n]*\n(.*?)(?=\n## \[|\Z)', src, re.S)
+          if not match:
+              raise SystemExit('Matching release notes are required')
+          print(match.group(1).strip())
           PYEOF
-          echo "--- release-notes.md ---"
-          cat release-notes.md
-          echo "--- end ---"
-
-      - name: Create release
+      - name: Build release artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv build
+          uv build --project packages/video-explainer-mcp --out-dir "$PWD/dist"
+          uv build --project packages/video-agent-mcp --out-dir "$PWD/dist"
+          npm pack --pack-destination dist
+          uvx --from twine twine check dist/*.whl dist/*.tar.gz
+          uv run --locked python scripts/smoke_built_mcp.py dist/video_research_mcp-*.whl
+      - name: Publish verified GitHub artifacts
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
-          gh release create "${REF_NAME}" \
-            --title "${REF_NAME}" \
-            --notes-file release-notes.md \
-            --verify-tag
+          set -euo pipefail
+          RELEASE_FLAGS=()
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            RELEASE_FLAGS+=(--prerelease --latest=false)
+          fi
+          gh release create "$REF_NAME" dist/* --title "$REF_NAME" \
+            --notes-file release-notes.md --verify-tag "${RELEASE_FLAGS[@]}"

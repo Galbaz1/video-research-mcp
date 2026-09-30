@@ -11,9 +11,4 @@ if ! command -v uv >/dev/null 2>&1; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ ! -d .venv ]; then
-  uv venv
-fi
-
-source .venv/bin/activate
-uv pip install -e ".[dev]"
+uv sync --locked --extra dev
