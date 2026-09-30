@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T22:01+00:00
+date: 2026-09-30T23:23+00:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,73 +21,65 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and next scene-assets leaf
+### Current acceptance and joint AV perception
 
-Vision/chat/comparison, model OCR and strict transformed original-pixel crops
-(`vrm-0e8.3.4`) are accepted, closed and normally pushed at
-`937c60a23ec3cb1ceeceab7ffe9da4856d3b0410`; remote branch readback matches.
-`vision-analysis/group-receipt.committed.json` SHA256
-`685a83123caa2036e92875fa64c7f04432ac461778805c6fe2ede934d25fd148` binds32
-owned Git blobs and163 runtime files to cleared private archives/installed bytes.
-This is offline integration acceptance; model accuracy and live provider quality
-remain unverified. No registry release or version bump occurred.
+Scene boundaries, actual timestamped storyboards, full frame/audio deduplication
+populations, and whole/one-sided audio/video exports (`vrm-0e8.3.5`) are accepted,
+closed and normally pushed at `9737891e046b5ab7a28a55a5ae5865b73116732d`.
+Remote branch readback matches. Private evidence root:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/scene-assets`.
+`group-receipt.committed.json` SHA256
+`7a8925afcfad36eb06282e0cd0458efdfd7cd545de5afbdb3f8c0b3b5fa44900`
+binds29 owned Git blobs and171 runtime source/archive/installed files.
+Six additive tools expose63 root tools, preserving the prior57 contracts and
+published34/15/2. Final2043 root tests/Ruff/public baseline/programme85units74packages/
+reuse23adopted116locked/9security/5offline gates PASS. The sole original review
+returned3P2; root repaired image/WAV immutable readback and digest-bound nested
+sampling. Original3RED, intermediate62PASS10FAIL,111 affected+1 stale-digest PASS
+are retained; no second independent review.
 
-Root discovery57/companion16/2 preserves published34/15/2, all three locks and
-protected originals.156 affected checks and82 integration repairs passed; final
-root1926/Ruff/85 transfer units74packages/22adopted115locked/9security/5offline PASS.
-The first final root suite15 failures remains retained: AST default-factory
-inspection, stale20-adoption list and a test comparing mutable target paths with
-the original inventory. Root repaired these without changing the evaluation
-protocol SHA256 `7ba1d01e3463b88d9f22739a1ad25e83201f5cc199de88cfe7203eb878c85a93`,
-original335e inventory identity, source audits, sources, cases, thresholds or labels.
-Only affected/final source checks reran; no second independent review.
+The fixed installed-wheel plan passed39/39 calls in two actual processes
+PIDs72914/73113,12 restart manifest reads and190 bound FFmpeg/ffprobe children.
+Receipt `installed-journey-harness/run-controlled/receipt.json` SHA256
+`f95b4b2086fd2ae255c511ca22b6699b615e544803ae2c42a89661f38c37340e`.
+The first4-attempt/3-verified/35-pending run remains FAIL: private validator
+compared a full storyboard tile including its label strip against frame pixels.
+One validator-only ROI correction reran the unchanged39 plan and candidate;
+no product/gate/archive/review repeated. All earlier component/build/optional-
+startup/control failures are retained. Exact private wheel SHA256
+`9ac68117b217c2756064efbb4744d34467c18a544bb58c25f36290169022618e`;
+sdist SHA256 `f9cf08c8b79c1e42f35ecc6bbb8d05b341174dc096a52c63d8d032af8497e5c5`.
+No registry release/version bump.0 provider requested/guarded DNSINET attempts;
+Python guards are not OS-wide proof. Semantic quality, perceptual AV sync,
+RSS and live provider quality remain unverified.
 
-The sole original review returned4P2; root repaired effective selected account,
-supported temperature binding, independent joined HTTP cleanup and actual OSS
-upload-origin receipt. Original probe buffers/report are persisted under
-`original-review/reviewer-returned`; labelled root report SHA256
-`e67b331658ec62889b2818c4139d3289a48235d980b8292fd52bd480e6d17485`.
-HTTP original6RED, intermediate test shield failure and54GREEN are retained.
-Geometry original6PASS/1FAIL (missing precise-frame receipt clock) and owner7PASS
-are retained. Historical nonsampling temperature expectations were corrected;
-no independent repaired-PASS is claimed.
+NumPy2.4.6 optional audio/dev is lazy/unbundled; exact selected-host910 members
+are cleared/read back. Root lock SHA256
+`b78b26dfb17e51de0817f8610048f7287c121c6aaa88018a4997751dab2bbc68`;
+companion locks unchanged. Other-platform native redistribution/source builds
+and Sigstore verification remain unverified. Source-only13-file Qwen contract
+receipt SHA256 `fa8abbfebec05c5e5a00ff0e196b59713eb4510d04ba8a46d0ad0a12146a34c5`.
 
-Pinned external Qwen API actually discovers13 tools and passes4 public calls/3
-SDK mocks:36 private packages/2157RECORD files/31native files/33 unchanged source
-bodies. Terminal receipt SHA256
-`18d303f8ccccc15685c47f1e88d364f71e017b337ae03ddf68608c051ce3a3e0`.
-Ordinary optional activation stays disabled; full API/OSS extras and weight
-rights remain unverified. Its first startup-harness failure and one correction
-remain recorded;1 ancillary subprocess attempt was blocked, with unknown argv.
+Fresh Beads readiness selected/claimed `vrm-0e8.3.6`: joint audio/video perception
+with distinct spoken/visible evidence, absolute ordered windows, measured
+payload/time/attempt budgets, terminal authentication/quota failures, classified
+transient retries and credential-safe untrusted output. Its only blocker3.2 is
+closed. Four exact pinned Qwen files are observed read-only under
+`joint-av/source-contracts/receipt.json` SHA256
+`af420f54b195a148f436b0fd5aeb90f733540cae9ea7d5f1c82229cd83af25d2`.
+Only perceive API fully read so far; selected portions of other files observed,
+not all-file read depth. No3.6 implementation/provider/foreign execution yet.
+Read current client/accepted media controls and primary API/license contracts,
+then implement the smallest full outcome. Root owns shared registration/config/
+client/dependencies/ledger/Beads/Git; read-only bounded source lanes are active.
 
-Core source journeys v1/v2 both stopped after8 calls; restart did not run, and
-both remain FAIL. Focused diagnosis identified urllib3's import-only IPv6 bind.
-The planned distinct installed-wheel acceptance then passed once with isolated
-parent/child `socket.has_ipv6=False`, retaining the earlier failures. Two actual
-installed processes PIDs48249/48250 completed14 schema-valid public calls,
-5 manifest reads/native crop pixels/restart/tamper rejection,5 HTTP+1 count+1
-SDK generation mocks and0 real provider calls. Receipt
-`installed-journey-harness/installed-run-v1/receipt.json` SHA256
-`3ff8537b91f6fe5b094fa2c28387f199bceb9c5fdf945f92f4e9987a9f00871c`.
-Private wheel SHA256 `3ca027879c175f53ca1617822b4997ad07615645fb35733843a526947d5f62bf`;
-sdist SHA256 `7077116ee183596b2542f814a0fbf88b8223510a712880b977d8571d10db2ce3`.
-Archive helper initially assumed the wheel ledger retained its source path;
-that original failure is retained and one exact force-include path correction
-passed163-file byte clearance. No product code/build changed afterward.
-Python guards are not OS-wide egress proof; live IPv6 was not tested.
-
-Fresh dependency selection claimed `vrm-0e8.3.5` (scene assets). Source-only
-`scene-assets/source-contracts/receipt.json` SHA256
-`fa8abbfebec05c5e5a00ff0e196b59713eb4510d04ba8a46d0ad0a12146a34c5` covers
-7 Qwen tools+4 helpers+Apache grant+pyproject,13 exact pinned Git blobs.
-Report SHA256 `2e4eb50618405b8219518f57cfee8f3e25cd6d63e2d8cf286cc7d3e4e7da2a19`.
-Missing outcomes: contiguous hard-cut intervals, actual timestamped storyboard
-pixels, explicit dHash/MFCC retained/discarded/error denominators and standalone
-whole-track audio export. Reuse accepted snapshots/PTS/process/frame/clip/manifest
-contracts. NumPy-only MFCC needs no Librosa/SciPy, but NumPy is currently absent
-from root lock/runtime; no dependency selection/install or .3.5 source edit yet.
-All prior lanes joined; root owns next dispatch/common registry/config/models/
-locks/ledger/Beads/Git. Keep module/function limits and one original review per slice.
+Previous accepted vision source3.4 is
+`937c60a23ec3cb1ceeceab7ffe9da4856d3b0410`; committed receipt SHA256
+`685a83123caa2036e92875fa64c7f04432ac461778805c6fe2ede934d25fd148`.
+All original failures and sole4P2 review owner repairs remain in vision-analysis.
+Accepted57-tool private installed journey14 calls across two processes is offline
+integration only; pinned external Qwen actual13-tool/4-call journey is separate.
+No live quality/comparative claim. Historical sourcejourneys v1/v2 remain FAIL.
 
 Human9-case audit remains pending at10.2 under “continue anyway,” not waived.
 Do not read held-out prompts/labels or claim comparison/release/superiority.
