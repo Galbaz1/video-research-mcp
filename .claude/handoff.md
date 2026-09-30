@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T10:29+02:00
+date: 2026-09-30T12:13+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f119-eabd-7c13-a784-1db70d6dbc33
 session_id_source: CODEX_THREAD_ID
@@ -15,6 +15,35 @@ Main Beads epic: `vrm-0e8`. Preparation item: `vrm-0e8.1`. This session audits
 omissions, maps useful capabilities, creates the Beads execution graph and loop
 contract, and hands implementation to a fresh chat. Do not mistake preparation
 closure for completion of the product or a proved superiority claim.
+
+## Fresh resume checkpoint
+
+The user explicitly returned to plugin development and requested a new-session
+handoff. The completed video download/transcript/PDF/Word/email-draft work is
+outside this continuation. Do not reopen those artifacts, alter the email draft,
+or send it as part of this programme.
+
+Fresh source/remote read-back on September 30 confirms preparation commit
+`a91a5138ded1671c164173dff5b73c865e1203ec` at both local HEAD and
+`origin/codex/multimodal-capability-programme`; public main remains `a3d75f6`.
+The implementation worktree was clean before this handoff-only update. All **74
+mapped programme leaves are open**, none is in progress or closed. Only preparation
+`vrm-0e8.1` is closed. The validator passed again against the live Beads graph.
+There is no evidence that the planned capability expansion has been implemented,
+released or proved superior to the compared projects. Existing baseline features
+and earlier local-windowing experiments remain available for focused reconciliation.
+
+The two currently ready leaves are `vrm-0e8.2.7` (freeze comparison/evaluation
+protocol before tuning) and `vrm-0e8.2.6` (clear per-file reuse and optional runtime
+routes). Start with the protocol; licensing can run independently with exclusive
+ownership. Continue implementation through the live dependency graph after those
+controls, using the existing loop contract. Do not repeat the completed landscape
+research without a concrete missing source or acceptance gap. Readiness is not
+provider-spend or content/device-operation authority.
+
+Handoff refresh receipt: `vrm-1fo`. Source pushes remain authorized; this checkpoint
+changes only the handoff and does not close any implementation item. The next
+session should implement the programme, rather than prepare another planning layer.
 
 ## User mandate and current authority
 
