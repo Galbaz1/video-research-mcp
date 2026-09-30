@@ -2,6 +2,11 @@
 
 Observed **September 30, 2026**. Research task: `vrm-59c`.
 
+The subsequent [comprehensive capability programme](2026-09-30-capability-programme.md)
+expands the audit to 22 external projects and maps every included useful capability
+to implementation and acceptance work under Beads epic `vrm-0e8`. This report
+retains the earlier comparison scope and its original evidence limits.
+
 ## Assessment
 
 **video-research-mcp has a credible distinction in its combined research workflow:** video understanding, document comparison, grounded web research, academic discovery, reusable knowledge and an explainer handoff. None of the five inspected direct MCP competitors exposes that complete combination. This is a source-backed architectural comparison; it does not establish better answers.

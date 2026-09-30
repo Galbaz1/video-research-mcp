@@ -43,6 +43,10 @@ The [tool manifest](metrics/tool-contract-manifest.json) records exact MCP schem
 
 ## Evidence and historical findings
 
+- [Comprehensive capability programme, September 30, 2026](research/2026-09-30-capability-programme.md):
+  expanded source audit, complete transfer coverage, Beads execution map and
+  [loop contract](loops/multimodal-capability-programme/LOOP.md). Implementation
+  and comparative acceptance remain open under `vrm-0e8`.
 - [Open-source landscape, September 30, 2026](research/2026-09-30-open-source-landscape.md):
   Qwen plugins, direct video MCP alternatives, adjacent research/production systems,
   verified source boundaries and prioritized opportunities.
