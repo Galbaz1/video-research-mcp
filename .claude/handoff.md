@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T20:31+02:00
+date: 2026-09-30T22:23+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,16 +21,76 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted feature source is `6dcf3444e68823f7b075001d6717d875043f2ed4`
-(local/YouTube window analysis and canonical upload recovery), following
-`e593770ba1623787435cceee78ea6e587f434800`
-(inspectable native images/video, decoded PTS and bounded source views),
-`c1d80736cb0cbbd0ec586d9d62a1eb293fda8927`
-(bounded media acquisition, channel discovery and exact-byte asset lifecycle), and `b0e78163f8f73dcb2109bb0e00eece995a8be0b5` (durable research/batch/render jobs
-and Interactions evaluation) and `cb2699f88e8b86deffac4d71634c58ab74ddddf5`
-(cache identity and execution budgets),
-`a310f63` (onboarding), `990e4b6` (evidence/native MCP contract) and `8a914ae` (readiness)
-on `codex/multimodal-capability-programme` in the implementation worktree below.
+Image/frame edits, local OCR/Vision, exact export manifests and bounded clip
+encoding (`vrm-0e8.3.3`) are verified and ready for the owned source commit.
+Current branch HEAD is `c97eeacd8080bf45dfeb9059fcdf94624e936e3f` on
+`codex/multimodal-capability-programme` in the implementation worktree below.
+Earlier accepted window/upload recovery source is
+`6dcf3444e68823f7b075001d6717d875043f2ed4`; native views/PTS source is
+`e593770ba1623787435cceee78ea6e587f434800`. `.3.3` stays claimed until its
+verified source commit and exact Git-blob receipt exist. Next dependency-ready
+leaf is `.3.4`, configurable vision chat/model OCR/grounding; continue it after
+closure, preserving explicit endpoint/upload and inference authority.
+
+All three required implementation lanes and the sole original independent review
+are joined. Image49/OCR45/clip36 focused controls and root public24/cleanup15
+passed. Component/source-journey receipts describe their original source freeze;
+OCR/Swift-cache source hashes were superseded by two narrowly scoped owner repairs.
+The original review found P2 F1: unreturned prepared image/manifest persisted on
+OCR backend failure/cancel; and P2 F2: Darwin ENOTEMPTY on simultaneous first-use
+Vision cache publication. Root reproduced four failures, repaired invocation-owned
+cleanup and only EEXIST/ENOTEMPTY collision handling, then passed61 affected checks,
+including public failure/cancel preserving prior exports and corrupt-cache rejection.
+No second independent review or independent repair-PASS is claimed. Reviewer role
+was read-only; root persists the exact returned report/probes and original outputs.
+
+Private `.3.3` evidence lives under `image-frame-preparation/` in the evidence root.
+Seven pinned Qwen source bodies: `receipt.frozen.json` SHA256
+`c3b4d7227bf643bda6395044a1f31377cc7d15b1bee6f2ead1ef85b7b5dfb4b8`.
+Original37-path review freeze: `original-review/freeze.json` SHA256
+`8bae41448c71f8f0c254604557d5c04bee301b6420cf98c89136409601263145`.
+Original lane receipts: image `7f39a3e8137f23d3edfeca858d5fd015194f9dc75177d4dd362cd72dcc3e895d`,
+OCR `daa29326ea740999bcdd028250bad30a2456fdb00f9c7a1ed0c1771341c4b417`,
+clip `07642c09cd29a8e249e04590d0b61c5fc5b4d9fc23c28a77f42af3e6c7afe94a`.
+Owner RED/GREEN logs and current source hashes: `review-owner-repair.json`.
+No foreign body/assets/binary were copied. Pillow12.3 is the sole new locked
+identity, optional images plus dev; root lock SHA256
+`8ece3336cf6437315cdb42caacc1954f77871fc935978ba3e02662109bd3be02`.
+Current cohort115 locked packages/20 adopted units. Exact Pillow grant and Aileron
+publisher/font receipts are retained; font bytes are not bundled.
+
+Seven final gates PASS after repairs:1817 root tests, Ruff, published34/15/2
+contracts compatible with54/16/2, unchanged three frozen baseline locks, five
+protected originals and exact original dirty checkout,85 transfer units/74 packages
+and live Beads graph,20 adopted/115 locked identities,9 security smoke and5 offline
+security entrypoints. Commands/logs: `final-gates.commands.json`. No repeated final
+suite or weakened acceptance. Build produced private0.7.1 wheel/sdist; source-byte
+and ledger/notices clearance validates154 Python+1 own Swift file, zero assets.
+Wheel SHA256 `42087c0966657d171b9392e3d8fe770a2240fbdfc73f407c8aaa5a8150bfdea1`;
+sdist SHA256 `547840f283fe1009ffd139ea1619aafcaaaf57d34b5c10f610c90b41849bf6de`.
+The initial private archive-verifier import-path failure and controlled PYTHONPATH
+repair are retained, with no source rebuild. Both archives and installed root
+runtime match current patched source bytes.
+
+Exact private installed-wheel actual stdio journey PASS:54 tools/27 calls across
+2 separate server processes,11 manifests,13 local commands and155 current runtime
+files. Receipt `packaging/installed-journey/receipt.json` SHA256
+`9d062c42b7ceb64bedbbbddacf3c21540572fca4a1fd081d48e32cbf35ae0728`.
+Native bytes equal artifacts; restart rehash succeeds; deliberate tampering rejects.
+Zero provider/Python DNS/INET attempts; this is not OS-wide network attestation.
+Original source journey is historical after the two patches; its exact native
+annotation block was displayed in Codex. Core discovery without Pillow exposes54
+tools and structured DEPENDENCY_MISSING. Public additions are image_edit,
+image_ocr, video_clip_export and image_manifest_read. Tesseract absent: actual
+Tesseract inference unverified. Actual native Vision observes owned text/QR/doc
+quadrilateral; own source/compiler/selected SDK/compiled binary are bound.
+Transitive framework/SDK bytes, perceptual clip sync, source last-frame holds and
+ICC color correctness remain unverified. No held-out, human comparison, superiority,
+registry version bump/publication or verified programme release claim. The human
+nine-case audit remains pending at10.2 under the explicit continue instruction.
+Do not use stale scripts/smoke_built_mcp.py legacy35-tool expectations for this54-tool
+candidate; terminal release work must reconcile that checker.
+
 This supersedes the earlier preparation-only checkpoint. Licensing commit
 `fd054d05cf26bcae98fe40e7f8fab611170c09d9` implements per-unit/component reuse,
 exact dependency receipts, archive clearance and missing companion MIT grants.

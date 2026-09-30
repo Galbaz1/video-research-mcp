@@ -63,7 +63,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     data = validate_ledger(receipt_root)
     assert len(data["units"]) == 85
     assert len(data["dependency_locks"]) == 3
-    assert len(data["dependency_packages"]) == 114
+    assert len(data["dependency_packages"]) == 115
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
         "adj_research_eval",
         "adj_video_eval",
@@ -83,6 +83,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "direct.frames",
         "own.local-windowing-upload-recovery",
         "direct.long_video",
+        "qwen_media_assets",
+        "direct.image_ops",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

@@ -75,7 +75,8 @@ def _discard_views(results: list[dict], base: Path) -> None:
     """Delete only internally produced UUID view slots from this public invocation."""
     directories = set()
     for result in results:
-        artifacts = result.get("frames", []) + ([result["artifact"]] if result.get("artifact") else [])
+        artifacts = (result.get("frames", []) + result.get("artifacts", [])
+                     + ([result["artifact"]] if result.get("artifact") else []))
         directories.update(Path(artifact["path"]).parent for artifact in artifacts)
     for directory in directories:
         if directory.parent != base or not re.fullmatch(r"[0-9a-f]{32}", directory.name):

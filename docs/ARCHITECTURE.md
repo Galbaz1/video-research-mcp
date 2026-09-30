@@ -246,6 +246,17 @@ success artifact path. Annotations describe a local non-destructive write, and
 the shared tracing decorator still applies. Deterministic operations invoke no
 model. Existing generative tools retain their dictionary/schema/client patterns.
 
+`image_edit` uses lazy optional Pillow preparation and one owned source snapshot.
+It records EXIF/crop/resize transforms, explicit annotation/cutout provenance,
+actual encoded bytes and a digest-bound manifest. `image_ocr` consumes that same
+preparation through an explicitly selected local Tesseract or Apple Vision
+backend. The optional native backend compiles only the project's own Swift source
+and verifies cached executable bytes. `video_clip_export` measures selected
+original PTS and decoded output timing under frame, pixel and byte limits.
+`image_manifest_read` verifies the retained manifest, original source and every
+declared artifact after restart. Native/text transport both rehash all artifacts.
+See [image exports](integrations/IMAGE_EXPORTS.md) for public requests and limits.
+
 Optional external MCPs keep their own schemas, pinned subprocess environments,
 dependency notices and payload boundaries. Readiness does not authorize installs,
 uploads or inference. They add no imports or startup dependencies to the core.

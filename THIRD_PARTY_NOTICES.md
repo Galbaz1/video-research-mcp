@@ -22,6 +22,17 @@ files. Their grants remain applicable to those packages; this project's MIT
 license does not replace them. Commercial service, generated-output, recording,
 model and media rights are separate from a Python/npm package's code license.
 
+The optional `images` extra imports **Pillow 12.3.0**, licensed MIT-CMU, as a
+separately installed dependency. Its exact registry artifact hashes are recorded
+in the reuse ledger. Pillow's installed `dist-info/licenses/LICENSE` includes
+the PIL/Pillow grant and the wheel's codec/library notices; those terms continue
+to apply. No Pillow code, codec binary or font file is copied into this project's
+archives. Image annotations use the font provided by that installed dependency.
+The embedded Aileron Regular subset has an exact installed-byte receipt in the
+ledger. Its [publisher](https://dotcolon.net/fonts/aileron/) declares “No Rights
+Reserved” and permits use, modification and redistribution. This font remains
+inside the separately installed Pillow package; no font bytes enter our archives.
+
 ## A distribution omission with verified source terms
 
 The optional dependency **weaviate-agents 1.8.0** omits license metadata and a

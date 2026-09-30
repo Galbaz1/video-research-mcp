@@ -8,7 +8,7 @@ import pytest
 
 from tests.test_image_ops import png
 from video_research_mcp.models.native_media import FrameTranscript
-from video_research_mcp.native_media_results import native_result
+from video_research_mcp.native_media_results import native_operation, native_result
 
 
 def metadata(path):
@@ -143,3 +143,30 @@ async def test_transport_cancellation_joins_actual_image_worker(tmp_path, monkey
     with pytest.raises(asyncio.CancelledError):
         await task
     assert finished.is_set()
+
+
+@pytest.mark.parametrize("canceled", [False, True])
+async def test_failed_ocr_transport_removes_both_owned_exports_only(
+    tmp_path, monkeypatch, clean_config, canceled
+):
+    """A failed final delivery removes prepared and raw slots while preserving input."""
+    import asyncio
+
+    cache = tmp_path / "cache"
+    monkeypatch.setenv("GEMINI_CACHE_DIR", str(cache))
+    original = png(tmp_path / "source.png")
+    before = original.read_bytes()
+    prepared = cache / "media" / "views" / ("a" * 32)
+    raw = cache / "media" / "views" / ("b" * 32)
+    for directory in (prepared, raw):
+        directory.mkdir(parents=True)
+    artifact = png(prepared / "prepared.png")
+    payload = raw / "observations.json"
+    payload.write_text('{"observed":true}')
+    error = asyncio.CancelledError if canceled else RuntimeError
+    with pytest.raises(error):
+        async with native_operation() as produced:
+            produced.append({"artifacts": [{"path": str(artifact)}, {"path": str(payload)}]})
+            raise error("delivery interrupted")
+    assert not prepared.exists() and not raw.exists()
+    assert original.read_bytes() == before

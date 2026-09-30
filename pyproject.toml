@@ -35,12 +35,14 @@ Changelog = "https://github.com/Galbaz1/video-research-mcp/blob/main/CHANGELOG.m
 tracing = ["mlflow-tracing>=3.16.1,<4"]
 agents = ["weaviate-agents>=1.8.0,<2"]
 strict = ["jsonschema>=4.26.0,<5"]
+images = ["Pillow>=12.3.0,<13"]
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
     "ruff>=0.16.9,<0.17",
     "mlflow-tracing>=3.16.1,<4",
     "jsonschema>=4.26.0,<5",
+    "Pillow>=12.3.0,<13",
 ]
 
 [project.scripts]
