@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+from urllib.parse import urlparse
 
 from .config import get_config
 
 
 def resolve_path(path_value: str) -> Path:
     """Resolve a user-supplied path to an absolute filesystem path."""
+    if urlparse(path_value).scheme:
+        raise PermissionError("Local paths must be filesystem paths, not URIs")
     return Path(path_value).expanduser().resolve()
 
 
@@ -24,6 +27,7 @@ def enforce_local_access_root(path: Path) -> Path:
     Raises:
         PermissionError: If the path falls outside the configured access root.
     """
+    path = path.expanduser().resolve()
     cfg = get_config()
     if not cfg.local_file_access_root:
         return path
@@ -34,4 +38,3 @@ def enforce_local_access_root(path: Path) -> Path:
             f"Path '{path}' is outside LOCAL_FILE_ACCESS_ROOT '{root}'"
         )
     return path
-

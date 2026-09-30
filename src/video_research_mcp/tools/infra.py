@@ -11,6 +11,7 @@ from pydantic import Field
 from .. import cache as cache_mod
 from ..config import MODEL_PRESETS, get_config, supports_sampling, update_config
 from ..errors import make_tool_error
+from ..redaction import redact_text
 from ..tracing import trace
 from ..types import CacheAction, ModelPreset, ThinkingLevel
 
@@ -26,7 +27,8 @@ _SENSITIVE_CONFIG_FIELDS = {
 
 def _redacted_config() -> dict:
     """Return runtime config with secret-bearing fields removed."""
-    return get_config().model_dump(exclude=_SENSITIVE_CONFIG_FIELDS)
+    data = get_config().model_dump(exclude=_SENSITIVE_CONFIG_FIELDS)
+    return {key: redact_text(value) if isinstance(value, str) else value for key, value in data.items()}
 
 
 def _enforce_mutation_policy(auth_token: str | None) -> None:

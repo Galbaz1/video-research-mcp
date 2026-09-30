@@ -6,6 +6,8 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from .redaction import redact_text
+
 
 class ErrorCategory(str, Enum):
     """Categories of errors for diagnostics."""
@@ -70,8 +72,8 @@ def make_tool_error(error: Exception) -> dict:
         ErrorCategory.AGENT_ERROR,
     }
     return ToolError(
-        error=str(error),
+        error=redact_text(str(error)),
         category=cat.value,
-        hint=hint,
+        hint=redact_text(hint),
         retryable=retryable,
     ).model_dump()

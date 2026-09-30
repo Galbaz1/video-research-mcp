@@ -103,6 +103,16 @@ class TestValidateVideoPath:
 
 
 class TestVideoFileContent:
+    async def test_byte_ceiling_precedes_hash_read_upload(self, tmp_path, monkeypatch, clean_config):
+        f = tmp_path / "large.mp4"
+        f.write_bytes(b"0123456789")
+        monkeypatch.setenv("MEDIA_MAX_INPUT_BYTES", "9")
+        hash_mock = MagicMock(side_effect=AssertionError("hashing must not start"))
+        monkeypatch.setattr("video_research_mcp.tools.video_file._file_content_hash", hash_mock)
+        with pytest.raises(ValueError, match="MEDIA_MAX_INPUT_BYTES"):
+            await _video_file_content(str(f), "analyze")
+        hash_mock.assert_not_called()
+
     @pytest.mark.asyncio
     async def test_small_file_uses_inline_bytes(self, tmp_path, mock_gemini_client):
         """Files under threshold use Part.from_bytes (no File API upload)."""

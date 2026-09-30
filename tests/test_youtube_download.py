@@ -33,6 +33,39 @@ def download_dir(tmp_path, monkeypatch):
 
 
 class TestDownloadYoutubeVideo:
+    @pytest.mark.parametrize("video_id", ["../outside", "file:///etc/passwd", "https://example.org", "--exec=bad"])
+    async def test_invalid_id_rejected_before_filesystem_or_process(self, video_id, tmp_path):
+        target = tmp_path / "not-created"
+        with patch("asyncio.create_subprocess_exec", new_callable=AsyncMock) as spawn:
+            with pytest.raises(ValueError, match="eleven-character"):
+                await download_youtube_video(video_id, target_dir=target)
+        assert not target.exists()
+        spawn.assert_not_called()
+
+    async def test_all_format_branches_keep_dimension_ceiling(self, download_dir):
+        output = download_dir / f"{TEST_VIDEO_ID}.mp4"
+        proc = MagicMock(returncode=0)
+        proc.communicate = AsyncMock(return_value=(b"", b""))
+
+        async def spawn(*args, **kwargs):
+            formats = args[args.index("-f") + 1].split("/")
+            assert all("[height<=720]" in f and "[width<=1280]" in f for f in formats)
+            assert "--ignore-config" in args
+            assert "--max-filesize" in args
+            output.write_bytes(b"video")
+            return proc
+
+        with patch("shutil.which", return_value="yt-dlp"), patch("asyncio.create_subprocess_exec", side_effect=spawn):
+            await download_youtube_video(TEST_VIDEO_ID)
+
+    async def test_oversized_cached_download_never_reaches_subprocess(self, download_dir, monkeypatch):
+        monkeypatch.setenv("MEDIA_MAX_INPUT_BYTES", "9")
+        (download_dir / f"{TEST_VIDEO_ID}.mp4").write_bytes(b"0123456789")
+        with patch("shutil.which", return_value="yt-dlp"), patch("asyncio.create_subprocess_exec", new_callable=AsyncMock) as spawn:
+            with pytest.raises(ValueError, match="MEDIA_MAX_INPUT_BYTES"):
+                await download_youtube_video(TEST_VIDEO_ID)
+        spawn.assert_not_called()
+
     async def test_raises_when_ytdlp_not_found(self, download_dir):
         """GIVEN yt-dlp not installed WHEN download called THEN raises RuntimeError."""
         with patch("shutil.which", return_value=None):

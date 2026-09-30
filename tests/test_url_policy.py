@@ -31,7 +31,7 @@ class _FakeNetworkStream:
         self._peer = (peer_ip, port)
 
     def get_extra_info(self, info: str, default=None):
-        if info == "peername":
+        if info == "server_addr":
             return self._peer
         return default
 
@@ -59,7 +59,7 @@ class _FakeResponse:
         self,
         chunks: list[bytes],
         *,
-        peer_ip: str | None = None,
+        peer_ip: str | None = "93.184.216.34",
         status_code: int = 200,
         headers: dict[str, str] | None = None,
     ):
@@ -114,6 +114,15 @@ class _FakeClient:
 
 
 class TestValidateUrl:
+    @patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=[])
+    async def test_empty_dns_result_is_not_a_public_address(self, _mock_dns):
+        with pytest.raises(UrlPolicyError, match="no addresses"):
+            await validate_url("https://example.org/file")
+
+    async def test_file_uri_cannot_enter_network_adapter(self):
+        with pytest.raises(UrlPolicyError, match="Only HTTPS"):
+            await validate_url("file:///etc/passwd")
+
     """Tests for validate_url()."""
 
     async def test_rejects_http(self):
@@ -210,19 +219,37 @@ class TestVerifyPeerIp:
         resp.extensions = {"network_stream": _FakeNetworkStream("93.184.216.34")}
         _verify_peer_ip(resp)  # Should not raise
 
-    def test_passes_without_network_stream(self):
-        """Missing network_stream extension is tolerated (graceful degradation)."""
+    def test_rejects_without_network_stream(self):
+        """An adapter cannot bypass peer verification by omitting transport metadata."""
         resp = MagicMock()
         resp.extensions = {}
-        _verify_peer_ip(resp)  # Should not raise
+        with pytest.raises(UrlPolicyError, match="Cannot verify connected peer"):
+            _verify_peer_ip(resp)
 
-    def test_passes_without_peername(self):
-        """Network stream without peername is tolerated."""
+    def test_rejects_without_server_address(self):
+        """An unknown actual peer cannot establish a public connection."""
         stream = MagicMock()
         stream.get_extra_info.return_value = None
         resp = MagicMock()
         resp.extensions = {"network_stream": stream}
-        _verify_peer_ip(resp)  # Should not raise
+        with pytest.raises(UrlPolicyError, match="Cannot verify connected peer"):
+            _verify_peer_ip(resp)
+
+    def test_installed_httpcore_stream_blocks_private_peer(self):
+        """Use the installed backend's actual metadata contract without network I/O."""
+        from httpcore._backends.anyio import AnyIOStream
+        import anyio
+
+        socket_stream = MagicMock()
+        def extra(attribute, default=None):
+            if attribute == anyio.abc.SocketAttribute.remote_address:
+                return ("127.0.0.1", 443)
+            return default
+        socket_stream.extra.side_effect = extra
+        resp = MagicMock()
+        resp.extensions = {"network_stream": AnyIOStream(socket_stream)}
+        with pytest.raises(UrlPolicyError, match="DNS rebinding detected"):
+            _verify_peer_ip(resp)
 
 
 class TestDownloadChecked:

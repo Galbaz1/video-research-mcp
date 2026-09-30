@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .config import ServerConfig, get_config
 from .errors import SubprocessError
+from .redaction import redact_text
 
 logger = logging.getLogger(__name__)
 
@@ -107,8 +108,8 @@ async def run_cli(
         raise
 
     elapsed = time.monotonic() - start
-    stdout = stdout_bytes.decode("utf-8", errors="replace")
-    stderr = stderr_bytes.decode("utf-8", errors="replace")
+    stdout = redact_text(stdout_bytes.decode("utf-8", errors="replace"))
+    stderr = redact_text(stderr_bytes.decode("utf-8", errors="replace"))
 
     result = SubprocessResult(
         stdout=stdout,

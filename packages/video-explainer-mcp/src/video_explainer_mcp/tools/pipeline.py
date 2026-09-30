@@ -14,6 +14,7 @@ from pydantic import Field
 
 from ..config import get_config
 from ..errors import make_tool_error
+from ..redaction import redact_text
 from ..jobs import JobStatus, create_job, get_job, update_job
 from ..models.pipeline import RenderResult, StepResult
 from ..runner import SubprocessResult, run_cli
@@ -235,7 +236,7 @@ async def explainer_render_start(
                 update_job(
                     job.job_id,
                     status=JobStatus.FAILED,
-                    error=str(exc),
+                    error=redact_text(str(exc)),
                     duration_seconds=round(time.monotonic() - start, 2),
                 )
 

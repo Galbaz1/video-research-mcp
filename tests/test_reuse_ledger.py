@@ -24,6 +24,8 @@ def receipt_root(tmp_path):
         "packages/video-agent-mcp/uv.lock",
         "packages/video-explainer-mcp/uv.lock",
     ]
+    data = json.loads((ROOT / LEDGER).read_text())
+    paths += [receipt["target_path"] for unit in data["units"] for receipt in unit["implementations"]]
     for name in paths:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -60,7 +62,10 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     assert len(data["units"]) == 85
     assert len(data["dependency_locks"]) == 3
     assert len(data["dependency_packages"]) == 114
-    assert all(u["adoption"] == "not-adopted" for u in data["units"])
+    assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
+        "adj_research_eval", "adj_video_eval", "direct.security",
+    }
+    assert all(not u["transfers"] and not u["imports"] for u in data["units"])
     assert data["bundled_assets"] == []
     assert data["optional_runtime_receipts"] == []
 

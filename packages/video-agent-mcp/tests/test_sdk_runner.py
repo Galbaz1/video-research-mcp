@@ -111,6 +111,19 @@ async def test_query_exception():
     assert "SDK connection failed" in result.error
 
 
+@pytest.mark.parametrize("terminal", [
+    result_message(is_error=True, errors=["Authorization: Bearer undisclosed-secret"]),
+    result_message(is_error=True, result="https://user:undisclosed-secret@example.org/fail?key=undisclosed-key"),
+])
+async def test_terminal_diagnostics_are_redacted(terminal):
+    with patch("video_agent_mcp.sdk_runner.claude_agent_sdk.query",
+               return_value=MockAsyncIterator([terminal])):
+        result = await run_agent_query("Generate a scene")
+    assert not result.success
+    assert "undisclosed-" not in result.error
+    assert result.text == ""
+
+
 async def test_parallel_concurrency_and_order():
     """Concurrency is bounded while results retain their input order."""
     active = 0

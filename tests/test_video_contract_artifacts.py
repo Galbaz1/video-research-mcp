@@ -91,6 +91,20 @@ class TestRenderArtifacts:
 
 
 class TestQualityChecks:
+    def test_empty_or_out_of_scope_artifact_fails(self, tmp_path):
+        render_artifacts(
+            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            source_label="test",
+        )
+        analysis_path = tmp_path / "analysis.md"
+        analysis_path.write_text("")
+        assert not _check_artifacts_exist(tmp_path).passed
+        outside = tmp_path.parent / "outside.md"
+        outside.write_text("unrelated evidence")
+        analysis_path.unlink()
+        analysis_path.symlink_to(outside)
+        assert not _check_artifacts_exist(tmp_path).passed
+
     def test_artifacts_exist_pass(self, tmp_path):
         """All artifacts present → pass."""
         render_artifacts(

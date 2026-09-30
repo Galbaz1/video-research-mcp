@@ -4,7 +4,7 @@
   "observed_at": "2026-09-30",
   "source_head": "335e8babbeebd783255f67cda2da62b22abb2612",
   "inventory": "docs/research/2026-09-30-capability-transfer.json",
-  "scope": "Routes and source-component rights are cleared before adoption. No external programme code, asset, weight or runtime is adopted by this leaf. Actual adoption adds exact file/import receipts before integration.",
+  "scope": "Pinned source-unit routes, source-component rights and exact dependency/archive clearance. Accepted protocol and root security requirements are independently implemented with file-hash receipts; no external programme code, asset, weight or optional runtime is copied or imported.",
   "components": [
     {
       "repo": "QwenLM/Qwen-MM-Plugins",
@@ -1546,10 +1546,56 @@
       "component": "alexlivre/omni-image-tools-mcp@4d191573b7e459519c3ec9414ade744456115a5a",
       "audited_reuse_mode": "already-present",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/redaction.py",
+          "target_sha256": "60f130eb52449fd6857b89ee6c8866189b4d548d5e4b424d51176a8d87e1473b",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/errors.py",
+          "target_sha256": "23c4bc19e0d45b9e16383045a62690fc18cef84061a660c5810d97247bde1e37",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/cache.py",
+          "target_sha256": "ea0d6eb1b5e0935f0c55b68b4fd14d516d7f8ec0b1ac6e385e302d1b5ec54641",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/local_path_policy.py",
+          "target_sha256": "c8a39da43e5b8e67b580631b9348e4781aee18627eac58ee333b2f6290241faf",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/url_policy.py",
+          "target_sha256": "943393a87cb8c3cd0902308a6a0d231f3591ed31fb4836b112b6f62d0139a3e3",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_file.py",
+          "target_sha256": "dfae13af5fc4ca2d682d2c47c571fa695c84b18e2f21b75787da8a5fcc68ec1c",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/youtube_download.py",
+          "target_sha256": "93b5b38095d68d1cb66032723841e4c8a9c1a203c58df72fecca64f2e0c0b693",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/contract/quality.py",
+          "target_sha256": "020c81ed09a3b0a4a26ed20702f51aae355a0b8ac2a753734ea59621ba253098",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/image_ops.py",
+          "target_sha256": "40d97d1492f8ba88222b693fe117710f29f9067d91faf2937464703e1988aebf",
+          "provenance": "Independently authored PNG header/pixel/crop limits with optional operator-installed FFmpeg; no runtime or upstream code copied/imported/bundled."
+        }
+      ]
     },
     {
       "unit_key": "direct.twelvelabs",
@@ -1593,10 +1639,46 @@
       "component": "assafelovic/gpt-researcher@0957c301ed06c2a5857b834358c7227c739041d4",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "scripts/evaluation/models.py",
+          "target_sha256": "3a5c2a39246e49514f6e86b8b9be9614942a0b8b6bc9ca1e81c35da44487e38e",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/support.py",
+          "target_sha256": "97627b946c55859a73a921060bffa5c6eb12866a371ff9af652789cf1ed740fa",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/scoring.py",
+          "target_sha256": "1effe450625a241613f7a4d0c87c398f2120a04c08549a712e5c300c20c3cc41",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/replay.py",
+          "target_sha256": "b8de032971f161d9f232410e5280d9bbd6eb2db8464341b7996c040d2abc544f",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/comparison.py",
+          "target_sha256": "43d79ee4b94cbb883b940ab2b650e9f98a5d38af1d25ead4c4e45adc0fafa4cd",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/replay_capability_evaluation.py",
+          "target_sha256": "6af26476e026772eb7b6e190e7904cb187b6a14a5a6f577980c46149a4c5da0e",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/metrics/multimodal-evaluation-protocol.json",
+          "target_sha256": "7ba1d01e3463b88d9f22739a1ad25e83201f5cc199de88cfe7203eb878c85a93",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        }
+      ]
     },
     {
       "unit_key": "adj_video_eval",
@@ -1611,10 +1693,31 @@
       "component": "HKUDS/VideoRAG@c412a093a820ef7a0e0dda31076ed871136198b3",
       "audited_reuse_mode": "reimplement",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "scripts/evaluation/support.py",
+          "target_sha256": "97627b946c55859a73a921060bffa5c6eb12866a371ff9af652789cf1ed740fa",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/scoring.py",
+          "target_sha256": "1effe450625a241613f7a4d0c87c398f2120a04c08549a712e5c300c20c3cc41",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/evaluation/comparison.py",
+          "target_sha256": "43d79ee4b94cbb883b940ab2b650e9f98a5d38af1d25ead4c4e45adc0fafa4cd",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/metrics/multimodal-heldout-manifest.json",
+          "target_sha256": "6a99a610eb3352f1434cc7b0251376b4fbf1259fdbac57e8e24a3c9e80ddf633",
+          "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
+        }
+      ]
     },
     {
       "unit_key": "adj_evidence_packet",

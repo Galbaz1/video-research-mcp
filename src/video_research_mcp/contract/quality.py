@@ -100,15 +100,21 @@ def _check_concept_map_edges(concept_map: dict) -> QualityCheck:
 
 
 def _check_artifacts_exist(artifact_dir: Path) -> QualityCheck:
-    """Verify that expected artifact files exist in the output directory."""
+    """Verify expected artifacts are nonempty regular files inside the output directory."""
     expected = ["analysis.md", "strategy.md", "concept-map.html"]
-    missing = [f for f in expected if not (artifact_dir / f).exists()]
+    invalid = []
+    for name in expected:
+        path = artifact_dir / name
+        if not path.is_file() or not path.resolve().is_relative_to(artifact_dir.resolve()):
+            invalid.append(name)
+        elif path.stat().st_size == 0:
+            invalid.append(name)
 
-    if missing:
+    if invalid:
         return QualityCheck(
             name="artifacts_exist",
             passed=False,
-            detail=f"Missing artifacts: {', '.join(missing)}",
+            detail=f"Missing, empty or out-of-scope artifacts: {', '.join(invalid)}",
         )
     return QualityCheck(name="artifacts_exist", passed=True, detail="All artifacts present")
 

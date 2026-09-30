@@ -1,0 +1,2525 @@
+{
+  "schema_version": 1,
+  "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+  "collection_method": "Exact Git source archive imported in existing unchanged locked package environments; list_tools only; no lifespan or tools executed.",
+  "servers": {
+    "root": {
+      "tool_count": 34,
+      "tools": [
+        {
+          "name": "content_analyze",
+          "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "instruction": {
+                "default": "Provide a comprehensive analysis of this content.",
+                "description": "What to analyze — e.g. 'summarize key findings', 'extract methodology', 'list all citations'",
+                "type": "string"
+              },
+              "file_path": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Local file path (PDF or text)"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "URL to analyze"
+              },
+              "text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Raw text content"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional JSON Schema for the response. If omitted, uses default ContentResult schema."
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "content_batch_analyze",
+          "description": "Analyze multiple content files from a directory or explicit file list.\n\nSupports two modes: 'compare' sends all files to Gemini in a single call\nfor cross-document analysis, 'individual' analyzes each file separately\nwith bounded concurrency (3 parallel calls).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "instruction": {
+                "default": "Provide a comprehensive analysis of these documents.",
+                "description": "What to analyze — e.g. 'compare methodologies', 'summarize each document', 'extract key findings'",
+                "type": "string"
+              },
+              "directory": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Directory to scan for content files"
+              },
+              "file_paths": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Explicit list of file paths to analyze"
+              },
+              "glob_pattern": {
+                "default": "*",
+                "description": "Glob pattern to filter files within directory",
+                "type": "string"
+              },
+              "mode": {
+                "default": "compare",
+                "description": "'compare' for cross-document analysis in one call, 'individual' for separate per-file analysis",
+                "enum": [
+                  "compare",
+                  "individual"
+                ],
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional JSON Schema for each result"
+              },
+              "thinking_level": {
+                "default": "high",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              },
+              "max_files": {
+                "default": 20,
+                "description": "Maximum files to process",
+                "maximum": 50,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "content_extract",
+          "description": "Extract structured data from content using a JSON Schema.\n\nUses Gemini's response_json_schema for guaranteed structured output.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "content": {
+                "description": "Text content to extract from",
+                "minLength": 1,
+                "type": "string"
+              },
+              "schema": {
+                "additionalProperties": true,
+                "description": "JSON Schema defining the extraction structure",
+                "type": "object"
+              }
+            },
+            "required": [
+              "content",
+              "schema"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "infra_cache",
+          "description": "Manage the analysis cache — stats, list, clear, or inspect context cache state.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": true,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "default": "stats",
+                "enum": [
+                  "stats",
+                  "list",
+                  "clear",
+                  "context"
+                ],
+                "type": "string",
+                "description": "Cache operation — \"stats\", \"list\", \"clear\", or \"context\"."
+              },
+              "content_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Scope clear to a specific content ID"
+              },
+              "auth_token": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "infra_configure",
+          "description": "Reconfigure the server at runtime — preset, model, thinking level, or temperature.\n\nChanges take effect immediately for all subsequent tool calls.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "preset": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "best",
+                      "stable",
+                      "budget"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Named model preset: \"best\" (Pro preview), \"stable\" (Flash), or \"budget\" (Flash-Lite)"
+              },
+              "model": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Gemini model ID override (takes precedence over preset)"
+              },
+              "thinking_level": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "minimal",
+                      "low",
+                      "medium",
+                      "high"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Thinking depth — \"minimal\", \"low\", \"medium\", or \"high\"."
+              },
+              "temperature": {
+                "anyOf": [
+                  {
+                    "maximum": 2.0,
+                    "minimum": 0.0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Sampling temperature for models that support it (not 3.6+ Flash)"
+              },
+              "auth_token": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_ask",
+          "description": "Ask a question and get an AI-generated answer grounded in stored knowledge.\n\nUses Weaviate AsyncQueryAgent in ask mode to synthesize an answer from\nobjects across knowledge collections, with source citations.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Question to answer from stored knowledge",
+                "minLength": 1,
+                "type": "string"
+              },
+              "collections": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "enum": [
+                        "ResearchFindings",
+                        "VideoAnalyses",
+                        "ContentAnalyses",
+                        "VideoMetadata",
+                        "SessionTranscripts",
+                        "WebSearchResults",
+                        "ResearchPlans",
+                        "CommunityReactions",
+                        "ConceptKnowledge",
+                        "RelationshipEdges",
+                        "CallNotes",
+                        "DeepResearchReports",
+                        "AcademicPapers"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Collections to search (all if omitted)"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_fetch",
+          "description": "Fetch a single object by UUID from a knowledge collection.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "description": "Weaviate object UUID",
+                "minLength": 1,
+                "type": "string"
+              },
+              "collection": {
+                "enum": [
+                  "ResearchFindings",
+                  "VideoAnalyses",
+                  "ContentAnalyses",
+                  "VideoMetadata",
+                  "SessionTranscripts",
+                  "WebSearchResults",
+                  "ResearchPlans",
+                  "CommunityReactions",
+                  "ConceptKnowledge",
+                  "RelationshipEdges",
+                  "CallNotes",
+                  "DeepResearchReports",
+                  "AcademicPapers"
+                ],
+                "type": "string",
+                "description": "Collection the object belongs to."
+              }
+            },
+            "required": [
+              "object_id",
+              "collection"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_ingest",
+          "description": "Manually insert data into a knowledge collection.\n\nProperties are validated against the collection schema — unknown keys\nare rejected with allowed name:type pairs.\n\nTip: call knowledge_schema(collection=...) first to see expected properties.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": false,
+            "idempotent_hint": false,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "collection": {
+                "enum": [
+                  "ResearchFindings",
+                  "VideoAnalyses",
+                  "ContentAnalyses",
+                  "VideoMetadata",
+                  "SessionTranscripts",
+                  "WebSearchResults",
+                  "ResearchPlans",
+                  "CommunityReactions",
+                  "ConceptKnowledge",
+                  "RelationshipEdges",
+                  "CallNotes",
+                  "DeepResearchReports",
+                  "AcademicPapers"
+                ],
+                "type": "string",
+                "description": "Target collection name."
+              },
+              "properties": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Object properties to insert"
+              }
+            },
+            "required": [
+              "collection",
+              "properties"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_query",
+          "description": "[DEPRECATED] Search knowledge store using natural language.\n\nDeprecated: Use knowledge_search instead, which now includes Cohere reranking\nand Flash summarization for better results with lower token usage.\n\nUses Weaviate AsyncQueryAgent in search mode for intelligent object retrieval.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Natural language search query",
+                "minLength": 1,
+                "type": "string"
+              },
+              "collections": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "enum": [
+                        "ResearchFindings",
+                        "VideoAnalyses",
+                        "ContentAnalyses",
+                        "VideoMetadata",
+                        "SessionTranscripts",
+                        "WebSearchResults",
+                        "ResearchPlans",
+                        "CommunityReactions",
+                        "ConceptKnowledge",
+                        "RelationshipEdges",
+                        "CallNotes",
+                        "DeepResearchReports",
+                        "AcademicPapers"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Collections to search (all if omitted)"
+              },
+              "limit": {
+                "default": 10,
+                "description": "Max results",
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_related",
+          "description": "Find semantically related objects using near-object vector search.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "description": "UUID of the source object",
+                "minLength": 1,
+                "type": "string"
+              },
+              "collection": {
+                "enum": [
+                  "ResearchFindings",
+                  "VideoAnalyses",
+                  "ContentAnalyses",
+                  "VideoMetadata",
+                  "SessionTranscripts",
+                  "WebSearchResults",
+                  "ResearchPlans",
+                  "CommunityReactions",
+                  "ConceptKnowledge",
+                  "RelationshipEdges",
+                  "CallNotes",
+                  "DeepResearchReports",
+                  "AcademicPapers"
+                ],
+                "type": "string",
+                "description": "Collection the source object belongs to."
+              },
+              "limit": {
+                "default": 5,
+                "description": "Max related results",
+                "maximum": 50,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "object_id",
+              "collection"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_schema",
+          "description": "Return property schemas for knowledge collections.\n\nReads from local CollectionDef objects — no Weaviate connection needed.\nUse this before knowledge_ingest to discover expected property names and types.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "collection": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "ResearchFindings",
+                      "VideoAnalyses",
+                      "ContentAnalyses",
+                      "VideoMetadata",
+                      "SessionTranscripts",
+                      "WebSearchResults",
+                      "ResearchPlans",
+                      "CommunityReactions",
+                      "ConceptKnowledge",
+                      "RelationshipEdges",
+                      "CallNotes",
+                      "DeepResearchReports",
+                      "AcademicPapers"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Collection to inspect (omit for all)"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_search",
+          "description": "Search across knowledge collections using hybrid, semantic, or keyword mode.\n\nSearches specified or all collections. Results are merged and sorted by score.\nFilters are collection-aware: conditions are skipped for collections\nthat lack the relevant property.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Search query",
+                "minLength": 1,
+                "type": "string"
+              },
+              "collections": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "enum": [
+                        "ResearchFindings",
+                        "VideoAnalyses",
+                        "ContentAnalyses",
+                        "VideoMetadata",
+                        "SessionTranscripts",
+                        "WebSearchResults",
+                        "ResearchPlans",
+                        "CommunityReactions",
+                        "ConceptKnowledge",
+                        "RelationshipEdges",
+                        "CallNotes",
+                        "DeepResearchReports",
+                        "AcademicPapers"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Collections to search (all if omitted)"
+              },
+              "search_type": {
+                "default": "hybrid",
+                "description": "Search mode: hybrid (BM25+vector), semantic (vector only), keyword (BM25 only)",
+                "enum": [
+                  "hybrid",
+                  "semantic",
+                  "keyword"
+                ],
+                "type": "string"
+              },
+              "limit": {
+                "default": 10,
+                "description": "Maximum total results to return",
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "alpha": {
+                "default": 0.5,
+                "description": "Hybrid balance: 0=BM25, 1=vector",
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              "evidence_tier": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by evidence tier (e.g. CONFIRMED)"
+              },
+              "source_tool": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by originating tool name"
+              },
+              "date_from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter created_at >= ISO date"
+              },
+              "date_to": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter created_at <= ISO date"
+              },
+              "category": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter VideoMetadata by category"
+              },
+              "video_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by video_id"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "knowledge_stats",
+          "description": "Get object counts per collection, optionally grouped by a property.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "collection": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "ResearchFindings",
+                      "VideoAnalyses",
+                      "ContentAnalyses",
+                      "VideoMetadata",
+                      "SessionTranscripts",
+                      "WebSearchResults",
+                      "ResearchPlans",
+                      "CommunityReactions",
+                      "ConceptKnowledge",
+                      "RelationshipEdges",
+                      "CallNotes",
+                      "DeepResearchReports",
+                      "AcademicPapers"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Collection to count (all if omitted)"
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Group counts by a text property (e.g. evidence_tier, source_tool)"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_assess_evidence",
+          "description": "Assess a claim against sources, returning evidence tier and confidence.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "claim": {
+                "description": "The claim to assess",
+                "minLength": 3,
+                "type": "string"
+              },
+              "sources": {
+                "description": "Evidence sources to evaluate against",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "context": {
+                "default": "",
+                "description": "Additional context for assessment",
+                "type": "string"
+              }
+            },
+            "required": [
+              "claim",
+              "sources"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_author_search",
+          "description": "Search for academic authors on Semantic Scholar.\n\nReturns author profiles with affiliation, paper count, citation count,\nand h-index.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Author name to search",
+                "maxLength": 200,
+                "minLength": 2,
+                "type": "string"
+              },
+              "limit": {
+                "default": 5,
+                "description": "Max authors to return",
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_deep",
+          "description": "Run multi-phase deep research with evidence-tier labeling.\n\nPhases: Scope Definition -> Evidence Collection -> Synthesis.\nEvery claim is labeled CONFIRMED, STRONG INDICATOR, INFERENCE,\nSPECULATION, or UNKNOWN.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "topic": {
+                "description": "Research topic or question",
+                "maxLength": 2000,
+                "minLength": 3,
+                "type": "string"
+              },
+              "scope": {
+                "default": "moderate",
+                "enum": [
+                  "quick",
+                  "moderate",
+                  "deep",
+                  "comprehensive"
+                ],
+                "type": "string",
+                "description": "Research depth — \"quick\", \"moderate\", \"deep\", or \"comprehensive\"."
+              },
+              "thinking_level": {
+                "default": "high",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              }
+            },
+            "required": [
+              "topic"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_document",
+          "description": "Run multi-phase deep research grounded in source documents.\n\nPhases: Document Mapping -> Evidence Extraction -> Cross-Reference -> Synthesis.\nEvery claim is labeled with evidence tiers and cited back to source documents.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "instruction": {
+                "description": "Research question or analysis instruction for the documents",
+                "type": "string"
+              },
+              "file_paths": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Local PDF/document file paths"
+              },
+              "urls": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "URLs to PDF documents (downloaded and uploaded to Gemini)"
+              },
+              "scope": {
+                "default": "moderate",
+                "enum": [
+                  "quick",
+                  "moderate",
+                  "deep",
+                  "comprehensive"
+                ],
+                "type": "string",
+                "description": "Research depth -- quick, moderate, deep, comprehensive."
+              },
+              "thinking_level": {
+                "default": "high",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              }
+            },
+            "required": [
+              "instruction"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_paper_citations",
+          "description": "Get citations or references for a paper.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "paper_id": {
+                "description": "Paper ID (S2, DOI:, or ArXiv:)",
+                "minLength": 1,
+                "type": "string"
+              },
+              "direction": {
+                "default": "citations",
+                "description": "'citations' (papers citing this) or 'references' (papers this cites)",
+                "enum": [
+                  "citations",
+                  "references"
+                ],
+                "type": "string"
+              },
+              "limit": {
+                "default": 20,
+                "description": "Max papers to return",
+                "maximum": 1000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "paper_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_paper_details",
+          "description": "Get detailed metadata for a specific paper.\n\nAccepts Semantic Scholar IDs, DOIs (prefix with DOI:), or ArXiv IDs\n(prefix with ArXiv:).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "paper_id": {
+                "description": "Paper ID: S2 ID, DOI (prefix 'DOI:10.xxx'), or ArXiv (prefix 'ArXiv:2301.xxx')",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "paper_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_paper_recommendations",
+          "description": "Get paper recommendations based on seed papers.\n\nUses Semantic Scholar's recommendation engine to find related papers.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "seed_paper_ids": {
+                "description": "List of S2 paper IDs to base recommendations on",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "limit": {
+                "default": 10,
+                "description": "Max papers to return",
+                "maximum": 500,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "seed_paper_ids"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_paper_search",
+          "description": "Search academic papers on Semantic Scholar.\n\nReturns papers with metadata, abstracts, citation counts, and TL;DR\nsummaries. Supports filtering by field of study, year range, and\nopen access availability.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Search query for academic papers",
+                "maxLength": 500,
+                "minLength": 2,
+                "type": "string"
+              },
+              "fields_of_study": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by fields (e.g. Computer Science, Medicine)"
+              },
+              "year_range": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Year filter: '2020' for single year, '2020-2024' for range, '2020-' for since"
+              },
+              "open_access_only": {
+                "default": false,
+                "description": "Only return open access papers",
+                "type": "boolean"
+              },
+              "limit": {
+                "default": 10,
+                "description": "Max papers to return",
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_plan",
+          "description": "Generate a multi-agent research orchestration plan.\n\nReturns a phased blueprint with task decomposition and model assignments.\nDoes NOT spawn agents — provides the blueprint for the caller.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "topic": {
+                "description": "Research topic or question",
+                "maxLength": 2000,
+                "minLength": 3,
+                "type": "string"
+              },
+              "scope": {
+                "default": "moderate",
+                "enum": [
+                  "quick",
+                  "moderate",
+                  "deep",
+                  "comprehensive"
+                ],
+                "type": "string",
+                "description": "Research depth."
+              },
+              "available_agents": {
+                "default": 10,
+                "description": "Number of agents available",
+                "maximum": 50,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "topic"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_web",
+          "description": "Launch a Gemini Deep Research Agent for autonomous web-grounded research.\n\nThe agent plans its own research, searches the web (~80-160 queries),\nreads sources, and produces a cited markdown report. Runs in background;\npoll with research_web_status. Provider usage is billed; runtime varies.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "topic": {
+                "description": "Precise research brief — the more detailed, the better results",
+                "maxLength": 10000,
+                "minLength": 10,
+                "type": "string"
+              },
+              "output_format": {
+                "default": "",
+                "description": "Report structure/format instructions (e.g. 'executive summary + data tables')",
+                "type": "string"
+              }
+            },
+            "required": [
+              "topic"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_web_cancel",
+          "description": "Cancel a running Deep Research task.\n\nSends a cancel request to the Interactions API and cleans up local\ntracking state. Useful for stopping a task before further provider usage.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "interaction_id": {
+                "description": "Interaction ID to cancel",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "interaction_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_web_followup",
+          "description": "Ask a follow-up question about a completed Deep Research report.\n\nUses previous_interaction_id to maintain context from the original\nresearch. Synchronous — follow-ups are fast (no background needed).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "interaction_id": {
+                "description": "Completed interaction ID to follow up on",
+                "minLength": 1,
+                "type": "string"
+              },
+              "question": {
+                "description": "Follow-up question about the research report",
+                "maxLength": 5000,
+                "minLength": 3,
+                "type": "string"
+              }
+            },
+            "required": [
+              "interaction_id",
+              "question"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "research_web_status",
+          "description": "Poll or retrieve a Deep Research task.\n\nReturns the full report with sources when completed, or current status\nif still in progress. Auto-stores completed reports to Weaviate.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "interaction_id": {
+                "description": "Interaction ID returned by research_web",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "interaction_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_analyze",
+          "description": "Analyze a video (YouTube URL or local file) with any instruction.\n\nProvide exactly one of url or file_path. Uses Gemini's structured output\nfor reliable JSON responses. Pass a custom output_schema to control the\nresponse shape, or use the default VideoResult schema.\n\nWhen strict_contract=True, runs the full contract pipeline: analysis with\nstrict Pydantic models, parallel strategy/concept-map generation, artifact\nrendering, and quality gates. Returns richer output but takes longer.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "anyOf": [
+                  {
+                    "description": "YouTube video URL (youtube.com or youtu.be)",
+                    "minLength": 10,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "YouTube video URL."
+              },
+              "file_path": {
+                "anyOf": [
+                  {
+                    "description": "Path to a local video file (mp4, webm, mov, avi, mkv, mpeg, wmv, 3gpp)",
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Path to a local video file."
+              },
+              "instruction": {
+                "default": "Provide a comprehensive analysis of this video.",
+                "description": "What to analyze — e.g. 'summarize key points', 'extract all CLI commands shown', 'list all recipes and ingredients'",
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional JSON Schema for the response. If omitted, uses default VideoResult schema."
+              },
+              "thinking_level": {
+                "default": "high",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              },
+              "use_cache": {
+                "default": true,
+                "description": "Use cached results",
+                "type": "boolean"
+              },
+              "strict_contract": {
+                "default": false,
+                "description": "Enable strict contract pipeline with quality gates, artifact rendering, and semantic validation. Produces richer output with strategy report, concept map, and HTML/Markdown artifacts.",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_batch_analyze",
+          "description": "Analyze all video files in a directory concurrently.\n\nScans the directory for supported video files (mp4, webm, mov, avi, mkv,\nmpeg, wmv, 3gpp), then analyzes each with the given instruction using\nbounded concurrency (3 parallel Gemini calls).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "directory": {
+                "description": "Path to a directory containing video files",
+                "minLength": 1,
+                "type": "string"
+              },
+              "instruction": {
+                "default": "Provide a comprehensive analysis of this video.",
+                "description": "What to analyze in each video",
+                "type": "string"
+              },
+              "glob_pattern": {
+                "default": "*",
+                "description": "Glob pattern to filter files within the directory",
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Optional JSON Schema for each video's response"
+              },
+              "thinking_level": {
+                "default": "high",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string",
+                "description": "Gemini thinking depth."
+              },
+              "max_files": {
+                "default": 20,
+                "description": "Maximum files to process",
+                "maximum": 50,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "directory"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_comments",
+          "description": "Fetch top YouTube comments sorted by relevance.\n\nReturns comment text, like count, and author for each comment.\nCosts 1+ YouTube API units, 0 Gemini units.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "description": "YouTube video URL (youtube.com or youtu.be)",
+                "minLength": 10,
+                "type": "string"
+              },
+              "max_comments": {
+                "default": 200,
+                "description": "Maximum comments to fetch (sorted by relevance)",
+                "maximum": 500,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_continue_session",
+          "description": "Continue analysis within an existing video session.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": false,
+            "idempotent_hint": false,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "session_id": {
+                "description": "Session ID from video_create_session",
+                "minLength": 1,
+                "type": "string"
+              },
+              "prompt": {
+                "description": "Follow-up question or instruction",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id",
+              "prompt"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_create_session",
+          "description": "Create a persistent session for multi-turn video exploration.\n\nProvide exactly one of url or file_path. When ``download=True`` and the\nsource is YouTube, the video is downloaded via yt-dlp, uploaded to the\nGemini File API, and context-cached for fast multi-turn use.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": false,
+            "idempotent_hint": false,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "anyOf": [
+                  {
+                    "description": "YouTube video URL (youtube.com or youtu.be)",
+                    "minLength": 10,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "YouTube video URL."
+              },
+              "file_path": {
+                "anyOf": [
+                  {
+                    "description": "Path to a local video file (mp4, webm, mov, avi, mkv, mpeg, wmv, 3gpp)",
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Path to a local video file."
+              },
+              "description": {
+                "default": "",
+                "description": "Session purpose or focus area",
+                "type": "string"
+              },
+              "download": {
+                "default": false,
+                "description": "Download YouTube video locally for cached multi-turn sessions. Slower startup (~2 min) but faster and cheaper per turn. Requires yt-dlp installed.",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_metadata",
+          "description": "Fetch YouTube video metadata without Gemini analysis.\n\nReturns title, description, view/like/comment counts, duration,\ntags, channel info, category, and language. Costs 1 YouTube API\nunit, 0 Gemini units.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "description": "YouTube video URL (youtube.com or youtu.be)",
+                "minLength": 10,
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "video_playlist",
+          "description": "Get video IDs and titles from a YouTube playlist.\n\nResults can be passed to video_analyze for batch analysis.\nCosts 1 YouTube API unit per page (max 50 items/page).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": false,
+            "idempotent_hint": true,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "description": "YouTube playlist URL (must contain 'list=' parameter)",
+                "minLength": 10,
+                "type": "string"
+              },
+              "max_items": {
+                "default": 20,
+                "description": "Maximum videos to return",
+                "maximum": 50,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "web_search",
+          "description": "Search the web using Gemini's built-in Google Search grounding.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "query": {
+                "description": "Search query",
+                "minLength": 2,
+                "type": "string"
+              },
+              "num_results": {
+                "default": 5,
+                "description": "Number of results",
+                "maximum": 20,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "explainer": {
+      "tool_count": 15,
+      "tools": [
+        {
+          "name": "explainer_create",
+          "description": "Create a new explainer video project.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_factcheck",
+          "description": "Run fact-checking on the project's script content.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_feedback",
+          "description": "Add feedback to a project for iterative improvement.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "feedback": {
+                "description": "Feedback text to add to the project",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id",
+              "feedback"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_generate",
+          "description": "Run the full explainer pipeline (or a subset of steps).",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "from_step": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Start from this step"
+              },
+              "to_step": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Stop after this step"
+              },
+              "force": {
+                "default": false,
+                "description": "Re-run already completed steps",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_inject",
+          "description": "Inject content into a project's input directory.\n\nWrites content directly to the project's ``input/`` directory without\ncalling the CLI. Use this to feed research output into the pipeline.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "content": {
+                "description": "Content to inject (markdown, text, or research output)",
+                "type": "string"
+              },
+              "filename": {
+                "default": "content.md",
+                "description": "Target filename in input/ directory",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id",
+              "content"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_list",
+          "description": "List all explainer projects with completion status.\n\nReturns:\n    Dict with projects list and total count.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_music",
+          "description": "Generate background music for the video.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_refine",
+          "description": "Refine a pipeline step's output for better quality.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "phase": {
+                "const": "script",
+                "description": "Which phase to refine",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id",
+              "phase"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_render",
+          "description": "Render the explainer video (blocking — waits for completion).\n\nFor long renders, prefer ``explainer_render_start`` + ``explainer_render_poll``.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "resolution": {
+                "default": "720p",
+                "description": "Output resolution",
+                "enum": [
+                  "720p",
+                  "1080p",
+                  "4k"
+                ],
+                "type": "string"
+              },
+              "fast": {
+                "default": true,
+                "description": "Use fast/preview quality",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_render_poll",
+          "description": "Check the status of a background render job.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "job_id": {
+                "description": "Job ID from explainer_render_start",
+                "type": "string"
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_render_start",
+          "description": "Start a background render and return immediately with a job ID.\n\nPoll progress with ``explainer_render_poll``.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "resolution": {
+                "default": "720p",
+                "description": "Output resolution",
+                "enum": [
+                  "720p",
+                  "1080p",
+                  "4k"
+                ],
+                "type": "string"
+              },
+              "fast": {
+                "default": true,
+                "description": "Use fast/preview quality",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_short",
+          "description": "Generate a short-form video from an existing project.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_sound",
+          "description": "Analyze scenes for sound cues or generate sound effects.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "action": {
+                "description": "'analyze' scenes or 'generate' sound effects",
+                "enum": [
+                  "analyze",
+                  "generate"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id",
+              "action"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_status",
+          "description": "Check the status of an explainer project.\n\nScans the project directory for completed pipeline steps without\ncalling the CLI.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": true,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": false
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "explainer_step",
+          "description": "Run a single pipeline step.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier (alphanumeric, hyphens, underscores)",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "step": {
+                "description": "Pipeline step to run",
+                "enum": [
+                  "script",
+                  "narration",
+                  "scenes",
+                  "voiceover",
+                  "storyboard"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "project_id",
+              "step"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "agent": {
+      "tool_count": 2,
+      "tools": [
+        {
+          "name": "agent_generate_scenes",
+          "description": "Generate all Remotion scene components for a project in parallel.\n\nReads script.json and voiceover/manifest.json from the project,\nbuilds per-scene prompts, runs them through Claude in parallel via\nthe Agent SDK, extracts TSX code from responses, and writes scene\nfiles + index.ts to disk.\n\nPartial failure is supported: if 5/7 scenes succeed, those 5 are\nwritten and indexed; the 2 failures are reported in ``errors``.\nFailed scenes can be retried with ``agent_generate_single_scene``.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier under the explainer projects directory",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "concurrency": {
+                "default": 5,
+                "description": "Max parallel scene queries (1-10)",
+                "maximum": 10,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "force": {
+                "default": false,
+                "description": "Overwrite existing scenes if True",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "project_id"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        },
+        {
+          "name": "agent_generate_single_scene",
+          "description": "Generate or regenerate a single Remotion scene component.\n\nUseful for retrying failed scenes from ``agent_generate_scenes``\nor regenerating a specific scene after script changes.",
+          "annotations": {
+            "title": null,
+            "read_only_hint": false,
+            "destructive_hint": null,
+            "idempotent_hint": null,
+            "open_world_hint": true
+          },
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "project_id": {
+                "description": "Project identifier under the explainer projects directory",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[a-zA-Z0-9_-]+$",
+                "type": "string"
+              },
+              "scene_number": {
+                "description": "1-indexed scene number to generate",
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "project_id",
+              "scene_number"
+            ],
+            "type": "object"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "type": "object"
+          }
+        }
+      ]
+    }
+  }
+}

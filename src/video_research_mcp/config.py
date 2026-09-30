@@ -140,6 +140,7 @@ class ServerConfig(BaseModel):
     mlflow_tracking_uri: str = Field(default="")
     mlflow_experiment_name: str = Field(default="video-research-mcp")
     doc_max_download_bytes: int = Field(default=50 * 1024 * 1024)
+    media_max_input_bytes: int = Field(default=512 * 1024 * 1024, ge=1)
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -258,6 +259,7 @@ class ServerConfig(BaseModel):
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
             doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+            media_max_input_bytes=int(os.getenv("MEDIA_MAX_INPUT_BYTES", str(512 * 1024 * 1024))),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")

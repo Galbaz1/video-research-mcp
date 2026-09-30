@@ -76,3 +76,16 @@ No optional foreign runtime is selected by this ledger.
 The ledger stores these dispositions and alternatives even when a related feature
 is implemented later. Update the receipt after a real dependency or adoption
 change; never edit the check to accept a previously failing unlicensed asset.
+
+## Accepted independent requirements implementations
+
+The frozen evaluation protocol and stronger root security boundaries now have
+exact independently authored file-hash receipts for `adj_research_eval`,
+`adj_video_eval` and `direct.security`. Their pinned external sources remain
+design/evidence references. No upstream implementation, model weight, source
+asset or optional runtime was copied or imported. Held-out fixture rights and
+provider/model terms stay separate from source-code reuse clearance.
+
+A later edit to a receipted implementation must refresh its target hash before
+source/archive clearance. The ledger cannot treat an implementation plan as an
+adoption receipt.

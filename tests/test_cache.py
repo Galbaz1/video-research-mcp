@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import pytest
 
@@ -22,6 +23,31 @@ def _tmp_cache(tmp_path, monkeypatch):
 
 
 class TestCache:
+    @pytest.mark.parametrize("payload", [[], None, "broken", 1, {"analysis": []},
+                                          {"analysis": {}}, {"error": "failed"}])
+    def test_malformed_or_failed_payload_is_a_miss(self, payload):
+        path = cache.cache_path("bad", "analyze", "model")
+        path.write_text(json.dumps(payload))
+        assert cache.load("bad", "analyze", "model") is None
+        cache.list_entries()
+
+    @pytest.mark.parametrize("artifact_state", ["missing", "empty", "corrupt", "symlink"])
+    def test_unverified_artifact_paths_are_never_cached_proof(self, tmp_path, artifact_state):
+        artifact = tmp_path / "proof.html"
+        if artifact_state == "empty":
+            artifact.touch()
+        elif artifact_state == "corrupt":
+            artifact.write_text("corrupt bytes")
+        elif artifact_state == "symlink":
+            original = tmp_path / "original"
+            original.write_text("outside the artifact scope")
+            artifact.symlink_to(original)
+        result = {"artifacts": {"proof": str(artifact)}, "quality_report": {"status": "pass"}}
+        assert cache.save("proof", "analyze", "model", result) is False
+        # Historical cache files cannot bypass the current writer policy.
+        cache.cache_path("proof", "analyze", "model").write_text(json.dumps({"analysis": result}))
+        assert cache.load("proof", "analyze", "model") is None
+
     def test_save_and_load(self):
         data = {"title": "Test Video", "summary": "A summary"}
         assert cache.save("vid123", "analyze", "gemini-pro", data) is True

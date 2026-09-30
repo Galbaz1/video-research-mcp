@@ -10,6 +10,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .config import get_config
+from .redaction import redact_text
 
 logger = logging.getLogger(__name__)
 
@@ -53,10 +54,18 @@ def load(
         return None
     try:
         data = json.loads(p.read_text())
+        if not isinstance(data, dict):
+            return None
+        analysis = data.get("analysis", data)
+        if not isinstance(analysis, dict) or not analysis or "error" in analysis:
+            return None
+        # This cache has no trusted artifact receipt or scope: never replay proof paths.
+        if "artifacts" in analysis:
+            return None
         logger.info("Cache hit: %s", p.name)
-        return data.get("analysis") or data
+        return analysis
     except (json.JSONDecodeError, OSError) as exc:
-        logger.warning("Cache read error: %s", exc)
+        logger.warning("Cache read error: %s", redact_text(str(exc)))
         return None
 
 
@@ -64,6 +73,8 @@ def save(
     content_id: str, tool_name: str, model: str, analysis: dict, instruction: str = "",
 ) -> bool:
     """Write *analysis* to cache. Returns True on success."""
+    if not analysis or "error" in analysis or "artifacts" in analysis:
+        return False
     p = cache_path(content_id, tool_name, model, instruction)
     try:
         envelope = {
@@ -79,7 +90,7 @@ def save(
         logger.info("Cached: %s", p.name)
         return True
     except OSError as exc:
-        logger.warning("Cache write error: %s", exc)
+        logger.warning("Cache write error: %s", redact_text(str(exc)))
         return False
 
 
@@ -115,6 +126,8 @@ def list_entries() -> list[dict]:
     for f in _cache_dir().glob("*.json"):
         try:
             data = json.loads(f.read_text())
+            if not isinstance(data, dict):
+                continue
             entries.append(
                 {
                     "file": f.name,

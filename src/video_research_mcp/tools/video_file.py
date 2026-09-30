@@ -59,6 +59,8 @@ def _validate_video_path(file_path: str) -> tuple[Path, str]:
         raise FileNotFoundError(f"Video file not found: {file_path}")
     if not p.is_file():
         raise ValueError(f"Not a file: {file_path}")
+    if p.stat().st_size > get_config().media_max_input_bytes:
+        raise ValueError("Video exceeds MEDIA_MAX_INPUT_BYTES; use a bounded window")
     mime = _video_mime_type(p)
     return p, mime
 
