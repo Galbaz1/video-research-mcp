@@ -2,7 +2,6 @@
 description: Query, debug, and evaluate MLflow traces from Gemini tool calls
 argument-hint: "[errors|slow|<trace-id>|feedback <trace-id> <score>]"
 allowed-tools: mcp__mlflow-mcp__search_traces, mcp__mlflow-mcp__get_trace, mcp__mlflow-mcp__set_trace_tag, mcp__mlflow-mcp__log_feedback, mcp__mlflow-mcp__evaluate_traces, mcp__mlflow-mcp__list_scorers, Bash
-model: sonnet
 ---
 
 # Traces: $ARGUMENTS

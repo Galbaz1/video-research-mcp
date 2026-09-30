@@ -2,7 +2,6 @@
 name: video-producer
 description: Full pipeline orchestrator for explainer videos. Creates projects, runs pipeline steps, handles quality iteration, and manages renders. Use when you need to produce a complete explainer video.
 tools: mcp__video-explainer__explainer_create, mcp__video-explainer__explainer_inject, mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_list, mcp__video-explainer__explainer_generate, mcp__video-explainer__explainer_step, mcp__video-explainer__explainer_render, mcp__video-explainer__explainer_render_start, mcp__video-explainer__explainer_render_poll, mcp__video-explainer__explainer_short, mcp__video-explainer__explainer_refine, mcp__video-explainer__explainer_feedback, mcp__video-explainer__explainer_factcheck, mcp__video-explainer__explainer_sound, mcp__video-explainer__explainer_music, Read, Write, Glob, Bash
-model: sonnet
 color: orange
 ---
 

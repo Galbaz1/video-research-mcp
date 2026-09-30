@@ -1,7 +1,6 @@
 ---
 description: First-time setup guide — verify config, discover commands, and run your first tool
 allowed-tools: Bash, Read, Glob, mcp__video-research__infra_configure, mcp__video-research__web_search
-model: sonnet
 ---
 
 # Getting Started
@@ -10,23 +9,15 @@ Welcome the user to the video-research plugin and walk them through first-time s
 
 ## Step 1: Verify Configuration
 
-Read `~/.config/video-research-mcp/.env` and check:
-- Is `GEMINI_API_KEY` set (uncommented, non-empty)?
-- If not: tell them to get a free key at https://aistudio.google.com/apikey, paste it in that file, and restart Claude Code. Stop here.
+Check the active client registration and use a local presence-only check for `GEMINI_API_KEY`; never print or read the full secret file into context. The shared configuration is `~/.config/video-research-mcp/.env`. If the key is absent, direct the user to https://aistudio.google.com/apikey and that file; restart the MCP client after editing.
 
-If the key exists, call `infra_configure()` with no arguments to confirm the server is responding.
-- If it responds: report the active model and move to Step 2.
-- If it fails: tell them to restart Claude Code and try again.
+Call `infra_configure()` without arguments. If it responds, report the active provider model and distinguish MCP connection from successful inference. If unavailable, inspect `/mcp` or use `/gr:doctor quick` before repeating setup.
 
-## Step 2: Quick Smoke Test
+## Step 2: First Authorized Analysis
 
-Run a simple web search to prove everything works:
-```
-web_search(query="latest AI research news", num_results=3)
-```
+Use the source/topic the user supplied. For an explicit onboarding smoke, request a short analysis with non-empty required fields and source attribution. Web search and analysis use provider quota/billing; do not promise they are free. If no source or inference authorization is supplied, complete the configuration check and show one concrete first-call example.
 
-If it succeeds, briefly confirm with: "Your setup is working. Here's what you can do."
-If it fails, report the error and suggest `/gr:doctor quick` for diagnostics.
+Completion requires the actual returned fields and sources, or a clearly recorded inference failure. Do not claim a config response proves video understanding, document coverage, or optional integrations.
 
 ## Step 3: Show What's Available
 
@@ -59,7 +50,7 @@ Present this reference. Use a compact format — no verbose descriptions.
 
 - **Knowledge Store** — persistent semantic search across all past results. Run the `weaviate-setup` skill to configure.
 - **MLflow Tracing** — track and debug every Gemini call. Use `/gr:traces` after enabling.
-- **Visualizations** — concept maps and evidence networks auto-generate after analysis.
+- **Visualizations** — concept maps and evidence networks can be generated when useful; browser acceptance is checked separately.
 
 ## Step 4: Suggest First Actions
 

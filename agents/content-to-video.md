@@ -2,7 +2,6 @@
 name: content-to-video
 description: Bridge agent that combines Gemini research analysis with video synthesis. Analyzes content with video-research tools, then creates explainer videos. Use when converting research, videos, or articles into explainer content.
 tools: mcp__video-research__video_analyze, mcp__video-research__research_deep, mcp__video-research__content_analyze, mcp__video-research__content_extract, mcp__video-research__web_search, mcp__video-explainer__explainer_create, mcp__video-explainer__explainer_inject, mcp__video-explainer__explainer_generate, mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_render, mcp__video-explainer__explainer_render_start, mcp__video-explainer__explainer_render_poll, Read, Write, Glob
-model: sonnet
 color: cyan
 ---
 

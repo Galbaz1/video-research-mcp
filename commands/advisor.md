@@ -2,12 +2,9 @@
 description: Get workflow advice — which /gr command best fits your task
 argument-hint: <what you want to accomplish>
 allowed-tools: mcp__video-research__knowledge_search, mcp__video-research__knowledge_stats, Read, Glob
-model: sonnet
 ---
 
 # Workflow Advisor: $ARGUMENTS
-
-Last updated: 2026-03-07 12:34 CET
 
 Recommend the optimal `/gr` command for this task. Do NOT execute anything.
 
@@ -42,19 +39,19 @@ Use this quick-reference to select the right command:
 
 | I want to... | Use | Cost |
 |--------------|-----|------|
-| Quick web lookup | `/gr:search` | free, instant |
-| Deep topic research | `/gr:research` | free, instant |
-| Thorough web-grounded research | `/gr:research-deep` | $2-5, 10-20 min |
-| Research grounded in documents | `/gr:research-doc` | free, instant |
-| Analyze a video | `/gr:video` | free, instant |
-| Multi-turn video Q&A | `/gr:video-chat` | free, per-turn |
-| Analyze a URL/file/text | `/gr:analyze` | free, instant |
-| Find past work | `/gr:recall` | free, instant |
-| Save to knowledge store | `/gr:ingest` | free, instant |
-| Check setup | `/gr:doctor` | free, instant |
-| View/change model preset | `/gr:models` | free, instant |
-| Debug MLflow traces | `/gr:traces` | free, instant |
-| First-time setup guide | `/gr:getting-started` | free, instant |
+| Quick web lookup | `/gr:search` | provider billing applies |
+| Deep topic research | `/gr:research` | provider billing applies |
+| Thorough web-grounded research | `/gr:research-deep` | long-running; provider billing |
+| Research grounded in documents | `/gr:research-doc` | provider billing applies |
+| Analyze a video | `/gr:video` | provider billing applies |
+| Multi-turn video Q&A | `/gr:video-chat` | provider billing per turn |
+| Analyze a URL/file/text | `/gr:analyze` | provider billing applies |
+| Find past work | `/gr:recall` | provider billing applies |
+| Save to knowledge store | `/gr:ingest` | provider billing applies |
+| Check setup | `/gr:doctor` | provider billing applies |
+| View/change model preset | `/gr:models` | provider billing applies |
+| Debug MLflow traces | `/gr:traces` | provider billing applies |
+| First-time setup guide | `/gr:getting-started` | provider billing applies |
 
 Present your recommendation in this format:
 
@@ -62,13 +59,13 @@ Present your recommendation in this format:
 RECOMMENDED: /gr:<command> "<args>"
 WHY: <one sentence>
 ALTERNATIVE: /gr:<other>
-COST: free|$2-5 | TIME: instant|10-20 min
+COST: check provider pricing | TIME: depends on scope
 NEXT STEP: <follow-up action>
 ```
 
 ## Step 4: Suggest Follow-up
 
-- After research → suggest `/gr:ingest` to persist results
+- After research → verify automatic persistence; use `/gr:ingest` for explicit missing records
 - Prior work found → suggest `/gr:recall` to review first
 - Video analysis → suggest `/gr:video-chat` for follow-up questions
 - Unsure about setup → suggest `/gr:doctor`

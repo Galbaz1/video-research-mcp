@@ -5,7 +5,7 @@ description: Interactive onboarding for the Weaviate knowledge store. Guides use
 
 # Weaviate Knowledge Store Setup
 
-You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. All 28 tools automatically write results to Weaviate when configured. 8 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
+You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. Analysis and research tools attempt write-through storage when configured; infrastructure/query tools do not create analysis records and storage failures are non-fatal. 8 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
 
 ## Setup Flow
 
@@ -121,7 +121,7 @@ This should return counts for all 12 collections (all 0 initially). If it return
 
 Once `knowledge_stats` returns successfully, tell the user:
 
-1. All 28 tools now automatically store results to Weaviate
+1. The knowledge connection works; verify a known stored record separately before claiming analysis persistence
 2. Use `knowledge_search(query="...")` to find past results semantically (supports hybrid, semantic, keyword modes)
 3. Use `knowledge_related(object_id="...", collection="...")` to find similar items
 4. Use `knowledge_fetch(object_id="...", collection="...")` to retrieve a specific object by UUID

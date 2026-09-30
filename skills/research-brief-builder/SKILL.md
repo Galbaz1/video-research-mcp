@@ -1,12 +1,13 @@
 ---
+name: research-brief-builder
 description: Builds precise research briefs through adversarial user interviews
 ---
 
 # Research Brief Builder
 
-Last updated: 2026-03-05 14:58 CET
-
 Knowledge pack for constructing high-quality research briefs for the Gemini Deep Research Agent.
+
+Reuse the supplied brief and session authority. For autonomous requests, state reversible assumptions and proceed; ask only for a missing material decision or spend authority. Completion means every required boundary below is supplied or explicitly assumed, not that a fixed interview occurred.
 
 ## Brief Quality Checklist
 
@@ -16,13 +17,13 @@ Knowledge pack for constructing high-quality research briefs for the Gemini Deep
 - [ ] Known context documented (avoid rediscovery)
 - [ ] Output format specified (audience, structure)
 - [ ] Exclusions listed
-- [ ] Cost acknowledged ($2-5 per run)
+- [ ] Authorized budget and maximum attempts recorded
 
 ## Anti-patterns
 
 - "Research everything about X" -- Too broad, will get generic results
 - No hypotheses -- Research has no direction, agent wanders
-- No exclusions -- $5 spent rediscovering what user already knows
+- No exclusions -- Budget spent rediscovering what user already knows
 - No format spec -- Get a wall of text instead of actionable output
 - Vague scope -- "recent" means different things to different people
 
@@ -46,7 +47,7 @@ Hypotheses to test: <H1, H2, ...>
 Known context: <what we already know>
 Output format: <structure, audience, tone>
 Exclusions: <what to skip>
-Cost: $2-5 | Time: 10-20 min
+Budget: <authorized limit> | Time: <provider-dependent>
 ==============
 ```
 

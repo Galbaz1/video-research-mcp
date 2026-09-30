@@ -2,7 +2,6 @@
 description: Multi-turn video Q&A session
 argument-hint: <youtube-url-or-file-path>
 allowed-tools: mcp__video-research__video_create_session, mcp__video-research__video_continue_session, Write, Read, Edit, Glob, Bash
-model: sonnet
 ---
 
 # Video Chat: $ARGUMENTS

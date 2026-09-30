@@ -2,7 +2,6 @@
 description: Analyze a video (YouTube URL, local file, or directory)
 argument-hint: <youtube-url-or-file-path>
 allowed-tools: mcp__video-research__video_analyze, mcp__video-research__video_batch_analyze, mcp__video-research__video_create_session, mcp__video-research__video_continue_session, mcp__video-research__video_metadata, mcp__video-research__video_playlist, Write, Glob, Read, Bash
-model: sonnet
 ---
 
 # Video Analysis: $ARGUMENTS

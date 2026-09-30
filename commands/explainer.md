@@ -2,7 +2,6 @@
 description: Full explainer video workflow — setup, inject content, generate pipeline, review, render
 argument-hint: "<project-id> [step]"
 allowed-tools: mcp__video-explainer__explainer_create, mcp__video-explainer__explainer_inject, mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_list, mcp__video-explainer__explainer_generate, mcp__video-explainer__explainer_step, mcp__video-explainer__explainer_render, mcp__video-explainer__explainer_render_start, mcp__video-explainer__explainer_render_poll, mcp__video-explainer__explainer_short, mcp__video-explainer__explainer_refine, mcp__video-explainer__explainer_feedback, mcp__video-explainer__explainer_factcheck, mcp__video-explainer__explainer_sound, mcp__video-explainer__explainer_music, Read, Write, Glob
-model: sonnet
 ---
 
 # Explainer Video: $ARGUMENTS
