@@ -11,7 +11,10 @@
     "skills",
     "agents",
     "THIRD_PARTY_NOTICES.md",
-    "docs/integrations/reuse-ledger.json"
+    "docs/integrations/reuse-ledger.json",
+    "docs/integrations/ONBOARDING.md",
+    "docs/integrations/QWEN_REUSE.md",
+    "integrations/qwen/manifest.json"
   ],
   "engines": {
     "node": ">=22"

@@ -4,7 +4,7 @@
   "observed_at": "2026-09-30",
   "source_head": "335e8babbeebd783255f67cda2da62b22abb2612",
   "inventory": "docs/research/2026-09-30-capability-transfer.json",
-  "scope": "Pinned source-unit routes, source-component rights and exact dependency/archive clearance. Accepted protocol and root security requirements are independently implemented with file-hash receipts; no external programme code, asset, weight or optional runtime is copied or imported.",
+  "scope": "Pinned source-unit routes, component rights and exact dependency/archive clearance. Accepted evaluation, security, evidence/native contract and offline onboarding requirements have exact own-source implementation receipts; no external programme code, asset, weight or optional runtime copied/imported.",
   "components": [
     {
       "repo": "QwenLM/Qwen-MM-Plugins",
@@ -538,10 +538,26 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "integrations/qwen/manifest.json",
+          "target_sha256": "1bf903699c69fa3aa4e55c9228c6ff420d5a4df303146666f424ac6eb12ddc2c",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "docs/integrations/QWEN_REUSE.md",
+          "target_sha256": "85f0a281fbbee4edc98f5322b8eafb6fa4595f5a83950a61eca041bb4fda5c9f",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "docs/integrations/ONBOARDING.md",
+          "target_sha256": "dbd7240fd0af5e7fda96889be8be4f1681d07df42e67220e8c8e07ac96c95cf9",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        }
+      ]
     },
     {
       "unit_key": "qwen_native_media",
@@ -1451,10 +1467,41 @@
       "component": "thatsrajan/vidlens-mcp@edd1d9fba8cf2364343b4cbd07378a649f956f08",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "bin/install.js",
+          "target_sha256": "707d2d8088000b44fe46641e9933568484266428cdd252374bab9aa7900d3fc7",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "bin/lib/config.js",
+          "target_sha256": "cc2f04ea018e2333b83165a8f790cb3a627d328bc725b8081af8934b878f0923",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "bin/lib/onboarding.js",
+          "target_sha256": "1e420df6f904024ec11f33e1328180a7fa5fdb605355444ff759afc3334fbf73",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "bin/lib/manifest.js",
+          "target_sha256": "1812a852819076ab9f465f2e91bb6c606739c07f20cf9556071284744f6918b8",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "docs/integrations/ONBOARDING.md",
+          "target_sha256": "dbd7240fd0af5e7fda96889be8be4f1681d07df42e67220e8c8e07ac96c95cf9",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        },
+        {
+          "target_path": "package.json",
+          "target_sha256": "fa6d80845de48ef7c95534608e247cc1feed1b20ea5443421c0e0f6ebc16c665",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+        }
+      ]
     },
     {
       "unit_key": "direct.audio_qa",

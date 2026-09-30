@@ -65,6 +65,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
         "adj_research_eval", "adj_video_eval", "direct.security",
         "own.strict-evidence-semantics", "adj_evidence_packet",
+        "qwen_reuse_manifest", "direct.providers",
     }
     assert all(not u["transfers"] and not u["imports"] for u in data["units"])
     assert data["bundled_assets"] == []
@@ -88,7 +89,8 @@ def test_pinned_unit_cannot_disappear_or_change(receipt_root, ledger, mutation):
 
 def test_adoption_requires_actual_file_or_import_receipt(receipt_root, ledger):
     """GIVEN an implementation claim without outputs THEN it cannot pass."""
-    ledger["units"][0]["adoption"] = "adopted"
+    unit = next(u for u in ledger["units"] if u["adoption"] == "not-adopted")
+    unit["adoption"] = "adopted"
     with pytest.raises(ValueError, match="adoption receipt"):
         validate_ledger(receipt_root, ledger)
 
