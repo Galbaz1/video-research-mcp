@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T17:21+02:00
+date: 2026-09-30T18:48+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,9 +21,10 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted source is `c1d80736cb0cbbd0ec586d9d62a1eb293fda8927`
-(bounded media acquisition, channel discovery and exact-byte asset lifecycle),
-following `b0e78163f8f73dcb2109bb0e00eece995a8be0b5` (durable research/batch/render jobs
+Current accepted source is `e593770ba1623787435cceee78ea6e587f434800`
+(inspectable native images/video, decoded PTS and bounded source views), following
+`c1d80736cb0cbbd0ec586d9d62a1eb293fda8927`
+(bounded media acquisition, channel discovery and exact-byte asset lifecycle), and `b0e78163f8f73dcb2109bb0e00eece995a8be0b5` (durable research/batch/render jobs
 and Interactions evaluation) and `cb2699f88e8b86deffac4d71634c58ab74ddddf5`
 (cache identity and execution budgets),
 `a310f63` (onboarding), `990e4b6` (evidence/native MCP contract) and `8a914ae` (readiness)
@@ -186,19 +187,65 @@ and failed one stale exact adoption fixture; adding the actual 14th adopted unit
 preserved all 85-unit/3-lock/114-package and negative clearance controls. Both that
 failure and the first archive-path harness error remain evidence.
 
-Current claimed leaf: **`vrm-0e8.3.2`**, inspectable native media, time windows and
-actual decoded frames. Both dependencies (`.2.11`, `.3.7`) are closed. Read-only
-preparation inspected the pinned Qwen readers/shared helpers and direct frame tools;
-exact six public code readbacks live under `native-media/source-readbacks/`. They
-are source inspection, not media/provider requests or runtime imports. Qwen sparse
-seek returns rounded requested time; direct burst uses generated FPS timestamps.
-The native implementation must bind actual source PTS/time base, source offset,
-rotation/crop coordinates, strict windows and frame/pixel/output budgets, preserve
-changed text and show explicit native/text fallback. FFmpeg/ffprobe 8.0.1 are locally
-available. No source body/asset/weight was copied into the runtime. Root owns common
-schemas/server/config/ledger; give concrete disjoint library/test ownership before
-implementation. `.3.1` windowing and `.3.3` asset workflows follow this leaf; do not
-start them early. `.2.5` remains blocked by memory/knowledge leaves `.6.7` and `.7.7`.
+Native media `vrm-0e8.3.2` is closed at `e593770`. Twenty exact committed files
+add `media_info`, `image_read`, `video_frame`, `video_frames` and
+`video_frame_by_query`. Measured source clocks/digests, original integer PTS/time
+bases, request deltas, rotated source-pixel crops and sheet tile mappings persist
+through native/text/fallback transport. Frames, sheets, filmstrips, scenes and
+keyframes report actual sampled points and enforced frame/pixel/byte limits;
+watched intervals remain empty. Supplied transcript queries bind the source digest,
+retain unverified status and abstain on zero lexical overlap.
+
+One bounded independent original 20-file review found a P1 metadata-clock spoof
+and P2 non-square-pixel distortion/text-fallback artifact-verification defects.
+Owners reproduced and repaired all three. Genuine named FFmpeg filter records must
+match the inspected source rational clock and valid source/window extent. Literal
+newline parsing and disabled progress reject Unicode/carriage metadata lookalikes.
+Explicit non-square/invalid SAR stops before render; absent SAR uses an explicit
+rotated stored-pixel-grid convention with `pixel_aspect_verified=false`. Every
+returned artifact is checked in native/text/fallback modes. Path lengths fail
+before filesystem work; generated stage cleanup and one public deadline are joined.
+No second independent PASS is claimed. Reviewer probes remain tool-output-only.
+
+Final gates: **1548 root tests**, Ruff plus one affected fixture-import check,
+85 units/74 packages/live graph, 16 adopted/114 locked packages, nine security smoke/five offline
+entrypoints. Published 34/15/2 contracts remain compatible with candidate **49/16/2**;
+three locks, five protected originals and the original dirty checkout are preserved. Exactly five
+original development assets pass 15 cases; repaired library 70 focused and public
+transport 27 focused controls pass. The fresh source MCP journey makes 20 calls and
+32 native commands with zero guarded network/provider/foreign attempts. Its exact
+returned still/filmstrip payloads equal the previously rendered Codex image bridge
+blocks. This establishes that host bridge, not the installed user configuration.
+
+Two fresh root archives clear exact notices/ledger and all **132** runtime Python
+files match source. The privately installed wheel exposes 49 exact schemas and
+passes nine actual MCP calls/13 local native commands in**two independent processes**,
+including persistent generated-view readback after restart. Python audit hooks
+are not OS-wide egress proof. FFmpeg/ffprobe 8.0.1 remain independently installed;
+first-still EXIF/color fidelity and globally nearest keyframe are unverified.
+No provider, heldout candidate, human or registry-release acceptance exists.
+
+Exact committed source receipt: `native-media/group-receipt.committed.json`, SHA256
+`3f20b21871ac3573b973a376870eef63579166787575ea72806fa496df038947`.
+Original/repair/fixture/public/installed receipts retain their exact scope and
+hashes. The first full command failed collection before tests on an unqualified
+helper import; its one-line `tests` package fix passed the unchanged 15 fixtures and
+corrected 1548-test suite. The archive harness initially counted uv's hidden `.gitignore`
+as an archive; exact archive selection corrected this without rebuilding source.
+All initial construction, guard, serialization and RED regressions remain evidence.
+
+Current claimed leaf: **`vrm-0e8.3.1`**, local windows, long-video sampling and
+retry-safe upload recovery. Both prerequisites (`.2.4`, `.3.2`) are closed and fresh
+Beads readiness precedes the claim. Read the existing explicit budget/window/cache
+behavior before adding another path. Compare own source `e326fde`/`bd980e8` against
+current code and reapply focused behavior, preserving two dirty originals. Keep
+uploaded URI/name on processing timeout and reuse it on retry; preserve complete
+content/settings/window cache identities. Mocked SDK requests must carry actual
+window/FPS metadata. Long-duration windows must be contiguous and continuation
+must retain covered/source/model/schema/settings while budget stops remain partial.
+`.3.3` and `.3.6` are also now dependency-ready. `.2.5` remains blocked by `.6.7`
+and `.7.7`. Root owns common schemas/server/config/ledger; assign concrete disjoint
+ownership before implementation. No new provider/upload authority follows readiness.
 
 The completed transcription/PDF/Word/mail work stays outside scope. Human development
 and independent held-out audits remain pending at final comparison under the user's
