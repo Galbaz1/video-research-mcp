@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T14:38:29.807556+00:00",
-  "tool_count": 44,
+  "generated_at": "2026-09-30T16:29:09.040492+00:00",
+  "tool_count": 49,
   "tools": [
     {
       "name": "content_analyze",
@@ -358,6 +358,811 @@
               "native_image_status"
             ],
             "title": "CropResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "image_read",
+      "description": "Return a bounded local still image as inspectable PNG and exact source metadata.\n\nAnimated inputs expose one still with an explicit limitation. Native output\nmay be processed by the host's model; this server invokes no model or upload.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Regular local media path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "max_pixels": {
+            "default": 1000000,
+            "description": "Maximum output pixels per frame",
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Include bounded native PNG blocks; false returns text metadata",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_path"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Metadata, point frames or a tiled view, usable by native and text clients.",
+            "properties": {
+              "source": {
+                "additionalProperties": true,
+                "description": "Exact original bytes with measured local container/stream metadata.",
+                "properties": {
+                  "path": {
+                    "title": "Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "exclusiveMinimum": 0,
+                    "title": "Bytes",
+                    "type": "integer"
+                  },
+                  "source_revision": {
+                    "title": "Source Revision",
+                    "type": "string"
+                  },
+                  "duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Duration Seconds"
+                  },
+                  "container_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Container Start Seconds"
+                  },
+                  "stream_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Start Seconds"
+                  },
+                  "stream_duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Duration Seconds"
+                  },
+                  "presentation_end_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Presentation End Seconds"
+                  },
+                  "stored_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Width"
+                  },
+                  "stored_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Height"
+                  },
+                  "display_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Width"
+                  },
+                  "display_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Height"
+                  },
+                  "sample_aspect_ratio": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Aspect Ratio"
+                  },
+                  "display_geometry_basis": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Display Geometry Basis"
+                  },
+                  "pixel_aspect_verified": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Pixel Aspect Verified"
+                  },
+                  "rotation_degrees": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Rotation Degrees"
+                  },
+                  "time_base": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Time Base"
+                  },
+                  "stream_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stream Index"
+                  },
+                  "streams": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Streams",
+                    "type": "array"
+                  },
+                  "chapters": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Chapters",
+                    "type": "array"
+                  },
+                  "metadata_method": {
+                    "title": "Metadata Method",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "source_revision",
+                  "duration_seconds",
+                  "container_start_seconds",
+                  "stored_width",
+                  "stored_height",
+                  "display_width",
+                  "display_height",
+                  "rotation_degrees",
+                  "time_base",
+                  "stream_index",
+                  "streams",
+                  "chapters",
+                  "metadata_method"
+                ],
+                "title": "NativeSource",
+                "type": "object"
+              },
+              "frames": {
+                "items": {
+                  "description": "Requested time and original decoded PTS remain distinct after crop/scale.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "exclusiveMinimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "native_image_status": {
+                      "default": "text_only",
+                      "enum": [
+                        "included",
+                        "partial",
+                        "text_only",
+                        "inline_byte_limit",
+                        "inline_total_limit"
+                      ],
+                      "title": "Native Image Status",
+                      "type": "string"
+                    },
+                    "requested_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Requested Seconds"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "selection_method": {
+                      "title": "Selection Method",
+                      "type": "string"
+                    },
+                    "approximate": {
+                      "title": "Approximate",
+                      "type": "boolean"
+                    },
+                    "delta_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Delta Seconds"
+                    },
+                    "crop_box": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 4,
+                          "minItems": 4,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Crop Box"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "width",
+                    "height",
+                    "requested_seconds",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "selection_method",
+                    "approximate",
+                    "delta_seconds",
+                    "crop_box"
+                  ],
+                  "title": "NativeFrame",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Frames",
+                "type": "array"
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "description": "An extracted PNG bound to its actual bytes and dimensions.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "width": {
+                        "exclusiveMinimum": 0,
+                        "title": "Width",
+                        "type": "integer"
+                      },
+                      "height": {
+                        "exclusiveMinimum": 0,
+                        "title": "Height",
+                        "type": "integer"
+                      },
+                      "native_image_status": {
+                        "default": "text_only",
+                        "enum": [
+                          "included",
+                          "partial",
+                          "text_only",
+                          "inline_byte_limit",
+                          "inline_total_limit"
+                        ],
+                        "title": "Native Image Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "width",
+                      "height"
+                    ],
+                    "title": "NativeArtifact",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tiles": {
+                "items": {
+                  "description": "Exact sheet placement and the source frame represented by that tile.",
+                  "properties": {
+                    "frame_index": {
+                      "minimum": 0,
+                      "title": "Frame Index",
+                      "type": "integer"
+                    },
+                    "x": {
+                      "minimum": 0,
+                      "title": "X",
+                      "type": "integer"
+                    },
+                    "y": {
+                      "minimum": 0,
+                      "title": "Y",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "source_frame_sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Source Frame Sha256",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "frame_index",
+                    "x",
+                    "y",
+                    "width",
+                    "height",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "source_frame_sha256"
+                  ],
+                  "title": "NativeTile",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Tiles",
+                "type": "array"
+              },
+              "coverage": {
+                "anyOf": [
+                  {
+                    "description": "Returned sampling points establish extraction, never continuous observation.",
+                    "properties": {
+                      "sampled_points": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "title": "Sampled Points",
+                        "type": "array"
+                      },
+                      "decoded_count": {
+                        "description": "Decoded frame artifacts returned, not every frame visited by the decoder",
+                        "minimum": 0,
+                        "title": "Decoded Count",
+                        "type": "integer"
+                      },
+                      "requested_window": {
+                        "anyOf": [
+                          {
+                            "description": "Half-open requested window relative to the measured container presentation origin.",
+                            "properties": {
+                              "start_seconds": {
+                                "title": "Start Seconds",
+                                "type": "number"
+                              },
+                              "end_seconds": {
+                                "title": "End Seconds",
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "start_seconds",
+                              "end_seconds"
+                            ],
+                            "title": "RequestedWindow",
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "complete": {
+                        "description": "Requested sampling completed; does not mean fully watched",
+                        "title": "Complete",
+                        "type": "boolean"
+                      },
+                      "stop_reason": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stop Reason"
+                      },
+                      "watched_intervals": {
+                        "items": {},
+                        "maxItems": 0,
+                        "title": "Watched Intervals",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sampled_points",
+                      "decoded_count",
+                      "requested_window",
+                      "complete",
+                      "stop_reason",
+                      "watched_intervals"
+                    ],
+                    "title": "NativeCoverage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "status": {
+                "default": "complete",
+                "enum": [
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "native_image_status": {
+                "default": "text_only",
+                "enum": [
+                  "included",
+                  "partial",
+                  "text_only",
+                  "inline_byte_limit",
+                  "inline_total_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              },
+              "transcript_match": {
+                "anyOf": [
+                  {
+                    "description": "Deterministic lexical selection with no semantic-confidence claim.",
+                    "properties": {
+                      "segment_index": {
+                        "minimum": 0,
+                        "title": "Segment Index",
+                        "type": "integer"
+                      },
+                      "segment": {
+                        "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                        "properties": {
+                          "start_seconds": {
+                            "minimum": 0,
+                            "title": "Start Seconds",
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "title": "End Seconds",
+                            "type": "number"
+                          },
+                          "text": {
+                            "maxLength": 4096,
+                            "minLength": 1,
+                            "title": "Text",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "start_seconds",
+                          "end_seconds",
+                          "text"
+                        ],
+                        "title": "TranscriptSegment",
+                        "type": "object"
+                      },
+                      "matched_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Matched Tokens",
+                        "type": "array"
+                      },
+                      "query_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Query Tokens",
+                        "type": "array"
+                      },
+                      "method": {
+                        "const": "lexical_token_overlap",
+                        "default": "lexical_token_overlap",
+                        "title": "Method",
+                        "type": "string"
+                      },
+                      "transcript_status": {
+                        "const": "caller_supplied_unverified",
+                        "default": "caller_supplied_unverified",
+                        "title": "Transcript Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "segment_index",
+                      "segment",
+                      "matched_tokens",
+                      "query_tokens"
+                    ],
+                    "title": "TranscriptMatch",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "title": "NativeMediaResult",
             "type": "object"
           },
           {
@@ -1247,6 +2052,799 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_info",
+      "description": "Inspect exact local media bytes, stream metadata, rotation, audio and chapters.\n\nUses independently installed FFprobe and a bounded private stable snapshot.\nThis performs no provider upload and does not establish watched coverage.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Regular local media path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "file_path"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Metadata, point frames or a tiled view, usable by native and text clients.",
+            "properties": {
+              "source": {
+                "additionalProperties": true,
+                "description": "Exact original bytes with measured local container/stream metadata.",
+                "properties": {
+                  "path": {
+                    "title": "Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "exclusiveMinimum": 0,
+                    "title": "Bytes",
+                    "type": "integer"
+                  },
+                  "source_revision": {
+                    "title": "Source Revision",
+                    "type": "string"
+                  },
+                  "duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Duration Seconds"
+                  },
+                  "container_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Container Start Seconds"
+                  },
+                  "stream_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Start Seconds"
+                  },
+                  "stream_duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Duration Seconds"
+                  },
+                  "presentation_end_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Presentation End Seconds"
+                  },
+                  "stored_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Width"
+                  },
+                  "stored_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Height"
+                  },
+                  "display_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Width"
+                  },
+                  "display_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Height"
+                  },
+                  "sample_aspect_ratio": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Aspect Ratio"
+                  },
+                  "display_geometry_basis": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Display Geometry Basis"
+                  },
+                  "pixel_aspect_verified": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Pixel Aspect Verified"
+                  },
+                  "rotation_degrees": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Rotation Degrees"
+                  },
+                  "time_base": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Time Base"
+                  },
+                  "stream_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stream Index"
+                  },
+                  "streams": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Streams",
+                    "type": "array"
+                  },
+                  "chapters": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Chapters",
+                    "type": "array"
+                  },
+                  "metadata_method": {
+                    "title": "Metadata Method",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "source_revision",
+                  "duration_seconds",
+                  "container_start_seconds",
+                  "stored_width",
+                  "stored_height",
+                  "display_width",
+                  "display_height",
+                  "rotation_degrees",
+                  "time_base",
+                  "stream_index",
+                  "streams",
+                  "chapters",
+                  "metadata_method"
+                ],
+                "title": "NativeSource",
+                "type": "object"
+              },
+              "frames": {
+                "items": {
+                  "description": "Requested time and original decoded PTS remain distinct after crop/scale.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "exclusiveMinimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "native_image_status": {
+                      "default": "text_only",
+                      "enum": [
+                        "included",
+                        "partial",
+                        "text_only",
+                        "inline_byte_limit",
+                        "inline_total_limit"
+                      ],
+                      "title": "Native Image Status",
+                      "type": "string"
+                    },
+                    "requested_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Requested Seconds"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "selection_method": {
+                      "title": "Selection Method",
+                      "type": "string"
+                    },
+                    "approximate": {
+                      "title": "Approximate",
+                      "type": "boolean"
+                    },
+                    "delta_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Delta Seconds"
+                    },
+                    "crop_box": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 4,
+                          "minItems": 4,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Crop Box"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "width",
+                    "height",
+                    "requested_seconds",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "selection_method",
+                    "approximate",
+                    "delta_seconds",
+                    "crop_box"
+                  ],
+                  "title": "NativeFrame",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Frames",
+                "type": "array"
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "description": "An extracted PNG bound to its actual bytes and dimensions.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "width": {
+                        "exclusiveMinimum": 0,
+                        "title": "Width",
+                        "type": "integer"
+                      },
+                      "height": {
+                        "exclusiveMinimum": 0,
+                        "title": "Height",
+                        "type": "integer"
+                      },
+                      "native_image_status": {
+                        "default": "text_only",
+                        "enum": [
+                          "included",
+                          "partial",
+                          "text_only",
+                          "inline_byte_limit",
+                          "inline_total_limit"
+                        ],
+                        "title": "Native Image Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "width",
+                      "height"
+                    ],
+                    "title": "NativeArtifact",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tiles": {
+                "items": {
+                  "description": "Exact sheet placement and the source frame represented by that tile.",
+                  "properties": {
+                    "frame_index": {
+                      "minimum": 0,
+                      "title": "Frame Index",
+                      "type": "integer"
+                    },
+                    "x": {
+                      "minimum": 0,
+                      "title": "X",
+                      "type": "integer"
+                    },
+                    "y": {
+                      "minimum": 0,
+                      "title": "Y",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "source_frame_sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Source Frame Sha256",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "frame_index",
+                    "x",
+                    "y",
+                    "width",
+                    "height",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "source_frame_sha256"
+                  ],
+                  "title": "NativeTile",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Tiles",
+                "type": "array"
+              },
+              "coverage": {
+                "anyOf": [
+                  {
+                    "description": "Returned sampling points establish extraction, never continuous observation.",
+                    "properties": {
+                      "sampled_points": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "title": "Sampled Points",
+                        "type": "array"
+                      },
+                      "decoded_count": {
+                        "description": "Decoded frame artifacts returned, not every frame visited by the decoder",
+                        "minimum": 0,
+                        "title": "Decoded Count",
+                        "type": "integer"
+                      },
+                      "requested_window": {
+                        "anyOf": [
+                          {
+                            "description": "Half-open requested window relative to the measured container presentation origin.",
+                            "properties": {
+                              "start_seconds": {
+                                "title": "Start Seconds",
+                                "type": "number"
+                              },
+                              "end_seconds": {
+                                "title": "End Seconds",
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "start_seconds",
+                              "end_seconds"
+                            ],
+                            "title": "RequestedWindow",
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "complete": {
+                        "description": "Requested sampling completed; does not mean fully watched",
+                        "title": "Complete",
+                        "type": "boolean"
+                      },
+                      "stop_reason": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stop Reason"
+                      },
+                      "watched_intervals": {
+                        "items": {},
+                        "maxItems": 0,
+                        "title": "Watched Intervals",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sampled_points",
+                      "decoded_count",
+                      "requested_window",
+                      "complete",
+                      "stop_reason",
+                      "watched_intervals"
+                    ],
+                    "title": "NativeCoverage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "status": {
+                "default": "complete",
+                "enum": [
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "native_image_status": {
+                "default": "text_only",
+                "enum": [
+                  "included",
+                  "partial",
+                  "text_only",
+                  "inline_byte_limit",
+                  "inline_total_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              },
+              "transcript_match": {
+                "anyOf": [
+                  {
+                    "description": "Deterministic lexical selection with no semantic-confidence claim.",
+                    "properties": {
+                      "segment_index": {
+                        "minimum": 0,
+                        "title": "Segment Index",
+                        "type": "integer"
+                      },
+                      "segment": {
+                        "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                        "properties": {
+                          "start_seconds": {
+                            "minimum": 0,
+                            "title": "Start Seconds",
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "title": "End Seconds",
+                            "type": "number"
+                          },
+                          "text": {
+                            "maxLength": 4096,
+                            "minLength": 1,
+                            "title": "Text",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "start_seconds",
+                          "end_seconds",
+                          "text"
+                        ],
+                        "title": "TranscriptSegment",
+                        "type": "object"
+                      },
+                      "matched_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Matched Tokens",
+                        "type": "array"
+                      },
+                      "query_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Query Tokens",
+                        "type": "array"
+                      },
+                      "method": {
+                        "const": "lexical_token_overlap",
+                        "default": "lexical_token_overlap",
+                        "title": "Method",
+                        "type": "string"
+                      },
+                      "transcript_status": {
+                        "const": "caller_supplied_unverified",
+                        "default": "caller_supplied_unverified",
+                        "title": "Transcript Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "segment_index",
+                      "segment",
+                      "matched_tokens",
+                      "query_tokens"
+                    ],
+                    "title": "TranscriptMatch",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "title": "NativeMediaResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -2263,6 +3861,2566 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_frame",
+      "description": "Retrieve a source frame with requested time, original decoded PTS and actual delta.\n\nTimes are relative to the measured container presentation origin. Precise\nselection returns the first decoded frame at or after the request.\nKeyframe selection reports its measured approximation and selection method.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Regular local media path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "time_seconds": {
+            "description": "Time relative to measured container presentation origin",
+            "minimum": 0,
+            "type": "number"
+          },
+          "selection": {
+            "default": "precise",
+            "description": "Decoded point or explicitly approximate indexed keyframe",
+            "enum": [
+              "precise",
+              "keyframe"
+            ],
+            "type": "string"
+          },
+          "max_pixels": {
+            "default": 1000000,
+            "description": "Maximum output pixels per frame",
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "crop_box": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "x,y,width,height in rotated source pixel grid; explicit SAR policy; crop before scale"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Include bounded native PNG blocks; false returns text metadata",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_path",
+          "time_seconds"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Metadata, point frames or a tiled view, usable by native and text clients.",
+            "properties": {
+              "source": {
+                "additionalProperties": true,
+                "description": "Exact original bytes with measured local container/stream metadata.",
+                "properties": {
+                  "path": {
+                    "title": "Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "exclusiveMinimum": 0,
+                    "title": "Bytes",
+                    "type": "integer"
+                  },
+                  "source_revision": {
+                    "title": "Source Revision",
+                    "type": "string"
+                  },
+                  "duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Duration Seconds"
+                  },
+                  "container_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Container Start Seconds"
+                  },
+                  "stream_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Start Seconds"
+                  },
+                  "stream_duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Duration Seconds"
+                  },
+                  "presentation_end_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Presentation End Seconds"
+                  },
+                  "stored_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Width"
+                  },
+                  "stored_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Height"
+                  },
+                  "display_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Width"
+                  },
+                  "display_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Height"
+                  },
+                  "sample_aspect_ratio": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Aspect Ratio"
+                  },
+                  "display_geometry_basis": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Display Geometry Basis"
+                  },
+                  "pixel_aspect_verified": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Pixel Aspect Verified"
+                  },
+                  "rotation_degrees": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Rotation Degrees"
+                  },
+                  "time_base": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Time Base"
+                  },
+                  "stream_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stream Index"
+                  },
+                  "streams": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Streams",
+                    "type": "array"
+                  },
+                  "chapters": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Chapters",
+                    "type": "array"
+                  },
+                  "metadata_method": {
+                    "title": "Metadata Method",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "source_revision",
+                  "duration_seconds",
+                  "container_start_seconds",
+                  "stored_width",
+                  "stored_height",
+                  "display_width",
+                  "display_height",
+                  "rotation_degrees",
+                  "time_base",
+                  "stream_index",
+                  "streams",
+                  "chapters",
+                  "metadata_method"
+                ],
+                "title": "NativeSource",
+                "type": "object"
+              },
+              "frames": {
+                "items": {
+                  "description": "Requested time and original decoded PTS remain distinct after crop/scale.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "exclusiveMinimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "native_image_status": {
+                      "default": "text_only",
+                      "enum": [
+                        "included",
+                        "partial",
+                        "text_only",
+                        "inline_byte_limit",
+                        "inline_total_limit"
+                      ],
+                      "title": "Native Image Status",
+                      "type": "string"
+                    },
+                    "requested_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Requested Seconds"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "selection_method": {
+                      "title": "Selection Method",
+                      "type": "string"
+                    },
+                    "approximate": {
+                      "title": "Approximate",
+                      "type": "boolean"
+                    },
+                    "delta_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Delta Seconds"
+                    },
+                    "crop_box": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 4,
+                          "minItems": 4,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Crop Box"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "width",
+                    "height",
+                    "requested_seconds",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "selection_method",
+                    "approximate",
+                    "delta_seconds",
+                    "crop_box"
+                  ],
+                  "title": "NativeFrame",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Frames",
+                "type": "array"
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "description": "An extracted PNG bound to its actual bytes and dimensions.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "width": {
+                        "exclusiveMinimum": 0,
+                        "title": "Width",
+                        "type": "integer"
+                      },
+                      "height": {
+                        "exclusiveMinimum": 0,
+                        "title": "Height",
+                        "type": "integer"
+                      },
+                      "native_image_status": {
+                        "default": "text_only",
+                        "enum": [
+                          "included",
+                          "partial",
+                          "text_only",
+                          "inline_byte_limit",
+                          "inline_total_limit"
+                        ],
+                        "title": "Native Image Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "width",
+                      "height"
+                    ],
+                    "title": "NativeArtifact",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tiles": {
+                "items": {
+                  "description": "Exact sheet placement and the source frame represented by that tile.",
+                  "properties": {
+                    "frame_index": {
+                      "minimum": 0,
+                      "title": "Frame Index",
+                      "type": "integer"
+                    },
+                    "x": {
+                      "minimum": 0,
+                      "title": "X",
+                      "type": "integer"
+                    },
+                    "y": {
+                      "minimum": 0,
+                      "title": "Y",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "source_frame_sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Source Frame Sha256",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "frame_index",
+                    "x",
+                    "y",
+                    "width",
+                    "height",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "source_frame_sha256"
+                  ],
+                  "title": "NativeTile",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Tiles",
+                "type": "array"
+              },
+              "coverage": {
+                "anyOf": [
+                  {
+                    "description": "Returned sampling points establish extraction, never continuous observation.",
+                    "properties": {
+                      "sampled_points": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "title": "Sampled Points",
+                        "type": "array"
+                      },
+                      "decoded_count": {
+                        "description": "Decoded frame artifacts returned, not every frame visited by the decoder",
+                        "minimum": 0,
+                        "title": "Decoded Count",
+                        "type": "integer"
+                      },
+                      "requested_window": {
+                        "anyOf": [
+                          {
+                            "description": "Half-open requested window relative to the measured container presentation origin.",
+                            "properties": {
+                              "start_seconds": {
+                                "title": "Start Seconds",
+                                "type": "number"
+                              },
+                              "end_seconds": {
+                                "title": "End Seconds",
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "start_seconds",
+                              "end_seconds"
+                            ],
+                            "title": "RequestedWindow",
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "complete": {
+                        "description": "Requested sampling completed; does not mean fully watched",
+                        "title": "Complete",
+                        "type": "boolean"
+                      },
+                      "stop_reason": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stop Reason"
+                      },
+                      "watched_intervals": {
+                        "items": {},
+                        "maxItems": 0,
+                        "title": "Watched Intervals",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sampled_points",
+                      "decoded_count",
+                      "requested_window",
+                      "complete",
+                      "stop_reason",
+                      "watched_intervals"
+                    ],
+                    "title": "NativeCoverage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "status": {
+                "default": "complete",
+                "enum": [
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "native_image_status": {
+                "default": "text_only",
+                "enum": [
+                  "included",
+                  "partial",
+                  "text_only",
+                  "inline_byte_limit",
+                  "inline_total_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              },
+              "transcript_match": {
+                "anyOf": [
+                  {
+                    "description": "Deterministic lexical selection with no semantic-confidence claim.",
+                    "properties": {
+                      "segment_index": {
+                        "minimum": 0,
+                        "title": "Segment Index",
+                        "type": "integer"
+                      },
+                      "segment": {
+                        "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                        "properties": {
+                          "start_seconds": {
+                            "minimum": 0,
+                            "title": "Start Seconds",
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "title": "End Seconds",
+                            "type": "number"
+                          },
+                          "text": {
+                            "maxLength": 4096,
+                            "minLength": 1,
+                            "title": "Text",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "start_seconds",
+                          "end_seconds",
+                          "text"
+                        ],
+                        "title": "TranscriptSegment",
+                        "type": "object"
+                      },
+                      "matched_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Matched Tokens",
+                        "type": "array"
+                      },
+                      "query_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Query Tokens",
+                        "type": "array"
+                      },
+                      "method": {
+                        "const": "lexical_token_overlap",
+                        "default": "lexical_token_overlap",
+                        "title": "Method",
+                        "type": "string"
+                      },
+                      "transcript_status": {
+                        "const": "caller_supplied_unverified",
+                        "default": "caller_supplied_unverified",
+                        "title": "Transcript Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "segment_index",
+                      "segment",
+                      "matched_tokens",
+                      "query_tokens"
+                    ],
+                    "title": "TranscriptMatch",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "title": "NativeMediaResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_frame_by_query",
+      "description": "Select a frame by lexical transcript match, requiring the exact video digest.\n\nSegment times use the container-relative presentation clock. Ties choose the\nearliest segment. A zero-token match abstains. The supplied transcript remains\nunverified; the extracted frame carries measured PTS.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Regular local media path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "query": {
+            "description": "Lexical query matched against supplied transcript tokens",
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "transcript": {
+            "description": "Source SHA256 and bounded timestamped segments; supplied speech remains unverified",
+            "properties": {
+              "source_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "segments": {
+                "items": {
+                  "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                  "properties": {
+                    "start_seconds": {
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "text": {
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "start_seconds",
+                    "end_seconds",
+                    "text"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 256,
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "source_sha256",
+              "segments"
+            ],
+            "type": "object"
+          },
+          "max_pixels": {
+            "default": 1000000,
+            "description": "Maximum output pixels per frame",
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Include bounded native PNG blocks; false returns text metadata",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_path",
+          "query",
+          "transcript"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Metadata, point frames or a tiled view, usable by native and text clients.",
+            "properties": {
+              "source": {
+                "additionalProperties": true,
+                "description": "Exact original bytes with measured local container/stream metadata.",
+                "properties": {
+                  "path": {
+                    "title": "Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "exclusiveMinimum": 0,
+                    "title": "Bytes",
+                    "type": "integer"
+                  },
+                  "source_revision": {
+                    "title": "Source Revision",
+                    "type": "string"
+                  },
+                  "duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Duration Seconds"
+                  },
+                  "container_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Container Start Seconds"
+                  },
+                  "stream_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Start Seconds"
+                  },
+                  "stream_duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Duration Seconds"
+                  },
+                  "presentation_end_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Presentation End Seconds"
+                  },
+                  "stored_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Width"
+                  },
+                  "stored_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Height"
+                  },
+                  "display_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Width"
+                  },
+                  "display_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Height"
+                  },
+                  "sample_aspect_ratio": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Aspect Ratio"
+                  },
+                  "display_geometry_basis": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Display Geometry Basis"
+                  },
+                  "pixel_aspect_verified": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Pixel Aspect Verified"
+                  },
+                  "rotation_degrees": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Rotation Degrees"
+                  },
+                  "time_base": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Time Base"
+                  },
+                  "stream_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stream Index"
+                  },
+                  "streams": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Streams",
+                    "type": "array"
+                  },
+                  "chapters": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Chapters",
+                    "type": "array"
+                  },
+                  "metadata_method": {
+                    "title": "Metadata Method",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "source_revision",
+                  "duration_seconds",
+                  "container_start_seconds",
+                  "stored_width",
+                  "stored_height",
+                  "display_width",
+                  "display_height",
+                  "rotation_degrees",
+                  "time_base",
+                  "stream_index",
+                  "streams",
+                  "chapters",
+                  "metadata_method"
+                ],
+                "title": "NativeSource",
+                "type": "object"
+              },
+              "frames": {
+                "items": {
+                  "description": "Requested time and original decoded PTS remain distinct after crop/scale.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "exclusiveMinimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "native_image_status": {
+                      "default": "text_only",
+                      "enum": [
+                        "included",
+                        "partial",
+                        "text_only",
+                        "inline_byte_limit",
+                        "inline_total_limit"
+                      ],
+                      "title": "Native Image Status",
+                      "type": "string"
+                    },
+                    "requested_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Requested Seconds"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "selection_method": {
+                      "title": "Selection Method",
+                      "type": "string"
+                    },
+                    "approximate": {
+                      "title": "Approximate",
+                      "type": "boolean"
+                    },
+                    "delta_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Delta Seconds"
+                    },
+                    "crop_box": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 4,
+                          "minItems": 4,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Crop Box"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "width",
+                    "height",
+                    "requested_seconds",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "selection_method",
+                    "approximate",
+                    "delta_seconds",
+                    "crop_box"
+                  ],
+                  "title": "NativeFrame",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Frames",
+                "type": "array"
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "description": "An extracted PNG bound to its actual bytes and dimensions.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "width": {
+                        "exclusiveMinimum": 0,
+                        "title": "Width",
+                        "type": "integer"
+                      },
+                      "height": {
+                        "exclusiveMinimum": 0,
+                        "title": "Height",
+                        "type": "integer"
+                      },
+                      "native_image_status": {
+                        "default": "text_only",
+                        "enum": [
+                          "included",
+                          "partial",
+                          "text_only",
+                          "inline_byte_limit",
+                          "inline_total_limit"
+                        ],
+                        "title": "Native Image Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "width",
+                      "height"
+                    ],
+                    "title": "NativeArtifact",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tiles": {
+                "items": {
+                  "description": "Exact sheet placement and the source frame represented by that tile.",
+                  "properties": {
+                    "frame_index": {
+                      "minimum": 0,
+                      "title": "Frame Index",
+                      "type": "integer"
+                    },
+                    "x": {
+                      "minimum": 0,
+                      "title": "X",
+                      "type": "integer"
+                    },
+                    "y": {
+                      "minimum": 0,
+                      "title": "Y",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "source_frame_sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Source Frame Sha256",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "frame_index",
+                    "x",
+                    "y",
+                    "width",
+                    "height",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "source_frame_sha256"
+                  ],
+                  "title": "NativeTile",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Tiles",
+                "type": "array"
+              },
+              "coverage": {
+                "anyOf": [
+                  {
+                    "description": "Returned sampling points establish extraction, never continuous observation.",
+                    "properties": {
+                      "sampled_points": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "title": "Sampled Points",
+                        "type": "array"
+                      },
+                      "decoded_count": {
+                        "description": "Decoded frame artifacts returned, not every frame visited by the decoder",
+                        "minimum": 0,
+                        "title": "Decoded Count",
+                        "type": "integer"
+                      },
+                      "requested_window": {
+                        "anyOf": [
+                          {
+                            "description": "Half-open requested window relative to the measured container presentation origin.",
+                            "properties": {
+                              "start_seconds": {
+                                "title": "Start Seconds",
+                                "type": "number"
+                              },
+                              "end_seconds": {
+                                "title": "End Seconds",
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "start_seconds",
+                              "end_seconds"
+                            ],
+                            "title": "RequestedWindow",
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "complete": {
+                        "description": "Requested sampling completed; does not mean fully watched",
+                        "title": "Complete",
+                        "type": "boolean"
+                      },
+                      "stop_reason": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stop Reason"
+                      },
+                      "watched_intervals": {
+                        "items": {},
+                        "maxItems": 0,
+                        "title": "Watched Intervals",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sampled_points",
+                      "decoded_count",
+                      "requested_window",
+                      "complete",
+                      "stop_reason",
+                      "watched_intervals"
+                    ],
+                    "title": "NativeCoverage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "status": {
+                "default": "complete",
+                "enum": [
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "native_image_status": {
+                "default": "text_only",
+                "enum": [
+                  "included",
+                  "partial",
+                  "text_only",
+                  "inline_byte_limit",
+                  "inline_total_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              },
+              "transcript_match": {
+                "anyOf": [
+                  {
+                    "description": "Deterministic lexical selection with no semantic-confidence claim.",
+                    "properties": {
+                      "segment_index": {
+                        "minimum": 0,
+                        "title": "Segment Index",
+                        "type": "integer"
+                      },
+                      "segment": {
+                        "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                        "properties": {
+                          "start_seconds": {
+                            "minimum": 0,
+                            "title": "Start Seconds",
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "title": "End Seconds",
+                            "type": "number"
+                          },
+                          "text": {
+                            "maxLength": 4096,
+                            "minLength": 1,
+                            "title": "Text",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "start_seconds",
+                          "end_seconds",
+                          "text"
+                        ],
+                        "title": "TranscriptSegment",
+                        "type": "object"
+                      },
+                      "matched_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Matched Tokens",
+                        "type": "array"
+                      },
+                      "query_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Query Tokens",
+                        "type": "array"
+                      },
+                      "method": {
+                        "const": "lexical_token_overlap",
+                        "default": "lexical_token_overlap",
+                        "title": "Method",
+                        "type": "string"
+                      },
+                      "transcript_status": {
+                        "const": "caller_supplied_unverified",
+                        "default": "caller_supplied_unverified",
+                        "title": "Transcript Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "segment_index",
+                      "segment",
+                      "matched_tokens",
+                      "query_tokens"
+                    ],
+                    "title": "TranscriptMatch",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "title": "NativeMediaResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_frames",
+      "description": "Inspect a bounded burst/window or timestamped contact sheet without a watched claim.\n\nDense filmstrips require a narrow window and explicit FPS. Selection retains\nchanged text; it performs no similarity pruning or OCR. Sheet tiles carry\nactual source times/digests. Scene/keyframe sampling may miss short events.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Regular local media path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "start_seconds": {
+            "default": 0,
+            "description": "Inclusive source-relative window start",
+            "minimum": 0,
+            "type": "number"
+          },
+          "end_seconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Exclusive window end; defaults to measured video presentation end"
+          },
+          "mode": {
+            "default": "sheet",
+            "description": "Uniform stills/grid/vertical strip, scene changes, or keyframes",
+            "enum": [
+              "frames",
+              "sheet",
+              "filmstrip",
+              "scenes",
+              "keyframes"
+            ],
+            "type": "string"
+          },
+          "fps": {
+            "default": 1,
+            "description": "Maximum selected rate for uniform frames",
+            "exclusiveMinimum": 0,
+            "maximum": 30,
+            "type": "number"
+          },
+          "max_frames": {
+            "default": 24,
+            "description": "Maximum returned frames; cap stop remains explicit",
+            "maximum": 48,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_pixels": {
+            "default": 250000,
+            "description": "Maximum output pixels per frame",
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "crop_box": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "x,y,width,height in rotated source pixel grid; explicit SAR policy; crop before scale"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Include bounded native PNG blocks; false returns text metadata",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_path"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Metadata, point frames or a tiled view, usable by native and text clients.",
+            "properties": {
+              "source": {
+                "additionalProperties": true,
+                "description": "Exact original bytes with measured local container/stream metadata.",
+                "properties": {
+                  "path": {
+                    "title": "Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "exclusiveMinimum": 0,
+                    "title": "Bytes",
+                    "type": "integer"
+                  },
+                  "source_revision": {
+                    "title": "Source Revision",
+                    "type": "string"
+                  },
+                  "duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Duration Seconds"
+                  },
+                  "container_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Container Start Seconds"
+                  },
+                  "stream_start_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Start Seconds"
+                  },
+                  "stream_duration_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stream Duration Seconds"
+                  },
+                  "presentation_end_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Presentation End Seconds"
+                  },
+                  "stored_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Width"
+                  },
+                  "stored_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stored Height"
+                  },
+                  "display_width": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Width"
+                  },
+                  "display_height": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Display Height"
+                  },
+                  "sample_aspect_ratio": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Aspect Ratio"
+                  },
+                  "display_geometry_basis": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Display Geometry Basis"
+                  },
+                  "pixel_aspect_verified": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Pixel Aspect Verified"
+                  },
+                  "rotation_degrees": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Rotation Degrees"
+                  },
+                  "time_base": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Time Base"
+                  },
+                  "stream_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Stream Index"
+                  },
+                  "streams": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Streams",
+                    "type": "array"
+                  },
+                  "chapters": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Chapters",
+                    "type": "array"
+                  },
+                  "metadata_method": {
+                    "title": "Metadata Method",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "source_revision",
+                  "duration_seconds",
+                  "container_start_seconds",
+                  "stored_width",
+                  "stored_height",
+                  "display_width",
+                  "display_height",
+                  "rotation_degrees",
+                  "time_base",
+                  "stream_index",
+                  "streams",
+                  "chapters",
+                  "metadata_method"
+                ],
+                "title": "NativeSource",
+                "type": "object"
+              },
+              "frames": {
+                "items": {
+                  "description": "Requested time and original decoded PTS remain distinct after crop/scale.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "exclusiveMinimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "native_image_status": {
+                      "default": "text_only",
+                      "enum": [
+                        "included",
+                        "partial",
+                        "text_only",
+                        "inline_byte_limit",
+                        "inline_total_limit"
+                      ],
+                      "title": "Native Image Status",
+                      "type": "string"
+                    },
+                    "requested_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Requested Seconds"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "selection_method": {
+                      "title": "Selection Method",
+                      "type": "string"
+                    },
+                    "approximate": {
+                      "title": "Approximate",
+                      "type": "boolean"
+                    },
+                    "delta_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Delta Seconds"
+                    },
+                    "crop_box": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 4,
+                          "minItems": 4,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Crop Box"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "width",
+                    "height",
+                    "requested_seconds",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "selection_method",
+                    "approximate",
+                    "delta_seconds",
+                    "crop_box"
+                  ],
+                  "title": "NativeFrame",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Frames",
+                "type": "array"
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "description": "An extracted PNG bound to its actual bytes and dimensions.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "width": {
+                        "exclusiveMinimum": 0,
+                        "title": "Width",
+                        "type": "integer"
+                      },
+                      "height": {
+                        "exclusiveMinimum": 0,
+                        "title": "Height",
+                        "type": "integer"
+                      },
+                      "native_image_status": {
+                        "default": "text_only",
+                        "enum": [
+                          "included",
+                          "partial",
+                          "text_only",
+                          "inline_byte_limit",
+                          "inline_total_limit"
+                        ],
+                        "title": "Native Image Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "width",
+                      "height"
+                    ],
+                    "title": "NativeArtifact",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "tiles": {
+                "items": {
+                  "description": "Exact sheet placement and the source frame represented by that tile.",
+                  "properties": {
+                    "frame_index": {
+                      "minimum": 0,
+                      "title": "Frame Index",
+                      "type": "integer"
+                    },
+                    "x": {
+                      "minimum": 0,
+                      "title": "X",
+                      "type": "integer"
+                    },
+                    "y": {
+                      "minimum": 0,
+                      "title": "Y",
+                      "type": "integer"
+                    },
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer"
+                    },
+                    "actual_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Actual Seconds"
+                    },
+                    "original_pts": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Original Pts"
+                    },
+                    "time_base": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Time Base"
+                    },
+                    "source_frame_sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "title": "Source Frame Sha256",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "frame_index",
+                    "x",
+                    "y",
+                    "width",
+                    "height",
+                    "actual_seconds",
+                    "original_pts",
+                    "time_base",
+                    "source_frame_sha256"
+                  ],
+                  "title": "NativeTile",
+                  "type": "object"
+                },
+                "maxItems": 48,
+                "title": "Tiles",
+                "type": "array"
+              },
+              "coverage": {
+                "anyOf": [
+                  {
+                    "description": "Returned sampling points establish extraction, never continuous observation.",
+                    "properties": {
+                      "sampled_points": {
+                        "items": {
+                          "type": "number"
+                        },
+                        "title": "Sampled Points",
+                        "type": "array"
+                      },
+                      "decoded_count": {
+                        "description": "Decoded frame artifacts returned, not every frame visited by the decoder",
+                        "minimum": 0,
+                        "title": "Decoded Count",
+                        "type": "integer"
+                      },
+                      "requested_window": {
+                        "anyOf": [
+                          {
+                            "description": "Half-open requested window relative to the measured container presentation origin.",
+                            "properties": {
+                              "start_seconds": {
+                                "title": "Start Seconds",
+                                "type": "number"
+                              },
+                              "end_seconds": {
+                                "title": "End Seconds",
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "start_seconds",
+                              "end_seconds"
+                            ],
+                            "title": "RequestedWindow",
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "complete": {
+                        "description": "Requested sampling completed; does not mean fully watched",
+                        "title": "Complete",
+                        "type": "boolean"
+                      },
+                      "stop_reason": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stop Reason"
+                      },
+                      "watched_intervals": {
+                        "items": {},
+                        "maxItems": 0,
+                        "title": "Watched Intervals",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sampled_points",
+                      "decoded_count",
+                      "requested_window",
+                      "complete",
+                      "stop_reason",
+                      "watched_intervals"
+                    ],
+                    "title": "NativeCoverage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "status": {
+                "default": "complete",
+                "enum": [
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "native_image_status": {
+                "default": "text_only",
+                "enum": [
+                  "included",
+                  "partial",
+                  "text_only",
+                  "inline_byte_limit",
+                  "inline_total_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              },
+              "transcript_match": {
+                "anyOf": [
+                  {
+                    "description": "Deterministic lexical selection with no semantic-confidence claim.",
+                    "properties": {
+                      "segment_index": {
+                        "minimum": 0,
+                        "title": "Segment Index",
+                        "type": "integer"
+                      },
+                      "segment": {
+                        "description": "Caller-supplied text/times, not verified speech or factual evidence.",
+                        "properties": {
+                          "start_seconds": {
+                            "minimum": 0,
+                            "title": "Start Seconds",
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "title": "End Seconds",
+                            "type": "number"
+                          },
+                          "text": {
+                            "maxLength": 4096,
+                            "minLength": 1,
+                            "title": "Text",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "start_seconds",
+                          "end_seconds",
+                          "text"
+                        ],
+                        "title": "TranscriptSegment",
+                        "type": "object"
+                      },
+                      "matched_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Matched Tokens",
+                        "type": "array"
+                      },
+                      "query_tokens": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Query Tokens",
+                        "type": "array"
+                      },
+                      "method": {
+                        "const": "lexical_token_overlap",
+                        "default": "lexical_token_overlap",
+                        "title": "Method",
+                        "type": "string"
+                      },
+                      "transcript_status": {
+                        "const": "caller_supplied_unverified",
+                        "default": "caller_supplied_unverified",
+                        "title": "Transcript Status",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "segment_index",
+                      "segment",
+                      "matched_tokens",
+                      "query_tokens"
+                    ],
+                    "title": "TranscriptMatch",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "title": "NativeMediaResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

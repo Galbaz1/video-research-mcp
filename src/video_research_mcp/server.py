@@ -26,6 +26,7 @@ from .tools.youtube import youtube_server
 from .tools import youtube_channels  # noqa: F401 — registers channel tools
 from .tools.knowledge import knowledge_server
 from .tools.media import media_server
+from .tools.media_read import media_read_server
 from .tools.jobs import jobs_server
 from .tools.media_assets import media_assets_server
 
@@ -67,6 +68,7 @@ app.mount(infra_server)
 app.mount(youtube_server)
 app.mount(knowledge_server)
 app.mount(media_server)
+app.mount(media_read_server)
 app.mount(jobs_server)
 app.mount(media_assets_server)
 

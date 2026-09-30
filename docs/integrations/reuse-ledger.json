@@ -574,10 +574,101 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/NATIVE_MEDIA.md",
+          "target_sha256": "0625fcb7c6626db51a5ebc4ea289cd3cb29b96011534685cd687f843d9216435",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_probe.py",
+          "target_sha256": "f2452b1cefdc8954b2e6ff072463c80569b74f73be43f20612fbb71a019d700c",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_snapshot.py",
+          "target_sha256": "e7a2bc3ec0aaff3cf8abccc3e70da2c1c7127b248f1b0d39b557a118dbb95137",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frames.py",
+          "target_sha256": "e2da3f28e4a136a6d5aec028d9354c520061b6a72767291cee5bde049d75ece5",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frame_views.py",
+          "target_sha256": "4f01342bcae1c582e5c430ba163605124960f549dc7dc3f3fc60afc4bccd8c7d",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_image_read.py",
+          "target_sha256": "ddc56a7ed0d1a9261bcb1930c627208d539d7596ed56b6315878a055f6ac231c",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/native_media.py",
+          "target_sha256": "32df4cc6188500f609fd263fef315ca80286e89e3144e519966d2b2dafe4843a",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/native_media_results.py",
+          "target_sha256": "45218d3fe683dd99cbf4fb29d9a7c1546121925fa57629d25122d25d9c44f623",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/media_read.py",
+          "target_sha256": "82b89a01c8156c23731362043d18737e76b737242319dc978a58ff48a64ea9f6",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/native_media_fixtures.py",
+          "target_sha256": "ff41589acb4883b3cd9845219df3898a53616dc9e372efa58a5b6350f1a4627b",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_frame_fixtures.py",
+          "target_sha256": "40af3372981fc57623d97369118e2f49ad784d107b6afb1f725335feb98645e8",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_frames.py",
+          "target_sha256": "9e5ddba8b5463c60d985857ea157b57fcacdf5b7fc36aeb1576a09154a1a3307",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_image_read.py",
+          "target_sha256": "2b8a15caf208775d9bcb13877d8a49f0941e742313e31960d29263e29320d71a",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_probe.py",
+          "target_sha256": "3a0b06abf9a3729615136681bfa022c34ae2bc9c6d7450eb91ab91d96d73f975",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_read.py",
+          "target_sha256": "df67d539a234d243f3fa81ed2faf7221a3105eb6f7c40bf97174cf16ee61b3ce",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_native_media_results.py",
+          "target_sha256": "daae5101f40c7d67f802e3571b19bd4b585980e68889825e046bf396da83eb3d",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        }
+      ]
     },
     {
       "unit_key": "qwen_file_visualization",
@@ -1177,7 +1268,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "aee1ec4e8041d069d7fa0b107504c63717c98975c4c05d60c8284819ef3f1356",
+          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1280,10 +1371,101 @@
       "component": "guimatheus92/mcp-video-analyzer@9e476c02f8426f5c277ed5e7f5729c1aee75b31a",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/NATIVE_MEDIA.md",
+          "target_sha256": "0625fcb7c6626db51a5ebc4ea289cd3cb29b96011534685cd687f843d9216435",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_probe.py",
+          "target_sha256": "f2452b1cefdc8954b2e6ff072463c80569b74f73be43f20612fbb71a019d700c",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_snapshot.py",
+          "target_sha256": "e7a2bc3ec0aaff3cf8abccc3e70da2c1c7127b248f1b0d39b557a118dbb95137",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frames.py",
+          "target_sha256": "e2da3f28e4a136a6d5aec028d9354c520061b6a72767291cee5bde049d75ece5",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frame_views.py",
+          "target_sha256": "4f01342bcae1c582e5c430ba163605124960f549dc7dc3f3fc60afc4bccd8c7d",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_image_read.py",
+          "target_sha256": "ddc56a7ed0d1a9261bcb1930c627208d539d7596ed56b6315878a055f6ac231c",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/native_media.py",
+          "target_sha256": "32df4cc6188500f609fd263fef315ca80286e89e3144e519966d2b2dafe4843a",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/native_media_results.py",
+          "target_sha256": "45218d3fe683dd99cbf4fb29d9a7c1546121925fa57629d25122d25d9c44f623",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/media_read.py",
+          "target_sha256": "82b89a01c8156c23731362043d18737e76b737242319dc978a58ff48a64ea9f6",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/native_media_fixtures.py",
+          "target_sha256": "ff41589acb4883b3cd9845219df3898a53616dc9e372efa58a5b6350f1a4627b",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_frame_fixtures.py",
+          "target_sha256": "40af3372981fc57623d97369118e2f49ad784d107b6afb1f725335feb98645e8",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_frames.py",
+          "target_sha256": "9e5ddba8b5463c60d985857ea157b57fcacdf5b7fc36aeb1576a09154a1a3307",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_image_read.py",
+          "target_sha256": "2b8a15caf208775d9bcb13877d8a49f0941e742313e31960d29263e29320d71a",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_probe.py",
+          "target_sha256": "3a0b06abf9a3729615136681bfa022c34ae2bc9c6d7450eb91ab91d96d73f975",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_media_read.py",
+          "target_sha256": "df67d539a234d243f3fa81ed2faf7221a3105eb6f7c40bf97174cf16ee61b3ce",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        },
+        {
+          "target_path": "tests/test_native_media_results.py",
+          "target_sha256": "daae5101f40c7d67f802e3571b19bd4b585980e68889825e046bf396da83eb3d",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+        }
+      ]
     },
     {
       "unit_key": "direct.ocr_timeline",
@@ -2693,7 +2875,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "aee1ec4e8041d069d7fa0b107504c63717c98975c4c05d60c8284819ef3f1356",
+          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2708,7 +2890,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "8e17fe64301583b59d0bd1106363a70154fbac394dda49c3371c52f453315f98",
+          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {

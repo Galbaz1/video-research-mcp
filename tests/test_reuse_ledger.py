@@ -79,6 +79,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "adj_durable_jobs",
         "direct.batch_jobs",
         "direct.acquisition",
+        "qwen_native_media",
+        "direct.frames",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]
