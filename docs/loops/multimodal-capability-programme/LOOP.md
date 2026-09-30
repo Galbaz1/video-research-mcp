@@ -67,6 +67,14 @@ authority belong to `vrm-0e8.2.9`; missing live inputs leave offline work eligib
 The three final gates are `vrm-0e8.10.1`, `vrm-0e8.10.2` and `vrm-0e8.10.3`.
 Follow actual dependencies rather than starting a large feature batch at once.
 
+September 30 stage-order instruction: “review pending, but continue anyway.”
+The verified technical protocol leaf may close for implementation while its fixed
+human development audit remains pending. That exact audit and the independent
+held-out source/media audit are required at `vrm-0e8.10.2`. This moves the human
+review stage; it supplies no audit result and changes no sources, metrics,
+thresholds or failure denominators. Continue eligible offline implementation.
+
+
 ## One implementation cycle
 
 1. **Observe.** Inspect the current module, tests, exact upstream code and current

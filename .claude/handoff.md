@@ -21,7 +21,7 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current runtime/infrastructure source is `55ba6e951a82b563503f54d4285d70c426acc8d4`
+Current accepted runtime/infrastructure source is `8a914ae`
 on `codex/multimodal-capability-programme` in the implementation worktree below.
 This supersedes the earlier preparation-only checkpoint. Licensing commit
 `fd054d05cf26bcae98fe40e7f8fab611170c09d9` implements per-unit/component reuse,
@@ -37,26 +37,43 @@ has not read private held-out prompts, labels or judge snapshots. Four independe
 review findings were reproduced and repaired: conjunctive multi-source support,
 original baseline replay, per-arm configuration freezing and unknown telemetry.
 
-**`vrm-0e8.2.7` remains in progress for one literal acceptance requirement:**
-“Citation judge re-fetches frozen source snapshots and checks exact supporting
-passages; human-audit a fixed sample.” All automated infrastructure gates pass,
-but a model review cannot stand in for this human source audit. A concrete fixed
-nine-family development sample is at:
-`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/development-human-audit.md`.
-It was opened in Codex and a user-input request is pending. Its sample receipt is
-`development-human-audit-sample.json` beside it. After an actual human result,
-record that result, close the protocol leaf only if accepted, then select
-`vrm-0e8.2.10` (baseline/security protection) and independently `vrm-0e8.2.9`
-(provider/readiness/resource plans). Beads currently reports no other ready leaves.
-Do not waive the audit, close the leaf from oracle results, or start blocked leaves.
+**The technical protocol leaf `vrm-0e8.2.7` is closed for continued implementation.**
+The user explicitly instructed: “review pending, but continue anyway.” This defers
+its fixed human audit to terminal comparison `vrm-0e8.10.2`; the audit has not been
+performed or waived. Preserve the exact nine-family development packet at:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/development-human-audit.md`
+and its `development-human-audit-sample.json` receipt. Actual development and
+independent held-out human source/media audits remain mandatory before comparative
+or release acceptance. Frozen sources, metrics, thresholds and denominators are unchanged.
 
-Latest verification: 863 root tests, 13 installer tests, Ruff/format and exact
-85-unit/74-package live Beads validator passed. Two development CLI replays were
-byte-identical. Focused evaluation tests: **26**. Separate reuse tests: **27**. All seven
-actual distribution archives passed license/asset clearance; initial companion
-missing-license failures were retained and repaired. Those exact build hashes are
-license receipts, not a new release. All five protected originals still match;
-the original checkout still has exactly its two pre-existing dirty docs.
+Baseline/security `vrm-0e8.2.10` is accepted at `c733749`; provider readiness
+`vrm-0e8.2.9` is accepted at `8a914ae`. Actual published and current discovery is
+34/15/2 with unchanged public contracts/three locks and all protected originals.
+The real HTTPcore peer-address gap, SDK terminal/diagnostic/header secrets,
+malformed cache/proof artifacts and media resource bounds are repaired. A bounded
+native PNG library operation has actual pixel-decode/source-snapshot/crop-limit
+proof; native MCP registration and broader codecs still follow the media leaves.
+
+Fresh final gates: **965 root, 161 explainer, 64 agent and 13 installer tests**;
+security smoke nine and offline tool security five; Ruff, exact programme and
+baseline checks; seven actual archive clearances and built core-wheel stdio/config
+redaction. Private exact receipts: `foundation-protection/receipt.json`,
+`final-archive-receipts.json`, `crop-journey/receipt.json` and `final-readiness.json`
+under the evidence root. The readiness worker receipt is `provider-readiness/receipt.json`;
+its original inspected PNG-source hash is historical, with current supplemental
+source hashes in `foundation-protection/final-readiness.json`.
+
+Readiness has 27 groups, with zero live-verified services and zero provider calls.
+Six development-only drafts share a proposed USD10/10generation-attempt/25HTTP/
+concurrency1 boundary; no live authority is conferred. Exact account, source-upload,
+output/cleanup permission, prices and hard charge bound are still required at launch.
+
+Current implementation leaf: **`vrm-0e8.2.8` evidence/MCP extension contract**.
+Independent **`vrm-0e8.2.11` optional onboarding/doctor** is also claimed. Continue
+these through Beads dependencies. The completed transcription/PDF/Word/mail work
+stays outside scope. Human development and independent heldout audits remain
+pending at final comparison; implementation continues under the explicit user
+stage-order correction. No live comparative/product/registry-release claim exists.
 
 Protocol receipt:
 `/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/protocol-implementation-receipt.json`.
@@ -69,9 +86,9 @@ oracle outputs with evaluator `4a70de13bebde39cbf2236a655256e4e2844b2b933c27af78
 The public manifest commits both original and supplemental receipts. This is
 label-derived oracle proof, with **zero candidate/provider executions**.
 
-All three lanes (licensing, independent custodian, one protocol reviewer) are
-terminal; no active job, provider operation, scheduler or duplicate coordinator
-exists. The main epic, integrated product acceptance, powered held-out comparison,
+The completed baseline/readiness/security lanes have joined. New contract and
+onboarding work continues under one coordinator with disjoint ownership. No
+provider operation, scheduler or duplicate coordinator exists. The main epic, integrated product acceptance, powered held-out comparison,
 human media review and verified release remain open. Source commit/push receipts
 are separate from any runtime/registry release claim. GitHub rejected the first
 push with GH007 because local Git used a private author email. Only the three
