@@ -17,12 +17,12 @@ The user requests all useful capabilities from the audited Qwen, video/audio/ima
 MCP, research, knowledge and production projects to be copied where permitted,
 imported, adapted or independently implemented in this repository. The desired
 outcome is a complete product with a substantial, demonstrated advantage over the
-strongest relevant alternatives. Current scope is comprehensive audit, execution
-setup and handoff; product implementation continues in the next chat.
+strongest relevant alternatives. The current user mandate resumes implementation through the dependency graph,
+integrated product acceptance, comparative evidence and verified release.
 
-The programme is **prepared**, not implemented or benchmarked. A prepared graph,
-source inventory, green unit test or rendered file cannot establish that the
-whole product is superior. The epic remains open until its acceptance evidence
+A prepared graph, source inventory, green unit test or rendered file cannot
+establish that the whole product is superior. Implementation and acceptance
+status come from Beads and exact artifact receipts. The epic remains open until its acceptance evidence
 exists. Unlimited token allowance does not imply unlimited external API spend.
 
 ## Source and checkout authority
@@ -104,9 +104,9 @@ errored or partial result is not PASS. Resolve disagreements by primary evidence
 
 Inherit active session/configured models and preserve deliberate specialist routes.
 Do not impose permanent model names in this contract or substitute on failure.
-Use the lower of actual host concurrency and configured ceilings; this preparation
-host exposes four simultaneous agent slots despite the user's higher personal
-ceiling. A configuration default is not proof of the effective child route.
+Use the lower of the current host tool-surface concurrency and configured
+ceilings at dispatch. Historical host limits are not current runtime availability.
+A configuration default is not proof of the effective child route.
 
 ## Reuse and optional capability boundaries
 

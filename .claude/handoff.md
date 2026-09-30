@@ -1,7 +1,7 @@
 ---
-date: 2026-09-30T12:13+02:00
+date: 2026-09-30T12:42+02:00
 thread: multimodal-capability-programme
-session_id: 01a0f119-eabd-7c13-a784-1db70d6dbc33
+session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
 topic: comprehensive-audit-and-execution-handoff
 domains: [research, runtime, knowledge, media, production, distribution]
@@ -18,32 +18,63 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-The user explicitly returned to plugin development and requested a new-session
-handoff. The completed video download/transcript/PDF/Word/email-draft work is
-outside this continuation. Do not reopen those artifacts, alter the email draft,
-or send it as part of this programme.
+Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
+work remains outside this programme and was not reopened or modified.
 
-Fresh source/remote read-back on September 30 confirms preparation commit
-`a91a5138ded1671c164173dff5b73c865e1203ec` at both local HEAD and
-`origin/codex/multimodal-capability-programme`; public main remains `a3d75f6`.
-The implementation worktree was clean before this handoff-only update. All **74
-mapped programme leaves are open**, none is in progress or closed. Only preparation
-`vrm-0e8.1` is closed. The validator passed again against the live Beads graph.
-There is no evidence that the planned capability expansion has been implemented,
-released or proved superior to the compared projects. Existing baseline features
-and earlier local-windowing experiments remain available for focused reconciliation.
+Current runtime/infrastructure source is `aeaca8db79c7ac410ced9abb2678873bc082d29b`
+on `codex/multimodal-capability-programme` in the implementation worktree below.
+This supersedes the earlier preparation-only checkpoint. Licensing commit
+`dfcf7df87498adb4eb5acd7c8d80cd033a8fc46b` implements per-unit/component reuse,
+exact dependency receipts, archive clearance and missing companion MIT grants.
+`vrm-0e8.2.6` is closed after verification. No programme external code/assets/weights
+or optional foreign runtime was imported; routes remain explicit and gated.
 
-The two currently ready leaves are `vrm-0e8.2.7` (freeze comparison/evaluation
-protocol before tuning) and `vrm-0e8.2.6` (clear per-file reuse and optional runtime
-routes). Start with the protocol; licensing can run independently with exclusive
-ownership. Continue implementation through the live dependency graph after those
-controls, using the existing loop contract. Do not repeat the completed landscape
-research without a concrete missing source or acceptance gap. Readiness is not
-provider-spend or content/device-operation authority.
+Evaluation commit `aeaca8d` implements the frozen nine-family/74-workflow protocol,
+strict replay, citation/temporal/artifact measures, paired thresholds, separate
+frozen provider arms and actual baseline-output replay. Fifteen public development
+cases and an independent sealed 27-case/six-modality corpus exist. The implementer
+has not read private held-out prompts, labels or judge snapshots. Four independent
+review findings were reproduced and repaired: conjunctive multi-source support,
+original baseline replay, per-arm configuration freezing and unknown telemetry.
 
-Handoff refresh receipt: `vrm-1fo`. Source pushes remain authorized; this checkpoint
-changes only the handoff and does not close any implementation item. The next
-session should implement the programme, rather than prepare another planning layer.
+**`vrm-0e8.2.7` remains in progress for one literal acceptance requirement:**
+“Citation judge re-fetches frozen source snapshots and checks exact supporting
+passages; human-audit a fixed sample.” All automated infrastructure gates pass,
+but a model review cannot stand in for this human source audit. A concrete fixed
+nine-family development sample is at:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/development-human-audit.md`.
+It was opened in Codex and a user-input request is pending. Its sample receipt is
+`development-human-audit-sample.json` beside it. After an actual human result,
+record that result, close the protocol leaf only if accepted, then select
+`vrm-0e8.2.10` (baseline/security protection) and independently `vrm-0e8.2.9`
+(provider/readiness/resource plans). Beads currently reports no other ready leaves.
+Do not waive the audit, close the leaf from oracle results, or start blocked leaves.
+
+Latest verification: 863 root tests, 13 installer tests, Ruff/format and exact
+85-unit/74-package live Beads validator passed. Two development CLI replays were
+byte-identical. Twenty-seven evaluation regressions are not claimed: the focused
+evaluation count is **26**, and the separate reuse count is **27**. All seven
+actual distribution archives passed license/asset clearance; initial companion
+missing-license failures were retained and repaired. Those exact build hashes are
+license receipts, not a new release. All five protected originals still match;
+the original checkout still has exactly its two pre-existing dirty docs.
+
+Protocol receipt:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/protocol-implementation-receipt.json`.
+Licensing receipt and archive hashes: `reuse-clearance/receipt.json` and
+`reuse-clearance/archive-receipts.json` under the same evidence root.
+Current sealed oracle supplemental receipt:
+`heldout-v1-oracle-refresh/refresh-receipt.json`. It replays the same original
+oracle outputs with evaluator `4a70de13bebde39cbf2236a655256e4e2844b2b933c27af78e5a053ca9a0c3aa`;
+27/27 contract cases pass and all 86 original sealed files remain unchanged.
+The public manifest commits both original and supplemental receipts. This is
+label-derived oracle proof, with **zero candidate/provider executions**.
+
+All three lanes (licensing, independent custodian, one protocol reviewer) are
+terminal; no active job, provider operation, scheduler or duplicate coordinator
+exists. The main epic, integrated product acceptance, powered held-out comparison,
+human media review and verified release remain open. Source commit/push receipts
+are separate from any runtime/registry release claim.
 
 ## User mandate and current authority
 
