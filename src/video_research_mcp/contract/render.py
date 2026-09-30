@@ -23,6 +23,7 @@ _HEADERS: dict[str, dict[str, str]] = {
         "concept_map": "Concept Map",
         "source": "Source",
         "see_also": "See also",
+        "review_status": "Draft: source support, timestamp correctness and media/human review are pending. Observed video coverage is unknown.",
     },
     "nl": {
         "summary": "Samenvatting",
@@ -33,6 +34,7 @@ _HEADERS: dict[str, dict[str, str]] = {
         "concept_map": "Conceptkaart",
         "source": "Bron",
         "see_also": "Zie ook",
+        "review_status": "Concept: bronondersteuning, juistheid van tijdstempels en media-/menselijke controle zijn nog niet beoordeeld. Geobserveerde videodekking is onbekend.",
     },
     "es": {
         "summary": "Resumen",
@@ -43,6 +45,7 @@ _HEADERS: dict[str, dict[str, str]] = {
         "concept_map": "Mapa Conceptual",
         "source": "Fuente",
         "see_also": "Ver también",
+        "review_status": "Borrador: el respaldo de fuentes, los tiempos y la revisión humana y de medios están pendientes. La cobertura observada es desconocida.",
     },
 }
 
@@ -100,6 +103,7 @@ def _render_analysis_md(path: Path, analysis: dict, source: str, h: dict[str, st
     lines.append("")
     lines.append(f"**{h['source']}:** {source}")
     lines.append("")
+    lines.extend([h["review_status"], ""])
 
     if analysis.get("summary"):
         lines.append(f"## {h['summary']}")
@@ -133,7 +137,9 @@ def _render_analysis_md(path: Path, analysis: dict, source: str, h: dict[str, st
 
     lines.append("---")
     lines.append("")
-    lines.append(f"{h['see_also']}: [Strategy Report](strategy.md) | [{h['concept_map']}](concept-map.html)")
+    lines.append(
+        f"{h['see_also']}: [Strategy Report](strategy.md) | [{h['concept_map']}](concept-map.html)"
+    )
     lines.append("")
 
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -144,6 +150,7 @@ def _render_strategy_md(path: Path, strategy: dict, h: dict[str, str]) -> None:
     lines: list[str] = []
     lines.append(f"# {strategy.get('title', 'Strategy Report')}")
     lines.append("")
+    lines.extend([h["review_status"], ""])
 
     for section in strategy.get("sections", []):
         lines.append(f"## {section.get('heading', 'Section')}")
@@ -209,11 +216,12 @@ def _render_concept_map_html(path: Path, concept_map: dict, h: dict[str, str]) -
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>{h['concept_map']}</title>
+<title>{h["concept_map"]}</title>
 <style>body {{ font-family: sans-serif; margin: 20px; background: #f5f5f5; }}</style>
 </head>
 <body>
-<h1>{h['concept_map']}</h1>
+<h1>{h["concept_map"]}</h1>
+<p>{html.escape(h["review_status"])}</p>
 <svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">

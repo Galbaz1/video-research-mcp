@@ -127,7 +127,8 @@ async def video_analyze(
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
     strict_contract: Annotated[bool, Field(
         description="Enable strict contract pipeline with quality gates, "
-        "artifact rendering, and semantic validation. Produces richer output "
+        "artifact rendering, and structural validation. Factual/media review "
+        "and observed coverage remain explicitly pending or unknown. Produces richer output "
         "with strategy report, concept map, and HTML/Markdown artifacts."
     )] = False,
 ) -> dict:
@@ -139,7 +140,8 @@ async def video_analyze(
 
     When strict_contract=True, runs the full contract pipeline: analysis with
     strict Pydantic models, parallel strategy/concept-map generation, artifact
-    rendering, and quality gates. Returns richer output but takes longer.
+    rendering, and structural quality gates. Factual/media review and observed
+    coverage remain explicit pending/unknown fields. Returns richer output but takes longer.
 
     Args:
         url: YouTube video URL.

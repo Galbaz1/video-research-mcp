@@ -12,6 +12,7 @@ from pydantic import Field
 
 from ..config import get_config
 from ..errors import make_tool_error
+from ..evidence import atomic_write, prepare_injection
 from ..models.pipeline import InjectResult
 from ..runner import run_cli
 from ..scanner import list_projects, scan_project
@@ -36,9 +37,7 @@ async def explainer_create(
     try:
         cfg = get_config()
         if not cfg.explainer_enabled:
-            return make_tool_error(
-                FileNotFoundError("EXPLAINER_PATH not configured")
-            )
+            return make_tool_error(FileNotFoundError("EXPLAINER_PATH not configured"))
         result = await run_cli("create", project_id)
         project_path = str(cfg.resolved_projects_path / project_id)
         return {
@@ -54,8 +53,12 @@ async def explainer_create(
 @project_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=False))
 async def explainer_inject(
     project_id: ProjectId,
-    content: Annotated[str, Field(description="Content to inject (markdown, text, or research output)")],
-    filename: Annotated[str, Field(description="Target filename in input/ directory")] = "content.md",
+    content: Annotated[
+        str, Field(description="Content to inject (markdown, text, or research output)")
+    ],
+    filename: Annotated[
+        str, Field(description="Target filename in input/ directory")
+    ] = "content.md",
 ) -> dict:
     """Inject content into a project's input directory.
 
@@ -73,15 +76,11 @@ async def explainer_inject(
     try:
         cfg = get_config()
         if not cfg.explainer_enabled:
-            return make_tool_error(
-                FileNotFoundError("EXPLAINER_PATH not configured")
-            )
+            return make_tool_error(FileNotFoundError("EXPLAINER_PATH not configured"))
 
         project_dir = cfg.resolved_projects_path / project_id
         if not project_dir.is_dir():
-            return make_tool_error(
-                FileNotFoundError(f"Project not found: {project_id}")
-            )
+            return make_tool_error(FileNotFoundError(f"Project not found: {project_id}"))
 
         if Path(filename).name != filename or filename in {"", ".", ".."}:
             raise ValueError("filename must be a single filename within input/")
@@ -92,13 +91,17 @@ async def explainer_inject(
         input_dir.mkdir(exist_ok=True)
         target = (input_dir / filename).resolve()
         target.relative_to(input_dir)
-        target.write_text(content)
+        evidence_report = prepare_injection(content, filename, input_dir)
+        atomic_write(target, content)
 
-        return InjectResult(
+        result = InjectResult(
             project_id=project_id,
             files_written=[str(target)],
             message=f"Injected {len(content)} chars into {filename}",
         ).model_dump()
+        if evidence_report is not None:
+            result["evidence_validation"] = evidence_report
+        return result
     except Exception as exc:
         return make_tool_error(exc)
 
@@ -121,14 +124,10 @@ async def explainer_status(
     try:
         cfg = get_config()
         if not cfg.explainer_enabled:
-            return make_tool_error(
-                FileNotFoundError("EXPLAINER_PATH not configured")
-            )
+            return make_tool_error(FileNotFoundError("EXPLAINER_PATH not configured"))
         info = await scan_project(project_id)
         if info is None:
-            return make_tool_error(
-                FileNotFoundError(f"Project not found: {project_id}")
-            )
+            return make_tool_error(FileNotFoundError(f"Project not found: {project_id}"))
         return info.model_dump()
     except Exception as exc:
         return make_tool_error(exc)
@@ -144,9 +143,7 @@ async def explainer_list() -> dict:
     try:
         cfg = get_config()
         if not cfg.explainer_enabled:
-            return make_tool_error(
-                FileNotFoundError("EXPLAINER_PATH not configured")
-            )
+            return make_tool_error(FileNotFoundError("EXPLAINER_PATH not configured"))
         projects = await list_projects()
         return {
             "projects": [p.model_dump() for p in projects],

@@ -5,39 +5,104 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import base64
+import hashlib
+import json
 import os
+import shutil
+import struct
 import tempfile
+import zlib
 from pathlib import Path
 
 from fastmcp import Client
 from fastmcp.client.transports import StdioTransport
 
 
+async def media_journey(client: Client, scratch: Path) -> None:
+    """Check actual native/text crop transports using owned synthetic PNG bytes."""
+    if not shutil.which("ffmpeg"):
+        raise RuntimeError("Native media smoke requires independently installed FFmpeg")
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return (
+            struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+        )
+
+    source = scratch / "owned-blue.png"
+    data = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 4, 4, 8, 2, 0, 0, 0))
+    data += chunk(b"IDAT", zlib.compress((b"\x00" + b"\x00\x00\xff" * 4) * 4)) + chunk(b"IEND", b"")
+    source.write_bytes(data)
+    source_hash = hashlib.sha256(data).hexdigest()
+    results = []
+    for mode in (True, False):
+        result = await client.call_tool(
+            "image_crop",
+            {
+                "file_path": str(source),
+                "output_path": str(scratch / f"crop-{mode}.png"),
+                "crop_box": [1, 1, 2, 2],
+                "include_image": mode,
+            },
+        )
+        metadata = result.structured_content
+        assert metadata["source_sha256"] == source_hash
+        assert metadata["crop_box"] == [1, 1, 2, 2]
+        assert json.loads(result.content[0].text) == metadata
+        assert [block.type for block in result.content] == (["text", "image"] if mode else ["text"])
+        artifact = Path(metadata["artifact"]).read_bytes()
+        assert hashlib.sha256(artifact).hexdigest() == metadata["artifact_sha256"]
+        if mode:
+            assert base64.b64decode(result.content[1].data) == artifact
+        results.append(metadata)
+    assert results[0]["artifact_sha256"] == results[1]["artifact_sha256"]
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == source_hash
+    print("PASS: native/text PNG transport, source/crop identity and artifact hashes")
+
+
 async def smoke(wheel: Path) -> None:
     """Launch the installed wheel and inspect its public discovery/configuration."""
     wheel = wheel.resolve(strict=True)
     with tempfile.TemporaryDirectory(prefix="gr-wheel-smoke-") as scratch:
-        overrides = {"GEMINI_MODEL", "GEMINI_FLASH_MODEL", "GEMINI_THINKING_LEVEL",
-                     "DEEP_RESEARCH_AGENT", "GEMINI_SESSION_DB"}
+        overrides = {
+            "GEMINI_MODEL",
+            "GEMINI_FLASH_MODEL",
+            "GEMINI_THINKING_LEVEL",
+            "DEEP_RESEARCH_AGENT",
+            "GEMINI_SESSION_DB",
+        }
         env = {key: value for key, value in os.environ.items() if key not in overrides}
-        env.update(HOME=scratch, GEMINI_API_KEY="test-key-not-real",
-                   GEMINI_TRACING_ENABLED="false", S2_API_KEY="built-wheel-secret-sentinel",
-                   WEAVIATE_URL="", WEAVIATE_API_KEY="",
-                   WEAVIATE_VECTORIZER="weaviate")
+        env.update(
+            HOME=scratch,
+            GEMINI_API_KEY="test-key-not-real",
+            GEMINI_TRACING_ENABLED="false",
+            S2_API_KEY="built-wheel-secret-sentinel",
+            WEAVIATE_URL="",
+            WEAVIATE_API_KEY="",
+            WEAVIATE_VECTORIZER="weaviate",
+        )
         transport = StdioTransport(
-            command="uv", args=["run", "--no-project", "--with", str(wheel), "video-research-mcp"],
-            env=env, cwd=scratch,
+            command="uv",
+            args=["run", "--no-project", "--with", str(wheel), "video-research-mcp"],
+            env=env,
+            cwd=scratch,
         )
         async with Client(transport) as client:
             tools = await client.list_tools()
             response = await client.call_tool("infra_configure", {})
             config = response.data["current_config"]
-            if (len(tools) != 34 or config["default_model"] != "gemini-3.8-flash"
-                    or config["deep_research_agent"] != "deep-research-preview-04-2026"):
+            if (
+                len(tools) != 35
+                or config["default_model"] != "gemini-3.8-flash"
+                or config["deep_research_agent"] != "deep-research-preview-04-2026"
+            ):
                 raise RuntimeError("Built artifact tool/model contract differs from this release")
             if "s2_api_key" in config or "built-wheel-secret-sentinel" in str(response.data):
                 raise RuntimeError("Built artifact exposes the Semantic Scholar API key")
-            print("PASS: built wheel stdio discovery (34 tools), configuration and secret redaction")
+            print(
+                "PASS: built wheel stdio discovery (35 tools), configuration and secret redaction"
+            )
+            await media_journey(client, Path(scratch))
 
 
 def main() -> None:

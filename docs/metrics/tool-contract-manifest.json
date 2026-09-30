@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-29T21:53:04.110886+00:00",
-  "tool_count": 34,
+  "generated_at": "2026-09-30T11:42:47.186543+00:00",
+  "tool_count": 35,
   "tools": [
     {
       "name": "content_analyze",
@@ -218,6 +218,190 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "image_crop",
+      "description": "Crop local PNG pixels without model inference or provider uploads.\n\nRequires an independently installed FFmpeg and respects LOCAL_FILE_ACCESS_ROOT.\nA source hash binds the crop to bytes; it does not establish factual support\nor whether the input was synthetic. Large outputs retain metadata/path only.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "description": "Local 8-bit RGB/RGBA noninterlaced PNG",
+            "type": "string"
+          },
+          "output_path": {
+            "description": "Fresh local PNG output path; never overwrites",
+            "type": "string"
+          },
+          "crop_box": {
+            "description": "Integer x, y, width, height in original image pixels",
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 4,
+            "minItems": 4,
+            "type": "array"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Include a native PNG block up to 1 MiB; false returns identical text metadata",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_path",
+          "output_path",
+          "crop_box"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Exact local pixel operation and hashes, usable by text-only MCP clients.",
+            "properties": {
+              "source_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "title": "Source Sha256",
+                "type": "string"
+              },
+              "source_width": {
+                "exclusiveMinimum": 0,
+                "title": "Source Width",
+                "type": "integer"
+              },
+              "source_height": {
+                "exclusiveMinimum": 0,
+                "title": "Source Height",
+                "type": "integer"
+              },
+              "crop_box": {
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "title": "Crop Box",
+                "type": "array"
+              },
+              "artifact": {
+                "title": "Artifact",
+                "type": "string"
+              },
+              "artifact_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "title": "Artifact Sha256",
+                "type": "string"
+              },
+              "artifact_width": {
+                "exclusiveMinimum": 0,
+                "title": "Artifact Width",
+                "type": "integer"
+              },
+              "artifact_height": {
+                "exclusiveMinimum": 0,
+                "title": "Artifact Height",
+                "type": "integer"
+              },
+              "operation": {
+                "const": "source-crop",
+                "title": "Operation",
+                "type": "string"
+              },
+              "coordinate_space": {
+                "const": "original_image_pixels",
+                "default": "original_image_pixels",
+                "title": "Coordinate Space",
+                "type": "string"
+              },
+              "artifact_kind": {
+                "const": "extracted",
+                "default": "extracted",
+                "title": "Artifact Kind",
+                "type": "string"
+              },
+              "source_kind": {
+                "const": "unverified",
+                "default": "unverified",
+                "title": "Source Kind",
+                "type": "string"
+              },
+              "native_image_status": {
+                "enum": [
+                  "included",
+                  "text_only",
+                  "inline_byte_limit"
+                ],
+                "title": "Native Image Status",
+                "type": "string"
+              }
+            },
+            "required": [
+              "source_sha256",
+              "source_width",
+              "source_height",
+              "crop_box",
+              "artifact",
+              "artifact_sha256",
+              "artifact_width",
+              "artifact_height",
+              "operation",
+              "native_image_status"
+            ],
+            "title": "CropResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -1486,7 +1670,7 @@
     },
     {
       "name": "video_analyze",
-      "description": "Analyze a video (YouTube URL or local file) with any instruction.\n\nProvide exactly one of url or file_path. Uses Gemini's structured output\nfor reliable JSON responses. Pass a custom output_schema to control the\nresponse shape, or use the default VideoResult schema.\n\nWhen strict_contract=True, runs the full contract pipeline: analysis with\nstrict Pydantic models, parallel strategy/concept-map generation, artifact\nrendering, and quality gates. Returns richer output but takes longer.",
+      "description": "Analyze a video (YouTube URL or local file) with any instruction.\n\nProvide exactly one of url or file_path. Uses Gemini's structured output\nfor reliable JSON responses. Pass a custom output_schema to control the\nresponse shape, or use the default VideoResult schema.\n\nWhen strict_contract=True, runs the full contract pipeline: analysis with\nstrict Pydantic models, parallel strategy/concept-map generation, artifact\nrendering, and structural quality gates. Factual/media review and observed\ncoverage remain explicit pending/unknown fields. Returns richer output but takes longer.",
       "annotations": {
         "title": null,
         "read_only_hint": false,
@@ -1561,7 +1745,7 @@
           },
           "strict_contract": {
             "default": false,
-            "description": "Enable strict contract pipeline with quality gates, artifact rendering, and semantic validation. Produces richer output with strategy report, concept map, and HTML/Markdown artifacts.",
+            "description": "Enable strict contract pipeline with quality gates, artifact rendering, and structural validation. Factual/media review and observed coverage remain explicitly pending or unknown. Produces richer output with strategy report, concept map, and HTML/Markdown artifacts.",
             "type": "boolean"
           }
         },

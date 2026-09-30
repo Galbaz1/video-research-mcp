@@ -81,7 +81,10 @@ change; never edit the check to accept a previously failing unlicensed asset.
 
 The frozen evaluation protocol and stronger root security boundaries now have
 exact independently authored file-hash receipts for `adj_research_eval`,
-`adj_video_eval` and `direct.security`. Their pinned external sources remain
+`adj_video_eval`, `direct.security`, `own.strict-evidence-semantics` and
+`adj_evidence_packet`. The source/claim/production packet, controller-supplied
+coverage and native/text crop extension now have exact own-source file receipts.
+Their pinned external sources remain
 design/evidence references. No upstream implementation, model weight, source
 asset or optional runtime was copied or imported. Held-out fixture rights and
 provider/model terms stay separate from source-code reuse clearance.

@@ -13,12 +13,18 @@ from .config import get_config
 from .weaviate_client import WeaviateClient
 from .tools.video import video_server
 from .academic_client import SemanticScholarClient
-from .tools.research import research_server, _ensure_document_tool, _ensure_web_tools, _ensure_academic_tools
+from .tools.research import (
+    research_server,
+    _ensure_document_tool,
+    _ensure_web_tools,
+    _ensure_academic_tools,
+)
 from .tools.content import content_server, _ensure_batch_tool
 from .tools.search import search_server
 from .tools.infra import infra_server
 from .tools.youtube import youtube_server
 from .tools.knowledge import knowledge_server
+from .tools.media import media_server
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +63,7 @@ app.mount(search_server)
 app.mount(infra_server)
 app.mount(youtube_server)
 app.mount(knowledge_server)
+app.mount(media_server)
 
 
 def main() -> None:

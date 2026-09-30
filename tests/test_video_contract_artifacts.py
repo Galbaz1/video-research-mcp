@@ -11,13 +11,18 @@ from video_research_mcp.contract.quality import (
     run_quality_gates,
 )
 from video_research_mcp.contract.render import render_artifacts
+from video_research_mcp.models.coverage import MediaCoverage
 
 
 def _sample_analysis():
     return {
         "title": "Test Video",
         "summary": "A comprehensive summary of the test video content.",
-        "key_points": ["First important point with details", "Second important point expanded", "Third important point expanded"],
+        "key_points": [
+            "First important point with details",
+            "Second important point expanded",
+            "Third important point expanded",
+        ],
         "timestamps": [
             {"time": "00:00", "description": "Introduction"},
             {"time": "05:00", "description": "Main discussion"},
@@ -51,7 +56,10 @@ class TestRenderArtifacts:
     def test_all_artifacts_created(self, tmp_path):
         """Rendering creates all expected files."""
         paths = render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="https://youtube.com/test",
         )
         assert (tmp_path / "analysis.md").exists()
@@ -62,7 +70,10 @@ class TestRenderArtifacts:
     def test_analysis_contains_source(self, tmp_path):
         """Analysis markdown includes source label."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="https://youtube.com/test",
         )
         content = (tmp_path / "analysis.md").read_text()
@@ -71,7 +82,10 @@ class TestRenderArtifacts:
     def test_analysis_contains_cross_links(self, tmp_path):
         """Analysis markdown links to strategy and concept map."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         content = (tmp_path / "analysis.md").read_text()
@@ -81,7 +95,10 @@ class TestRenderArtifacts:
     def test_html_is_valid(self, tmp_path):
         """Concept map HTML contains required structure."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         html = (tmp_path / "concept-map.html").read_text()
@@ -93,7 +110,10 @@ class TestRenderArtifacts:
 class TestQualityChecks:
     def test_empty_or_out_of_scope_artifact_fails(self, tmp_path):
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         analysis_path = tmp_path / "analysis.md"
@@ -108,7 +128,10 @@ class TestQualityChecks:
     def test_artifacts_exist_pass(self, tmp_path):
         """All artifacts present → pass."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         check = _check_artifacts_exist(tmp_path)
@@ -123,7 +146,10 @@ class TestQualityChecks:
     def test_links_valid_pass(self, tmp_path):
         """Valid relative links → pass."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         check = _check_links_valid(tmp_path)
@@ -140,7 +166,10 @@ class TestQualityChecks:
     def test_html_parseable_pass(self, tmp_path):
         """Well-formed HTML → pass."""
         render_artifacts(
-            tmp_path, _sample_analysis(), _sample_strategy(), _sample_concept_map(),
+            tmp_path,
+            _sample_analysis(),
+            _sample_strategy(),
+            _sample_concept_map(),
             source_label="test",
         )
         check = _check_html_parseable(tmp_path)
@@ -161,9 +190,18 @@ class TestQualityChecks:
         render_artifacts(tmp_path, analysis, strategy, concept_map, source_label="test")
 
         report = run_quality_gates(
-            analysis, strategy, concept_map, tmp_path,
+            analysis,
+            concept_map,
+            tmp_path,
             coverage_min_ratio=0.90,
             start_time=time.monotonic(),
+            observation=MediaCoverage(source_id="test-source"),
         )
         assert report.status == "pass"
         assert report.duration_seconds >= 0
+        assert report.coverage_ratio is None
+        assert report.coverage.status == "unknown"
+        assert report.scope == "artifact_and_structure"
+        assert report.claim_support == report.timestamp_correctness == "pending"
+        assert report.human_review == report.media_review == "pending"
+        assert report.factual_success is False

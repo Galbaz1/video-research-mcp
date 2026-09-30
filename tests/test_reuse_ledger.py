@@ -64,6 +64,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     assert len(data["dependency_packages"]) == 114
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
         "adj_research_eval", "adj_video_eval", "direct.security",
+        "own.strict-evidence-semantics", "adj_evidence_packet",
     }
     assert all(not u["transfers"] and not u["imports"] for u in data["units"])
     assert data["bundled_assets"] == []

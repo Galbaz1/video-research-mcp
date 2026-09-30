@@ -1587,7 +1587,7 @@
         },
         {
           "target_path": "src/video_research_mcp/contract/quality.py",
-          "target_sha256": "020c81ed09a3b0a4a26ed20702f51aae355a0b8ac2a753734ea59621ba253098",
+          "target_sha256": "0e52e97de73606448ece6a285fcb915767455417c8ce11bc7c507aeea192a092",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -1732,10 +1732,41 @@
       "component": "lfnovo/open-notebook@3127f14ea9dbb519f0e4ddc64a0742ca644ba6ef",
       "audited_reuse_mode": "reimplement",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/evidence.py",
+          "target_sha256": "4b6b5f4fa10acd6f5a3f297100a133857f6904329fb329011f1a018b6f43636e",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/evidence.py",
+          "target_sha256": "cfa9c501011d81a817c4a3a3f4867093b32030b0a34c533e9f52850cc15156b9",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py",
+          "target_sha256": "4b6b5f4fa10acd6f5a3f297100a133857f6904329fb329011f1a018b6f43636e",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+          "target_sha256": "f088d82f440a73c8c3984b6c58fdd8dc13eba6a45f0d3eca19d1f2d806448273",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
+          "target_sha256": "9bfb9629f23538c3e7e25446afa46b99fa41425e6dbbc447dcbef22c9b90efc9",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "commands/explain-video.md",
+          "target_sha256": "a713ec68f0b78a5ac459333961e90e2f0774f12210732b0b09e9d3b5b4fc4ca5",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        }
+      ]
     },
     {
       "unit_key": "adj_research_workflow",
@@ -2252,10 +2283,81 @@
       "component": "Galbaz1/video-research-mcp@a3d75f6ab87bd893c7d167394fb5bace717f23ec",
       "audited_reuse_mode": "adapt",
       "permitted_route": "own-source",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/validation.py",
+          "target_sha256": "c71f6aa1172dbb044596cb9107eb0959d3ea5104d99a034701045e8e0820dca2",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/contract/quality.py",
+          "target_sha256": "0e52e97de73606448ece6a285fcb915767455417c8ce11bc7c507aeea192a092",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/contract/pipeline.py",
+          "target_sha256": "636adbb189ce4c640db41e6d5239acc9f6fb1cd98f03968555b523a4dd648fea",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/contract/render.py",
+          "target_sha256": "f6f61a69b9b4bb70e623f94ffd760bb0a3d5b1875d74d0bd6d8da88f52449d2e",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/video_contract.py",
+          "target_sha256": "92d0012e7d713a3dce64f5cabe1157c48a6784339d30facdda46429d24787858",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/coverage.py",
+          "target_sha256": "45e33cf3ee35a8dad2af582d01ff106136d888023bf1dc1144156296dcffede9",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/media.py",
+          "target_sha256": "9695f4806fe06ddd10d1924a3be10494da27de4dae3e9365f61cf747c0a02d8d",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/media.py",
+          "target_sha256": "756840c08621a4a92d40eb2c3e90eed9494917ca9d91a108197dadf66b779d19",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "dbc6eb6df2aa70c0708b678b082cdc133d77babd9811194fd4d9f9afafe56111",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/AGENTS.md",
+          "target_sha256": "f90af7d235dc2c50f2da2f77e26f26e8b56642b9169fa4e5a67292267712b59c",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/ARCHITECTURE.md",
+          "target_sha256": "a0eeb5561dbf8a92a945de90ed048afb0dce1850705cb85ef7b83edac83c37a9",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "64d27f73244bee24475566f536f86b594a84cbe1f77752bbbb2a273a9902224d",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/smoke_built_mcp.py",
+          "target_sha256": "d8d90f70bdf6cec1ef09e9c7679ec8186e199533bd7a87419a2c1fa33a6e10cf",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video.py",
+          "target_sha256": "963d3962ec4abb9de4c3bbabda8473042c7f98cd06ba0e9487ea87a65227fc34",
+          "provenance": "Own public metadata clarification; input names/defaults/constraints/annotations unchanged."
+        }
+      ]
     },
     {
       "unit_key": "own.grounded-research-routing",
