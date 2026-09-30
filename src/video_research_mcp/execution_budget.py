@@ -5,10 +5,12 @@ from __future__ import annotations
 from contextlib import contextmanager
 from contextvars import ContextVar
 import json
+from typing import Callable
 
 from google.genai import types
 
 from .models.execution import ExecutionLimits
+from .job_execution import single_submission
 from .retry import with_retry
 
 _active: ContextVar[ExecutionBudget | None] = ContextVar("execution_budget", default=None)
@@ -22,8 +24,11 @@ def current_budget() -> ExecutionBudget | None:
 class ExecutionBudget:
     """Reserve each count/generation operation before its external transport call."""
 
-    def __init__(self, limits: ExecutionLimits):
+    def __init__(
+        self, limits: ExecutionLimits, *, generation_check: Callable[[], None] | None = None
+    ):
         self.limits = limits
+        self.generation_check = generation_check
         self.calls: list[dict] = []
         self.reserved_tokens = 0
         self.windows = 0
@@ -106,6 +111,8 @@ class ExecutionBudget:
         input_tokens = await self.count_input(client, model, contents, config)
 
         async def attempt():
+            if self.generation_check is not None:
+                self.generation_check()
             record = self.reserve_call(
                 "generate_content",
                 model=model,
@@ -123,6 +130,8 @@ class ExecutionBudget:
             self.reconcile(record, response)
             return response
 
+        if single_submission.get():
+            return await attempt()
         return await with_retry(attempt)
 
     def report(self) -> dict:

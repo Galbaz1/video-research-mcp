@@ -117,7 +117,7 @@ class TestPolicyInheritance:
         video.write_bytes(b"\x00" * 10)
 
         with patch(
-            "video_research_mcp.tools.video_file.enforce_local_access_root",
+            "video_research_mcp.media_snapshot.enforce_local_access_root",
             side_effect=lambda p: p,
         ) as mock_enforce:
             path, mime = _validate_video_path(str(video))

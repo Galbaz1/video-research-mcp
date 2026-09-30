@@ -585,12 +585,12 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
+          "target_sha256": "66f664d474cc54c8d277eeb951aa099714788344d95e6751b17674564ed0abbb",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "target_sha256": "e108bb3e8fc534098b9291d804653ddb7818c9de77eef9eddd96b8bf7368732a",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -1268,7 +1268,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "target_sha256": "e108bb3e8fc534098b9291d804653ddb7818c9de77eef9eddd96b8bf7368732a",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1278,7 +1278,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae",
+          "target_sha256": "fcdc574c7f052e7720515fbc68ed540a784c424ea82650fd20ecf9407472cb46",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1382,12 +1382,12 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
+          "target_sha256": "66f664d474cc54c8d277eeb951aa099714788344d95e6751b17674564ed0abbb",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "target_sha256": "e108bb3e8fc534098b9291d804653ddb7818c9de77eef9eddd96b8bf7368732a",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -1498,10 +1498,76 @@
       "component": "ludmila-omlopes/youtube-video-analyzer-mcp@cdb00e98fcfe6198f209cc69288a2cdc3b495f58",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/video_windows.py",
+          "target_sha256": "782ddef8245b74fc1a0d49432a4d25eb0841fa35be42bf95f5f95318855aa324",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_window_plan.py",
+          "target_sha256": "3f6f9c1dd756ba7d68335aae010863aba40eaffd867461cf890ba739df0720f2",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_window_run.py",
+          "target_sha256": "f57c66d8132d2708dbcfc4d98497b48b3791f602f094d1640c5cd8217d599f94",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_window_state.py",
+          "target_sha256": "123b6d9f756a284a647553a1bd2176456f267eef1e4a5eea8e1e3f37f7679468",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_windows.py",
+          "target_sha256": "843ab46c3b81b391eb4c93d721ffe99121ace198c5cbe8c96e66c6ed57aa7042",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/jobs.py",
+          "target_sha256": "f9e3028f7a02a113bd5a6c256aa9dc1ecba2a86fb03fdec333e61e4b2a26e3ad",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "e108bb3e8fc534098b9291d804653ddb7818c9de77eef9eddd96b8bf7368732a",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/execution_budget.py",
+          "target_sha256": "b733ac7e48538e4782f59ecbba6a7144b6595901b96e51ad75a8043d6399bbc0",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_video_window_plan.py",
+          "target_sha256": "e45a0959750005f143a0c66d3e696390b5c2f6cf46af555f5ced9ce6e6a7e87c",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_video_window_run.py",
+          "target_sha256": "ee4567e4084cdccabcf462377c5feef3715488ec965c0829961f322be7cebe3b",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_video_windows_tool.py",
+          "target_sha256": "700053003600a09b52bdeaf198132b89a9f96eefd2b65a4a970b29e9519bc9ac",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_execution_budget.py",
+          "target_sha256": "1c5528f4f20c492e75f6b5c92b432dc3e9101a3a33d2c29e8d5972fbb9413738",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/integrations/VIDEO_WINDOWS.md",
+          "target_sha256": "9d2e07e49df66ba7f21c426a8b78714dd615129751120e3a318457063dd266a0",
+          "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
+        }
+      ]
     },
     {
       "unit_key": "direct.retrieval",
@@ -1566,7 +1632,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_file.py",
-          "target_sha256": "8709ef694f5773755d4da19be36866e66c313206a792ace64fca43494fb34704"
+          "target_sha256": "512244286546cf1d0d4da8190cc7e42b9f89f9d8067f16e90fe335e0265fa3d9"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_core.py",
@@ -1679,7 +1745,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/jobs.py",
-          "target_sha256": "bc50d461db9df2c3f4c7764711993d36138a1f4cda7a36555be4650f09f56c54",
+          "target_sha256": "f9e3028f7a02a113bd5a6c256aa9dc1ecba2a86fb03fdec333e61e4b2a26e3ad",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         }
       ]
@@ -1706,7 +1772,7 @@
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
-          "target_sha256": "f1727d7d7181a26a34138e1beded46e848b09149fa19589106edb2553e90b291"
+          "target_sha256": "b733ac7e48538e4782f59ecbba6a7144b6595901b96e51ad75a8043d6399bbc0"
         },
         {
           "target_path": "src/video_research_mcp/models/execution.py",
@@ -1714,15 +1780,15 @@
         },
         {
           "target_path": "src/video_research_mcp/output_view.py",
-          "target_sha256": "bddfcb98ec08f1c9e1edca909487e59501616054ce56bac0d2de07b9dcaf2efe"
+          "target_sha256": "a6d5418660e1e49c33602d8f762962c815c43d869d28c34203a57a23541fac03"
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae"
+          "target_sha256": "fcdc574c7f052e7720515fbc68ed540a784c424ea82650fd20ecf9407472cb46"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_plan.py",
-          "target_sha256": "1944f93055b6d6c4866329967946f2f8e871d731ffeee40b234e8441e686d4e7"
+          "target_sha256": "1406211e60dd3c3fc12aded3b573156313d360bbf8471f9ac70ff0833abf0e80"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_execution.py",
@@ -1978,7 +2044,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_file.py",
-          "target_sha256": "8709ef694f5773755d4da19be36866e66c313206a792ace64fca43494fb34704",
+          "target_sha256": "512244286546cf1d0d4da8190cc7e42b9f89f9d8067f16e90fe335e0265fa3d9",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -2678,10 +2744,61 @@
       "component": "Galbaz1/video-research-mcp@bd980e834929c291ca3766180fb1a44d1f615efd",
       "audited_reuse_mode": "adapt",
       "permitted_route": "own-source",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/tools/video.py",
+          "target_sha256": "fcdc574c7f052e7720515fbc68ed540a784c424ea82650fd20ecf9407472cb46",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_file.py",
+          "target_sha256": "512244286546cf1d0d4da8190cc7e42b9f89f9d8067f16e90fe335e0265fa3d9",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_upload.py",
+          "target_sha256": "6344d502d686b4f422efc6de9f72b43890c51c29e8185195628ec426c64f40e2",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_window_metadata.py",
+          "target_sha256": "b6f57cd3552b30e20111f9e2ecc5962e5f3c917adef571c968eccb0f483a53cd",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_plan.py",
+          "target_sha256": "1406211e60dd3c3fc12aded3b573156313d360bbf8471f9ac70ff0833abf0e80",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "src/video_research_mcp/output_view.py",
+          "target_sha256": "a6d5418660e1e49c33602d8f762962c815c43d869d28c34203a57a23541fac03",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "tests/test_video_file.py",
+          "target_sha256": "8d57a06573614c0748836ed178dcf103bf1e222504998d02676aee1da18d1b10",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "tests/test_video_upload.py",
+          "target_sha256": "16b645b76bd41b6644ed1182fc4ab174f38dfdd3de91ac5805a57e1c887715b6",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "tests/test_video_window_metadata.py",
+          "target_sha256": "4eee3acdf816fabca0fdfe745e03044f350263831c5aa298909ce4190e731520",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        },
+        {
+          "target_path": "docs/integrations/VIDEO_WINDOWS.md",
+          "target_sha256": "9d2e07e49df66ba7f21c426a8b78714dd615129751120e3a318457063dd266a0",
+          "provenance": "Own-source reconciliation of pinned requirements."
+        }
+      ]
     },
     {
       "unit_key": "own.interactions-compatibility",
@@ -2875,7 +2992,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "ce31fb5000326d098bc97e3dc64122c8101ce2b1a5a6eae02d2558f356062e5e",
+          "target_sha256": "e108bb3e8fc534098b9291d804653ddb7818c9de77eef9eddd96b8bf7368732a",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2890,7 +3007,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "90dcc8f815d954eeec513a0570f7596f694de79759cc09455b8927f6fb0089fc",
+          "target_sha256": "66f664d474cc54c8d277eeb951aa099714788344d95e6751b17674564ed0abbb",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2900,7 +3017,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "249c8cc844c45ab11b596038f7c27a9b8177e17ae7f602d0c89601362dda6fae",
+          "target_sha256": "fcdc574c7f052e7720515fbc68ed540a784c424ea82650fd20ecf9407472cb46",
           "provenance": "Own public metadata clarification; input names/defaults/constraints/annotations unchanged."
         }
       ]

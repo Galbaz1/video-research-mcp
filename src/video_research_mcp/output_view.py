@@ -43,6 +43,7 @@ _IDENTITY_FIELDS = frozenset(
         "local_filepath",
         "screenshot_dir",
         "execution_usage",
+        "analysis_window",
     }
 )
 

@@ -8,6 +8,7 @@ import pytest
 from video_research_mcp.client import GeminiClient
 from video_research_mcp.config import update_config
 from video_research_mcp.execution_budget import ExecutionBudget, current_budget
+from video_research_mcp.job_execution import job_submission
 from video_research_mcp.models.execution import ExecutionLimits
 
 
@@ -99,6 +100,19 @@ async def test_each_retry_retains_failed_reservation_and_call_bound(transport, c
     assert budget.report()["reserved_or_reconciled_tokens"] == 224
     assert budget.report()["measured_total_tokens"] is None
     assert all(r["status"] == "failed_usage_unknown" for r in budget.calls[1:])
+
+
+async def test_durable_submission_never_retries_ambiguous_generation(transport, clean_config):
+    """GIVEN a durable attempt THEN transport failure retains one unknown reservation."""
+    update_config(retry_base_delay=0.001, retry_max_delay=0.001, retry_max_attempts=3)
+    transport.aio.models.generate_content.side_effect = RuntimeError("503 service unavailable")
+    budget = ExecutionBudget(limits(max_calls=6, max_windows=6))
+    with budget.activate(), job_submission(), pytest.raises(RuntimeError, match="503"):
+        await GeminiClient.generate("prompt")
+    transport.aio.models.count_tokens.assert_awaited_once()
+    transport.aio.models.generate_content.assert_awaited_once()
+    assert budget.report()["provider_calls"] == 2
+    assert budget.calls[-1]["status"] == "failed_usage_unknown"
 
 
 @pytest.mark.parametrize("count", [None, -1])

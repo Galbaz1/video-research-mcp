@@ -5,6 +5,7 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from google.genai.types import File as GeminiFile
 
 from video_research_mcp.models.video import VideoResult
 from video_research_mcp.models.youtube import VideoMetadata as YTVideoMetadata
@@ -266,7 +267,7 @@ class TestVideoCreateSession:
         uploaded.state = "PROCESSING"
         mock_gemini_client["client"].aio.files.upload = AsyncMock(return_value=uploaded)
         mock_gemini_client["client"].aio.files.get = AsyncMock(
-            return_value=MagicMock(state="ACTIVE")
+            return_value=GeminiFile(name=uploaded.name, uri=uploaded.uri, state="ACTIVE")
         )
         mock_gemini_client["generate"].return_value = "Local Talk"
 

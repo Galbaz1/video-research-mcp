@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T16:29:09.040492+00:00",
-  "tool_count": 49,
+  "generated_at": "2026-09-30T17:52:08.952588+00:00",
+  "tool_count": 50,
   "tools": [
     {
       "name": "content_analyze",
@@ -1374,7 +1374,7 @@
         "additionalProperties": false,
         "properties": {
           "job_id": {
-            "description": "Durable video batch ID",
+            "description": "Durable video batch or window-run ID",
             "maxLength": 128,
             "minLength": 1,
             "type": "string"
@@ -3578,6 +3578,46 @@
             "description": "Use cached results",
             "type": "boolean"
           },
+          "fps": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 30,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Local files only: requested static sampling frames per second; observed coverage remains unknown"
+          },
+          "start_offset": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Local source interval start, using h/m/s units, for example '27m' or '1m30.5s'"
+          },
+          "end_offset": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Local source interval end using h/m/s units; timestamps retain the original source origin"
+          },
           "strict_contract": {
             "default": false,
             "description": "Enable strict contract pipeline with quality gates, artifact rendering, and structural validation. Factual/media review and observed coverage remain explicitly pending or unknown. Produces richer output with strategy report, concept map, and HTML/Markdown artifacts.",
@@ -3638,6 +3678,74 @@
             "description": "Page a top-level transcript string without truncating stored evidence or citations"
           }
         },
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_analyze_windows",
+      "description": "Plan or execute contiguous source windows with retained partial outcomes.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": true,
+            "description": "Exactly one local file_path or YouTube url, instruction, start_ms/end_ms, window_ms, optional fps/output_schema/thinking_level; remote byte identity and freshness remain unknown",
+            "type": "object"
+          },
+          "execution_budget": {
+            "additionalProperties": true,
+            "description": "Explicit max_calls/max_tokens/max_output_tokens/max_frames/max_windows for this run; counts and generations each consume media transmissions, File API preparation is reported separately",
+            "type": "object"
+          },
+          "dry_run": {
+            "default": true,
+            "description": "Return a frozen local plan with zero provider calls; false explicitly executes against the configured provider",
+            "type": "boolean"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional caller ID for one immutable durable run; retrying this ID never repeats a recorded window"
+          },
+          "continuation_token": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Previous partial-run token; binds source/settings/windows and resolves one idempotent child run"
+          }
+        },
+        "required": [
+          "request",
+          "execution_budget"
+        ],
         "type": "object"
       },
       "output_schema": {

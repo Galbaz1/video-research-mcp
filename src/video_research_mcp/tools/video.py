@@ -24,6 +24,7 @@ from ..errors import make_tool_error
 from ..models.video import SessionInfo, SessionResponse
 from ..models.execution import ExecutionLimits
 from ..output_view import project_output, validate_output_request
+from ..video_window_metadata import normalize_window, window_description, window_instruction
 from ..prompts.video import METADATA_OPTIMIZER, METADATA_PREAMBLE
 from ..sessions import session_store
 from ..types import ThinkingLevel, VideoFilePath, YouTubeUrl, coerce_json_param
@@ -137,6 +138,18 @@ async def video_analyze(
     ] = None,
     thinking_level: ThinkingLevel = "high",
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
+    fps: Annotated[
+        float | None,
+        Field(gt=0, le=30, strict=True, description="Local files only: requested static sampling frames per second; observed coverage remains unknown"),
+    ] = None,
+    start_offset: Annotated[
+        str | None,
+        Field(max_length=64, strict=True, description="Local source interval start, using h/m/s units, for example '27m' or '1m30.5s'"),
+    ] = None,
+    end_offset: Annotated[
+        str | None,
+        Field(max_length=64, strict=True, description="Local source interval end using h/m/s units; timestamps retain the original source origin"),
+    ] = None,
     strict_contract: Annotated[
         bool,
         Field(
@@ -198,6 +211,9 @@ async def video_analyze(
         output_schema: Optional JSON Schema dict for custom output shape.
         thinking_level: Gemini thinking depth.
         use_cache: Whether to use cached results.
+        fps: Requested static sampling rate for a local file, at most 30.
+        start_offset: Local window start, normalized to milliseconds.
+        end_offset: Local window end, greater than the start when supplied.
         strict_contract: Run strict contract pipeline with quality gates.
         dry_run: Return a local execution plan with zero provider calls.
         execution_budget: Explicit request limits and a static sampling window.
@@ -228,11 +244,17 @@ async def video_analyze(
             raise ValueError("Provide exactly one of: url or file_path")
         if sources > 1:
             raise ValueError("Provide exactly one of: url or file_path — got both")
+        window = normalize_window(fps, start_offset, end_offset)
+        if window is not None and url is not None:
+            raise ValueError("fps/start_offset/end_offset apply to local files only (file_path)")
+        if window is not None and execution_budget is not None:
+            raise ValueError("Use the execution_budget window or fps/start_offset/end_offset, not both")
     except ValueError as exc:
         return make_tool_error(exc)
 
     result = None
     try:
+        instruction = window_instruction(instruction, window)
         limits = (
             ExecutionLimits.model_validate(execution_budget)
             if execution_budget is not None
@@ -247,6 +269,7 @@ async def video_analyze(
                 strict_contract=strict_contract,
                 output_schema=output_schema,
                 thinking_level=thinking_level,
+                video_metadata=window,
             )
             if dry_run:
                 return plan
@@ -277,7 +300,12 @@ async def video_analyze(
             else:
                 contents = _video_content(clean_url, instruction)
         else:
-            contents, content_id, file_uri = await _video_file_content(file_path, instruction)
+            if window is None:
+                contents, content_id, file_uri = await _video_file_content(file_path, instruction)
+            else:
+                contents, content_id, file_uri = await _video_file_content(
+                    file_path, instruction, video_metadata=window
+                )
             source_label = file_path
             local_filepath = str(Path(file_path).expanduser().resolve())
 
@@ -292,6 +320,8 @@ async def video_analyze(
             )
             result["local_filepath"] = local_filepath
             result["screenshot_dir"] = screenshot_dir
+            if window is not None:
+                result["analysis_window"] = window_description(window)
             if not use_cache:
                 result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
             if "error" in result:
@@ -317,11 +347,13 @@ async def video_analyze(
         )
         result["local_filepath"] = local_filepath
         result["screenshot_dir"] = screenshot_dir
+        if window is not None:
+            result["analysis_window"] = window_description(window)
         if not use_cache:
             result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
 
         # Pre-warm context cache for future session reuse
-        if use_cache and content_id:
+        if use_cache and content_id and window is None:
             cache_uri = clean_url if url else file_uri
             if cache_uri:
                 prewarm_cache(content_id, cache_uri)

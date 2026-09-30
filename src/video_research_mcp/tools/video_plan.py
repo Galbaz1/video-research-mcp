@@ -10,6 +10,7 @@ from ..config import get_config
 from ..models.execution import ExecutionLimits
 from ..media_identity import identify_source
 from ..models.video import VideoResult
+from ..video_window_metadata import window_description
 from .video_core import _ANALYSIS_PREAMBLE
 from .video_file import LARGE_FILE_THRESHOLD, _validate_video_path
 from .video_url import _extract_video_id, _normalize_youtube_url, _video_content
@@ -55,6 +56,7 @@ def plan_video(
     strict_contract: bool,
     output_schema: dict | None = None,
     thinking_level: str = "high",
+    video_metadata: types.VideoMetadata | None = None,
 ) -> dict:
     """Enumerate source reads/sends and unknowns without clients, uploads or inference."""
     cfg = get_config()
@@ -89,6 +91,8 @@ def plan_video(
                 "prompt_utf8_bytes": len(prompt.encode()),
                 "response_schema": schema,
                 "thinking_level": thinking_level,
+                "video_metadata": video_metadata.model_dump(mode="json", exclude_none=True)
+                if video_metadata is not None else None,
             }
         ],
         "models": [cfg.default_model] if limits else [cfg.default_model, cfg.flash_model],
@@ -114,6 +118,7 @@ def plan_video(
         "provider_calls": 0,
         "launch_blockers": blocked,
         "observed_coverage": "unknown",
+        "analysis_window": window_description(video_metadata) if video_metadata is not None else None,
         "charge_bound_verified": False,
     }
 

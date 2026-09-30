@@ -1,4 +1,4 @@
-"""Readback and checkpoint cancellation for durable local video batches."""
+"""Readback and checkpoint cancellation for durable video analysis jobs."""
 
 import asyncio
 from typing import Annotated
@@ -42,13 +42,13 @@ async def job_status(
 @trace(name="job_cancel", span_type="TOOL")
 async def job_cancel(
     job_id: Annotated[
-        str, Field(min_length=1, max_length=128, description="Durable video batch ID")
+        str, Field(min_length=1, max_length=128, description="Durable video batch or window-run ID")
     ],
 ) -> dict:
     """Cancel queued video work or request its owner stop at the next checkpoint.
 
     Args:
-        job_id: The video batch's durable ID.
+        job_id: The video batch or window run's durable ID.
 
     Returns:
         Actual local state; provider termination remains unknown.
@@ -58,7 +58,7 @@ async def job_cancel(
         job = store.get(job_id)
         if job is None:
             raise KeyError(f"Job not found: {job_id}")
-        if job["kind"] != "video_batch":
+        if job["kind"] not in {"video_batch", "video_windows"}:
             raise ValueError(
                 "Use research_web_cancel or explainer_render_cancel for this operation"
             )

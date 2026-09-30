@@ -12,6 +12,7 @@ from . import context_cache, tracing
 from .config import get_config
 from .weaviate_client import WeaviateClient
 from .tools.video import video_server
+from .tools.video_windows import video_windows_server
 from .academic_client import SemanticScholarClient
 from .tools.research import (
     research_server,
@@ -57,6 +58,7 @@ app = FastMCP(
 )
 
 app.mount(video_server)
+app.mount(video_windows_server)
 _ensure_document_tool()  # register research_document on research_server
 _ensure_web_tools()  # register Deep Research tools on research_server
 _ensure_academic_tools()  # register Semantic Scholar tools on research_server
