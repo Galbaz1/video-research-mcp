@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "protocol_id": "vrm-0e8-evaluation-v1",
+  "freeze_source": "335e8babbeebd783255f67cda2da62b22abb2612",
+  "baseline_source": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+  "inventory_sha256": "deacee9b11e9b853a6534949320b5c708c2f72c40413c84bcfc3170a83da6683",
+  "timestamp_tolerance_ms": 500,
+  "completion_gain_pp": 10,
+  "nonregression_pp": 2,
+  "quality_floor": 0.95,
+  "quality_metrics": [
+    "fact_recall",
+    "supported_claim_precision",
+    "citation_precision",
+    "citation_recall"
+  ],
+  "resource_ratio_max": 1.25,
+  "minimum_cases_per_family": 30,
+  "bootstrap_seed": 20260930,
+  "bootstrap_resamples": 5000,
+  "zero_fabricated_support": true,
+  "families": {
+    "Foundation": {
+      "baselines": [
+        {
+          "repo": "video-research-mcp",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec"
+        }
+      ],
+      "rationale": "Published runtime is the regression baseline for identity, persistence, MCP discovery and installation. Compare the same contract across restart/error fixtures."
+    },
+    "Media": {
+      "baselines": [
+        {
+          "repo": "QwenLM/Qwen-MM-Plugins",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f"
+        },
+        {
+          "repo": "thatsrajan/vidlens-mcp",
+          "revision": "edd1d9fba8cf2364343b4cbd07378a649f956f08"
+        },
+        {
+          "repo": "twelvelabs-io/twelve-labs-claude-code-plugin",
+          "revision": "c9d4936dbee87ecfd4fb8c54f7369d9b83439f14"
+        }
+      ],
+      "rationale": "Native multimodal Qwen workflows, transcript-plus-frame VidLens and hosted TwelveLabs cover complementary strong paths; include each capable nominee, including visual-only and temporal tasks."
+    },
+    "Audio": {
+      "baselines": [
+        {
+          "repo": "QwenLM/Qwen-MM-Plugins",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f"
+        },
+        {
+          "repo": "sblattj/whosaid",
+          "revision": "f7e100d1f04b108b322378b6c43534e27a19eab2"
+        },
+        {
+          "repo": "JuzzyDee/audio-analyzer-rs",
+          "revision": "0387fe1630ff0fc7f71bf656be81f3b1f400dda8"
+        }
+      ],
+      "rationale": "Qwen AV perception, explicit local speaker workflows and deterministic DSP offer strong specialist paths; distinguish transcription, identity and measured acoustics."
+    },
+    "Research": {
+      "baselines": [
+        {
+          "repo": "assafelovic/gpt-researcher",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4"
+        },
+        {
+          "repo": "langchain-ai/open_deep_research",
+          "revision": "1b7d2e80db9faa586165c60e09096dbbfd483a64"
+        }
+      ],
+      "rationale": "GPT Researcher supports web/local/hybrid research and stale-document distractors; open_deep_research supplies an independent research harness. Both capable baselines must be retained."
+    },
+    "Memory": {
+      "baselines": [
+        {
+          "repo": "HKUDS/LightRAG",
+          "revision": "453dce83d6d0354a06e46c8d4029a0895c4e054b"
+        },
+        {
+          "repo": "QwenLM/Qwen-MM-Plugins",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f"
+        },
+        {
+          "repo": "smallthinkingmachines/video-context-mcp",
+          "revision": "4f39f0312401bc428f07dcd69da6b757daf3e441"
+        }
+      ],
+      "rationale": "LightRAG corpus retrieval, Qwen AV memory and video-context persistence cover retrieval and restart. Exclude restricted ImageBind code/weights; retain equivalent permitted native-video challengers."
+    },
+    "Knowledge": {
+      "baselines": [
+        {
+          "repo": "lfnovo/open-notebook",
+          "revision": "3127f14ea9dbb519f0e4ddc64a0742ca644ba6ef"
+        },
+        {
+          "repo": "HKUDS/LightRAG",
+          "revision": "453dce83d6d0354a06e46c8d4029a0895c4e054b"
+        }
+      ],
+      "rationale": "Open Notebook and LightRAG provide source ingestion, notebook isolation, chat and exports. Compare source-linked artifacts rather than tool count."
+    },
+    "Production": {
+      "baselines": [
+        {
+          "repo": "QwenLM/Qwen-MM-Plugins",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f"
+        },
+        {
+          "repo": "harry0703/MoneyPrinterTurbo",
+          "revision": "44e6d5e11832beccc2c3ce6b139bf437e920bb6a"
+        }
+      ],
+      "rationale": "Qwen original-footage and generation workflows plus MoneyPrinterTurbo cover production pipelines; compare artifacts, source support and actual full-job resources."
+    },
+    "Optional": {
+      "baselines": [
+        {
+          "repo": "QwenLM/Qwen-MM-Plugins",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f"
+        },
+        {
+          "repo": "twelvelabs-io/twelve-labs-claude-code-plugin",
+          "revision": "c9d4936dbee87ecfd4fb8c54f7369d9b83439f14"
+        }
+      ],
+      "rationale": "Qwen Blender/FreeCAD/spatial/preview/hardware workflows and hosted TwelveLabs provide specialist routes. Simulators and rights-cleared fixtures precede separately authorized physical/service checks."
+    },
+    "Acceptance": {
+      "baselines": [
+        {
+          "repo": "video-research-mcp",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec"
+        }
+      ],
+      "rationale": "Public product install/release contracts supply the preserved baseline. Integrated workflow comparisons additionally inherit each specialist family; packaging parity does not establish superiority."
+    }
+  },
+  "workflows": {
+    "windowing": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.1"
+    },
+    "interactions": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.1"
+    },
+    "cache": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.2"
+    },
+    "research": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.1"
+    },
+    "media-read": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.2"
+    },
+    "visualize": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.1"
+    },
+    "assets": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.3"
+    },
+    "vision": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.4"
+    },
+    "scenes": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.5"
+    },
+    "perception": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.6"
+    },
+    "speech": {
+      "family": "Audio",
+      "bead_id": "vrm-0e8.4.1"
+    },
+    "events": {
+      "family": "Audio",
+      "bead_id": "vrm-0e8.4.2"
+    },
+    "segmentation": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.2"
+    },
+    "providers": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.2"
+    },
+    "reverse-image": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.3"
+    },
+    "graph-memory": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.1"
+    },
+    "av-memory": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.2"
+    },
+    "memory-lifecycle": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.3"
+    },
+    "tutorial-note": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.1"
+    },
+    "video-skill": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.2"
+    },
+    "generation": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.1"
+    },
+    "tts": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.2"
+    },
+    "footage-edit": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.3"
+    },
+    "music-mv": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.4"
+    },
+    "commentary": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.5"
+    },
+    "translation": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.6"
+    },
+    "educational": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.7"
+    },
+    "spatial": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.3"
+    },
+    "blender": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.4"
+    },
+    "freecad": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.5"
+    },
+    "hardware": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.6"
+    },
+    "harness": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.4"
+    },
+    "compaction": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.4"
+    },
+    "jobs": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.3"
+    },
+    "corpus": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.5"
+    },
+    "ingestion": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.3"
+    },
+    "notebook": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.4"
+    },
+    "podcast": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.5"
+    },
+    "planning": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.8"
+    },
+    "render": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.9"
+    },
+    "timing": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.10"
+    },
+    "scene-agents": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.11"
+    },
+    "refinement": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.12"
+    },
+    "factcheck": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.13"
+    },
+    "formats": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.14"
+    },
+    "sound": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.15"
+    },
+    "materials": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.16"
+    },
+    "production-ui": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.17"
+    },
+    "publish": {
+      "family": "Production",
+      "bead_id": "vrm-0e8.8.18"
+    },
+    "acquisition": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.7"
+    },
+    "speakers": {
+      "family": "Audio",
+      "bead_id": "vrm-0e8.4.3"
+    },
+    "ocr-timeline": {
+      "family": "Media",
+      "bead_id": "vrm-0e8.3.8"
+    },
+    "collections": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.6"
+    },
+    "wiki": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.6"
+    },
+    "reports": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.7"
+    },
+    "synthesis": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.5"
+    },
+    "audience": {
+      "family": "Research",
+      "bead_id": "vrm-0e8.5.6"
+    },
+    "budgets": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.4"
+    },
+    "grounded-answers": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.7"
+    },
+    "corrections": {
+      "family": "Memory",
+      "bead_id": "vrm-0e8.6.8"
+    },
+    "audio-qa": {
+      "family": "Audio",
+      "bead_id": "vrm-0e8.4.4"
+    },
+    "live": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.7"
+    },
+    "verification": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.5"
+    },
+    "workspace": {
+      "family": "Knowledge",
+      "bead_id": "vrm-0e8.7.8"
+    },
+    "twelvelabs": {
+      "family": "Optional",
+      "bead_id": "vrm-0e8.9.8"
+    },
+    "legal": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.6"
+    },
+    "protocol": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.7"
+    },
+    "contract": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.8"
+    },
+    "resources": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.9"
+    },
+    "regression": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.10"
+    },
+    "onboarding": {
+      "family": "Foundation",
+      "bead_id": "vrm-0e8.2.11"
+    },
+    "integration": {
+      "family": "Acceptance",
+      "bead_id": "vrm-0e8.10.1"
+    },
+    "comparison": {
+      "family": "Acceptance",
+      "bead_id": "vrm-0e8.10.2"
+    },
+    "release": {
+      "family": "Acceptance",
+      "bead_id": "vrm-0e8.10.3"
+    }
+  },
+  "modalities": [
+    "text",
+    "image",
+    "video",
+    "audio",
+    "geometry",
+    "tabular"
+  ],
+  "negative_cases": [
+    "absent_evidence",
+    "conflicting_sources",
+    "stale_source",
+    "empty_output",
+    "invalid_schema",
+    "unavailable_source",
+    "timeout",
+    "refusal",
+    "processing_error",
+    "restart",
+    "cancel",
+    "partial_coverage"
+  ],
+  "video_cases": [
+    "visual_only",
+    "audio_only",
+    "exact_timestamp",
+    "ordering",
+    "cross_video",
+    "long_recording",
+    "fixed_sampling"
+  ],
+  "splits": {
+    "development": "tests/evaluation/fixtures",
+    "heldout_manifest": "docs/metrics/multimodal-heldout-manifest.json",
+    "heldout_owner": "independent acceptance custodian; never implementation author"
+  },
+  "human_audit": {
+    "selection": "first opaque case ID in each family, plus every incorrect or disputed support judgement",
+    "minimum_per_family": 1,
+    "required_before_comparative_claim": true
+  },
+  "baseline_policy": "Run public baseline plus every capable nominated specialist under identical input/prompt/budget and pre-frozen provider settings; retain all results. Select the strongest per-workflow dev baseline before candidate tuning, recording exact adapter/config hashes. Missing nominees remain missing; no advantage claim over an unavailable baseline.",
+  "denominator_policy": "All assigned cases, explicit failures/refusals/abstentions/timeouts/missing results and all attempt/auxiliary calls remain visible. Repeat attempts use separate immutable receipts; full-job resource totals include all attempts. Undefined telemetry is null.",
+  "superiority_policy": "Each declared workflow must meet completion gain and paired 95% interval, non-regression and quality floor against the strongest retained baseline, with complete timestamps/artifact validators where applicable, zero fabricated support, human audit and observable bounded full-job cost. No composite score or author-reported benchmark is evidence.",
+  "minimum_sample_policy": "The initial sealed 27-case contract corpus is not a powered superiority cohort. Independent owner seals at least 30 cases per declared workflow (and family) before live tuning/acceptance. Never extend or edit a failing held-out cohort to obtain a pass.",
+  "live_policy": "This harness replays files and never spends, uploads, records, installs or publishes. Live run launches require separately recorded exact resource/operation authority in vrm-0e8.2.9. Labels and source originals stay outside system prompts.",
+  "judge_limits": "Canonical facts are exact case/whitespace-normalized targets. Matching a labeled quotation verifies support against a frozen source; it is not semantic grading of arbitrary prose or proof that the model inspected original media. Independent source/media human review and artifact-specific validators remain required.",
+  "snapshot_policy": "Hash primary media bytes separately from independent source-snapshots.json judge observations. Judge snapshots/labels/construction records never enter candidate prompts. Snapshot hashes and asset binding are required in sealed manifest."
+}

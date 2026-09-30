@@ -1,0 +1,739 @@
+{
+  "schema_version": 1,
+  "corpus_id": "heldout-v1",
+  "programme_epic": "vrm-0e8",
+  "protocol_bead": "vrm-0e8.2.7",
+  "status": "sealed_offline_contract_corpus",
+  "seal_date": "2026-09-30T10:34:27Z",
+  "owner": {
+    "identity": "/root/acceptance_custodian",
+    "role": "independent sealed acceptance custodian",
+    "account_owner": "Fausto Albers",
+    "implementation_author": false
+  },
+  "custody": {
+    "private_root": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1",
+    "inputs_and_labels_separate": true,
+    "answer_bearing_data_disclosed_to_implementation": false,
+    "judge_snapshots_excluded_from_candidate_inputs": true,
+    "case_modification_after_seal": "Forbidden; retire the cohort after acceptance-driven tuning."
+  },
+  "source_revisions": {
+    "programme_source": "335e8babbeebd783255f67cda2da62b22abb2612",
+    "public_baseline": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+    "inventory": {
+      "path": "/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09/docs/research/2026-09-30-capability-transfer.json",
+      "sha256": "deacee9b11e9b853a6534949320b5c708c2f72c40413c84bcfc3170a83da6683"
+    },
+    "upstream_comparison_revisions": [
+      {
+        "repo": "0xchamin/mcptube",
+        "sha": "e619bc1c0ab425ecb7b214819b9f434fdf4809a3"
+      },
+      {
+        "repo": "Galbaz1/video-research-mcp",
+        "sha": "000434257e09dfd4eef93546442de2d6c597a53d"
+      },
+      {
+        "repo": "Galbaz1/video-research-mcp",
+        "sha": "a3d75f6ab87bd893c7d167394fb5bace717f23ec"
+      },
+      {
+        "repo": "Galbaz1/video-research-mcp",
+        "sha": "bd980e834929c291ca3766180fb1a44d1f615efd"
+      },
+      {
+        "repo": "HKUDS/LightRAG",
+        "sha": "453dce83d6d0354a06e46c8d4029a0895c4e054b"
+      },
+      {
+        "repo": "HKUDS/VideoRAG",
+        "sha": "c412a093a820ef7a0e0dda31076ed871136198b3"
+      },
+      {
+        "repo": "JuzzyDee/audio-analyzer-rs",
+        "sha": "0387fe1630ff0fc7f71bf656be81f3b1f400dda8"
+      },
+      {
+        "repo": "QwenLM/Qwen-MM-Plugins",
+        "sha": "07736672525443c7f8a3f6405eed37d2236f023f"
+      },
+      {
+        "repo": "alexlivre/omni-image-tools-mcp",
+        "sha": "4d191573b7e459519c3ec9414ade744456115a5a"
+      },
+      {
+        "repo": "assafelovic/gpt-researcher",
+        "sha": "0957c301ed06c2a5857b834358c7227c739041d4"
+      },
+      {
+        "repo": "guimatheus92/mcp-video-analyzer",
+        "sha": "9e476c02f8426f5c277ed5e7f5729c1aee75b31a"
+      },
+      {
+        "repo": "harry0703/MoneyPrinterTurbo",
+        "sha": "44e6d5e11832beccc2c3ce6b139bf437e920bb6a"
+      },
+      {
+        "repo": "langchain-ai/deepagents",
+        "sha": "1756bbe1eb348e20b925598ed49665b0d34b4b2d"
+      },
+      {
+        "repo": "langchain-ai/open_deep_research",
+        "sha": "1b7d2e80db9faa586165c60e09096dbbfd483a64"
+      },
+      {
+        "repo": "lfnovo/open-notebook",
+        "sha": "3127f14ea9dbb519f0e4ddc64a0742ca644ba6ef"
+      },
+      {
+        "repo": "ludmila-omlopes/youtube-video-analyzer-mcp",
+        "sha": "cdb00e98fcfe6198f209cc69288a2cdc3b495f58"
+      },
+      {
+        "repo": "oxbshw/watch-skill",
+        "sha": "f1317c8fe64744a606c31867b05fbbe3144268c6"
+      },
+      {
+        "repo": "prajwal-y/video_explainer",
+        "sha": "c033e28d6eccae43c1762f4653f9c320b16b050e"
+      },
+      {
+        "repo": "sblattj/whosaid",
+        "sha": "f7e100d1f04b108b322378b6c43534e27a19eab2"
+      },
+      {
+        "repo": "smallthinkingmachines/video-context-mcp",
+        "sha": "4f39f0312401bc428f07dcd69da6b757daf3e441"
+      },
+      {
+        "repo": "stelaino/vision-ocr-mcp",
+        "sha": "4c9225ca81d1c237901d7c58a6b32f7895968415"
+      },
+      {
+        "repo": "thatsrajan/vidlens-mcp",
+        "sha": "edd1d9fba8cf2364343b4cbd07378a649f956f08"
+      },
+      {
+        "repo": "twelvelabs-io/twelve-labs-claude-code-plugin",
+        "sha": "c9d4936dbee87ecfd4fb8c54f7369d9b83439f14"
+      },
+      {
+        "repo": "vishalguptax/media-context-mcp",
+        "sha": "2cc68be304d7151f2a980fc59940938d2fa20b72"
+      },
+      {
+        "repo": "willibrandon/ferrous-waves",
+        "sha": "d28ec11361123eb3778454deddf164f1fb6d25e4"
+      }
+    ]
+  },
+  "commitments": {
+    "inputs.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/inputs.json",
+      "sha256": "fb73e0a98d02ed84f4fc07b0efa16bca70877b98e841eec96bab2ab05d06c004"
+    },
+    "labels.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/labels.json",
+      "sha256": "7d84f45c07ed0f498dbc91334f4c633ce0068736882c749ede234aae644e7e7a"
+    },
+    "prompt.txt": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/prompt.txt",
+      "sha256": "ceb3c6c4abebad01c316d5d75db97c28b2e63182570fbfddb0415b1e4a4e6ab8"
+    },
+    "source-snapshots.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/source-snapshots.json",
+      "sha256": "71a8dfc5e0d3877def6141583d6a07e7caa1995a5133532d90b1675745f93862"
+    },
+    "experiment.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/experiment.json",
+      "sha256": "3ffee9a2a3e40ccb9bc7a1a86bd17913d47bbfbaf82c1cc6cf02dce8b6c675c3"
+    },
+    "rights.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/rights.json",
+      "sha256": "2f65870840fb86ec2ee20ef31c11db1b13bb7806f3e837c1fd0aca9d1bfac67a"
+    },
+    "build_corpus.py": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/build_corpus.py",
+      "sha256": "49beb7d706d659187f5c0e43fda5751a7fbd37da2fa7adc8db189f1258f3ca09"
+    },
+    "validate_corpus.py": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/validate_corpus.py",
+      "sha256": "bd94f7d36dbc258ef7a7699ed2f65461ab2820e19b8c6df4467231f9b4a53ce5"
+    },
+    "oracle_replay.py": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle_replay.py",
+      "sha256": "c002e5525926060905353884f2405962a1db0ef991b728eadc3d1616a7f6734d"
+    },
+    "private-coverage.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/private-coverage.json",
+      "sha256": "1de3e72ae65354440505782a0ecc2be2020481ea5887725c3324d38bfd886b29"
+    },
+    "validation-receipt.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/validation-receipt.json",
+      "sha256": "23ef16b9a100c758f7dee28ddbea04efb2da7aa24d6cac96a160c8064b717bbc"
+    },
+    "deterministic-rebuild-receipt.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/deterministic-rebuild-receipt.json",
+      "sha256": "25844a19ac6c6645acecba9c676242f16ca124c5ea74d16f687f2ece717af162"
+    },
+    "oracle-outputs.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-outputs.json",
+      "sha256": "6cc63725ff945facea3cff9eb200498d35448fd9cefb322639a0d2e9246b5cbe"
+    },
+    "oracle-run-receipt.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-run-receipt.json",
+      "sha256": "e53ee12f4dd96cf44ff0da31a697327335a60f3ea1a98fb2888400562ab570f2"
+    },
+    "oracle-replay-one.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-replay-one.json",
+      "sha256": "b25d88b07bde5247d7d3db27bc66ae497709c70f505cb2abb57d5adb7d171b7a"
+    },
+    "oracle-replay-two.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-replay-two.json",
+      "sha256": "b25d88b07bde5247d7d3db27bc66ae497709c70f505cb2abb57d5adb7d171b7a"
+    },
+    "oracle-validation-receipt.json": {
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-validation-receipt.json",
+      "sha256": "abf3e3c94895efb443130c2c8128289883601503d8c1c3da21ff97a5038154c5"
+    }
+  },
+  "cases": [
+    {
+      "id": "h-08d6ef7978174214e63d",
+      "family": "Production",
+      "modalities": [
+        "audio",
+        "text",
+        "video"
+      ]
+    },
+    {
+      "id": "h-0a342face71ac70898b7",
+      "family": "Memory",
+      "modalities": [
+        "image"
+      ]
+    },
+    {
+      "id": "h-0c4064aa03a4c6581c61",
+      "family": "Knowledge",
+      "modalities": [
+        "image",
+        "tabular"
+      ]
+    },
+    {
+      "id": "h-0d1ca1f05f35eee627bc",
+      "family": "Production",
+      "modalities": [
+        "text",
+        "video"
+      ]
+    },
+    {
+      "id": "h-14f2bd4f7f88dbb2e089",
+      "family": "Research",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-1e4d911ca8352f91b16b",
+      "family": "Acceptance",
+      "modalities": [
+        "image",
+        "text"
+      ]
+    },
+    {
+      "id": "h-1f5325a1bbb5cd4c7d04",
+      "family": "Audio",
+      "modalities": [
+        "audio"
+      ]
+    },
+    {
+      "id": "h-27901811a749bf5a8e91",
+      "family": "Memory",
+      "modalities": [
+        "video"
+      ]
+    },
+    {
+      "id": "h-2d7484b698bbccf62cd1",
+      "family": "Audio",
+      "modalities": [
+        "audio"
+      ]
+    },
+    {
+      "id": "h-37a67dfadebc2848b43b",
+      "family": "Media",
+      "modalities": [
+        "video"
+      ]
+    },
+    {
+      "id": "h-482c08a4bf4712407d21",
+      "family": "Production",
+      "modalities": [
+        "text",
+        "video"
+      ]
+    },
+    {
+      "id": "h-5c2b787f23fedd4c669b",
+      "family": "Acceptance",
+      "modalities": [
+        "tabular",
+        "video"
+      ]
+    },
+    {
+      "id": "h-7814772ace0fe74d872c",
+      "family": "Optional",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-7a0179f7da220141dce8",
+      "family": "Knowledge",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-7a527aca8af44c2907ad",
+      "family": "Optional",
+      "modalities": [
+        "geometry",
+        "text"
+      ]
+    },
+    {
+      "id": "h-7b49ac7c14e6b3267e55",
+      "family": "Audio",
+      "modalities": [
+        "audio"
+      ]
+    },
+    {
+      "id": "h-7f15cee5ec2683080e32",
+      "family": "Knowledge",
+      "modalities": [
+        "tabular",
+        "text"
+      ]
+    },
+    {
+      "id": "h-8e1707975e493100c355",
+      "family": "Foundation",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-8ed0470bd4ff2db7289f",
+      "family": "Memory",
+      "modalities": [
+        "text",
+        "video"
+      ]
+    },
+    {
+      "id": "h-9d8211b7eb38fcd34b6e",
+      "family": "Research",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-a4eb07663089059ee38f",
+      "family": "Media",
+      "modalities": [
+        "audio",
+        "video"
+      ]
+    },
+    {
+      "id": "h-b6c2673bb7c7ab730069",
+      "family": "Foundation",
+      "modalities": [
+        "image",
+        "text"
+      ]
+    },
+    {
+      "id": "h-c88355201a3015f3ad61",
+      "family": "Research",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-c9919bfe2883122fbb74",
+      "family": "Optional",
+      "modalities": [
+        "geometry"
+      ]
+    },
+    {
+      "id": "h-e4c2d921988a8c4cd587",
+      "family": "Media",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-ea21e8429eb84f0ab96d",
+      "family": "Acceptance",
+      "modalities": [
+        "text"
+      ]
+    },
+    {
+      "id": "h-fd0792e2538b31cd7611",
+      "family": "Foundation",
+      "modalities": [
+        "text"
+      ]
+    }
+  ],
+  "source_assets": [
+    {
+      "id": "s-0e691a4c7d9f809802",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-0e691a4c7d9f809802.json",
+      "sha256": "d2a37a3e1437c434832f3e0c46936d7657e817d20201e416177915f7f9f333e6",
+      "modality": "text"
+    },
+    {
+      "id": "s-14a211b8a810c80c68",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-14a211b8a810c80c68.json",
+      "sha256": "abb3c7cc67ba8deb1c9ba49ebfb8d648a62f5516e4d2fa89abe00787253c2f2c",
+      "modality": "text"
+    },
+    {
+      "id": "s-2ab2e8bf9c7355ba54",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-2ab2e8bf9c7355ba54.json",
+      "sha256": "38b634240129fac53f38b3c5a8b48b697fa9c39d540d6635f7fd04373fad1317",
+      "modality": "text"
+    },
+    {
+      "id": "s-2c0e97709fd86b9c71",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-2c0e97709fd86b9c71.json",
+      "sha256": "aad9f5342100c5e0550f8cc3463d535b78b8dde7937d6cf1421b34a8c5198de5",
+      "modality": "text"
+    },
+    {
+      "id": "s-3291bb8bb0116e0d40",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-3291bb8bb0116e0d40.json",
+      "sha256": "e620b7657f74992f1b8fdb82e0ac5dc6f6b470a391b8a2f36d4eeda1636da7bb",
+      "modality": "text"
+    },
+    {
+      "id": "s-3f251db73f53a7fba1",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-3f251db73f53a7fba1.png",
+      "sha256": "c0aeb6deeb7ad9e28e7d6b072820b204c9f0d93850b78945df9917712a511728",
+      "modality": "image"
+    },
+    {
+      "id": "s-44e4d33b4d4f082313",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-44e4d33b4d4f082313.json",
+      "sha256": "fc2e79034cecc49af250533ed3e0e00653420d9e36b0031fca37afbfcc1987a2",
+      "modality": "text"
+    },
+    {
+      "id": "s-5034119c9e4046f476",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-5034119c9e4046f476.csv",
+      "sha256": "e67ab684b41c456b889b06472adc2a570d300665c3c1b9cb90fc2d02910e7ddc",
+      "modality": "tabular"
+    },
+    {
+      "id": "s-52c0444247097ea296",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-52c0444247097ea296.json",
+      "sha256": "334fdaf1ed3964861d50d4bb14bb12d01cbd0a861a569068f2efb8c0b8f940b1",
+      "modality": "text"
+    },
+    {
+      "id": "s-6105d6cc76af400325",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-6105d6cc76af400325.png",
+      "sha256": "fc0c8fd608be2196ee22003ef55059233a2eb873e35069a530dcd122f8673743",
+      "modality": "image"
+    },
+    {
+      "id": "s-68400d9af82bbdef1d",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-68400d9af82bbdef1d.wav",
+      "sha256": "61604049eab1992b9d02569d2aa23c7a54135560a76b9758bd62a20c6deeeeef",
+      "modality": "audio"
+    },
+    {
+      "id": "s-6ee62b48d2b8f581f9",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-6ee62b48d2b8f581f9.json",
+      "sha256": "fd77c93702cad5866e4a3c787f32c65d355cad851d6cd85eba110e81dec703d9",
+      "modality": "text"
+    },
+    {
+      "id": "s-789cf3472be94bccdb",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-789cf3472be94bccdb.json",
+      "sha256": "05131d53b0fc6f840b9444795bee999ca26b4f38aa13c87b1bc79150394a8505",
+      "modality": "text"
+    },
+    {
+      "id": "s-79b1c3bed9ca5dbaae",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-79b1c3bed9ca5dbaae.json",
+      "sha256": "f147d674af64d0b1716d3a9814a14e1b5ddfea90688540688aa4498cdbabf0bc",
+      "modality": "text"
+    },
+    {
+      "id": "s-8148b7fefaf89ebf8e",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-8148b7fefaf89ebf8e.json",
+      "sha256": "a92ee250d788387d36923be3e0c0753448cf3d45cb3f69eb1ce328af738b4adf",
+      "modality": "geometry"
+    },
+    {
+      "id": "s-8392143b2ef8d4b458",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-8392143b2ef8d4b458.json",
+      "sha256": "f4e961b78dd18b4654d563bf1adfdf127ad0143550405e1b1b15c84b6852d562",
+      "modality": "text"
+    },
+    {
+      "id": "s-8b567eaa39b6a35883",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-8b567eaa39b6a35883.json",
+      "sha256": "3a5c7f54acf71bdb82b9adf4d13b80ba0612dcabfb745bbe0a36ed3a0c942657",
+      "modality": "text"
+    },
+    {
+      "id": "s-96ad16e93f7d5837b7",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-96ad16e93f7d5837b7.mp4",
+      "sha256": "3d27f6b4d64bf0dbe69ab79a4ae9d8b2f7c92595509345c57a3ff8ced1710764",
+      "modality": "video"
+    },
+    {
+      "id": "s-ad6a0068a86e4f54d7",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-ad6a0068a86e4f54d7.csv",
+      "sha256": "eb0a73072b575ceee5b2f249bb3678f35b0bbca3616bd7e18194d06bb8818071",
+      "modality": "tabular"
+    },
+    {
+      "id": "s-b5d67627cdbebf2447",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-b5d67627cdbebf2447.json",
+      "sha256": "66227e4d298b02a2c2be7a76809153fbe6624d5b17543bfb1578eec1a15ac58d",
+      "modality": "text"
+    },
+    {
+      "id": "s-bb4bb59db76290d2bf",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-bb4bb59db76290d2bf.json",
+      "sha256": "cc40abaea1b79f80bae9f79027a46a60d5198d1eb84446906d04f14658eccbef",
+      "modality": "text"
+    },
+    {
+      "id": "s-c35dac1688d7d44ebe",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-c35dac1688d7d44ebe.json",
+      "sha256": "5bd877b24edba5a5a667b16a0ea866d8a79813721ab69222435718f2c081da46",
+      "modality": "text"
+    },
+    {
+      "id": "s-c7e02251939e08e555",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-c7e02251939e08e555.json",
+      "sha256": "9c876754c18052748d787392f1ae9af490ba092dc9e2c157f439af27a2cba834",
+      "modality": "text"
+    },
+    {
+      "id": "s-c89454ece24666ec30",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-c89454ece24666ec30.mp4",
+      "sha256": "6932f51023e9bca03255da20486be7a7e018a7d0271f1a6c27e22a9c75dd82f7",
+      "modality": "video"
+    },
+    {
+      "id": "s-d09cdbb8cb7f56df79",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-d09cdbb8cb7f56df79.json",
+      "sha256": "572c232079aedb9d21059424ccf314cc8aa655e5e27852551bd867d93643e16b",
+      "modality": "text"
+    },
+    {
+      "id": "s-f46057f2eda982a8dc",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-f46057f2eda982a8dc.mp4",
+      "sha256": "fa1a625423c37291dbc1242c2395ba5fa07a6a08ca46141a3a33ee6b41acc0a7",
+      "modality": "video"
+    },
+    {
+      "id": "s-f4c65614d645f754ff",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-f4c65614d645f754ff.json",
+      "sha256": "a622cf775961095da2c1ef3b9e12ea5d5be40bb0d9ba6cc3259c6d222733e6b3",
+      "modality": "text"
+    },
+    {
+      "id": "s-fa8b0c1dc0bf17fc4c",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/assets/s-fa8b0c1dc0bf17fc4c.wav",
+      "sha256": "923d629d331352d3680b1854c07dbc5fe65d6ec61da083ff9fadc4a9ab8333e3",
+      "modality": "audio"
+    }
+  ],
+  "counts": {
+    "cases": 27,
+    "families": 9,
+    "by_family": {
+      "Acceptance": 3,
+      "Audio": 3,
+      "Foundation": 3,
+      "Knowledge": 3,
+      "Media": 3,
+      "Memory": 3,
+      "Optional": 3,
+      "Production": 3,
+      "Research": 3
+    },
+    "cases_by_modality": {
+      "audio": 5,
+      "geometry": 2,
+      "image": 4,
+      "tabular": 3,
+      "text": 17,
+      "video": 8
+    },
+    "source_assets": 28,
+    "judge_snapshots": 28,
+    "mapped_workflows_sampled": 27,
+    "mapped_workflows_total": 74
+  },
+  "declared_coverage": [
+    "text",
+    "image",
+    "video",
+    "audio",
+    "geometry",
+    "tabular",
+    "negative and absent evidence",
+    "error",
+    "refusal",
+    "timeout",
+    "unavailable input/runtime",
+    "interruption/restart",
+    "exact intervals",
+    "temporal ordering",
+    "cross-video evidence",
+    "conflicting source snapshots",
+    "fixed sampling",
+    "longer local recording",
+    "artifact lineage"
+  ],
+  "human_audit": {
+    "selection": "First opaque case ID in each family; fixed before any candidate execution.",
+    "sample_case_ids": [
+      "h-1e4d911ca8352f91b16b",
+      "h-1f5325a1bbb5cd4c7d04",
+      "h-8e1707975e493100c355",
+      "h-0c4064aa03a4c6581c61",
+      "h-37a67dfadebc2848b43b",
+      "h-0a342face71ac70898b7",
+      "h-7814772ace0fe74d872c",
+      "h-08d6ef7978174214e63d",
+      "h-14f2bd4f7f88dbb2e089"
+    ],
+    "count": 9,
+    "performed": false,
+    "status": "Required before comparative acceptance."
+  },
+  "rights": {
+    "original_owned_fixtures": true,
+    "borrowed_benchmark_corpus": false,
+    "external_media_or_model_weights": false,
+    "scope": "Original deterministic local evaluation fixtures."
+  },
+  "validation_receipt": {
+    "schema_version": 1,
+    "corpus_id": "heldout-v1",
+    "validation_status": "passed",
+    "case_count": 27,
+    "family_count": 9,
+    "source_asset_count": 28,
+    "snapshot_count": 28,
+    "supported_evidence_passages": 42,
+    "temporal_targets": 15,
+    "local_media_assets_decoded": 7,
+    "video_frames_decoded": 860,
+    "pcm_samples_checked": 256000,
+    "checks": {
+      "schema_and_inventory_mapping": true,
+      "all_hash_commitments": true,
+      "quotes_refetched_from_frozen_snapshots": true,
+      "labels_withheld_from_inputs": true,
+      "all_required_family_modality_and_negative_coverage": true,
+      "source_interval_checks": true,
+      "original_fixture_rights": true
+    },
+    "candidate_executions": 0,
+    "provider_calls": 0,
+    "human_audit_performed": false
+  },
+  "deterministic_rebuild": {
+    "schema_version": 1,
+    "rebuilds": 2,
+    "compared_files": 62,
+    "identical_bytes": true,
+    "commitment_sha256": "641f86c6e87824a01175b48b235363b27056d8b8ba946a42f203ed33c9c5d9ad",
+    "candidate_runs": 0
+  },
+  "oracle_validation": {
+    "kind": "Label-derived oracle contract replay; original and latest evaluator receipts retained.",
+    "candidate_performance": false,
+    "candidate_executions": 0,
+    "provider_calls": 0,
+    "human_audit_performed": false,
+    "original": {
+      "schema_version": 1,
+      "kind": "label-derived oracle contract replay",
+      "candidate_performance": false,
+      "validated_case_and_label_contracts": 27,
+      "oracle_cases_complete": 27,
+      "replays": 2,
+      "identical_reports": true,
+      "report_sha256": "b25d88b07bde5247d7d3db27bc66ae497709c70f505cb2abb57d5adb7d171b7a",
+      "second_report_sha256": "b25d88b07bde5247d7d3db27bc66ae497709c70f505cb2abb57d5adb7d171b7a",
+      "receipt_sha256": "e53ee12f4dd96cf44ff0da31a697327335a60f3ea1a98fb2888400562ab570f2",
+      "outputs_sha256": "6cc63725ff945facea3cff9eb200498d35448fd9cefb322639a0d2e9246b5cbe",
+      "evaluator_sha256": "d83f207985bc5bf1fde406a90c60cb709c2bd69c852ecebf3946e1fae1c958f5",
+      "protocol_sha256": "7ba1d01e3463b88d9f22739a1ad25e83201f5cc199de88cfe7203eb878c85a93",
+      "experiment_sha256": "3ffee9a2a3e40ccb9bc7a1a86bd17913d47bbfbaf82c1cc6cf02dce8b6c675c3",
+      "candidate_executions": 0,
+      "provider_calls": 0,
+      "human_audit_performed": false,
+      "receipt_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-run-receipt.json",
+      "report_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-replay-one.json",
+      "outputs_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1/oracle-outputs.json",
+      "sealed_public_manifest_copy": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1-oracle-refresh/original-public-manifest.json",
+      "sealed_public_manifest_sha256": "24c52d22b7c5f844c6a0410d00bc8c5f121efe209587a347489578f3e5179e0c"
+    },
+    "current": {
+      "kind": "same sealed label-derived oracle outputs, refreshed evaluator contract",
+      "candidate_performance": false,
+      "candidate_executions": 0,
+      "provider_calls": 0,
+      "human_audit_performed": false,
+      "validated_case_and_label_contracts": 27,
+      "oracle_cases_complete": 27,
+      "sealed_source_files_preserved": 86,
+      "evaluator_sha256": "4a70de13bebde39cbf2236a655256e4e2844b2b933c27af78e5a053ca9a0c3aa",
+      "protocol_sha256": "7ba1d01e3463b88d9f22739a1ad25e83201f5cc199de88cfe7203eb878c85a93",
+      "receipt_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1-oracle-refresh/oracle-run-receipt.json",
+      "receipt_sha256": "acfa83206502ac6d024a23df30f61e0f6371589c296cd1cf9dabb21ba46d72f0",
+      "outputs_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1-oracle-refresh/oracle-outputs.json",
+      "outputs_sha256": "6cc63725ff945facea3cff9eb200498d35448fd9cefb322639a0d2e9246b5cbe",
+      "report_path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/heldout-v1-oracle-refresh/oracle-replay.json",
+      "report_sha256": "958b96f3f8f8d3b998724670156467d73a3573eb4e135807dbcca642a5d05745",
+      "refreshed_at": "2026-09-30T10:39:05Z"
+    }
+  },
+  "limitations": [
+    "This 27-case contract corpus samples 27 of 74 mapped workflows; it is not whole-product acceptance.",
+    "Three cases per family are insufficient for the frozen material-advantage/statistical cohort requirement.",
+    "No candidate or baseline system was run. Label-derived oracle replay verifies evaluator contracts only.",
+    "Natural recordings, speech intelligibility/diarization, provider inference and real device/publication journeys remain unverified.",
+    "Canonical exact-text scoring is not semantic grading of arbitrary prose or proof of media inspection.",
+    "Artifact-specific semantic/safety checks, human source/media review and fixed-sample human audit remain required.",
+    "The custodian and implementer share an operating-system account; role custody and read embargo do not provide process-level access isolation.",
+    "Future full programme comparison, integrated product acceptance and verified release remain open."
+  ]
+}

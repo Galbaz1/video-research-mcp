@@ -1,0 +1,1 @@
+Visual track: a blue marker appears from 1000 to 2000 ms. Audio track: a bell sounds from 3000 to 3500 ms. The blue marker precedes the bell.
