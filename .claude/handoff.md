@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T15:53+02:00
+date: 2026-09-30T17:21+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,9 +21,11 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted source is `b0e78163f8f73dcb2109bb0e00eece995a8be0b5`
-(durable research/batch/render jobs and Interactions evaluation), following
-`cb2699f88e8b86deffac4d71634c58ab74ddddf5` (cache identity and execution budgets),
+Current accepted source is `c1d80736cb0cbbd0ec586d9d62a1eb293fda8927`
+(bounded media acquisition, channel discovery and exact-byte asset lifecycle),
+following `b0e78163f8f73dcb2109bb0e00eece995a8be0b5` (durable research/batch/render jobs
+and Interactions evaluation) and `cb2699f88e8b86deffac4d71634c58ab74ddddf5`
+(cache identity and execution budgets),
 `a310f63` (onboarding), `990e4b6` (evidence/native MCP contract) and `8a914ae` (readiness)
 on `codex/multimodal-capability-programme` in the implementation worktree below.
 This supersedes the earlier preparation-only checkpoint. Licensing commit
@@ -138,16 +140,65 @@ conversation-tool-output-only probe limitations and no second independent PASS.
 All original SDK, SQLite bootstrap, fixture, archive and guard failures remain retained.
 Exact lane receipts sit under `durable-jobs/`; the committed group receipt joins them.
 
-Current claimed leaf: `vrm-0e8.3.7`, supported source acquisition and exact-byte
-asset/metadata lifecycle. Its full inventory maps nine public capabilities and three
-workflows, including channel inspection/catalog and stream manifests. Read-only
-preparation identified existing source identity, YouTube and checked-transport routes.
-Implement one bounded acquisition path; keep metadata-only operations free of download,
-asset deletion within owned storage, and arbitrary derived URLs behind checked
-redirect/DNS/connected-peer transport. Do not pass arbitrary Loom/direct/HLS URLs
-unfenced to yt-dlp or FFmpeg. Root owns shared config/client/server/transport/manifest;
-assign independent concrete files before dispatch. `vrm-0e8.2.5` remains blocked by
-memory/knowledge verification leaves `.6.7` and `.7.7`; follow live Beads readiness.
+Acquisition `vrm-0e8.3.7` is closed at `c1d8073`. Thirty-six exact committed
+files implement the nine mapped public capabilities and three workflows with
+seven additive operations plus existing metadata/analysis. Metadata-only routes
+perform no media network download, inference or upload. YouTube/Loom/direct/local
+routing, finite MPEG-TS/fMP4 HLS, channel inspection and a one-page uploads catalog
+retain explicit support and unknown-access boundaries. Every arbitrary/derived HTTP
+request uses checked redirects, DNS and public connected peers. Only canonical
+YouTube IDs reach yt-dlp; cookies are explicit fenced files, never browser extraction.
+
+Actual full SHA-256 objects and bounded source receipts survive restart. Digest-only
+removal verifies owned bytes and invalidates source caches while preserving originals.
+Each complete receipt history is at most 64 KiB. Listing reads at most one MiB of
+metadata and returns at most one MiB of serialized result dictionary; MCP may carry
+text and structured copies. SQL preflight avoids materializing oversized receipt
+blobs. Unknown/corrupt/deleted rows and metadata omission reasons retain denominators.
+
+One bounded independent original-freeze review reproduced five P2 defects: repeated
+spawn cancellation orphaned a process, FIFO sidecars blocked cache workers, receipt
+history expanded output, long metadata exposed quadratic redaction, and substituted
+assets suppressed listing totals. Focused owner regressions repaired all five. The
+shared regular byte reader moved without changing either function body into
+`media_local_io.py`; catalog transactions remain together. No second independent
+PASS is claimed. Reviewer probes are tool-output-only; raw catalog 8-failure/26-pass
+reproduction and all initial fixture/native-process failures remain retained.
+
+Fresh final gates: **1436 root tests**, Ruff, exact 85-unit/74-package graph and
+reuse clearance, nine security smoke/five offline entrypoint checks. Published
+34/15/2 contracts remain compatible; candidate discovery is **44/16/2**. Three
+locks and five protected originals are unchanged. Two actual current root archives
+clear exact notices/ledger; all **124** runtime Python files match source. Nine
+actual installed-wheel MCP calls across **two separate processes** prove persisted
+reuse, current byte checks and owned deletion preserving the original fixture.
+Private audit guards report zero network attempts; two local MLflow platform
+inspection attempts per process remain denied/classified. This is Python audit-hook
+evidence, not an OS-wide egress or installed-user-client claim. The private candidate
+still has version 0.7.1; no registry release occurred.
+
+Exact committed receipt: `acquisition/group-receipt.committed.json`, SHA256
+`51d0e0c290315bcaee5472b26d4c8b30481b46470564973184f3f6b529f1358b`.
+Historical asset 22-call/5-mocked-HTTP/one-ffprobe and HLS eight-process fixture
+journeys remain retained with their older shared helper hashes; current root gates
+and built-wheel proof bind the repaired helpers. The first final suite passed 1435
+and failed one stale exact adoption fixture; adding the actual 14th adopted unit
+preserved all 85-unit/3-lock/114-package and negative clearance controls. Both that
+failure and the first archive-path harness error remain evidence.
+
+Current claimed leaf: **`vrm-0e8.3.2`**, inspectable native media, time windows and
+actual decoded frames. Both dependencies (`.2.11`, `.3.7`) are closed. Read-only
+preparation inspected the pinned Qwen readers/shared helpers and direct frame tools;
+exact six public code readbacks live under `native-media/source-readbacks/`. They
+are source inspection, not media/provider requests or runtime imports. Qwen sparse
+seek returns rounded requested time; direct burst uses generated FPS timestamps.
+The native implementation must bind actual source PTS/time base, source offset,
+rotation/crop coordinates, strict windows and frame/pixel/output budgets, preserve
+changed text and show explicit native/text fallback. FFmpeg/ffprobe 8.0.1 are locally
+available. No source body/asset/weight was copied into the runtime. Root owns common
+schemas/server/config/ledger; give concrete disjoint library/test ownership before
+implementation. `.3.1` windowing and `.3.3` asset workflows follow this leaf; do not
+start them early. `.2.5` remains blocked by memory/knowledge leaves `.6.7` and `.7.7`.
 
 The completed transcription/PDF/Word/mail work stays outside scope. Human development
 and independent held-out audits remain pending at final comparison under the user's
