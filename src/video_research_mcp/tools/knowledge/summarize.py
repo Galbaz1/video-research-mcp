@@ -90,7 +90,7 @@ async def summarize_hits(
             prompt,
             schema=HitSummaryBatch,
             model=cfg.flash_model,
-            thinking_level="minimal",
+            thinking_level="low",
             system_instruction=KNOWLEDGE_SUMMARIZE_SYSTEM,
         )
         return _apply_summaries(hits, batch)

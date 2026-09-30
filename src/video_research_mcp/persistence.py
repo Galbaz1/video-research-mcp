@@ -145,35 +145,10 @@ class SessionDB:
 
 
 def _content_to_dict(content: types.Content) -> dict:
-    """Serialize a genai Content object to a JSON-safe dict."""
-    parts = []
-    for p in content.parts:
-        part_dict: dict = {}
-        if p.text:
-            part_dict["text"] = p.text
-        if p.file_data:
-            part_dict["file_data"] = {
-                "file_uri": p.file_data.file_uri,
-                "mime_type": getattr(p.file_data, "mime_type", None),
-            }
-        if getattr(p, "thought", False):
-            part_dict["thought"] = True
-        parts.append(part_dict)
-    return {"role": content.role, "parts": parts}
+    """Serialize all SDK content fields, including opaque thought signatures."""
+    return content.model_dump(mode="json", exclude_none=True)
 
 
 def _dict_to_content(d: dict) -> types.Content:
     """Deserialize a dict back into a genai Content object."""
-    parts = []
-    for p in d["parts"]:
-        if "file_data" in p:
-            fd = p["file_data"]
-            parts.append(types.Part(
-                file_data=types.FileData(
-                    file_uri=fd["file_uri"],
-                    mime_type=fd.get("mime_type"),
-                ),
-            ))
-        elif "text" in p:
-            parts.append(types.Part(text=p["text"]))
-    return types.Content(role=d["role"], parts=parts)
+    return types.Content.model_validate(d)

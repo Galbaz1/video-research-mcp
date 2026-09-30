@@ -2,7 +2,7 @@
 paths: "src/**/*.py"
 ---
 
-# FastMCP Patterns (v3.x)
+# FastMCP Patterns (v4.x)
 
 ## Server & Tool Registration
 
@@ -13,8 +13,8 @@ paths: "src/**/*.py"
 
 ## Tool Functions
 
-- Tools are plain async functions — FastMCP 3.x preserves callability (no FunctionTool wrapping)
-- Never write compatibility code for FastMCP 2.x — our constraint is `>=3.0.2`
+- Tools are plain async functions — FastMCP 4.x preserves callability (no FunctionTool wrapping)
+- Never write compatibility code for FastMCP 2.x — our constraint is `>=4.0.10,<5`
 - Return `dict`, not Pydantic models — serialize via `model.model_dump()` before returning
 - Never raise exceptions from tools — return `make_tool_error()` dicts
 - All tools must have `@trace(name="tool_name", span_type="TOOL")` decorator (from `...tracing import trace`) — no-op when mlflow not installed

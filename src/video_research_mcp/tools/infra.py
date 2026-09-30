@@ -9,7 +9,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from .. import cache as cache_mod
-from ..config import MODEL_PRESETS, get_config, update_config
+from ..config import MODEL_PRESETS, get_config, supports_sampling, update_config
 from ..errors import make_tool_error
 from ..tracing import trace
 from ..types import CacheAction, ModelPreset, ThinkingLevel
@@ -100,7 +100,9 @@ async def infra_configure(
     )] = None,
     model: Annotated[str | None, Field(description="Gemini model ID override (takes precedence over preset)")] = None,
     thinking_level: ThinkingLevel | None = None,
-    temperature: Annotated[float | None, Field(ge=0.0, le=2.0, description="Sampling temperature")] = None,
+    temperature: Annotated[float | None, Field(
+        ge=0.0, le=2.0, description="Sampling temperature for models that support it (not 3.6+ Flash)",
+    )] = None,
     auth_token: Annotated[str | None, Field(
         description="Optional infra auth token (required when INFRA_ADMIN_TOKEN is configured)",
     )] = None,
@@ -139,6 +141,10 @@ async def infra_configure(
 
         if overrides:
             _enforce_mutation_policy(auth_token)
+            if temperature is not None and not supports_sampling(
+                str(overrides.get("default_model", get_config().default_model))
+            ):
+                raise ValueError("The selected model does not support temperature")
             cfg = update_config(**overrides)
         else:
             cfg = get_config()

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from google import genai
     from google.genai import types
 
-from .config import VALID_THINKING_LEVELS, get_config
+from .config import VALID_THINKING_LEVELS, get_config, supports_sampling, validate_model_thinking
 from .retry import with_retry
 
 logger = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class GeminiClient:
             raise ValueError("No Gemini API key — set GEMINI_API_KEY or pass api_key explicitly")
         if key not in cls._clients:
             cls._clients[key] = genai.Client(api_key=key)
-            logger.info("Created Gemini client (key …%s)", key[-4:])
+            logger.info("Created Gemini client")
         return cls._clients[key]
 
     @classmethod
@@ -74,7 +74,7 @@ class GeminiClient:
             model: Override model ID (defaults to config's default_model).
             thinking_level: Override thinking level (defaults to config's default).
             response_schema: JSON schema dict to constrain output format.
-            temperature: Override temperature (defaults to config's default).
+            temperature: Sampling override for compatible models; rejected by 3.6+ Flash.
             system_instruction: System-level instruction prepended to the prompt.
             tools: Gemini tool wiring (e.g. GoogleSearch, UrlContext).
             **kwargs: Forwarded to the underlying generate_content call.
@@ -87,11 +87,15 @@ class GeminiClient:
         cfg = get_config()
         resolved_model = model or cfg.default_model
         resolved_thinking = _resolve_thinking_level(thinking_level or cfg.default_thinking_level)
+        validate_model_thinking(resolved_model, resolved_thinking)
 
         config = types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_level=resolved_thinking),
-            temperature=temperature if temperature is not None else cfg.default_temperature,
         )
+        if supports_sampling(resolved_model):
+            config.temperature = temperature if temperature is not None else cfg.default_temperature
+        elif temperature is not None:
+            raise ValueError(f"{resolved_model} does not support temperature")
         if system_instruction:
             config.system_instruction = system_instruction
         if response_schema:
@@ -111,7 +115,8 @@ class GeminiClient:
         )
 
         # Strip thinking parts — only return user-visible text
-        parts = response.candidates[0].content.parts if response.candidates else []
+        content = response.candidates[0].content if response.candidates else None
+        parts = (content.parts or []) if content else []
         text_parts = [p.text for p in parts if p.text and not getattr(p, "thought", False)]
         return "\n".join(text_parts) if text_parts else (response.text or "")
 

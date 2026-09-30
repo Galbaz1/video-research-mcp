@@ -1,7 +1,7 @@
 [project]
 name = "video-research-mcp"
 version = "0.6.1"
-description = "Unified Gemini 3.5 Flash research partner — 51 tools for video analysis, deep research, content extraction, media production, and explainer video creation via MCP"
+description = "Unified Gemini 3.8 Flash research partner — 51 tools for video analysis, deep research, content extraction, media production, and explainer video creation via MCP"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Fausto" }]
@@ -16,12 +16,12 @@ classifiers = [
     "Intended Audience :: Developers",
 ]
 dependencies = [
-    "fastmcp>=3.0.2",
-    "google-api-python-client>=2.100",
-    "google-genai>=1.57",
-    "httpx>=0.27",
-    "pydantic>=2.0",
-    "weaviate-client>=4.19.2",
+    "fastmcp>=4.0.10,<5",
+    "google-api-python-client>=2.200.0,<3",
+    "google-genai>=2.25.0,<3",
+    "httpx>=0.28.1,<0.29",
+    "pydantic>=2.13.5,<3",
+    "weaviate-client>=4.23.1,<5",
 ]
 
 [project.urls]
@@ -32,22 +32,22 @@ Issues = "https://github.com/Galbaz1/video-research-mcp/issues"
 Changelog = "https://github.com/Galbaz1/video-research-mcp/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
-tracing = ["mlflow-tracing>=3.0"]
-agents = ["weaviate-agents>=1.2.0"]
-strict = ["jsonschema>=4.0"]
+tracing = ["mlflow-tracing>=3.16.1,<4"]
+agents = ["weaviate-agents>=1.8.0,<2"]
+strict = ["jsonschema>=4.26.0,<5"]
 dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=1.0",
-    "ruff>=0.9",
-    "mlflow-tracing>=3.0",
-    "jsonschema>=4.0",
+    "pytest>=9.1.1,<10",
+    "pytest-asyncio>=1.4.0,<2",
+    "ruff>=0.16.9,<0.17",
+    "mlflow-tracing>=3.16.1,<4",
+    "jsonschema>=4.26.0,<5",
 ]
 
 [project.scripts]
 video-research-mcp = "video_research_mcp.server:main"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.32.4,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
@@ -60,3 +60,6 @@ testpaths = ["tests"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

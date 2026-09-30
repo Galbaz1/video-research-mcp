@@ -145,3 +145,15 @@ class TestContentSerialization:
         d = _content_to_dict(content)
         result = _dict_to_content(d)
         assert result.parts[0].file_data.file_uri == "gs://bucket/file"
+
+    def test_thought_signature_and_metadata_roundtrip(self, db):
+        """GIVEN signed model content WHEN SQLite roundtrips THEN signatures survive."""
+        content = types.Content(role="model", parts=[
+            types.Part(text="Thought summary", thought=True),
+            types.Part(text="Answer", thought_signature=b"\xff\x00signature"),
+        ])
+        db.save_sync(_make_session(history=[content]))
+        loaded = db.load_sync("abc123")
+
+        assert loaded.history[0] == content
+        assert loaded.history[0].parts[1].thought_signature == b"\xff\x00signature"

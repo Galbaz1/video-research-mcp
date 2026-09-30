@@ -34,9 +34,10 @@ logger = logging.getLogger(__name__)
 _launch_times: dict[str, dict] = {}
 _MAX_TRACKED = 100
 _TTL_SECONDS = 7200  # 2 hours
+_launch_lock = asyncio.Lock()
 
-
-_ACTIVE_TTL_SECONDS = 1800  # 30 min — max reasonable Deep Research runtime
+_ACTIVE_TTL_SECONDS = 3600  # Provider's maximum Deep Research runtime.
+_ACTIVE_STATUSES = {"queued", "in_progress"}
 
 
 def _evict_stale() -> None:
@@ -54,13 +55,16 @@ def _find_active_interaction() -> str | None:
     """Return interaction_id of a likely-active task, or None."""
     now = time.time()
     for iid, meta in _launch_times.items():
-        if now - meta["time"] < _ACTIVE_TTL_SECONDS:
+        if (
+            now - meta["time"] < _ACTIVE_TTL_SECONDS
+            and meta.get("status", "in_progress") in _ACTIVE_STATUSES
+        ):
             return iid
     return None
 
 
 def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
-    """Extract report text and sources from Interaction outputs.
+    """Extract trailing model output text and unique sources from current SDK steps.
 
     Args:
         interaction: A google.genai Interaction object.
@@ -68,37 +72,29 @@ def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
     Returns:
         Tuple of (report_text, sources_list).
     """
-    report_parts: list[str] = []
-    sources: list[DeepResearchSource] = []
+    sources: dict[str, DeepResearchSource] = {}
 
-    for turn in getattr(interaction, "outputs", []) or []:
-        # Check direct text field (Deep Research format)
-        direct_text = getattr(turn, "text", "")
-        if direct_text:
-            report_parts.append(direct_text)
-        # Also check content array (standard Interactions format)
-        for content in getattr(turn, "content", []) or []:
-            content_type = getattr(content, "type", "")
-            if content_type == "text":
-                text = getattr(content, "text", "")
-                if text:
-                    report_parts.append(text)
-            elif content_type == "googleSearchResult":
-                result = getattr(content, "result", None)
-                if result:
-                    sources.append(DeepResearchSource(
-                        url=getattr(result, "url", ""),
-                        title=getattr(result, "title", ""),
-                    ))
-            elif content_type == "urlContextResult":
-                result = getattr(content, "result", None)
-                if result:
-                    sources.append(DeepResearchSource(
-                        url=getattr(result, "url", ""),
-                        status=getattr(result, "status", ""),
+    for step in interaction.steps or []:
+        if step.type == "model_output":
+            for content in step.content or []:
+                if content.type != "text":
+                    continue
+                for annotation in content.annotations or []:
+                    if annotation.type == "url_citation" and annotation.url:
+                        sources[annotation.url] = DeepResearchSource(
+                            url=annotation.url, title=annotation.title or "",
+                        )
+        elif step.type in {"google_search_result", "url_context_result"}:
+            for result in step.result or []:
+                url = getattr(result, "url", "")
+                if url:
+                    sources.setdefault(url, DeepResearchSource(
+                        url=url,
+                        title=getattr(result, "title", "") or "",
+                        status=getattr(result, "status", "") or "",
                     ))
 
-    return "\n\n".join(report_parts), sources
+    return interaction.output_text or "", list(sources.values())
 
 
 def _extract_usage(interaction) -> dict:
@@ -129,7 +125,7 @@ async def research_web(
 
     The agent plans its own research, searches the web (~80-160 queries),
     reads sources, and produces a cited markdown report. Runs in background;
-    poll with research_web_status. Costs $2-5 per task, takes 10-20 minutes.
+    poll with research_web_status. Provider usage is billed; runtime varies.
 
     Args:
         topic: Research brief — include specific questions, scope, hypotheses.
@@ -139,16 +135,6 @@ async def research_web(
         Dict with interaction_id and status, or error via make_tool_error().
     """
     try:
-        _evict_stale()
-
-        # API allows only 1 concurrent Deep Research task per key
-        active = _find_active_interaction()
-        if active:
-            return make_tool_error(RuntimeError(
-                f"Deep Research task already in progress: {active}. "
-                "Poll with research_web_status or cancel with research_web_cancel first."
-            ))
-
         prompt = topic
         if output_format:
             prompt = f"{topic}\n\nOutput format:\n{output_format}"
@@ -156,14 +142,24 @@ async def research_web(
         cfg = get_config()
         client = GeminiClient.get()
 
-        interaction = await client.aio.interactions.create(
-            input=prompt,
-            agent=cfg.deep_research_agent,
-            background=True,
-        )
-
-        interaction_id = interaction.id
-        _launch_times[interaction_id] = {"time": time.time(), "topic": topic}
+        async with _launch_lock:
+            _evict_stale()
+            active = _find_active_interaction()
+            if active:
+                raise RuntimeError(
+                    f"Deep Research task already in progress: {active}. "
+                    "Poll with research_web_status or cancel with research_web_cancel first."
+                )
+            interaction = await client.aio.interactions.create(
+                input=prompt,
+                agent=cfg.deep_research_agent,
+                background=True,
+                store=True,
+            )
+            interaction_id = interaction.id
+            _launch_times[interaction_id] = {
+                "time": time.time(), "topic": topic, "status": interaction.status,
+            }
         logger.info("Deep Research launched: %s", interaction_id)
 
         return DeepResearchLaunch(
@@ -215,16 +211,16 @@ async def research_web_status(
 
         status = getattr(interaction, "status", "unknown") or "unknown"
 
-        # Pop launch metadata on any non-transient status to prevent unbounded growth.
-        # Only "in_progress" keeps the entry; terminal statuses (completed, failed,
-        # cancelled, unknown) always clear it.
-        if status != "in_progress":
+        if status not in _ACTIVE_STATUSES:
             launch_meta = _launch_times.pop(interaction_id, None)
         else:
             launch_meta = _launch_times.get(interaction_id)
 
         if status != "completed":
-            return {"interaction_id": interaction_id, "status": status}
+            result = {"interaction_id": interaction_id, "status": status}
+            if interaction.errors:
+                result["errors"] = [error.model_dump(mode="json") for error in interaction.errors]
+            return result
 
         report_text, sources = _extract_report(interaction)
         usage = _extract_usage(interaction)
@@ -291,15 +287,11 @@ async def research_web_followup(
             input=question,
             model=cfg.default_model,
             previous_interaction_id=interaction_id,
+            generation_config={"thinking_level": cfg.default_thinking_level},
         )
-
-        response_text = ""
-        for turn in getattr(followup, "outputs", []) or []:
-            for content in getattr(turn, "content", []) or []:
-                if getattr(content, "type", "") == "text":
-                    text = getattr(content, "text", "")
-                    if text:
-                        response_text += text + "\n"
+        if followup.status != "completed":
+            return {"interaction_id": followup.id, "status": followup.status}
+        response_text, _ = _extract_report(followup)
 
         result = DeepResearchFollowup(
             interaction_id=followup.id,
@@ -330,7 +322,7 @@ async def research_web_cancel(
     """Cancel a running Deep Research task.
 
     Sends a cancel request to the Interactions API and cleans up local
-    tracking state. Useful for aborting expensive ($2-5) tasks early.
+    tracking state. Useful for stopping a task before further provider usage.
 
     Args:
         interaction_id: The interaction ID from research_web.

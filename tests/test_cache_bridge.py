@@ -717,3 +717,56 @@ class TestLocalFileCaching:
 
         assert "error" not in result
         mock_prewarm.assert_not_called()
+
+
+class TestSessionResponseContract:
+    async def test_signed_response_is_preserved_in_next_turn(self, _mock_session_store):
+        """GIVEN signed SDK content WHEN continuing twice THEN exact content is replayed."""
+        from google.genai import types
+
+        session = _mock_session_store.create(FILE_API_URI, "general")
+        signed = types.Content(role="model", parts=[
+            types.Part(text="Thought", thought=True),
+            types.Part(text="Answer", thought_signature=b"opaque-signature"),
+        ])
+        client = MagicMock()
+        client.aio.models.generate_content = AsyncMock(return_value=types.GenerateContentResponse(
+            candidates=[types.Candidate(content=signed)],
+        ))
+        with (
+            patch("video_research_mcp.tools.video.GeminiClient.get", return_value=client),
+            patch("video_research_mcp.weaviate_store.store_session_turn", new_callable=AsyncMock),
+        ):
+            first = await video_continue_session(session.session_id, "First question")
+            assert first["response"] == "Answer"
+            assert session.history[1] is signed
+            await video_continue_session(session.session_id, "Second question")
+
+        replay = client.aio.models.generate_content.call_args.kwargs["contents"]
+        assert replay[1] is signed
+        assert replay[1].parts[1].thought_signature == b"opaque-signature"
+
+    async def test_cache_preparation_error_becomes_tool_error(self, _mock_session_store):
+        session = _mock_session_store.create(FILE_API_URI, "general")
+        with patch(
+            "video_research_mcp.tools.video.prepare_cached_request",
+            new_callable=AsyncMock, side_effect=RuntimeError("Cache preparation failed"),
+        ):
+            result = await video_continue_session(session.session_id, "Question")
+        assert result["error"] == "Cache preparation failed"
+        assert result["retryable"] is False
+        assert session.turn_count == 0
+
+    async def test_blocked_response_does_not_add_a_turn(self, _mock_session_store):
+        from google.genai import types
+
+        session = _mock_session_store.create(FILE_API_URI, "general")
+        client = MagicMock()
+        client.aio.models.generate_content = AsyncMock(return_value=types.GenerateContentResponse(
+            candidates=[types.Candidate(finish_reason="SAFETY")],
+        ))
+        with patch("video_research_mcp.tools.video.GeminiClient.get", return_value=client):
+            result = await video_continue_session(session.session_id, "Question")
+        assert result["category"] == "UNKNOWN"
+        assert "no content" in result["error"]
+        assert session.turn_count == 0
