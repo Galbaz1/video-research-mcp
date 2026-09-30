@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T19:34:51.103505+00:00",
-  "tool_count": 54,
+  "generated_at": "2026-09-30T21:00:22.018415+00:00",
+  "tool_count": 57,
   "tools": [
     {
       "name": "content_analyze",
@@ -9229,6 +9229,1389 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "vision_chat",
+      "description": "Analyze, identify or compare exact images and bounded source video samples.\n\nDry plans perform local preparation with zero provider calls. A live request\nrequires explicit workflow authorization and a configured model/account.\nInterpretation remains model inference, separately from source byte lineage.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact original sources, instruction, selected backend, dry plan and explicit workflow submission grant",
+            "properties": {
+              "sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "An exact original image, source frame, or bounded video selection.",
+                  "properties": {
+                    "kind": {
+                      "default": "image",
+                      "enum": [
+                        "image",
+                        "frame",
+                        "video"
+                      ],
+                      "type": "string"
+                    },
+                    "file_path": {
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "expected_source_sha256": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "time_seconds": {
+                      "anyOf": [
+                        {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "crop": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "Integer pixel xywh or normalized1000 xyxy in the oriented source grid.",
+                          "properties": {
+                            "space": {
+                              "default": "pixel",
+                              "enum": [
+                                "pixel",
+                                "normalized1000"
+                              ],
+                              "type": "string"
+                            },
+                            "coordinates": {
+                              "anyOf": [
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    }
+                                  ],
+                                  "type": "array"
+                                },
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ],
+                                  "type": "array"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "coordinates"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "resize": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "An explicit exact target size; the caller chooses its aspect ratio.",
+                          "properties": {
+                            "width": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "height": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "width",
+                            "height"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "start_seconds": {
+                      "default": 0,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "anyOf": [
+                        {
+                          "exclusiveMinimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "fps": {
+                      "default": 1,
+                      "maximum": 10,
+                      "minimum": 0.1,
+                      "type": "number"
+                    },
+                    "max_frames": {
+                      "default": 16,
+                      "maximum": 32,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "file_path",
+                    "expected_source_sha256"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 4,
+                "minItems": 1,
+                "type": "array"
+              },
+              "instruction": {
+                "maxLength": 8192,
+                "minLength": 1,
+                "type": "string"
+              },
+              "backend": {
+                "default": "gemini",
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "limits": {
+                "additionalProperties": false,
+                "description": "Still/frame transmission limits without fabricated video windows.",
+                "properties": {
+                  "max_calls": {
+                    "default": 2,
+                    "maximum": 9,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_tokens": {
+                    "default": 100000,
+                    "maximum": 2000000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "default": 2048,
+                    "maximum": 8192,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "type": "object",
+                "default": {
+                  "max_calls": 2,
+                  "max_tokens": 100000,
+                  "max_output_tokens": 2048
+                }
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "export_crops": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "sources",
+              "instruction"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Observed payload lineage kept distinct from a model's interpretation.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "operation": {
+                "enum": [
+                  "vision_chat",
+                  "ocr",
+                  "grounding"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "preparations": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Preparations",
+                "type": "array"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "model_output": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Model Output"
+              },
+              "regions": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Regions",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              },
+              "provenance": {
+                "additionalProperties": true,
+                "title": "Provenance",
+                "type": "object"
+              }
+            },
+            "required": [
+              "status",
+              "operation",
+              "backend",
+              "request_sha256",
+              "preparations",
+              "payload_receipt",
+              "model_output",
+              "regions",
+              "execution",
+              "uploads",
+              "provenance"
+            ],
+            "title": "VisionResponse",
+            "type": "object"
+          },
+          {
+            "description": "Keep attempted transmissions and storage uncertainty after an unsuccessful call.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request Sha256"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "execution",
+              "payload_receipt",
+              "request_sha256",
+              "uploads"
+            ],
+            "title": "VisionFailure",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "vision_grounding",
+      "description": "Locate objects with strict inferred boxes and optional actual original-pixel crops.\n\nNormalized1000 boxes map through the exact transmitted preparation to original\nstored/oriented pixels. Crop byte/geometry verification does not verify that the\nmodel identified the object correctly. Empty detections remain valid abstentions.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact original sources, instruction, selected backend, dry plan and explicit workflow submission grant",
+            "properties": {
+              "sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "An exact original image, source frame, or bounded video selection.",
+                  "properties": {
+                    "kind": {
+                      "default": "image",
+                      "enum": [
+                        "image",
+                        "frame",
+                        "video"
+                      ],
+                      "type": "string"
+                    },
+                    "file_path": {
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "expected_source_sha256": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "time_seconds": {
+                      "anyOf": [
+                        {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "crop": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "Integer pixel xywh or normalized1000 xyxy in the oriented source grid.",
+                          "properties": {
+                            "space": {
+                              "default": "pixel",
+                              "enum": [
+                                "pixel",
+                                "normalized1000"
+                              ],
+                              "type": "string"
+                            },
+                            "coordinates": {
+                              "anyOf": [
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    }
+                                  ],
+                                  "type": "array"
+                                },
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ],
+                                  "type": "array"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "coordinates"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "resize": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "An explicit exact target size; the caller chooses its aspect ratio.",
+                          "properties": {
+                            "width": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "height": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "width",
+                            "height"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "start_seconds": {
+                      "default": 0,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "anyOf": [
+                        {
+                          "exclusiveMinimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "fps": {
+                      "default": 1,
+                      "maximum": 10,
+                      "minimum": 0.1,
+                      "type": "number"
+                    },
+                    "max_frames": {
+                      "default": 16,
+                      "maximum": 32,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "file_path",
+                    "expected_source_sha256"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 4,
+                "minItems": 1,
+                "type": "array"
+              },
+              "instruction": {
+                "maxLength": 8192,
+                "minLength": 1,
+                "type": "string"
+              },
+              "backend": {
+                "default": "gemini",
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "limits": {
+                "additionalProperties": false,
+                "description": "Still/frame transmission limits without fabricated video windows.",
+                "properties": {
+                  "max_calls": {
+                    "default": 2,
+                    "maximum": 9,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_tokens": {
+                    "default": 100000,
+                    "maximum": 2000000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "default": 2048,
+                    "maximum": 8192,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "type": "object",
+                "default": {
+                  "max_calls": 2,
+                  "max_tokens": 100000,
+                  "max_output_tokens": 2048
+                }
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "export_crops": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "sources",
+              "instruction"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Observed payload lineage kept distinct from a model's interpretation.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "operation": {
+                "enum": [
+                  "vision_chat",
+                  "ocr",
+                  "grounding"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "preparations": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Preparations",
+                "type": "array"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "model_output": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Model Output"
+              },
+              "regions": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Regions",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              },
+              "provenance": {
+                "additionalProperties": true,
+                "title": "Provenance",
+                "type": "object"
+              }
+            },
+            "required": [
+              "status",
+              "operation",
+              "backend",
+              "request_sha256",
+              "preparations",
+              "payload_receipt",
+              "model_output",
+              "regions",
+              "execution",
+              "uploads",
+              "provenance"
+            ],
+            "title": "VisionResponse",
+            "type": "object"
+          },
+          {
+            "description": "Keep attempted transmissions and storage uncertainty after an unsuccessful call.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request Sha256"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "execution",
+              "payload_receipt",
+              "request_sha256",
+              "uploads"
+            ],
+            "title": "VisionFailure",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "vision_ocr",
+      "description": "Infer visible text from exact prepared images or precise source frames.\n\nModel transcription is labeled inference. The separate image_ocr operation\nselects local Tesseract/Vision observations. No automatic fallback occurs.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact original sources, instruction, selected backend, dry plan and explicit workflow submission grant",
+            "properties": {
+              "sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "An exact original image, source frame, or bounded video selection.",
+                  "properties": {
+                    "kind": {
+                      "default": "image",
+                      "enum": [
+                        "image",
+                        "frame",
+                        "video"
+                      ],
+                      "type": "string"
+                    },
+                    "file_path": {
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "expected_source_sha256": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "time_seconds": {
+                      "anyOf": [
+                        {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "crop": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "Integer pixel xywh or normalized1000 xyxy in the oriented source grid.",
+                          "properties": {
+                            "space": {
+                              "default": "pixel",
+                              "enum": [
+                                "pixel",
+                                "normalized1000"
+                              ],
+                              "type": "string"
+                            },
+                            "coordinates": {
+                              "anyOf": [
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "integer"
+                                    }
+                                  ],
+                                  "type": "array"
+                                },
+                                {
+                                  "maxItems": 4,
+                                  "minItems": 4,
+                                  "prefixItems": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ],
+                                  "type": "array"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "coordinates"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "resize": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "An explicit exact target size; the caller chooses its aspect ratio.",
+                          "properties": {
+                            "width": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "height": {
+                              "maximum": 4096,
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "width",
+                            "height"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "start_seconds": {
+                      "default": 0,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "anyOf": [
+                        {
+                          "exclusiveMinimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
+                    },
+                    "fps": {
+                      "default": 1,
+                      "maximum": 10,
+                      "minimum": 0.1,
+                      "type": "number"
+                    },
+                    "max_frames": {
+                      "default": 16,
+                      "maximum": 32,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "file_path",
+                    "expected_source_sha256"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 4,
+                "minItems": 1,
+                "type": "array"
+              },
+              "instruction": {
+                "maxLength": 8192,
+                "minLength": 1,
+                "type": "string"
+              },
+              "backend": {
+                "default": "gemini",
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "limits": {
+                "additionalProperties": false,
+                "description": "Still/frame transmission limits without fabricated video windows.",
+                "properties": {
+                  "max_calls": {
+                    "default": 2,
+                    "maximum": 9,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_tokens": {
+                    "default": 100000,
+                    "maximum": 2000000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "default": 2048,
+                    "maximum": 8192,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "type": "object",
+                "default": {
+                  "max_calls": 2,
+                  "max_tokens": 100000,
+                  "max_output_tokens": 2048
+                }
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "output_schema": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "export_crops": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "sources",
+              "instruction"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Observed payload lineage kept distinct from a model's interpretation.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "operation": {
+                "enum": [
+                  "vision_chat",
+                  "ocr",
+                  "grounding"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "preparations": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Preparations",
+                "type": "array"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "model_output": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Model Output"
+              },
+              "regions": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Regions",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              },
+              "provenance": {
+                "additionalProperties": true,
+                "title": "Provenance",
+                "type": "object"
+              }
+            },
+            "required": [
+              "status",
+              "operation",
+              "backend",
+              "request_sha256",
+              "preparations",
+              "payload_receipt",
+              "model_output",
+              "regions",
+              "execution",
+              "uploads",
+              "provenance"
+            ],
+            "title": "VisionResponse",
+            "type": "object"
+          },
+          {
+            "description": "Keep attempted transmissions and storage uncertainty after an unsuccessful call.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "payload_receipt": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Payload Receipt",
+                "type": "array"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request Sha256"
+              },
+              "uploads": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Uploads",
+                "type": "array"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "execution",
+              "payload_receipt",
+              "request_sha256",
+              "uploads"
+            ],
+            "title": "VisionFailure",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

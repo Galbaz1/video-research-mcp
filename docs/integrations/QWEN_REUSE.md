@@ -13,8 +13,10 @@ files and carries notice receipts from the existing
 [reuse ledger](reuse-ledger.json). The exact
 [release index](https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/plugin-versions.json)
 contains fourteen capability versions. Each manifest entry names its declared tag;
-that metadata does not prove a tagged release's commit or byte identity. No
-foreign process, tagged release tree or dependency lock is adopted here.
+that metadata does not prove a tagged release's commit or byte identity. Onboarding itself adopts no foreign process, tagged release tree or dependency
+lock. The later vision leaf supplies a separately receipted private pinned API
+process check through [the disabled optional API route](qwen-api.md); it does
+not activate accounts, models or ordinary onboarding installs.
 
 Qwen original code uses Apache-2.0; its Blender/FreeCAD derived portions carry
 separate MIT grants and copyright notices. Any later copied implementation must

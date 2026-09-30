@@ -70,6 +70,7 @@ class GeminiClient:
         thinking_level: str | None = None,
         response_schema: dict | None = None,
         temperature: float | None = None,
+        api_key: str | None = None,
         system_instruction: str | None = None,
         tools: list[types.Tool] | None = None,
         **kwargs: Any,
@@ -86,6 +87,7 @@ class GeminiClient:
             thinking_level: Override thinking level (defaults to config's default).
             response_schema: JSON schema dict to constrain output format.
             temperature: Sampling override for compatible models; rejected by 3.6+ Flash.
+            api_key: Explicit account credential for a frozen, bounded workflow.
             system_instruction: System-level instruction prepended to the prompt.
             tools: Gemini tool wiring (e.g. GoogleSearch, UrlContext).
             **kwargs: Forwarded to the underlying generate_content call.
@@ -118,7 +120,7 @@ class GeminiClient:
         from .execution_budget import current_budget
 
         budget = current_budget()
-        client = cls.get()
+        client = cls.get(api_key=api_key) if api_key is not None else cls.get()
         if budget:
             if system_instruction or tools or kwargs:
                 raise ValueError(

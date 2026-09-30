@@ -102,3 +102,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 A new copied/adapted file must add its exact source/target hashes, component grant,
 copyright, full license text and change notice to the ledger and this notice file
 before it enters a built archive. An external asset must add its own receipt.
+
+## Configured vision workflow requirements (vrm-0e8.3.4)
+
+The independently authored vision chat/comparison, OCR inference and strict
+normalized-box-to-original-pixel crop workflow was informed by
+QwenLM/Qwen-MM-Plugins at07736672525443c7f8a3f6405eed37d2236f023f
+(Apache-2.0 original API/shared requirements) and alexlivre/omni-image-tools-mcp
+at4d191573b7e459519c3ec9414ade744456115a5a (MIT image vision/compare/extract
+requirements). Applicable grant bodies and copyright notices are retained above.
+Change attribution: implementation uses own strict typed geometry, original/prepared
+byte commitments, configured origins, explicit submission and no automatic retries,
+fallbacks or answer cache; no source bodies were copied. The optional pinned
+Qwen API is a separately receipted private process using its declared older MCP
+and Pillow majors. Its dependencies, binaries, fonts, media and model weights
+are absent from this core distribution. Private mocked process discovery does
+not establish provider support, accuracy, charging, deletion or full optional
+extra readiness. See integrations/qwen/api.json and docs/integrations/IMAGE_VISION.md.

@@ -85,6 +85,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "direct.long_video",
         "qwen_media_assets",
         "direct.image_ops",
+        "qwen_vision_api",
+        "direct.image_vision",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

@@ -10,6 +10,7 @@ from typing import Callable
 from google.genai import types
 
 from .models.execution import ExecutionLimits
+from .models.vision import VisionLimits
 from .job_execution import single_submission
 from .retry import with_retry
 
@@ -25,7 +26,7 @@ class ExecutionBudget:
     """Reserve each count/generation operation before its external transport call."""
 
     def __init__(
-        self, limits: ExecutionLimits, *, generation_check: Callable[[], None] | None = None
+        self, limits: ExecutionLimits | VisionLimits, *, generation_check: Callable[[], None] | None = None
     ):
         self.limits = limits
         self.generation_check = generation_check
@@ -50,9 +51,11 @@ class ExecutionBudget:
             raise ValueError("Execution budget exhausted: provider call limit")
         if self.reserved_tokens + tokens > self.limits.max_tokens:
             raise ValueError("Execution budget exhausted: token reservation limit")
-        frames = self.frames + self.limits.requested_frames
-        if self.windows + 1 > self.limits.max_windows or frames > self.limits.max_frames:
-            raise ValueError("Execution budget exhausted: window/frame limit")
+        frames = self.frames
+        if isinstance(self.limits, ExecutionLimits):
+            frames += self.limits.requested_frames
+            if self.windows + 1 > self.limits.max_windows or frames > self.limits.max_frames:
+                raise ValueError("Execution budget exhausted: window/frame limit")
         record = {
             "kind": kind,
             "model": model,
@@ -62,7 +65,8 @@ class ExecutionBudget:
         }
         self.calls.append(record)
         self.reserved_tokens += tokens
-        self.windows += 1
+        if isinstance(self.limits, ExecutionLimits):
+            self.windows += 1
         self.frames = frames
         return record
 
@@ -138,7 +142,7 @@ class ExecutionBudget:
         """Export nonsecret usage evidence without inventing prices or savings."""
         measured = [r["reconciled_tokens"] for r in self.calls if "reconciled_tokens" in r]
         generation = [r for r in self.calls if r["kind"] == "generate_content"]
-        return {
+        result = {
             "limits": self.limits.model_dump(),
             "provider_calls": len(self.calls),
             "requested_windows": self.windows,
@@ -158,3 +162,9 @@ class ExecutionBudget:
             "saved_tokens": None,
             "charge_bound_verified": False,
         }
+        if isinstance(self.limits, VisionLimits):
+            for key in ("requested_windows", "requested_frames", "observed_frames"):
+                result.pop(key)
+            result.update(prepared_images=self.frames,
+                          image_transmissions=len(self.calls) * self.frames)
+        return result

@@ -324,11 +324,35 @@
           "reuse_mode": "integration-only",
           "rationale": "[CONFIRMED source; proposed transfer] Keep optional Qwen VL services external because existing Gemini analysis remains primary; expose complementary OCR/grounding and compatible endpoint routes without transplanting incompatible SDK dependencies.",
           "target_paths": [
+            "src/video_research_mcp/vision_analysis.py",
+            "src/video_research_mcp/vision_http.py",
+            "src/video_research_mcp/vision_preparation.py",
+            "src/video_research_mcp/vision_provider.py",
+            "src/video_research_mcp/vision_regions.py",
+            "src/video_research_mcp/vision_upload.py",
+            "src/video_research_mcp/models/vision.py",
+            "src/video_research_mcp/tools/vision.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/execution_budget.py",
+            "src/video_research_mcp/server.py",
+            "tests/test_vision_http.py",
+            "tests/test_vision_workflows.py",
+            "tests/test_vision_providers.py",
+            "tests/test_vision_geometry.py",
+            "docs/integrations/IMAGE_VISION.md",
+            "docs/metrics/tool-contract-manifest.json",
             "integrations/qwen/api.json",
             "docs/integrations/qwen-api.md",
-            "skills/inspect-multimodal-source/SKILL.md"
+            "src/video_research_mcp/client.py",
+            "tests/test_vision_http_cleanup.py",
+            "README.md",
+            "docs/ARCHITECTURE.md",
+            "scripts/inspect_provider_readiness.py",
+            "tests/test_provider_readiness.py",
+            "tests/test_reuse_ledger.py",
+            "tests/evaluation/test_replay.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Reconciled implementation targets; source criteria and audited public surface unchanged.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_native_media"
@@ -5611,10 +5635,31 @@
           "reuse_mode": "adapt",
           "rationale": "Add image-specific analysis/comparison and object crop requests through the existing instruction/schema contract. Route optional local backends explicitly and validate model-proposed boxes before extracting actual pixels.",
           "target_paths": [
-            "src/video_research_mcp/tools/content.py",
-            "src/video_research_mcp/tools/image.py",
-            "src/video_research_mcp/schema_guard.py",
-            "src/video_research_mcp/client.py"
+            "src/video_research_mcp/vision_analysis.py",
+            "src/video_research_mcp/vision_http.py",
+            "src/video_research_mcp/vision_preparation.py",
+            "src/video_research_mcp/vision_provider.py",
+            "src/video_research_mcp/vision_regions.py",
+            "src/video_research_mcp/vision_upload.py",
+            "src/video_research_mcp/models/vision.py",
+            "src/video_research_mcp/tools/vision.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/execution_budget.py",
+            "src/video_research_mcp/server.py",
+            "tests/test_vision_http.py",
+            "tests/test_vision_workflows.py",
+            "tests/test_vision_providers.py",
+            "tests/test_vision_geometry.py",
+            "docs/integrations/IMAGE_VISION.md",
+            "docs/metrics/tool-contract-manifest.json",
+            "src/video_research_mcp/client.py",
+            "tests/test_vision_http_cleanup.py",
+            "README.md",
+            "docs/ARCHITECTURE.md",
+            "scripts/inspect_provider_readiness.py",
+            "tests/test_provider_readiness.py",
+            "tests/test_reuse_ledger.py",
+            "tests/evaluation/test_replay.py"
           ],
           "dependencies": [
             "direct.image_ops",
@@ -5670,7 +5715,8 @@
             "src/video_research_mcp/schema_guard.py",
             "src/video_research_mcp/client.py"
           ],
-          "bead_id": "vrm-0e8.3.4"
+          "bead_id": "vrm-0e8.3.4",
+          "target_status": "Reconciled implementation targets; source criteria and audited public surface unchanged."
         },
         {
           "key": "direct.providers",

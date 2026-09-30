@@ -544,12 +544,12 @@
       "implementations": [
         {
           "target_path": "integrations/qwen/manifest.json",
-          "target_sha256": "1bf903699c69fa3aa4e55c9228c6ff420d5a4df303146666f424ac6eb12ddc2c",
+          "target_sha256": "fe6a687b60cf6ccd8e0f99aa0a6e9561bc3a662655f55f9ff6bcdaab40637154",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
           "target_path": "docs/integrations/QWEN_REUSE.md",
-          "target_sha256": "85f0a281fbbee4edc98f5322b8eafb6fa4595f5a83950a61eca041bb4fda5c9f",
+          "target_sha256": "4afbce54fb7f2637de008abfd6e368e1b15d6b81699511938ffa511f475648ed",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -585,13 +585,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "9197491c9316ce9424b05689232aa86769a1546a6ceb47917bc11f636bd098c5",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -720,7 +720,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "9197491c9316ce9424b05689232aa86769a1546a6ceb47917bc11f636bd098c5",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -866,10 +866,146 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/vision_analysis.py",
+          "target_sha256": "dba2d21fa84ad129dadaa77387747d91439ded1169ed236bf6077b64d3268ea6",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_http.py",
+          "target_sha256": "13a8a2cb78e74104395371e1c6e6d9576167019387c5fb508497cbcd6bd1ebfe",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_preparation.py",
+          "target_sha256": "026edb37e2f8f9b5f234aac7681d5fde52a7e6aa79d14e5877ca0551d0669722",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_provider.py",
+          "target_sha256": "34e120efc9c0e41b9aa52ec5207c3fc972c5746ad311c6695bd1e427c033567c",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_regions.py",
+          "target_sha256": "700aa47cbd34c7fda85309aed2edd3037a8af07dead224ae69018c9590457840",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_upload.py",
+          "target_sha256": "0f5f148323daaaf9abae282cd27afec20b5ff61b2451f14074afe1c3f431634f",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/vision.py",
+          "target_sha256": "9ac9d4e6d9d7756bda79808e151ea69141ec474d36444c0878576a7812b8ef55",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/vision.py",
+          "target_sha256": "a40920a549e64c2aa390db3e9332cedc43297ae45ac57f602f2f238c475e5f4e",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/execution_budget.py",
+          "target_sha256": "44f23da8124c90912b6d8ae5e9f5c71095cea687752bfee8c1d4722a36abaf12",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_http.py",
+          "target_sha256": "3381294e3a81f25d7329129d93b28d6233810f38d741407165f586bea0d24257",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_workflows.py",
+          "target_sha256": "e79f6bada7720e135211305f72c05403bfa434924a71d5ebc83c260b92d6224c",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_providers.py",
+          "target_sha256": "1d52f522e1bd8b9589b91d7da7d0232047b897448412b58c86df369c4dab68ba",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_geometry.py",
+          "target_sha256": "2e830d2cb57aac549242256bd0b205683dca0a1f77724c29ec120a2c1b4afea9",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "docs/integrations/IMAGE_VISION.md",
+          "target_sha256": "55de209c56dffa2ad0d2a9c04a729c06ea73a075ae6ff098e949bbbb2d45ca88",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "integrations/qwen/api.json",
+          "target_sha256": "8266ef7c11fd886a94861f9fa60fa8fa4df026cf20773c2232fdf08c34def402",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "docs/integrations/qwen-api.md",
+          "target_sha256": "9fcb67b9ae7fce2140eecc519c6acb6b6c5545fdbcbf487a829f4efb40ae5ff1",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/client.py",
+          "target_sha256": "c12d6213d3baed5e45a7a6584a011674808f08e8b5d20a7fb3fb69b0183561c3",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "tests/test_vision_http_cleanup.py",
+          "target_sha256": "beeee2bad3e7471de9f57e6b1bf1bfeaef5b9adfc2de3ba9daf91f0196cf8349",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "README.md",
+          "target_sha256": "d6868116339889a04381e531745e68f1c355127e29f1a16294224ff11322c5fa",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "docs/ARCHITECTURE.md",
+          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "scripts/inspect_provider_readiness.py",
+          "target_sha256": "d8d6d2b4ebc5f9befa0c7fce462ad38673b816708eea548ce92ce47dcf502026",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/test_provider_readiness.py",
+          "target_sha256": "05a41a9d479a87ce928f433b698fd2e62f47a3cad83bc82a7f2dce7c73c1d213",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/test_reuse_ledger.py",
+          "target_sha256": "8fa0ced8ce49344dc38c8aac1221ab83d3906e70ef6e9124ae2f4a894abaa183",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/evaluation/test_replay.py",
+          "target_sha256": "3b26a58eefeda62d5a2c6998a7a73d0051fe71bef5fda0045cfd83b0dd03237c",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        }
+      ]
     },
     {
       "unit_key": "qwen_scene_assets",
@@ -1368,7 +1504,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "846c99dc3c67d0c7dc253101ac97b49964ab0035f8ced8e201bbde6626940312",
+          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1408,7 +1544,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1523,13 +1659,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "9197491c9316ce9424b05689232aa86769a1546a6ceb47917bc11f636bd098c5",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1679,13 +1815,13 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
-          "target_sha256": "b733ac7e48538e4782f59ecbba6a7144b6595901b96e51ad75a8043d6399bbc0",
+          "target_sha256": "44f23da8124c90912b6d8ae5e9f5c71095cea687752bfee8c1d4722a36abaf12",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -1914,11 +2050,11 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/client.py",
-          "target_sha256": "4d0ed23945d4195d99b290473da06fe075076a1eb3b87167e3f64c54c44c19ba"
+          "target_sha256": "c12d6213d3baed5e45a7a6584a011674808f08e8b5d20a7fb3fb69b0183561c3"
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
-          "target_sha256": "b733ac7e48538e4782f59ecbba6a7144b6595901b96e51ad75a8043d6399bbc0"
+          "target_sha256": "44f23da8124c90912b6d8ae5e9f5c71095cea687752bfee8c1d4722a36abaf12"
         },
         {
           "target_path": "src/video_research_mcp/models/execution.py",
@@ -2006,7 +2142,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "9197491c9316ce9424b05689232aa86769a1546a6ceb47917bc11f636bd098c5",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2026,7 +2162,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2146,10 +2282,136 @@
       "component": "alexlivre/omni-image-tools-mcp@4d191573b7e459519c3ec9414ade744456115a5a",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/vision_analysis.py",
+          "target_sha256": "dba2d21fa84ad129dadaa77387747d91439ded1169ed236bf6077b64d3268ea6",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_http.py",
+          "target_sha256": "13a8a2cb78e74104395371e1c6e6d9576167019387c5fb508497cbcd6bd1ebfe",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_preparation.py",
+          "target_sha256": "026edb37e2f8f9b5f234aac7681d5fde52a7e6aa79d14e5877ca0551d0669722",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_provider.py",
+          "target_sha256": "34e120efc9c0e41b9aa52ec5207c3fc972c5746ad311c6695bd1e427c033567c",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_regions.py",
+          "target_sha256": "700aa47cbd34c7fda85309aed2edd3037a8af07dead224ae69018c9590457840",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_upload.py",
+          "target_sha256": "0f5f148323daaaf9abae282cd27afec20b5ff61b2451f14074afe1c3f431634f",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/vision.py",
+          "target_sha256": "9ac9d4e6d9d7756bda79808e151ea69141ec474d36444c0878576a7812b8ef55",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/vision.py",
+          "target_sha256": "a40920a549e64c2aa390db3e9332cedc43297ae45ac57f602f2f238c475e5f4e",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/execution_budget.py",
+          "target_sha256": "44f23da8124c90912b6d8ae5e9f5c71095cea687752bfee8c1d4722a36abaf12",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_http.py",
+          "target_sha256": "3381294e3a81f25d7329129d93b28d6233810f38d741407165f586bea0d24257",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_workflows.py",
+          "target_sha256": "e79f6bada7720e135211305f72c05403bfa434924a71d5ebc83c260b92d6224c",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_providers.py",
+          "target_sha256": "1d52f522e1bd8b9589b91d7da7d0232047b897448412b58c86df369c4dab68ba",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "tests/test_vision_geometry.py",
+          "target_sha256": "2e830d2cb57aac549242256bd0b205683dca0a1f77724c29ec120a2c1b4afea9",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "docs/integrations/IMAGE_VISION.md",
+          "target_sha256": "55de209c56dffa2ad0d2a9c04a729c06ea73a075ae6ff098e949bbbb2d45ca88",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+        },
+        {
+          "target_path": "src/video_research_mcp/client.py",
+          "target_sha256": "c12d6213d3baed5e45a7a6584a011674808f08e8b5d20a7fb3fb69b0183561c3",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "tests/test_vision_http_cleanup.py",
+          "target_sha256": "beeee2bad3e7471de9f57e6b1bf1bfeaef5b9adfc2de3ba9daf91f0196cf8349",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "README.md",
+          "target_sha256": "d6868116339889a04381e531745e68f1c355127e29f1a16294224ff11322c5fa",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "docs/ARCHITECTURE.md",
+          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+        },
+        {
+          "target_path": "scripts/inspect_provider_readiness.py",
+          "target_sha256": "d8d6d2b4ebc5f9befa0c7fce462ad38673b816708eea548ce92ce47dcf502026",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/test_provider_readiness.py",
+          "target_sha256": "05a41a9d479a87ce928f433b698fd2e62f47a3cad83bc82a7f2dce7c73c1d213",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/test_reuse_ledger.py",
+          "target_sha256": "8fa0ced8ce49344dc38c8aac1221ab83d3906e70ef6e9124ae2f4a894abaa183",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "tests/evaluation/test_replay.py",
+          "target_sha256": "3b26a58eefeda62d5a2c6998a7a73d0051fe71bef5fda0045cfd83b0dd03237c",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        }
+      ]
     },
     {
       "unit_key": "direct.providers",
@@ -3269,7 +3531,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "6d26b0a21eb8d05cdcb472b1fed87ed05977d84cd01912761ce9565f21d58437",
+          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3280,13 +3542,13 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "386f8cb4d1759e39079e3fae260dabc91302b5b54167b902f72c163cd01f1fc0",
+          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "9197491c9316ce9424b05689232aa86769a1546a6ceb47917bc11f636bd098c5",
+          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },

@@ -71,14 +71,15 @@ def literal_default(node: ast.AST):
 
 
 def config_defaults(path: Path) -> dict:
-    """Read declarative config defaults through AST rather than importing clients."""
+    """Read literal Field defaults without importing clients or executing factories."""
     tree = ast.parse(path.read_text())
     config = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "ServerConfig")
     result = {}
     for node in config.body:
         if isinstance(node, ast.AnnAssign) and isinstance(node.value, ast.Call):
-            default = next(k.value for k in node.value.keywords if k.arg == "default")
-            result[node.target.id] = literal_default(default)
+            for keyword in node.value.keywords:
+                if keyword.arg == "default":
+                    result[node.target.id] = literal_default(keyword.value)
     return result
 
 

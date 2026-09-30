@@ -34,7 +34,10 @@
       "copied_paths": [],
       "imported_packages": [],
       "target_files": [
-        "integrations/qwen/manifest.json"
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/api.json",
+        "docs/integrations/qwen-api.md",
+        "docs/integrations/IMAGE_VISION.md"
       ],
       "applicable_notice_receipts": [
         {
@@ -50,7 +53,8 @@
         "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
-      "blocked_assets": []
+      "blocked_assets": [],
+      "verification_boundary": "Private pinned API discovery and SDK-mocked contracts are separately receipted; live provider/optional extra readiness stays unverified and ordinary activation stays disabled."
     },
     {
       "id": "blender",

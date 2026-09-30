@@ -37,10 +37,12 @@ and a running MCP process can be different versions; check the running process
 before relying on a particular model or feature.
 
 This implementation branch also provides bounded local acquisition, inspectable
-source frames, durable window analysis and deterministic image/clip exports.
+source frames, durable window analysis, deterministic image/clip exports and
+configurable model vision, image comparison, OCR inference and object crops.
 See [native media](docs/integrations/NATIVE_MEDIA.md),
 [window analysis](docs/integrations/VIDEO_WINDOWS.md) and
-[image edits, OCR and export manifests](docs/integrations/IMAGE_EXPORTS.md) for
+[image edits, OCR and export manifests](docs/integrations/IMAGE_EXPORTS.md) and
+[configured vision](docs/integrations/IMAGE_VISION.md) for
 their actual limits and optional runtime requirements. These source features have
 separate acceptance evidence and have not been published as a new registry release.
 

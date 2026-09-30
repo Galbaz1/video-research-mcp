@@ -257,6 +257,15 @@ original PTS and decoded output timing under frame, pixel and byte limits.
 declared artifact after restart. Native/text transport both rehash all artifacts.
 See [image exports](integrations/IMAGE_EXPORTS.md) for public requests and limits.
 
+`vision_chat`, `vision_ocr` and `vision_grounding` submit exact prepared sources
+through the existing metered Gemini client or a server-configured compatible
+endpoint. Dry plans make no provider calls; submission requires a current workflow
+grant. The selected model, account and effective settings are bound to a digest.
+Strict inferred boxes map back through preparation transforms to actual original
+pixel crops. Model text/object correctness remains unverified. Compatible HTTP
+attests the selected peer before transmission and joins independently bounded
+cleanup. See [configured vision](integrations/IMAGE_VISION.md).
+
 Optional external MCPs keep their own schemas, pinned subprocess environments,
 dependency notices and payload boundaries. Readiness does not authorize installs,
 uploads or inference. They add no imports or startup dependencies to the core.

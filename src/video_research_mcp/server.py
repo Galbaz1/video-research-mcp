@@ -31,6 +31,7 @@ from .tools.media_read import media_read_server
 from .tools.jobs import jobs_server
 from .tools.media_assets import media_assets_server
 from .tools.image import image_server
+from .tools.vision import vision_server
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,7 @@ app.mount(media_read_server)
 app.mount(jobs_server)
 app.mount(media_assets_server)
 app.mount(image_server)
+app.mount(vision_server)
 
 
 def main() -> None:

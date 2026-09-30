@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import logging
+import json
 import os
 from ipaddress import ip_address
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, field_validator, model_validator
+
+from .models.vision import VisionBackend
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +146,7 @@ class ServerConfig(BaseModel):
     media_max_input_bytes: int = Field(default=512 * 1024 * 1024, ge=1)
     media_acquire_timeout_seconds: float = Field(default=120, ge=1, le=3600)
     media_cookies_file: str = Field(default="")
+    vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -264,6 +268,7 @@ class ServerConfig(BaseModel):
             media_max_input_bytes=int(os.getenv("MEDIA_MAX_INPUT_BYTES", str(512 * 1024 * 1024))),
             media_acquire_timeout_seconds=float(os.getenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "120")),
             media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
+            vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")
