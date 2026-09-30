@@ -44,12 +44,18 @@ def _video_mime_type(path: Path) -> str:
 
 
 def _file_content_hash(path: Path) -> str:
-    """SHA-256 of file contents, truncated to 16 hex chars."""
-    h = hashlib.sha256()
+    """Complete SHA-256 commitment, with a streaming input byte ceiling."""
+    ceiling = get_config().media_max_input_bytes
+    if path.stat().st_size > ceiling:
+        raise ValueError("Video exceeds MEDIA_MAX_INPUT_BYTES; use a bounded window")
+    h, size = hashlib.sha256(), 0
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(8192), b""):
+            size += len(chunk)
+            if size > ceiling:
+                raise ValueError("Video exceeds MEDIA_MAX_INPUT_BYTES; use a bounded window")
             h.update(chunk)
-    return h.hexdigest()[:16]
+    return h.hexdigest()
 
 
 def _validate_video_path(file_path: str) -> tuple[Path, str]:
@@ -177,7 +183,8 @@ async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Conten
 
     Returns:
         (content, content_id, file_uri) where content_id is the SHA-256 hash
-        prefix and file_uri is the File API URI (empty for small inline files).
+        of the complete original bytes and file_uri is the File API URI
+        (empty for small inline files).
     """
     p, mime = _validate_video_path(file_path)
     content_id = _file_content_hash(p)

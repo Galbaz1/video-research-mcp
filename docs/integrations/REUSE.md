@@ -82,7 +82,8 @@ change; never edit the check to accept a previously failing unlicensed asset.
 The frozen evaluation protocol and stronger root security boundaries now have
 exact independently authored file-hash receipts for `adj_research_eval`,
 `adj_video_eval`, `direct.security`, `own.strict-evidence-semantics` and
-`adj_evidence_packet`, `qwen_reuse_manifest` and `direct.providers`.
+`adj_evidence_packet`, `qwen_reuse_manifest`, `direct.providers`,
+`own.analysis-cache-contract`, `direct.identity` and `direct.budgets`.
 The source/claim/production packet, controller-supplied
 coverage and native/text crop extension now have exact own-source file receipts.
 Offline doctor, atomic install/checkpoint/restore and the disabled Qwen capability

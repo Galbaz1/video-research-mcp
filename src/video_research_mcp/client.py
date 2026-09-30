@@ -104,15 +104,25 @@ class GeminiClient:
         if tools:
             config.tools = tools
 
+        from .execution_budget import current_budget
+
+        budget = current_budget()
         client = cls.get()
-        response = await with_retry(
-            lambda: client.aio.models.generate_content(
-                model=resolved_model,
-                contents=contents,
-                config=config,
-                **kwargs,
+        if budget:
+            if system_instruction or tools or kwargs:
+                raise ValueError(
+                    "Bounded execution cannot count external tools, system context or SDK overrides"
+                )
+            response = await budget.generate(client, resolved_model, contents, config)
+        else:
+            response = await with_retry(
+                lambda: client.aio.models.generate_content(
+                    model=resolved_model,
+                    contents=contents,
+                    config=config,
+                    **kwargs,
+                )
             )
-        )
 
         # Strip thinking parts — only return user-visible text
         content = response.candidates[0].content if response.candidates else None
@@ -229,12 +239,11 @@ class GeminiClient:
         # Dict (JSON Schema) path: validate in-place, return parsed
         try:
             import jsonschema
+
             jsonschema.validate(parsed, schema)
         except ImportError:
             if strict:
-                raise ValueError(
-                    "jsonschema package required for strict dict schema validation"
-                )
+                raise ValueError("jsonschema package required for strict dict schema validation")
             logger.debug("jsonschema not installed, skipping dict schema validation")
         except Exception as exc:
             if strict:

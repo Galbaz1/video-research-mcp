@@ -29,6 +29,8 @@ async def _passthrough_retry(fn):
 @pytest.fixture(autouse=True)
 def _clean_config(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setenv("WEAVIATE_URL", "")
+    monkeypatch.setenv("WEAVIATE_API_KEY", "")
     cfg_mod._config = None
     yield
     cfg_mod._config = None
@@ -676,8 +678,11 @@ class TestLocalFileCaching:
         session = _mock_session_store.get(result["session_id"])
         assert session.cache_name == ""
 
-    async def test_video_analyze_prewarms_for_local_file(self, mock_gemini_client):
-        """GIVEN a local file with File API URI WHEN video_analyze THEN calls prewarm_cache."""
+    @pytest.mark.parametrize("use_cache", [True, False])
+    async def test_video_analyze_local_file_prewarm_respects_cache_choice(
+        self, mock_gemini_client, use_cache
+    ):
+        """GIVEN a File API URI THEN only cache-enabled analysis may prewarm."""
         from video_research_mcp.models.video import VideoResult
 
         mock_gemini_client["generate_structured"].return_value = VideoResult(
@@ -692,10 +697,10 @@ class TestLocalFileCaching:
             ),
             patch.object(cc_mod, "start_prewarm", return_value=MagicMock()) as mock_prewarm,
         ):
-            result = await video_analyze(file_path="/tmp/test.mp4", use_cache=False)
+            result = await video_analyze(file_path="/tmp/test.mp4", use_cache=use_cache)
 
         assert "error" not in result
-        mock_prewarm.assert_called_once()
+        assert mock_prewarm.call_count == int(use_cache)
 
     async def test_local_file_small_skips_prewarm(self, mock_gemini_client):
         """GIVEN a small local file (inline bytes, no URI) WHEN video_analyze THEN skips prewarm."""

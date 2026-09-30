@@ -1,4 +1,4 @@
-"""Generic file-based analysis cache with TTL."""
+"""Deterministic result contracts bound to freshly checked original source bytes."""
 
 from __future__ import annotations
 
@@ -10,132 +10,249 @@ from pathlib import Path
 from uuid import uuid4
 
 from .config import get_config
+from .media_identity import SourceIdentity, identify_source, valid_digest
 from .redaction import redact_text
 
 logger = logging.getLogger(__name__)
+_CONTRACT_FIELDS = {
+    "source_digest",
+    "source_revision",
+    "provider",
+    "account_scope",
+    "model",
+    "tool_name",
+    "output_schema",
+    "thinking_level",
+    "prompt",
+    "metadata",
+    "preprocessing",
+    "window",
+    "sampling",
+    "retrieval_revision",
+}
+_REGISTRY_FILES = {"media_identity_registry.json", "context_cache_registry.json"}
 
 
 def _cache_dir() -> Path:
-    """Return the cache directory path, creating it if needed."""
-    d = Path(get_config().cache_dir)
-    d.mkdir(parents=True, exist_ok=True)
-    return d
+    """Return the existing configured cache directory, creating it for result I/O."""
+    directory = Path(get_config().cache_dir)
+    directory.mkdir(parents=True, exist_ok=True)
+    return directory
 
 
-def cache_key(content_id: str, tool_name: str, model: str, instruction: str = "") -> str:
-    """Generate ``{content_id}_{tool}_{instr_hash}_{model_hash}``.
+def normalized_contract(contract: dict) -> dict:
+    """Canonicalize JSON mapping order without changing prompt or schema meaning."""
+    if not isinstance(contract, dict) or not _CONTRACT_FIELDS <= contract.keys():
+        raise ValueError("Complete result cache contract required")
+    return json.loads(json.dumps(contract, sort_keys=True, separators=(",", ":"), allow_nan=False))
 
-    The *instruction* hash differentiates results for the same content
-    analysed with different instructions (e.g. "summarize" vs "list recipes").
-    """
-    model_hash = hashlib.md5(model.encode()).hexdigest()[:8]
-    instr_hash = hashlib.md5(instruction.encode()).hexdigest()[:8] if instruction else "default"
-    return f"{content_id}_{tool_name}_{instr_hash}_{model_hash}"
+
+def cache_key(
+    content_id: str,
+    tool_name: str,
+    model: str,
+    instruction: str = "",
+    *,
+    contract: dict | None = None,
+) -> str:
+    """Hash the complete contract; caller labels never become filesystem components."""
+    descriptor = (
+        normalized_contract(contract)
+        if contract is not None
+        else {
+            "legacy_unusable": True,
+            "content_id": content_id,
+            "tool": tool_name,
+            "model": model,
+            "instruction": instruction,
+        }
+    )
+    encoded = json.dumps(descriptor, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return "v2_" + hashlib.sha256(encoded.encode()).hexdigest()
 
 
 def cache_path(
-    content_id: str, tool_name: str, model: str, instruction: str = "",
+    content_id: str,
+    tool_name: str,
+    model: str,
+    instruction: str = "",
+    *,
+    contract: dict | None = None,
 ) -> Path:
-    """Return the full filesystem path for a cache entry's JSON file."""
-    return _cache_dir() / f"{cache_key(content_id, tool_name, model, instruction)}.json"
+    """Return a filename containing only the version and full contract hash."""
+    return _cache_dir() / (
+        cache_key(content_id, tool_name, model, instruction, contract=contract) + ".json"
+    )
+
+
+def _current_binding(
+    contract: dict | None, source: SourceIdentity | None, tool: str, model: str
+) -> bool:
+    """Require a complete contract and recheck original bytes before any replay/write."""
+    if source is None or source.state != "fresh" or not valid_digest(source.digest):
+        return False
+    try:
+        normalized = normalized_contract(contract)
+    except (ValueError, TypeError):
+        return False
+    if (
+        normalized["source_digest"] != source.digest
+        or normalized["source_revision"] != source.revision
+    ):
+        return False
+    if normalized["tool_name"] != tool or normalized["model"] != model:
+        return False
+    current = identify_source(source.alias, expected_digest=source.digest, persist=False)
+    if current.state != "fresh":
+        invalidate_source(source.digest)
+        return False
+    return True
+
+
+def _valid_analysis(analysis) -> bool:
+    """Reject errors and artifact proof paths lacking a trusted validation receipt."""
+    return (
+        isinstance(analysis, dict)
+        and bool(analysis)
+        and not {"error", "artifacts"} & analysis.keys()
+    )
 
 
 def load(
-    content_id: str, tool_name: str, model: str, instruction: str = "",
+    content_id: str,
+    tool_name: str,
+    model: str,
+    instruction: str = "",
+    *,
+    contract: dict | None = None,
+    source: SourceIdentity | None = None,
 ) -> dict | None:
-    """Return cached result dict or *None* if miss/expired."""
-    ttl = get_config().cache_ttl_days
-    p = cache_path(content_id, tool_name, model, instruction)
-    if not p.exists():
+    """Return an exact fresh contract match; incomplete and legacy entries miss."""
+    if not _current_binding(contract, source, tool_name, model):
         return None
-    mtime = datetime.fromtimestamp(p.stat().st_mtime)
-    if datetime.now() > mtime + timedelta(days=ttl):
-        logger.debug("Cache expired: %s", p.name)
-        return None
+    path = cache_path(content_id, tool_name, model, instruction, contract=contract)
     try:
-        data = json.loads(p.read_text())
-        if not isinstance(data, dict):
+        if not path.is_file():
             return None
-        analysis = data.get("analysis", data)
-        if not isinstance(analysis, dict) or not analysis or "error" in analysis:
+        modified = datetime.fromtimestamp(path.stat().st_mtime)
+        if datetime.now() > modified + timedelta(days=get_config().cache_ttl_days):
             return None
-        # This cache has no trusted artifact receipt or scope: never replay proof paths.
-        if "artifacts" in analysis:
+        envelope = json.loads(path.read_text())
+        if not isinstance(envelope, dict) or envelope.get("cache_version") != 2:
             return None
-        logger.info("Cache hit: %s", p.name)
-        return analysis
-    except (json.JSONDecodeError, OSError) as exc:
-        logger.warning("Cache read error: %s", redact_text(str(exc)))
+        if envelope.get("contract") != normalized_contract(contract):
+            return None
+        analysis = envelope.get("analysis")
+        return analysis if _valid_analysis(analysis) else None
+    except (ValueError, OSError) as error:
+        logger.warning("Cache read error: %s", redact_text(str(error)))
         return None
 
 
 def save(
-    content_id: str, tool_name: str, model: str, analysis: dict, instruction: str = "",
+    content_id: str,
+    tool_name: str,
+    model: str,
+    analysis: dict,
+    instruction: str = "",
+    *,
+    contract: dict | None = None,
+    source: SourceIdentity | None = None,
 ) -> bool:
-    """Write *analysis* to cache. Returns True on success."""
-    if not analysis or "error" in analysis or "artifacts" in analysis:
+    """Atomically retain only a complete contract with freshly checked original bytes."""
+    if not _valid_analysis(analysis) or not _current_binding(contract, source, tool_name, model):
         return False
-    p = cache_path(content_id, tool_name, model, instruction)
+    path = cache_path(content_id, tool_name, model, instruction, contract=contract)
+    temporary = path.with_suffix(f".{uuid4().hex}.tmp")
     try:
         envelope = {
+            "cache_version": 2,
             "cached_at": datetime.now().isoformat(),
             "content_id": content_id,
             "tool": tool_name,
             "model": model,
+            "contract": normalized_contract(contract),
             "analysis": analysis,
         }
-        tmp = p.with_suffix(f".{uuid4().hex}.tmp")
-        tmp.write_text(json.dumps(envelope, indent=2))
-        tmp.replace(p)
-        logger.info("Cached: %s", p.name)
+        temporary.write_text(json.dumps(envelope, indent=2))
+        temporary.replace(path)
         return True
-    except OSError as exc:
-        logger.warning("Cache write error: %s", redact_text(str(exc)))
+    except (OSError, ValueError) as error:
+        logger.warning("Cache write error: %s", redact_text(str(error)))
         return False
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def _entry_files() -> list[Path]:
+    """Separate result entries from source/context registry sidecars."""
+    return [path for path in _cache_dir().glob("*.json") if path.name not in _REGISTRY_FILES]
 
 
 def clear(content_id: str | None = None) -> int:
-    """Remove cache files. If *content_id* given, only that ID."""
+    """Remove exact source dependencies, including all their request variants."""
     removed = 0
-    for f in _cache_dir().glob("*.json"):
-        if content_id is None or f.name.startswith(f"{content_id}_"):
-            try:
-                f.unlink()
-                removed += 1
-            except OSError:
-                pass
+    for path in _entry_files():
+        try:
+            if content_id is not None:
+                envelope = json.loads(path.read_text())
+                if not isinstance(envelope, dict):
+                    continue
+                matches = envelope.get("content_id") == content_id
+                contract = envelope.get("contract", {})
+                matches = (
+                    matches
+                    or isinstance(contract, dict)
+                    and contract.get("source_digest") == content_id
+                )
+                if not matches:
+                    continue
+            path.unlink()
+            removed += 1
+        except (ValueError, OSError):
+            continue
+    return removed
+
+
+def invalidate_source(digest: str) -> int:
+    """Invalidate result and local context dependencies without provider operations."""
+    removed = clear(digest)
+    from .context_cache import invalidate_content
+
+    invalidate_content(digest)
     return removed
 
 
 def stats() -> dict:
-    """Return cache statistics."""
-    d = _cache_dir()
-    files = list(d.glob("*.json"))
-    total = sum(f.stat().st_size for f in files)
+    """Report result-entry storage, including retained legacy files."""
+    files = _entry_files()
     return {
-        "cache_dir": str(d),
+        "cache_dir": str(_cache_dir()),
         "total_files": len(files),
-        "total_size_mb": round(total / (1024 * 1024), 2),
+        "total_size_mb": round(sum(path.stat().st_size for path in files) / 1024**2, 2),
         "ttl_days": get_config().cache_ttl_days,
     }
 
 
 def list_entries() -> list[dict]:
-    """List all cached entries with metadata."""
+    """Audit entries without interpreting uninspected sources as fresh."""
     entries = []
-    for f in _cache_dir().glob("*.json"):
+    for path in _entry_files():
         try:
-            data = json.loads(f.read_text())
-            if not isinstance(data, dict):
-                continue
-            entries.append(
-                {
-                    "file": f.name,
-                    "content_id": data.get("content_id"),
-                    "tool": data.get("tool"),
-                    "cached_at": data.get("cached_at"),
-                }
-            )
-        except (json.JSONDecodeError, OSError):
+            envelope = json.loads(path.read_text())
+            if isinstance(envelope, dict):
+                entries.append(
+                    {
+                        "file": path.name,
+                        "content_id": envelope.get("content_id"),
+                        "tool": envelope.get("tool"),
+                        "cached_at": envelope.get("cached_at"),
+                        "cache_state": "contract_entry"
+                        if envelope.get("cache_version") == 2
+                        else "legacy_miss",
+                        "source_state": "not_checked",
+                    }
+                )
+        except (ValueError, OSError):
             continue
-    return sorted(entries, key=lambda x: x.get("cached_at") or "", reverse=True)
+    return sorted(entries, key=lambda entry: entry.get("cached_at") or "", reverse=True)

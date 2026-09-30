@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T11:42:47.186543+00:00",
+  "generated_at": "2026-09-30T12:30:41.484881+00:00",
   "tool_count": 35,
   "tools": [
     {
@@ -1747,6 +1747,60 @@
             "default": false,
             "description": "Enable strict contract pipeline with quality gates, artifact rendering, and structural validation. Factual/media review and observed coverage remain explicitly pending or unknown. Produces richer output with strategy report, concept map, and HTML/Markdown artifacts.",
             "type": "boolean"
+          },
+          "dry_run": {
+            "default": false,
+            "description": "Plan source reads/sends without provider calls",
+            "type": "boolean"
+          },
+          "execution_budget": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Explicit max_calls/max_tokens/max_output_tokens/max_frames/max_windows and start_ms/end_ms/fps. Bounded execution skips optional enrichment and cache reuse."
+          },
+          "output_fields": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Select top-level response fields; complete source/citation/provenance carriers remain included"
+          },
+          "transcript_offset": {
+            "default": 0,
+            "description": "Original custom-schema transcript string offset in Unicode code points",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "transcript_limit": {
+            "anyOf": [
+              {
+                "maximum": 10000,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Page a top-level transcript string without truncating stored evidence or citations"
           }
         },
         "type": "object"

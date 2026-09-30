@@ -1269,10 +1269,27 @@
       "component": "oxbshw/watch-skill@f1317c8fe64744a606c31867b05fbbe3144268c6",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/media_identity.py",
+          "target_sha256": "9d877d3dd9a32b5f97532ccaa402af042a78ba7c15dc34ccb11450821460dc8b"
+        },
+        {
+          "target_path": "src/video_research_mcp/context_cache.py",
+          "target_sha256": "f7a82a3f815c505da9b2bdc396fbb2aba61ee302dfdcdd31df4dfb99e273c15c"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_file.py",
+          "target_sha256": "8709ef694f5773755d4da19be36866e66c313206a792ace64fca43494fb34704"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_core.py",
+          "target_sha256": "918b46340fca64034ef611550d390d571ae2fe37b0cf3489b904d9ebc037b5b9"
+        }
+      ]
     },
     {
       "unit_key": "direct.wiki",
@@ -1375,10 +1392,43 @@
       "component": "oxbshw/watch-skill@f1317c8fe64744a606c31867b05fbbe3144268c6",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/client.py",
+          "target_sha256": "37b9c70d112509abc5f92c22eaa2c840e915fc92c4f2c1e82d3826f484545362"
+        },
+        {
+          "target_path": "src/video_research_mcp/execution_budget.py",
+          "target_sha256": "f1727d7d7181a26a34138e1beded46e848b09149fa19589106edb2553e90b291"
+        },
+        {
+          "target_path": "src/video_research_mcp/models/execution.py",
+          "target_sha256": "8884c449a52fe8c87a9253eb8eba11c9b5fe6b518519cd2c3313be1bbfd46a9f"
+        },
+        {
+          "target_path": "src/video_research_mcp/output_view.py",
+          "target_sha256": "bddfcb98ec08f1c9e1edca909487e59501616054ce56bac0d2de07b9dcaf2efe"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video.py",
+          "target_sha256": "d4e9e9a340cafb93f5a618164b762f40c8fadccdd36ea5e5fced6ea5aaed0e91"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_plan.py",
+          "target_sha256": "1944f93055b6d6c4866329967946f2f8e871d731ffeee40b234e8441e686d4e7"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_execution.py",
+          "target_sha256": "b2e9876f39229e43b1b07bd4e04bfc316831b33942efeebb47512d5d3a7d968a"
+        },
+        {
+          "target_path": "docs/integrations/EXECUTION_BUDGETS.md",
+          "target_sha256": "5cd6a4c1e4794149e4d37241aeff68d55ca3bb3926042fc6205bf9b9e9115d94"
+        }
+      ]
     },
     {
       "unit_key": "direct.grounding",
@@ -1609,7 +1659,7 @@
         },
         {
           "target_path": "src/video_research_mcp/cache.py",
-          "target_sha256": "ea0d6eb1b5e0935f0c55b68b4fd14d516d7f8ec0b1ac6e385e302d1b5ec54641",
+          "target_sha256": "62b1a87ae31ade8e8b1418a9e9f2cea2e36649e549a509580181aba1f709f027",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -1624,7 +1674,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_file.py",
-          "target_sha256": "dfae13af5fc4ca2d682d2c47c571fa695c84b18e2f21b75787da8a5fcc68ec1c",
+          "target_sha256": "8709ef694f5773755d4da19be36866e66c313206a792ace64fca43494fb34704",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -2311,10 +2361,19 @@
       "component": "Galbaz1/video-research-mcp@a3d75f6ab87bd893c7d167394fb5bace717f23ec",
       "audited_reuse_mode": "reimplement",
       "permitted_route": "own-source",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/cache.py",
+          "target_sha256": "62b1a87ae31ade8e8b1418a9e9f2cea2e36649e549a509580181aba1f709f027"
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_core.py",
+          "target_sha256": "918b46340fca64034ef611550d390d571ae2fe37b0cf3489b904d9ebc037b5b9"
+        }
+      ]
     },
     {
       "unit_key": "own.strict-evidence-semantics",
@@ -2386,12 +2445,12 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "a0eeb5561dbf8a92a945de90ed048afb0dce1850705cb85ef7b83edac83c37a9",
+          "target_sha256": "f7eb38b31193cb9aee34cf9add20458b163c51be665bc7216d0f7a53e7b91a4d",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "64d27f73244bee24475566f536f86b594a84cbe1f77752bbbb2a273a9902224d",
+          "target_sha256": "709c0ebcf9001013980b14389b97d7ff0239fa05e61e6462d309ec0e23cbf96f",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2401,7 +2460,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "963d3962ec4abb9de4c3bbabda8473042c7f98cd06ba0e9487ea87a65227fc34",
+          "target_sha256": "d4e9e9a340cafb93f5a618164b762f40c8fadccdd36ea5e5fced6ea5aaed0e91",
           "provenance": "Own public metadata clarification; input names/defaults/constraints/annotations unchanged."
         }
       ]

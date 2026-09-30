@@ -365,16 +365,29 @@ There are three stored caches and one bridge between video workflows:
 | Context cache | `context_cache.py`; provider resource with local registry | Reuses provider-side video context for sessions |
 | Video cache bridge | `tools/video_cache.py` | Coordinates prewarm, lookup, TTL refresh, and fallback |
 
-Only ordinary video analysis and its batch path use the result cache. Its key is
-`{content_id}_{tool}_{instruction_hash}_{model_hash}.json`; local content IDs are
-SHA-256 prefixes and YouTube IDs come from the URL. Cached results return
-`cached: true`. TTL is based on file modification time, and expired or unreadable
-entries become misses. Saves use a temporary file and replacement.
+Only ordinary video analysis and its batch path use the result cache. Version-two
+filenames contain a SHA-256 of the normalized complete request contract; caller
+paths and URLs never become filename components. The envelope binds original
+source digest/revision, provider and credential scope, model, schema, thinking,
+actual prompt/metadata, preprocessing, window/sampling and retrieval revision.
+The current caller performs no retrieval and records a null retrieval revision.
+Equivalent original inline bytes at renamed paths reuse one identity and retain
+aliases; changed bytes create a new revision. Controller source fields survive
+response projection. Legacy entries and incomplete contracts are explicit misses.
 
-The result key does not include `output_schema` or `thinking_level`. Use
-`use_cache=False` when changing those settings in a controlled comparison. Source
-preparation and YouTube metadata optimization happen before the result-cache
-lookup, so a result hit does not imply that no other work occurred.
+Every replay/write rechecks original bytes. Missing/deleted/changed sources
+invalidate dependent result and local context-cache registry state. Unfetched URLs
+have unknown freshness and cannot replay results. Local File API references remain
+unverifiable for result reuse until uploaded bytes have an immutable commitment:
+the existing uploader hashes and reads a path separately. A local prepared hash
+alone does not verify the provider's bytes. Inline payloads are directly bound to
+the original snapshot; mismatches before or during analysis fail closed.
+
+`use_cache=False` bypasses result and identity-cache reads/writes and context
+prewarm. Ordinary source preparation and YouTube metadata optimization still occur;
+the [explicit bounded mode](integrations/EXECUTION_BUDGETS.md) additionally skips
+those optional remote operations and knowledge enrichment. TTL expiration and
+unreadable/malformed/error/proof-artifact entries are misses. Saves are atomic.
 
 File uploads are deduplicated by content hash and a per-hash lock. A cached URI is
 checked through the File API before reuse. One-shot local videos below 20 MiB use

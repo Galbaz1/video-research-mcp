@@ -66,6 +66,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "adj_research_eval", "adj_video_eval", "direct.security",
         "own.strict-evidence-semantics", "adj_evidence_packet",
         "qwen_reuse_manifest", "direct.providers",
+        "own.analysis-cache-contract", "direct.identity", "direct.budgets",
     }
     assert all(not u["transfers"] and not u["imports"] for u in data["units"])
     assert data["bundled_assets"] == []

@@ -11,7 +11,7 @@ from typing import Annotated
 
 from fastmcp import FastMCP
 from mcp.types import ToolAnnotations
-from pydantic import Field
+from pydantic import Field, StrictStr
 
 from video_research_mcp.tracing import trace
 
@@ -21,12 +21,16 @@ from .. import context_cache
 from ..config import get_config
 from ..errors import make_tool_error
 from ..models.video import SessionInfo, SessionResponse
+from ..models.execution import ExecutionLimits
+from ..output_view import project_output, validate_output_request
 from ..prompts.video import METADATA_OPTIMIZER, METADATA_PREAMBLE
 from ..sessions import session_store
 from ..types import ThinkingLevel, VideoFilePath, YouTubeUrl, coerce_json_param
 from ..youtube import YouTubeClient
 from .video_cache import ensure_session_cache, prewarm_cache, prepare_cached_request
 from .video_core import analyze_video
+from .video_execution import cache_bypass_effects, execute_bounded_video
+from .video_plan import plan_video
 from .video_file import _upload_large_file, _video_file_content, _video_file_uri
 from .video_url import (
     _extract_video_id,
@@ -42,6 +46,7 @@ video_server = FastMCP("video")
 
 _SHORT_VIDEO_THRESHOLD = 5 * 60  # 5 minutes
 _LONG_VIDEO_THRESHOLD = 30 * 60  # 30 minutes
+
 
 async def _youtube_metadata_pipeline(
     video_id: str, instruction: str
@@ -115,22 +120,64 @@ async def _youtube_metadata_pipeline(
 async def video_analyze(
     url: YouTubeUrl | None = None,
     file_path: VideoFilePath | None = None,
-    instruction: Annotated[str, Field(
-        description="What to analyze — e.g. 'summarize key points', "
-        "'extract all CLI commands shown', 'list all recipes and ingredients'"
-    )] = "Provide a comprehensive analysis of this video.",
-    output_schema: Annotated[dict | None, Field(
-        description="Optional JSON Schema for the response. "
-        "If omitted, uses default VideoResult schema."
-    )] = None,
+    instruction: Annotated[
+        str,
+        Field(
+            description="What to analyze — e.g. 'summarize key points', "
+            "'extract all CLI commands shown', 'list all recipes and ingredients'"
+        ),
+    ] = "Provide a comprehensive analysis of this video.",
+    output_schema: Annotated[
+        dict | None,
+        Field(
+            description="Optional JSON Schema for the response. "
+            "If omitted, uses default VideoResult schema."
+        ),
+    ] = None,
     thinking_level: ThinkingLevel = "high",
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
-    strict_contract: Annotated[bool, Field(
-        description="Enable strict contract pipeline with quality gates, "
-        "artifact rendering, and structural validation. Factual/media review "
-        "and observed coverage remain explicitly pending or unknown. Produces richer output "
-        "with strategy report, concept map, and HTML/Markdown artifacts."
-    )] = False,
+    strict_contract: Annotated[
+        bool,
+        Field(
+            description="Enable strict contract pipeline with quality gates, "
+            "artifact rendering, and structural validation. Factual/media review "
+            "and observed coverage remain explicitly pending or unknown. Produces richer output "
+            "with strategy report, concept map, and HTML/Markdown artifacts."
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool, Field(description="Plan source reads/sends without provider calls")
+    ] = False,
+    execution_budget: Annotated[
+        dict | None,
+        Field(
+            description="Explicit max_calls/max_tokens/max_output_tokens/max_frames/max_windows and start_ms/end_ms/fps. Bounded execution skips optional enrichment and cache reuse."
+        ),
+    ] = None,
+    output_fields: Annotated[
+        list[StrictStr] | None,
+        Field(
+            description="Select top-level response fields; complete source/citation/provenance carriers remain included"
+        ),
+    ] = None,
+    transcript_offset: Annotated[
+        int,
+        Field(
+            ge=0,
+            le=2**31 - 1,
+            strict=True,
+            description="Original custom-schema transcript string offset in Unicode code points",
+        ),
+    ] = 0,
+    transcript_limit: Annotated[
+        int | None,
+        Field(
+            ge=1,
+            le=10000,
+            strict=True,
+            description="Page a top-level transcript string without truncating stored evidence or citations",
+        ),
+    ] = None,
 ) -> dict:
     """Analyze a video (YouTube URL or local file) with any instruction.
 
@@ -151,6 +198,11 @@ async def video_analyze(
         thinking_level: Gemini thinking depth.
         use_cache: Whether to use cached results.
         strict_contract: Run strict contract pipeline with quality gates.
+        dry_run: Return a local execution plan with zero provider calls.
+        execution_budget: Explicit request limits and a static sampling window.
+        output_fields: Sparse response selection, preserving complete evidence.
+        transcript_offset: Original transcript string code-point offset.
+        transcript_limit: Maximum code points in the returned transcript page.
 
     Returns:
         Dict matching VideoResult schema (default), custom output_schema,
@@ -169,6 +221,7 @@ async def video_analyze(
         }
 
     try:
+        validate_output_request(output_fields, transcript_offset, transcript_limit)
         sources = sum(x is not None for x in (url, file_path))
         if sources == 0:
             raise ValueError("Provide exactly one of: url or file_path")
@@ -177,7 +230,37 @@ async def video_analyze(
     except ValueError as exc:
         return make_tool_error(exc)
 
+    result = None
     try:
+        limits = (
+            ExecutionLimits.model_validate(execution_budget)
+            if execution_budget is not None
+            else None
+        )
+        if dry_run or limits is not None:
+            plan = plan_video(
+                url=url,
+                file_path=file_path,
+                instruction=instruction,
+                limits=limits,
+                strict_contract=strict_contract,
+                output_schema=output_schema,
+                thinking_level=thinking_level,
+            )
+            if dry_run:
+                return plan
+            result = await execute_bounded_video(
+                plan, limits, instruction, output_schema, thinking_level
+            )
+            if "error" in result:
+                return result
+            return project_output(
+                result,
+                fields=output_fields,
+                transcript_offset=transcript_offset,
+                transcript_limit=transcript_limit,
+            )
+
         metadata_context = None
         local_filepath = ""
         screenshot_dir = ""
@@ -186,14 +269,10 @@ async def video_analyze(
             content_id = _extract_video_id(url)
             source_label = clean_url
 
-            meta_ctx, fps_override = await _youtube_metadata_pipeline(
-                content_id, instruction
-            )
+            meta_ctx, fps_override = await _youtube_metadata_pipeline(content_id, instruction)
             if meta_ctx:
                 metadata_context = meta_ctx
-                contents = _video_content_with_metadata(
-                    clean_url, instruction, fps=fps_override
-                )
+                contents = _video_content_with_metadata(clean_url, instruction, fps=fps_override)
             else:
                 contents = _video_content(clean_url, instruction)
         else:
@@ -212,7 +291,16 @@ async def video_analyze(
             )
             result["local_filepath"] = local_filepath
             result["screenshot_dir"] = screenshot_dir
-            return result
+            if not use_cache:
+                result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
+            if "error" in result:
+                return result
+            return project_output(
+                result,
+                fields=output_fields,
+                transcript_offset=transcript_offset,
+                transcript_limit=transcript_limit,
+            )
 
         result = await analyze_video(
             contents,
@@ -228,19 +316,27 @@ async def video_analyze(
         )
         result["local_filepath"] = local_filepath
         result["screenshot_dir"] = screenshot_dir
+        if not use_cache:
+            result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
 
         # Pre-warm context cache for future session reuse
-        if content_id:
+        if use_cache and content_id:
             cache_uri = clean_url if url else file_uri
             if cache_uri:
                 prewarm_cache(content_id, cache_uri)
 
-        return result
+        return project_output(
+            result,
+            fields=output_fields,
+            transcript_offset=transcript_offset,
+            transcript_limit=transcript_limit,
+        )
 
-    except (ValueError, FileNotFoundError) as exc:
-        return make_tool_error(exc)
     except Exception as exc:
-        return make_tool_error(exc)
+        error = make_tool_error(exc)
+        if isinstance(result, dict) and "execution_usage" in result:
+            error["execution_usage"] = result["execution_usage"]
+        return error
 
 
 async def _download_and_cache(

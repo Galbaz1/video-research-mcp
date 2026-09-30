@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import io
 import json
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock
@@ -57,7 +59,8 @@ class TestFileContentHash:
         h1 = _file_content_hash(f)
         h2 = _file_content_hash(f)
         assert h1 == h2
-        assert len(h1) == 16
+        assert len(h1) == 64
+        assert h1 == hashlib.sha256(f.read_bytes()).hexdigest()
 
     def test_different_content_different_hash(self, tmp_path):
         f1 = tmp_path / "a.mp4"
@@ -65,6 +68,16 @@ class TestFileContentHash:
         f1.write_bytes(b"content A")
         f2.write_bytes(b"content B")
         assert _file_content_hash(f1) != _file_content_hash(f2)
+
+    def test_streaming_growth_exceeding_byte_ceiling_is_rejected(
+        self, tmp_path, monkeypatch, clean_config
+    ):
+        source = tmp_path / "growing.mp4"
+        source.write_bytes(b"short")
+        monkeypatch.setenv("MEDIA_MAX_INPUT_BYTES", "5")
+        monkeypatch.setattr(Path, "open", lambda *args, **kwargs: io.BytesIO(b"grown bytes"))
+        with pytest.raises(ValueError, match="MEDIA_MAX_INPUT_BYTES"):
+            _file_content_hash(source)
 
 
 class TestValidateVideoPath:
