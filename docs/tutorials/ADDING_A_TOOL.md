@@ -1,394 +1,272 @@
 # Adding a New Tool
 
-How to add a tool to the video-research-mcp server, from choosing a sub-server through writing tests and updating documentation.
+Add a tool to the domain that owns its behavior, give it a clear result contract,
+and test its success and failure paths without contacting providers. The root
+server mounts domain servers, so most additions do not need a new server.
 
-## Overview
-
-The server uses a **composite FastMCP** architecture. The root server (`server.py`) mounts sub-servers, each owning a group of related tools:
-
-```
-server.py (root)
-  +-- tools/video.py      -> video_server    (4 tools)
-  +-- tools/youtube.py     -> youtube_server  (3 tools)
-  +-- tools/research.py    -> research_server (13 tools including deferred registrations)
-  +-- tools/content.py     -> content_server  (3 tools including batch)
-  +-- tools/search.py      -> search_server   (1 tool)
-  +-- tools/infra.py       -> infra_server    (2 tools)
-  +-- tools/knowledge/     -> knowledge_server(8 tools)
-```
+This walkthrough uses a hypothetical `content_compare` tool. It is an extension
+example, not part of the installed tool surface. The
+[tool manifest](../metrics/tool-contract-manifest.json) lists registered tools;
+the [architecture guide](../ARCHITECTURE.md) explains their shared services.
 
 ## Step 1: Choose a Sub-Server
 
-If your tool fits an existing domain, add it to that sub-server's file. If it introduces a new domain, create a new sub-server.
+| Behavior | Owner |
+| --- | --- |
+| Video analysis or conversation | `tools/video.py` and its helper modules |
+| YouTube metadata, comments, or playlists | `tools/youtube.py` |
+| Research, document analysis, or academic metadata | `tools/research.py` and its registered modules |
+| Text/file/URL analysis and extraction | `tools/content.py` and `content_batch.py` |
+| Grounded web search | `tools/search.py` |
+| Configuration or cache operations | `tools/infra.py` |
+| Knowledge retrieval, ingestion, or schemas | `tools/knowledge/` |
 
-**Decision guide:**
-
-| Tool purpose | Sub-server |
-|-------------|------------|
-| Analyze video content | `tools/video.py` (video_server) |
-| YouTube API data | `tools/youtube.py` (youtube_server) |
-| Research/evidence | `tools/research.py` (research_server) |
-| Analyze files/URLs/text | `tools/content.py` (content_server) |
-| Web search | `tools/search.py` (search_server) |
-| Server config/cache | `tools/infra.py` (infra_server) |
-| Knowledge store queries | `tools/knowledge/` (knowledge_server) |
-| Something entirely new | Create a new sub-server (see Step 2b) |
+Keep provider work in the existing clients. Keep output models in `models/`,
+shared parameter aliases in `types.py`, and substantive prompts in `prompts/`
+when they warrant a separate module. A new domain server is appropriate when its
+responsibilities differ from all existing domains.
 
 ## Step 2a: Add to an Existing Sub-Server
 
-Here is a complete example -- adding a `content_compare` tool to the content sub-server.
-
 ### Define the output model
 
-Create or extend a model in `models/`. Models serve as both Gemini structured output schemas and response types.
+Add this model to `src/video_research_mcp/models/content.py`, using that module's
+existing Pydantic imports:
 
 ```python
-# src/video_research_mcp/models/content.py
+from pydantic import BaseModel, Field
+
 
 class ContentComparison(BaseModel):
-    """Structured comparison of two content sources."""
+    """Comparison of two supplied texts."""
 
     similarities: list[str] = Field(default_factory=list)
     differences: list[str] = Field(default_factory=list)
     overall_assessment: str = ""
 ```
 
+The model describes the structured output Gemini should return and validates the
+response locally. Its defaults are deliberate: empty lists are acceptable when
+no similarities or differences are found.
+
 ### Write the tool function
 
-Every tool MUST have:
-
-1. `ToolAnnotations` in the decorator
-2. `@trace` decorator for optional MLflow tracing
-3. `Annotated` params with `Field` constraints
-4. A docstring with Args/Returns
-5. Structured output via `GeminiClient`
+Add the following imports and function to `tools/content.py`. The existing
+`content_server` handles registration; no change to `server.py` is needed for a
+function defined directly in that module.
 
 ```python
-# src/video_research_mcp/tools/content.py
-
-from ..models.content import ContentComparison
-from ..tracing import trace
-
-@content_server.tool(
-    annotations=ToolAnnotations(
-        readOnlyHint=True,
-        destructiveHint=False,
-        idempotentHint=True,
-        openWorldHint=True,
-    )
-)
-@trace(name="content_compare", span_type="TOOL")
-async def content_compare(
-    text_a: Annotated[str, Field(min_length=1, description="First content to compare")],
-    text_b: Annotated[str, Field(min_length=1, description="Second content to compare")],
-    instruction: Annotated[str, Field(
-        description="Comparison focus -- e.g. 'compare methodologies', 'find contradictions'"
-    )] = "Compare these two pieces of content.",
-    thinking_level: ThinkingLevel = "medium",
-) -> dict:
-    """Compare two pieces of content with a given instruction.
-
-    Args:
-        text_a: First content source.
-        text_b: Second content source.
-        instruction: What aspect to compare.
-        thinking_level: Gemini thinking depth.
-
-    Returns:
-        Dict matching ContentComparison schema.
-    """
-    try:
-        prompt = f"{instruction}\n\n--- Content A ---\n{text_a}\n\n--- Content B ---\n{text_b}"
-        result = await GeminiClient.generate_structured(
-            prompt,
-            schema=ContentComparison,
-            thinking_level=thinking_level,
-        )
-        return result.model_dump()
-    except Exception as exc:
-        return make_tool_error(exc)
-```
-
-### Key conventions
-
-**`@trace` decorator** -- optional MLflow tracing for observability:
-
-```python
-from ..tracing import trace
-
-@server.tool(annotations=ToolAnnotations(...))
-@trace(name="my_tool", span_type="TOOL")
-async def my_tool(...) -> dict:
-```
-
-The `@trace` decorator goes **between** `@server.tool` and the function definition. It creates a `TOOL` root span in MLflow that parents any Gemini autolog child spans. When tracing is not configured (`mlflow-tracing` not installed or `GEMINI_TRACING_ENABLED=false`), the decorator is a no-op -- it passes through the function unchanged.
-
-Parameters:
-- `name` -- span name (typically matches the tool function name)
-- `span_type` -- always `"TOOL"` for MCP tool entrypoints
-
-Source: `src/video_research_mcp/tracing.py`
-
-**ToolAnnotations** -- declare the tool's behavior to MCP clients:
-
-| Hint | Meaning |
-|------|---------|
-| `readOnlyHint=True` | Tool does not modify state |
-| `destructiveHint=True` | Tool deletes or overwrites data (e.g., cache clear) |
-| `idempotentHint=True` | Calling twice with same args gives same result |
-| `openWorldHint=True` | Tool accesses external services (Gemini, YouTube, web) |
-
-**Parameter types** -- use shared types from `types.py`:
-
-```python
-from ..types import ThinkingLevel, Scope, YouTubeUrl, TopicParam
-```
-
-These provide schema-level validation (e.g., `YouTubeUrl` requires `min_length=10`).
-
-**Error handling** -- never raise from a tool. Always catch and return `make_tool_error()`:
-
-```python
-from ..errors import make_tool_error
-
-try:
-    # ... tool logic
-except Exception as exc:
-    return make_tool_error(exc)
-```
-
-This returns a structured error dict with `error`, `category`, `hint`, and `retryable` fields.
-
-## Step 2b: Create a New Sub-Server
-
-If your tool introduces a new domain:
-
-### Create the sub-server file
-
-```python
-# src/video_research_mcp/tools/my_domain.py
-"""My domain tools -- N tools on a FastMCP sub-server."""
-
-from __future__ import annotations
-
-import logging
 from typing import Annotated
 
-from fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..client import GeminiClient
 from ..errors import make_tool_error
+from ..models.content import ContentComparison
+from ..prompts.content import CONTENT_ANALYSIS_SYSTEM
 from ..tracing import trace
 from ..types import ThinkingLevel
 
-logger = logging.getLogger(__name__)
-my_domain_server = FastMCP("my-domain")
 
-
-@my_domain_server.tool(
-    annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True)
+@content_server.tool(
+    annotations=ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        idempotentHint=False,
+        openWorldHint=True,
+    )
 )
-@trace(name="my_tool", span_type="TOOL")
-async def my_tool(
-    input_text: Annotated[str, Field(min_length=1, description="Input to process")],
+@trace(name="content_compare", span_type="TOOL")
+async def content_compare(
+    text_a: Annotated[str, Field(min_length=1, description="First text")],
+    text_b: Annotated[str, Field(min_length=1, description="Second text")],
+    instruction: Annotated[str, Field(description="Comparison focus")] = (
+        "Compare the claims and supporting evidence in these texts."
+    ),
     thinking_level: ThinkingLevel = "medium",
 ) -> dict:
-    """Process input with Gemini.
+    """Compare two supplied texts under the requested focus.
 
     Args:
-        input_text: The text to process.
+        text_a: First text to compare.
+        text_b: Second text to compare.
+        instruction: What the comparison should examine.
         thinking_level: Gemini thinking depth.
 
     Returns:
-        Dict with processed results.
+        ContentComparison fields, or a structured tool error.
     """
     try:
-        result = await GeminiClient.generate(
-            input_text,
-            thinking_level=thinking_level,
+        if not text_a.strip() or not text_b.strip():
+            raise ValueError("Both texts must contain content")
+        prompt = (
+            f"{instruction}\n\n"
+            f"--- Text A ---\n{text_a}\n\n"
+            f"--- Text B ---\n{text_b}"
         )
-        return {"result": result}
+        result = await GeminiClient.generate_structured(
+            prompt,
+            schema=ContentComparison,
+            thinking_level=thinking_level,
+            system_instruction=CONTENT_ANALYSIS_SYSTEM,
+        )
+        return result.model_dump(mode="json")
     except Exception as exc:
         return make_tool_error(exc)
 ```
 
-### Mount in server.py
+The trace decorator sits between FastMCP registration and the function. Imports
+come from `mcp.types` for annotations and the project wrapper for tracing.
+Annotations describe behavior to MCP clients; they do not enforce permissions.
+A generated comparison is not marked idempotent because repeated model calls can
+produce different output.
+
+The explicit whitespace check protects the workflow even when called directly
+from Python. FastMCP enforces `Field` constraints on MCP calls, but those
+constraints do not run just because a test calls the coroutine. Missing required
+Python arguments raise `TypeError` before the function body runs.
+
+The content system instruction keeps supplied texts in the role of source data.
+A new workflow needs an instruction suited to its own inputs and must preserve it
+through any fallback or reshaping call.
+
+## Step 2b: Create a New Sub-Server
+
+For a new domain, define `domain_server = FastMCP("domain")` in its tool module,
+register functions there, then import and mount that instance in `server.py`:
 
 ```python
-# src/video_research_mcp/server.py
-from .tools.my_domain import my_domain_server
+from .tools.my_domain import domain_server
 
-app.mount(my_domain_server)
+app.mount(domain_server)
 ```
 
-### Add shared types (if needed)
+Each registered function still needs annotations, tracing, described parameters,
+a Google-style docstring, and an error boundary. Keep the function callable for
+unit tests and do not add compatibility paths for old FastMCP majors.
 
-If your tool introduces new Literal types or Annotated aliases, add them to `types.py`:
-
-```python
-# src/video_research_mcp/types.py
-MyMode = Literal["fast", "thorough", "exhaustive"]
-```
+If you split a tool into a module that imports its domain server, registration
+must happen after that server exists. Follow `_ensure_document_tool()` and
+`_ensure_batch_tool()` for deferred registration; then verify root tool discovery.
+Defining a decorated function in a module that the app never imports does not
+expose it to MCP clients.
 
 ## Step 3: GeminiClient Integration
 
-The server provides two entry points:
+Use `GeminiClient.generate_structured()` for a known Pydantic result model. It
+supplies the model schema to Gemini, validates the JSON response, and returns a
+model instance. Use `generate()` when the result is intentionally text or when a
+workflow only needs provider-constrained JSON plus parsing.
 
-### `generate_structured()` -- validated Pydantic output (preferred)
-
-Use when you want Gemini to return data matching a Pydantic model:
-
-```python
-from ..client import GeminiClient
-from ..models.my_domain import MyResult
-
-result = await GeminiClient.generate_structured(
-    contents,                      # str, Content, or list[Content]
-    schema=MyResult,               # Pydantic model class
-    thinking_level="medium",       # optional override
-    system_instruction="...",      # optional system prompt
-)
-# result is a validated MyResult instance
-return result.model_dump()
-```
-
-Under the hood, this:
-1. Extracts the model's JSON schema via `MyResult.model_json_schema()`
-2. Passes it as `response_json_schema` to Gemini
-3. Validates the raw JSON response with `MyResult.model_validate_json(raw)`
-
-### `generate()` -- raw text or custom schema
-
-Use for unstructured responses or caller-provided schemas:
+For a caller-supplied schema that needs local validation, use:
 
 ```python
-# Raw text response
-text = await GeminiClient.generate(
-    "Explain quantum computing",
-    thinking_level="high",
-)
-
-# Custom JSON schema (dict, not Pydantic)
-raw_json = await GeminiClient.generate(
-    contents,
-    response_schema={"type": "object", "properties": {...}},
-    thinking_level="low",
-)
-result = json.loads(raw_json)
-```
-
-### Tools wiring (Google Search, URL context)
-
-```python
-from google.genai import types
-
-# Web-grounded response
-text = await GeminiClient.generate(
-    "Search for: latest AI papers",
-    tools=[types.Tool(google_search=types.GoogleSearch())],
-)
-
-# URL context
-text = await GeminiClient.generate(
-    "Analyze this URL: https://example.com",
-    tools=[types.Tool(url_context=types.UrlContext())],
+result = await GeminiClient.generate_json_validated(
+    "Extract names from this text: Ada wrote the report.",
+    schema={
+        "type": "object",
+        "properties": {"names": {"type": "array", "items": {"type": "string"}}},
+        "required": ["names"],
+    },
+    strict=True,
 )
 ```
+
+Dictionary schema validation requires the `strict` extra (`jsonschema`). Without
+`strict=True`, this helper can return parsed but unvalidated data. Choose that
+behavior explicitly; do not describe `json.loads()` as schema validation.
+
+Use `GeminiClient.get()` for shared SDK facilities such as uploads, cache APIs,
+or Interactions. Ordinary generation belongs in the shared generation methods
+so config resolution and retry behavior remain consistent. Google Search and URL
+Context tool wiring can be passed through `generate()` or `generate_structured()`
+where the provider supports the combination. See
+[client.py](../../src/video_research_mcp/client.py) for exact signatures.
 
 ## Step 4: Write-Through Knowledge Store
 
-All 18 existing tools auto-store their results to Weaviate when it is configured. New tools should follow this convention. Add a store function in `weaviate_store.py` and call it from your tool after computing the result:
+Decide whether the result belongs in the knowledge store. Analytical workflows
+usually persist useful results, while extraction, diagnostics, and launch-only
+operations may have no write-through result. The comparison example above
+returns its output without defining a new storage contract.
 
-```python
-# In your tool function, after getting the result:
-from ..weaviate_store import store_my_result
-await store_my_result(result, source, instruction)
-```
+For persisted output, choose or define a collection in `weaviate_schema/`, add a
+matching helper in `weaviate_store/`, and call that helper after the primary result
+is ready. Helpers must check whether storage is enabled, catch storage errors,
+and preserve the primary result when storage fails. Reuse existing property,
+provenance, and UUID conventions rather than inserting arbitrary model output.
 
-Store calls are **non-fatal** -- the tool succeeds even if the Weaviate write fails. The import is done inside the function body to avoid circular imports.
-
-If your tool needs a new Weaviate collection, define it in `weaviate_schema.py` and add the collection name to `KnowledgeCollection` in `types.py`.
-
-See [KNOWLEDGE_STORE.md](./KNOWLEDGE_STORE.md) for the full write-through pattern and collection schema guide.
+A new collection also needs its entry in `ALL_COLLECTIONS`, the
+`KnowledgeCollection` alias, and the knowledge helper mappings that apply to it.
+See [Knowledge Store](KNOWLEDGE_STORE.md) for collection and ingestion contracts.
+Graph extraction is a separate model call; include it only when its derived
+concepts and relationships serve the workflow.
 
 ## Step 5: Write Tests
 
-Every new tool needs tests. See [WRITING_TESTS.md](./WRITING_TESTS.md) for the full guide. Here is the minimal pattern:
+After adding the example model and tool, place this test in
+`tests/test_content_compare.py`:
 
 ```python
-# tests/test_my_domain_tools.py
-"""Tests for my domain tools."""
-
-from __future__ import annotations
-
-import pytest
-
-from video_research_mcp.models.my_domain import MyResult
-from video_research_mcp.tools.my_domain import my_tool
+from video_research_mcp.models.content import ContentComparison
+from video_research_mcp.tools.content import content_compare
 
 
-class TestMyTool:
-    @pytest.mark.asyncio
-    async def test_returns_structured_result(self, mock_gemini_client):
-        """GIVEN valid input WHEN my_tool is called THEN returns MyResult dict."""
-        mock_gemini_client["generate_structured"].return_value = MyResult(
-            field="value",
-        )
+async def test_comparison_returns_validated_fields(mock_gemini_client):
+    """GIVEN two texts WHEN compared THEN return the model's fields."""
+    mock_gemini_client["generate_structured"].return_value = ContentComparison(
+        similarities=["Both texts report the same sample size."],
+        differences=["Only the second text reports uncertainty."],
+        overall_assessment="The second text provides more evidence.",
+    )
 
-        result = await my_tool(input_text="test input")
+    result = await content_compare(text_a="First report", text_b="Second report")
 
-        assert result["field"] == "value"
-        mock_gemini_client["generate_structured"].assert_called_once()
+    assert result["overall_assessment"] == "The second text provides more evidence."
+    call = mock_gemini_client["generate_structured"].call_args
+    assert call.kwargs["schema"] is ContentComparison
 
-    @pytest.mark.asyncio
-    async def test_returns_error_on_failure(self, mock_gemini_client):
-        """GIVEN Gemini failure WHEN my_tool is called THEN returns error dict."""
-        mock_gemini_client["generate_structured"].side_effect = RuntimeError("API error")
 
-        result = await my_tool(input_text="test input")
+async def test_blank_text_stops_before_generation(mock_gemini_client):
+    result = await content_compare(text_a=" ", text_b="Second report")
 
-        assert "error" in result
-        assert "category" in result
+    assert result["error"] == "Both texts must contain content"
+    mock_gemini_client["generate_structured"].assert_not_called()
+
+
+async def test_provider_failure_returns_tool_error(mock_gemini_client):
+    mock_gemini_client["generate_structured"].side_effect = RuntimeError("429 quota")
+
+    result = await content_compare(text_a="First report", text_b="Second report")
+
+    assert result["category"] == "API_QUOTA_EXCEEDED"
+    assert result["retryable"] is True
 ```
 
-Run your tests:
+Async tests need no marker because the project sets `asyncio_mode = "auto"`.
+Return concrete Pydantic instances from structured-output mocks. Add tests for
+any behavior the example does not cover: custom schemas, source selection,
+policy rejection, partial results, persistence, or registration as applicable.
+[Writing Tests](WRITING_TESTS.md) explains the shared fixtures and mock boundaries.
+
+## Step 6: Update Documentation and Verify Discovery
+
+Update the user-facing guide and relevant instruction-file tool inventory when
+the capability changes. Regenerate the manifest from the mounted app and inspect
+the new entry's input schema and annotations. Avoid adding another manually
+maintained table of every parameter.
+
+Run focused tests while developing, then the project's required checks:
 
 ```bash
-uv run pytest tests/test_my_domain_tools.py -v
+uv run --locked --extra dev pytest tests/test_content_compare.py -v
+uv run --locked --extra dev ruff check src/ tests/
+uv run --locked --extra dev pytest tests/ -q
+PYTHONPATH=src uv run --locked --extra dev python scripts/export_tool_contract_manifest.py
 ```
 
-## Step 6: Update CLAUDE.md
-
-Update the tool surface table in `CLAUDE.md` to include your new tool:
-
-```markdown
-| `my_tool` | my_domain | input_text + instruction | `MyResult` |
-```
-
-## Checklist
-
-Before submitting:
-
-- [ ] Tool has `ToolAnnotations` in the decorator
-- [ ] Tool has `@trace(name="tool_name", span_type="TOOL")` decorator
-- [ ] All params use `Annotated[type, Field(...)]` with descriptions
-- [ ] Docstring has Args and Returns sections
-- [ ] Uses `generate_structured()` for default schemas
-- [ ] Catches all exceptions and returns `make_tool_error()`
-- [ ] Any new URL download flow reuses `url_policy.download_checked()` (no ad hoc redirect-following clients)
-- [ ] Output model defined in `models/`
-- [ ] Write-through store function added to `weaviate_store.py`
-- [ ] Tests written with `mock_gemini_client` fixture
-- [ ] Sub-server mounted in `server.py` (if new)
-- [ ] CLAUDE.md tool table updated
-- [ ] File stays under 300 lines of code
-
-## Reference
-
-- [Architecture Guide](../ARCHITECTURE.md) -- server design and patterns
-- [Writing Tests](./WRITING_TESTS.md) -- test fixtures and conventions
-- [Knowledge Store](./KNOWLEDGE_STORE.md) -- Weaviate integration
-- Source: `src/video_research_mcp/tools/content.py` -- example of a well-structured tool file
-- Source: `src/video_research_mcp/client.py` -- GeminiClient API
+Before handing off, confirm that the tool is discoverable from the root app,
+returns its documented result and error shapes, and cannot bypass the policies
+for its inputs. New local reads must apply `local_path_policy`; server-side URL
+downloads must reuse `url_policy.download_checked()`.

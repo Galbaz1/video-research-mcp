@@ -1,122 +1,142 @@
 # Roadmap
 
-Planned and completed features for video-research-mcp. Each item links to a design doc and GitHub issue.
+This page separates capabilities present in the source from earlier proposals.
+Use it to find an implementation entry point or a discussion to join. A source
+capability does not establish which version a registry or running client has;
+see [Publishing](docs/PUBLISHING.md) for that verification.
 
-Want to pick something up? Comment on the issue. Design docs in [`docs/plans/`](docs/plans/) contain implementation plans with file layouts, test strategies, and checklists.
-
----
+The linked issues identify feature discussions. Their current status and agreed
+scope belong to the issue itself.
 
 ## Completed
 
-### ~~2. Document Research~~ ✓
+<a id="2-document-research-"></a>
 
-Multi-phase pipeline for deep research grounded in actual source documents. Accepts PDFs and URLs, runs evidence-tiered extraction with page-level citations.
+### 2. Document Research
 
-- `research_document` tool + `/gr:research-doc` command
-- `research_document_file.py` handles File API upload and URL download
-- Evidence tiers with document + page citations
+Research a supplied document set with multi-phase extraction, evidence tiers,
+and document/page citations. `research_document` and `/gr:research-doc` are
+implemented; file preparation handles local files and checked URL downloads.
+Citation presence still requires source inspection when a claim matters.
 
-Design doc: [docs/plans/DOCUMENT_RESEARCH.md](docs/plans/DOCUMENT_RESEARCH.md) | [GitHub issue (closed)](https://github.com/Galbaz1/video-research-mcp/issues/2)
+Sources: [document tool](src/video_research_mcp/tools/research_document.py),
+[file preparation](src/video_research_mcp/tools/research_document_file.py),
+[issue #2](https://github.com/Galbaz1/video-research-mcp/issues/2).
 
-### ~~3. MLflow Tracing~~ ✓
+<a id="3-mlflow-tracing-"></a>
 
-Optional observability for every Gemini call. `@trace` decorators on all 24 tools. Zero overhead when not installed.
+### 3. MLflow Tracing
 
-- `tracing.py` module with guarded mlflow import
-- `[tracing]` install extra using `mlflow-tracing` package
-- Three-layer trace trees: TOOL → retry → CHAT_MODEL
-- `/gr:traces` command + `mlflow-traces` skill
-- Opt-out via `GEMINI_TRACING_ENABLED=false`
+Optional tracing provides MCP tool spans and Gemini SDK autologging when enabled.
+The `[tracing]` extra, `/gr:traces`, and `mlflow-traces` skill are implemented.
+Tracing is disabled without the required configuration/library and can be forced
+off with `GEMINI_TRACING_ENABLED=false`. Trace coverage depends on the SDK call
+path; do not infer that every external call was captured.
 
-Design doc: [docs/plans/MLFLOW_TRACING.md](docs/plans/MLFLOW_TRACING.md) | [GitHub issue (closed)](https://github.com/Galbaz1/video-research-mcp/issues/3)
+Sources: [tracing module](src/video_research_mcp/tracing.py),
+[issue #3](https://github.com/Galbaz1/video-research-mcp/issues/3).
 
-### ~~5. Video Explainer MCP~~ ✓
+<a id="5-video-explainer-mcp-"></a>
 
-Companion MCP server wrapping video_explainer to create explainer videos from research output. 15 tools across 4 sub-servers.
+### 5. Video Explainer MCP
 
-- `packages/video-explainer-mcp/` — fully independent package
-- Pipeline: project → scenes → render → audio → quality
-- `/ve:*` namespace (3 commands, 1 skill, 2 agents)
-- Background render pattern (start/poll) for long encodes
+The independent companion wraps an external `video_explainer` checkout with
+15 tools for projects, pipeline steps, rendering, audio, and quality checks.
+Background rendering uses start/poll jobs. `/ve:*` workflows are shipped by the
+installer, but require separate companion registration and upstream setup.
 
-Design doc: [docs/plans/VIDEO_EXPLAINER_MCP_PLAN.md](docs/plans/VIDEO_EXPLAINER_MCP_PLAN.md) | [GitHub issue (closed)](https://github.com/Galbaz1/video-research-mcp/issues/5)
+Sources: [package guide](packages/video-explainer-mcp/README.md),
+[issue #5](https://github.com/Galbaz1/video-research-mcp/issues/5).
 
-### Video Agent MCP ✓
+<a id="video-agent-mcp-"></a>
 
-Parallel scene generation via Claude Agent SDK. Replaces sequential LLM calls (~21 min for 7 scenes) with bounded concurrent execution (~3-5 min).
+### Video Agent MCP
 
-- `packages/video-agent-mcp/` — 2 tools: `agent_generate_scenes`, `agent_generate_single_scene`
-- Bounded concurrency via `asyncio.Semaphore`
-- Partial failure handling (N/7 scenes succeed → write those, report errors)
-- CLAUDECODE env guard prevents recursive agent loops
+Two companion tools generate scene components through bounded concurrent Claude
+Agent SDK queries. Successful scene files and failed results remain distinct;
+a single-scene tool supports targeted regeneration. Terminal SDK success,
+timeouts, turn budgets, and isolated child settings are enforced. Generation
+speed depends on project and provider conditions; typechecking and rendering
+remain separate checks.
 
-### Knowledge Store Reranker + Flash Summarization ✓
+Source: [package guide](packages/video-agent-mcp/README.md).
 
-Cohere reranking and Gemini Flash post-processing for knowledge search results.
+<a id="knowledge-store-reranker--flash-summarization-"></a>
 
-- Overfetch pattern (3x limit) → Cohere rerank → sort by rerank_score
-- Flash summarization: one-line relevance summaries, property trimming
-- Auto-enables when `COHERE_API_KEY` is set
-- `rerank_score` and `summary` fields on `KnowledgeHit`
+### Knowledge Store Reranker + Flash Summarization
 
-### Media Asset Pipeline ✓
+Knowledge search supports Cohere reranking and Gemini Flash post-processing.
+Search overfetches candidates before ranking; results can include `rerank_score`
+and concise `summary` fields. Cohere use is auto-enabled by its configured key
+unless explicitly disabled. Summarization and reranking can be configured
+separately.
 
-Local file path propagation through video/content pipelines for offline access.
+Sources: [knowledge tools](src/video_research_mcp/tools/knowledge/),
+[knowledge-store guide](docs/tutorials/KNOWLEDGE_STORE.md).
 
-- `local_media_path`, `screenshot_dir` fields in Weaviate schema
-- `/gr:recall` shows local availability and offers chat shortcuts
-- Write-through stores local paths alongside analysis results
+<a id="media-asset-pipeline-"></a>
 
----
+### Media Asset Pipeline
 
-## In Progress
+Video/content results can retain local media and screenshot paths in the
+knowledge store. `/gr:recall` helps rediscover local artifacts. Paths support
+access only while the underlying files are available; provider analysis remains
+an external-processing workflow.
 
-### Contract Hardening (PR #19)
-
-Video output contract enforcement with quality gates and artifact rendering. Cherry-picked from closed PR #6 — only the unique, self-contained modules.
-
-- `contract/` package: pipeline orchestration, quality gates, artifact rendering with i18n (en/nl/es)
-- `validation.py`: semantic validation for timestamps, key points, concept edges
-- `schema_guard.py`: JSON schema complexity limiter
-- `generate_json_validated()`: dual-path validation (Pydantic TypeAdapter / jsonschema)
-- 60 tests, all passing
-
-Design doc: [docs/plans/VIDEO_OUTPUT_CONTRACT_HARDENING.md](docs/plans/VIDEO_OUTPUT_CONTRACT_HARDENING.md) | [PR #19](https://github.com/Galbaz1/video-research-mcp/pull/19)
-
----
-
-## Planned
+Sources: [recall command](commands/recall.md),
+[storage modules](src/video_research_mcp/weaviate_store/).
 
 ### 1. Deep Research Agent
 
-Expose Google's Gemini Deep Research Agent — an autonomous agent that plans, searches the real web (80-160 queries), reads sources, and writes cited reports. Runs 2-20 minutes per task.
+The earlier proposal is implemented as `research_web`, `research_web_status`,
+`research_web_followup`, and `research_web_cancel`, rather than the proposed
+`research_agent_*` names. These use the Interactions API and a start/poll pattern;
+completed reports and follow-ups can be stored in `DeepResearchReports`.
+Provider runtime and usage vary; inspect terminal status, citations, and errors.
 
-- 3 new tools: `research_agent_start`, `research_agent_poll`, `research_agent_followup`
-- Start/poll pattern — non-blocking for the calling agent
-- All state managed server-side by Google's Interactions API
-- Auto-stores reports to Weaviate `ResearchFindings` collection
+Sources: [web research tools](src/video_research_mcp/tools/research_web.py),
+[issue #1](https://github.com/Galbaz1/video-research-mcp/issues/1).
 
-Design doc: [docs/plans/DEEP_RESEARCH_AGENT_PLAN.md](docs/plans/DEEP_RESEARCH_AGENT_PLAN.md) | [GitHub issue](https://github.com/Galbaz1/video-research-mcp/issues/1)
+<a id="in-progress"></a>
+
+### Contract Hardening (PR #19)
+
+The previously listed work now has an implementation in source:
+`video_analyze(strict_contract=True)` runs analysis, strategy/concept-map
+construction, artifact rendering, and quality gates. Semantic validation and
+JSON validation helpers also exist. The schema-complexity helper is present;
+its existence does not imply it is enforced for every caller-provided schema.
+
+This feature is optional, and its quality gates do not independently verify all
+factual claims.
+
+Sources: [contract pipeline](src/video_research_mcp/contract/pipeline.py),
+[semantic validation](src/video_research_mcp/validation.py),
+[schema helper](src/video_research_mcp/schema_guard.py),
+[PR #19](https://github.com/Galbaz1/video-research-mcp/pull/19).
+
+## Planned
+
+The following remain proposals rather than implemented tools/skills in this
+checkout. They carry no delivery date or release commitment.
 
 ### 4. Writing Style Skill
 
-A passive skill that bakes humanizer rules into the `/gr:*` command pipeline so every `analysis.md` reads like a researcher's notes, not a press release.
+The earlier proposal describes a passive `writing-style` skill applying selected
+humanizer patterns to command/agent `analysis.md` prose. Its proposed scope is
+research writing; structured MCP output and visualization HTML remain outside it.
+A dedicated skill with this name is not shipped in `FILE_MAP`.
 
-- 1 new skill: `writing-style` (~60 lines), adapted from the humanizer's 24 patterns
-- 11 AI writing patterns filtered for research/analysis context
-- Applied to all commands and agents that write `analysis.md` prose
-- No effect on MCP tool output (structured JSON) or visualizer HTML
-
-Design doc: [docs/plans/WRITING_STYLE_SKILL_PLAN.md](docs/plans/WRITING_STYLE_SKILL_PLAN.md) | [GitHub issue](https://github.com/Galbaz1/video-research-mcp/issues/4)
+Discussion: [issue #4](https://github.com/Galbaz1/video-research-mcp/issues/4).
 
 ### 6. Knowledge Conflict Detection
 
-Detect contradictory, outdated, or inconsistent information across the knowledge store at recall time.
+The proposal describes `knowledge_conflicts` and a `/gr:recall conflicts` route
+for contradictory, outdated, or inconsistent stored information. It proposes
+four conflict types, severity/resolution guidance, and strict/balanced/lenient
+sensitivity. Those interfaces are not registered in the current source.
 
-- 1 new tool: `knowledge_conflicts`
-- Gemini-powered conflict analysis on recall results
-- Four conflict types with severity levels and resolution hints
-- Configurable sensitivity: strict, balanced, lenient
-- `/gr:recall conflicts "topic"` command integration
+Discussion: [issue #9](https://github.com/Galbaz1/video-research-mcp/issues/9).
 
-Design doc: [docs/plans/KNOWLEDGE_CONFLICT_DETECTION.md](docs/plans/KNOWLEDGE_CONFLICT_DETECTION.md) | [GitHub issue](https://github.com/Galbaz1/video-research-mcp/issues/9)
+Before starting a proposal, confirm its current scope in the tracker and follow
+[Contributing](CONTRIBUTING.md).

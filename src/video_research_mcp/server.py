@@ -41,7 +41,7 @@ app = FastMCP(
     "video-research",
     instructions=(
         "Unified Gemini research partner — video analysis, deep research, "
-        "content extraction. Powered by Gemini 3.1 Pro with thinking support."
+        "content extraction. Uses the configured Gemini models with thinking support."
     ),
     lifespan=_lifespan,
 )

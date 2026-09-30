@@ -1,53 +1,74 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+This file records notable changes by release. Versioned entries describe the
+behavior and validation reported at that time; use current guides for installation
+and provider configuration.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.7.1] - 2026-09-30
+
+### Changed
+
+- Rewrote the README and reader-facing documentation around installation, daily
+  use, architecture, contribution, and release tasks. Added a documentation index
+  and preserved historical findings, release records, and reporting commitments.
+- Corrected configuration, knowledge-store, cache, installer, and companion setup
+  explanations against the implementation. Companion package patch versions now
+  include their rewritten READMEs.
+- Removed model-specific claims from package descriptions and server discovery
+  instructions; configured model selection remains the runtime authority.
+
+### Security
+
+- Redacted the Semantic Scholar API key from read-only `infra_configure` responses,
+  alongside the existing provider secrets. Expanded the secret-redaction regression
+  check and built-wheel smoke to cover this field.
 
 ## [0.7.0] - 2026-09-29
 
 ### Changed
 
 - Default research and summary models now use stable Gemini 3.8 Flash. Unsupported
-  minimal thinking requests return an actionable validation error. Explicit-cache workflows retain
-  Google's supported generateContent endpoint.
-- Upgrade all three Python packages to current stable dependencies, including
+  minimal thinking requests return an actionable validation error. Explicit-cache
+  workflows retain Google's supported generateContent endpoint.
+- Upgraded all three Python packages to current stable dependencies, including
   FastMCP 4 and Google GenAI SDK 2, with explicit API-major bounds and refreshed
-  locks. Expand locked CI to companion packages and Python 3.14.
+  locks. Expanded locked CI to companion packages and Python 3.14.
 - Global installer registration now uses Claude Code user scope in
   `~/.claude.json`, preserves custom environment/settings and local companion
-  servers, and refreshes the server package during resolution. Update Playwright
-  MCP and use maintained Node runtimes.
-- Audit and simplify skill/provider guides, align onboarding with the actual
-  installed servers, inherit configured orchestration models and remove obsolete
-  media API instructions. Add a bounded plugin-maintenance skill.
+  servers, and refreshes the server package during resolution. Updated Playwright
+  MCP and moved to maintained Node runtimes.
+- Audited and simplified skill/provider guides, aligned onboarding with installed
+  servers, inherited configured orchestration models, and removed obsolete media
+  API instructions. Added a bounded plugin-maintenance skill.
 - GitHub release creation now requires passing CI, synchronized versions,
   matching release notes and valid build artifacts. Tags outside main publish
   as prereleases. GitHub source publication does not upload to PyPI or npm.
 
 ### Fixed
 
-- Preserve SDK thought signatures and full content through video-session
+- Preserved SDK thought signatures and full content through video-session
   history and SQLite serialization.
-- Read current Deep Research interaction steps, citations and error lists;
-  preserve typed failures rather than treating absent legacy outputs as success.
-- Reject malformed or escaping installer manifests, preserve unowned/customized
-  files and retain ownership evidence for modified obsolete files.
+- Read current Deep Research interaction steps, citations, and error lists;
+  preserved typed failures instead of treating absent legacy outputs as success.
+- Rejected malformed or escaping installer manifests, preserved unowned/customized
+  files, and retained ownership evidence for modified obsolete files.
 - Companion scene generation now isolates child settings, enforces terminal SDK
   success and budgets, and uses a valid configurable Claude model.
 - Companion render acceptance requires a fresh nonempty artifact; cancellation
   stops and joins subprocess work. Injection filenames cannot escape projects.
-- Remove committed documentation conflict markers and unsafe visualization
+- Removed committed documentation conflict markers and unsafe visualization
   cleanup of user directories or unrelated local processes.
-
-## [Unreleased]
 
 ## [0.6.1] - 2026-05-21
 
 ### Changed
 
-- **Default Gemini model: `gemini-3.5-flash`** with `thinking_level="medium"` (previously `gemini-3.1-pro-preview` / `high`). Both `default_model` and `flash_model` point at 3.5 Flash; preset opt-ins (`best`, `stable`, `budget`) remain available for Pro 3.1, Pro 3, and the legacy 3-flash-preview. Rationale: 3.5 Flash beats 3.1 Pro on Google's published benchmarks at ~4× speed and <½ cost.
+- **Default Gemini model: `gemini-3.5-flash`** with `thinking_level="medium"` (previously `gemini-3.1-pro-preview` / `high`). Both `default_model` and `flash_model` point at 3.5 Flash; preset opt-ins (`best`, `stable`, `budget`) remain available for Pro 3.1, Pro 3, and the legacy 3-flash-preview. The release rationale cited Google's benchmarks as showing better results than 3.1 Pro at about 4× speed and less than half the cost.
 - **`.claude-plugin/plugin.json` version sync** — was 12 versions stale at 0.3.3; now part of the documented version-sync policy in `docs/PUBLISHING.md` alongside `pyproject.toml` and `package.json`.
 
 ### Added
@@ -57,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- **31 Dependabot alerts resolved** (3 critical, 10 high, 14 medium, 4 low) via `uv lock --upgrade`. Includes fastmcp 3.0.2 → 3.3.1 (Gemini-CLI command injection), python-multipart 0.0.22 → 0.0.29 (DoS), python-dotenv 1.2.1 → 1.2.2 (symlink following), cryptography 46.0.5 → 48.0.0 (buffer overflow), authlib 1.6.8 → 1.7.2 (CSRF + OIDC). google-genai bumped 1.65 → 2.5.0 (major; API stable for our usage, 781 tests pass).
+- **31 Dependabot alerts resolved** (3 critical, 10 high, 14 medium, 4 low) via `uv lock --upgrade`. Includes fastmcp 3.0.2 → 3.3.1 (Gemini-CLI command injection), python-multipart 0.0.22 → 0.0.29 (DoS), python-dotenv 1.2.1 → 1.2.2 (symlink following), cryptography 46.0.5 → 48.0.0 (buffer overflow), authlib 1.6.8 → 1.7.2 (CSRF + OIDC). google-genai bumped 1.65 → 2.5.0 (major; API remained compatible with this project's usage, with 781 tests reported passing).
 
 ## [0.6.0] - 2026-03-25
 
@@ -69,7 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `video-generation` — Provider-agnostic video generation (Veo/Sora) with selection matrix and draft-to-final workflow
   - `video-production` — Cinematic multi-shot orchestration with style anchors, 4 chaining patterns, and frame-level QA
   - `image-generation` — Style anchor and prompt optimization for mcp-image (Subject-Context-Style structure)
-- Token-conscious skill design: all descriptions <200 chars with negative qualifiers, bodies <2,000 words, heavy content in `references/` (Level 3 progressive disclosure)
+- Skill descriptions stayed under 200 characters with negative qualifiers; bodies stayed under 2,000 words, with detailed material in `references/` (Level 3 progressive disclosure).
 
 ### Changed
 
@@ -82,7 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Semantic Scholar integration** — 5 new tools: `research_paper_search`, `research_paper_details`, `research_paper_citations`, `research_paper_recommendations`, `research_author_search`
 - **AcademicPapers Weaviate collection** with deterministic UUIDs
-- **Auto knowledge graph extraction** — `content_analyze`, `video_analyze`, `research_deep`, `research_web`, `research_document`, `content_batch_analyze` now auto-extract concepts and relationships
+- **Automatic knowledge graph extraction** — `content_analyze`, `video_analyze`, `research_deep`, `research_web`, `research_document`, `content_batch_analyze` now auto-extract concepts and relationships
 - **ConceptKnowledge + RelationshipEdges** collections populated automatically
 - **S2-specific error categories** (`S2_RATE_LIMITED`, `S2_NOT_FOUND`)
 
@@ -99,7 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **Vectorizer auto-detect** — default without `OPENAI_API_KEY` is now `weaviate` (built-in embeddings) instead of `openai`, which silently failed for Docker users without an OpenAI key
+- **Vectorizer auto-detection** — default without `OPENAI_API_KEY` is now `weaviate` (built-in embeddings) instead of `openai`, which had silently failed for Docker users without an OpenAI key
 
 ### Added
 
@@ -116,7 +137,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **`_extract_report` turn.text fallback** — Deep Research reports delivered via `turn.text` (instead of `turn.content[].text`) were silently lost; now both formats are captured
-- **Transient 403 retry in `research_web_status`** — polling now retries up to 3 times with backoff on transient 403 errors instead of failing immediately
+- **Transient 403 retry in `research_web_status`** — polling now retries up to 3 times with backoff on transient 403 errors rather than failing immediately
 - **Concurrency guard on `research_web`** — prevents launching a second Deep Research task while one is active (API allows only 1 concurrent task per key); returns actionable error with the active interaction ID
 - **Timeout heuristic in `/gr:research-deep`** — skill now warns after 20 min and suggests cancel+retry after 30 min of polling without completion
 
@@ -180,7 +201,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **3x faster server startup** — lazy-import `google-genai` and `weaviate` SDKs; deferred from module load to first tool call (fixes Glama Docker build timeout)
+- **3× faster server startup** — lazy-import `google-genai` and `weaviate` SDKs; deferred from module load to first tool call (fixes Glama Docker build timeout)
 
 ## [0.3.4] - 2026-03-05
 
@@ -205,7 +226,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Deep Research follow-up tool annotation now correctly marks write behavior (`readOnlyHint=false`)
-- Deep Research launch tracking now evicts stale IDs (TTL + cap) and cleans terminal interactions to avoid in-memory growth
+- Deep Research launch tracking now evicts stale IDs (TTL + cap) and cleans up terminal interactions to avoid in-memory growth
 - Follow-up results are now persisted to Weaviate (`follow_ups_json`) instead of storing only follow-up IDs
 
 ### Changed
@@ -292,7 +313,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Diagnostics** — `/gr:doctor` command for MCP wiring, API key, Weaviate, and MLflow connectivity checks
 - **Retry logic** — exponential backoff with jitter for Gemini API calls
 - **Batch analysis** — `video_batch_analyze` for concurrent directory-level video processing
-- **PyPI metadata** — classifiers, project URLs, version alignment with npm
+- **PyPI metadata** — added classifiers, project URLs, and version alignment with npm
 
 ### Changed
 
@@ -309,12 +330,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Content tools** — `content_analyze`, `content_extract` with caller-provided JSON schemas
 - **Search** — `web_search` via Gemini grounding with source citations
 - **Infrastructure** — `infra_cache` (view/list/clear), `infra_configure` (runtime model/thinking/temperature)
-- **Structured output** — `GeminiClient.generate_structured()` with Pydantic model validation
+- **Structured output** — added `GeminiClient.generate_structured()` with Pydantic model validation
 - **Thinking support** — configurable thinking levels (minimal/low/medium/high) via `ThinkingConfig`
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.7.0...HEAD
+[0.7.1]: https://pypi.org/project/video-research-mcp/0.7.1/
+[0.7.0]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.7.0
+[0.6.1]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.6.1
+[0.6.0]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.6.0
 [0.5.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.4...v0.5.0
 [0.4.4]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/Galbaz1/video-research-mcp/compare/v0.4.2...v0.4.3
@@ -327,3 +352,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Galbaz1/video-research-mcp/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.1.0
+[0.3.9]: https://pypi.org/project/video-research-mcp/0.3.9/
+[0.3.8]: https://pypi.org/project/video-research-mcp/0.3.8/
+[0.3.7]: https://pypi.org/project/video-research-mcp/0.3.7/
+[0.3.6]: https://pypi.org/project/video-research-mcp/0.3.6/
+[0.3.5]: https://pypi.org/project/video-research-mcp/0.3.5/
+[0.3.4]: https://pypi.org/project/video-research-mcp/0.3.4/

@@ -1,656 +1,581 @@
 # Knowledge Store
 
-How the knowledge store works, how to set up Weaviate, and how to use the 8 knowledge tools for persistent semantic search across all tool results.
+The optional knowledge store saves selected research and analysis results to
+Weaviate so you can retrieve them across sessions. Start with `knowledge_schema`
+to inspect the available fields, then use `knowledge_search` to retrieve objects
+or `knowledge_ask` to request an answer with references to stored objects.
+
+Storage is best-effort. A successful analysis does not prove that its result was
+saved, and a stored claim does not become verified evidence by being searchable.
+Use `knowledge_fetch` to inspect the original properties behind a search hit or
+answer citation.
 
 ## What It Is
 
-The knowledge store is an **optional Weaviate-backed persistence layer** that automatically saves results from every tool call. When enabled, each tool's output is written through to a Weaviate collection, building a searchable knowledge base over time.
+Setting `WEAVIATE_URL` enables the store. Tools with write-through integration
+await a storage attempt before returning their result; a storage exception is
+logged and does not fail the main tool call. The synchronous Weaviate operations
+run in worker threads, so they do not block the event loop, but their elapsed time
+can still add to the tool's response time.
 
-Without Weaviate configured, the server works identically -- knowledge tools return empty results and write-through calls are silently skipped.
+Without a configured URL, store functions skip writes. Knowledge tools behave as
+follows:
+
+| Tool | Response when storage is disabled |
+| --- | --- |
+| `knowledge_schema` | Local schema definitions, with no connection required |
+| `knowledge_search` | Empty `results` and `total_results: 0` |
+| `knowledge_related` | Empty `related` list |
+| `knowledge_stats` | Empty `collections` and `total_objects: 0` |
+| `knowledge_fetch`, `knowledge_ingest` | `Weaviate not configured` error and setup hint |
+| `knowledge_ask`, `knowledge_query` | Setup error; if the optional agents package is absent, its installation error takes precedence |
+
+Disabling storage does not disable all additional model work. Video, content,
+and research paths call the graph extractor after their primary result. The
+extractor can make a further Gemini request even when Weaviate is disabled;
+only its subsequent storage functions check the enabled flag.
 
 ## Architecture
 
-```
-Tool call (e.g., video_analyze)
-  |
-  +-- Returns result to caller (always)
-  |
-  +-- Writes to Weaviate collection (if enabled, non-blocking, non-fatal)
-       |
-       +-- VideoAnalyses collection
+| Source | Responsibility |
+| --- | --- |
+| [weaviate_client.py](../../src/video_research_mcp/weaviate_client.py) | Lazy sync/async connections, schema creation and evolution, shutdown |
+| [weaviate_schema/](../../src/video_research_mcp/weaviate_schema/) | The 13 collection definitions, property types, indexes and references |
+| [weaviate_store/](../../src/video_research_mcp/weaviate_store/) | Result-to-property mappings and non-fatal storage attempts |
+| [tools/knowledge/](../../src/video_research_mcp/tools/knowledge/) | Eight tools for schema inspection, ingestion, retrieval and questions |
+| [weaviate_migrate.py](../../src/video_research_mcp/weaviate_migrate.py) | Vectorizer configuration and opt-in collection migration |
 
-Knowledge tools (knowledge_search, knowledge_related, knowledge_ask, etc.)
-  |
-  +-- Query Weaviate collections
-  |
-  +-- Return ranked results to caller
-```
-
-Three modules implement the knowledge store:
-
-| Module | Responsibility |
-|--------|---------------|
-| `weaviate_client.py` | Singleton client, connection management, schema bootstrap |
-| `weaviate_schema/` | 12 collection definitions (PropertyDef, CollectionDef dataclasses) |
-| `weaviate_store/` | Write-through functions (one per collection) |
-
-The 8 knowledge tools live in `tools/knowledge/` (split into `search.py`, `retrieval.py`, `ingest.py`, `schema.py`, and `agent.py`).
+`knowledge_schema` reads the repository's definitions, not the live cluster's
+schema. The first synchronous connection creates missing collections, adds
+missing properties to existing ones, configures optional reranking and adds
+reference definitions. The async connection used by QueryAgent does not itself
+bootstrap collections; run `knowledge_stats` first on a new deployment.
 
 ## Setup
 
+Choose a vectorizer that your cluster supports. The MCP accepts `openai`,
+`weaviate` and `ollama`. If `WEAVIATE_VECTORIZER` is unset, environment loading
+selects `openai` when `OPENAI_API_KEY` is present and `weaviate` otherwise.
+Set the variable explicitly to make deployment behavior predictable.
+The client forwards configured embedding/reranker provider credentials as
+headers to the chosen Weaviate host; use the intended cluster URL.
+
 ### Option A: Local Weaviate (Docker)
 
-Create a `docker-compose.yml`:
+This example uses the OpenAI vectorizer and the documentation's pinned Weaviate
+image. It requires an OpenAI key in the MCP server's environment; embedding
+requests may incur provider charges. The September modernization tests did not
+validate this Docker deployment or provider access.
+
+Create `docker-compose.yml`:
 
 ```yaml
 services:
   weaviate:
     image: cr.weaviate.io/semitechnologies/weaviate:1.37.4
     ports:
-      - "8080:8080"
-      - "50051:50051"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:50051:50051"
+    volumes:
+      - weaviate_data:/var/lib/weaviate
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
-      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      DEFAULT_VECTORIZER_MODULE: text2vec-weaviate
-      ENABLE_MODULES: text2vec-weaviate
+      PERSISTENCE_DATA_PATH: /var/lib/weaviate
+      DEFAULT_VECTORIZER_MODULE: text2vec-openai
+      ENABLE_MODULES: text2vec-openai
+
+volumes:
+  weaviate_data:
 ```
 
-Then `docker compose up -d` and set the env vars:
+Start the service, then configure the MCP process:
 
 ```bash
+docker compose up -d
 export WEAVIATE_URL="http://localhost:8080"
-export WEAVIATE_VECTORIZER="weaviate"
+export WEAVIATE_VECTORIZER="openai"
+# Supply OPENAI_API_KEY through your environment or secret manager.
 ```
 
-The `text2vec-weaviate` vectorizer uses Weaviate's built-in embedding service — no extra API key needed.
+The local example permits anonymous access on loopback ports. A shared deployment
+needs its own authentication and network policy.
+
+For an existing Ollama-backed deployment, select `WEAVIATE_VECTORIZER=ollama`.
+The runtime defaults are `WEAVIATE_OLLAMA_API_ENDPOINT=http://host.docker.internal:11434`
+and `WEAVIATE_OLLAMA_MODEL=nomic-embed-text`; the cluster must have the
+`text2vec-ollama` module and be able to reach that endpoint.
 
 ### Option B: Weaviate Cloud (WCS)
 
-Create a cluster at [console.weaviate.cloud](https://console.weaviate.cloud), then:
+Create a cluster through [Weaviate Cloud](https://console.weaviate.cloud), then
+configure its URL, authentication and supported vectorizer:
 
 ```bash
 export WEAVIATE_URL="https://your-cluster.weaviate.network"
-export WEAVIATE_API_KEY="your-weaviate-api-key"
+export WEAVIATE_VECTORIZER="weaviate"
+# Supply WEAVIATE_API_KEY through your environment or secret manager.
 ```
+
+The `weaviate` setting selects `text2vec-weaviate`; it assumes that the cluster
+provides that embedding service. Cluster setup, entitlement and billing remain
+provider concerns. This setting does not guarantee that a local Docker image
+provides a keyless embedding service.
 
 ### Verify Connection
 
-Start the MCP server. On first connection, it will auto-create all 12 collections if they do not exist. Check logs for:
+Restart the MCP process after changing its environment. Call `knowledge_stats`
+to exercise the synchronous connection and collection bootstrap. Connection
+logs identify the cluster and newly created collections, for example:
 
-```
+```text
 INFO: Connected to Weaviate at http://localhost:8080
 INFO: Created Weaviate collection: ResearchFindings
-INFO: Created Weaviate collection: VideoAnalyses
-...
 ```
 
-## The 12 Collections
+Counts alone cannot distinguish an empty collection from a failed count request:
+`knowledge_stats` logs a per-collection failure and reports zero for that
+collection. To verify persistence, ingest a test record and fetch the returned
+UUID. Remove or retain that record according to your cluster's data policy;
+the knowledge MCP does not expose a delete tool.
 
-Each collection stores results from specific tools. All collections share two common properties: `created_at` (date) and `source_tool` (text).
+## The 13 Collections
+
+Every collection defines `created_at` and `updated_at` as dates and `source_tool`
+as text. Automatic store functions populate the fields specified by their
+mapping; manual ingestion inserts only the properties you supply.
+
+The guide below identifies the content each collection holds. For the complete
+current property names, types and descriptions, call:
+
+```json
+{}
+```
+
+with `knowledge_schema`, or pass a collection name to inspect one schema:
+
+```json
+{"collection": "ResearchFindings"}
+```
 
 ### ResearchFindings
 
-Stores findings from `research_deep` and `research_assess_evidence`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| topic | text | yes | Research topic |
-| scope | text | no | Research scope |
-| claim | text | yes | Individual finding or claim |
-| evidence_tier | text | no | CONFIRMED, STRONG INDICATOR, INFERENCE, SPECULATION, UNKNOWN |
-| reasoning | text | yes | Supporting reasoning |
-| executive_summary | text | yes | Report executive summary |
-| confidence | number | no | Confidence score 0-1 |
-| open_questions | text[] | no | Open research questions |
+Research reports and individual findings from `research_deep`,
+`research_document` and `research_assess_evidence`. Useful fields include
+`topic`, `scope`, `claim`, `evidence_tier`, `reasoning`, `executive_summary`,
+`confidence`, `open_questions`, `supporting` and `contradicting`. Reports can
+link their findings through `report_uuid` and `belongs_to_report`.
+The research models describe tiers as `CONFIRMED`, `STRONG INDICATOR`,
+`INFERENCE`, `SPECULATION` and `UNKNOWN`. These labels and confidence values
+are stored assessments, not independent checks.
 
 ### VideoAnalyses
 
-Stores results from `video_analyze` and `video_batch_analyze`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| video_id | text | no | YouTube video ID or file hash |
-| source_url | text | no | Source URL or file path |
-| instruction | text | yes | Analysis instruction used |
-| title | text | yes | Video title |
-| summary | text | yes | Analysis summary |
-| key_points | text[] | yes | Key points extracted |
-| raw_result | text | no | Full JSON result |
+Analyses from `video_analyze` and its batch path. Fields include `video_id`,
+`source_url`, `instruction`, `title`, `summary`, `key_points`, `raw_result`,
+`timestamps_json`, `topics`, `sentiment`, `local_filepath` and `screenshot_dir`.
+When a content ID exists, the store derives a UUID from that ID and an instruction
+hash so repeat analyses upsert. `has_metadata` can reference `VideoMetadata`.
 
 ### ContentAnalyses
 
-Stores results from `content_analyze`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| source | text | no | Source URL, file path, or '(text)' |
-| instruction | text | yes | Analysis instruction used |
-| title | text | yes | Content title |
-| summary | text | yes | Analysis summary |
-| key_points | text[] | yes | Key points extracted |
-| entities | text[] | yes | Named entities found |
-| raw_result | text | no | Full JSON result |
+Analyses from `content_analyze` and its batch path. Fields include `source`,
+`instruction`, `title`, `summary`, `key_points`, `entities`, `raw_result`,
+`structure_notes`, `quality_assessment` and `local_filepath`.
 
 ### VideoMetadata
 
-Stores YouTube metadata from `video_metadata`. Uses deterministic UUIDs based on `video_id` for automatic deduplication.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| video_id | text | no | YouTube video ID |
-| title | text | yes | Video title |
-| description | text | yes | Video description |
-| channel_title | text | yes | Channel name |
-| tags | text[] | yes | Video tags |
-| view_count | int | no | View count |
-| like_count | int | no | Like count |
-| duration | text | no | Video duration |
-| published_at | text | no | Publish date |
+YouTube metadata from `video_metadata`: title, description, channel, tags,
+published date, duration, counts, category, caption availability and language.
+Use `channel_title`, not `channel`. Its deterministic UUID derives from
+`video_id`, allowing repeat fetches to upsert.
 
 ### SessionTranscripts
 
-Stores conversation turns from `video_continue_session`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| session_id | text | no | Session ID |
-| video_title | text | yes | Video title for this session |
-| turn_index | int | no | Turn number in session |
-| turn_prompt | text | yes | User prompt for this turn |
-| turn_response | text | yes | Model response for this turn |
+Conversation turns from `video_continue_session`, with `session_id`,
+`video_title`, `turn_index`, `turn_prompt`, `turn_response` and `local_filepath`.
+These records supplement the session store; they do not replace its runtime
+conversation state.
 
 ### WebSearchResults
 
-Stores results from `web_search`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| query | text | yes | Search query |
-| response | text | yes | Search response text |
-| sources_json | text | no | Grounding sources as JSON |
+`web_search` output: `query`, `response` and `sources_json`. The source list is
+stored as a JSON string.
 
 ### ResearchPlans
 
-Stores orchestration plans from `research_plan`.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| topic | text | yes | Research topic |
-| scope | text | no | Research scope |
-| task_decomposition | text[] | yes | Task breakdown |
-| phases_json | text | no | Phases as JSON |
+Plans from `research_plan`: `topic`, `scope`, `task_decomposition`, `phases_json`
+and `recommended_models_json`. A stored plan describes proposed work, not
+completed research.
 
 ### DeepResearchReports
 
-Stores completed long-running Deep Research reports and follow-up Q&A.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| interaction_id | text | no | Gemini Interactions API ID |
-| topic | text | yes | Research question/brief |
-| report_text | text | yes | Full report text |
-| sources_json | text | no | Report source list as JSON |
-| source_count | int | no | Number of sources |
-| usage_json | text | no | Token usage details as JSON |
-| follow_up_ids | text[] | no | Follow-up interaction IDs |
-| follow_ups_json | text | no | Follow-up Q&A as JSON |
+Completed reports collected by `research_web_status`, and follow-up Q&A from
+`research_web_followup`. Fields include `interaction_id`, `topic`, `report_text`,
+`sources_json`, `source_count`, `status`, `duration_seconds`, `usage_json`,
+`follow_up_ids` and `follow_ups_json`. The schema also defines references to
+research findings and web searches.
 
 ### CommunityReactions
 
-Stores YouTube comment sentiment analysis from the comment-analyst agent.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| video_id | text | no | YouTube video ID |
-| video_title | text | yes | Video title |
-| comment_count | int | no | Number of comments analyzed |
-| sentiment_positive | number | no | Positive sentiment 0-100 |
-| sentiment_negative | number | no | Negative sentiment 0-100 |
-| sentiment_neutral | number | no | Neutral sentiment 0-100 |
-| themes_positive | text[] | yes | Positive themes from comments |
-| themes_critical | text[] | yes | Critical themes from comments |
-| consensus | text | yes | Community consensus assessment |
+Aggregated comment analyses supplied by the comment-analysis workflow or manual
+ingestion. Fields include `video_id`, `video_title`, `comment_count`, three
+sentiment percentages, `themes_positive`, `themes_critical`, `consensus` and
+`notable_opinions_json`. These records describe the sampled comments, not the
+whole audience. The schema defines a `for_video` reference to metadata.
 
 ### ConceptKnowledge
 
-Stores concepts extracted from analyses with knowledge state tracking.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| concept_name | text | yes | Name of the concept |
-| state | text | no | Knowledge state: know, fuzzy, or unknown |
-| source_url | text | no | URL or path of source content |
-| source_title | text | yes | Title of the source content |
-| source_category | text | no | Category: video, video-chat, research, analysis |
-| description | text | yes | Brief description of the concept |
+Extracted concepts with `concept_name`, `state` (`know`, `fuzzy` or `unknown`),
+`source_url`, `source_title`, `source_category`, `description` and `timestamp`.
+The state is the extraction workflow's label.
 
 ### RelationshipEdges
 
-Stores directed relationships between concepts from analyses.
-
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| from_concept | text | yes | Source concept name |
-| to_concept | text | yes | Target concept name |
-| relationship_type | text | no | Type: enables, example_of, builds_on, contradicts, related_to |
-| source_url | text | no | URL or path of source content |
-| source_category | text | no | Category: video, video-chat, research, analysis |
+Directed concept relationships: `from_concept`, `to_concept`,
+`relationship_type`, `source_url` and `source_category`. Documented relationship
+labels are `enables`, `example_of`, `builds_on`, `contradicts` and `related_to`.
 
 ### CallNotes
 
-Stores structured notes from meeting and call recordings.
+Meeting or call notes supplied by the relevant workflow or manual ingestion:
+`video_id`, `source_url`, `title`, `summary`, `participants`, `decisions`,
+`action_items`, `topics_discussed`, `duration`, `meeting_date` and `local_filepath`.
+A collection definition does not make every video analysis create call notes.
 
-| Property | Type | Vectorized | Description |
-|----------|------|-----------|-------------|
-| video_id | text | no | YouTube video ID or file hash |
-| source_url | text | no | Source URL or file path |
-| title | text | yes | Meeting/call title |
-| summary | text | yes | Meeting summary |
-| participants | text[] | yes | Meeting participants |
-| decisions | text[] | yes | Decisions made |
-| action_items | text[] | yes | Action items |
-| topics_discussed | text[] | yes | Topics discussed |
+### AcademicPapers
+
+Semantic Scholar paper metadata from the paper search, detail, citation and
+recommendation tools. Fields include `paper_id`, `title`, `abstract`,
+`authors_json`, `year`, `venue`, `citation_count`, `fields_of_study`, `doi`,
+`arxiv_id`, `tldr`, `is_open_access`, `open_access_pdf_url` and `url`.
+The store upserts by a UUID derived from `paper_id` when it is available.
 
 ## Using the Knowledge Tools
 
-### knowledge_search -- search across collections
-
-Supports three search modes: hybrid (default), semantic, and keyword. Optional Cohere reranking and Gemini Flash summarization enrich results when enabled.
-
-```
-Use knowledge_search with query "transformer architecture"
-Use knowledge_search with query "RLHF" and search_type "semantic"
-Use knowledge_search with query "batch normalization" and search_type "keyword"
-```
-
-Parameters:
-- `query` (required) -- search text
-- `search_type` (optional) -- `"hybrid"` (default), `"semantic"`, or `"keyword"`
-- `collections` (optional) -- list of collection names to search; defaults to all 12
-- `limit` (optional) -- max results per collection (default 10)
-- `alpha` (optional) -- hybrid balance: 0.0 = pure keyword, 1.0 = pure vector, 0.5 = balanced (hybrid mode only)
-- `evidence_tier` (optional) -- filter ResearchFindings by tier (e.g. `"CONFIRMED"`)
-- `source_tool` (optional) -- filter by originating tool name
-- `date_from` / `date_to` (optional) -- filter by ISO date range on `created_at`
-- `category` (optional) -- filter VideoMetadata by category
-- `video_id` (optional) -- filter by video_id field
-
-Search modes:
-- **hybrid** -- fuses BM25 keyword scores with vector similarity via `collection.query.hybrid()`
-- **semantic** -- pure vector similarity via `collection.query.near_text()`; finds semantically similar content even without keyword overlap
-- **keyword** -- pure BM25 keyword matching via `collection.query.bm25()`; precise when you know the exact terms
-
-Results are merged across collections and sorted by rerank score (when available) then base score descending.
-
-**Result fields** (`KnowledgeHit`):
-- `collection` -- source collection name
-- `object_id` -- Weaviate UUID
-- `score` -- base relevance score (from search mode)
-- `rerank_score` -- Cohere reranker score (null when reranking not enabled)
-- `summary` -- Flash-generated relevance summary (null when summarization not enabled)
-- `properties` -- object property dict (trimmed to useful properties when Flash summarization is active)
-
-**Response fields** (`KnowledgeSearchResult`):
-- `query`, `total_results`, `results` -- standard envelope
-- `filters_applied` -- active filter dict (null if no filters)
-- `reranked` -- true when Cohere reranking was applied
-- `flash_processed` -- true when Flash summarization was applied
-
-### knowledge_related -- find similar objects
-
-Uses Weaviate's near-object vector search to find semantically related entries.
-
-```
-Use knowledge_related with object_id "uuid-from-search" and collection "VideoAnalyses"
-```
-
-Parameters:
-- `object_id` (required) -- UUID of the source object (from a search result)
-- `collection` (required) -- which collection the source belongs to
-- `limit` (optional) -- max results (default 5)
-
-The source object is automatically excluded from results.
-
-### knowledge_stats -- object counts
-
-```
-Use knowledge_stats
-Use knowledge_stats with collection "ResearchFindings"
-```
-
-Returns per-collection counts and total. Useful for monitoring knowledge base growth.
-
-### knowledge_fetch -- retrieve object by UUID
-
-Fetch a single object directly by its UUID. Useful for retrieving specific objects found in search results.
-
-```
-Use knowledge_fetch with object_id "uuid-from-search" and collection "ResearchFindings"
-```
-
-Parameters:
-- `object_id` (required) -- Weaviate UUID of the object
-- `collection` (required) -- which collection the object belongs to
-
-Returns `found: true` with the object's properties, or `found: false` if the UUID doesn't exist.
+Examples below are tool argument objects to pass through your MCP client.
 
 ### knowledge_schema -- collection property introspection
 
-Returns property names, types, and descriptions for one or all collections. Reads from local schema definitions — no Weaviate connection needed.
+Call this before manual ingestion. It returns:
 
-```
-Use knowledge_schema with collection "VideoMetadata"
-Use knowledge_schema                                  # all 12 collections
+```json
+{
+  "schemas": {
+    "ResearchFindings": [
+      {"name": "claim", "type": "text", "description": "Individual finding or claim"}
+    ]
+  },
+  "total_collections": 1
+}
 ```
 
-Call this before `knowledge_ingest` to discover expected property names and types.
+This abbreviated example omits the collection's other fields. Schema types
+include `text`, `text[]`, `int`, `number`, `boolean` and `date`; JSON fields such
+as `sources_json` are text containing serialized JSON.
 
 ### knowledge_ingest -- manual data entry
 
-Insert data directly into any collection. Properties are validated against the collection schema.
+The following synthetic record illustrates the schema; it makes no research claim:
 
-```
-Use knowledge_ingest with collection "ResearchFindings" and properties:
-{"topic": "AI Safety", "claim": "RLHF reduces harmful outputs", "evidence_tier": "CONFIRMED", "confidence": 0.85}
+```json
+{
+  "collection": "ResearchFindings",
+  "properties": {
+    "topic": "Documentation example",
+    "claim": "Illustrative entry; no finding has been verified.",
+    "evidence_tier": "UNKNOWN",
+    "confidence": 0.0,
+    "supporting": [],
+    "source_tool": "knowledge_ingest",
+    "created_at": "2026-09-29T00:00:00Z"
+  }
+}
 ```
 
-Unknown properties are rejected with an error listing the allowed `name:type` pairs and a hint to call `knowledge_schema`.
+The tool rejects unknown keys before insertion, showing allowed `name:type`
+pairs and a hint to call `knowledge_schema`. It does not locally validate every
+value's type or fill timestamps and provenance for you; Weaviate handles value
+acceptance. A successful response contains `status: "success"`, the collection
+and an `object_id`. Each manual call inserts a new object; repeating it can
+create duplicates.
+
+### knowledge_fetch -- retrieve object by UUID
+
+Pass the `object_id` from ingestion, search or an answer citation together with
+its collection. The response contains `found: true` and full properties, or
+`found: false` when the object does not exist. This is the way to recover fields
+trimmed from a summarized search hit.
+
+### knowledge_search -- search across collections
+
+```json
+{
+  "query": "transformer architecture",
+  "collections": ["ResearchFindings", "VideoAnalyses"],
+  "search_type": "hybrid",
+  "limit": 10,
+  "alpha": 0.5
+}
+```
+
+| Parameter | Behavior |
+| --- | --- |
+| `query` | Required nonempty text |
+| `collections` | Omit to search all 13 collections |
+| `search_type` | `hybrid` by default; also `semantic` or `keyword` |
+| `limit` | Maximum total returned hits after merging collections; default 10, range 1–100 |
+| `alpha` | Hybrid balance from 0 for keyword to 1 for vector; default 0.5 |
+| `evidence_tier`, `source_tool` | Equality filters on those properties where present |
+| `date_from`, `date_to` | Inclusive ISO date/time bounds on `created_at` |
+| `category`, `video_id` | Equality filters where the collection has those properties |
+
+Hybrid search calls Weaviate's BM25/vector fusion; semantic search uses
+`near_text`; keyword search uses BM25. Filters are collection-aware: a filter
+is skipped for a collection that lacks its property. Restrict `collections`
+when a condition must apply to every hit. Invalid date strings are ignored by
+the filter builder, so supply valid ISO values. `filters_applied` records the
+requested non-null values, not proof that each condition applied to each hit.
+
+The tool sorts the merged hits by available reranker score, then base score,
+and truncates to `limit`. A semantic base score is `1 - distance`; other modes
+use Weaviate's score. These scores describe retrieval ranking, not factual
+confidence. Per-collection query failures are logged and skipped, so an empty
+or partial result is not proof that the cluster contains no matching objects.
+
+Each hit includes `collection`, `object_id`, `score`, optional `rerank_score`,
+optional `summary` and `properties`. The response reports `total_results`,
+`filters_applied`, `reranked` and `flash_processed` alongside the query and hits.
+
+### knowledge_related -- find similar objects
+
+Pass `object_id`, `collection` and optionally `limit` (default 5, range 1–50).
+The tool uses near-object vector search in that collection and excludes the
+source UUID from the returned `related` list.
+
+### knowledge_stats -- object counts
+
+Omit `collection` to count all collections, or select one. `group_by` optionally
+counts values of a text property such as `evidence_tier` or `source_tool`; it is
+skipped where the property does not exist. The response provides per-collection
+counts and `total_objects`. Check logs when interpreting zero counts.
 
 ### knowledge_ask -- AI-generated answers (QueryAgent)
 
-Ask a natural-language question and get a synthesized answer with source citations. Powered by Weaviate's QueryAgent.
-
+```json
+{
+  "query": "What findings about transformer architectures are stored?",
+  "collections": ["ResearchFindings"]
+}
 ```
-Use knowledge_ask with query "What were the key findings about transformer architectures?"
-Use knowledge_ask with query "How does RLHF work?" and collections ["ResearchFindings"]
+
+Enable the `agents` extra in the environment that launches the MCP server.
+The npm installer uses an isolated `uvx` environment; installing the extra with
+`uv pip install` in a separate environment does not add it to that server.
+
+For a new Claude Code user-scope registration, use:
+
+```bash
+claude mcp add --scope user video-research -- uvx --refresh 'video-research-mcp[tracing,agents]'
 ```
 
-Parameters:
-- `query` (required) -- natural-language question
-- `collections` (optional) -- list of collection names to query; defaults to all 12
+If the server is already registered, edit its existing launch arguments instead
+of adding a second entry. The research launch should contain:
 
-Returns an AI-generated `answer` string plus a `sources` list with collection name and object UUID for each cited source.
+```json
+{
+  "command": "uvx",
+  "args": ["--refresh", "video-research-mcp[tracing,agents]"]
+}
+```
 
-**Requires**: `pip install video-research-mcp[agents]` (installs `weaviate-agents>=1.2.0`). Returns a clear error hint if the package is not installed.
+Preserve the entry's environment and other settings. User-scope registration
+lives in `~/.claude.json`; the npm installer's project registration uses
+`.mcp.json`. Restart the MCP client after changing the launch. Installer upgrades
+replace managed launch arguments with `video-research-mcp[tracing]`, so recheck
+and restore the `agents` extra after an upgrade.
+
+For a source checkout, run from its root:
+
+```bash
+uv sync --locked --extra dev --extra agents
+uv run --locked --extra agents video-research-mcp
+```
+
+Include `--extra agents` in a registered `uv run` launch as well, so its environment
+synchronization retains the dependency. See
+[Connecting a source checkout](./GETTING_STARTED.md#a-source-checkout) for the
+registration pattern.
+
+`knowledge_ask` calls Weaviate's AsyncQueryAgent and returns an `answer` plus
+`sources`, each containing a collection name and object UUID. Omit `collections`
+to use all 13. The agent is created lazily, cached by target collections and
+recreated when the async client changes.
+
+This is a provider-backed answer request, not just object retrieval. Inspect
+cited objects with `knowledge_fetch`; a stored-object citation is not necessarily
+a direct citation to the primary document behind its contents. Empty answers or
+source lists are possible.
 
 ### knowledge_query -- DEPRECATED
 
-> **Deprecated**: Use `knowledge_search` instead. `knowledge_search` now includes Cohere reranking and Flash summarization, making `knowledge_query` redundant. `knowledge_ask` (AI-powered Q&A) is unaffected.
-
-`knowledge_query` still functions during the deprecation period but returns a `_deprecated: true` flag in all responses. It will be removed in a future release. Migrate to `knowledge_search` for all retrieval needs.
+Use `knowledge_search` for new retrieval workflows. `knowledge_query` remains
+available through AsyncQueryAgent's search mode and requires the agents extra.
+Successful responses include `_deprecated: true` and `_deprecation_notice`;
+error responses do not necessarily include those fields. No removal date is
+specified in the implementation.
 
 ### How knowledge_search compares to knowledge_ask
 
-| Feature | `knowledge_search` | `knowledge_ask` |
-|---------|--------------------|------------------------------------|
-| Search mode | Explicit (hybrid/semantic/keyword) | Automatic (QueryAgent decides) |
-| Filters | Manual (evidence_tier, date_from, etc.) | Inferred from natural language |
-| Reranking | Cohere (when `COHERE_API_KEY` set) | N/A |
-| Summarization | Gemini Flash (relevance scoring + trimming) | N/A |
-| Output | Objects with scores + summaries | Synthesized answer + source citations |
-| Dependency | `weaviate-client` only | `weaviate-agents` (optional) |
-| Best for | Precise, repeatable queries with score transparency | Exploratory questions, "what do I know about X?" |
-
-The QueryAgent instance (used by `knowledge_ask`) is lazily created on first use and cached by the frozenset of target collection names.
+| Reader need | Tool |
+| --- | --- |
+| Select a search mode, filters and a returned-hit limit | `knowledge_search` |
+| Inspect ranked objects, then fetch their full properties | `knowledge_search` + `knowledge_fetch` |
+| Request a synthesized answer with stored-object references | `knowledge_ask` |
+| Avoid Gemini summaries during retrieval | `knowledge_search` with `FLASH_SUMMARIZE=false` in the server environment |
 
 ## Cohere Reranking
 
-When enabled, `knowledge_search` overfetches results (3x the requested limit) and re-scores them with Cohere's reranker before returning the top results. This significantly improves relevance, especially for hybrid and keyword searches.
+Set `COHERE_API_KEY` to auto-enable reranking, or set `RERANKER_ENABLED=false`
+to disable it even when the key is present. `RERANKER_ENABLED=true` enables
+configuration but does not supply credentials; the cluster still needs the
+Cohere module and valid key. `RERANKER_PROVIDER` defaults to `cohere`, and the
+implemented backend is Cohere.
 
-### Enabling reranking
+For collections with a mapping in
+[helpers.py](../../src/video_research_mcp/tools/knowledge/helpers.py), the search
+requests `limit * 3` candidates per collection and asks Weaviate to rerank them.
+The mapping selects representative fields such as a finding's `claim` or a
+video analysis's `summary`. It currently covers 11 collections;
+`DeepResearchReports` and `AcademicPapers` have no mapping and use base ranking.
 
-Set `COHERE_API_KEY` in your environment. Reranking auto-enables when a Cohere key is present:
-
-```bash
-export COHERE_API_KEY="your-cohere-api-key"
-```
-
-To explicitly control:
-
-```bash
-export RERANKER_ENABLED=true   # force-enable (requires COHERE_API_KEY)
-export RERANKER_ENABLED=false  # force-disable even with key present
-```
-
-When `COHERE_API_KEY` is set and `RERANKER_ENABLED` is not `"false"`, reranking activates automatically.
-
-### How it works
-
-Each collection has a designated rerank property -- the text field that best represents the semantic content of objects in that collection:
-
-| Collection | Rerank property |
-|------------|----------------|
-| ResearchFindings | `claim` |
-| VideoAnalyses | `summary` |
-| ContentAnalyses | `summary` |
-| VideoMetadata | `description` |
-| SessionTranscripts | `turn_response` |
-| WebSearchResults | `response` |
-| ResearchPlans | `topic` |
-| CommunityReactions | `consensus` |
-| ConceptKnowledge | `description` |
-| RelationshipEdges | `relationship_type` |
-| CallNotes | `summary` |
-| DeepResearchReports | `report_text` |
-
-The overfetch pattern:
-1. Request `limit * 3` results from Weaviate (with Cohere `Rerank` config attached)
-2. Weaviate sends the overfetched results to Cohere for scoring
-3. Results are sorted by `rerank_score` (descending), with `score` as tiebreaker
-4. The `rerank_score` field appears on each `KnowledgeHit`; `reranked: true` on the response
-
-When reranking is off, results use the base score only and `rerank_score` is null.
-
-### Configuration reference
-
-| Env var | Default | Effect |
-|---------|---------|--------|
-| `COHERE_API_KEY` | `""` | Cohere API key; presence auto-enables reranking |
-| `RERANKER_ENABLED` | (auto) | `"true"` = force on, `"false"` = force off, empty = auto from key |
-| `RERANKER_PROVIDER` | `"cohere"` | Reranker backend (only Cohere supported currently) |
-
-Source: `config.py:ServerConfig.reranker_enabled`, `tools/knowledge/helpers.py:RERANK_PROPERTY`
+`reranked: true` indicates that at least one collection query used a rerank
+configuration. Check each hit's `rerank_score` to see whether it has a score.
+This option sends text through Weaviate to Cohere and may incur provider charges.
 
 ## Flash Summarization
 
-After search (and optional reranking), `knowledge_search` runs Gemini Flash over the results to:
+Search summarization is enabled by default. Set `FLASH_SUMMARIZE=false` in the
+server environment to disable the Gemini post-processing request.
 
-1. **Score relevance** -- each hit gets a 0-1 relevance score against the query
-2. **Generate summaries** -- a one-line relevance summary per hit
-3. **Trim properties** -- identifies which property names are worth keeping, reducing token consumption when results are sent to Claude's context window
+The summarizer sends up to 100 returned hits to the configured
+`GEMINI_FLASH_MODEL` at low thinking depth, truncating each input property's
+string representation to 300 characters. It requests relevance assessments,
+one-line summaries and useful property names. The application uses the summary
+and property selection; it does not use the generated relevance number to
+reorder the hits or replace their base scores.
 
-### Enabling Flash summarization
-
-Enabled by default. To disable:
-
-```bash
-export FLASH_SUMMARIZE=false
-```
-
-### How it works
-
-The summarizer (`tools/knowledge/summarize.py`) batches up to 100 hits and sends them to Gemini Flash (`gemini-3.8-flash`) with `thinking_level="low"` for fast processing.
-
-The `HitSummaryBatch` model structures Flash's output:
-
-```python
-class HitSummary(BaseModel):
-    object_id: str       # Weaviate UUID
-    relevance: float     # 0-1 relevance score
-    summary: str         # One-line relevance summary
-    useful_properties: list[str]  # Property names worth keeping
-
-class HitSummaryBatch(BaseModel):
-    summaries: list[HitSummary]
-```
-
-After Flash responds:
-- Each hit's `summary` field is populated with the generated summary
-- Each hit's `properties` dict is trimmed to only the properties Flash identified as useful (falls back to all properties if Flash returns an empty list)
-- The response's `flash_processed: true` flag indicates summarization ran
-
-Flash summarization is **best-effort** -- on any error, the raw hits are returned unchanged.
-
-### Configuration reference
-
-| Env var | Default | Effect |
-|---------|---------|--------|
-| `FLASH_SUMMARIZE` | `"true"` | Set to `"false"` to disable |
-
-Source: `config.py:ServerConfig.flash_summarize`, `tools/knowledge/summarize.py`
+Matched hits receive a summary and trimmed properties. If no selected property
+matches, all original properties remain. Unmatched hits pass through. On an
+exception, the original hits are returned and a warning is logged.
+`flash_processed` is true when at least one returned hit has a summary, rather
+than merely because the option is enabled. Fetch the UUID for complete evidence.
 
 ## Write-Through Store Pattern
 
-Every tool that produces results automatically writes them to Weaviate via functions in `weaviate_store/`. This is the biggest architectural pattern to understand when adding new tools.
+Automatic writes cover these result-producing paths; infrastructure, extraction
+and other tools are not blanket-persisted.
 
-### Which tools store to which collections
-
-| Tool | Store function | Collection |
-|------|---------------|------------|
-| `video_analyze` | `store_video_analysis` | VideoAnalyses |
-| `video_batch_analyze` | `store_video_analysis` (per file) | VideoAnalyses |
+| Tool path | Store function | Collection |
+| --- | --- | --- |
+| `video_analyze`, `video_batch_analyze` | `store_video_analysis` per analyzed result | VideoAnalyses |
 | `video_continue_session` | `store_session_turn` | SessionTranscripts |
 | `video_metadata` | `store_video_metadata` | VideoMetadata |
-| `content_analyze` | `store_content_analysis` | ContentAnalyses |
-| `content_batch_analyze` | `store_content_analysis` (per file) | ContentAnalyses |
-| `research_deep` | `store_research_finding` | ResearchFindings |
-| `research_document` | `store_research_finding` | ResearchFindings |
-| `research_plan` | `store_research_plan` | ResearchPlans |
+| `content_analyze`, `content_batch_analyze` | `store_content_analysis` per analyzed result | ContentAnalyses |
+| `research_deep`, `research_document` | `store_research_finding` | ResearchFindings |
 | `research_assess_evidence` | `store_evidence_assessment` | ResearchFindings |
-| `research_web_status` | `store_deep_research` | DeepResearchReports |
+| `research_plan` | `store_research_plan` | ResearchPlans |
+| `research_web_status` on completion | `store_deep_research` | DeepResearchReports |
 | `research_web_followup` | `store_deep_research_followup` | DeepResearchReports |
 | `web_search` | `store_web_search` | WebSearchResults |
+| Paper search/detail/citation/recommendation tools | Academic paper store functions | AcademicPapers |
+
+Several analysis/research paths also extract concepts and relationships into
+`ConceptKnowledge` and `RelationshipEdges`. Other collections have store helpers
+or support manual ingestion; their presence does not imply an automatic write
+from every MCP tool. Some reused store helpers label `source_tool` with their
+original tool name, so that field alone does not identify the complete call path.
 
 ### The pattern
 
+A result-producing tool calls its store helper after computing the result:
+
 ```python
-# In a tool function, after computing the result:
 from ..weaviate_store import store_video_analysis
+
 await store_video_analysis(result, content_id, instruction, source_url)
 ```
 
-Each store function follows the same structure:
-
-```python
-async def store_video_analysis(result, content_id, instruction, source_url=""):
-    """Store a video analysis result. Returns UUID or None."""
-    if not _is_enabled():          # Guard: skip if Weaviate not configured
-        return None
-    try:
-        def _insert():
-            client = WeaviateClient.get()
-            collection = client.collections.get("VideoAnalyses")
-            return str(collection.data.insert(properties={
-                "created_at": _now(),
-                "source_tool": "video_analyze",
-                "video_id": content_id,
-                "source_url": source_url,
-                "instruction": instruction,
-                "title": result.get("title", ""),
-                "summary": result.get("summary", ""),
-                "key_points": result.get("key_points", []),
-                "raw_result": json.dumps(result),
-            }))
-        return await asyncio.to_thread(_insert)
-    except Exception as exc:
-        logger.warning("Weaviate store failed (non-fatal): %s", exc)
-        return None                # Never fail the tool call
-```
-
-Key design decisions:
-
-1. **Non-fatal** -- store failures are logged as warnings, never propagated to the caller
-2. **Non-blocking** -- runs in a thread via `asyncio.to_thread` since the Weaviate client is synchronous
-3. **Guard check** -- `_is_enabled()` returns False if `WEAVIATE_URL` is not set
-4. **Timestamp** -- `_now()` returns UTC datetime (Weaviate accepts datetime objects directly)
+The helper checks whether storage is enabled, maps fields to properties and
+runs the synchronous operation with `await asyncio.to_thread(...)`. It returns
+a UUID (or collection-specific result) on success and `None` on failure or when
+disabled. Failures are logged as non-fatal warnings. For an implementation
+example, read [video.py](../../src/video_research_mcp/weaviate_store/video.py).
 
 ### Adding a store function for a new tool
 
-1. Add the function to the appropriate module in `weaviate_store/` (or create one)
-2. Map result fields to collection properties
-3. Call it from your tool after computing the result
-
-If your tool needs a new collection, define it in `weaviate_schema/` (see next section).
+Add the helper in `weaviate_store/`, map fields to the target schema and call it
+from the owning tool after generation. Test disabled behavior, successful writes
+and failure handling with the existing mocks. See
+[Adding a New Tool](./ADDING_A_TOOL.md) and [Writing Tests](./WRITING_TESTS.md).
 
 ## Adding a New Collection
 
-1. Define the collection in a module under `weaviate_schema/`:
+Define a `CollectionDef` in `weaviate_schema/` and add it to `ALL_COLLECTIONS`.
+Add its name to `KnowledgeCollection` in `types.py`, implement the storage mapping
+and decide whether it needs a `RERANK_PROPERTY` entry. For example:
 
 ```python
 MY_DATA = CollectionDef(
     name="MyData",
     description="Results from my_tool",
     properties=_common_properties() + [
-        PropertyDef("field_a", ["text"], "Description of field A"),
-        PropertyDef("field_b", ["int"], "Description of field B",
-                    skip_vectorization=True, index_range_filters=True),
-        PropertyDef("raw_json", ["text"], "JSON blob",
-                    skip_vectorization=True, index_searchable=False),
+        PropertyDef("summary", ["text"], "Analysis summary"),
+        PropertyDef(
+            "item_count", ["int"], "Number of items",
+            skip_vectorization=True, index_range_filters=True,
+        ),
     ],
 )
 ```
 
-2. Add it to the `ALL_COLLECTIONS` list:
-
-```python
-ALL_COLLECTIONS: list[CollectionDef] = [
-    # ... existing collections
-    MY_DATA,
-]
-```
-
-3. Add the collection name to `KnowledgeCollection` in `types.py`:
-
-```python
-KnowledgeCollection = Literal[
-    "ResearchFindings", "VideoAnalyses", "ContentAnalyses",
-    "VideoMetadata", "SessionTranscripts", "WebSearchResults", "ResearchPlans",
-    "MyData",  # new
-]
-```
-
-4. Write a store function in `weaviate_store/` (see pattern above).
-
-5. The collection is created automatically on first server start (idempotent).
+The next synchronous connection creates a missing collection. Existing
+collections receive missing properties; this is not a general schema migration.
 
 ### Property configuration
 
-- `data_type` -- Weaviate types: `["text"]`, `["text[]"]`, `["int"]`, `["number"]`, `["date"]`, `["boolean"]`
-- `skip_vectorization=True` -- exclude from vector embedding (use for IDs, counts, JSON blobs)
-- `index_range_filters=True` -- enable B-tree index for range queries (`>`, `<`, `between`) on int/number/date fields
-- `index_searchable=False` -- disable BM25 keyword index on non-searchable text (JSON blobs, IDs, metadata)
-- `index_filterable=True` (default) -- roaring-bitmap index for equality/contains filters
+Vectorize meaningful text such as titles, summaries and claims. Set
+`skip_vectorization=True` for structural fields and
+`index_searchable=False` for text that should not enter the BM25 index, such as
+raw JSON and IDs. Equality filters use `index_filterable` (default true);
+numeric/date range queries need `index_range_filters=True`.
 
-Guidelines:
-- Properties that carry semantic meaning (titles, summaries, claims) should be vectorized (default) and BM25-searchable (default)
-- Properties that are structural (UUIDs, timestamps, raw JSON) should skip vectorization and disable BM25
-- Numeric/date fields used in range filters should set `index_range_filters=True`
+Changing vectorized source properties or the vectorizer can require rebuilding
+a collection. `WEAVIATE_AUTO_MIGRATE` defaults to false, leaving a warning for a
+mismatch. When explicitly enabled, the migration exports objects and references,
+deletes and recreates the collection, then attempts to restore them. This is a
+destructive operation with logged partial-failure paths, so back up the cluster
+and inspect the result. It is not an atomic rollback mechanism.
 
 ## Weaviate Client Singleton
 
-`WeaviateClient` in `weaviate_client.py` mirrors the `GeminiClient` pattern:
+`get()` creates or returns the shared synchronous client under a thread lock;
+`aget()` manages the async client for QueryAgent. `ensure_collections()` creates
+and evolves schemas through the sync client. `is_available()` checks configuration
+and readiness but can also initialize that client and schema.
+`close()` closes the sync connection; `aclose()` closes both at server shutdown.
 
-- **`get()`** -- returns (or creates) the shared client; thread-safe
-- **`ensure_collections()`** -- idempotent schema creation on first connect
-- **`is_available()`** -- checks if configured and reachable
-- **`close()` / `aclose()`** -- cleanup (called in server lifespan shutdown)
-
-Connection is automatic based on URL scheme:
-- `http://localhost:*` -- connects via `weaviate.connect_to_local`
-- `https://*.weaviate.network` -- connects via `weaviate.connect_to_weaviate_cloud`
-- Other URLs -- connects via `weaviate.connect_to_custom`
-
-All connections include `Timeout(init=30, query=60, insert=120)` for production reliability.
+The sync connector selects local connection helpers for loopback or `192.168.*`
+hosts, the cloud helper for other HTTPS URLs and a custom helper for remaining
+URLs. The async connector uses the local helper for local hosts and the cloud
+helper otherwise; custom non-cloud deployments therefore need separate
+compatibility verification before using QueryAgent. Timeouts are 30 seconds for
+initialization, 60 for queries and 120 for inserts.
 
 ## Reference
 
-- [Getting Started](./GETTING_STARTED.md) -- env var setup
-- [Adding a New Tool](./ADDING_A_TOOL.md) -- integrating write-through in new tools
-- [Writing Tests](./WRITING_TESTS.md) -- `mock_weaviate_client` fixture
-- [Architecture Guide](../ARCHITECTURE.md) -- overall server design
-- Source: `src/video_research_mcp/weaviate_schema/` -- collection definitions
-- Source: `src/video_research_mcp/weaviate_store/` -- write-through functions
-- Source: `src/video_research_mcp/weaviate_client.py` -- client singleton
-- Source: `src/video_research_mcp/tools/knowledge/` -- query tools (8 tools across 5 modules)
+- [Getting Started](./GETTING_STARTED.md): server environment and startup
+- [Adding a New Tool](./ADDING_A_TOOL.md): tool and storage integration
+- [Writing Tests](./WRITING_TESTS.md): mocked Weaviate fixtures
+- [Architecture Guide](../ARCHITECTURE.md): server structure
+- [Ingest UX findings](../KNOWLEDGE_INGEST_UX_FINDINGS.md): the dated session that motivated schema discovery

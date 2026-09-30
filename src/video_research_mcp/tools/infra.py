@@ -20,6 +20,7 @@ _SENSITIVE_CONFIG_FIELDS = {
     "youtube_api_key",
     "weaviate_api_key",
     "infra_admin_token",
+    "s2_api_key",
 }
 
 
@@ -96,7 +97,7 @@ async def infra_cache(
 @trace(name="infra_configure", span_type="TOOL")
 async def infra_configure(
     preset: Annotated[ModelPreset | None, Field(
-        description='Named model preset: "best" (3.1 Pro), "stable" (3 Pro), or "budget" (3 Flash)',
+        description='Named model preset: "best" (Pro preview), "stable" (Flash), or "budget" (Flash-Lite)',
     )] = None,
     model: Annotated[str | None, Field(description="Gemini model ID override (takes precedence over preset)")] = None,
     thinking_level: ThinkingLevel | None = None,

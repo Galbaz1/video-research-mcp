@@ -1,6 +1,6 @@
 [project]
 name = "video-explainer-mcp"
-version = "0.2.0"
+version = "0.2.1"
 description = "MCP server for synthesizing explainer videos — wraps prajwal-y/video_explainer CLI"
 readme = "README.md"
 requires-python = ">=3.11"

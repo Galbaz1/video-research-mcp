@@ -36,6 +36,7 @@ class TestInfraTools:
         monkeypatch.setenv("YOUTUBE_API_KEY", "youtube-secret")
         monkeypatch.setenv("WEAVIATE_API_KEY", "weaviate-secret")
         monkeypatch.setenv("INFRA_ADMIN_TOKEN", "infra-secret")
+        monkeypatch.setenv("S2_API_KEY", "semantic-scholar-secret")
         cfg_mod._config = None
 
         out = await infra_configure()
@@ -45,6 +46,8 @@ class TestInfraTools:
         assert "youtube_api_key" not in cfg
         assert "weaviate_api_key" not in cfg
         assert "infra_admin_token" not in cfg
+        assert "s2_api_key" not in cfg
+        assert "semantic-scholar-secret" not in str(out)
 
     @pytest.mark.asyncio
     async def test_infra_configure_invalid_thinking_level_returns_error(self):

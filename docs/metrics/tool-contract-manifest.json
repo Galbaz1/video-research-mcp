@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T21:10:14.585254+00:00",
+  "generated_at": "2026-09-29T21:53:04.110886+00:00",
   "tool_count": 34,
   "tools": [
     {
@@ -305,7 +305,7 @@
               }
             ],
             "default": null,
-            "description": "Named model preset: \"best\" (3.1 Pro), \"stable\" (3 Pro), or \"budget\" (3 Flash)"
+            "description": "Named model preset: \"best\" (Pro preview), \"stable\" (Flash), or \"budget\" (Flash-Lite)"
           },
           "model": {
             "anyOf": [

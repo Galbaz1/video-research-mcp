@@ -1,132 +1,102 @@
 # Knowledge Ingest UX: Findings & Recommendations
 
-Last updated: 2026-03-05 20:12 CET
+Last updated in the original session: **2026-03-05 20:12 CET**.
 
-> Date: 2026-03-05
-> Context: Real-world usage session — GPT-5.4 video analysis with cross-platform sentiment research via 4 parallel researcher agents. Manual `knowledge_ingest` calls after automated pipeline.
+This note records a March 5, 2026 usage session: GPT-5.4 video analysis,
+cross-platform sentiment research by four parallel researcher agents, then
+manual `knowledge_ingest` calls. It preserves that session's observations and
+recommendations; it is not a benchmark of the current implementation.
 
 ## Problem
 
-When manually calling `knowledge_ingest`, Claude (and human users of the MCP tools) must **guess property names** for each collection. The tool description says "Properties are validated against the collection schema" but never reveals what that schema is. This leads to a trial-and-error loop:
+The session encountered eight failed calls before establishing a working manual
+ingestion pattern. The caller could supply a properties dictionary, but the tool
+did not expose the collection schema. Discovering names took three round-trips:
+try plausible keys, receive an unknown-property error, inspect an existing object,
+then retry.
 
-```
-1. Call knowledge_ingest with intuitive property names
-2. Get "Unknown properties" error
-3. Search an existing object in the collection to reverse-engineer the schema
-4. Retry with correct names
-```
+The naming differences were concrete:
 
-In this session, it took **3 round-trips** to discover that:
-- `ResearchFindings` uses `claim` (not `finding`), `supporting` (not `sources`)
-- `ConceptKnowledge` uses `concept_name` (not `name`), has no `category` or `related_concepts`
-- `CommunityReactions` has no `platform`, `reaction_summary`, or `source_url` — uses `consensus`, `themes_positive`, `themes_critical`, `notable_opinions_json`
-- `VideoMetadata` has no `channel`, `local_filepath`, `source_url`, `screenshot_dir` — uses `channel_title`
+| Collection | What the caller had to discover |
+| --- | --- |
+| ResearchFindings | `claim` instead of `finding`; `supporting` instead of `sources` |
+| ConceptKnowledge | `concept_name` instead of `name`; no `category` or `related_concepts` |
+| CommunityReactions | `consensus`, `themes_positive`, `themes_critical` and `notable_opinions_json`; no `platform`, `reaction_summary` or `source_url` |
+| VideoMetadata | `channel_title` instead of `channel`; no `local_filepath`, `source_url` or `screenshot_dir` |
 
 ## Root Cause
 
-The schema is defined in `weaviate_schema/*.py` as `CollectionDef` objects. The `ALLOWED_PROPERTIES` dict in `tools/knowledge/helpers.py` validates against these at runtime. But this information is **never exposed to the LLM or user**.
-
-The tool's `properties` parameter is typed as `dict` with no further hints — the LLM has to infer property names from context, which fails when names are non-obvious (`claim` vs `finding`).
+At the time, collection definitions in `weaviate_schema/` supplied the runtime
+validation map in `tools/knowledge/helpers.py`, but the tool interface did not
+expose those definitions. A generic `dict` parameter left callers to infer
+property names from the collection's purpose. That inference failed when ordinary
+words such as “finding” did not match the stored field name `claim`.
 
 ## Impact
 
-- **Token waste**: Each failed ingest + retry costs ~500-1000 tokens per attempt
-- **Session friction**: 3 extra round-trips in a workflow that should be seamless
-- **Agent failures**: Background agents calling `knowledge_ingest` can't self-correct without this discovery loop
-- **Adoption barrier**: New users will hit this on first manual ingest and may give up
+The observed cost was eight failed calls and three discovery round-trips. The
+original note estimated about 500–1,000 tokens per failed ingest/retry attempt;
+it did not report a measured token total. It also identified likely friction
+for new users and background agents that lacked a schema-discovery step. Those
+adoption and agent-recovery effects were concerns, not separately measured outcomes.
 
 ## Recommendations
 
-### 1. Add `knowledge_schema` tool (recommended, low effort)
+The session proposed three changes, with these approximate implementation sizes:
 
-New read-only tool that returns the schema for one or all collections:
+| Priority at the time | Proposal | Estimated size | Intended effect |
+| --- | --- | --- | --- |
+| Do now | Include allowed properties in validation errors | 1 line | Make a rejected call easier to correct |
+| Next release | Add read-only `knowledge_schema` | About 30 lines | Expose names, types and descriptions before ingestion, without a cluster connection |
+| Optional | Add field hints to the ingest docstring | About 10 lines | Help common calls, while accepting that a duplicated field list can drift |
 
-```python
-@knowledge_server.tool()
-async def knowledge_schema(
-    collection: KnowledgeCollection | None = None,
-) -> dict:
-    """Show the Weaviate schema for a collection.
+The schema proposal required no collection change or migration. Its purpose was
+to expose the existing definitions. The proposed error message would show both
+unknown and allowed keys. A static docstring list was considered useful but
+fragile because it would have to change with the schema.
 
-    Returns property names, types, and descriptions for one or all
-    collections. Use this before knowledge_ingest to see what
-    properties are expected.
-    """
-    targets = [c for c in SCHEMA_COLLECTIONS if collection is None or c.name == collection]
-    return {
-        "collections": [
-            {
-                "name": c.name,
-                "description": c.description,
-                "properties": [
-                    {"name": p.name, "type": p.data_type, "description": p.description}
-                    for p in c.properties
-                ],
-            }
-            for c in targets
-        ]
-    }
-```
+### Current implementation note — 2026-09-29
 
-**Effort**: ~30 lines. No schema changes. No migration.
+The source now implements the first two recommendations:
 
-### 2. Enrich `knowledge_ingest` error message (quick win)
+- [knowledge_schema](../src/video_research_mcp/tools/knowledge/schema.py) returns
+  `schemas` and `total_collections` from local definitions, even when Weaviate is
+  disabled.
+- [knowledge_ingest](../src/video_research_mcp/tools/knowledge/ingest.py) rejects
+  unknown keys with allowed `name:type` pairs and a hint to call
+  `knowledge_schema(collection=...)`.
+- [Schema tests](../tests/test_knowledge_schema.py) cover single-collection,
+  all-collection and no-Weaviate discovery, plus the enriched error message.
 
-When validation fails, include the allowed properties in the error:
-
-```python
-# Current (unhelpful):
-f"Unknown properties for {collection}: {sorted(unknown)}"
-
-# Proposed (self-documenting):
-f"Unknown properties for {collection}: {sorted(unknown)}. "
-f"Allowed: {sorted(allowed)}"
-```
-
-**Effort**: 1 line change in `tools/knowledge/ingest.py:54`.
-
-### 3. Add property hints to tool description (no code change)
-
-Extend the `knowledge_ingest` docstring with a compact schema reference:
-
-```python
-"""Manually insert data into a knowledge collection.
-
-Properties are validated against the collection schema — unknown keys
-are rejected.
-
-Key properties per collection:
-- ResearchFindings: claim, evidence_tier, confidence, supporting[], topic, reasoning
-- VideoAnalyses: video_id, title, summary, key_points[], topics[], sentiment, source_url
-- CommunityReactions: video_id, video_title, sentiment_positive, themes_positive[], consensus
-- ConceptKnowledge: concept_name, description, state, source_tool
-- RelationshipEdges: from_concept, to_concept, relationship_type
-"""
-```
-
-**Effort**: Docstring update only. But fragile — must be updated when schema changes.
-
-### Priority
-
-| # | Fix | Effort | Impact | Recommendation |
-|---|-----|--------|--------|----------------|
-| 2 | Better error message | 1 line | Medium | Do now |
-| 1 | `knowledge_schema` tool | 30 lines | High | Do next release |
-| 3 | Docstring hints | 10 lines | Medium | Optional (fragile) |
+The recommended current sequence is to inspect the schema, supply its property
+names and value types, ingest, then fetch the returned UUID. See the
+[Knowledge Store guide](tutorials/KNOWLEDGE_STORE.md#using-the-knowledge-tools).
+This source inspection does not establish that the March workflow was rerun or
+that failed-call counts have decreased in real use.
 
 ## Session Evidence
 
 ### Successful ingests (after discovery)
-- `VideoAnalyses`: 1 object (video analysis with key_points as text[])
-- `CommunityReactions`: 1 object (cross-platform sentiment with themes)
-- `ResearchFindings`: 3 objects (developer sentiment, Claude vs GPT-5.4, #QuitGPT)
-- `ConceptKnowledge`: 3 objects (GPT-5.4, Extreme Reasoning, #QuitGPT movement)
+
+| Collection | Objects recorded in the session |
+| --- | --- |
+| VideoAnalyses | 1 video analysis, with `key_points` as `text[]` |
+| CommunityReactions | 1 cross-platform sentiment record with themes |
+| ResearchFindings | 3 records: developer sentiment, Claude versus GPT-5.4, and #QuitGPT |
+| ConceptKnowledge | 3 records: GPT-5.4, Extreme Reasoning, and the #QuitGPT movement |
+
+These are recorded ingestion successes, not verification of the records' claims.
 
 ### Failed attempts before discovery
-- `VideoMetadata`: rejected `channel`, `local_filepath`, `source_url`, `screenshot_dir`
-- `VideoAnalyses`: rejected `key_points` as string (must be text[])
-- `CommunityReactions`: rejected `platform`, `reaction_summary`, `sentiment_score`, `source_url`
-- `ResearchFindings`: rejected `finding`, `sources` (3 objects failed)
-- `ConceptKnowledge`: rejected `category`, `name`, `related_concepts` (3 objects failed)
 
-Total: **8 failed calls** before successful ingestion pattern was established.
+| Collection | Rejected input recorded in the session |
+| --- | --- |
+| VideoMetadata | `channel`, `local_filepath`, `source_url`, `screenshot_dir` |
+| VideoAnalyses | `key_points` as a string rather than `text[]` |
+| CommunityReactions | `platform`, `reaction_summary`, `sentiment_score`, `source_url` |
+| ResearchFindings | `finding`, `sources`; three objects failed |
+| ConceptKnowledge | `category`, `name`, `related_concepts`; three objects failed |
+
+The original session counted **eight failed calls**. A call and an object are
+different units, so the object counts above should not be added to reconstruct
+that call total.

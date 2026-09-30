@@ -1,285 +1,270 @@
-# Getting Started
+# Getting started
 
-A step-by-step guide to installing, configuring, and running the video-research-mcp server, then connecting it to Claude Code and making your first tool calls.
+This guide takes you from installation to a connected research server and a first
+useful call. Choose the Claude Code workflow bundle for slash commands, or connect
+the Python server directly from another MCP client. The two video companions are
+separate installations.
 
-## Prerequisites
+## Before you install
 
-- **Python 3.11+** -- check with `python3 --version`
-- **uv** -- the fast Python package manager ([install](https://docs.astral.sh/uv/getting-started/installation/))
-- **Gemini API key** -- get one at [Google AI Studio](https://aistudio.google.com/apikey)
-- **YouTube Data API v3** enabled for your GCP project -- required for `video_metadata`, `video_comments`, and `video_playlist` tools. See [YouTube API 403 errors](#youtube-api-403-errors) if you hit issues
+For the research server, you need:
 
-## Installation
+- Python 3.11 or later and [uv](https://docs.astral.sh/uv/getting-started/installation/).
+- A [Gemini API key](https://aistudio.google.com/apikey) with access to the models
+  you plan to use.
+- A client that supports stdio MCP.
 
-Clone the repo and install in development mode:
+The npm workflow installer also needs Node.js 22 or later. Local video-frame
+extraction needs `ffmpeg`. Weaviate, MLflow tracing, academic API keys, and media
+production providers are optional.
 
-```bash
-git clone https://github.com/Galbaz1/video-research-mcp.git
-cd video-research-mcp
-uv venv && source .venv/bin/activate
-uv pip install -e ".[dev]"
-```
+Gemini processes selected content remotely. Check your provider access and data
+requirements before submitting sensitive recordings or documents.
 
-Verify the installation:
-
-```bash
-uv run python scripts/export_tool_contract_manifest.py --output /tmp/video-research-tools.json
-```
-
-## Environment Variables
-
-Use the shared configuration file below or export directly. A checkout `.env` is not automatically loaded. Only `GEMINI_API_KEY` is required -- everything else has sensible defaults.
+## Install the Claude Code workflows
 
 ```bash
-# Required
-export GEMINI_API_KEY="your-gemini-api-key"
-
-# Optional -- shown with defaults
-export GEMINI_MODEL="gemini-3.8-flash"
-export GEMINI_FLASH_MODEL="gemini-3.8-flash"
-export GEMINI_THINKING_LEVEL="medium"        # low | medium | high for the default model
-export GEMINI_TEMPERATURE="1.0"            # omitted from Gemini 3.6+ Flash API requests
-export GEMINI_CACHE_DIR="$HOME/.cache/video-research-mcp/"
-export GEMINI_CACHE_TTL_DAYS="30"
-export GEMINI_MAX_SESSIONS="50"
-export GEMINI_SESSION_TIMEOUT_HOURS="2"
-export GEMINI_SESSION_MAX_TURNS="24"
-export GEMINI_RETRY_MAX_ATTEMPTS="3"
-export GEMINI_RETRY_BASE_DELAY="1.0"
-export GEMINI_RETRY_MAX_DELAY="60.0"
-export YOUTUBE_API_KEY=""                    # falls back to GEMINI_API_KEY
-export GEMINI_SESSION_DB=""                  # empty = in-memory sessions only
-
-# Knowledge store (optional -- requires Weaviate)
-export WEAVIATE_URL=""                       # empty = knowledge tools disabled
-export WEAVIATE_API_KEY=""
-```
-
-The full list lives in `src/video_research_mcp/config.py:ServerConfig.from_env()`.
-
-### Shared config file
-
-The server auto-loads `~/.config/video-research-mcp/.env` at startup, so keys are available in **any workspace** without direnv or shell profile changes.
-
-**Loading order** (first wins):
-1. Process environment variables (set by shell, direnv, or MCP `env` block)
-2. `~/.config/video-research-mcp/.env` config file
-3. Built-in defaults in `ServerConfig`
-
-**Security**: The server reads the configuration file locally. Its credential values authenticate calls to configured providers; analysis prompts and uploaded media are processed remotely. Keep the file out of git, use `chmod 600`, and report only key-presence checks in diagnostics.
-
-Create the file manually or let the npm installer generate a template:
-
-```bash
-# Manual
-mkdir -p ~/.config/video-research-mcp
-cat > ~/.config/video-research-mcp/.env << 'EOF'
-GEMINI_API_KEY=your-key
-# YOUTUBE_API_KEY=          # falls back to GEMINI_API_KEY
-# WEAVIATE_URL=             # empty = knowledge tools disabled
-# WEAVIATE_API_KEY=
-EOF
-chmod 600 ~/.config/video-research-mcp/.env
-
-# Or via installer (creates a commented template with mode 600)
 npx video-research-mcp@latest
 ```
 
-## Running the Server
-
-### Standalone (stdio transport)
-
-```bash
-GEMINI_API_KEY=your-key uv run video-research-mcp
-```
-
-The server starts on stdio (standard MCP transport). It does not open a port -- the MCP client connects via stdin/stdout.
-
-### With direnv (recommended for development)
-
-Create an `.envrc`:
+The installer copies commands, skills, and agents into `~/.claude/` and registers
+MCP servers in Claude Code's user configuration, `~/.claude.json`. For a project
+installation, run the following from the project directory:
 
 ```bash
-source .venv/bin/activate
-export GEMINI_API_KEY="your-key"
+npx video-research-mcp@latest --local
 ```
 
-Then `direnv allow` and run:
+Project workflows go into `.claude/`; project MCP registrations go into
+`.mcp.json`. The installer creates a shared credential template if it is missing.
+It also registers Playwright and MLflow MCP, but does not start a tracking server
+or register the video companions.
+
+Set credentials as described below, restart Claude Code, and inspect `/mcp`.
+`npx video-research-mcp@latest --check` checks the installed files and registration;
+it does not prove that a provider request succeeds.
+
+## Configuration
+
+The research server loads configuration in this order:
+
+1. Process environment variables, including those supplied by the MCP client.
+2. `~/.config/video-research-mcp/.env`.
+3. Built-in defaults.
+
+A `.env` in the source checkout is not loaded automatically. Shell exports reach
+clients launched from that shell; a GUI client may have a different environment.
+The shared file is useful when the same configuration should work in several
+projects or clients.
+
+After running the installer, edit the template and set `GEMINI_API_KEY`. If you
+have not run it, create the file with a text editor:
 
 ```bash
-video-research-mcp
+mkdir -p ~/.config/video-research-mcp
+${EDITOR:-vi} ~/.config/video-research-mcp/.env
+chmod 600 ~/.config/video-research-mcp/.env
 ```
 
-## Connecting from Claude Code
+A minimal file contains:
 
-Register the published runtime using Claude Code's supported CLI:
+```dotenv
+GEMINI_API_KEY=your-gemini-api-key
+```
+
+Keep credentials outside the repository. The shared file is read locally;
+authentication and selected analysis content are sent to configured services.
+
+### Add only the options you need
+
+| Option | Default or behavior | When to set it |
+|---|---|---|
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Choose a different supported primary model |
+| `GEMINI_FLASH_MODEL` | `gemini-3.8-flash` | Choose the auxiliary summary model |
+| `GEMINI_THINKING_LEVEL` | `medium` | Use `low`, `medium`, or `high` with the default model |
+| `DEEP_RESEARCH_AGENT` | `deep-research-preview-04-2026` | Select another supported Deep Research agent |
+| `YOUTUBE_API_KEY` | Falls back to `GEMINI_API_KEY` | Use a key with YouTube Data API v3 access |
+| `GEMINI_SESSION_DB` | In-memory sessions when unset | Give SQLite a writable path to persist sessions |
+| `WEAVIATE_URL`, `WEAVIATE_API_KEY` | Storage disabled when the URL is empty | Connect the optional knowledge store |
+| `MLFLOW_TRACKING_URI` | Tracing disabled without a URI | Connect a tracking server and install the tracing extra |
+| `S2_API_KEY` | Optional | Authenticate Semantic Scholar requests |
+| `LOCAL_FILE_ACCESS_ROOT` | No configured root restriction | Limit supported local-file operations to a directory |
+| `INFRA_MUTATIONS_ENABLED` | `false` | Allow model changes and cache clearing through tools |
+| `INFRA_ADMIN_TOKEN` | Optional | Require a token for permitted infrastructure mutations |
+
+The full configuration contract is
+[`ServerConfig.from_env()`](../../src/video_research_mcp/config.py).
+Cache lifetimes, retry limits, document limits, and storage behavior are explained
+in the [architecture](../ARCHITECTURE.md) and
+[knowledge-store](KNOWLEDGE_STORE.md) guides.
+
+The default model rejects `minimal` thinking and explicit sampling overrides.
+Do not set temperature merely because another Gemini model accepts it.
+
+## Connect the research server
+
+### Claude Code
+
+The npm installer registers the server for you. To register only the published
+Python runtime, use:
 
 ```bash
 claude mcp add --scope user video-research -- uvx --refresh 'video-research-mcp[tracing]'
 claude mcp list
 ```
 
-User registrations live in `~/.claude.json`; project scope uses `.mcp.json`. The shared environment file supplies credentials without copying them into registration commands. For a source checkout, use `claude mcp add --scope local video-research -- uv --directory /absolute/path/to/video-research-mcp run video-research-mcp`.
+The `tracing` extra installs the dependency; tracing still needs a tracking URI.
+For the smallest runtime, use `video-research-mcp` without the extra.
 
-Restart the client, inspect `/mcp`, and call `infra_configure()` without arguments. Confirm the actual model IDs and process connection before analysis. The registered runtime has 34 tools; see the generated [tool manifest](../metrics/tool-contract-manifest.json) for exact contracts. These counts do not imply the optional companion servers are installed.
+Restart the client, inspect its MCP connection status, and ask it to call
+`infra_configure()` with no arguments. Check `current_config.default_model` and
+`current_config.flash_model`. This is a read-only configuration check, with no
+Gemini request. `/gr:doctor quick` adds a workflow-level environment inspection.
 
-### Other MCP clients, including Codex
+### Other MCP clients
 
-The server uses standard stdio MCP. Configure `uvx` with arguments `--refresh`, `video-research-mcp[tracing]`, or use `uv --directory <checkout> run video-research-mcp` for an exact source revision. Follow the client's current configuration schema. The npm installer targets Claude Code; it does not install a Codex plugin manifest. Skills can be reused in clients supporting `SKILL.md`, but Claude slash commands/agent frontmatter are client-specific. See [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins) before claiming native Codex distribution.
-
-### Optional companion servers from source
-
-The explainer and scene-agent packages are not registered by the default installer. Install their declared development environments, configure the external `video_explainer` checkout and provider credentials, then register their local entry points:
-
-```bash
-claude mcp add --scope local video-explainer -- uv --directory /absolute/path/to/video-research-mcp/packages/video-explainer-mcp run video-explainer-mcp
-claude mcp add --scope local video-agent -- uv --directory /absolute/path/to/video-research-mcp/packages/video-agent-mcp run video-agent-mcp
-```
-
-A successful registration is separate from an executable pipeline. Verify `EXPLAINER_PATH`, prerequisite binaries, writable project directories, and provider availability before generation. Default mock TTS produces a preview, not production narration.
-
-## First Tool Calls
-
-Once connected, try these from Claude Code:
-
-### Analyze a YouTube video
-
-```
-Use video_analyze to summarize this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-```
-
-Claude will call `video_analyze(url="...", instruction="summarize this video")` and return a structured `VideoResult` with title, summary, key_points, timestamps, topics, and sentiment.
-
-### Analyze with a custom instruction
-
-```
-Use video_analyze to extract all CLI commands shown in https://www.youtube.com/watch?v=<id>
-```
-
-The `instruction` parameter accepts free text -- Gemini interprets it and returns structured JSON.
-
-### Analyze content from a URL
-
-```
-Use content_analyze to extract the methodology from https://arxiv.org/abs/2301.00001
-```
-
-### Search the web
-
-```
-Use web_search to find recent papers on multimodal language models
-```
-
-### Get video metadata (no Gemini cost)
-
-```
-Use video_metadata on https://www.youtube.com/watch?v=<id>
-```
-
-Returns title, description, view/like/comment counts, duration, tags, and channel info. Uses the YouTube Data API directly (0 Gemini tokens).
-
-### Custom output schemas
-
-For structured extraction with a caller-defined shape:
-
-```
-Use video_analyze on <url> with instruction "List all recipes" and output_schema:
-{"type": "object", "properties": {"recipes": {"type": "array", "items": {"type": "object", "properties": {"name": {"type": "string"}, "ingredients": {"type": "array"}}}}}}
-```
-
-## Model Presets
-
-Switch between quality/cost trade-offs at runtime:
-
-```
-Use infra_configure with preset "best"    # Gemini 3.1 Pro preview + Gemini 3.8 Flash
-Use infra_configure with preset "stable"  # Gemini 3.8 Flash for both routes
-Use infra_configure with preset "budget"  # Gemini 3.5 Flash-Lite for both routes
-```
-
-The change takes effect immediately for all subsequent tool calls.
-
-## Understanding Tool Responses
-
-All tools return dicts. On success, you get structured data matching the tool's Pydantic model. On failure, you get an error dict:
+Use your client's supported stdio registration format. A typical JSON entry is:
 
 ```json
 {
-  "error": "API key lacks permission...",
-  "category": "API_PERMISSION_DENIED",
-  "hint": "API key lacks permission OR video is restricted",
+  "mcpServers": {
+    "video-research": {
+      "command": "uvx",
+      "args": ["--refresh", "video-research-mcp"]
+    }
+  }
+}
+```
+
+Ensure the client can find `uvx` and the shared configuration file. Avoid assuming
+that a client substitutes shell variables inside JSON strings.
+
+Codex and other MCP clients can use the research tools. The npm installer targets
+Claude Code; it does not create a native Codex plugin. Claude slash commands and
+agent frontmatter may need adaptation in another client's workflow format.
+
+### A source checkout
+
+A registry installation runs the version published to PyPI. To develop or inspect
+an exact source revision, clone the repository, select the revision you intend to
+use, and install its lockfile:
+
+```bash
+git clone https://github.com/Galbaz1/video-research-mcp.git
+cd video-research-mcp
+uv sync --locked --extra dev
+```
+
+Register that checkout using its absolute path:
+
+```bash
+claude mcp add --scope local video-research -- uv --directory /absolute/path/to/video-research-mcp run --locked video-research-mcp
+```
+
+`uv run --locked video-research-mcp` also starts the server from the checkout.
+It waits for MCP messages on stdin/stdout and does not open a web port. Running
+that command alone is not a provider acceptance test.
+
+To copy the source checkout's Claude workflows, run `node bin/install.js`. Its
+research registration still uses the published Python runtime; replace that
+registration with the source command above when you want the client to use your
+checkout.
+
+## Make a first useful call
+
+After the configuration check, start with a small public source or a file you are
+authorized to submit. These analysis calls use external services and may incur
+charges.
+
+```text
+Use video_analyze to summarize <public YouTube URL>. Include timestamps for the
+main claims and distinguish the speaker's claims from your assessment.
+```
+
+Or begin with a document or a web question:
+
+```text
+Use content_analyze on <document path or URL> to extract its method and limitations.
+Use web_search to find primary sources about <topic> and retain the source links.
+```
+
+Tool arguments are defined by the connected server's schema. The
+[tool manifest](../metrics/tool-contract-manifest.json) is a source snapshot of
+those contracts. Commands such as `/gr:video` add a workflow around a tool call;
+they may save notes, extract frames, or use additional providers.
+
+### Responses and errors
+
+Success responses contain the tool's structured result. Custom output schemas
+allow a caller-defined shape on supported tools. On failure, tools generally
+return an error dictionary with a category, hint, and retryable flag:
+
+```json
+{
+  "error": "The requested operation is unavailable",
+  "category": "PERMISSION_DENIED",
+  "hint": "Check the operation's access requirements",
   "retryable": false
 }
 ```
 
-Error categories include `URL_INVALID`, `API_QUOTA_EXCEEDED`, `FILE_NOT_FOUND`, `WEAVIATE_CONNECTION`, and others. See `src/video_research_mcp/errors.py` for the full list.
+This is an illustrative shape, not a promised error for every operation.
+Use the actual category and hint. Gemini calls already use bounded backoff for
+transient failures; avoid adding an unbounded client retry loop.
 
-The `retryable` flag indicates whether the error is transient (network timeout, rate limit). The server has built-in exponential backoff for transient Gemini API errors (configurable via `GEMINI_RETRY_*` env vars).
+### Model presets
+
+`infra_configure()` reports available presets without changing anything. Changing
+a preset through `/gr:models` or the tool requires
+`INFRA_MUTATIONS_ENABLED=true` and, if configured, the matching admin token.
+Restart the server after changing those environment settings.
+
+| Preset | Primary model | Auxiliary model |
+|---|---|---|
+| `best` | `gemini-3.1-pro-preview` | `gemini-3.8-flash` |
+| `stable` | `gemini-3.8-flash` | `gemini-3.8-flash` |
+| `budget` | `gemini-3.5-flash-lite` | `gemini-3.5-flash-lite` |
+
+An allowed change affects later calls in that server process. Provider entitlement,
+quota, and model availability still need verification.
+
+## Optional companion servers
+
+The [explainer](../../packages/video-explainer-mcp/README.md) and
+[scene-agent](../../packages/video-agent-mcp/README.md) packages have their own
+configuration and prerequisites. The explainer needs an external
+`video_explainer` checkout; scene generation needs Claude access.
+
+Register their local entry points only after installing the packages and setting
+up the prerequisites in those guides. A connected companion server does not prove
+that its provider or rendering pipeline is ready. The default mock narration is
+for previews.
 
 ## Troubleshooting
 
-### "No Gemini API key" error
+| Symptom | Check |
+|---|---|
+| Server fails to start | Client logs, Python/uv availability, configured launch path, and `GEMINI_API_KEY` |
+| API key works in a terminal but not the client | Process environment precedence and the shared configuration file |
+| YouTube metadata returns 403 | YouTube Data API v3 enabled for the key's project, key restrictions, and `YOUTUBE_API_KEY` |
+| Analysis returns quota or permission errors | Actual error category, provider account access, quota, and selected model |
+| A repeated video analysis returns an old result | Use `video_analyze` with `use_cache=false`; cache clearing requires mutation permission |
+| Knowledge operation is unavailable | Weaviate connection, collection access, and optional dependencies |
+| Local frames are missing | `ffmpeg`, local source access, and the frame-extraction workflow |
+| A model change is denied | Infrastructure mutation policy and optional admin token |
+| Source changes do not affect the client | The exact launch command and whether it runs PyPI or the checkout |
 
-Set `GEMINI_API_KEY` in your environment or MCP config's `env` block.
+For YouTube metadata, comments, and playlists, enable
+[YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com)
+for the key's Google Cloud project. These tools call YouTube directly; Gemini video
+analysis has a different provider path and access requirements.
 
-### "Could not extract video ID" error
+When a request remains blocked after a controlled retry, retain the error and fix
+the stated cause. A successful connection, local test, or generated summary proves
+a different thing from a successful provider-backed analysis of your source.
 
-The URL must be a real YouTube domain (`youtube.com`, `youtu.be`, `m.youtube.com`). The server rejects spoofed domains like `youtube.com.evil.test` to prevent URL injection.
+## Continue from here
 
-### YouTube API 403 errors
-
-All YouTube tools (`video_metadata`, `video_comments`, `video_playlist`) require YouTube Data API v3 access. A 403 error means your API key can't reach this API.
-
-**Common causes:**
-
-1. **AI Studio key restriction** -- Keys from [Google AI Studio](https://aistudio.google.com/apikey) are often restricted to `generativelanguage.googleapis.com` only. They work for Gemini but not YouTube Data API.
-2. **YouTube Data API v3 not enabled** -- The API must be explicitly enabled in your GCP project.
-3. **Different keys in different contexts** -- If you use direnv/dotenv, the key in your `.env` may differ from the one in your shell profile (`~/.zshrc`). The MCP server prioritizes process environment over the shared configuration; a project `.env` requires explicit loading.
-
-**Fix:**
-
-1. Visit [YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com) and click **Enable** for the GCP project that owns your API key
-2. Or set a separate `YOUTUBE_API_KEY` env var pointing to a key with YouTube Data API v3 scope
-3. Verify with: `video_metadata(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")` -- should return metadata, not an error
-
-### Rate limit / quota errors
-
-Inspect the error category and your provider quota first. If the task permits a lower-cost model, use:
-
-```
-Use infra_configure with preset "budget"
-```
-
-The server applies configured backoff for transient errors. Do not stack unbounded client retries on it: allow one controlled retry of an idempotent call, preserve the error, and stop when quota or infrastructure remains unavailable.
-
-### Video analysis returns cached results
-
-The file-based cache keys on `{content_id}_{tool}_{instruction_hash}_{model_hash}`. To force a fresh analysis:
-
-```
-Use video_analyze on <url> with use_cache=false
-```
-
-Or clear the cache:
-
-```
-Use infra_cache with action "clear"
-```
-
-### MCP server not appearing in Claude Code
-
-1. Check that the path in `.mcp.json` points to the correct directory
-2. Verify `uv run video-research-mcp` works from that directory
-3. Restart Claude Code after editing `.mcp.json`
-4. Check Claude Code logs for MCP connection errors
-
-### Knowledge tools return empty results
-
-Knowledge tools require a running Weaviate instance. Set `WEAVIATE_URL` to enable them. See [KNOWLEDGE_STORE.md](./KNOWLEDGE_STORE.md) for setup instructions.
-
-## Next Steps
-
-- [Adding a New Tool](./ADDING_A_TOOL.md) -- extend the server with your own tools
-- [Writing Tests](./WRITING_TESTS.md) -- test conventions and fixtures
-- [Knowledge Store](./KNOWLEDGE_STORE.md) -- persistent semantic storage with Weaviate
-- [Architecture Guide](../ARCHITECTURE.md) -- deep dive into the server's design
+Read the [documentation index](../README.md) for the next task, or go directly to
+[knowledge storage](KNOWLEDGE_STORE.md), [adding a tool](ADDING_A_TOOL.md),
+[writing tests](WRITING_TESTS.md), or [architecture](../ARCHITECTURE.md).

@@ -1,26 +1,55 @@
 # video-agent-mcp
 
-Generate Remotion scene components concurrently from an existing explainer project.
-This server exposes `agent_generate_scenes` and `agent_generate_single_scene`.
-It calls the Claude Agent SDK for text generation, then writes returned TSX and a
-scene index. It does not orchestrate research or build a finished video.
+Generate Remotion scene components concurrently from an existing explainer
+script. The server reads project files, sends scene prompts through the Claude
+Agent SDK, and writes TSX plus a scene index. Use the explainer server and
+upstream renderer to prepare inputs, preview scenes, and render the video.
+
+Two tools are available: `agent_generate_scenes` and
+`agent_generate_single_scene`.
+
+Repository links point to the published source release. For the exact source
+and bundled README of a registry version, use its source archive on
+[PyPI](https://pypi.org/project/video-agent-mcp/#files).
 
 ## Install and configure
 
-Python 3.11 or newer is required. From this directory:
+You need Python 3.11 or newer, [uv](https://docs.astral.sh/uv/), an existing
+explainer project, and supported Agent SDK authentication. The SDK bundles its
+CLI; follow its [authentication guide](https://code.claude.com/docs/en/agent-sdk/overview)
+for Anthropic API or supported cloud-provider credentials.
+
+From this package directory in a source checkout:
 
 ```sh
-uv sync --extra dev --frozen
-uv run video-agent-mcp
+uv sync --locked --extra dev
+uv run --locked video-agent-mcp
 ```
 
-For an installed release, use `uvx video-agent-mcp`. The Claude Agent SDK bundles
-its CLI; authentication must be configured through a supported Anthropic API or
-cloud-provider credential environment. Follow the [SDK authentication guide](https://code.claude.com/docs/en/agent-sdk/overview).
+The command starts a stdio MCP server. Register it in your client's configuration
+rather than expecting a terminal UI. For Claude Code, add this entry to the
+appropriate `mcpServers` object, replacing the absolute checkout path:
 
-Configuration is read from environment variables and
-`~/.config/video-research-mcp/.env`. Existing environment values take precedence.
-The explainer and agent servers use the same project location:
+```json
+{
+  "video-agent": {
+    "command": "uv",
+    "args": [
+      "run", "--locked", "--directory",
+      "/absolute/path/to/video-research-mcp/packages/video-agent-mcp",
+      "video-agent-mcp"
+    ]
+  }
+}
+```
+
+To use a registry release, register `uvx` with
+`video-agent-mcp==<published-version>` instead. Confirm that exact version is
+published first. The core npm installer does not register this companion.
+
+Configuration comes from the process environment and
+`~/.config/video-research-mcp/.env`; nonempty process values take precedence.
+Use the same project location as the explainer server:
 
 ```dotenv
 EXPLAINER_PATH=/absolute/path/to/video_explainer
@@ -31,49 +60,74 @@ AGENT_TIMEOUT=300
 AGENT_MAX_TURNS=1
 ```
 
-`AGENT_MODEL` overrides the current default in
-`src/video_agent_mcp/config.py`. Verify IDs against the
-[official model overview](https://platform.claude.com/docs/en/models/overview)
-before overriding it. The default is the current Sonnet model.
+`EXPLAINER_PATH` is the upstream checkout root. Projects default to its
+`projects/` directory. If an older deployment used a projects-root value for
+`EXPLAINER_PATH`, preserve that directory through `EXPLAINER_PROJECTS_PATH`.
+The override also works when `EXPLAINER_PATH` is unset.
 
-`EXPLAINER_PATH` points to the upstream checkout, **not its projects directory**.
-For an existing deployment that used the old projects-root interpretation, set
-`EXPLAINER_PROJECTS_PATH` to that old value. The override is also available when
-`EXPLAINER_PATH` is unset.
+`AGENT_MODEL` overrides the default in
+[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
+[official model overview](https://platform.claude.com/docs/en/models/overview)
+for a supported ID. Restart the server after configuration changes.
 
 ## First scene generation
 
-1. Create a project with the explainer server and generate its script.
-   The project must contain `script/script.json` with a `scenes` list.
-2. Generate voiceover if exact speech timing is needed. The optional
-   `voiceover/manifest.json` provides per-scene word timestamps.
-3. Call `agent_generate_scenes(project_id="my-video", concurrency=3)`.
-   Scene titles must map to unique component filenames and registry keys.
-4. Inspect the `scenes` and `errors` lists. Retry failed scenes with
-   `agent_generate_single_scene(project_id="my-video", scene_number=2)`.
-5. Typecheck and preview the returned TSX in the upstream Remotion project
-   before rendering.
+1. Prepare a project with `script/script.json` containing a `scenes` list.
+   The [explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/packages/video-explainer-mcp/README.md) can create the
+   project and run the script step. Scene titles must produce unique component
+   filenames and registry keys.
+2. If exact speech timing matters, generate voiceover first. Optional
+   `voiceover/manifest.json` supplies per-scene word timestamps.
+3. After authorizing provider usage, call the MCP tool:
 
-Scene generation incurs provider usage. Concurrency is bounded from 1 to 10,
-queries have a timeout and turn limit, and failed scenes remain in the results.
-A query requires a terminal SDK success message; partial or failed responses are
-not written as successful scenes. Queries receive no built-in tools or MCP
-servers, and do not load project or user settings. The server performs file writes
-only after generation.
+   ```text
+   agent_generate_scenes(project_id="my-video", concurrency=3)
+   ```
 
-`force=True` allows existing scene files to be overwritten. Scene extraction
-checks that a response contains code; it does not prove TypeScript compilation,
-visual quality, or factual accuracy. Render validation belongs to the upstream
-renderer and the explainer server.
+4. Inspect both `scenes` and `errors`. Successful components appear in
+   `scenes/` and `index.ts`; failed scenes remain in the result. Retry a specific
+   failed scene with:
+
+   ```text
+   agent_generate_single_scene(project_id="my-video", scene_number=2)
+   ```
+
+5. Review the TSX, typecheck it, and preview it in the upstream Remotion project
+   before rendering. A generated component is not proof of valid TypeScript,
+   visual quality, or factual accuracy.
+
+Batch generation refuses to overwrite existing top-level TSX unless `force=True`.
+The single-scene tool regenerates its target without a force flag. Preserve a
+copy before replacing a scene. A single-scene success rebuilds the index from
+scene files present on disk, so inspect retained files as well as new output.
+
+## Execution limits and failures
+
+Queries run with bounded concurrency from 1 to 10, a per-query timeout, and a
+turn limit. Pass `concurrency` explicitly for a batch; its tool default is 5.
+`AGENT_TIMEOUT` defaults to 300 seconds and must be at least 30.
+
+Child queries have no built-in tools or MCP servers and load no user/project
+settings. They override the child `CLAUDECODE` guard without changing the parent
+process environment. A terminal SDK success and extractable code are required
+before a scene response is written as successful output. Shared styles and the
+reference component are written before queries begin, so those files alone do
+not establish scene completion.
+
+On partial failure, keep the successful scenes and inspect the reported errors
+before retrying only the affected scene. Each retry incurs provider usage.
 
 ## Development
 
+From this package directory:
+
 ```sh
-uv run pytest tests/ -q
-uv run ruff check src/ tests/
+uv run --locked pytest tests/ -q
+uv run --locked ruff check src/ tests/
 uv build
 ```
 
-Tests mock SDK queries and never generate paid content. The committed lockfile
-records the verified development environment; dependency constraints stay within
-the supported SDK minor release and library major versions.
+Tests mock SDK queries and do not generate paid content. The lockfile records the
+development environment; `pyproject.toml` defines supported dependency ranges.
+See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/CONTRIBUTING.md) for repository workflow
+and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/docs/PUBLISHING.md) for release verification.

@@ -1,472 +1,294 @@
 # Architecture Diagrams
 
-Visual reference for the video-research MCP server architecture. Each section contains a Mermaid diagram with a brief description.
-
----
+These diagrams show which component owns each step. Read the
+[architecture guide](ARCHITECTURE.md) for contracts and limitations, and the
+[tool manifest](metrics/tool-contract-manifest.json) for exact parameters.
+Arrows describe the current source flows; they do not establish live provider
+availability or successful installation.
 
 ## 1. Server Mounting Hierarchy
 
-The root `FastMCP("video-research")` server mounts 7 sub-servers, each owning a distinct set of tools. The lifespan hook manages shutdown of shared clients (GeminiClient, WeaviateClient).
-
-```mermaid
-graph TD
-    classDef root fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:2px
-    classDef subserver fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:1px
-    classDef tool fill:#0f3460,stroke:#533483,color:#eee,stroke-width:1px
-    classDef lifecycle fill:#533483,stroke:#e94560,color:#fff,stroke-width:1px
-
-    ROOT["FastMCP('video-research')<br/>server.py"]:::root
-
-    LIFE["_lifespan<br/>GeminiClient.close_all()<br/>WeaviateClient.aclose()"]:::lifecycle
-    ROOT -. "lifespan hook" .-> LIFE
-
-    VS["video_server<br/>FastMCP('video')"]:::subserver
-    YS["youtube_server<br/>FastMCP('youtube')"]:::subserver
-    RS["research_server<br/>FastMCP('research')"]:::subserver
-    CS["content_server<br/>FastMCP('content')"]:::subserver
-    SS["search_server<br/>FastMCP('search')"]:::subserver
-    IS["infra_server<br/>FastMCP('infra')"]:::subserver
-    KS["knowledge_server<br/>FastMCP('knowledge')"]:::subserver
-
-    ROOT --> VS
-    ROOT --> YS
-    ROOT --> RS
-    ROOT --> CS
-    ROOT --> SS
-    ROOT --> IS
-    ROOT --> KS
-
-    V1["video_analyze"]:::tool
-    V2["video_create_session"]:::tool
-    V3["video_continue_session"]:::tool
-    V4["video_batch_analyze"]:::tool
-    VS --> V1
-    VS --> V2
-    VS --> V3
-    VS --> V4
-
-    Y1["video_metadata"]:::tool
-    Y0["video_comments"]:::tool
-    Y2["video_playlist"]:::tool
-    YS --> Y1
-    YS --> Y0
-    YS --> Y2
-
-    R1["research_deep"]:::tool
-    R2["research_plan"]:::tool
-    R3["research_assess_evidence"]:::tool
-    R4["research_document"]:::tool
-    R5["research_web"]:::tool
-    R6["research_web_status"]:::tool
-    R7["research_web_followup"]:::tool
-    R8["research_web_cancel"]:::tool
-    RS --> R1
-    RS --> R2
-    RS --> R3
-    RS --> R4
-    RS --> R5
-    RS --> R6
-    RS --> R7
-    RS --> R8
-
-    C1["content_analyze"]:::tool
-    C2["content_extract"]:::tool
-    C3["content_batch_analyze"]:::tool
-    CS --> C1
-    CS --> C2
-    CS --> C3
-
-    S1["web_search"]:::tool
-    SS --> S1
-
-    I1["infra_cache"]:::tool
-    I2["infra_configure"]:::tool
-    IS --> I1
-    IS --> I2
-
-    K1["knowledge_search"]:::tool
-    K2["knowledge_related"]:::tool
-    K3["knowledge_stats"]:::tool
-    K4["knowledge_fetch"]:::tool
-    K5["knowledge_ingest"]:::tool
-    K6["knowledge_ask"]:::tool
-    K7["knowledge_query"]:::tool
-    KS --> K1
-    KS --> K2
-    KS --> K3
-    KS --> K4
-    KS --> K5
-    KS --> K6
-    KS --> K7
-```
-
----
-
-## 2. GeminiClient Request Flow
-
-Every tool that calls Gemini follows this pipeline: check the file-based cache, call GeminiClient (which delegates to the Google GenAI SDK with retry logic), validate the response, write back to cache, and optionally persist to Weaviate. The diagram shows both cache-hit and cache-miss paths.
+The research app mounts seven domain servers and exposes 34 tools. Deferred
+imports finish research and content registration before mounting.
 
 ```mermaid
 flowchart TD
-    classDef toolcall fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:2px
-    classDef cache fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:1px
-    classDef client fill:#0f3460,stroke:#533483,color:#eee,stroke-width:1px
-    classDef api fill:#533483,stroke:#e94560,color:#fff,stroke-width:1px
-    classDef validate fill:#2a9d8f,stroke:#264653,color:#fff,stroke-width:1px
-    classDef store fill:#e76f51,stroke:#264653,color:#fff,stroke-width:1px
-    classDef decision fill:#264653,stroke:#2a9d8f,color:#fff,stroke-width:1px
-
-    TOOL["Tool function called<br/>(video_analyze, research_deep, etc.)"]:::toolcall
-
-    CACHE_CHECK{"cache.load()<br/>File-based JSON cache<br/>keyed by content_id +<br/>tool + instruction_hash +<br/>model_hash"}:::decision
-
-    TOOL --> CACHE_CHECK
-
-    HIT["Return cached result<br/>cached: true"]:::cache
-    CACHE_CHECK -- "Cache HIT<br/>(file exists, not expired)" --> HIT
-
-    SCHEMA_CHECK{"Custom<br/>output_schema?"}:::decision
-    CACHE_CHECK -- "Cache MISS<br/>(missing or TTL expired)" --> SCHEMA_CHECK
-
-    GEN["GeminiClient.generate()<br/>response_schema=custom_dict<br/>Returns raw JSON text"]:::client
-    GEN_S["GeminiClient.generate_structured()<br/>schema=PydanticModel<br/>Returns validated model"]:::client
-
-    SCHEMA_CHECK -- "Yes (caller-provided)" --> GEN
-    SCHEMA_CHECK -- "No (default schema)" --> GEN_S
-
-    CFG["get_config()<br/>resolve model, thinking_level,<br/>temperature"]:::client
-    GEN --> CFG
-    GEN_S --> CFG
-
-    RETRY["with_retry()<br/>Exponential backoff<br/>for transient errors<br/>(429, 503, quota, timeout)"]:::client
-    CFG --> RETRY
-
-    API["Google GenAI API<br/>client.aio.models.generate_content()<br/>+ ThinkingConfig<br/>+ response_json_schema"]:::api
-    RETRY --> API
-
-    STRIP["Strip thinking parts<br/>Extract text from<br/>non-thought parts"]:::validate
-    API --> STRIP
-
-    PARSE_JSON["json.loads(raw)<br/>Parse JSON text"]:::validate
-    PARSE_PYDANTIC["schema.model_validate_json(raw)<br/>Pydantic validation"]:::validate
-
-    STRIP --> PARSE_JSON
-    STRIP --> PARSE_PYDANTIC
-
-    PARSE_JSON -. "custom schema path" .-> RESULT
-    PARSE_PYDANTIC -. "default schema path" .-> MODEL_DUMP
-
-    MODEL_DUMP["model.model_dump()<br/>Convert to dict"]:::validate
-    MODEL_DUMP --> RESULT
-
-    RESULT["Result dict"]:::toolcall
-
-    CACHE_WRITE["cache.save()<br/>Write JSON to<br/>~/.cache/video-research-mcp/"]:::cache
-    RESULT --> CACHE_WRITE
-
-    WEAVIATE["weaviate_store.store_*()<br/>Write-through to Weaviate<br/>(non-fatal on failure)"]:::store
-    CACHE_WRITE --> WEAVIATE
-
-    RETURN["Return result to MCP client"]:::toolcall
-    WEAVIATE --> RETURN
-    HIT --> RETURN
+    Entry["Console script: video-research-mcp"] --> App["server.py: FastMCP video-research"]
+    App --> Video["video_server: 4 tools"]
+    App --> Research["research_server: 13 tools"]
+    App --> Content["content_server: 3 tools"]
+    App --> Search["search_server: web_search"]
+    App --> Infra["infra_server: 2 tools"]
+    App --> YouTube["youtube_server: 3 tools"]
+    App --> Knowledge["knowledge_server: 8 tools"]
+    Document["research_document.py"] -. "deferred registration" .-> Research
+    Web["research_web.py"] -. "deferred registration" .-> Research
+    Academic["academic.py"] -. "deferred registration" .-> Research
+    Batch["content_batch.py"] -. "deferred registration" .-> Content
+    VideoBatch["video_batch.py"] -. "import registration" .-> Video
+    App -. "lifespan" .-> Life["Set up tracing; on shutdown flush traces and close clients"]
 ```
 
----
+Tool modules share clients and config. The two companion packages run as separate
+MCP servers; see diagram 7.
+
+## 2. GeminiClient Request Flow
+
+This is the ordinary video-analysis path. Other workflows choose their own
+preparation, caching, and storage steps. YouTube metadata optimization or file
+preparation can run before the result cache is checked.
+
+```mermaid
+flowchart TD
+    Input["video_analyze: exactly one source"] --> Prepare["Normalize YouTube URL or prepare local video"]
+    Prepare --> Cache{"use_cache and result hit?"}
+    Cache -- Yes --> Hit["Return cached result; cached=true"]
+    Cache -- No --> Schema{"Custom output_schema?"}
+    Schema -- No --> Structured["generate_structured with VideoResult"]
+    Schema -- Yes --> Raw["generate with response_schema"]
+    Structured --> Request["Resolve model/settings; GenerateContent with retry"]
+    Raw --> Request
+    Request --> Text["Extract visible text"]
+    Text --> Validate{"Selected output path"}
+    Validate -- Default --> Model["Pydantic validation; model_dump"]
+    Validate -- Custom --> Parse["Parse JSON; no local schema validation here"]
+    Model --> Result["Add source to result"]
+    Parse --> Result
+    Result --> Save["Save result if use_cache"]
+    Save --> Store["Best-effort VideoAnalyses write"]
+    Store --> Graph["Await best-effort graph enrichment"]
+    Graph --> Return["Return result; prewarm eligible File API context"]
+    Hit --> Return
+```
+
+The hit skips generation and storage inside `video_core`; it still returns through
+the outer tool. Strict video analysis takes the separate path in diagram 8.
+`generate_json_validated()` is another client API with explicit strict/lenient
+validation; it is not the custom-schema path shown here.
 
 ## 3. Session Lifecycle
 
-Video sessions enable multi-turn conversations about a single video. The SessionStore holds sessions in memory with optional SQLite persistence. Sessions are evicted after a configurable TTL and history is trimmed to prevent unbounded growth.
-
-```mermaid
-stateDiagram-v2
-    classDef active fill:#2a9d8f,color:#fff
-    classDef expired fill:#e76f51,color:#fff
-    classDef persist fill:#0f3460,color:#fff
-
-    [*] --> CreateSession: video_create_session(url)
-
-    state CreateSession {
-        direction LR
-        Evict[Evict expired sessions] --> CapCheck[Check max_sessions cap]
-        CapCheck --> Allocate[Allocate new VideoSession<br/>session_id = uuid4 hex 12]
-    }
-
-    CreateSession --> Active: SessionInfo returned<br/>(session_id, video_title)
-
-    state Active {
-        direction TB
-        InMemory[In-memory dict<br/>SessionStore._sessions]
-        SQLite[SQLite WAL persistence<br/>SessionDB.save_sync()]
-        InMemory --> SQLite: Write-through<br/>(if GEMINI_SESSION_DB set)
-    }
-
-    Active --> ContinueTurn: video_continue_session(session_id, prompt)
-
-    state ContinueTurn {
-        direction TB
-        Lookup[SessionStore.get(session_id)]
-        BuildHistory[Build contents from<br/>session.history + new prompt]
-        GeminiCall[GeminiClient generate<br/>with full history context]
-        AddTurn[session_store.add_turn()<br/>append user + model Content]
-        TrimHistory[Trim history to<br/>session_max_turns * 2 items]
-        WeaviateStore[store_session_turn()<br/>to SessionTranscripts]
-        Lookup --> BuildHistory
-        BuildHistory --> GeminiCall
-        GeminiCall --> AddTurn
-        AddTurn --> TrimHistory
-        TrimHistory --> WeaviateStore
-    }
-
-    ContinueTurn --> Active: SessionResponse returned<br/>(response, turn_count)
-
-    Active --> RecoverFromDB: Session evicted from memory<br/>but exists in SQLite
-    RecoverFromDB --> Active: SessionDB.load_sync()<br/>restores to memory
-
-    Active --> Expired: TTL exceeded<br/>(session_timeout_hours)
-    Active --> EvictedByCap: max_sessions reached<br/>(oldest evicted)
-
-    Expired --> [*]
-    EvictedByCap --> [*]
-```
-
----
-
-## 4. Weaviate Knowledge Store Data Flow
-
-All tool results are written through to Weaviate collections via `weaviate_store/`. The knowledge tools (`knowledge_*`) provide query access. The 12 collections store different data types, each with common properties (`created_at`, `source_tool`) plus domain-specific fields.
-
-```mermaid
-flowchart LR
-    classDef tool fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:2px
-    classDef store fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:1px
-    classDef client fill:#0f3460,stroke:#533483,color:#eee,stroke-width:1px
-    classDef collection fill:#533483,stroke:#e94560,color:#fff,stroke-width:1px
-    classDef query fill:#2a9d8f,stroke:#264653,color:#fff,stroke-width:1px
-    classDef weaviate fill:#e76f51,stroke:#264653,color:#fff,stroke-width:2px
-
-    subgraph "Producer Tools (write-through)"
-        T1["video_analyze<br/>video_batch_analyze"]:::tool
-        T2["content_analyze"]:::tool
-        T3["research_deep"]:::tool
-        T4["research_plan"]:::tool
-        T5["research_assess_evidence"]:::tool
-        T9["research_document"]:::tool
-        T10["research_web_status"]:::tool
-        T11["research_web_followup"]:::tool
-        T6["video_metadata"]:::tool
-        T7["video_continue_session"]:::tool
-        T8["web_search"]:::tool
-    end
-
-    subgraph "weaviate_store/"
-        S1["store_video_analysis()"]:::store
-        S2["store_content_analysis()"]:::store
-        S3["store_research_finding()"]:::store
-        S4["store_research_plan()"]:::store
-        S5["store_evidence_assessment()"]:::store
-        S9["store_deep_research()"]:::store
-        S10["store_deep_research_followup()"]:::store
-        S6["store_video_metadata()"]:::store
-        S7["store_session_turn()"]:::store
-        S8["store_web_search()"]:::store
-    end
-
-    T1 --> S1
-    T2 --> S2
-    T3 --> S3
-    T4 --> S4
-    T5 --> S5
-    T9 --> S3
-    T10 --> S9
-    T11 --> S10
-    T6 --> S6
-    T7 --> S7
-    T8 --> S8
-
-    WC["WeaviateClient.get()<br/>Thread-safe singleton<br/>auto-creates schema"]:::client
-
-    S1 --> WC
-    S2 --> WC
-    S3 --> WC
-    S4 --> WC
-    S5 --> WC
-    S6 --> WC
-    S7 --> WC
-    S8 --> WC
-
-    subgraph "Weaviate Cloud"
-        direction TB
-        C1["ResearchFindings<br/>topic, claim, evidence_tier,<br/>confidence, executive_summary"]:::collection
-        C2["VideoAnalyses<br/>video_id, instruction,<br/>title, summary, key_points"]:::collection
-        C3["ContentAnalyses<br/>source, instruction,<br/>title, summary, entities"]:::collection
-        C4["VideoMetadata<br/>video_id, title, channel,<br/>tags, view_count, duration"]:::collection
-        C5["SessionTranscripts<br/>session_id, video_title,<br/>turn_prompt, turn_response"]:::collection
-        C6["WebSearchResults<br/>query, response,<br/>sources_json"]:::collection
-        C7["ResearchPlans<br/>topic, scope,<br/>task_decomposition, phases"]:::collection
-    end
-
-    WC --> C1
-    WC --> C2
-    WC --> C3
-    WC --> C4
-    WC --> C5
-    WC --> C6
-    WC --> C7
-
-    subgraph "Knowledge Query Tools"
-        K1["knowledge_search<br/>hybrid: BM25 + vector<br/>alpha controls balance"]:::query
-        K2["knowledge_related<br/>near-object vector search"]:::query
-        K3["knowledge_stats<br/>object counts per collection"]:::query
-        K4["knowledge_ingest<br/>manual object insertion"]:::query
-    end
-
-    C1 --> K1
-    C2 --> K1
-    C3 --> K1
-    C4 --> K1
-    C5 --> K1
-    C6 --> K1
-    C7 --> K1
-
-    C1 --> K2
-    C2 --> K2
-    C3 --> K2
-    C4 --> K2
-    C5 --> K2
-    C6 --> K2
-    C7 --> K2
-
-    C1 --> K3
-    C2 --> K3
-    C3 --> K3
-    C4 --> K3
-    C5 --> K3
-    C6 --> K3
-    C7 --> K3
-
-    C1 --> K4
-    C2 --> K4
-    C3 --> K4
-    C4 --> K4
-    C5 --> K4
-    C6 --> K4
-    C7 --> K4
-```
-
----
-
-## 5. Reranker & Flash Post-Processing Flow
-
-`knowledge_search` overfetches 3x the requested limit, reranks via Cohere (Weaviate-integrated), then optionally runs Gemini Flash to score relevance, generate one-line summaries, and trim properties before returning the final result set.
+The session store owns history. Provider context caching changes how the video
+is attached to a turn, while SQLite optionally preserves the session locally.
 
 ```mermaid
 sequenceDiagram
     participant Caller
-    participant KS as knowledge_search
-    participant WV as Weaviate
-    participant RR as Cohere Reranker<br/>(Weaviate module)
-    participant Flash as Gemini Flash<br/>(summarize_hits)
+    participant Tool as Video tools
+    participant Store as SessionStore
+    participant DB as Optional SQLite
+    participant Cache as Context cache
+    participant API as Gemini GenerateContent
 
-    Caller->>KS: query, limit=10
+    Caller->>Tool: video_create_session(source)
+    Note over Tool: Local source always uploads; YouTube download is optional
+    Tool->>Cache: Attempt cache for eligible File API URI
+    Cache-->>Tool: Cache name or uncached reason
+    Tool->>Store: create(source URI, cache/model, title, local path)
+    Store->>DB: Save if configured
+    Tool-->>Caller: SessionInfo with statuses and session_id
 
-    Note over KS: fetch_limit = limit * 3<br/>(overfetch factor)
-
-    KS->>WV: hybrid/semantic/bm25<br/>limit=30, rerank=Rerank(prop, query)
-    WV->>RR: rerank 30 candidates
-    RR-->>WV: scored + reordered
-    WV-->>KS: 30 results with<br/>rerank_score + base score
-
-    Note over KS: Sort by rerank_score desc,<br/>base score as tiebreaker
-
-    alt flash_summarize enabled
-        KS->>Flash: _build_prompt(hits, query)<br/>batch up to 20 hits
-        Flash-->>KS: HitSummaryBatch<br/>(relevance, summary,<br/>useful_properties per hit)
-        Note over KS: Trim properties to<br/>useful ones, attach summaries
+    Caller->>Tool: video_continue_session(session_id, prompt)
+    Tool->>Store: get(session_id)
+    Store->>DB: Read through on memory miss, if configured
+    Store-->>Tool: Session or missing
+    Tool->>Cache: Refresh known cache TTL
+    alt Cache remains usable
+        Tool->>API: Retained history + text prompt + cached_content
+    else Uncached or refresh failed
+        Tool->>API: Retained history + video URI and text prompt
     end
-
-    KS-->>Caller: KnowledgeSearchResult<br/>reranked=true,<br/>flash_processed=true/false
+    API-->>Tool: SDK content
+    Tool->>Store: Append user/model pair; trim history; update activity
+    Store->>DB: Save if configured
+    Note over Tool: Best-effort SessionTranscripts write after a successful turn
+    Tool-->>Caller: SessionResponse
 ```
 
----
+In-memory expiry and capacity eviction do not delete SQLite rows. The current
+SQLite read-through path does not separately reject expired rows; see
+[Session Management](ARCHITECTURE.md#8-session-management) before treating the
+memory timeout as a retention guarantee.
 
-## 6. MLflow Tracing Flow
+## 4. Weaviate Knowledge Store Data Flow
 
-Optional tracing via `mlflow-tracing`. The `@trace` decorator wraps MCP tool entrypoints as `TOOL` root spans. `mlflow.gemini.autolog()` patches the google-genai SDK to capture every `generate_content` call as a child `CHAT_MODEL` span. Guarded import — the server runs fine without `mlflow-tracing` installed.
+Selected workflows write derived results through domain store helpers. The
+collection definitions control properties, indexes, vectorization, and references.
+
+```mermaid
+flowchart LR
+    Producers["Analysis, research, metadata, search, and paper workflows"] --> Helpers["weaviate_store: domain helpers"]
+    Helpers --> Enabled{"Storage enabled?"}
+    Enabled -- No --> Skip["Skip primary write"]
+    Enabled -- Yes --> Client["WeaviateClient.get"]
+    Client --> Schema["Ensure collections, properties, vector config, references"]
+    Schema --> Write["Insert or upsert derived result"]
+    Write --> Collections["Collections defined by ALL_COLLECTIONS"]
+    Collections --> Queries["knowledge_search / related / fetch / stats"]
+    Definitions["Local CollectionDef objects"] --> Inspect["knowledge_schema"]
+    Definitions --> Ingest["knowledge_ingest validation"]
+    Ingest --> Client
+    Collections --> Agent["Optional QueryAgent tools"]
+    Producers -. "selected workflows" .-> Graph["Gemini concept/relationship extraction"]
+    Graph --> GraphStore["Best-effort graph store helpers"]
+    GraphStore --> Enabled
+```
+
+Primary storage and graph enrichment failures are logged without invalidating
+the analysis result. The graph helper can still make a Gemini call when Weaviate
+storage is disabled. The canonical schema currently contains 13 collections;
+see [Knowledge Store](tutorials/KNOWLEDGE_STORE.md) for their use.
+
+## 5. Reranker & Flash Post-Processing Flow
+
+`limit` is the final total across selected collections. Each reranked collection
+fetches extra candidates before merging and trimming.
 
 ```mermaid
 sequenceDiagram
-    participant MCP as MCP Client
-    participant Tool as Tool Function<br/>(@trace decorator)
-    participant MLflow as MLflow
-    participant Gemini as GeminiClient<br/>(autologged)
-    participant API as Google GenAI API
+    participant Caller
+    participant Search as knowledge_search
+    participant WV as Weaviate
+    participant Flash as Gemini summarizer
 
-    Note over MLflow: setup() at server start:<br/>set_tracking_uri()<br/>set_experiment()<br/>gemini.autolog()
-
-    MCP->>Tool: tool invocation
-
-    alt tracing enabled
-        Tool->>MLflow: Start TOOL span<br/>(name, span_type="TOOL")
-        MLflow-->>Tool: span context
+    Caller->>Search: query, collections, limit
+    loop Each selected collection
+        Note over Search: Build only filters supported by this collection
+        alt Reranking enabled and property available
+            Search->>WV: Search with limit * 3 and rerank config
+        else No reranking
+            Search->>WV: Search with limit
+        end
+        WV-->>Search: Hits with base and optional rerank scores
+        Note over Search: A failed collection is logged; others continue
     end
-
-    Tool->>Gemini: generate() / generate_structured()
-    Gemini->>API: aio.models.generate_content()
-
-    alt tracing enabled
-        Note over Gemini,MLflow: autolog captures<br/>CHAT_MODEL child span<br/>(model, tokens, latency)
-        API-->>Gemini: response
-        Gemini-->>Tool: parsed result
-        Tool->>MLflow: Complete TOOL span<br/>(success/error, attributes)
-    else tracing disabled
-        API-->>Gemini: response
-        Gemini-->>Tool: parsed result
-        Note over Tool: @trace is identity —<br/>zero overhead
+    Note over Search: Merge, sort by rerank/base score, trim to overall limit
+    opt Flash summarization enabled and hits exist
+        Search->>Flash: Bounded hit properties and query
+        Flash-->>Search: Summaries and useful property names, or failure
+        Note over Search: Keep original hits if summarization fails
     end
-
-    Tool-->>MCP: tool result
-
-    Note over MLflow: shutdown():<br/>flush_trace_async_logging()
+    Search-->>Caller: Hits, total_results, reranked, flash_processed
 ```
 
----
+Flash summaries reduce returned properties; they do not replace stored objects
+or verify the findings. Prompt bounds live in
+[tools/knowledge/summarize.py](../src/video_research_mcp/tools/knowledge/summarize.py).
+
+## 6. MLflow Tracing Flow
+
+Tracing has a tool-entry layer and a Gemini autolog layer. The diagram shows
+GenerateContent instrumentation; SDK operations outside that integration need
+separate evidence of tracing coverage.
+
+```mermaid
+sequenceDiagram
+    participant App as Server lifespan
+    participant MLflow
+    participant Caller
+    participant Tool as Decorated tool
+    participant Gemini as GeminiClient
+    participant API as GenerateContent
+
+    App->>MLflow: Set tracking URI/experiment and enable Gemini autolog, if configured
+    Caller->>Tool: MCP invocation
+    opt Tracing enabled when decorated
+        Tool->>MLflow: Start TOOL span
+    end
+    Tool->>Gemini: Generate request
+    Gemini->>API: aio.models.generate_content
+    API-->>Gemini: Response
+    Note over Gemini,MLflow: Autolog records supported model-call spans
+    Gemini-->>Tool: Text or validated result
+    Tool-->>Caller: Result or error
+    App->>MLflow: Flush pending traces on shutdown
+```
+
+The project decorator is a passthrough when tracing is disabled. Configuration
+and setup failures are covered in
+[tracing.py](../src/video_research_mcp/tracing.py) and its tests.
 
 ## 7. Monorepo Package Structure
 
-Three independent Python packages share a single git repository. The root package (`video-research-mcp`) is the main MCP server. The two packages under `packages/` are standalone MCP servers for video production workflows. All packages use hatchling and share the same Python/tooling requirements but have no runtime cross-dependencies.
+Each Python package has its own dependencies, lockfile, entry point, and tests.
+The npm package installs plugin assets and MCP configuration; it does not make
+the research server a video-rendering service.
 
 ```mermaid
-graph TD
-    classDef root fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:2px
-    classDef pkg fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:1px
-    classDef detail fill:#0f3460,stroke:#533483,color:#eee,stroke-width:1px
-    classDef dep fill:#533483,stroke:#e94560,color:#fff,stroke-width:1px
-
-    REPO["gemini-research-mcp<br/>(monorepo)"]:::root
-
-    subgraph "Root: video-research-mcp"
-        ROOT_PKG["video-research-mcp<br/>34 tools | 7 sub-servers<br/>PyPI + npm (plugin installer)"]:::pkg
-        ROOT_DEPS["google-genai >=2.25.0,<3<br/>fastmcp >=4.0.10,<5<br/>weaviate-client >=4.23.1,<5<br/>pydantic >=2.13.5,<3"]:::dep
-        ROOT_PKG --- ROOT_DEPS
-    end
-
-    subgraph "packages/video-agent-mcp"
-        AGENT_PKG["video-agent-mcp<br/>2 tools | 1 sub-server<br/>Parallel scene generation"]:::pkg
-        AGENT_DEPS["claude-agent-sdk >=0.2.162,<0.3<br/>fastmcp >=4.0.10,<5<br/>pydantic >=2.13.5,<3"]:::dep
-        AGENT_PKG --- AGENT_DEPS
-    end
-
-    subgraph "packages/video-explainer-mcp"
-        EXPLAINER_PKG["video-explainer-mcp<br/>15 tools | 4 sub-servers<br/>Video synthesis pipeline"]:::pkg
-        EXPLAINER_DEPS["fastmcp >=4.0.10,<5<br/>pydantic >=2.13.5,<3"]:::dep
-        EXPLAINER_PKG --- EXPLAINER_DEPS
-    end
-
-    REPO --> ROOT_PKG
-    REPO --> AGENT_PKG
-    REPO --> EXPLAINER_PKG
-
-    SHARED["Shared: Python >=3.11<br/>hatchling build<br/>ruff + pytest"]:::detail
-    REPO -.- SHARED
+flowchart TD
+    Repo["video-research-mcp repository"] --> Research["Root Python package: research MCP"]
+    Repo --> Agent["packages/video-agent-mcp: scene-text MCP"]
+    Repo --> Explainer["packages/video-explainer-mcp: pipeline-wrapper MCP"]
+    Repo --> NPM["npm installer: plugin assets and MCP configuration"]
+    Research --> Gemini["Gemini / YouTube / Semantic Scholar / optional Weaviate"]
+    Agent --> SDK["Claude Agent SDK: bounded text queries"]
+    Explainer --> Upstream["Separately installed video_explainer checkout and console script"]
+    Upstream --> Providers["Generation and rendering prerequisites"]
 ```
+
+The scene-text runner disables tools and inherited settings, preserves terminal
+failures, and changes only the child environment. The explainer runner uses an
+argument-list subprocess and cleans up on cancellation or timeout. See the
+[companion package descriptions](ARCHITECTURE.md#16-companion-packages).
+
+## 8. Strict Video Artifact Flow
+
+Strict mode generates and checks local artifacts before returning final paths.
+It rejects a simultaneous custom `output_schema` and bypasses ordinary result
+caching and write-through storage.
+
+```mermaid
+flowchart TD
+    Source["Prepared video source"] --> Analysis["Generate and validate StrictVideoResult"]
+    Analysis --> Strategy["Generate StrategyReport"]
+    Analysis --> Map["Generate ConceptMap"]
+    Strategy --> Render["Render three artifacts into temporary directory"]
+    Map --> Render
+    Render --> Gates{"All quality gates pass?"}
+    Gates -- Yes --> Promote["Move artifacts to unique final directory"]
+    Promote --> Success["Return analysis, strategy, map, paths, quality report"]
+    Gates -- No --> Clean["Remove temporary and placeholder output"]
+    Clean --> Failure["Return QUALITY_GATE_FAILED, analysis, quality report"]
+```
+
+The gates check output structure, timestamp rules, artifact presence, and links.
+They do not prove factual accuracy or browser rendering; details are in
+[the strict contract description](ARCHITECTURE.md#strict-video-contract).
+
+## 9. Autonomous Web Research Lifecycle
+
+Deep Research uses the Interactions API, separate from ordinary GenerateContent.
+The launch tracker is local bookkeeping; the provider owns task execution.
+
+```mermaid
+sequenceDiagram
+    participant Caller
+    participant Tools as research_web tools
+    participant Tracker as Process launch tracker
+    participant API as Gemini Interactions
+
+    Caller->>Tools: research_web(topic)
+    Tools->>Tracker: Reject a likely-active tracked task
+    Tools->>API: create(agent, background=true, store=true)
+    API-->>Tools: interaction_id and status
+    Tools->>Tracker: Record topic, launch time, status
+    Tools-->>Caller: Launch envelope
+    Caller->>Tools: research_web_status(interaction_id)
+    Tools->>API: get(interaction_id)
+    API-->>Tools: Current status and steps/output
+    alt Completed
+        Note over Tools: Extract output_text and citation/search sources; best-effort storage
+        Tools-->>Caller: Report, sources, usage, available duration metadata
+    else Running or failed
+        Tools-->>Caller: Status and provider errors if present
+    end
+    Caller->>Tools: research_web_followup(completed_id, question)
+    Tools->>API: create(model, previous_interaction_id, question)
+    API-->>Tools: Follow-up interaction
+    Tools-->>Caller: Completed response or current status
+```
+
+`research_web_cancel` requests provider cancellation and clears local tracking.
+A restart loses launch timing/topic bookkeeping, so those fields are not durable
+proof of a task's history. The provider interaction ID remains the handle used
+for polling and follow-up.

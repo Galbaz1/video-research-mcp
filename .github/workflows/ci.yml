@@ -11,6 +11,16 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: '3.11'
+      - run: uv sync --locked --extra dev
+      - run: uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py
+
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -26,7 +36,6 @@ jobs:
       - run: uv run --locked pytest tests/ -q
         env:
           GEMINI_API_KEY: test-key-not-real
-      - run: uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py
 
   companion-packages:
     runs-on: ubuntu-latest

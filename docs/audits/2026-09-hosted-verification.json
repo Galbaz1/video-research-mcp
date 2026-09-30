@@ -1,0 +1,843 @@
+{
+  "retrieved_at": "2026-09-29T22:03:37.534440+00:00",
+  "source": "GitHub Actions API and original public job logs",
+  "run": {
+    "conclusion": "success",
+    "headSha": "96f11b8c7d70a1bc4d73bfa500482f9811e4141f",
+    "jobs": [
+      {
+        "completedAt": "2026-09-29T21:26:46Z",
+        "conclusion": "success",
+        "databaseId": 109627514815,
+        "name": "companion-packages (3.11, video-agent-mcp)",
+        "startedAt": "2026-09-29T21:26:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:33Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:33Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:37Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:40Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:40Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:44Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:26:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:26:45Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627514815"
+      },
+      {
+        "completedAt": "2026-09-29T21:26:45Z",
+        "conclusion": "success",
+        "databaseId": 109627514947,
+        "name": "companion-packages (3.14, video-explainer-mcp)",
+        "startedAt": "2026-09-29T21:26:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:33Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:34Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:38Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:41Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:41Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:43Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:26:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:26:43Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627514947"
+      },
+      {
+        "completedAt": "2026-09-29T21:27:03Z",
+        "conclusion": "success",
+        "databaseId": 109627514957,
+        "name": "test (3.12)",
+        "startedAt": "2026-09-29T21:26:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:37Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:38Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:59Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:59Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:01Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:02Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:27:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:02Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:27:02Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627514957"
+      },
+      {
+        "completedAt": "2026-09-29T21:26:46Z",
+        "conclusion": "success",
+        "databaseId": 109627514983,
+        "name": "companion-packages (3.14, video-agent-mcp)",
+        "startedAt": "2026-09-29T21:26:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:37Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:40Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:43Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:43Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:26:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:26:45Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627514983"
+      },
+      {
+        "completedAt": "2026-09-29T21:26:57Z",
+        "conclusion": "success",
+        "databaseId": 109627515041,
+        "name": "test (3.13)",
+        "startedAt": "2026-09-29T21:26:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:33Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:33Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:37Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:54Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:54Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:26:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:26:56Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627515041"
+      },
+      {
+        "completedAt": "2026-09-29T21:27:23Z",
+        "conclusion": "success",
+        "databaseId": 109627515092,
+        "name": "companion-packages (3.11, video-explainer-mcp)",
+        "startedAt": "2026-09-29T21:27:07Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:27:10Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:27:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:11Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:27:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:15Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:27:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:17Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:27:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:20Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:27:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:20Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/",
+            "number": 6,
+            "startedAt": "2026-09-29T21:27:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:20Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:27:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:21Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:27:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:21Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:27:21Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627515092"
+      },
+      {
+        "completedAt": "2026-09-29T21:26:59Z",
+        "conclusion": "success",
+        "databaseId": 109627515095,
+        "name": "test (3.14)",
+        "startedAt": "2026-09-29T21:26:32Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:36Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:39Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:55Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:55Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:26:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:26:56Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627515095"
+      },
+      {
+        "completedAt": "2026-09-29T21:27:09Z",
+        "conclusion": "success",
+        "databaseId": 109627515112,
+        "name": "release-contract",
+        "startedAt": "2026-09-29T21:26:32Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:37Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:40Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:42Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:44Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:45Z",
+            "conclusion": "success",
+            "name": "Run node --test tests/installer.test.js",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:52Z",
+            "conclusion": "success",
+            "name": "Run ./scripts/run_security_smoke.sh",
+            "number": 7,
+            "startedAt": "2026-09-29T21:26:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:54Z",
+            "conclusion": "success",
+            "name": "Run PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py",
+            "number": 8,
+            "startedAt": "2026-09-29T21:26:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:54Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked python scripts/check_release.py",
+            "number": 9,
+            "startedAt": "2026-09-29T21:26:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:56Z",
+            "conclusion": "success",
+            "name": "Run uv build",
+            "number": 10,
+            "startedAt": "2026-09-29T21:26:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:03Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked python scripts/smoke_built_mcp.py dist/*.whl",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:05Z",
+            "conclusion": "success",
+            "name": "Run npm pack --dry-run",
+            "number": 12,
+            "startedAt": "2026-09-29T21:27:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:06Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 22,
+            "startedAt": "2026-09-29T21:27:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:06Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 23,
+            "startedAt": "2026-09-29T21:27:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:07Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 24,
+            "startedAt": "2026-09-29T21:27:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:07Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-09-29T21:27:07Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627515112"
+      },
+      {
+        "completedAt": "2026-09-29T21:27:03Z",
+        "conclusion": "success",
+        "databaseId": 109627515266,
+        "name": "test (3.11)",
+        "startedAt": "2026-09-29T21:26:32Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-29T21:26:35Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-29T21:26:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:36Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-09-29T21:26:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:38Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v10.2.0",
+            "number": 3,
+            "startedAt": "2026-09-29T21:26:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:41Z",
+            "conclusion": "success",
+            "name": "Run uv sync --locked --extra dev",
+            "number": 4,
+            "startedAt": "2026-09-29T21:26:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:59Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked pytest tests/ -q",
+            "number": 5,
+            "startedAt": "2026-09-29T21:26:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:26:59Z",
+            "conclusion": "success",
+            "name": "Run uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py",
+            "number": 6,
+            "startedAt": "2026-09-29T21:26:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:00Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v10.2.0",
+            "number": 11,
+            "startedAt": "2026-09-29T21:26:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:00Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 12,
+            "startedAt": "2026-09-29T21:27:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-29T21:27:00Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-09-29T21:27:00Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514/job/109627515266"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/Galbaz1/video-research-mcp/actions/runs/36633275514"
+  },
+  "log_excerpts": [
+    "companion-packages (3.11, video-agent-mcp)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:40.5544517Z 51 passed in 0.77s",
+    "companion-packages (3.11, video-agent-mcp)\tRun uv run --locked ruff check src/ tests/\t2026-09-29T21:26:40.7747994Z All checks passed!",
+    "companion-packages (3.14, video-explainer-mcp)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:41.7260516Z 129 passed in 2.12s",
+    "companion-packages (3.14, video-explainer-mcp)\tRun uv run --locked ruff check src/ tests/\t2026-09-29T21:26:41.9535818Z All checks passed!",
+    "test (3.12)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:58.4871665Z 801 passed, 1 warning in 19.05s",
+    "test (3.12)\tRun uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py\t2026-09-29T21:26:59.1987005Z All checks passed!",
+    "companion-packages (3.14, video-agent-mcp)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:43.4265084Z 51 passed in 0.74s",
+    "companion-packages (3.14, video-agent-mcp)\tRun uv run --locked ruff check src/ tests/\t2026-09-29T21:26:43.7788498Z All checks passed!",
+    "test (3.13)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:53.4868539Z 801 passed, 1 warning in 14.66s",
+    "test (3.13)\tRun uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py\t2026-09-29T21:26:54.3583422Z All checks passed!",
+    "companion-packages (3.11, video-explainer-mcp)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:27:20.5338197Z 129 passed in 2.12s",
+    "companion-packages (3.11, video-explainer-mcp)\tRun uv run --locked ruff check src/ tests/\t2026-09-29T21:27:20.5741025Z All checks passed!",
+    "test (3.14)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:54.6014642Z 801 passed, 2 warnings in 14.22s",
+    "test (3.14)\tRun uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py\t2026-09-29T21:26:55.3373999Z All checks passed!",
+    "release-contract\tRun node --test tests/installer.test.js\t2026-09-29T21:26:45.8536945Z \u2139 tests 13",
+    "release-contract\tRun node --test tests/installer.test.js\t2026-09-29T21:26:45.8537753Z \u2139 pass 13",
+    "release-contract\tRun ./scripts/run_security_smoke.sh\t2026-09-29T21:26:52.1721946Z 9 passed in 4.80s",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2300879Z [PASS] non_https_url_blocked",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2303464Z [PASS] local_path_boundary",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2306926Z [PASS] infra_mutation_gate_disabled",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2310224Z [PASS] infra_token_gate",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2313985Z [PASS] research_source_limit",
+    "release-contract\tRun PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\t2026-09-29T21:26:54.2318648Z   pass=5 fail=0 skip=0",
+    "release-contract\tRun uv run --locked python scripts/smoke_built_mcp.py dist/*.whl\t2026-09-29T21:27:03.4244958Z PASS: built wheel stdio discovery (34 tools) and read-only configuration",
+    "test (3.11)\tRun uv run --locked pytest tests/ -q\t2026-09-29T21:26:58.7048629Z 801 passed, 1 warning in 16.07s",
+    "test (3.11)\tRun uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py\t2026-09-29T21:26:59.3131069Z All checks passed!"
+  ]
+}

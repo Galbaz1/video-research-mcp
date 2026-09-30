@@ -2,46 +2,64 @@
 
 ## Metadata
 
-- Scan date: 2026-09-29 (Europe/Amsterdam).
-- Project: video-research-mcp; baseline origin/main 7b85c66.
-- Repositories scanned: 13 direct/build/dev dependency source repositories.
+- Scan date: **2026-09-29**, Europe/Amsterdam.
+- Project: video-research-mcp; baseline `origin/main` at `7b85c66`.
+- Source repositories inspected: 13 direct/build/dev dependency repositories.
 - Direct dependencies inventoried: 14 distinct packages across three manifests.
-- Scope: current primary registry/source metadata, privileged runtime dependencies,
-  and an advisory scan of the resolved core all-extras environment. This is a
-  bounded maintenance audit, not a proof that upstream code has no defects.
+- Scope: primary registry/source metadata, privileged runtime dependencies and
+  an advisory scan of the resolved core all-extras environment.
+
+This is the modernization run's dated audit. It does not cover every transitive
+source file, prove the absence of upstream defects or certify later dependency
+resolutions.
 
 ## Executive Summary
 
-The inspected source repositories are active and unarchived. Latest stable
-registry metadata and source URLs are retained in
-[dependency sources](../docs/audits/2026-09-dependency-sources.json). None is being
-replaced based on popularity alone. The full core advisory scan reported no
-known vulnerabilities; platform markers and advisory coverage limit that claim.
+No dependency replacement was justified by the inspected evidence. The 13 source
+repositories were active and unarchived at inspection. The
+[dependency inventory](../docs/audits/2026-09-dependency-sources.json) retains
+stable registry versions, Python support and source URLs.
+
+The resolved core all-extras scan covered 103 dependencies and reported zero
+known vulnerabilities. That result is bounded by platform markers and advisory
+coverage. A separate GitHub comparison found 67 alerts against unchanged main
+(three critical, 27 high, 25 medium and 12 low), with no vulnerable range matching
+the upgraded locks. Those baseline alerts were not erased by this audit. See
+[the publication receipt](../docs/audits/2026-09-modernization.md#github-publication-receipt--2026-09-29)
+for the exact source and comparison boundary.
 
 ### Counts by Risk Factor
 
-| Risk factor | Dependencies | Total |
-|---|---|---:|
+| Inspected risk factor | Dependencies | Count |
+| --- | --- | ---: |
 | Third-party code execution | claude-agent-sdk | 1 |
-| Deserialization and cryptography at protocol boundary | fastmcp | 1 |
-| Verified archive/deprecation among inspected repositories | None | 0 |
+| Deserialization and cryptography at the protocol boundary | fastmcp | 1 |
+| Confirmed archive/deprecation among inspected source repositories | None | 0 |
+
+The first two rows identify runtime exposure, not a discovered vulnerability.
+The third does not cover provider model or product retirements.
 
 ### High-Risk Dependencies
 
-| Dependency | Risk factors | Evidence and correction | Suggested alternative |
-|---|---|---|---|
-| claude-agent-sdk | Executes an external agent subprocess | Official SDK permits tool, MCP, workspace and environment isolation. Companion calls now explicitly disable built-in tools, inherited settings and MCP discovery, set bounded turns/time/concurrency, and validate terminal success. | Retain the current maintained SDK; an ad hoc CLI wrapper would inherit the same process risk and lose typed terminal evidence. |
-| fastmcp | Exposes external input schemas and dispatches provider/file operations | Upgrade to current stable API major and retain mocked security regressions plus actual MCP tool discovery. Upstream [release](https://github.com/PrefectHQ/fastmcp/releases/tag/v4.0.10) and repository inspected directly. | Retain; replacing the framework would require a separately scoped protocol migration without an observed benefit. |
+| Dependency | Exposure | Recorded response |
+| --- | --- | --- |
+| claude-agent-sdk | Starts an external agent subprocess | Retain the maintained SDK. Companion calls disable built-in tools, inherited settings and MCP discovery, bound turns/time/concurrency, and validate terminal success. An ad hoc CLI wrapper would retain process exposure while losing typed terminal evidence. |
+| fastmcp | Accepts external schemas and dispatches provider/file operations | Upgrade to the inspected stable API major, retain mocked policy regressions, and verify MCP discovery from the built artifact. The [v4.0.10 release](https://github.com/PrefectHQ/fastmcp/releases/tag/v4.0.10) and source repository were inspected directly during the audit. A framework replacement would require a separately scoped protocol migration with no observed benefit here. |
 
 ## Suggested Alternatives
 
-No replacement is justified by the observed evidence. Maintain API-major bounds,
-exact locks, source-backed updates, offline security tests and required release
-checks. Weekly Dependabot coverage now includes both companion packages and
-GitHub Actions. The proprietary provider remains outside offline test acceptance.
+Retain the current maintained dependencies, API-major bounds and exact locks.
+Source-backed updates, offline security tests and artifact release checks address
+the observed exposures without a replacement migration. Weekly Dependabot
+coverage includes both companion packages and GitHub Actions.
+
+The proprietary provider implementation and real account access remain outside
+offline acceptance. SDK controls limit tool/process behavior; their configured
+turn/time/concurrency limits are not a monetary budget.
 
 ## Report Generated By
 
-Supply Chain Risk Auditor skill with registry and source inspection.
-Generated: 2026-09-29. Completion and publication evidence is in the
-[modernization audit](../docs/audits/2026-09-modernization.md).
+The Supply Chain Risk Auditor skill, using registry and source inspection.
+Generated: **2026-09-29**. The
+[modernization audit](../docs/audits/2026-09-modernization.md) records review
+corrections, local acceptance and GitHub artifact verification for the run.

@@ -1,28 +1,56 @@
 # video-explainer-mcp
 
-Expose the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
-as MCP tools for project setup, pipeline steps, audio, quality checks, and video
-rendering. This package is a wrapper: the upstream checkout owns model selection,
-provider integrations, Remotion templates, and rendering dependencies.
+Create explainer projects, run pipeline steps, and render videos through MCP.
+This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
+with 15 tools for projects, generation, rendering, audio, and quality checks.
+The upstream checkout owns provider integrations, model selection, Remotion
+code, and rendering dependencies.
+
+Repository links point to the published source release. For the exact source
+and bundled README of a registry version, use its source archive on
+[PyPI](https://pypi.org/project/video-explainer-mcp/#files).
 
 ## Install and configure
 
-Python 3.11 or newer is required. From this directory:
+The wrapper requires Python 3.11 or newer and [uv](https://docs.astral.sh/uv/).
+Before generation, install the upstream CLI in its own checkout and virtual
+environment, following that checkout's instructions. The wrapper expects:
+
+- `<EXPLAINER_PATH>/.venv/bin/video-explainer` as an executable console script.
+- The Node.js version required by the upstream checkout, plus FFmpeg on `PATH`.
+- Upstream Remotion npm dependencies under `remotion/node_modules/`.
+- Credentials and compatible upstream support for each provider you intend to use.
+
+From this package directory in a source checkout:
 
 ```sh
-uv sync --extra dev --frozen
-uv run video-explainer-mcp
+uv sync --locked --extra dev
+uv run --locked video-explainer-mcp
 ```
 
-For an installed release, use `uvx video-explainer-mcp`. Before calling tools,
-install the upstream CLI in its own virtual environment, following that checkout's
-setup instructions. This server expects
-`<EXPLAINER_PATH>/.venv/bin/video-explainer`, plus the Node.js version declared by
-that checkout, FFmpeg, and upstream Remotion npm dependencies. It invokes the
-console script directly without a shell.
+The command starts a stdio server. Add this entry to your client's `mcpServers`
+configuration, replacing the absolute checkout path:
 
-Configuration is read from environment variables and
-`~/.config/video-research-mcp/.env`. Existing environment values take precedence:
+```json
+{
+  "video-explainer": {
+    "command": "uv",
+    "args": [
+      "run", "--locked", "--directory",
+      "/absolute/path/to/video-research-mcp/packages/video-explainer-mcp",
+      "video-explainer-mcp"
+    ]
+  }
+}
+```
+
+For a registry release, register `uvx` with
+`video-explainer-mcp==<published-version>` and confirm that version is published.
+The core npm installer does not register this companion or install the upstream
+renderer.
+
+Configuration comes from the process environment and
+`~/.config/video-research-mcp/.env`; nonempty process values take precedence:
 
 ```dotenv
 EXPLAINER_PATH=/absolute/path/to/video_explainer
@@ -33,45 +61,74 @@ EXPLAINER_TIMEOUT=600
 EXPLAINER_RENDER_TIMEOUT=1800
 ```
 
-Supported wrapper TTS selectors are `mock`, `elevenlabs`, `openai`, `gemini`, and
-`edge`. Real providers require credentials and compatible provider support in the
-upstream CLI. The default `mock` avoids paid TTS; other pipeline steps may still
-call model providers. Updating this wrapper does not update the external checkout
-or add support for new provider models. Supply secrets through the environment or
-your local untracked configuration file.
+Restart after changing configuration. `EXPLAINER_PATH` is the checkout root,
+not the projects directory. The CLI runs directly without a shell, receives
+`--projects-dir`, and inherits provider credentials while recursive Claude Code
+guard variables are removed from its child environment.
+
+Wrapper TTS selectors are `mock`, `elevenlabs`, `openai`, `gemini`, and `edge`.
+The default `mock` avoids paid TTS; other generation steps can still call paid
+providers. A selector is usable only if the upstream CLI supports it and its
+credentials are configured. Updating this wrapper does not update that checkout
+or add upstream provider support.
 
 ## First project and render
 
-1. Call `explainer_create(project_id="my-video")`.
-2. Call `explainer_inject(project_id="my-video", content="...", filename="research.md")`.
-   The filename must remain within the project's `input/` directory.
-3. Call `explainer_generate`, or use `explainer_step` for a bounded pipeline step.
-4. Inspect `explainer_status`, then preview/typecheck generated scenes upstream.
-5. Call `explainer_render_start` and poll its returned job ID with
-   `explainer_render_poll`. Use blocking `explainer_render` for shorter renders.
+These are MCP calls, made through your client after registration:
 
-Render completion requires exit code zero and a new or updated, nonempty `.mp4`
-or `.webm` file in the project's `output/` directory. A retained video from an
-older run does not prove the current render succeeded. Artifact detection verifies
-file production; it does not decode video, prove visual quality, or fact-check its
-contents.
+1. Create a project:
 
-Background jobs live in memory and are lost when the server restarts. Shutdown
-cancels and joins active render tasks and stops their CLI subprocesses. Poll for
-`completed` or `failed`, and inspect the recorded output path or error. Do not
-start a second render while the same project's first render is still running.
+   ```text
+   explainer_create(project_id="my-video")
+   ```
 
-`explainer_status` reports filesystem observations. A step file's presence alone
-does not prove that it is valid or that the entire video is ready for publication.
+2. Add source material:
+
+   ```text
+   explainer_inject(project_id="my-video", content="...", filename="research.md")
+   ```
+
+   `filename` must be a single filename inside `input/`. Injection replaces an
+   existing file with the same name; preserve the original when that matters.
+3. Authorize generation, then run a bounded step such as
+   `explainer_step(project_id="my-video", step="script")`, or use
+   `explainer_generate` for the pipeline. Inspect returned errors and outputs
+   before continuing. `force=True` reruns already completed generation steps.
+4. Read `explainer_status` and inspect the actual generated files. Review and
+   typecheck TSX upstream, then preview scenes before rendering.
+5. Start a render with `explainer_render_start(project_id="my-video")`. Poll the
+   returned `job_id` with `explainer_render_poll` until `completed` or `failed`.
+   Use blocking `explainer_render` for a short render.
+
+Render acceptance requires exit code zero and a new or updated, nonempty regular
+`.mp4` or `.webm` file in the project's `output/`. An unchanged older video does
+not satisfy the current render. Inspect the returned output path, decode/play
+that file, and review picture, sound, timing, and claims before publication.
+The wrapper's artifact check establishes file production, not those quality checks.
+
+## Status and recovery
+
+`explainer_status` reports filesystem observations. A step file's presence does
+not establish its validity or publication readiness. Background jobs live in
+memory, so their IDs are lost on restart. Shutdown cancels and joins active render
+tasks and stops their CLI subprocesses.
+
+The server prevents concurrent renders of the same project. After a failure,
+inspect the job error and project output before retrying. Preserve project files
+when upgrading the wrapper or renderer; they are separate from package installs.
 
 ## Development
 
+From this package directory:
+
 ```sh
-uv run pytest tests/ -q
-uv run ruff check src/ tests/
+uv run --locked pytest tests/ -q
+uv run --locked ruff check src/ tests/
 uv build
 ```
 
-All tests use temporary projects and mocked CLI processes; no test calls paid
-providers. The committed lockfile records the verified development environment,
-and dependencies remain constrained to their supported major versions.
+Tests use temporary projects and mocked CLI processes; no paid provider calls
+are made. The lockfile records the development environment; `pyproject.toml`
+defines supported dependency ranges. See the root
+[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/CONTRIBUTING.md) and
+[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/docs/PUBLISHING.md) for repository and release checks.

@@ -1,425 +1,268 @@
 # Writing Tests
 
-How to write, organize, and run tests for the video-research-mcp server.
+The test suite verifies tool workflows, result models, provider adapters, and
+local state without making real provider calls. Mock the external boundary and
+exercise the internal behavior that changed. A test that replaces the behavior
+under examination cannot establish that behavior.
 
-## Test Philosophy
-
-All tests are **unit-level with mocked Gemini and Weaviate**. No test should ever hit a real API. The test suite validates:
-
-1. **Tool functions** -- correct input handling, structured output, error paths
-2. **Pydantic models** -- defaults, roundtrip serialization, validation
-3. **Helper functions** -- URL parsing, content building, cache operations
-
-Currently 540 tests across 20+ test files, all running in under 10 seconds.
+The root package uses pytest with `asyncio_mode = "auto"`. Its test dependencies
+and configuration live in [pyproject.toml](../../pyproject.toml); shared fixtures
+live in [tests/conftest.py](../../tests/conftest.py). Companion packages have their
+own test directories and lockfiles.
 
 ## Running Tests
 
+Run commands from the root checkout:
+
 ```bash
-# Run all tests
-uv run pytest tests/ -v
+# All root Python tests
+uv run --locked --extra dev pytest tests/ -q
 
-# Run a single file
-uv run pytest tests/test_video_tools.py -v
+# One workflow or one test
+uv run --locked --extra dev pytest tests/test_content_tools.py -v
+uv run --locked --extra dev pytest tests/test_content_tools.py::TestContentAnalyze::test_text_default_schema -v
 
-# Run a single test
-uv run pytest tests/test_video_tools.py::TestVideoAnalyze::test_video_analyze_default_schema -v
+# Select by name; show captured output while diagnosing
+uv run --locked --extra dev pytest tests/ -k "content_analyze" -v
+uv run --locked --extra dev pytest tests/test_content_tools.py -v -s
 
-# Run tests matching a keyword
-uv run pytest tests/ -k "video_analyze" -v
-
-# Run with output (useful for debugging)
-uv run pytest tests/ -v -s
+# Python lint and installer tests
+uv run --locked --extra dev ruff check src/ tests/
+npm test
 ```
 
-### asyncio_mode=auto
-
-The project uses `asyncio_mode = "auto"` in `pyproject.toml`:
-
-```toml
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]
-```
-
-This means async test functions run automatically without needing `@pytest.mark.asyncio` on every test. However, it is still common practice in this codebase to include the marker explicitly for clarity.
+Async test functions run automatically; new tests do not need
+`@pytest.mark.asyncio`. Add `PYTHONPATH=src` if the runner needs an explicit source
+path, as in the project's test instructions. Use focused checks during repair,
+then the required final suite. Avoid documenting a fixed test count or runtime;
+both change as the repository evolves.
 
 ## Conftest Fixtures
 
-All shared fixtures live in `tests/conftest.py`. Four autouse fixtures run for every test, plus several opt-in fixtures for specific scenarios.
-
 ### Autouse fixtures (run automatically)
 
-### `_set_dummy_api_key` (autouse)
+| Fixture | Boundary it isolates |
+| --- | --- |
+| `_set_dummy_api_key` | Sets a non-real Gemini key |
+| `_disable_tracing` | Disables tracing configuration for tests |
+| `_isolate_dotenv` | Prevents loading the user's real config file |
+| `_isolate_upload_cache` | Redirects upload cache files to a temporary directory |
+| `_disable_graph_extraction` | Patches graph enrichment at its source and package export |
+| `_unwrap_fastmcp_tools` | Keeps imported tool entry points directly callable for tests |
 
-```python
-@pytest.fixture(autouse=True)
-def _set_dummy_api_key(monkeypatch):
-    """Ensure tests never hit real Gemini API."""
-    monkeypatch.setenv("GEMINI_API_KEY", "test-key-not-real")
-```
-
-Sets a fake API key so the config singleton initializes without errors.
-
-### `_disable_tracing` (autouse)
-
-```python
-@pytest.fixture(autouse=True)
-def _disable_tracing(monkeypatch):
-    """Disable MLflow tracing in all tests to avoid real tracking-server calls."""
-    monkeypatch.setenv("GEMINI_TRACING_ENABLED", "false")
-```
-
-Prevents tests from contacting a real MLflow tracking server. The `test_tracing.py` module patches the tracing module directly and does not rely on this fixture.
-
-### `_isolate_dotenv` (autouse)
-
-```python
-@pytest.fixture(autouse=True)
-def _isolate_dotenv(tmp_path, monkeypatch):
-    """Prevent tests from loading the user's real ~/.config/video-research-mcp/.env."""
-    monkeypatch.setattr(
-        "video_research_mcp.dotenv.DEFAULT_ENV_PATH",
-        tmp_path / "nonexistent.env",
-    )
-```
-
-Redirects dotenv loading to a nonexistent temp path so the user's real `.env` file never leaks into tests.
-
-### `_isolate_upload_cache` (autouse)
-
-```python
-@pytest.fixture(autouse=True)
-def _isolate_upload_cache(tmp_path, monkeypatch):
-    """Point upload cache to a temp directory so tests never share filesystem state."""
-    cache_dir = tmp_path / "upload_cache"
-    cache_dir.mkdir()
-    monkeypatch.setattr(
-        "video_research_mcp.tools.video_file._upload_cache_dir",
-        lambda: cache_dir,
-    )
-```
-
-Ensures the File API upload cache uses an isolated temp directory per test.
+The dummy key is not a network mock. Tests still need to patch every provider
+operation they invoke. These fixtures also do not automatically isolate every
+result cache, context cache, session, or environment setting; use the fixtures
+and temporary paths required by the scenario.
 
 ### Opt-in fixtures
 
-### `mock_gemini_client`
+| Fixture | Supplied behavior |
+| --- | --- |
+| `mock_gemini_client` | Patches `get()`, `generate()`, `generate_structured()`, and `generate_json_validated()` |
+| `clean_config` | Clears the config singleton before and after the test |
+| `mock_weaviate_client` | Supplies a mock client/collection and patches singleton access and availability |
+| `mock_weaviate_disabled` | Removes Weaviate settings and resets config through `clean_config` |
 
-```python
-@pytest.fixture()
-def mock_gemini_client():
-    """Patch GeminiClient.get(), .generate(), and .generate_structured()."""
-    with (
-        patch("video_research_mcp.client.GeminiClient.get") as mock_get,
-        patch("video_research_mcp.client.GeminiClient.generate", new_callable=AsyncMock) as mock_gen,
-        patch("video_research_mcp.client.GeminiClient.generate_structured", new_callable=AsyncMock) as mock_structured,
-    ):
-        client = MagicMock()
-        mock_get.return_value = client
-        yield {
-            "get": mock_get,
-            "generate": mock_gen,
-            "generate_structured": mock_structured,
-            "client": client,
-        }
-```
+`mock_gemini_client` returns a dictionary with `get`, `generate`,
+`generate_structured`, `generate_json_validated`, and `client` entries. Return a
+concrete Pydantic model from `generate_structured`; return text from `generate`;
+return a dictionary from `generate_json_validated` when testing its callers.
+For direct SDK calls, configure the relevant method on `client` as an
+`AsyncMock`, such as `client.aio.files.upload` or `client.aio.interactions.create`.
 
-Returns a dict with four keys. Usage:
-
-```python
-# Mock structured output (returns a Pydantic model instance)
-mock_gemini_client["generate_structured"].return_value = VideoResult(title="Test")
-
-# Mock raw text output
-mock_gemini_client["generate"].return_value = '{"key": "value"}'
-
-# Mock failure
-mock_gemini_client["generate"].side_effect = RuntimeError("API error")
-
-# Access the underlying client mock (for file upload mocking etc.)
-mock_gemini_client["client"].aio.files.upload = AsyncMock(return_value=uploaded)
-```
-
-### `clean_config`
-
-```python
-@pytest.fixture()
-def clean_config():
-    """Reset the config singleton between tests."""
-    import video_research_mcp.config as cfg_mod
-    cfg_mod._config = None
-    yield
-    cfg_mod._config = None
-```
-
-Use when testing config behavior or when a test modifies env vars that affect the config singleton.
-
-### `mock_weaviate_client`
-
-```python
-@pytest.fixture()
-def mock_weaviate_client():
-    """Patch WeaviateClient for unit tests."""
-    # ... provides mock client + collection
-    yield {"client": mock_client, "collection": mock_collection}
-```
-
-For testing knowledge tools. Patches the Weaviate singleton and provides pre-configured mocks for common operations (insert, query, aggregate).
-
-### `mock_weaviate_disabled`
-
-```python
-@pytest.fixture()
-def mock_weaviate_disabled(monkeypatch, clean_config):
-    """Ensure Weaviate is disabled — empty WEAVIATE_URL."""
-    monkeypatch.delenv("WEAVIATE_URL", raising=False)
-    monkeypatch.delenv("WEAVIATE_API_KEY", raising=False)
-```
-
-For testing graceful degradation when Weaviate is not configured. Depends on `clean_config` to reset the singleton so the removed env vars take effect.
+Patch the name the implementation resolves. Imports inside a tool often resolve
+through a package export, while a module-level import may need a patch on that
+module. The graph fixture patches both locations for that reason. Do not copy
+its suppression into a test whose purpose is to verify graph extraction.
 
 ## Testing Tools
 
-Tool tests follow a consistent pattern:
-
-### Basic structure
-
-```python
-# tests/test_my_tools.py
-"""Tests for my domain tools."""
-
-from __future__ import annotations
-
-import pytest
-
-from video_research_mcp.models.my_domain import MyResult
-from video_research_mcp.tools.my_domain import my_tool
-
-
-class TestMyTool:
-    @pytest.mark.asyncio
-    async def test_success_case(self, mock_gemini_client):
-        """GIVEN valid input WHEN my_tool called THEN returns structured result."""
-        mock_gemini_client["generate_structured"].return_value = MyResult(
-            field="value",
-        )
-
-        result = await my_tool(input_text="test")
-
-        assert result["field"] == "value"
-        mock_gemini_client["generate_structured"].assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_error_case(self, mock_gemini_client):
-        """GIVEN API failure WHEN my_tool called THEN returns error dict."""
-        mock_gemini_client["generate_structured"].side_effect = RuntimeError("fail")
-
-        result = await my_tool(input_text="test")
-
-        assert "error" in result
-        assert "category" in result
-        assert "hint" in result
-
-    @pytest.mark.asyncio
-    async def test_validation_error(self):
-        """GIVEN invalid input WHEN my_tool called THEN returns error without calling Gemini."""
-        result = await my_tool()  # missing required param
-        assert "error" in result
-```
-
-### What to test for each tool
-
-| Scenario | What to assert |
-|----------|---------------|
-| Happy path (default schema) | Result matches model fields, `generate_structured` called |
-| Happy path (custom schema) | Result matches custom schema, `generate` called |
-| Invalid input | Returns error dict, Gemini NOT called |
-| Gemini failure | Returns error dict with category and hint |
-| Edge cases | Empty inputs, boundary values, both/neither sources |
-
-### Real example from the codebase
-
-From `tests/test_video_tools.py`:
+Use a small input that reaches the branch under test. This complete text-analysis
+example avoids URL resolution and File API uploads:
 
 ```python
-class TestVideoAnalyze:
-    @pytest.mark.asyncio
-    async def test_video_analyze_default_schema(self, mock_gemini_client):
-        """video_analyze with no custom schema uses VideoResult via generate_structured."""
-        mock_gemini_client["generate_structured"].return_value = VideoResult(
-            title="Test Video",
-            summary="A test summary",
-            key_points=["point 1"],
-            topics=["AI"],
-        )
+from video_research_mcp.models.content import ContentResult
+from video_research_mcp.tools.content import content_analyze
 
-        result = await video_analyze(
-            url="https://www.youtube.com/watch?v=abc123",
-            use_cache=False,
-        )
 
-        assert result["title"] == "Test Video"
-        assert result["summary"] == "A test summary"
-        assert result["source"] == "https://www.youtube.com/watch?v=abc123"
-        mock_gemini_client["generate_structured"].assert_called_once()
+async def test_text_analysis_returns_structured_result(
+    mock_gemini_client, mock_weaviate_disabled,
+):
+    """GIVEN text WHEN analyzed THEN return validated content fields."""
+    mock_gemini_client["generate_structured"].return_value = ContentResult(
+        title="Study notes",
+        summary="The sample contains ten observations.",
+        key_points=["The study reports its sample size."],
+    )
 
-    @pytest.mark.asyncio
-    async def test_video_analyze_custom_schema(self, mock_gemini_client):
-        """video_analyze with custom output_schema uses generate() + json.loads."""
-        mock_gemini_client["generate"].return_value = '{"recipes": ["pasta", "salad"]}'
+    result = await content_analyze(
+        text="The study contains ten observations.",
+        instruction="Summarize the evidence.",
+    )
 
-        custom_schema = {"type": "object", "properties": {"recipes": {"type": "array"}}}
-        result = await video_analyze(
-            url="https://www.youtube.com/watch?v=abc123",
-            instruction="List all recipes",
-            output_schema=custom_schema,
-            use_cache=False,
-        )
+    assert result["title"] == "Study notes"
+    call = mock_gemini_client["generate_structured"].call_args
+    assert call.kwargs["schema"] is ContentResult
+    assert "Summarize the evidence." in call.args[0].parts[-1].text
 
-        assert result["recipes"] == ["pasta", "salad"]
-        mock_gemini_client["generate"].assert_called_once()
+
+async def test_missing_source_stops_before_generation(
+    mock_gemini_client, mock_weaviate_disabled,
+):
+    result = await content_analyze()
+
+    assert "Provide exactly one" in result["error"]
+    mock_gemini_client["generate"].assert_not_called()
+    mock_gemini_client["generate_structured"].assert_not_called()
+
+
+async def test_quota_failure_returns_recovery_fields(
+    mock_gemini_client, mock_weaviate_disabled,
+):
+    mock_gemini_client["generate_structured"].side_effect = RuntimeError("429 quota")
+
+    result = await content_analyze(text="Study notes")
+
+    assert result["category"] == "API_QUOTA_EXCEEDED"
+    assert result["retryable"] is True
+    assert result["retry_after_seconds"] == 60
 ```
+
+Choose additional cases from the actual contract:
+
+| Changed behavior | Useful assertion |
+| --- | --- |
+| Custom schema | Schema reaches the provider adapter; malformed output takes the documented failure path |
+| Source selection | Both/neither sources stop before generation |
+| Policy checks | Rejected URL/path makes no downstream provider call |
+| Fallback | Each step retains the system instruction and consumes the previous step's actual output |
+| Batch processing | Input order, success/failure counts, and failed items are retained |
+| Storage | Provenance and UUID arguments are correct; storage failure preserves the primary result |
+| Registration | Root discovery exposes the intended name, schema, and annotations |
+
+Direct Python calls bypass FastMCP's parameter-schema validation. A missing
+required argument raises `TypeError` before the function body, and a `Field`
+constraint does not validate an ordinary coroutine call. Test explicit tool
+invariants directly; test MCP parameter validation through the registered tool
+when that is the behavior being changed.
+
+### Provider adapters and validation
+
+When testing `GeminiClient.generate()`, mock the SDK method it calls and inspect
+the constructed config. When testing `generate_structured()` or
+`generate_json_validated()`, mock `generate()` and let local parsing and validation
+run. Using `mock_gemini_client["generate_json_validated"]` would bypass the
+validator itself.
+
+See [test_client.py](../../tests/test_client.py) for SDK response handling,
+[test_client_validated.py](../../tests/test_client_validated.py) for strict and
+lenient JSON behavior, and [test_config.py](../../tests/test_config.py) for model
+compatibility. Provider-retry tests should patch waits so failure cases do not
+sleep in real time.
 
 ## Testing Models
 
-Model tests validate defaults, field types, and roundtrip serialization. They need no fixtures.
+Model tests check a meaningful constraint, default, or roundtrip. They usually
+need no service fixtures:
 
 ```python
-# tests/test_models.py
+from video_research_mcp.models.content import ContentResult
 
-class TestVideoModels:
-    def test_video_result_defaults(self):
-        r = VideoResult()
-        assert r.title == ""
-        assert r.key_points == []
-        assert r.timestamps == []
 
-    def test_video_result_roundtrip(self):
-        r = VideoResult(
-            title="Test",
-            summary="Summary",
-            key_points=["p1"],
-            timestamps=[Timestamp(time="0:30", description="intro")],
-        )
-        d = r.model_dump()
-        assert d["title"] == "Test"
-        r2 = VideoResult.model_validate(d)
-        assert r2.timestamps[0].description == "intro"
+def test_content_result_roundtrip():
+    original = ContentResult(title="Report", key_points=["Reported finding"])
+
+    restored = ContentResult.model_validate(original.model_dump(mode="json"))
+
+    assert restored.title == "Report"
+    assert restored.key_points == ["Reported finding"]
+    assert restored.entities == []
 ```
+
+Use invalid inputs to test validation rules that matter to the caller. Schema
+conformance and semantic checks are separate: strict video tests also verify
+quality-gate behavior and actual artifact files.
 
 ## Testing Helpers
 
-Pure function tests for URL parsing, content building, etc. No async, no mocking needed.
+Pure transformations can run directly. Filesystem helpers should use `tmp_path`
+and assert the relevant file content or state. For a file-analysis workflow,
+write a text file under `tmp_path`, mock generation, and inspect the parts or
+provenance passed to the adapter/store.
+
+Config tests need `clean_config` so environment changes take effect:
 
 ```python
-# tests/test_video_tools.py
+from video_research_mcp.config import get_config
 
-class TestUrlHelpers:
-    def test_normalize_standard_url(self):
-        url = "https://www.youtube.com/watch?v=abc123"
-        assert _normalize_youtube_url(url) == "https://www.youtube.com/watch?v=abc123"
 
-    def test_invalid_url(self):
-        with pytest.raises(ValueError, match="Could not extract"):
-            _normalize_youtube_url("https://example.com/page")
+def test_model_override(clean_config, monkeypatch):
+    monkeypatch.setenv("GEMINI_MODEL", "test-model")
+    monkeypatch.setenv("GEMINI_THINKING_LEVEL", "medium")
 
-    def test_reject_spoofed_youtube_domains(self):
-        with pytest.raises(ValueError):
-            _extract_video_id("https://youtube.com.evil.test/watch?v=abc123")
+    assert get_config().default_model == "test-model"
 ```
+
+For URL policy tests, patch DNS and HTTP transport boundaries. Calling a public
+HTTPS URL can perform real DNS resolution even when Gemini generation is mocked.
+See [test_url_policy.py](../../tests/test_url_policy.py) for redirects, peer IPs,
+and size limits; do not bypass the policy helper in a test intended to prove it.
+
+For context caches, reset `_registry`, `_pending`, `_suppressed`, `_last_failure`,
+and `_loaded` as appropriate, redirect `_registry_path` to `tmp_path`, and mock
+cache API operations. Cancel or await background tasks created by the test.
+[test_context_cache.py](../../tests/test_context_cache.py) and
+[test_cache_bridge.py](../../tests/test_cache_bridge.py) demonstrate isolated state.
+Use a temporary `SessionStore`/database for session and persistence tests rather
+than the user's session database.
 
 ## Testing Knowledge Tools
 
-Knowledge tool tests need `mock_weaviate_client` and typically also `clean_config` + `monkeypatch` to set `WEAVIATE_URL`:
+To test disabled storage, request `mock_weaviate_disabled` and assert the tool's
+documented response: search, related-object, and stats tools return empty models;
+fetch, ingest, and QueryAgent tools return configuration errors. To test a query,
+request `mock_weaviate_client`, enable storage in isolated config, and disable
+unrelated enrichment:
 
 ```python
-class TestKnowledgeSearch:
-    async def test_returns_empty_when_disabled(self, mock_weaviate_disabled):
-        """knowledge_search returns empty result when Weaviate not configured."""
-        from video_research_mcp.tools.knowledge import knowledge_search
-        result = await knowledge_search(query="AI research")
-        assert result["total_results"] == 0
+from video_research_mcp.tools.knowledge import knowledge_search
 
-    async def test_searches_all_collections(
-        self, mock_weaviate_client, clean_config, monkeypatch
-    ):
-        """knowledge_search queries all 12 collections when none specified."""
-        monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
-        from video_research_mcp.tools.knowledge import knowledge_search
-        await knowledge_search(query="test")
-        assert mock_weaviate_client["client"].collections.get.call_count == 12
+
+async def test_search_dispatches_to_selected_collection(
+    mock_weaviate_client, clean_config, monkeypatch,
+):
+    monkeypatch.setenv("WEAVIATE_URL", "https://test.weaviate.network")
+    monkeypatch.setenv("RERANKER_ENABLED", "false")
+    monkeypatch.setenv("FLASH_SUMMARIZE", "false")
+
+    result = await knowledge_search(query="sample size", collections=["VideoAnalyses"])
+
+    mock_weaviate_client["client"].collections.get.assert_called_once_with("VideoAnalyses")
+    mock_weaviate_client["collection"].query.hybrid.assert_called_once()
+    assert result["total_results"] == 0
 ```
 
-Note the lazy import pattern (`from ... import knowledge_search` inside the test function). This ensures the import happens after fixtures have patched the modules.
+Configure `near_text` or `bm25` mocks when testing those modes; the shared fixture
+preconfigures common operations, not every possible query. Use concrete result
+properties and metadata when verifying rerank ordering, score conversion, filter
+handling, or Flash summaries. QueryAgent tests must mock the agent and use the
+async-client boundary where the implementation does.
 
 ## File Naming Convention
 
-| File | What it tests |
-|------|---------------|
-| `test_<domain>_tools.py` | Tool functions for a domain (e.g., `test_video_tools.py`) |
-| `test_models.py` | All Pydantic models |
-| `test_<module>.py` | Non-tool modules (e.g., `test_cache.py`, `test_retry.py`, `test_sessions.py`, `test_persistence.py`) |
-| `test_video_file.py` | Local video file helpers (MIME detection, hashing, File API upload) |
-| `test_video_core.py` | Shared video analysis pipeline (cache check, Gemini call, cache save) |
-| `test_weaviate_*.py` | Weaviate client, schema, and store modules |
-| `test_knowledge_tools.py` | Knowledge query tools |
+| File group | Coverage |
+| --- | --- |
+| `test_<domain>_tools.py` | Public tool workflows |
+| `test_models.py`, `test_*_models.py` | Model contracts |
+| `test_client*.py`, `test_config.py` | Provider/config adapters |
+| `test_cache*.py`, `test_sessions.py`, `test_persistence.py` | Local and provider state ownership |
+| `test_video_contract*.py`, `test_validation.py` | Strict output, quality checks, and artifacts |
+| `test_weaviate_*.py`, `test_knowledge_*.py` | Knowledge storage, schemas, and retrieval |
+| `test_url_policy.py`, `test_video_url.py` | URL and source boundaries |
+| `installer.test.js`, installer export tests | Plugin installation behavior and tracked state matrix |
 
-## Linting
-
-Run ruff before committing:
-
-```bash
-uv run ruff check src/ tests/
-```
-
-Configuration (in `pyproject.toml`):
-
-```toml
-[tool.ruff]
-target-version = "py311"
-line-length = 100
-```
-
-## Common Patterns
-
-### Testing with tmp_path
-
-For tools that work with local files, use pytest's `tmp_path` fixture:
-
-```python
-@pytest.mark.asyncio
-async def test_local_file(self, tmp_path, mock_gemini_client):
-    f = tmp_path / "clip.mp4"
-    f.write_bytes(b"\x00" * 100)
-
-    mock_gemini_client["generate_structured"].return_value = VideoResult(title="Local")
-
-    result = await video_analyze(file_path=str(f), use_cache=False)
-    assert result["title"] == "Local"
-```
-
-### Testing config behavior
-
-```python
-async def test_custom_config(self, clean_config, monkeypatch):
-    monkeypatch.setenv("GEMINI_MODEL", "gemini-custom")
-    from video_research_mcp.config import get_config
-    cfg = get_config()
-    assert cfg.default_model == "gemini-custom"
-```
-
-### Asserting Gemini was called with specific args
-
-```python
-mock_gemini_client["generate_structured"].assert_called_once()
-call_args = mock_gemini_client["generate_structured"].call_args
-assert call_args.kwargs["schema"] == MyResult
-```
-
-## Reference
-
-- [Adding a New Tool](./ADDING_A_TOOL.md) -- tool conventions and checklist
-- [Knowledge Store](./KNOWLEDGE_STORE.md) -- Weaviate integration details
-- Source: `tests/conftest.py` -- all shared fixtures
-- Source: `tests/test_video_tools.py` -- comprehensive tool test example
-- Source: `tests/test_knowledge_tools.py` -- knowledge tool test patterns
+For a new tool, follow [Adding a Tool](ADDING_A_TOOL.md). Before delivery, run the
+focused checks and required gates for the affected package. Passing mocked tests
+establishes the local contract; authenticated provider behavior needs a separate,
+explicitly authorized live validation.

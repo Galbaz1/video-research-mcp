@@ -21,7 +21,8 @@ async def smoke(wheel: Path) -> None:
                      "DEEP_RESEARCH_AGENT", "GEMINI_SESSION_DB"}
         env = {key: value for key, value in os.environ.items() if key not in overrides}
         env.update(HOME=scratch, GEMINI_API_KEY="test-key-not-real",
-                   GEMINI_TRACING_ENABLED="false", WEAVIATE_URL="", WEAVIATE_API_KEY="",
+                   GEMINI_TRACING_ENABLED="false", S2_API_KEY="built-wheel-secret-sentinel",
+                   WEAVIATE_URL="", WEAVIATE_API_KEY="",
                    WEAVIATE_VECTORIZER="weaviate")
         transport = StdioTransport(
             command="uv", args=["run", "--no-project", "--with", str(wheel), "video-research-mcp"],
@@ -34,7 +35,9 @@ async def smoke(wheel: Path) -> None:
             if (len(tools) != 34 or config["default_model"] != "gemini-3.8-flash"
                     or config["deep_research_agent"] != "deep-research-preview-04-2026"):
                 raise RuntimeError("Built artifact tool/model contract differs from this release")
-            print("PASS: built wheel stdio discovery (34 tools) and read-only configuration")
+            if "s2_api_key" in config or "built-wheel-secret-sentinel" in str(response.data):
+                raise RuntimeError("Built artifact exposes the Semantic Scholar API key")
+            print("PASS: built wheel stdio discovery (34 tools), configuration and secret redaction")
 
 
 def main() -> None:
