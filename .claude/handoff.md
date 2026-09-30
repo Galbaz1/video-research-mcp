@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T22:23+02:00
+date: 2026-09-30T22:01+00:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,9 +21,84 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
+### Current acceptance and next scene-assets leaf
+
+Vision/chat/comparison, model OCR and strict transformed original-pixel crops
+(`vrm-0e8.3.4`) are accepted, closed and normally pushed at
+`937c60a23ec3cb1ceeceab7ffe9da4856d3b0410`; remote branch readback matches.
+`vision-analysis/group-receipt.committed.json` SHA256
+`685a83123caa2036e92875fa64c7f04432ac461778805c6fe2ede934d25fd148` binds32
+owned Git blobs and163 runtime files to cleared private archives/installed bytes.
+This is offline integration acceptance; model accuracy and live provider quality
+remain unverified. No registry release or version bump occurred.
+
+Root discovery57/companion16/2 preserves published34/15/2, all three locks and
+protected originals.156 affected checks and82 integration repairs passed; final
+root1926/Ruff/85 transfer units74packages/22adopted115locked/9security/5offline PASS.
+The first final root suite15 failures remains retained: AST default-factory
+inspection, stale20-adoption list and a test comparing mutable target paths with
+the original inventory. Root repaired these without changing the evaluation
+protocol SHA256 `7ba1d01e3463b88d9f22739a1ad25e83201f5cc199de88cfe7203eb878c85a93`,
+original335e inventory identity, source audits, sources, cases, thresholds or labels.
+Only affected/final source checks reran; no second independent review.
+
+The sole original review returned4P2; root repaired effective selected account,
+supported temperature binding, independent joined HTTP cleanup and actual OSS
+upload-origin receipt. Original probe buffers/report are persisted under
+`original-review/reviewer-returned`; labelled root report SHA256
+`e67b331658ec62889b2818c4139d3289a48235d980b8292fd52bd480e6d17485`.
+HTTP original6RED, intermediate test shield failure and54GREEN are retained.
+Geometry original6PASS/1FAIL (missing precise-frame receipt clock) and owner7PASS
+are retained. Historical nonsampling temperature expectations were corrected;
+no independent repaired-PASS is claimed.
+
+Pinned external Qwen API actually discovers13 tools and passes4 public calls/3
+SDK mocks:36 private packages/2157RECORD files/31native files/33 unchanged source
+bodies. Terminal receipt SHA256
+`18d303f8ccccc15685c47f1e88d364f71e017b337ae03ddf68608c051ce3a3e0`.
+Ordinary optional activation stays disabled; full API/OSS extras and weight
+rights remain unverified. Its first startup-harness failure and one correction
+remain recorded;1 ancillary subprocess attempt was blocked, with unknown argv.
+
+Core source journeys v1/v2 both stopped after8 calls; restart did not run, and
+both remain FAIL. Focused diagnosis identified urllib3's import-only IPv6 bind.
+The planned distinct installed-wheel acceptance then passed once with isolated
+parent/child `socket.has_ipv6=False`, retaining the earlier failures. Two actual
+installed processes PIDs48249/48250 completed14 schema-valid public calls,
+5 manifest reads/native crop pixels/restart/tamper rejection,5 HTTP+1 count+1
+SDK generation mocks and0 real provider calls. Receipt
+`installed-journey-harness/installed-run-v1/receipt.json` SHA256
+`3ff8537b91f6fe5b094fa2c28387f199bceb9c5fdf945f92f4e9987a9f00871c`.
+Private wheel SHA256 `3ca027879c175f53ca1617822b4997ad07615645fb35733843a526947d5f62bf`;
+sdist SHA256 `7077116ee183596b2542f814a0fbf88b8223510a712880b977d8571d10db2ce3`.
+Archive helper initially assumed the wheel ledger retained its source path;
+that original failure is retained and one exact force-include path correction
+passed163-file byte clearance. No product code/build changed afterward.
+Python guards are not OS-wide egress proof; live IPv6 was not tested.
+
+Fresh dependency selection claimed `vrm-0e8.3.5` (scene assets). Source-only
+`scene-assets/source-contracts/receipt.json` SHA256
+`fa8abbfebec05c5e5a00ff0e196b59713eb4510d04ba8a46d0ad0a12146a34c5` covers
+7 Qwen tools+4 helpers+Apache grant+pyproject,13 exact pinned Git blobs.
+Report SHA256 `2e4eb50618405b8219518f57cfee8f3e25cd6d63e2d8cf286cc7d3e4e7da2a19`.
+Missing outcomes: contiguous hard-cut intervals, actual timestamped storyboard
+pixels, explicit dHash/MFCC retained/discarded/error denominators and standalone
+whole-track audio export. Reuse accepted snapshots/PTS/process/frame/clip/manifest
+contracts. NumPy-only MFCC needs no Librosa/SciPy, but NumPy is currently absent
+from root lock/runtime; no dependency selection/install or .3.5 source edit yet.
+All prior lanes joined; root owns next dispatch/common registry/config/models/
+locks/ledger/Beads/Git. Keep module/function limits and one original review per slice.
+
+Human9-case audit remains pending at10.2 under “continue anyway,” not waived.
+Do not read held-out prompts/labels or claim comparison/release/superiority.
+Do not reopen completed transcript/PDF/Word/mail work. Programme remains active;
+continue implementation to integrated acceptance, comparison and verified release.
+
+### Previously accepted image exports
+
 Image/frame edits, local OCR/Vision, exact export manifests and bounded clip
 encoding (`vrm-0e8.3.3`) are accepted and closed at `e74d5696d29bb1b463544f28a14c96a24f6b509f`.
-Current branch HEAD is `e74d5696d29bb1b463544f28a14c96a24f6b509f` on
+Last accepted image source is `e74d5696d29bb1b463544f28a14c96a24f6b509f`; doc-only HEAD `ceea9dd22cb85e2dbaa5a34417c4cd9aca3ebbba` is on
 `codex/multimodal-capability-programme` in the implementation worktree below.
 Earlier accepted window/upload recovery source is
 `6dcf3444e68823f7b075001d6717d875043f2ed4`; native views/PTS source is
