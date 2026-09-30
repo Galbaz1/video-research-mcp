@@ -10163,10 +10163,23 @@
         "assets"
       ],
       "target_paths": [
-        "src/video_research_mcp/media_dedup.py",
         "src/video_research_mcp/media_scenes.py",
+        "src/video_research_mcp/media_storyboard.py",
+        "src/video_research_mcp/media_frame_dedup.py",
+        "src/video_research_mcp/audio_fingerprints.py",
+        "src/video_research_mcp/audio_assets.py",
+        "src/video_research_mcp/media_clip_export.py",
+        "src/video_research_mcp/models/scene_assets.py",
+        "src/video_research_mcp/models/scene_delivery.py",
         "src/video_research_mcp/tools/media_scenes.py",
-        "tests/test_media_scenes.py"
+        "tests/test_scene_detection.py",
+        "tests/test_media_storyboard.py",
+        "tests/test_frame_dedup.py",
+        "tests/test_audio_fingerprints.py",
+        "tests/test_audio_assets.py",
+        "tests/test_scene_asset_tools.py",
+        "src/video_research_mcp/media_frames.py",
+        "tests/test_scene_asset_binding.py"
       ],
       "declared_dependencies": [
         "assets",

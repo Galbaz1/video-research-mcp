@@ -1,7 +1,841 @@
 {
-  "generated_at": "2026-09-30T21:00:22.018415+00:00",
-  "tool_count": 57,
+  "generated_at": "2026-09-30T22:47:15.593781+00:00",
+  "tool_count": 63,
   "tools": [
+    {
+      "name": "audio_clip_export",
+      "description": "Export a whole or one-sided audio selection to a unique private 16kHz mono WAV.\n\nOriginals and prior exports remain unchanged. Caller-selected output paths\nand overwriting are rejected. Use image_manifest_read for verified restart.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local audio/video source; omitted endpoints select whole track within 240-second/8MiB WAV limits",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "audio_deduplicate",
+      "description": "Compare local audio candidates while retaining silence, errors and uncertainty.\n\nRequires the optional audio extra and local FFmpeg. Similarity does not\nestablish equal speech, speaker identity or permission to delete evidence.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "All explicit source audio intervals, up to120 seconds aggregate, and lossy MFCC cosine threshold",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "segments": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "A finite candidate interval for bounded mono PCM comparison.",
+                  "properties": {
+                    "start_seconds": {
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "start_seconds",
+                    "end_seconds"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 64,
+                "minItems": 1,
+                "type": "array"
+              },
+              "similarity_threshold": {
+                "default": 0.95,
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256",
+              "segments"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
     {
       "name": "content_analyze",
       "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.",
@@ -6478,6 +7312,426 @@
       }
     },
     {
+      "name": "video_clip_select",
+      "description": "Export a whole or one-sided bounded video selection using measured clip timing.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact source video; omitted endpoints resolve from source under existing 60-second/256-frame/8MiB clip gates",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_pixels": {
+                "default": 1000000,
+                "maximum": 1000000,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "include_audio": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
       "name": "video_comments",
       "description": "Fetch top YouTube comments sorted by relevance.\n\nReturns comment text, like count, and author for each comment.\nCosts 1+ YouTube API units, 0 Gemini units.",
       "annotations": {
@@ -6604,6 +7858,854 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_deduplicate_frames",
+      "description": "Compare bounded source frames without dropping similar or failed candidates.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Every candidate source point and explicit greedy dHash Hamming threshold; visual similarity cannot establish identity",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "times_seconds": {
+                "items": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "maxItems": 64,
+                "minItems": 1,
+                "type": "array"
+              },
+              "hamming_threshold": {
+                "default": 6,
+                "maximum": 32,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "max_pixels": {
+                "default": 16384,
+                "maximum": 1000000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256",
+              "times_seconds"
+            ],
+            "type": "object"
+          },
+          "include_image": {
+            "default": false,
+            "description": "Include bounded native candidate frames; all decisions remain in text",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_detect_scenes",
+      "description": "Detect hard visual cuts and return contiguous intervals with actual source PTS.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local source, bounded window and explicit hard-cut threshold; no semantic scene claim",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "threshold": {
+                "default": 0.3,
+                "exclusiveMaximum": 1,
+                "exclusiveMinimum": 0,
+                "type": "number"
+              },
+              "min_scene_seconds": {
+                "default": 1,
+                "exclusiveMinimum": 0,
+                "maximum": 60,
+                "type": "number"
+              },
+              "max_cuts": {
+                "default": 64,
+                "maximum": 256,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -9229,6 +11331,439 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_storyboard",
+      "description": "Create a measured source storyboard with literal absolute source-clock labels.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local source, at most 120-second window and sixteen actual frame tiles with burned source timestamps",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "columns": {
+                "default": 4,
+                "maximum": 6,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "rows": {
+                "default": 2,
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_pixels": {
+                "default": 1000000,
+                "maximum": 1000000,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256"
+            ],
+            "type": "object"
+          },
+          "include_image": {
+            "default": true,
+            "description": "Emit the actual storyboard PNG within native byte limits",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "One complete local report with explicit delivery of actual bounded image bytes.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": {},
+                "description": "Preserve complete operation-specific evidence alongside required source and limits.",
+                "properties": {
+                  "source": {
+                    "additionalProperties": true,
+                    "description": "Exact original bytes with measured local container/stream metadata.",
+                    "properties": {
+                      "path": {
+                        "title": "Path",
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "exclusiveMinimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "source_revision": {
+                        "title": "Source Revision",
+                        "type": "string"
+                      },
+                      "duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Duration Seconds"
+                      },
+                      "container_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Container Start Seconds"
+                      },
+                      "stream_start_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Start Seconds"
+                      },
+                      "stream_duration_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Stream Duration Seconds"
+                      },
+                      "presentation_end_seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Presentation End Seconds"
+                      },
+                      "stored_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Width"
+                      },
+                      "stored_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stored Height"
+                      },
+                      "display_width": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Width"
+                      },
+                      "display_height": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Display Height"
+                      },
+                      "sample_aspect_ratio": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Sample Aspect Ratio"
+                      },
+                      "display_geometry_basis": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Display Geometry Basis"
+                      },
+                      "pixel_aspect_verified": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null,
+                        "title": "Pixel Aspect Verified"
+                      },
+                      "rotation_degrees": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Rotation Degrees"
+                      },
+                      "time_base": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Time Base"
+                      },
+                      "stream_index": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Stream Index"
+                      },
+                      "streams": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Streams",
+                        "type": "array"
+                      },
+                      "chapters": {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "title": "Chapters",
+                        "type": "array"
+                      },
+                      "metadata_method": {
+                        "title": "Metadata Method",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "bytes",
+                      "source_revision",
+                      "duration_seconds",
+                      "container_start_seconds",
+                      "stored_width",
+                      "stored_height",
+                      "display_width",
+                      "display_height",
+                      "rotation_degrees",
+                      "time_base",
+                      "stream_index",
+                      "streams",
+                      "chapters",
+                      "metadata_method"
+                    ],
+                    "title": "NativeSource",
+                    "type": "object"
+                  },
+                  "limits": {
+                    "additionalProperties": {},
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "limits"
+                ],
+                "title": "SourceAssetMetadata",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One artifact's explicit native transport outcome.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "image/bmp",
+                        "image/gif"
+                      ],
+                      "title": "Mime",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "text_only",
+                        "included",
+                        "inline_byte_limit",
+                        "inline_total_limit",
+                        "unsupported_native_mime"
+                      ],
+                      "title": "Status",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "mime",
+                    "status"
+                  ],
+                  "title": "ImageDelivery",
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "native_images"
+            ],
+            "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

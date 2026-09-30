@@ -146,3 +146,6 @@ The implementation independently adopts the mapped requirements from:
 No foreign helper body, font, media asset or executable is copied. Exact source,
 implementation and dependency receipts remain in the reuse ledger. The legacy
 `image_crop` contract remains available for its published PNG-only callers.
+
+[Local scene assets](SCENE_ASSETS.md) uses the same manifest readback for
+timestamped storyboards, whole/one-sided clips and standalone WAV exports.

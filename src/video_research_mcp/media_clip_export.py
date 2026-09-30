@@ -12,6 +12,7 @@ from .media_probe import FORMATS, binary, probe_snapshot
 from .media_process import run_media_process
 from .media_snapshot import copy_hash, snapshot
 from .models.media_export import ClipExportRequest, ClipExportResult
+from .models.scene_assets import ClipSelectionRequest
 
 
 def _bounds(source: dict, request: ClipExportRequest) -> tuple:
@@ -106,30 +107,46 @@ def _audio_result(measured, source_clock, frames, start, requested: bool) -> dic
 
 async def export_clip(request: ClipExportRequest) -> dict:
     """Export a measured source clip, publishing only after source/artifact manifest checks."""
-    from .image_manifest import write_manifest
-
     request = ClipExportRequest.model_validate(request)
     async with snapshot(request.file_path, request.expected_source_sha256) as owned:
         source = await probe_snapshot(owned)
-        offset, width, height, transform, audio, scale = _bounds(source, request)
-        frames = await _selected(owned, source, request, offset)
-        output = owned.directory / "clip.mp4"
-        command = _encode_command(owned, source, request, offset, transform, audio, output)
-        _, stderr = await run_media_process(command, owned.remaining())
-        encoded_sources = source_frames(stderr, source, request.start_seconds, request.end_seconds)
-        if encoded_sources != frames:
-            raise ValueError("Encoding did not visit exactly the selected original frames")
-        if not 0 < output.stat().st_size <= MAX_ARTIFACT_BYTES:
-            raise ValueError("Encoded clip exceeds the 8 MiB artifact byte budget")
-        measured = await decoded_output(output, owned)
-        verify_output(measured, frames, request.start_seconds, width, height)
-        audio_clock = source_audio(stderr, offset, request.start_seconds, request.end_seconds) if audio else None
-        digest, size = await copy_hash(output)
-        output.chmod(0o600)
-        metadata = _metadata(source, request, frames, measured, audio_clock, output, digest, size, scale)
-        await owned.verify()
-        metadata["manifest"] = await write_manifest(metadata, owned.directory)
-        return ClipExportResult.model_validate(metadata).model_dump()
+        return await _export(owned, source, request)
+
+
+async def export_selected_clip(request: ClipSelectionRequest) -> dict:
+    """Resolve omitted endpoints from the exact source before applying existing clip gates."""
+    request = ClipSelectionRequest.model_validate(request)
+    async with snapshot(request.file_path, request.expected_source_sha256) as owned:
+        source = await probe_snapshot(owned)
+        duration, _ = _source_clock(source)
+        selection = request.model_dump()
+        selection["end_seconds"] = duration if request.end_seconds is None else request.end_seconds
+        return await _export(owned, source, ClipExportRequest.model_validate(selection))
+
+
+async def _export(owned, source, request) -> dict:
+    """Encode and verify one already selected exact-source window."""
+    from .image_manifest import write_manifest
+
+    offset, width, height, transform, audio, scale = _bounds(source, request)
+    frames = await _selected(owned, source, request, offset)
+    output = owned.directory / "clip.mp4"
+    command = _encode_command(owned, source, request, offset, transform, audio, output)
+    _, stderr = await run_media_process(command, owned.remaining())
+    encoded_sources = source_frames(stderr, source, request.start_seconds, request.end_seconds)
+    if encoded_sources != frames:
+        raise ValueError("Encoding did not visit exactly the selected original frames")
+    if not 0 < output.stat().st_size <= MAX_ARTIFACT_BYTES:
+        raise ValueError("Encoded clip exceeds the 8 MiB artifact byte budget")
+    measured = await decoded_output(output, owned)
+    verify_output(measured, frames, request.start_seconds, width, height)
+    audio_clock = source_audio(stderr, offset, request.start_seconds, request.end_seconds) if audio else None
+    digest, size = await copy_hash(output)
+    output.chmod(0o600)
+    metadata = _metadata(source, request, frames, measured, audio_clock, output, digest, size, scale)
+    await owned.verify()
+    metadata["manifest"] = await write_manifest(metadata, owned.directory)
+    return ClipExportResult.model_validate(metadata).model_dump()
 
 
 def _metadata(source, request, frames, measured, audio_clock, output, digest, size, scale) -> dict:

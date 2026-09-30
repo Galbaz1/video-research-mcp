@@ -580,18 +580,18 @@
       "implementations": [
         {
           "target_path": "docs/integrations/NATIVE_MEDIA.md",
-          "target_sha256": "0625fcb7c6626db51a5ebc4ea289cd3cb29b96011534685cd687f843d9216435",
+          "target_sha256": "5de09938f7feb492bd44ec7ca9d62e6812ef73a35873ceedc0b5c5e47d2a2bc2",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -607,7 +607,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_frames.py",
-          "target_sha256": "e2da3f28e4a136a6d5aec028d9354c520061b6a72767291cee5bde049d75ece5",
+          "target_sha256": "d98c4b52138a0b51b9b04f5a3615d3b510859b9734424185f7fb6740520a6112",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -617,7 +617,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_image_read.py",
-          "target_sha256": "ddc56a7ed0d1a9261bcb1930c627208d539d7596ed56b6315878a055f6ac231c",
+          "target_sha256": "78a6724e43ed7bf2a21f543576046cc76ef427c9e554a257e0f6c81366cab2df",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -715,12 +715,12 @@
       "implementations": [
         {
           "target_path": "docs/integrations/IMAGE_EXPORTS.md",
-          "target_sha256": "a52a74c3932952b67cec0ee6d5bd307d64c4a9eed37f6026739717beba7059cf",
+          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -820,7 +820,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_clip_export.py",
-          "target_sha256": "92443fb1d9046b4b6259435dac6fb641b835c1cca50b6ad90cb3c5de8a4145ef",
+          "target_sha256": "ac9074210a1ef690c7aeff06ffab39f3713a0c76ebd8c796e1518845ce79a281",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional. Bounded encoded clip export is a programme extension; upstream encode parity is not claimed."
         },
         {
@@ -922,7 +922,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -952,7 +952,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "8fa0ced8ce49344dc38c8aac1221ab83d3906e70ef6e9124ae2f4a894abaa183",
+          "target_sha256": "3e4b900858252d1ac6e22da11596b33829ca6a80d3bd76992e76b2546a10621c",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1024,10 +1024,136 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/audio_assets.py",
+          "target_sha256": "6e007516f974012cf4de97497f4f16eae7251873618b40cb386f09293b42e6c3",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/audio_fingerprints.py",
+          "target_sha256": "fbdca8d69fd9ed170ad1d5164d98c7c0262da7f94c6f671922cd01d77a19bf18",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frame_dedup.py",
+          "target_sha256": "4721c259d4a3b6e3d6f4635087c19f29962c7d04733aa2a4cf1afb5623a06ede",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_scenes.py",
+          "target_sha256": "5297f2bfd120a52edb17951a7f9ea85e09d375ed215305cf270e31015265d438",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_storyboard.py",
+          "target_sha256": "18462280e82a43102cf394faaa86daaec5e661266731f29d21d6ab5d6f141d36",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_clip_export.py",
+          "target_sha256": "ac9074210a1ef690c7aeff06ffab39f3713a0c76ebd8c796e1518845ce79a281",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_image_read.py",
+          "target_sha256": "78a6724e43ed7bf2a21f543576046cc76ef427c9e554a257e0f6c81366cab2df",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/scene_assets.py",
+          "target_sha256": "8cbee1b35c795e004ed497aa8a58b8bceb62e791d4284f453478354c83ce6384",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/scene_delivery.py",
+          "target_sha256": "1c165a3ff5c7e2981d2e19f370007663699a10a5ac3598fad3fff4ad124515bd",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/media_scenes.py",
+          "target_sha256": "725519d3bdf8429c7cb8fe65cdcf774c5983f040263973e62abfc00d9db8e2d1",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_audio_assets.py",
+          "target_sha256": "19301f76440c877c8e94917fe13eddb9aaa7395ed3e36c35384751db5606f4f0",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_audio_fingerprints.py",
+          "target_sha256": "132588e53464d77c081a78458012e14c24b36c844f075e5c5d22eda9bf7b8564",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_frame_dedup.py",
+          "target_sha256": "c2b3667b8fe6f9213d08d6b4ac587bb116b61f1a5bb541a3e7063a3f4e1a7934",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_media_storyboard.py",
+          "target_sha256": "ead142804410b60a84551d82eadc33eeae8e1651a8ab45fc78782e0d02365076",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_scene_asset_tools.py",
+          "target_sha256": "860142ddf53d3a2ffc072dc88adc2b2e3869cfc179ad89e5d74d64f7e27916f4",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_scene_detection.py",
+          "target_sha256": "821104a53448eadfdd1b7876a5918e32a5ac9f90742f2cd90f440ed9c0deacc8",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "tests/test_reuse_ledger.py",
+          "target_sha256": "3e4b900858252d1ac6e22da11596b33829ca6a80d3bd76992e76b2546a10621c",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "docs/integrations/SCENE_ASSETS.md",
+          "target_sha256": "c6cf122ea62a7d9bd5d93690a72a8ec74d1a8ecac56d2b18883e15efab7951d9",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "docs/integrations/NATIVE_MEDIA.md",
+          "target_sha256": "5de09938f7feb492bd44ec7ca9d62e6812ef73a35873ceedc0b5c5e47d2a2bc2",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "docs/integrations/IMAGE_EXPORTS.md",
+          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "pyproject.toml",
+          "target_sha256": "cd1f818bc0b4709ef89739bcfbd335d2f5112b597d573ea053059b49ce05ef65",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+        },
+        {
+          "target_path": "src/video_research_mcp/media_frames.py",
+          "target_sha256": "d98c4b52138a0b51b9b04f5a3615d3b510859b9734424185f7fb6740520a6112",
+          "provenance": "Root owner repair of three original-review P2 source/artifact binding findings. Immutable byte buffers bind PNG pixels and WAV PCM/file SHA; actual nested sampler enforces original expected digest and returned source commitment, with failed-stage cleanup. No second independent review or foreign source transfer."
+        },
+        {
+          "target_path": "tests/test_scene_asset_binding.py",
+          "target_sha256": "597345f672cb1fe1e11d489fd17f099074a6c2f281437de80c0f195c7d272304",
+          "provenance": "Root owner repair of three original-review P2 source/artifact binding findings. Immutable byte buffers bind PNG pixels and WAV PCM/file SHA; actual nested sampler enforces original expected digest and returned source commitment, with failed-stage cleanup. No second independent review or foreign source transfer."
+        }
+      ]
     },
     {
       "unit_key": "qwen_av_perception",
@@ -1544,7 +1670,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1654,18 +1780,18 @@
       "implementations": [
         {
           "target_path": "docs/integrations/NATIVE_MEDIA.md",
-          "target_sha256": "0625fcb7c6626db51a5ebc4ea289cd3cb29b96011534685cd687f843d9216435",
+          "target_sha256": "5de09938f7feb492bd44ec7ca9d62e6812ef73a35873ceedc0b5c5e47d2a2bc2",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1681,7 +1807,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_frames.py",
-          "target_sha256": "e2da3f28e4a136a6d5aec028d9354c520061b6a72767291cee5bde049d75ece5",
+          "target_sha256": "d98c4b52138a0b51b9b04f5a3615d3b510859b9734424185f7fb6740520a6112",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -1691,7 +1817,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_image_read.py",
-          "target_sha256": "ddc56a7ed0d1a9261bcb1930c627208d539d7596ed56b6315878a055f6ac231c",
+          "target_sha256": "78a6724e43ed7bf2a21f543576046cc76ef427c9e554a257e0f6c81366cab2df",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -1815,7 +1941,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2137,12 +2263,12 @@
       "implementations": [
         {
           "target_path": "docs/integrations/IMAGE_EXPORTS.md",
-          "target_sha256": "a52a74c3932952b67cec0ee6d5bd307d64c4a9eed37f6026739717beba7059cf",
+          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2162,7 +2288,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2338,7 +2464,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2368,7 +2494,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2403,7 +2529,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "8fa0ced8ce49344dc38c8aac1221ab83d3906e70ef6e9124ae2f4a894abaa183",
+          "target_sha256": "3e4b900858252d1ac6e22da11596b33829ca6a80d3bd76992e76b2546a10621c",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3531,7 +3657,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "e4a97645d7dfbd82c249b76b860141941abd44ca2c5bca43c7238013135c7bc9",
+          "target_sha256": "520cc1c93defaf32c75be4214fa255cfc6eb2de3853fb89b05ea86951eab3cc6",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3548,7 +3674,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "32bb38cdfdf9eee6eb39b7a30bd9a13686a7d8339edf8a84d1405e767afaa122",
+          "target_sha256": "fbeef0dc1512fc7703a3035e13c7358c0f835981daae572ad4e9000bb9061c1f",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3712,7 +3838,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "8ece3336cf6437315cdb42caacc1954f77871fc935978ba3e02662109bd3be02",
+      "sha256": "b78b26dfb17e51de0817f8610048f7287c121c6aaa88018a4997751dab2bbc68",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -3949,6 +4075,10 @@
         {
           "name": "more-itertools",
           "version": "11.1.0"
+        },
+        {
+          "name": "numpy",
+          "version": "2.4.6"
         },
         {
           "name": "openapi-pydantic",
@@ -6156,6 +6286,95 @@
         "4b65538ae22f6fed0ce4874efd317463a7489796a0939fa66824dd542125a192"
       ],
       "bundled": false
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6",
+      "license_expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "license_classifiers": [],
+      "license_metadata": null,
+      "registry_url": "https://pypi.org/pypi/numpy/2.4.6/json",
+      "registry_sha256": "fc316414566d77fbc82c92f9d710d913778a701b253d0568aa033bd85d3e5169",
+      "registry_artifact_hashes": [
+        "001fbb8e08d942dd57599e781f2472269ee7f2755fae407b4f67b2f0b17da3f1",
+        "0280e0356c0829a18d9de1cb7eee50ec22ca639878d7240307ca0943d73cd2c4",
+        "043191bfa8eab18c776647b62723ac9dddece59743b13f49b2016094129c2b3f",
+        "06ca2f61ec4385a07a6977c55ba998a4466c123642b4a32694d3128fce18c079",
+        "0a041d3d761dc3c35cc56ce0351506a02bcbc25f7b169f652435141a17db9096",
+        "0ab0a9c4ffb1a6d95ef519fe4247dba8eb6b18ad93999f76b7f657039acabd47",
+        "0c9136e14ed34a9e343a31c533d78a9813a69a3148332bce5e9821cb2f996e66",
+        "110f8b71aacb688ec69062bb7f6938a0f8acb01b7c1c4beb453c65b6d234584d",
+        "112b06a867b235ef466ed3508ddf0238050df9c727cafb5301ac385b899189a1",
+        "17f9ade344e7d9b464a084d69bcf18fc691cb1db67c62ed80820bf4926d78f0e",
+        "1e254a00cdf42b1e4d5b3d68d33af63268d41340d8885df2ab6470f2e1500147",
+        "1e978ec1e8bd0e0e4de6bb75de9d30cbb74db6b6a2bb727618613703ca0167dd",
+        "25c692919ac5a01f170a3bfcd62d745b24fd095c353d50812637d6fcab442e75",
+        "260a5d70215b61ab4fadf5c7baacd64821842975eea312125ed3c39a6391b063",
+        "2803abfebfc990042cd494d8ce2d5f82e9d847af6d35ec486923aa19dbad5e73",
+        "29a287e0cf63ff528da061de6b9f64a4618da591ca1046aafc54062e40ca7eab",
+        "29cb7f67d10b479ff07c17d33e39f78c07f71c40ef30d63c153d340e96cd3fb4",
+        "3213d622a0283a39a93d188f3cf72b26862df52fbb4ca3697f51705016523d41",
+        "33111801a01c12a8a1e3721f0a9232f8cfc8ae2c6b7098167e6f623c6073f402",
+        "357cc07a6d7b0b182ff02249616a03742827ebb1277546b5c7cd7f7620a45698",
+        "38efbc8de75c7a0fc1ac190162d892787f3f47b57cc291231aafee36b80982b7",
+        "4081eb135ac24158bd51cdfbef16f1c64df7063b1143f24731387137c092bec8",
+        "40fdc1ae7125e518ea98e53e69a4ebc27e1fd50510c47b7ea130cf21e5e1d42b",
+        "4cfe66903cc32a9921a6733d96b19bb6abf310397581bbad89c228f5abaf0ee8",
+        "511dbaf848decaaaf4b4ca48032619fb3138710c4bf7da7617765edad1ef96b0",
+        "55cced7c52e981362f708ad635198e97a752dfba412cc03c23bbf3bd8d5cd662",
+        "56b39e5e0622a09a25bf5baf62f4bcf0cb8a41ae6e2819cf49bbc5a74c083f91",
+        "5dbbdb29840ca3d91ee0fece42fc29278886d908280bfec0a5846c6f901a3eb0",
+        "5f9fb9157b4ce2971008323afe46053787b526ef624fea915b261468a8421a0f",
+        "6180d8b35af935aed8ece3a85e0a43f87393ae0ac87c8d2c8bd2c993f7270ef3",
+        "68a5124b13fa6cc2086764a20005d30bc0548146f7f5322f02fce212ca14317f",
+        "68bb27509ac1b9a3443094260f6326150663b06abe40b73a2f81160623da5b67",
+        "6f41ae150c4e32db4f3310cdaf64b1593a03dbabe29eec77fc9b50fe64061df6",
+        "7265a2f3d436e54ef9f2b52b5c937e6be778781bd97a590319d7348f1c1ca997",
+        "72fbe16c6fac95aedf5937fa873445cec2110be35d8a4e9433d7501fd98dae6b",
+        "7d92c3819208a60205a12a245c91ad70cb0a85336659b19b834205573ac8456e",
+        "8155154c7c691289fe18f510b5d4657c68c67989f293f0535a91360392ff6538",
+        "81a1cca95ed5bb92aa8b10dd2cdc9a0d3853a50fad926c28b5d7e8ea54389627",
+        "89cd468399cfd2504718f0ba50e410dca55a170b61a02ad92bb18c8a65186e93",
+        "8ad03c0965fb3c692200e74d458ca28c1dbb4ce96f9a479a8aa041ad5fabca02",
+        "90f9849678c75fe7afa2d348ac842c168b0a4d3d61919687216dfc547976d853",
+        "948424b06129ce883307e8cff868c31396d8dc7630a59c61d70d98dbe70f222c",
+        "9cd5ffd25db4e7ba6a375693b3fc0fc1791ec636c17db3720da19bde7180ec43",
+        "a0df0043bdb289bde1f62da130d20df23d58b45429f752bc7a8fc5325a225ecd",
+        "a2c306dea656c12c68f51f4cea133cbe78ca7435eb28c735eac1d3ebe73be6e8",
+        "a7830bab239b79cda9c08c2da014761cafb48da6150e1da17ac06283f43b6089",
+        "a7c711e21628b52034bb5ab8d1bce291f752fcc5e92accc615778acee1ff4778",
+        "aaf159caa35993cb1f56fb9b8e4610d35758e7ca005412eb1daa856a78c9c4b1",
+        "ae506e6902902557576a26ff33eda8695e7ecb3cb36c3b573a0765dee114ebdb",
+        "b507f5c4c1d508876d1819b6bf9a49d365b96320b5d4993426b33a23ca4b8261",
+        "bf162abab1c1a736333192707cef898e735a5ca00f38f27eeedf44b39d9e85eb",
+        "c1a2af6c6ef86344a6b0db6b97834208bf598db514f2b155042439b62605601a",
+        "c2d37ab77531417474168eb79d6d80b14f821a966818505d03013d0833edb7a8",
+        "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+        "d581b735e177fdcdce6fed8e7e8880a3fb6ee4e3653a3ac6af01c6f4c03effc5",
+        "d6da64deb6b8ed903e7560180a92f2d804ee1ba5eeb849ac2748b8c1aba1f6d7",
+        "d8e8286dd7cea7895157318d1b91cdacac64c479f3cbc8dce548331728484751",
+        "ddea102b48f9e339f3948bf22040944184627a30fdf7f858667673b9c5f033c8",
+        "dfa20cc6ca228e6b155b11da03825975ce66aea520985dbbddf0f2a5a495c605",
+        "e3e5193ef5a3dc73bceee50f7fdc2c90dbb76c42df8d8fae3d1067a583df579e",
+        "e3eeb0aabd6bd5ce64faae67e9935203a6991b4bc2a485a767fbafb2c5125f45",
+        "e5805d5a22fd19c8ccff10a9561f9df94436b0545619ea579db2d3c35294bce2",
+        "e85b752a1e912b70eaad4fafbd4d1238007ab221de2009b9a2f5ae7461239895",
+        "eaf7fa2de5c0be8ae6ff8e9bea2ccd725e980541244521d8d4b5f3354a27babe",
+        "ebfb099f8dcf083deef3ac1ca4c1503f387cf76296fcb3816b66f5ecb5f54fdb",
+        "ece3d2cfe132e7d51f44a832b303895e6f2d499c5e74dfbdb06ee246147a304a",
+        "ed9749eef4cbd126da3dc1d6bcb3a57f5eb7ac6a6484146bdbf743f552dfc577",
+        "ede83e07a75dd06bc501566c1eca2afc0d61677c1472ac9ad93fdee6e638a48d",
+        "ef4aea96ce4d3b074422cb4f2f64e216bf9e213004bb58ecfdf50ea02ea8eb9a",
+        "f3a3570c4a2a16746ac2c31a7c7c7b0c186b95ce902e33db6f28094ed7387dda",
+        "f407cb6b8e9d6d8c626bc73c945db1706035af8fd632295547bf1c9e46d092d6",
+        "f74a575920ab21fe304421a3fc28793d82e299cae9eccb37084e9fc7f3617c20"
+      ],
+      "bundled": false,
+      "selected_host_clearance_receipt_sha256": "8cb633094d907552017da924259ccc3e40b8f9ab2c89e215591f32b90776aef3",
+      "source_revision": "b832a09cf2a169c833dd2371e7c07aa00b293242",
+      "selected_host_wheel_sha256": "d581b735e177fdcdce6fed8e7e8880a3fb6ee4e3653a3ac6af01c6f4c03effc5",
+      "source_sdist_sha256": "f3a3570c4a2a16746ac2c31a7c7c7b0c186b95ce902e33db6f28094ed7387dda",
+      "scope": "Optional audio/dev import only; exact910 selected-host installed members verified.19 extensions/two static libraries use system Accelerate/libSystem/libc++; no NumPy/system/OpenBLAS/GNU binaries bundled in own package. All20wheel/32source named grant notices separately retained, conditional native notices intact. Other-platform native redistribution and sdist build execution unverified."
     },
     {
       "name": "openapi-pydantic",

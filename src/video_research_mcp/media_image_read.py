@@ -54,6 +54,8 @@ def geometry(source: dict, max_pixels: int, crop_box) -> tuple[int, int, str]:
         crop = f"crop={w}:{h}:{x}:{y}:exact=1,"
     ratio = min(1, math.sqrt(max_pixels / (width * height)))
     width, height = max(1, int(width * ratio)), max(1, int(height * ratio))
+    if width * height > max_pixels:
+        raise ValueError("Pixel budget cannot preserve this aspect ratio with at least one pixel per dimension")
     return width, height, f"{crop}scale={width}:{height},setsar=1,sidedata=mode=delete,format=rgb24"
 
 

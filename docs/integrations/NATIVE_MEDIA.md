@@ -145,3 +145,7 @@ candidate results remain in private programme evidence with exact source/artifac
 digests. These controls establish local extraction and transport behavior. They
 do not establish provider accuracy, held-out superiority, a human audit result or
 a distribution release.
+
+[Local scene assets](SCENE_ASSETS.md) adds contiguous hard-cut intervals,
+timestamped storyboard pixels, full frame/audio similarity denominators and
+whole/one-sided extraction using these same source and artifact controls.

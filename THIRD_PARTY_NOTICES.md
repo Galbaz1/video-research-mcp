@@ -119,3 +119,35 @@ and Pillow majors. Its dependencies, binaries, fonts, media and model weights
 are absent from this core distribution. Private mocked process discovery does
 not establish provider support, accuracy, charging, deletion or full optional
 extra readiness. See integrations/qwen/api.json and docs/integrations/IMAGE_VISION.md.
+
+## Local scene asset requirements (vrm-0e8.3.5)
+
+The independently authored hard-cut partition, timestamped storyboard,
+horizontal grayscale dHash, bounded audio MFCC similarity and extraction routes
+were informed by QwenLM/Qwen-MM-Plugins at
+07736672525443c7f8a3f6405eed37d2236f023f, under the original Apache-2.0 grant
+retained above. Change attribution: source snapshots, actual presentation clocks,
+bounded processes, complete candidate denominators, immutable export paths and
+manifest readback use this project's own implementations. No foreign helper body,
+font, model weight, media or executable is copied. Local FFmpeg remains external.
+
+Audio MFCC uses NumPy 2.4.6 through the optional audio/dev extras. Its primary
+BSD-3-Clause grant is pinned at
+b832a09cf2a169c833dd2371e7c07aa00b293242; exact upstream LICENSE.txt matches
+the sdist and the prefix of the selected wheel's complete appended license.
+Selected macOS arm64 CPython 3.14 wheel SHA256:
+d581b735e177fdcdce6fed8e7e8880a3fb6ee4e3653a3ac6af01c6f4c03effc5.
+Source sdist SHA256:
+f3a3570c4a2a16746ac2c31a7c7c7b0c186b95ce902e33db6f28094ed7387dda.
+The exact artifact grants and embedded notices remain intact in the external
+NumPy package; all 20 wheel and 32 source named license/notice files are separately
+retained and dispositioned in the dependency clearance receipt.
+
+The inspected wheel has 19 arm64 extensions and two static libraries, with only
+system Accelerate, libSystem and libc++ dynamic links. It contains no OpenBLAS,
+libgfortran, libgcc or libquadmath binaries. Its generic conditional native
+notice templates remain intact; they are not assertions that these runtimes are
+present. Other-platform native redistribution and source-build execution remain
+uncleared by this selected-host receipt. NumPy and system binaries are not bundled
+in this project's wheel. Registry provenance subjects match the artifact hashes;
+cryptographic Sigstore verification was not performed.

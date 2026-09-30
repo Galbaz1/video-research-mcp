@@ -154,7 +154,8 @@ async def frame_at(file_path: str, *, time_seconds: float, max_pixels: int = MAX
 
 async def sample_frames(file_path: str, *, start_seconds: float = 0, end_seconds: float | None = None,
                         fps: float = 1, max_frames: int = 48, max_pixels: int = MAX_FRAME_PIXELS,
-                        crop_box=None, selection: str = "uniform") -> dict:
+                        crop_box=None, selection: str = "uniform",
+                        expected_source_sha256: str | None = None) -> dict:
     """Sample a half-open source window without synthesizing frame timestamps or deduplication."""
     start = _seconds(start_seconds, "start_seconds")
     end = _seconds(end_seconds, "end_seconds") if end_seconds is not None else None
@@ -167,7 +168,7 @@ async def sample_frames(file_path: str, *, start_seconds: float = 0, end_seconds
     validate_pixels(max_pixels)
     if selection not in {"uniform", "scene", "keyframe", "keyframes"}:
         raise ValueError("selection must be uniform, scene or keyframe")
-    async with snapshot(file_path) as owned:
+    async with snapshot(file_path, expected_source_sha256) as owned:
         source = await probe_snapshot(owned)
         duration, offset = _source_clock(source)
         end = duration if end is None else end
