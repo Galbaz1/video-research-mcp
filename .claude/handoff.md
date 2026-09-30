@@ -21,15 +21,15 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current runtime/infrastructure source is `aeaca8db79c7ac410ced9abb2678873bc082d29b`
+Current runtime/infrastructure source is `55ba6e951a82b563503f54d4285d70c426acc8d4`
 on `codex/multimodal-capability-programme` in the implementation worktree below.
 This supersedes the earlier preparation-only checkpoint. Licensing commit
-`dfcf7df87498adb4eb5acd7c8d80cd033a8fc46b` implements per-unit/component reuse,
+`fd054d05cf26bcae98fe40e7f8fab611170c09d9` implements per-unit/component reuse,
 exact dependency receipts, archive clearance and missing companion MIT grants.
 `vrm-0e8.2.6` is closed after verification. No programme external code/assets/weights
 or optional foreign runtime was imported; routes remain explicit and gated.
 
-Evaluation commit `aeaca8d` implements the frozen nine-family/74-workflow protocol,
+Evaluation commit `55ba6e9` implements the frozen nine-family/74-workflow protocol,
 strict replay, citation/temporal/artifact measures, paired thresholds, separate
 frozen provider arms and actual baseline-output replay. Fifteen public development
 cases and an independent sealed 27-case/six-modality corpus exist. The implementer
@@ -52,8 +52,7 @@ Do not waive the audit, close the leaf from oracle results, or start blocked lea
 
 Latest verification: 863 root tests, 13 installer tests, Ruff/format and exact
 85-unit/74-package live Beads validator passed. Two development CLI replays were
-byte-identical. Twenty-seven evaluation regressions are not claimed: the focused
-evaluation count is **26**, and the separate reuse count is **27**. All seven
+byte-identical. Focused evaluation tests: **26**. Separate reuse tests: **27**. All seven
 actual distribution archives passed license/asset clearance; initial companion
 missing-license failures were retained and repaired. Those exact build hashes are
 license receipts, not a new release. All five protected originals still match;
@@ -74,7 +73,12 @@ All three lanes (licensing, independent custodian, one protocol reviewer) are
 terminal; no active job, provider operation, scheduler or duplicate coordinator
 exists. The main epic, integrated product acceptance, powered held-out comparison,
 human media review and verified release remain open. Source commit/push receipts
-are separate from any runtime/registry release claim.
+are separate from any runtime/registry release claim. GitHub rejected the first
+push with GH007 because local Git used a private author email. Only the three
+unpublished commits were corrected to the verified existing account no-reply
+address; the complete tree was unchanged. Original identities remain preserved
+at `refs/codex/receipts/multimodal-privacy-rejected`, with the exact mapping in
+`author-correction-receipt.json` under the evidence root.
 
 ## User mandate and current authority
 
