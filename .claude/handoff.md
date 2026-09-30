@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T14:16+02:00
+date: 2026-09-30T15:53+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,8 +21,10 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-Current accepted source is `a310f63` (onboarding), following `990e4b6`
-(evidence/native MCP contract) and `8a914ae` (readiness)
+Current accepted source is `b0e78163f8f73dcb2109bb0e00eece995a8be0b5`
+(durable research/batch/render jobs and Interactions evaluation), following
+`cb2699f88e8b86deffac4d71634c58ab74ddddf5` (cache identity and execution budgets),
+`a310f63` (onboarding), `990e4b6` (evidence/native MCP contract) and `8a914ae` (readiness)
 on `codex/multimodal-capability-programme` in the implementation worktree below.
 This supersedes the earlier preparation-only checkpoint. Licensing commit
 `fd054d05cf26bcae98fe40e7f8fab611170c09d9` implements per-unit/component reuse,
@@ -94,14 +96,61 @@ remain unverified. Fourteen Qwen capabilities remain external-disabled with audi
 source/index commitments; no foreign code/assets/weights were bundled.
 Exact receipt: `contract-onboarding/onboarding-receipt.committed.json`.
 
-Current claimed implementation leaves: `vrm-0e8.2.2` (cache/source identity) and
-`vrm-0e8.2.4` (execution budgets and bounded output views). One cache worker owns
-cache/media identity/video core and narrowly scoped file-hash/context invalidation;
-the coordinator owns client/public video/budget/shared integration. The output-view
-worker has frozen two new files with 44 tests and a seven-page Unicode replay;
-full budget/caller acceptance remains open. Continue through current Beads readiness.
+Cache identity `vrm-0e8.2.2` and execution budgets/output views `vrm-0e8.2.4`
+are closed at `cb2699f`. The exact 26-file receipt is
+`budgets/group-receipt.committed.json`, SHA256
+`68343de14099b04ceb08173f559b82fe822d92bec898524a9f88f9793475c4dc`.
+Complete source/credential/model/schema/prompt/preprocessing/window/sampling/retrieval
+bindings prevent stale result reuse. Opaque uploaded-source freshness stays unknown.
+Per-transport generation/count limits, unknown reservations and one SDK attempt
+retain errors and partial output; sparse Unicode paging preserves full evidence and
+source text. Fresh 1138 root checks, actual seven-step MCP journey and bounded review
+passed. Initial fixture/localhost-Weaviate and corrupt-cache failures remain evidence.
+
+Interactions `vrm-0e8.2.1` and durable jobs `vrm-0e8.2.3` are closed at `b0e7816`.
+The exact 41-file receipt is `durable-jobs/group-receipt.committed.json`, SHA256
+`1781711b9e5abf5c182a1f25d1cb7fdb1d99d5f5e1e3701239141ebb7227ed4f`.
+Retain current generation, signed/full-content persistence, sessions and caches;
+reject wholesale experiment replacement. Five exact own MIT test-only function bodies
+have source/excerpt receipts and notices. One concrete SQLite store serves both
+separately installed runtimes, binding request/source/settings, provider/process ID,
+result and actual artifact bytes. Unknown launches/running items never resubmit;
+queued recovery uses ownership CAS; cancellation acknowledgements and late results
+remain explicit. Render dispatch checks actual output baseline and owns/reaps live
+POSIX process groups, including descendants after parent exit. Windows descendant
+termination remains unverified. Root artifact readback runs outside the event loop.
+
+Fresh final gates: 1217 root, 196 explainer and 31 installer checks; Ruff; nine
+security smoke/five offline tool entrypoints; unchanged three locks/five protected
+originals. Published 34/15/2 contracts remain compatible; candidate discovery is
+37/16/2. Root actual MCP journey: 33 public calls/eight controls/13 guarded local
+SDK transmissions; companion four actual MCP/owned CLI+FFmpeg outcomes. Five cleared
+build artifacts contain regular canonical store bytes; standalone explainer sdist
+rebuild yields the identical wheel. Isolated installed wheels expose 37/16 exact
+schemas/config/redaction. Private audit guards blocked original optional PyPI version
+checks; `FASTMCP_CHECK_FOR_UPDATES=off` is a private harness setting. Final network
+attempts/allowed DNS/INET are zero; two classified local MLflow platform inspections
+remained denied. This is Python audit-hook evidence, not an OS-wide egress claim.
+
+One bounded independent review found six concrete initial-freeze defects; focused
+owner regressions repaired all six. Its private snapshot receipt explicitly records
+conversation-tool-output-only probe limitations and no second independent PASS.
+All original SDK, SQLite bootstrap, fixture, archive and guard failures remain retained.
+Exact lane receipts sit under `durable-jobs/`; the committed group receipt joins them.
+
+Current claimed leaf: `vrm-0e8.3.7`, supported source acquisition and exact-byte
+asset/metadata lifecycle. Its full inventory maps nine public capabilities and three
+workflows, including channel inspection/catalog and stream manifests. Read-only
+preparation identified existing source identity, YouTube and checked-transport routes.
+Implement one bounded acquisition path; keep metadata-only operations free of download,
+asset deletion within owned storage, and arbitrary derived URLs behind checked
+redirect/DNS/connected-peer transport. Do not pass arbitrary Loom/direct/HLS URLs
+unfenced to yt-dlp or FFmpeg. Root owns shared config/client/server/transport/manifest;
+assign independent concrete files before dispatch. `vrm-0e8.2.5` remains blocked by
+memory/knowledge verification leaves `.6.7` and `.7.7`; follow live Beads readiness.
+
 The completed transcription/PDF/Word/mail work stays outside scope. Human development
-and independent heldout audits remain pending at final comparison under the user's
+and independent held-out audits remain pending at final comparison under the user's
 stage-order correction. No live comparative/product/registry-release claim exists.
 
 Protocol receipt:
@@ -115,16 +164,14 @@ oracle outputs with evaluator `4a70de13bebde39cbf2236a655256e4e2844b2b933c27af78
 The public manifest commits both original and supplemental receipts. This is
 label-derived oracle proof, with **zero candidate/provider executions**.
 
-The completed baseline/readiness/security lanes have joined. New cache and
-budget work continues under one coordinator with disjoint ownership. No
-provider operation, scheduler or duplicate coordinator exists. The main epic, integrated product acceptance, powered held-out comparison,
-human media review and verified release remain open. Source commit/push receipts
-are separate from any runtime/registry release claim. GitHub rejected the first
-push with GH007 because local Git used a private author email. Only the three
-unpublished commits were corrected to the verified existing account no-reply
-address; the complete tree was unchanged. Original identities remain preserved
-at `refs/codex/receipts/multimodal-privacy-rejected`, with the exact mapping in
-`author-correction-receipt.json` under the evidence root.
+The required implementation and verification lanes above have joined. Beads owns
+current readiness; continue authorized offline feature work. No provider operation,
+scheduled coordinator, paid cohort, upload or registry publication was launched.
+The main epic, integrated product acceptance, powered held-out comparison, human
+media review and verified release remain open. Source commit/push receipts are
+separate from runtime/registry release. Earlier GH007 correction changed only three
+unpublished author identities to the verified no-reply address with identical trees;
+original identities and mapping remain in the recorded private receipt refs.
 
 ## User mandate and current authority
 
