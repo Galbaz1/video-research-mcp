@@ -22,15 +22,15 @@ Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mai
 work remains outside this programme and was not reopened or modified.
 
 Image/frame edits, local OCR/Vision, exact export manifests and bounded clip
-encoding (`vrm-0e8.3.3`) are verified and ready for the owned source commit.
-Current branch HEAD is `c97eeacd8080bf45dfeb9059fcdf94624e936e3f` on
+encoding (`vrm-0e8.3.3`) are accepted and closed at `e74d5696d29bb1b463544f28a14c96a24f6b509f`.
+Current branch HEAD is `e74d5696d29bb1b463544f28a14c96a24f6b509f` on
 `codex/multimodal-capability-programme` in the implementation worktree below.
 Earlier accepted window/upload recovery source is
 `6dcf3444e68823f7b075001d6717d875043f2ed4`; native views/PTS source is
-`e593770ba1623787435cceee78ea6e587f434800`. `.3.3` stays claimed until its
-verified source commit and exact Git-blob receipt exist. Next dependency-ready
-leaf is `.3.4`, configurable vision chat/model OCR/grounding; continue it after
-closure, preserving explicit endpoint/upload and inference authority.
+`e593770ba1623787435cceee78ea6e587f434800`. Exact38 owned Git blobs and155 runtime files match the cleared archives and
+installed loaded bindings. `image-frame-preparation/group-receipt.committed.json`
+SHA256 `e72fb9c9ed0ec24b691f51b7d66aaf874518251ac137d43d384e74714dbab849`. Next dependency-ready leaf is `.3.4`, configurable vision
+chat/model OCR/grounding; preserve explicit endpoint/upload/inference authority.
 
 All three required implementation lanes and the sole original independent review
 are joined. Image49/OCR45/clip36 focused controls and root public24/cleanup15
