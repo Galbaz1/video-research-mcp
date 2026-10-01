@@ -27,7 +27,12 @@
     "integrations/qwen/blender.json",
     "scripts/blender_session.py",
     "scripts/blender_startup.py",
-    "scripts/blender_stdio.py"
+    "scripts/blender_stdio.py",
+    "scripts/freecad_session.py",
+    "scripts/freecad_startup.py",
+    "scripts/freecad_jobs.py",
+    "integrations/qwen/freecad.json",
+    "docs/integrations/qwen-freecad.md"
   ],
   "engines": {
     "node": ">=22"

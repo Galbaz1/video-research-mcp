@@ -11146,9 +11146,16 @@
         "onboarding"
       ],
       "target_paths": [
-        "docs/integrations/qwen-freecad.md",
+        "scripts/freecad_session.py",
+        "scripts/freecad_startup.py",
+        "scripts/freecad_jobs.py",
+        "scripts/blender_session.py",
+        "scripts/blender_stdio.py",
         "integrations/qwen/freecad.json",
-        "skills/research-visualization-freecad/SKILL.md"
+        "docs/integrations/qwen-freecad.md",
+        "skills/research-visualization-freecad/SKILL.md",
+        "tests/test_freecad_session.py",
+        "tests/test_freecad_jobs.py"
       ],
       "declared_dependencies": [
         "contract",

@@ -70,6 +70,12 @@ build-backend = "hatchling.build"
 packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"scripts/freecad_session.py" = "freecad/scripts/freecad_session.py"
+"scripts/freecad_startup.py" = "freecad/scripts/freecad_startup.py"
+"scripts/freecad_jobs.py" = "freecad/scripts/freecad_jobs.py"
+"integrations/qwen/freecad.json" = "freecad/integrations/qwen/freecad.json"
+"docs/integrations/qwen-freecad.md" = "freecad/docs/integrations/qwen-freecad.md"
+"skills/research-visualization-freecad/SKILL.md" = "freecad/skills/research-visualization-freecad/SKILL.md"
 "scripts/blender_session.py" = "blender/scripts/blender_session.py"
 "scripts/blender_startup.py" = "blender/scripts/blender_startup.py"
 "scripts/blender_stdio.py" = "blender/scripts/blender_stdio.py"
