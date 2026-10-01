@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T15:19+02:00
+date: 2026-10-01T15:23+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -105,7 +105,10 @@ component acceptance, explicit commit and normal push. The epic remains open.
 
 ### Tutorial-note component checkpoint: installed acceptance blocked
 
-`vrm-0e8.7.1` has complete implemented source but remains unaccepted. Source-linked
+`vrm-0e8.7.1` has complete implemented source but remains unaccepted. Source
+`50e3366c047d0a16e14f066552a156df65d9dc42` was normally pushed; exact remote
+readback matches. Committed component receipt SHA
+`556b9c885f59f36fd438459d9a6ed3c0308837babea02ee8452fedf6e55aa078`. Source-linked
 `video_note_create` is mounted as root tool83; prior82 exact contract objects are
 preserved. Independent authoring uses FPDF2/PDFium, existing frame_at and optional
 AV perception; no Qwen runtime/code/fonts copied. Full source/license/explorer and
@@ -144,8 +147,9 @@ comparison and registry release unqualified. Preserve this blocker and continue
 fresh ready work. Read-only Blender reconnaissance is joined; source-contract lane
 is active in /root/compaction_existing_code under blender/source-contracts/.
 Blender5.2.1 arm64 installed metadata/executable hash only; actual addon/scene/
-render/viewport journey has not started. Claim current ready vrm-0e8.9.4 after this
-component checkpoint, read its criteria and pinned source/grants, use an owned
+render/viewport journey has not started. Current ready vrm-0e8.9.4 is claimed. Its actual CLI --version verifies
+Blender5.2.1LTS build9e2066aef7ef; no scene/addon execution. Read pinned
+source/grants before activation and use an owned
 factory scene with primitive geometry and optional asset/providers disabled.
 A separate read-only tutorial startup diagnosis is active in /root/licensing;
 no execution/retry/source changes authorized in that lane.
