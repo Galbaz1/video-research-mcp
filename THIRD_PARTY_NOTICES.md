@@ -75,6 +75,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Rights that are not cleared by repository metadata
 
+- **Segmentation service and SAM3**: the own optional HTTP adapter is informed by
+  the Apache-2.0 Qwen wrapper and launcher at
+  `07736672525443c7f8a3f6405eed37d2236f023f`. No launcher, SAM code, checkpoint,
+  model runtime or third-party image is copied or imported. SAM3's full custom
+  [SAM License](https://github.com/facebookresearch/sam3/blob/2345a4ad109ac29c569da749c91d84f10dc08c40/LICENSE)
+  applies separately to SAM materials; its package MIT classifier does not clear
+  them. The gated model card and checkpoint grant binding remain unresolved.
+  Operator service terms, model access, checkpoint identity and any later
+  redistribution require separate evidence. Mock raster checks establish the
+  adapter contract and do not establish loaded-model or mask semantics.
 - **Qwen-MM-Plugins**: original code has Apache-2.0 terms. Blender and FreeCAD
   vendored/derived portions have their own MIT copyrights, permission grants and
   notices. Font grants vary by directory. Verified OFL fonts require the exact

@@ -41,7 +41,9 @@
     "docs/integrations/qwen-spatial.md",
     "skills/spatial-video-analysis/SKILL.md",
     "integrations/qwen/tts.json",
-    "docs/integrations/measured-narration.md"
+    "docs/integrations/measured-narration.md",
+    "integrations/qwen/segmentation.json",
+    "docs/integrations/qwen-segmentation.md"
   ],
   "engines": {
     "node": ">=22"

@@ -664,10 +664,21 @@
           "reuse_mode": "integration-only",
           "rationale": "[CONFIRMED source; proposed transfer] Integrate external SAM3 rather than bundle GPU/checkpoints; wrapper license and model license differ.",
           "target_paths": [
-            "integrations/qwen/segmentation.json",
-            "docs/integrations/qwen-segmentation.md"
+            "src/video_research_mcp/segmentation.py",
+            "src/video_research_mcp/segmentation_images.py",
+            "src/video_research_mcp/segmentation_service.py",
+            "src/video_research_mcp/models/segmentation.py",
+            "src/video_research_mcp/tools/segmentation.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/server.py",
+            "tests/test_segmentation.py",
+            "tests/test_segmentation_images.py",
+            "tests/test_segmentation_service.py",
+            "tests/test_segmentation_admission.py",
+            "docs/integrations/qwen-segmentation.md",
+            "integrations/qwen/segmentation.json"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Owned optional raster/native/HTTP adapter accepted through frozen20 original-grid mock controls and3210root tests; live SAM checkpoint/runtime/semantic acceptance remains unqualified.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_media_assets"
@@ -10532,6 +10543,17 @@
         "assets"
       ],
       "target_paths": [
+        "src/video_research_mcp/segmentation.py",
+        "src/video_research_mcp/segmentation_images.py",
+        "src/video_research_mcp/segmentation_service.py",
+        "src/video_research_mcp/models/segmentation.py",
+        "src/video_research_mcp/tools/segmentation.py",
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/server.py",
+        "tests/test_segmentation.py",
+        "tests/test_segmentation_images.py",
+        "tests/test_segmentation_service.py",
+        "tests/test_segmentation_admission.py",
         "docs/integrations/qwen-segmentation.md",
         "integrations/qwen/segmentation.json"
       ],

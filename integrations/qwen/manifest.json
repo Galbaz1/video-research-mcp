@@ -37,7 +37,9 @@
         "integrations/qwen/manifest.json",
         "integrations/qwen/api.json",
         "docs/integrations/qwen-api.md",
-        "docs/integrations/IMAGE_VISION.md"
+        "docs/integrations/IMAGE_VISION.md",
+        "integrations/qwen/segmentation.json",
+        "docs/integrations/qwen-segmentation.md"
       ],
       "applicable_notice_receipts": [
         {
@@ -54,7 +56,7 @@
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
       "blocked_assets": [],
-      "verification_boundary": "Private pinned API discovery and SDK-mocked contracts are separately receipted; live provider/optional extra readiness stays unverified and ordinary activation stays disabled."
+      "verification_boundary": "Private pinned API discovery/SDK-mocked contracts and own segmentation raster/HTTP route have separately receipted qualification. Live provider/checkpoint readiness remains unverified; ordinary external activation remains disabled."
     },
     {
       "id": "blender",
