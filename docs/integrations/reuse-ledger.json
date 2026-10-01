@@ -585,7 +585,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -720,7 +720,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -952,7 +952,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
+          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
+          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1135,7 +1135,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1225,7 +1225,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         }
       ]
@@ -1324,7 +1324,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/search_provider.py",
-          "target_sha256": "e5fca51154c22dfeedee8d63e2379bc82ced6d0a59992a8b36bcafb89d0d77c2",
+          "target_sha256": "cf5cb2cc5b424855c33d55abf476e3136fcdd069924bc1e749022936dbf9d6f8",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -1407,10 +1407,70 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/qwen-search.md",
+          "target_sha256": "511e9471554552ed41ebb2716f9f93fc7d3f6127876d716266f378b39161d486",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "integrations/qwen/search.json",
+          "target_sha256": "36b16931fe7f76ebf6ec35026becef603272dc3c9080b7091d8f6546218cd3c1",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "skills/reverse-search-video-frame/SKILL.md",
+          "target_sha256": "98b4981c3b0137a28df8c29e4a2d24e3821e04d77103e7cd855b7c72391ce36f",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/reverse_search.py",
+          "target_sha256": "3b9f564ac53768643f3326c91f93b170a037b3b05aad28114716e754fc54c728",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/reverse_frame_search.py",
+          "target_sha256": "213243fe7772b6899e23466bece6651eea217942133b1f88a5b4554978e71ea7",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/reverse_frame_sources.py",
+          "target_sha256": "acfab4f7c856e3fb4138829a382096269afe956bc80dff626f1868ab3c4a3120",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/search_provider.py",
+          "target_sha256": "cf5cb2cc5b424855c33d55abf476e3136fcdd069924bc1e749022936dbf9d6f8",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_reverse_frame_search.py",
+          "target_sha256": "f70fcf373930ef3b97e4e8dd26389a4b46cb9b9daef80c344cd1cfdfcf4618e7",
+          "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "bin/lib/copy.js",
+          "target_sha256": "a6f86c3f9d5f2a023d8bbb5e7f9d3b6534fe11da2b9eb3d40f34472689d17cdf",
+          "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred."
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.3",
+        "route": "integration-only via independent adapter",
+        "source_contract_receipt": "reverse-search/source-contracts/receipt.json in fixed private evidence root",
+        "source_contract_receipt_sha256": "ea481e2a59779f93269cad32bbe5916d7abd1046a9a8c65116a656ce6c86576a",
+        "source_contract_report_sha256": "6d84738d7e338506358deb034f85b7e84258c7d796825ccbd459348210dbf4d5",
+        "mapped_full_bodies": 3,
+        "mapped_full_lines": 302,
+        "mapped_full_bytes": 13346,
+        "read_depth": "Mapped3full;8helpers conservative individual scopes; current Uguu response/config/entry full and Upload targeted; grants and4official Uguu docs retained. Serper renderer readback/raw403 failures explicit; no blanket live schema claim.",
+        "service_contract": "Pinned Qwen Lens schema and current Uguu interface sources; live Lens/account/downloadhost/retention/deletion/charges unqualified",
+        "foreign_runtime_adopted": false,
+        "semantic_identity": "Tool always pending; source appearance/text/page-context review required before identity claim; similarity/provenance alone is insufficient"
+      }
     },
     {
       "unit_key": "qwen_graph_memory",
@@ -1932,7 +1992,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2415,7 +2475,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2641,7 +2701,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2676,7 +2736,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
+          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3358,7 +3418,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/search_provider.py",
-          "target_sha256": "e5fca51154c22dfeedee8d63e2379bc82ced6d0a59992a8b36bcafb89d0d77c2",
+          "target_sha256": "cf5cb2cc5b424855c33d55abf476e3136fcdd069924bc1e749022936dbf9d6f8",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -4277,7 +4337,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
+          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },

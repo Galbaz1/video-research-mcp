@@ -10483,9 +10483,18 @@
         "assets"
       ],
       "target_paths": [
+        "bin/lib/copy.js",
         "docs/integrations/qwen-search.md",
+        "docs/integrations/reuse-ledger.json",
+        "docs/metrics/tool-contract-manifest.json",
         "integrations/qwen/search.json",
-        "skills/reverse-search-video-frame/SKILL.md"
+        "skills/reverse-search-video-frame/SKILL.md",
+        "src/video_research_mcp/models/reverse_search.py",
+        "src/video_research_mcp/reverse_frame_search.py",
+        "src/video_research_mcp/reverse_frame_sources.py",
+        "src/video_research_mcp/tools/search_provider.py",
+        "tests/test_reuse_ledger.py",
+        "tests/test_reverse_frame_search.py"
       ],
       "declared_dependencies": [
         "assets",
@@ -10499,7 +10508,13 @@
         "Similarity suggestions are verified against source appearance/text before entity identity is asserted.",
         "Missing key fails clearly; image upload is recorded; URL/path policy applies."
       ],
-      "bead_id": "vrm-0e8.5.3"
+      "bead_id": "vrm-0e8.5.3",
+      "original_target_paths": [
+        "docs/integrations/qwen-search.md",
+        "integrations/qwen/search.json",
+        "skills/reverse-search-video-frame/SKILL.md"
+      ],
+      "implementation_status": "implemented independent bounded root adapter; live service and semantic/media acceptance remain separate"
     },
     {
       "key": "graph-memory",
