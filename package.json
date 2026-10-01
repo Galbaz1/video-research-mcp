@@ -39,7 +39,9 @@
     "scripts/spatial_motion.py",
     "integrations/qwen/video-spatio.json",
     "docs/integrations/qwen-spatial.md",
-    "skills/spatial-video-analysis/SKILL.md"
+    "skills/spatial-video-analysis/SKILL.md",
+    "integrations/qwen/tts.json",
+    "docs/integrations/measured-narration.md"
   ],
   "engines": {
     "node": ">=22"

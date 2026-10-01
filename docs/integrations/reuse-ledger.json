@@ -544,7 +544,7 @@
       "implementations": [
         {
           "target_path": "integrations/qwen/manifest.json",
-          "target_sha256": "6381ed247b45761eb37b8ab3abaf2e1c0ce0ecf524b8c30eecab5e93067c2484",
+          "target_sha256": "41fff042c1723097e773842afe96e7dc8b7e8ea1156fc2d6c2b89e105e570396",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e585721547f8e54e65ac0bc08bd92323b1e6ee59b0c25ba9804df24f3ef5fa1",
+          "target_sha256": "450c41294520bcdc5b47a87fe813b6975443764710b7d2fca9835b63ac0a59fb",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e585721547f8e54e65ac0bc08bd92323b1e6ee59b0c25ba9804df24f3ef5fa1",
+          "target_sha256": "450c41294520bcdc5b47a87fe813b6975443764710b7d2fca9835b63ac0a59fb",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1140,7 +1140,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0e02be169868919b83c12cab44d152ea4586d17b66597f31e4ca291fdfd7d5e9",
+          "target_sha256": "a6215d159d1a2ea5b9feb44d41c04d4ec2f152d6f534e1219e12926cb585481e",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1714,10 +1714,81 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "integrations/qwen/tts.json",
+          "target_sha256": "87ee5392347fb9c2734f9e630367a1715c075c560334f48ea99ed31978c5ee21",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_pcm.py",
+          "target_sha256": "f1da10b4c4d5c0ccec4dc9594a46669ccd8766ff27655333a8cea316ca3cdead",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_provider.py",
+          "target_sha256": "291e7f4ed5b1257078f4f86fb6ca3632b6ce274f2e1c5f3b9c87dddac6746625",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_run.py",
+          "target_sha256": "0ebb949f9ec4e90718673097bf96398fb3f5fb2efb8ba277cd5375e30f14563a",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_timing.py",
+          "target_sha256": "fa75ad06a1f970a27c3b85a09e851080300eb355baad01af0244645b9267f9ec",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/narration.py",
+          "target_sha256": "a2f10a9998e812fd07d2a6f3a98de9290ddeb0a8bf07a66607f72d416502d8b6",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
+          "target_sha256": "84e491c30d3dc4daaf4fddd1f9635bb396ac06363760bba34a518836e7021905",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+          "target_sha256": "b9e05ee0322c3a1a6ecf89ffbd92830a5feb321ab0608f0b7c09c7eea5652e27",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_pcm.py",
+          "target_sha256": "01570a65da52245c70c734b2ebf7db925e969ae6ea5ac73357ec0f1df9f3c75b",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_provider.py",
+          "target_sha256": "63b78fd0e095714d09b4e71f9aa19d447aef6bbb816b0847bac962e1fcba2f71",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_run.py",
+          "target_sha256": "73e810fca22249300fc4cfeb5b31b6d361978a9f87b93f340bcf70bac0f3bcd0",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_admission.py",
+          "target_sha256": "1769e5c6b5e7b21a96692452af8343d1d5691ca85b552391307eba1abec10d1c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "docs/integrations/measured-narration.md",
+          "target_sha256": "3b73c543266f1d4efb6e515fb79ec932bdfe9dda0df1d484b9a4fc5be3abcc6c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/hatch_resources.py",
+          "target_sha256": "91fa6dd332eca453eb7d81c6e64ca22c875958ea54e7bbd42fa2b704a1383f2c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        }
+      ]
     },
     {
       "unit_key": "qwen_footage_edit",
@@ -3022,7 +3093,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e585721547f8e54e65ac0bc08bd92323b1e6ee59b0c25ba9804df24f3ef5fa1",
+          "target_sha256": "450c41294520bcdc5b47a87fe813b6975443764710b7d2fca9835b63ac0a59fb",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3076,7 +3147,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "f932252b977dd01a39f3df5a7d6d16a9a8d48b1017b582e25e79f15b16ea8853",
+          "target_sha256": "c15ce758c612e94ef9b7d63d232c0f4cf1d7ebf2cb86052ec06c5356a795525d",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -3203,7 +3274,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e585721547f8e54e65ac0bc08bd92323b1e6ee59b0c25ba9804df24f3ef5fa1",
+          "target_sha256": "450c41294520bcdc5b47a87fe813b6975443764710b7d2fca9835b63ac0a59fb",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -4227,7 +4298,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e585721547f8e54e65ac0bc08bd92323b1e6ee59b0c25ba9804df24f3ef5fa1",
+          "target_sha256": "450c41294520bcdc5b47a87fe813b6975443764710b7d2fca9835b63ac0a59fb",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -4461,12 +4532,12 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "45729ef7a3976df595536b94dd27eb392ab3f31b90429fd521da2bd743f7ce14",
+          "target_sha256": "3751b8eb22406d6b242c2fa8f9b3141d5be4a79b8c8e8ecab750eff1aa28ee4e",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0e02be169868919b83c12cab44d152ea4586d17b66597f31e4ca291fdfd7d5e9",
+          "target_sha256": "a6215d159d1a2ea5b9feb44d41c04d4ec2f152d6f534e1219e12926cb585481e",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -4561,7 +4632,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
-          "target_sha256": "dae81ab22791cc5d9e2e85f5f6750c67b140be057983a6283236351a0773928e",
+          "target_sha256": "b9e05ee0322c3a1a6ecf89ffbd92830a5feb321ab0608f0b7c09c7eea5652e27",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -4727,7 +4798,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "45729ef7a3976df595536b94dd27eb392ab3f31b90429fd521da2bd743f7ce14",
+          "target_sha256": "3751b8eb22406d6b242c2fa8f9b3141d5be4a79b8c8e8ecab750eff1aa28ee4e",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
         },
         {
@@ -4782,7 +4853,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0e02be169868919b83c12cab44d152ea4586d17b66597f31e4ca291fdfd7d5e9",
+          "target_sha256": "a6215d159d1a2ea5b9feb44d41c04d4ec2f152d6f534e1219e12926cb585481e",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {
@@ -4906,10 +4977,81 @@
       "component": "harry0703/MoneyPrinterTurbo@44e6d5e11832beccc2c3ce6b139bf437e920bb6a",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "integrations/qwen/tts.json",
+          "target_sha256": "87ee5392347fb9c2734f9e630367a1715c075c560334f48ea99ed31978c5ee21",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_pcm.py",
+          "target_sha256": "f1da10b4c4d5c0ccec4dc9594a46669ccd8766ff27655333a8cea316ca3cdead",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_provider.py",
+          "target_sha256": "291e7f4ed5b1257078f4f86fb6ca3632b6ce274f2e1c5f3b9c87dddac6746625",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_run.py",
+          "target_sha256": "0ebb949f9ec4e90718673097bf96398fb3f5fb2efb8ba277cd5375e30f14563a",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/narration_timing.py",
+          "target_sha256": "fa75ad06a1f970a27c3b85a09e851080300eb355baad01af0244645b9267f9ec",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/narration.py",
+          "target_sha256": "a2f10a9998e812fd07d2a6f3a98de9290ddeb0a8bf07a66607f72d416502d8b6",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
+          "target_sha256": "84e491c30d3dc4daaf4fddd1f9635bb396ac06363760bba34a518836e7021905",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+          "target_sha256": "b9e05ee0322c3a1a6ecf89ffbd92830a5feb321ab0608f0b7c09c7eea5652e27",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_pcm.py",
+          "target_sha256": "01570a65da52245c70c734b2ebf7db925e969ae6ea5ac73357ec0f1df9f3c75b",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_provider.py",
+          "target_sha256": "63b78fd0e095714d09b4e71f9aa19d447aef6bbb816b0847bac962e1fcba2f71",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_run.py",
+          "target_sha256": "73e810fca22249300fc4cfeb5b31b6d361978a9f87b93f340bcf70bac0f3bcd0",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_narration_admission.py",
+          "target_sha256": "1769e5c6b5e7b21a96692452af8343d1d5691ca85b552391307eba1abec10d1c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "docs/integrations/measured-narration.md",
+          "target_sha256": "3b73c543266f1d4efb6e515fb79ec932bdfe9dda0df1d484b9a4fc5be3abcc6c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/hatch_resources.py",
+          "target_sha256": "91fa6dd332eca453eb7d81c6e64ca22c875958ea54e7bbd42fa2b704a1383f2c",
+          "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
+        }
+      ]
     },
     {
       "unit_key": "adj_sound_music",
@@ -6435,7 +6577,7 @@
     },
     {
       "path": "packages/video-explainer-mcp/uv.lock",
-      "sha256": "0be8c03093dfa1ca78356bb3f99dfa5ee33480aba7821ceb60ea64730b231120",
+      "sha256": "109aabb730e50247915ca883b6436ebbda3c802211e291630fdf613280b965f2",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -6472,6 +6614,10 @@
         {
           "name": "caio",
           "version": "0.12.9"
+        },
+        {
+          "name": "certifi",
+          "version": "2026.7.22"
         },
         {
           "name": "cffi",
@@ -6526,8 +6672,16 @@
           "version": "0.16.0"
         },
         {
+          "name": "httpcore",
+          "version": "1.0.9"
+        },
+        {
           "name": "httpcore2",
           "version": "2.13.1"
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1"
         },
         {
           "name": "httpx2",

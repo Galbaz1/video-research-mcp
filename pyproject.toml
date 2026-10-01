@@ -70,6 +70,8 @@ build-backend = "hatchling.build"
 packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"integrations/qwen/tts.json" = "narration/integrations/qwen/tts.json"
+"docs/integrations/measured-narration.md" = "narration/docs/integrations/measured-narration.md"
 "scripts/spatial_session.py" = "spatial/scripts/spatial_session.py"
 "scripts/spatial_inputs.py" = "spatial/scripts/spatial_inputs.py"
 "scripts/spatial_dispatch.py" = "spatial/scripts/spatial_dispatch.py"

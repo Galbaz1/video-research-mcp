@@ -10886,11 +10886,19 @@
       ],
       "target_paths": [
         "integrations/qwen/tts.json",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/models/pipeline.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_pcm.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_provider.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_run.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_timing.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/models/narration.py",
         "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
-        "packages/video-explainer-mcp/tests/test_audio_tools.py"
+        "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+        "packages/video-explainer-mcp/tests/test_narration_pcm.py",
+        "packages/video-explainer-mcp/tests/test_narration_provider.py",
+        "packages/video-explainer-mcp/tests/test_narration_run.py",
+        "packages/video-explainer-mcp/tests/test_narration_admission.py",
+        "docs/integrations/measured-narration.md",
+        "packages/video-explainer-mcp/hatch_resources.py"
       ],
       "declared_dependencies": [
         "contract",

@@ -26,10 +26,12 @@ Homepage = "https://github.com/Galbaz1/video-research-mcp"
 Repository = "https://github.com/Galbaz1/video-research-mcp"
 
 [project.optional-dependencies]
+narration = ["httpx>=0.28.1,<0.29"]
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
     "ruff>=0.16.9,<0.17",
+    "httpx>=0.28.1,<0.29",
 ]
 
 [project.scripts]
@@ -47,7 +49,13 @@ packages = ["src/video_explainer_mcp"]
 "src/video_explainer_mcp/job_store.py" = "video_explainer_mcp/job_store.py"
 "src/video_explainer_mcp/media_process.py" = "video_explainer_mcp/media_process.py"
 
+[tool.hatch.build.targets.wheel.hooks.custom]
+path = "hatch_resources.py"
+
 [tool.hatch.build.targets.sdist.force-include]
+"../../THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
+"../../integrations/qwen/tts.json" = "narration/integrations/qwen/tts.json"
+"../../docs/integrations/measured-narration.md" = "narration/docs/integrations/measured-narration.md"
 "../../src/video_research_mcp/models/ingestion_location.py" = "src/video_explainer_mcp/models/ingestion_location.py"
 "../../src/video_research_mcp/job_store.py" = "src/video_explainer_mcp/job_store.py"
 "../../src/video_research_mcp/media_process.py" = "src/video_explainer_mcp/media_process.py"

@@ -266,3 +266,28 @@ is bundled. Runtime activation remains blocked: the original OpenCV profile has
 an FFmpeg grant contradiction, and the narrower Matplotlib profile lacks a grant
 mapping for 41 legacy AFM font-metric files. Source-level tests do not qualify
 those runtimes, physical geometry, perception or hardware safety.
+
+
+
+## Measured narration adaptation
+
+The optional `explainer_narration` entry point independently implements measured
+PCM WAV production, provider contracts, subtitle offsets, previews and contained
+custom audio. Its source references are the pinned Qwen TTS/education workflows
+under Apache-2.0 and MoneyPrinterTurbo narration/timing/file-admission behavior
+under MIT (copyright 2024 Harry). Exact per-file hashes and complete source grants
+were retained before adaptation; no foreign application or renderer body is copied
+or imported. The original cache, rate, subtitle and failure defects are retained
+in the source evidence and addressed in the owned implementation.
+
+Qwen source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f>.
+MoneyPrinterTurbo source: <https://github.com/harry0703/MoneyPrinterTurbo/tree/44e6d5e11832beccc2c3ce6b139bf437e920bb6a>.
+Their complete source grants are available at the corresponding pinned `LICENSE`
+paths; references and grant digests are recorded in `integrations/qwen/tts.json`.
+
+Provider SDKs, model weights, fonts, voices, audio assets and foreign renderer code
+are not bundled. HTTP support is an optional companion dependency using the
+existing receipted HTTPX version. Provider services, voice identity/output rights,
+paid requests, real spoken-content validation and renderer consumption require
+their own qualification. Synthetic PCM and mocked HTTP establish only the stated
+offline contracts; they supply no live-provider or comparative performance claim.

@@ -111,6 +111,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "qwen_blender",
         "qwen_freecad",
         "qwen_spatial",
+        "qwen_tts",
+        "adj_tts_audio",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 
 from .evidence import atomic_write
+from .file_io import open_regular
 from .planning_sources import canonical, read_object
 
 
@@ -112,6 +113,11 @@ def require_binding(project: Path, state: dict, kind: str) -> dict:
     metadata = body.get("video_research_plan", {})
     if sha != binding["sha256"] or any(metadata.get(key) != value for key, value in _metadata(state).items()):
         raise ValueError(f"Bound {kind} bytes or approval metadata changed")
+    if kind == "narration":
+        require_binding(project, state, "script")
+        if binding.get("parent_script_sha256") != state["bindings"]["script"]["sha256"]:
+            raise ValueError("Narration parent script changed")
+        _require_narration_audio(project, binding, body)
     if kind == "storyboard":
         require_binding(project, state, "script")
         if binding.get("parent_script_sha256") != state["bindings"]["script"]["sha256"]:
@@ -120,6 +126,28 @@ def require_binding(project: Path, state: dict, kind: str) -> dict:
         if current != (project / binding["path"]).resolve():
             raise ValueError("Configured storyboard path changed after binding")
     return body
+
+
+def _require_narration_audio(project: Path, binding: dict, body: dict) -> None:
+    """Read the exact promoted regular WAV bytes retained by its narration receipt."""
+    relative = Path(binding["audio_path"])
+    if relative.is_absolute():
+        raise ValueError("Narration audio binding must use a relative project path")
+    path = project / relative
+    path.resolve().relative_to(project)
+    for candidate in (path, *path.parents):
+        if candidate == project:
+            break
+        if candidate.is_symlink():
+            raise ValueError("Narration audio binding must not contain symlinks")
+    with open_regular(path) as (stream, info):
+        if info.st_size > 64 * 1024 * 1024:
+            raise ValueError("Narration audio exceeds the 64 MiB readback limit")
+        audio = stream.read(64 * 1024 * 1024 + 1)
+    artifact = body["artifact"]
+    actual = hashlib.sha256(audio).hexdigest()
+    if artifact["path"] != binding["audio_path"] or len(audio) != artifact["bytes"] or actual != binding["audio_sha256"] or actual != artifact["sha256"]:
+        raise ValueError("Narration audio bytes changed after promotion")
 
 
 def bind_storyboard(project: Path, state: dict, path: Path) -> None:
