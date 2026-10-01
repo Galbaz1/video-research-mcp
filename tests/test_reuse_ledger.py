@@ -97,6 +97,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "qwen_search_backends",
         "adj_provider_adapters",
         "adj_external_harness",
+        "adj_context_compaction",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

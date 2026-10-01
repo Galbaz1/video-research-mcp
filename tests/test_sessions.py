@@ -72,7 +72,7 @@ class TestSessionStore:
         store._evict_expired()
         assert store.get(session.session_id) is None
 
-    def test_history_trimmed_to_max_turn_window(self):
+    def test_original_history_survives_max_turn_window(self):
         store = SessionStore()
         cfg_mod._config = cfg_mod.ServerConfig(
             gemini_api_key="test",
@@ -87,9 +87,9 @@ class TestSessionStore:
             store.add_turn(session.session_id, user, model)
 
         assert session.turn_count == 3
-        assert len(session.history) == 4
+        assert len(session.history) == 6
         latest_text = [p.text for c in session.history for p in c.parts if p.text]
-        assert latest_text == ["u1", "m1", "u2", "m2"]
+        assert latest_text == ["u0", "m0", "u1", "m1", "u2", "m2"]
 
 
 class TestSessionStorePersistence:

@@ -34,6 +34,11 @@ SOURCE_CONTRACTS = {
     "src/video_research_mcp/image_ops.py",
     "src/video_research_mcp/provider_readiness.py",
     "src/video_research_mcp/audio_dsp_backend.py",
+    "src/video_research_mcp/session_compaction.py",
+    "src/video_research_mcp/session_memory_store.py",
+    "src/video_research_mcp/session_sources.py",
+    "src/video_research_mcp/session_history.py",
+    "src/video_research_mcp/tools/session_memory.py",
     "src/video_research_mcp/models/text_provider.py",
     "src/video_research_mcp/tools/research_web.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
@@ -108,6 +113,8 @@ def enabled(kind: str, env: dict) -> bool:
     """Resolve current source enable conditions without touching service endpoints."""
     if kind == "planned":
         return False
+    if kind == "session-memory":
+        return present(env, "GEMINI_SESSION_DB")
     if kind == "weaviate":
         return present(env, "WEAVIATE_URL")
     if kind == "reranker":
@@ -208,6 +215,7 @@ def inspect_integration(root: Path, row: dict, env: dict) -> dict:
         "reranker",
         "tracing",
         "explainer",
+        "session-memory",
     }
     if row["credential_any"] and not any(credentials[k] for k in row["credential_any"]):
         missing.append("credential-or-separately-verified-login")

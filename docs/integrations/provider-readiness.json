@@ -19,7 +19,12 @@
     "src/video_research_mcp/image_ops.py",
     "src/video_research_mcp/provider_readiness.py",
     "src/video_research_mcp/models/text_provider.py",
-    "src/video_research_mcp/audio_dsp_backend.py"
+    "src/video_research_mcp/audio_dsp_backend.py",
+    "src/video_research_mcp/session_compaction.py",
+    "src/video_research_mcp/session_memory_store.py",
+    "src/video_research_mcp/session_sources.py",
+    "src/video_research_mcp/session_history.py",
+    "src/video_research_mcp/tools/session_memory.py"
   ],
   "states": [
     "disabled",
@@ -591,6 +596,27 @@
       "config_source": null,
       "config_bindings": {},
       "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "session-scoped-memory",
+      "adopted": true,
+      "capabilities": [
+        "Complete bounded SDK original archives; exact scoped derived memory revision CRUD; paged original recovery/list/glob/literal search; disclosed deterministic replay selection"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "session-memory",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "session_db_path": "GEMINI_SESSION_DB",
+        "session_max_turns": "GEMINI_SESSION_MAX_TURNS",
+        "session_context_token_budget": "GEMINI_SESSION_CONTEXT_TOKEN_BUDGET",
+        "session_recent_turns": "GEMINI_SESSION_RECENT_TURNS"
+      },
+      "usage_visibility": "Local deterministic text-budget estimate only; provider expanded media/cache tokens and inference charges unknown. History/profile operations have no provider calls. SDK continuation retains separate provider activity.",
       "live_verified": false,
       "run_authority": "not-granted"
     }

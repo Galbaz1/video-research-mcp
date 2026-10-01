@@ -128,6 +128,8 @@ class ServerConfig(BaseModel):
     max_sessions: int = Field(default=50)
     session_timeout_hours: int = Field(default=2)
     session_max_turns: int = Field(default=24)
+    session_context_token_budget: int = Field(default=32768, ge=1024, le=1048576)
+    session_recent_turns: int = Field(default=2, ge=1, le=24)
     retry_max_attempts: int = Field(default=3)
     retry_base_delay: float = Field(default=1.0)
     retry_max_delay: float = Field(default=60.0)
@@ -263,6 +265,8 @@ class ServerConfig(BaseModel):
             max_sessions=int(os.getenv("GEMINI_MAX_SESSIONS", "50")),
             session_timeout_hours=int(os.getenv("GEMINI_SESSION_TIMEOUT_HOURS", "2")),
             session_max_turns=int(os.getenv("GEMINI_SESSION_MAX_TURNS", "24")),
+            session_context_token_budget=int(os.getenv("GEMINI_SESSION_CONTEXT_TOKEN_BUDGET", "32768")),
+            session_recent_turns=int(os.getenv("GEMINI_SESSION_RECENT_TURNS", "2")),
             retry_max_attempts=int(os.getenv("GEMINI_RETRY_MAX_ATTEMPTS", "3")),
             retry_base_delay=float(os.getenv("GEMINI_RETRY_BASE_DELAY", "1.0")),
             retry_max_delay=float(os.getenv("GEMINI_RETRY_MAX_DELAY", "60.0")),

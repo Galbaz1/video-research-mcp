@@ -6,7 +6,6 @@ Batch analysis lives in video_batch.py, registered via side-effect import.
 from __future__ import annotations
 
 import logging
-import asyncio
 from pathlib import Path
 from typing import Annotated
 
@@ -22,6 +21,7 @@ from .. import context_cache
 from ..config import get_config
 from ..errors import make_tool_error
 from ..models.video import SessionInfo, SessionResponse
+from ..models.session_memory import SessionScope
 from ..models.execution import ExecutionLimits
 from ..output_view import project_output, validate_output_request
 from ..video_window_metadata import normalize_window, window_description, window_instruction
@@ -33,7 +33,7 @@ from .video_cache import ensure_session_cache, prewarm_cache, prepare_cached_req
 from .video_core import analyze_video
 from .video_execution import cache_bypass_effects, execute_bounded_video
 from .video_plan import plan_video
-from .video_file import _file_content_hash, _upload_large_file, _video_file_content, _video_file_uri
+from .video_file import _upload_large_file, _video_file_content, _video_file_uri
 from .video_url import (
     _extract_video_id,
     _normalize_youtube_url,
@@ -374,14 +374,14 @@ async def video_analyze(
 
 async def _download_and_cache(
     video_id: str,
-) -> tuple[str, str, str, str, str]:
+) -> tuple[str, str, str, str, str, str]:
     """Download YouTube video, upload to File API, and create context cache.
 
     Args:
         video_id: YouTube video ID.
 
     Returns:
-        (cache_name, model, download_status, file_api_uri, local_filepath) where
+        (cache_name, model, download_status, file_api_uri, local_filepath, uploaded_sha256) where
         download_status is "downloaded" on success or "failed"/"unavailable".
     """
     try:
@@ -389,16 +389,17 @@ async def _download_and_cache(
     except Exception as exc:
         status = "unavailable" if "not found" in str(exc).lower() else "failed"
         logger.warning("Download failed for %s: %s", video_id, exc)
-        return "", "", status, "", ""
+        return "", "", status, "", "", ""
 
     try:
-        content_digest = await asyncio.to_thread(_file_content_hash, local_path)
+        from ..session_sources import local_digest
+        content_digest = await local_digest(local_path)
         file_uri = await _upload_large_file(
             local_path, "video/mp4", content_hash=content_digest
         )
     except Exception as exc:
         logger.warning("File API upload failed for %s: %s", video_id, exc)
-        return "", "", "failed", "", str(local_path)
+        return "", "", "failed", "", str(local_path), ""
 
     from google.genai import types
 
@@ -409,13 +410,13 @@ async def _download_and_cache(
             content_digest, [file_part], cfg.default_model
         )
         if cache_name:
-            return cache_name, cfg.default_model, "downloaded", file_uri, str(local_path)
+            return cache_name, cfg.default_model, "downloaded", file_uri, str(local_path), content_digest
     except Exception:
         logger.debug("Cache creation failed for %s, session will use File API URI", video_id)
 
     # Cache creation failed but upload succeeded — session can still use the
     # File API URI (uncached but avoids re-fetching YouTube URL each turn)
-    return "", "", "downloaded", file_uri, str(local_path)
+    return "", "", "downloaded", file_uri, str(local_path), content_digest
 
 
 @video_server.tool(
@@ -436,6 +437,9 @@ async def video_create_session(
         "Slower startup (~2 min) but faster and cheaper per turn. "
         "Requires yt-dlp installed."
     )] = False,
+    scope: Annotated[dict[str, str] | None, Field(
+        description="Exact workspace/notebook isolation for sessions and derived memory; omit for legacy unscoped sessions"
+    )] = None,
 ) -> dict:
     """Create a persistent session for multi-turn video exploration.
 
@@ -448,12 +452,14 @@ async def video_create_session(
         file_path: Path to a local video file.
         description: Optional focus area for the session.
         download: Download YouTube video for cached sessions.
+        scope: Exact optional workspace and notebook identifiers.
 
     Returns:
         Dict with session_id, status, video_title, source_type, cache/download status,
         and optional local_filepath when a local file is available.
     """
     try:
+        scope = SessionScope.model_validate(scope) if scope is not None else None
         sources = sum(x is not None for x in (url, file_path))
         if sources == 0:
             raise ValueError("Provide exactly one of: url or file_path")
@@ -500,7 +506,7 @@ async def video_create_session(
     cache_name, cache_model, cache_reason, download_status = "", "", "", ""
 
     if download and source_type == "youtube":
-        cache_name, cache_model, download_status, file_uri, local_filepath = (
+        cache_name, cache_model, download_status, file_uri, local_filepath, content_id = (
             await _download_and_cache(video_id)
         )
         if file_uri:
@@ -511,14 +517,18 @@ async def video_create_session(
             content_id, clean_url
         )
 
-    session = session_store.create(
-        clean_url, "general",
-        video_title=title,
-        cache_name=cache_name,
-        model=cache_model,
-        local_filepath=local_filepath,
-    )
-    return SessionInfo(
+    try:
+        from ..session_sources import bind_source
+        identity = await bind_source(_normalize_youtube_url(url) if url else local_filepath,
+                                     local_filepath if source_type == "local" or content_id else "", content_id)
+        session = session_store.create(
+            clean_url, "general", video_title=title, cache_name=cache_name,
+            model=cache_model, local_filepath=local_filepath, scope=scope,
+            source_identity=identity,
+        )
+    except Exception as error:
+        return make_tool_error(error)
+    result = SessionInfo(
         session_id=session.session_id,
         status="created",
         video_title=title,
@@ -528,6 +538,9 @@ async def video_create_session(
         cache_reason=cache_reason,
         local_filepath=local_filepath,
     ).model_dump(mode="json")
+    return {**result, "scope": scope.model_dump() if scope else None,
+            "source_identity": identity, "history_complete": session.history_complete,
+            "originals_persisted": session_store._db is not None}
 
 
 @video_server.tool(
@@ -542,17 +555,25 @@ async def video_create_session(
 async def video_continue_session(
     session_id: Annotated[str, Field(min_length=1, description="Session ID from video_create_session")],
     prompt: Annotated[str, Field(min_length=1, description="Follow-up question or instruction")],
+    scope: Annotated[dict[str, str] | None, Field(
+        description="Exact workspace/notebook from creation; required for scoped sessions"
+    )] = None,
 ) -> dict:
     """Continue analysis within an existing video session.
 
     Args:
         session_id: Session ID returned by video_create_session.
         prompt: Follow-up question about the video.
+        scope: Exact workspace/notebook from session creation.
 
     Returns:
         Dict with response text and turn_count.
     """
-    session = session_store.get(session_id)
+    try:
+        scope = SessionScope.model_validate(scope) if scope is not None else None
+        session = session_store.get(session_id, scope)
+    except Exception as error:
+        return make_tool_error(error)
     if session is None:
         return {
             "error": f"Session {session_id} not found or expired",
@@ -563,9 +584,12 @@ async def video_continue_session(
     from google.genai import types
 
     try:
-        _, contents, config_kwargs = await prepare_cached_request(session, prompt)
+        from ..session_sources import recover_media
+        await recover_media(session, session_store)
+        _, contents, config_kwargs = await prepare_cached_request(session, prompt, session_store)
         user_content = contents[-1]
         model = config_kwargs.pop("_model")
+        selection = config_kwargs.pop("_context", None)
         client = GeminiClient.get()
 
         response = await with_retry(
@@ -590,7 +614,8 @@ async def video_continue_session(
             text,
             local_filepath=session.local_filepath,
         )
-        return SessionResponse(response=text, turn_count=turn).model_dump(mode="json")
+        return {**SessionResponse(response=text, turn_count=turn).model_dump(mode="json"),
+                "context_selection": selection}
     except Exception as exc:
         return make_tool_error(exc)
 

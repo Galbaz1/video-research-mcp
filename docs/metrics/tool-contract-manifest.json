@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-01T04:21:35.383313+00:00",
-  "tool_count": 72,
+  "generated_at": "2026-10-01T05:49:00.759097+00:00",
+  "tool_count": 73,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -9250,6 +9250,291 @@
       }
     },
     {
+      "name": "session_memory",
+      "description": "Inspect original history or read/edit/delete one explicitly scoped derived profile.\n\nHistory remains recoverable after active-session expiry when SQLite persistence\nis configured. Large inline-media pages export exact bounded private JSON.\nMemory edits require the current revision; deletion clears only derived text.\nCaller-selected scope is isolation, not an authenticated multi-user identity.\nNo provider, inference, upload or global-memory search occurs.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact origin session, workspace/notebook and source; inspect originals or explicitly edit/delete non-authoritative learned text",
+            "properties": {
+              "action": {
+                "enum": [
+                  "get",
+                  "set",
+                  "delete",
+                  "history",
+                  "list",
+                  "search",
+                  "compact"
+                ],
+                "type": "string"
+              },
+              "scope": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Caller-selected workspace and notebook, compared exactly without fallback.",
+                    "properties": {
+                      "workspace_id": {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "type": "string"
+                      },
+                      "notebook_id": {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "workspace_id",
+                      "notebook_id"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "source_id": {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "session_id": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "synopsis": {
+                "anyOf": [
+                  {
+                    "maxLength": 32768,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "expected_revision": {
+                "default": 0,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "offset": {
+                "default": 0,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "limit": {
+                "default": 10,
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "pattern": {
+                "default": "messages/*",
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "query": {
+                "anyOf": [
+                  {
+                    "maxLength": 256,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "action",
+              "source_id",
+              "session_id"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Local data response; conversation and learned text are never verified media evidence.",
+            "properties": {
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "scope": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Caller-selected workspace and notebook, compared exactly without fallback.",
+                    "properties": {
+                      "workspace_id": {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "title": "Workspace Id",
+                        "type": "string"
+                      },
+                      "notebook_id": {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "title": "Notebook Id",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "workspace_id",
+                      "notebook_id"
+                    ],
+                    "title": "SessionScope",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_id": {
+                "title": "Source Id",
+                "type": "string"
+              },
+              "memory": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Memory"
+              },
+              "history": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "History"
+              },
+              "selection": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Selection"
+              },
+              "authoritative": {
+                "default": false,
+                "title": "Authoritative",
+                "type": "boolean"
+              },
+              "source_verified": {
+                "default": false,
+                "title": "Source Verified",
+                "type": "boolean"
+              },
+              "source_data_is_instruction": {
+                "default": false,
+                "title": "Source Data Is Instruction",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "status",
+              "scope",
+              "source_id"
+            ],
+            "title": "SessionMemoryResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
       "name": "text_generate",
       "description": "Generate structured text using one selected compatible HTTP endpoint.\n\nNo default Gemini/vision account is borrowed. Sources are untrusted text;\nthis operation cannot accept files, media, tools or grounded search.\nMissing input-token/currency meters cause requested hard ceilings to fail.",
       "annotations": {
@@ -11841,6 +12126,21 @@
             "description": "Follow-up question or instruction",
             "minLength": 1,
             "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Exact workspace/notebook from creation; required for scoped sessions"
           }
         },
         "required": [
@@ -11904,6 +12204,21 @@
             "default": false,
             "description": "Download YouTube video locally for cached multi-turn sessions. Slower startup (~2 min) but faster and cheaper per turn. Requires yt-dlp installed.",
             "type": "boolean"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Exact workspace/notebook isolation for sessions and derived memory; omit for legacy unscoped sessions"
           }
         },
         "type": "object"

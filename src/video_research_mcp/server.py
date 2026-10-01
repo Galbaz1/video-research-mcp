@@ -39,6 +39,7 @@ from .tools.text_provider import text_provider_server
 from .tools.search_provider import search_provider_server
 from .tools.twelvelabs import twelvelabs_server
 from .tools.audio_dsp import audio_dsp_server
+from .tools.session_memory import session_memory_server
 
 logger = logging.getLogger(__name__)
 
@@ -91,6 +92,7 @@ app.mount(text_provider_server)
 app.mount(search_provider_server)
 app.mount(twelvelabs_server)
 app.mount(audio_dsp_server)
+app.mount(session_memory_server)
 
 
 def main() -> None:

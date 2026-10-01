@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T07:30+02:00
+date: 2026-10-01T08:20+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -64,17 +64,58 @@ full-analysis and plots remain unqualified; successful own plots are separate.
 Next DSP cause-finding is exact source/indexing and a separately scoped future
 bounded native stderr diagnostic. All owned recorded PIDs/groups are absent.
 
-`vrm-0e8.6.4` is freshly claimed/in_progress from live eligible dependencies:
-recoverable session compaction and scoped derived memory. Root owns product.
-Read-only existing-code lane is joined: current add_turn destructively trims
-history before SQLite save; persisted sessions bypass timeout/max checks on reload;
-workspace/notebook scope and persistent memory inspect/edit/delete are absent.
-Current source-only lane owns private `session-compaction/source-contracts/`,
-DeepAgents four mapped files at exact pin
-`1756bbe1eb348e20b925598ed49665b0d34b4b2d`. No next-leaf product/runtime/provider
-changes yet. Preserve originals durably before selecting a bounded replay view;
-keep synopsis separate/non-authoritative and require exact scope for memory.
-Join source/grant report before implementation. No SDK host/shell is justified.
+`vrm-0e8.6.4` bounded component is verified, pending exact source commit and Beads
+closure. Private `session-compaction/group-receipt.json` SHA256
+45b0f01d78f3b405ae749c32683c060a491f2e35f428fb3b6289ff75d474f16c binds final24owned,
+222root Python+Swift/38companion bodies and3 unchanged locks at candidate freeze
+4d644d128311ea8fa4e90a6d6000abd6a67308ff47514051a3b3537740ed8c62. Source/commit
+readback will be retained in group-receipt.committed.json after commit. No source
+or dependencies changed during installed qualification. All required lanes joined.
+
+Full original SDK history, media/signatures, source identity and exact scope are
+persisted before detached bounded replay. New session_memory supports explicit
+manual compaction inspection, exact history pages/hashed private JSON exports,
+logical list/glob/literal search and source-scoped profile CAS CRUD/tombstones.
+SQLite archive survives session TTL/LRU and cache expiry. Legacy completeness,
+loss, persistence and original-refetch requests are explicit. Summaries remain
+untrusted and non-authoritative; conflict labels/precedence are inspected contract
+behavior, not semantic model obedience. One serializedUTF8 byte is the declared
+estimated text token; expanded provider media/cache totals are unknown. The local
+scope selector is isolation, not authenticated multiuser authority.
+
+Source lane joined four full pinned DeepAgents bodies,7102lines302477B/two actual
+MIT grants,1756bbe1eb348e20b925598ed49665b0d34b4b2d. Independently authored history/
+store equivalents for six mapped surfaces; no foreign code/runtime/hostFS/shell.
+Source receipt43cbeb283079ec1e32d50fc42eb40f24ba8d7ae42de12d1ffe75a1ee6cbecf10;
+storage lane19realSQLite controls/receipt077551bbbc35fe2fc810cc158e35a07edbbec38aaa3f93b46eae458a4d60a0e0.
+The sole original review remains NEEDS_FIXES2P2: shared export cleanup and uploaded
+source SHA binding. Root owns repairs and concurrent filesystem/local+download
+replacement regressions. Exact original reportd415edf806b82aa61d885a4c89496eef35a7f0c02a7df8bd19ebb7a9aa28a449
+and both original probe buffers are persisted and their declared bytes/hashes
+verified. Reviewer examined21owned paths/full12files1706lines77692B. Repaired
+bodies were not independently re-reviewed; no second review.
+
+Final2569root/27reuse/9security/5offline casesPASS, fullRuff/public-baseline/
+programme/reuse/archive gatesPASS;196companion cases carry exact38unchanged
+shipped bodies/sharedJobStore target/3locks from accepted DSP commit. Fresh offline
+wheel/sdist222runtime/24owned sdist bytes and isolated installed222runtime bytes
+match. Installed same39public calls/2uncached discoveries completePASS across
+PIDs55151/55229,79retained files rehashed, all4attemptedstdioPIDs absent and control
+threads joined. Actual source snapshots/upload reconciliation/replay/SQLite/cache
+controllers remain active; only external SDK/YouTube edges mocked. Liveprovider,
+network and native0 for this fixed journey. No real caller config/profile migrated.
+
+Retained first root30FAIL/2535PASS explicit metadata expectations, later19FAIL/
+120PASS stale owned hashes, and initial79PASS/4FAIL nonspecific SDK fixtures; each
+exact repair retained, no oracle weakening. Installed first0verified/39unrun failed
+because root proceeded after sealed-helper repair failed and launched basePython;
+second23verified/1failed/15unrun used standardBase64 on SDKURLsafeencoding.
+Harness-only venv-path and decoder repairs preserve candidate, fixed39plan,
+fixtures, bounds and exact full-byte assertions. Third SAME39 PASS; final receipt
+is bound by group-receipt.json. No hidden retry/cohort, native/provider run or
+semantic/human success inferred. Next: commit explicit25paths with verified
+no-reply identities, normal authorized push/readback, close .6.4 only after exact
+Git-source proof, then select and claim a fresh eligible programme leaf.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release

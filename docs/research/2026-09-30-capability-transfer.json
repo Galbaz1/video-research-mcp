@@ -8149,10 +8149,26 @@
           "reuse_mode": "adapt",
           "rationale": "Existing sessions/cache/SQLite persistence are already present. Add bounded context selection/compaction with original message/media references retained, distinguishing synopsis from authoritative source. Use SDK integration only if a real caller needs its harness.",
           "target_paths": [
-            "src/video_research_mcp/sessions.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/models/session_memory.py",
             "src/video_research_mcp/persistence.py",
-            "src/video_research_mcp/context_cache.py",
-            "tests/test_session_compaction.py"
+            "src/video_research_mcp/server.py",
+            "src/video_research_mcp/session_compaction.py",
+            "src/video_research_mcp/session_history.py",
+            "src/video_research_mcp/session_memory_store.py",
+            "src/video_research_mcp/session_sources.py",
+            "src/video_research_mcp/sessions.py",
+            "src/video_research_mcp/tools/session_memory.py",
+            "src/video_research_mcp/tools/video.py",
+            "src/video_research_mcp/tools/video_cache.py",
+            "tests/test_cache_bridge.py",
+            "tests/test_provider_readiness.py",
+            "tests/test_reuse_ledger.py",
+            "tests/test_session_compaction.py",
+            "tests/test_session_memory_store.py",
+            "tests/test_sessions.py",
+            "scripts/inspect_provider_readiness.py",
+            "docs/integrations/SESSION_MEMORY.md"
           ],
           "dependencies": [
             "adj_evidence_packet"
@@ -11109,10 +11125,26 @@
         "legal"
       ],
       "target_paths": [
-        "src/video_research_mcp/context_cache.py",
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/models/session_memory.py",
         "src/video_research_mcp/persistence.py",
+        "src/video_research_mcp/server.py",
+        "src/video_research_mcp/session_compaction.py",
+        "src/video_research_mcp/session_history.py",
+        "src/video_research_mcp/session_memory_store.py",
+        "src/video_research_mcp/session_sources.py",
         "src/video_research_mcp/sessions.py",
-        "tests/test_session_compaction.py"
+        "src/video_research_mcp/tools/session_memory.py",
+        "src/video_research_mcp/tools/video.py",
+        "src/video_research_mcp/tools/video_cache.py",
+        "tests/test_cache_bridge.py",
+        "tests/test_provider_readiness.py",
+        "tests/test_reuse_ledger.py",
+        "tests/test_session_compaction.py",
+        "tests/test_session_memory_store.py",
+        "tests/test_sessions.py",
+        "scripts/inspect_provider_readiness.py",
+        "docs/integrations/SESSION_MEMORY.md"
       ],
       "declared_dependencies": [
         "contract",

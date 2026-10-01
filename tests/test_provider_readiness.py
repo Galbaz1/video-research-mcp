@@ -70,17 +70,29 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     """GIVEN no credentials THEN local presence and mock output are not live proof."""
     report = run(workspace)
     observed = rows(report)
-    assert len(observed) == 27
-    assert sum(row["adopted"] for row in observed.values()) == 16
+    assert len(observed) == 28
+    assert sum(row["adopted"] for row in observed.values()) == 17
     assert observed["gemini-generation"]["state"] == "missing"
     assert observed["semantic-scholar"]["state"] == "installed"
     assert observed["weaviate-store"]["state"] == "disabled"
     assert observed["explainer-tts"]["state"] == "mocked"
+    assert observed["session-scoped-memory"]["state"] == "disabled"
     assert all(row["state"] == "disabled" for row in observed.values() if not row["adopted"])
     assert all(
         row["live_verified"] is False and row["run_authority"] == "not-granted"
         for row in observed.values()
     )
+    assert report["provider_calls"] == report["network_requests"] == 0
+
+
+def test_session_memory_requires_configured_storage_without_opening_or_revealing_path(workspace, monkeypatch):
+    """GIVEN a selected private DB path THEN inspection reports only unverified configuration."""
+    private = "/private/never-opened/memory-secret.sqlite3"
+    report = run(workspace, {"GEMINI_SESSION_DB": private})
+    row = rows(report)["session-scoped-memory"]
+    assert row["state"] == "configured-but-unverified"
+    assert not row["live_verified"] and row["run_authority"] == "not-granted"
+    assert private not in json.dumps(report)
     assert report["provider_calls"] == report["network_requests"] == 0
 
 
