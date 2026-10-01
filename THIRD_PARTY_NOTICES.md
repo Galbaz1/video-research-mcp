@@ -151,3 +151,35 @@ present. Other-platform native redistribution and source-build execution remain
 uncleared by this selected-host receipt. NumPy and system binaries are not bundled
 in this project's wheel. Registry provenance subjects match the artifact hashes;
 cryptographic Sigstore verification was not performed.
+
+## Tutorial PDF runtime (vrm-0e8.7.1)
+
+The optional `tutorial` extra uses **fpdf2**, covered by **LGPL-3.0-only**,
+through an ordinary import of a separately installed, unmodified library.
+Full [GPL3](licenses/fpdf2/GPL-3.0.txt) and
+[LGPL3](licenses/fpdf2/LGPL-3.0.txt) copies accompany this application.
+Users may replace this dependency with an interface-compatible modified version,
+modify its library portions, and reverse engineer the combined application to
+debug those modifications. Our MIT terms do not restrict those permissions.
+No fpdf2 library body is vendored, frozen or statically linked into our archives.
+Library redistribution or modification must meet its own source and notice terms.
+
+Its required fonttools and defusedxml dependencies retain their packaged MIT
+(including external BSD3/Apache/MIT/OFL notices) and PSF2 grants. The selected
+generic wheels contain no font binaries or native libraries; fpdf2 includes one
+ICC profile under its adjacent permissive International Color Consortium grant.
+The core Helvetica/WinAnsi route does not select custom fonts or PDF/A.
+Ordinary authored PDF output and supplied content have separate rights.
+
+The separately installed **pypdfium2** wrapper retains its Apache2/BSD3 notices
+and the native PDFium build's bundled dependency notices. The source-only grant
+receipt covers the selected macOS13+arm64 build; full native source/build closure
+and other platform artifacts are not qualified by that receipt. No wrapper code,
+native binary, ICC profile or font bytes are bundled in our distribution.
+
+Tutorial requirements were inspected at QwenLM/Qwen-MM-Plugins
+`07736672525443c7f8a3f6405eed37d2236f023f` (original Apache2 code).
+The source plan, immutable illustration lineage, staged PDF validation and atomic
+publication are independently authored. No Qwen code, font, model or demo is
+copied or imported. ReportLab whole-wheel use remains withheld because seventeen
+font permissions were unresolved; the font-free writer preserves the workflow.

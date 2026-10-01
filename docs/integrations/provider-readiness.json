@@ -49,7 +49,15 @@
     "src/video_research_mcp/hardware_authority.py",
     "scripts/video_skill_contract.py",
     "scripts/validate_video_skill.py",
-    "scripts/package_video_skill.py"
+    "scripts/package_video_skill.py",
+    "src/video_research_mcp/models/video_note.py",
+    "src/video_research_mcp/tools/video_note.py",
+    "src/video_research_mcp/video_note/__init__.py",
+    "src/video_research_mcp/video_note/frames.py",
+    "src/video_research_mcp/video_note/io.py",
+    "src/video_research_mcp/video_note/perception.py",
+    "src/video_research_mcp/video_note/pipeline.py",
+    "src/video_research_mcp/video_note/render.py"
   ],
   "states": [
     "disabled",
@@ -703,6 +711,30 @@
       "config_source": "src/video_research_mcp/config.py",
       "config_bindings": {},
       "usage_visibility": "Local validation and actual archive bytes. Does not observe a task run or authenticate execution/rights declarations. Trigger judgment and independently observed task success remain separate; optional model evaluation requires bounded authorization.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "video-tutorial-notes",
+      "adopted": true,
+      "capabilities": [
+        "video_note_create; source-bound supplied or explicitly granted AV step plan, point illustrations, durable lineage and validated atomic PDF"
+      ],
+      "packages": [
+        "fpdf2",
+        "fonttools",
+        "defusedxml",
+        "pypdfium2",
+        "Pillow"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Local hash/byte counts and page/raster checks. Optional illustrations use installed FFmpeg; failures retain text and warnings. AV inference requires its existing explicit bounded grant. Installed metadata is not rendered output, source correctness or human/model review.",
       "live_verified": false,
       "run_authority": "not-granted"
     }

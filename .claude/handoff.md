@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T13:54+02:00
+date: 2026-10-01T15:19+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -76,8 +76,9 @@ Actual receipt SHA256
 `5b202f4c25aa4699c970ac9dc6e2230e8c5a7b093cb7ed78512457631d0448b1`;
 root join SHA256
 `f0e8b0440c32bb12e9cbb59ebcbdc34c8553d11a7c11831a45f95c6432eaf20b`.
-The acceptance-runner preparation lane was interrupted before any files or
-execution; root authored and statically checked its explicit runner. The sealed
+The acceptance custodian authored an unused installed-journey-node-guard.cjs
+before interruption, without executing it. Root authored the distinct accepted
+runner and installer-scope-preload.cjs; their exact bodies were read back. The sealed
 12-case plan/oracles remained unchanged. No qualification retry occurred.
 Source remains synthetic; human audit,
 physical/semantic truth, live providers, comparison and release remain unqualified.
@@ -102,21 +103,52 @@ children; actual candidate Python loader selected its project sentinel. No paid 
 Human audit is pending, not waived. Continue eligible implementation after
 component acceptance, explicit commit and normal push. The epic remains open.
 
-### Next tutorial-note implementation
+### Tutorial-note component checkpoint: installed acceptance blocked
 
-Fresh Beads readiness selected and claimed `vrm-0e8.7.1`, source-linked illustrated
-tutorial PDFs. This is a new programme capability; completed transcript/PDF/Word/
-mail delivery remains outside scope. Work in the same implementation checkout.
-Pinned source is QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f,
-unit qwen_tutorial_note, four mapped source bodies. Source-contract/licensing
-preparation is active in /root/licensing and the narrow existing-code explorer
-in /root/compaction_existing_code. Both are read-only for product/Beads/Git;
-no implementation or candidate task/model/native execution yet. Evidence belongs
-under private capability-programme/2026-09-30/tutorial-note/. Join both required
-results before choosing the smallest implementation and exclusive ownership.
-Read docs/loops/multimodal-capability-programme/LOOP.md and current Bead criteria.
-The PDF skill has been loaded for actual raster/artifact inspection. Human audit
-remains pending, not waived; heldout remains unread and providers unauthorized.
+`vrm-0e8.7.1` has complete implemented source but remains unaccepted. Source-linked
+`video_note_create` is mounted as root tool83; prior82 exact contract objects are
+preserved. Independent authoring uses FPDF2/PDFium, existing frame_at and optional
+AV perception; no Qwen runtime/code/fonts copied. Full source/license/explorer and
+primary lanes are joined. ReportLab remains withheld for unresolved bundled font
+permissions. External selected FPDF2/FontTools/DefusedXML/PDFium and Pillow wheels
+are individually qualified; full GPL/LGPL notices are included in product archives.
+
+Private evidence: capability-programme/2026-09-30/tutorial-note/. Frozen25 owned
+nonhandoff paths,295 runtime bodies and3locks are bound by final-source.json,
+SHA78e18e8db9eddb861663420b29a1efaad7728ecb918400030f609de638328885.
+Sole original review3P2 repaired: final deadline fence, atomic no-overwrite
+publication, exact native frame-view cleanup. Five regressions first failed;
+166 affected then one native cancellation case passed. No second review.
+Final2899root/37installer/9security/5offline, Ruff/baseline/programme/reuse/release
+passed once. Companion309/agent13 carry against exact unchanged code/locks.
+Five fresh archives passed full notice/reuse and source-byte checks; fresh3.14.7
+installed245root/37companion bodies and480 PDF dependency bodies match exactly.
+The committed73-tool metrics snapshot is historical and unchanged; private83 is
+compared to accepted private82. Earlier wrong-authority failures are retained.
+
+The actual fixed12-control installed journey is BLOCKED, not PASS. First launch
+failed before candidate startup because the isolated environment omitted declared
+Pillow. The single controlled intervention installed the exact qualified12.3.0
+cp314macOSarm64 wheel; all138nonRECORD bodies match. Corrected launch started
+candidatePID80273 but the offline guard refused one operation during bootstrap,
+before discovery or public tutorial calls. OuterPID80269 and candidate are absent;
+no native children, PDF artifacts or page inspections. The guard did not retain a
+callsite and ExceptionGroup collapsed the cause; exact startup cause is unknown.
+Raw harness labels T01 failed; root terminal classification preserves raw evidence
+and records all12 tutorial controls UNRUN. No third attempt or altered oracle.
+installed-journey-root-terminal.json retains the boundary. Root tests/mocks and
+archive checks do not establish actual readable tutorial output or product acceptance.
+
+Human audit remains pending/not waived; heldout unread, providers unauthorized,
+comparison and registry release unqualified. Preserve this blocker and continue
+fresh ready work. Read-only Blender reconnaissance is joined; source-contract lane
+is active in /root/compaction_existing_code under blender/source-contracts/.
+Blender5.2.1 arm64 installed metadata/executable hash only; actual addon/scene/
+render/viewport journey has not started. Claim current ready vrm-0e8.9.4 after this
+component checkpoint, read its criteria and pinned source/grants, use an owned
+factory scene with primitive geometry and optional asset/providers disabled.
+A separate read-only tutorial startup diagnosis is active in /root/licensing;
+no execution/retry/source changes authorized in that lane.
 
 ### Current hardware implementation checkpoint
 

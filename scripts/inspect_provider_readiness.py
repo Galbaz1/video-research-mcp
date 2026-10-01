@@ -26,6 +26,14 @@ CONFIG_SOURCES = {
     "packages/video-agent-mcp/src/video_agent_mcp/config.py",
 }
 SOURCE_CONTRACTS = {
+    'src/video_research_mcp/models/video_note.py',
+    'src/video_research_mcp/tools/video_note.py',
+    'src/video_research_mcp/video_note/__init__.py',
+    'src/video_research_mcp/video_note/frames.py',
+    'src/video_research_mcp/video_note/io.py',
+    'src/video_research_mcp/video_note/perception.py',
+    'src/video_research_mcp/video_note/pipeline.py',
+    'src/video_research_mcp/video_note/render.py',
     "scripts/video_skill_contract.py",
     "scripts/validate_video_skill.py",
     "scripts/package_video_skill.py",

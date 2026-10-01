@@ -19,6 +19,8 @@ def receipt_root(tmp_path):
         LEDGER,
         "THIRD_PARTY_NOTICES.md",
         "LICENSE",
+        "licenses/fpdf2/GPL-3.0.txt",
+        "licenses/fpdf2/LGPL-3.0.txt",
         "docs/research/2026-09-30-capability-transfer.json",
         "uv.lock",
         "packages/video-agent-mcp/uv.lock",
@@ -49,6 +51,8 @@ def wheel(root: Path, path: Path, extra=None, package="video-research-mcp", omit
         "THIRD_PARTY_NOTICES.md": (root / "THIRD_PARTY_NOTICES.md").read_bytes(),
         "reuse-ledger.json": (root / LEDGER).read_bytes(),
         "example.py": b'"""Own fixture source."""\n',
+        "licenses/fpdf2/GPL-3.0.txt": (root / "licenses/fpdf2/GPL-3.0.txt").read_bytes(),
+        "licenses/fpdf2/LGPL-3.0.txt": (root / "licenses/fpdf2/LGPL-3.0.txt").read_bytes(),
     }
     members.update(extra or {})
     with zipfile.ZipFile(path, "w") as archive:
@@ -63,7 +67,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     data = validate_ledger(receipt_root)
     assert len(data["units"]) == 85
     assert len(data["dependency_locks"]) == 3
-    assert len(data["dependency_packages"]) == 116
+    assert len(data["dependency_packages"]) == 120
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
         "qwen_reverse_image",
         "direct.twelvelabs",
@@ -103,6 +107,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "adj_ingestion",
         "qwen_hardware",
         "qwen_video_to_skill",
+        "qwen_tutorial_note",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]
@@ -207,7 +212,7 @@ def test_own_source_wheel_passes_with_exact_receipts(receipt_root, tmp_path):
     """GIVEN clear source and actual notice bytes THEN the archive passes."""
     path = wheel(receipt_root, tmp_path / "fixture.whl")
     result = check_archive(path, receipt_root)
-    assert result["files"] == 5
+    assert result["files"] == 7
     assert result["sha256"] == sha256(path.read_bytes())
 
 
@@ -267,12 +272,23 @@ def test_archive_asset_requires_commercial_permission_and_matching_hash(
         check_archive(changed, receipt_root)
 
 
-@pytest.mark.parametrize("missing", ["THIRD_PARTY_NOTICES.md", "reuse-ledger.json"])
+@pytest.mark.parametrize("missing", [
+    "THIRD_PARTY_NOTICES.md", "reuse-ledger.json",
+    "licenses/fpdf2/GPL-3.0.txt", "licenses/fpdf2/LGPL-3.0.txt",
+])
 def test_archive_requires_current_notices_and_ledger(receipt_root, tmp_path, missing):
     """GIVEN a distribution missing an audit receipt THEN it cannot pass."""
     path = wheel(receipt_root, tmp_path / "missing.whl", omit=[missing])
     with pytest.raises(ValueError, match="Missing or stale archive receipt"):
         check_archive(path, receipt_root)
+
+
+@pytest.mark.parametrize("license_name", ["GPL-3.0.txt", "LGPL-3.0.txt"])
+def test_pdf_writer_application_license_cannot_be_shortened(receipt_root, ledger, license_name):
+    """GIVEN only a license label THEN full required application terms are missing."""
+    (receipt_root / "licenses/fpdf2" / license_name).write_text(license_name)
+    with pytest.raises(ValueError, match="PDF writer application license"):
+        validate_ledger(receipt_root, ledger)
 
 
 def test_fake_companion_source_does_not_bypass_root_notice_gate(receipt_root, tmp_path):
@@ -314,6 +330,8 @@ def test_actual_npm_tar_bytes_pass(receipt_root, tmp_path):
         "package/LICENSE": (receipt_root / "LICENSE").read_bytes(),
         "package/THIRD_PARTY_NOTICES.md": (receipt_root / "THIRD_PARTY_NOTICES.md").read_bytes(),
         "package/" + LEDGER: (receipt_root / LEDGER).read_bytes(),
+        "package/licenses/fpdf2/GPL-3.0.txt": (receipt_root / "licenses/fpdf2/GPL-3.0.txt").read_bytes(),
+        "package/licenses/fpdf2/LGPL-3.0.txt": (receipt_root / "licenses/fpdf2/LGPL-3.0.txt").read_bytes(),
     }
     path = tmp_path / "fixture.tgz"
     with tarfile.open(path, "w:gz") as archive:
@@ -321,4 +339,4 @@ def test_actual_npm_tar_bytes_pass(receipt_root, tmp_path):
             info = tarfile.TarInfo(name)
             info.size = len(data)
             archive.addfile(info, io.BytesIO(data))
-    assert check_archive(path, receipt_root)["files"] == 4
+    assert check_archive(path, receipt_root)["files"] == 6

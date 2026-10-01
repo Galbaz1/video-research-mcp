@@ -20,7 +20,9 @@
     "docs/integrations/video-derived-skills.md",
     "scripts/video_skill_contract.py",
     "scripts/validate_video_skill.py",
-    "scripts/package_video_skill.py"
+    "scripts/package_video_skill.py",
+    "licenses/fpdf2",
+    "docs/integrations/video-tutorial-notes.md"
   ],
   "engines": {
     "node": ">=22"

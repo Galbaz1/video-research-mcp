@@ -1050,11 +1050,19 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt source-linked note plan and local PDF pipeline; render verification is an actual user artifact, while current upstream has no claimed final model review.",
           "target_paths": [
+            "src/video_research_mcp/video_note/__init__.py",
+            "src/video_research_mcp/video_note/frames.py",
+            "src/video_research_mcp/video_note/io.py",
+            "src/video_research_mcp/video_note/perception.py",
+            "src/video_research_mcp/video_note/pipeline.py",
+            "src/video_research_mcp/video_note/render.py",
+            "src/video_research_mcp/models/video_note.py",
             "src/video_research_mcp/tools/video_note.py",
-            "src/video_research_mcp/video_note",
-            "tests/test_video_note.py"
+            "tests/test_video_note.py",
+            "tests/test_video_note_render.py",
+            "docs/integrations/video-tutorial-notes.md"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Reconciled independent tutorial implementation using qualified external fpdf2/PDFium; audited source requirements and acceptance unchanged. Exact target bytes in reuse ledger; installed artifact and visual acceptance remain separate.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_av_perception",
@@ -10748,9 +10756,17 @@
         "scenes"
       ],
       "target_paths": [
+        "src/video_research_mcp/video_note/__init__.py",
+        "src/video_research_mcp/video_note/frames.py",
+        "src/video_research_mcp/video_note/io.py",
+        "src/video_research_mcp/video_note/perception.py",
+        "src/video_research_mcp/video_note/pipeline.py",
+        "src/video_research_mcp/video_note/render.py",
+        "src/video_research_mcp/models/video_note.py",
         "src/video_research_mcp/tools/video_note.py",
-        "src/video_research_mcp/video_note",
-        "tests/test_video_note.py"
+        "tests/test_video_note.py",
+        "tests/test_video_note_render.py",
+        "docs/integrations/video-tutorial-notes.md"
       ],
       "declared_dependencies": [
         "assets",

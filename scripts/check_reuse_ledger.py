@@ -213,6 +213,14 @@ def validate_ledger(root: Path = ROOT, ledger: dict | None = None) -> dict:
     grant = agents["source_grant"]
     require(sha256(grant["text"].encode()) == grant["sha256"], "Dependency grant hash drift")
     require(grant["text"].strip() in notices, "Missing full verified dependency grant")
+    writer = next(p for p in ledger["dependency_packages"] if p["name"] == "fpdf2")
+    require("fpdf2**, covered by **LGPL-3.0-only" in notices, "Missing PDF writer notice")
+    for receipt in writer["application_licenses"]:
+        require(safe_path(receipt["path"]), "Unsafe application license path")
+        require(
+            sha256((root / receipt["path"]).read_bytes()) == receipt["sha256"],
+            "Missing or changed PDF writer application license",
+        )
     for asset in ledger["bundled_assets"]:
         validate_file_receipt(root, asset, notices)
     require(
@@ -279,6 +287,8 @@ def check_archive(path: Path, root: Path = ROOT, ledger: dict | None = None) -> 
             "THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
             "reuse-ledger.json" if is_wheel else LEDGER: LEDGER,
         }
+        writer = next(p for p in ledger["dependency_packages"] if p["name"] == "fpdf2")
+        required.update({r["path"]: r["path"] for r in writer["application_licenses"]})
         for name, source in required.items():
             require(
                 by_name.get(name) == (root / source).read_bytes(),
