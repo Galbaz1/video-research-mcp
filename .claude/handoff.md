@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T20:29+02:00
+date: 2026-10-01T21:40+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,46 +18,75 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-### Narration implementation active
+### Segmentation implementation active
 
-Current claimed leaf: `vrm-0e8.8.2`. Current accepted source HEAD is
-6490c7b51b0a2a920a08e5365d163bf02e142ebb, normally pushed/exact remote verified.
-Spatial9.3 is blocked, not closed; no owned native jobs. Continue implementation
-through the dependency graph. Human9 audit remains pending, not waived.
+Current claimed leaf: `vrm-0e8.9.2`. Accepted source HEAD74e77594414e59abac5bdfb7050d48feaacaaa13
+is normally pushed/exact remote verified; narration8.2 is closed under offline
+synthetic/mocked acceptance. Human9audit remains pending/notwaived. Continue
+implementation through the graph, not final-answer at component boundaries.
 
-/root/freecad_adapter is the sole primary writer for new companion narration
-PCM/provider/run/timing modules, model, matching tests and measured-narration doc.
-Root owns tool/approval binding, optional dependency/lock, descriptor/metadata,
-Git/Beads/handoff and the frozen actual acceptance journey. No duplicate writer,
-foreign source import, provider/native launch, install or paid request.
+/root/freecad_adapter is the sole primary for root segmentation orchestration,
+image/service helpers, model, matching three tests and qwen-segmentation doc.
+Root exclusively owns config/server/public native tool, descriptor/notices/ledger/
+packaging/Git/Beads and frozen actual acceptance. Sole original reviewer reused
+only after primary terminal and complete root integration. No native jobs,
+foreign import, service/model/GPU/provider launch/install/download or paid calls.
 
-Source preparation terminal/root joined a2ee1f3b9415ab11bb7a4c93ab9e18789618ad35a6809e5fb03de78495398d9f:
-34 full pinned Qwen/MoneyPrinter bodies/419324B/10480lines,2 full grants,
-67 artifact bindings. Existing-code advisor33 bindings joined; source receipt
-b890d0ea37346ac07b26967fcedb0c9523bff6c689812db576918e1ab996e7c0.
-Exact current HTTP contracts retained; foreign_execution_sources=[]; whole
-foreign renderer/voice pipelines, assets/weights and service rights not qualified.
+Source preparation terminal/root joined segmentation/preparation-root-joined.json:
+8 full Qwen bodies/59877B/1354lines/fullApache grant,4 full official SAM reference
+bodies/40534B/827lines including complete custom SAM license,42artifact bindings.
+Advisor33bindings unchanged and joined. Qwen07736672525443c7f8a3f6405eed37d2236f023f;
+SAM2345a4ad109ac29c569da749c91d84f10dc08c40. HFmanualgatedcard401 retained/unread,
+checkpoint/runtime/model reuse unresolved; foreign_execution_sources=[].
+Original wrapper discards masks/dimensions; healthok/startedworker does not prove
+loaded model. Own optional declared external/mock HTTP route preserves raster
+masks and actual overlay; no wrapper/schema-only success or model readiness claim.
 
-Frozen16 controls in narration/acceptance-plan.frozen.json:
-01a4063860df58d294435efc0e07176b48358b08c9199209a76a2bf1c83c1e6e.
-Two-sentence exact 'One. Two.' synthetic PCM fixture at24kHz/mono16-bit,
-4800 frames/word at rate1,2400 silence frames after EACH sentence including last,
-14400 total/.6s, audio intervals[0,.2]/[.3,.5]; rate2 total9600frames/.4s.
-RMSdBFS[-40,-6],0 clipped samples, one-sample duration tolerance fixed.
-One HTTP-mocked configured MiniMax word-subtitle fixture; no billable call.
-This establishes synthetic/media/request contracts, not real speech content.
+Frozen20 controls before tuning: segmentation/acceptance-plan.frozen.json
+SHA20ef5a0b4f076b35115b7f2b6e4d359cde53271b7525e80ce10395392e48d4ab.
+Firstparty known32x24 RGB image, binaryL mask192/768 pixels=.25coverage,
+boxxyxy[8,6,24,18],score.875 uncalibrated; overlay inside[225,55,28],background
+[40,60,80]. Exact3PNG/rawpixel hashes frozen. Existing bounded HTTPX/HTTPCore/H11
+mock network, Pillow helpers/snapshot/manifest/native delivery; no resize/grid
+substitution/non1EXIF,16MiBsource/1MPgrid/16masks/4MPaggregate/256KiBHTTP/8MiBoutputs.
+Config defaultempty SEGMENTATION_SERVICES_JSON selects typed profiles; request
+requires exact source/service/prompt, dryplan0HTTP or explicit workflow submission.
+Mask/model semantics remain unverified; no hidden download or service autostart.
 
-Root declared optional companion[narration] and dev httpx0.28.1. Offline lock
-resolution added existing root-qualified certifi2026.7.22/httpcore1.0.9/httpx0.28.1;
-no installation. Root/core and agent locks unchanged. Refresh companion lock
-receipt and all shared ledger hash references before final gates/builds.
-Preserve existing mock/ElevenLabs/Edge CLI contracts. Own new WAV entrypoint
-must bind exact approved script; word timings require real provider declaration
-or exact mock synthesis events, never text-proportional estimates. Current
-render/narration legacy production remains delegated; no owned FFmpeg renderer.
-Primary is active; no independent narration review dispatched yet. Join primary,
-then sole original review, repair findings, final tests/archives and actual packed
-16-control journey. Stop after one repeated failure under controlled correction.
+### Narration offline leaf accepted
+
+vrm-0e8.8.2 closed at74e77594414e59abac5bdfb7050d48feaacaaa13, normalpush/remote/
+23Gitblobs verified. Private narration/source-final.json SHA
+6a89ad74d65eb1b05421ddee39dde8a680d1a4c2253178fe24a8f7f981eab9af.
+Source34 full pinned Qwen/MoneyPrinter bodies/419324B/10480lines/2grants joined;
+no foreign application/renderer imports or copied code/models/assets/fonts.
+
+One original review2P2: altered cache sentence/status/timing receipts legitimized
+with new hashes; companion sdist ../../resource paths broke isolated wheel build.
+Original2public cache regressions RED and actual sdist→wheel exit2 retained;
+root repaired trusted transactional per-key receipt digests including previews
+and small self-contained build hook.79focusedPASS; no secondreview.
+Final3111root/388companion/37installer/9security/5offline/Ruff/metadataPASS.
+245root runtime bodies/83toolobjects/2root-agent locks unchanged;18prior companion
+toolobjects exact and one owned narration tool added. Optional companion HTTPX
+lock uses existing qualified root versions; no install/core dependency change.
+Seven fresh promoted archives plus isolated sdist wheel660bytecomparisonsPASS.
+
+Frozen16 actual extracted-wheel journey firstattempt16PASS/0FAIL/0UNRUN,
+33publiccalls/36HTTPmocked requests/0real provider/0socket attempts.
+1504loadedbindings/246retainedfiles rootrehashed; original inputs preserved.
+Exact One. Two. =>14400frames/24kHz/.6seconds including bothfinal-inclusive pauses;
+rate2 =>9600/.4seconds. Synthetic event boundaries or provider-declared words,
+RMSdBFS/clipping/PCM measured; tones are not speech. Actual library profile
+explicitly patches owned emptydotenv path; no console/HOME-isolation claim.
+Private promotion-controller missed journal direct paths once; corrected journal
+locations/reconstructed deterministic original metadata, actual initial archives/
+receipt/readback preserved. No actualjourney rerun or acceptance change.
+
+Current legacy production narration/render stays external CLI. Live speech,
+voice/model rights, renderer consumption, human/comparison/release unverified.
+Human9audit pending/notwaived, heldout unread/providers unauthorized. No owned
+native jobs. Completed transcript/PDF/Word/mail delivery remains outside programme.
 
 ### Spatial source component verified; actual geometry blocked
 
