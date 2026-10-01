@@ -123,7 +123,61 @@ Root owns all product changes. The pinned prajwal-y/video_explainer grant remain
 unresolved: no code copying/import/bundling; independently author the selected
 plan contract. Next join these bounded read-only lanes, implement end to end,
 verify exact source/package/installed journeys, commit/push accepted owned files.
-No active .6.4 processes remain; no next-leaf provider/native run or source edit yet.
+No active .6.4 processes remain. .8.8 source lanes are joined: four full mapped
+bodies4695lines164399B plus types179lines/README360/script196targeted; receipt
+c8a74fcc603544f4c2d347c44e440745ee140fa4b1b7dbce89e447fca1fc8d91. Narrow
+actual path-resolver supplement403lines11454B receipt
+f37359bab43dce63e9fd4bc477b9317a0bf1902fefdc7bab221fabe7bf1b6778 confirms
+config.json paths.storyboard as save authority; fence before optional CLI.
+Root now owns24 component paths plus this tracked handoff. The ONE original
+review is terminal NEEDS_FIXES3P2, retained verbatim under
+video-planning/original-review/report.json SHA256
+87291fd9bfc07853c6fa3eac8be8b0ccd4950e22f4bac1ed91b1a34af77f965d.
+Original19 source snapshots and five probe buffers are verified; repaired source
+was not independently re-reviewed. Root repaired FIFO replacement blocking with
+nonblocking regular-file readers, citation-reference amplification with bounded
+atomic plan persistence, and the installed command's missing-doc dependency with
+a self-contained two-source example. Focused43 Python cases plus one actual
+isolated installer command case PASS. Earlier metadata/hash/fixture failures and
+original35/38-case receipts remain retained; no second review or oracle weakening.
+Final source freeze video-planning/final-source.json SHA256
+6e302e86fc17981751954514132d102582f2f7e094a35ce159b8b8378f94418a binds24owned,
+222root/32explainer/13agent runtime bodies and3 unchanged locks. No dependencies
+changed. Final required gates PASS:2569root/239explainer/32installer/9security/
+5offline, Ruff/public-baseline/programme/reuse/archive checks. Root+agent235runtime
+bodies are exact priorHEAD; agent suite not repeated for unchanged13bodies in this
+component. Fresh root+companion wheels/sdists match222+32runtime and24root/18companion
+owned sdist paths. Isolated Python3.14.7 install matches32companion runtime bodies,
+lockedFastMCP4.0.10/Pydantic2.13.5/MCP2.2.0. Component-gates receipt
+442bd1748eb6695e155d3cf5741a28fffc284bfcb1bac14d58f8372752d320a7;
+installed-runtime receipt0b35530801bf26e929455061e9a9f59e93066703cc555f02e8cd1802e4d14b1b.
+Retained root setup failures: guessedarchiveversion corrected to actual recorded
+paths; Python3.11 lockedcache missingrpds-py, single supportedPython3.14 offline
+intervention succeeded; published15 description equality precheck corrected to
+actualpredecessor16 contract (three prior accepted renderdescription changes).
+Current17 preserves completeprior16 objects and published15schemas/annotations.
+Fixed32 installed public calls are accepted on the unchanged candidate:32verified,
+0failed/0unrun;2uncached discoveries/PIDs48346+48363,7authored CLI subprocesses,
+151retained files rehashed, all11first/final owned PIDs absent, control threads and
+pipe drains joined. Final receipt16b4db06d383aad1be39a2d71d5c32a2d4caaf452b04430a211dcd01306f700c.
+First attempt9verified/1failed/22unrun retained55files; harness expected full
+snapshot/asset_kind inside compact artifact metadata. Single root harness-only
+correction checks full unchanged originals in committed packet, exact compactrefs
+and full normalized claim/support objects. Same32/spec/fixtures/bounds untouched,
+no source change/second review. Original prepared driver/helpers remain sealed;
+corrected receipt7227b44027f430448c4b8696064b2f663d0f2d9ced0aa4ab2564449923a12610.
+Group receipt3445acd9c935f1ad9610fa238998e218eb1e156ed8f0a0a9af5578ab313c8714
+binds24owned/267runtime/3locks, source/grant/test/review/archive/install/journey
+receipts and all negative attempts. .8.8 bounded acceptance met, pending atomic
+25-path commit/push/exact readback and Beads closure. No provider/native/heldout
+reads, real renderer/TTS/upstream-runtime/factual/human or programme release claim.
+Independent source/grant preparation for next .8.9 owns only private
+render-readiness/source-contracts. Pinned CLI custom storyboard config is checked
+but render.mjs reads a fixed storyboard path; separate renderer API uses unsupported
+--props without required --project. Source-only findings, no implementation yet.
+Next commit/push accepted owned files, close .8.8 and continue fresh eligible
+Beads work, naturally renderer readiness if still eligible.
+Human review remains pending, not waived.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release

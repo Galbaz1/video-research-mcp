@@ -8572,10 +8572,27 @@
           "reuse_mode": "integration-only",
           "rationale": "Expose or independently implement a noninteractive plan review/approval contract before scripts and scenes; upstream public plan workflow exists but current MCP does not expose it. Preserve all supplied sources in the plan rather than upstream documents[0] behavior.",
           "target_paths": [
+            "packages/video-explainer-mcp/src/video_explainer_mcp/models/planning.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/planning.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/planning_sources.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/planning_production.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
             "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
-            "packages/video-explainer-mcp/src/video_explainer_mcp/models/project.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
+            "packages/video-explainer-mcp/tests/test_planning.py",
+            "packages/video-explainer-mcp/README.md",
             "commands/explain-video.md",
-            "packages/video-explainer-mcp/tests/test_project_tools.py"
+            "docs/integrations/video-planning.md",
+            "packages/video-explainer-mcp/tests/test_plan_admission.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/file_io.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
+            "packages/video-explainer-mcp/tests/test_plan_readers.py",
+            "tests/installer.test.js"
           ],
           "dependencies": [
             "adj_evidence_packet"
@@ -11348,10 +11365,27 @@
         "legal"
       ],
       "target_paths": [
-        "commands/explain-video.md",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/models/project.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/models/planning.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/planning.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/planning_sources.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/planning_production.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
         "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
-        "packages/video-explainer-mcp/tests/test_project_tools.py"
+        "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
+        "packages/video-explainer-mcp/tests/test_planning.py",
+        "packages/video-explainer-mcp/README.md",
+        "commands/explain-video.md",
+        "docs/integrations/video-planning.md",
+        "packages/video-explainer-mcp/tests/test_plan_admission.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/file_io.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
+        "packages/video-explainer-mcp/tests/test_plan_readers.py",
+        "tests/installer.test.js"
       ],
       "declared_dependencies": [
         "contract",

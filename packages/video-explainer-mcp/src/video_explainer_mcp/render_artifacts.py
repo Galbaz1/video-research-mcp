@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
-import stat
 from pathlib import Path
+
+from .file_io import open_regular
 
 
 def file_revision(path: Path) -> dict:
@@ -14,17 +14,10 @@ def file_revision(path: Path) -> dict:
     if path.is_symlink() or not path.is_file():
         raise FileNotFoundError(f"Expected a regular file: {path}")
     digest = hashlib.sha256()
-    descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
-    with os.fdopen(descriptor, "rb") as stream:
-        before = os.fstat(stream.fileno())
-        if not stat.S_ISREG(before.st_mode):
-            raise ValueError(f"Expected a regular file: {path}")
+    with open_regular(path) as (stream, info):
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
-        after = os.fstat(stream.fileno())
-    if (before.st_mtime_ns, before.st_size) != (after.st_mtime_ns, after.st_size):
-        raise ValueError(f"File changed while hashing: {path}")
-    return {"sha256": digest.hexdigest(), "size_bytes": after.st_size}
+    return {"sha256": digest.hexdigest(), "size_bytes": info.st_size}
 
 
 def project_revision(project_dir: Path) -> dict:

@@ -12,6 +12,7 @@ from pydantic import Field
 from ..config import get_config
 from ..errors import make_tool_error
 from ..models.pipeline import StepResult
+from ..planning_production import generate_steps, produce, production_transaction
 from ..runner import run_cli
 from ..types import PipelineStep, ProjectId
 
@@ -73,6 +74,10 @@ async def explainer_generate(
         Dict with project_id, success status, duration, and CLI output.
     """
     try:
+        with production_transaction(project_id) as (project, connection, state):
+            if state is not None:
+                return await generate_steps(project, connection, state, project_id,
+                                            from_step, to_step, force, run_cli, _tts_args)
         args = ["generate", project_id]
         if from_step:
             args.extend(["--from", from_step])
@@ -110,8 +115,18 @@ async def explainer_step(
     try:
         args = [step, project_id]
         args.extend(_tts_args(step))
-
-        result = await run_cli(*args)
+        with production_transaction(project_id) as (project, connection, state):
+            if state is not None:
+                if step == "storyboard":
+                    args.append("--force")
+                result = await produce(project, connection, state, args, run_cli)
+                binding = state["bindings"].get(step, {})
+                return {**StepResult(project_id=project_id, step=step, success=True,
+                                    output_file=str(project / binding["path"]) if binding else "",
+                                    duration_seconds=result.duration_seconds,
+                                    message=result.stdout.strip()).model_dump(),
+                        "plan_revision": state["revision"], "factual_success": False}
+            result = await run_cli(*args)
         return StepResult(
             project_id=project_id,
             step=step,

@@ -14,6 +14,7 @@ from ..config import get_config
 from ..errors import make_tool_error
 from ..evidence import atomic_write, prepare_injection
 from ..models.pipeline import InjectResult
+from ..planning import plan_transaction
 from ..runner import run_cli
 from ..scanner import list_projects, scan_project
 from ..types import ProjectId
@@ -91,8 +92,9 @@ async def explainer_inject(
         input_dir.mkdir(exist_ok=True)
         target = (input_dir / filename).resolve()
         target.relative_to(input_dir)
-        evidence_report = prepare_injection(content, filename, input_dir)
-        atomic_write(target, content)
+        with plan_transaction(project_dir):
+            evidence_report = prepare_injection(content, filename, input_dir)
+            atomic_write(target, content)
 
         result = InjectResult(
             project_id=project_id,

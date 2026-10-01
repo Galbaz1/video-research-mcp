@@ -23,6 +23,24 @@ function runInstaller(home, ...args) {
   });
 }
 
+test('installed video planning command is complete without checkout documentation', (t) => {
+  const home = fixture(t);
+  const result = runInstaller(home, '--global');
+  assert.equal(result.status, 0, result.stderr);
+  const commandPath = path.join(home, '.claude/commands/ve/explain-video.md');
+  const installed = fs.readFileSync(commandPath, 'utf8');
+  assert.equal(installed, fs.readFileSync(path.resolve(__dirname, '../commands/explain-video.md'), 'utf8'));
+  assert.equal(fs.existsSync(path.join(home, '.claude/docs/integrations/video-planning.md')), false);
+  const examples = [...installed.matchAll(/```json\n([\s\S]*?)\n```/g)].map(match => JSON.parse(match[1]));
+  const create = examples.find(example => example.action === 'create');
+  assert.equal(create.expected_revision, 0);
+  assert.equal(create.plan.scenes.length, 2);
+  assert.equal(create.plan.sources.length, 2);
+  assert.equal(create.plan.duration_budget_seconds, 30);
+  assert.match(installed, /This installed command requires no repository doc file/);
+  assert.doesNotMatch(installed, /Read \[the complete plan contract\]/);
+});
+
 test('global registration uses Claude user scope and preserves user configuration', (t) => {
   const home = fixture(t);
   const configPath = path.join(home, '.claude.json');

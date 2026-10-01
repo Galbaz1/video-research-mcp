@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4fbe62872e6d6910336bc83f5d3d65ec43f7fdf748ee2218955941684d2bef45",
+          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4fbe62872e6d6910336bc83f5d3d65ec43f7fdf748ee2218955941684d2bef45",
+          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -2736,7 +2736,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4fbe62872e6d6910336bc83f5d3d65ec43f7fdf748ee2218955941684d2bef45",
+          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2917,7 +2917,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4fbe62872e6d6910336bc83f5d3d65ec43f7fdf748ee2218955941684d2bef45",
+          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -3299,17 +3299,17 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
-          "target_sha256": "f088d82f440a73c8c3984b6c58fdd8dc13eba6a45f0d3eca19d1f2d806448273",
+          "target_sha256": "ca80cfb94cf3fe40cd8ad7237b5d1c246d52bd19092143c77738b2b32cdeaa78",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
-          "target_sha256": "9bfb9629f23538c3e7e25446afa46b99fa41425e6dbbc447dcbef22c9b90efc9",
+          "target_sha256": "89b517ec9652983eeb6a04af4fda6f2ef61b375745b1ff163493eeda37c878a8",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "commands/explain-video.md",
-          "target_sha256": "fbbf33182ac691c0a5747aae3bcb7f2cf15a6edab6757d88e8b93c04e7df7e7e",
+          "target_sha256": "d1186b0c6200efd3b3f8f7df1a34f77304334099996e639765f62c64c2dc4436",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         }
       ]
@@ -3941,7 +3941,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4fbe62872e6d6910336bc83f5d3d65ec43f7fdf748ee2218955941684d2bef45",
+          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -4001,7 +4001,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "3efe1b6907292a66bee2452e169cc1fa739b322e692aa66f53783744c87c5cb7",
+          "target_sha256": "0b6e4b6d079be088e2304ec11120ca04d498b54fd7147522e3a05911d124612c",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
@@ -4011,7 +4011,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
-          "target_sha256": "9f51b5e075918dd29809e478c6f455756a8bce168fb18a62ad1813dc070065d3",
+          "target_sha256": "d9adefa8473dc7fff456ee909fe637a93c24988db6157aeffe3cb68d3c807200",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
@@ -4122,10 +4122,116 @@
       "component": "prajwal-y/video_explainer@c033e28d6eccae43c1762f4653f9c320b16b050e",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/planning.py",
+          "target_sha256": "33d3f893a8dc4699c86e0e5055ebc754e839206ff4c4e9e6515e23b18eb1eb78",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/planning.py",
+          "target_sha256": "a6a81aa784673176b60d9959dd9ebd46a4d1a464ce39d01bccfd25dacab4d353",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/planning_sources.py",
+          "target_sha256": "3c7038970a72e7e6c05f1ea7538aadc364a84b44e451fbb8cbb39137ff788ae2",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+          "target_sha256": "dae81ab22791cc5d9e2e85f5f6750c67b140be057983a6283236351a0773928e",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/planning_production.py",
+          "target_sha256": "6a5c2cad0789c87a1559eb1dade18026e9b2070e2946789ad89550c99ff33968",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py",
+          "target_sha256": "8057221d3259fbf850abe87a95e93bf4db1b7715feb084493d60b85cf2cd714b",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
+          "target_sha256": "8dd7922903e3cdcbd11a96b70937fcc6f83abe10ba845b337914adc538fe272c",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
+          "target_sha256": "b78efa5b636c22650516e883efd03d37ae73423fa23af14fbbc1c5e5eee4abac",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
+          "target_sha256": "89b517ec9652983eeb6a04af4fda6f2ef61b375745b1ff163493eeda37c878a8",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
+          "target_sha256": "0b6e4b6d079be088e2304ec11120ca04d498b54fd7147522e3a05911d124612c",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
+          "target_sha256": "777fd2aa8c661dcd5999f704dfa8d80490f89b9c09f11561f2ccb1feaa18735f",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_planning.py",
+          "target_sha256": "b140952be667a69b81832c0d8114e498c43080f1df7fed4c4cbd424b6907b573",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/README.md",
+          "target_sha256": "d287996c761b6c3874dff920976af1880422ff68b2ca1539483229f8a01936f3",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "commands/explain-video.md",
+          "target_sha256": "d1186b0c6200efd3b3f8f7df1a34f77304334099996e639765f62c64c2dc4436",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "docs/integrations/video-planning.md",
+          "target_sha256": "cab35d2a6a838ad649c54b5dc1a86e54386b589f63d9fb9b4956405f689ba30b",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_plan_admission.py",
+          "target_sha256": "7b4ebd0d8136fe6d477c3f362b4e597fdb24888645a8ec61316f4e82142edf44",
+          "provenance": "Owned real SQLite source citation persistence, concurrent injection exclusion and render source freeze regression controls; fixtures original and independently authored, no foreign code/runtime."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/file_io.py",
+          "target_sha256": "c6f5e4c6f8339a21754f5a8dd1b44cc3ee6dd8aa8a08f1d231aba50ea0341668",
+          "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+          "target_sha256": "ca80cfb94cf3fe40cd8ad7237b5d1c246d52bd19092143c77738b2b32cdeaa78",
+          "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
+          "target_sha256": "d9adefa8473dc7fff456ee909fe637a93c24988db6157aeffe3cb68d3c807200",
+          "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_plan_readers.py",
+          "target_sha256": "dd14dcdadc9eec5befda705788823013358f5d1da7feb81c0305da97c5873380",
+          "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
+        },
+        {
+          "target_path": "tests/installer.test.js",
+          "target_sha256": "910f9abe0fd4c164981ecd3b9e40dd3b6a5a0a21c643749f87672848862beb6b",
+          "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
+        }
+      ]
     },
     {
       "unit_key": "adj_render_pipeline",
@@ -4687,7 +4793,7 @@
         },
         {
           "target_path": "commands/explain-video.md",
-          "target_sha256": "fbbf33182ac691c0a5747aae3bcb7f2cf15a6edab6757d88e8b93c04e7df7e7e",
+          "target_sha256": "d1186b0c6200efd3b3f8f7df1a34f77304334099996e639765f62c64c2dc4436",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {

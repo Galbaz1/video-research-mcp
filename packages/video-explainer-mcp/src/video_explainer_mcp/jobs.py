@@ -7,7 +7,8 @@ from pathlib import Path
 
 from .config import get_config
 from .job_store import JobStore
-from .render_artifacts import file_revision, project_revision, render_outputs
+from .planning_production import freeze_render_source
+from .render_artifacts import file_revision, render_outputs
 
 
 def adapter_revision() -> dict:
@@ -31,7 +32,7 @@ def create_job(project_id: str, resolution: str = "720p", fast: bool = True) -> 
     project_dir = (cfg.resolved_projects_path / project_id).resolve()
     if not project_dir.is_relative_to(cfg.resolved_projects_path):
         raise ValueError("Render project resolves outside configured projects directory")
-    source = project_revision(project_dir)
+    source = freeze_render_source(project_dir)
     cli = Path(cfg.explainer_path).expanduser().resolve() / ".venv/bin/video-explainer"
     request = {
         "project_id": project_id,

@@ -9,6 +9,7 @@ from fastmcp import FastMCP
 
 from .config import get_config
 from .tools.audio import audio_server
+from .tools.planning import planning_server
 from .tools.pipeline import cancel_background_renders, pipeline_server
 from .tools.render_jobs import recover_render_jobs
 from .tools.project import project_server
@@ -43,6 +44,7 @@ app.mount(project_server)
 app.mount(pipeline_server)
 app.mount(quality_server)
 app.mount(audio_server)
+app.mount(planning_server)
 
 
 def main() -> None:
