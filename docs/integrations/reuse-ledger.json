@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
+          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
+          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -2676,7 +2676,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
+          "target_sha256": "fcfca2836fbaee773caa37a0093997a96bc588b2e68a68f6e176abaebfeedf67",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3473,10 +3473,96 @@
       "component": "assafelovic/gpt-researcher@0957c301ed06c2a5857b834358c7227c739041d4",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/DEEP_AGENTS.md",
+          "target_sha256": "c3ec6ec4630ed973928d109dcda744b1551ad80c0efe06d99be1ca4b21228348",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "docs/integrations/GPT_RESEARCHER.md",
+          "target_sha256": "094f8b10001f0a54bd649d6152d32c60107598435eab84fa56c37ee5748c1097",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "docs/integrations/external-harness.json",
+          "target_sha256": "17ffed59db36a83258b51a6c038f2928be025251602d68dc3f801d18726e9ebd",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "examples/deepagents_report.py",
+          "target_sha256": "da96e6329d376778f89671f3723f46d2e18c2b92d0c252fd39ffc720540c9880",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "examples/external_video_source.py",
+          "target_sha256": "929e17738fee8285063c798e96a6ee0b0492ce987c456d43575ff531a9bcfa36",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "examples/gpt_researcher_report.py",
+          "target_sha256": "e18af58793d4fcefd8992bc2443c6a98e1284b9e201b0c1efe63c3c222435715",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "src/video_research_mcp/integrations/__init__.py",
+          "target_sha256": "21d502d1bbde97b9703573fb2353d91b9ec94f33143d0ada0aef5438fabbb4fa",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "src/video_research_mcp/integrations/external_harness.py",
+          "target_sha256": "aec639377611361ad36260437f80a3e7008cdd1d88c1051d6e043a9f9defc3b1",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "tests/integration/test_deepagents_consumer.py",
+          "target_sha256": "9fa4c9f421d52b317e0da2ff7e3dced32100c213fd56e3b2c7021ac130c81b99",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "tests/integration/test_external_harness_contract.py",
+          "target_sha256": "fa2633ca19473b7bdf3beefb8cb1092851067c9b6e1234841ee10733ec201db3",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        },
+        {
+          "target_path": "tests/integration/test_external_report_consumer.py",
+          "target_sha256": "2234948caf616779194efa37f680e0fc84a6e3a23678518c2afeb7001fccb8e5",
+          "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.4",
+        "route": "integration-only via independent adapter",
+        "source_contract_receipt": "external-harness/source-contracts/receipt.json in fixed private evidence root",
+        "source_scope": "5 mapped pinned consumer/retriever/selector/tool/agent bodies and concretely delegated helper/config/grant contracts; selected current DeepAgents source artifact separate from audit revision",
+        "acceptance_scope": "mocked external client/source/report and installed native stdio contracts; foreign runtimes, provider charges and semantic/model/comparison acceptance unqualified",
+        "optional_entrypoints": [
+          {
+            "consumer": "gpt-researcher",
+            "version": "0.16.0",
+            "module": "examples/gpt_researcher_report.py",
+            "entrypoint": "GPTResearcher.write_report(ext_context); conduct_research not assumed",
+            "runtime": "absent; isolated transitive licenses/lock required; MCP1/coreMCP2 incompatible"
+          },
+          {
+            "consumer": "deepagents",
+            "version": "0.7.18",
+            "module": "examples/deepagents_report.py",
+            "entrypoint": "create_deep_agent; one task to video_source; one fixed source tool; source artifact + profile and own execution guards",
+            "runtime": "absent; transitive licenses/lock and model capability qualification required"
+          }
+        ],
+        "foreign_runtime_adopted": false,
+        "source_contract_receipt_sha256": "ad7f9f81a57b61301910b813c5b4cc7093aef340ba8bb49ede697ff9b742cb25",
+        "source_contract_report_sha256": "b64aaf1c130d63744f938700cac041b5e918a414b9fc41be75fcbe8e01c98357",
+        "mapped_full_bodies": 5,
+        "mapped_full_lines": 885,
+        "mapped_full_bytes": 37301,
+        "read_depth": "Mapped5/5 and necessary5helper bodies full; agent API486/806 targeted; currentDeep/SDK/officialdocs read scopes declared individually; no blanket full-read claim"
+      }
     },
     {
       "unit_key": "adj_context_compaction",

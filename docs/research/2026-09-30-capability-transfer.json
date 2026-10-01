@@ -8065,9 +8065,17 @@
           "reuse_mode": "integration-only",
           "rationale": "Provide a complete working configuration/example that consumes video-research-mcp as a specialized source. Cooperate with existing planner/research/report engines; Open Deep Research is archived so use it as a reference rather than preferred new dependency.",
           "target_paths": [
-            "docs/integrations/GPT_RESEARCHER.md",
             "docs/integrations/DEEP_AGENTS.md",
-            "tests/integration/test_external_harness_contract.py"
+            "docs/integrations/GPT_RESEARCHER.md",
+            "docs/integrations/external-harness.json",
+            "examples/deepagents_report.py",
+            "examples/external_video_source.py",
+            "examples/gpt_researcher_report.py",
+            "src/video_research_mcp/integrations/__init__.py",
+            "src/video_research_mcp/integrations/external_harness.py",
+            "tests/integration/test_deepagents_consumer.py",
+            "tests/integration/test_external_harness_contract.py",
+            "tests/integration/test_external_report_consumer.py"
           ],
           "dependencies": [
             "adj_evidence_packet"
@@ -8100,7 +8108,8 @@
             "docs/integrations/DEEP_AGENTS.md",
             "tests/integration/test_external_harness_contract.py"
           ],
-          "bead_id": "vrm-0e8.5.4"
+          "bead_id": "vrm-0e8.5.4",
+          "target_status": "Concrete bounded source adapter with isolated maintained GPT Researcher report and specialized Deep Agents task examples. Mocked contracts and exact installed native journey required; foreign runtime/live model/currency/semantic/comparison/release qualification separate."
         },
         {
           "key": "adj_context_compaction",
