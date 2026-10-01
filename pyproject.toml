@@ -70,6 +70,12 @@ build-backend = "hatchling.build"
 packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"scripts/blender_session.py" = "blender/scripts/blender_session.py"
+"scripts/blender_startup.py" = "blender/scripts/blender_startup.py"
+"scripts/blender_stdio.py" = "blender/scripts/blender_stdio.py"
+"integrations/qwen/blender.json" = "blender/integrations/qwen/blender.json"
+"docs/integrations/qwen-blender.md" = "blender/docs/integrations/qwen-blender.md"
+"skills/research-visualization-blender/SKILL.md" = "blender/skills/research-visualization-blender/SKILL.md"
 "THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
 "docs/integrations/reuse-ledger.json" = "reuse-ledger.json"
 "licenses/fpdf2/GPL-3.0.txt" = "licenses/fpdf2/GPL-3.0.txt"

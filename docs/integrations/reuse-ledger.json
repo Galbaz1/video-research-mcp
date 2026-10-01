@@ -544,7 +544,7 @@
       "implementations": [
         {
           "target_path": "integrations/qwen/manifest.json",
-          "target_sha256": "fe6a687b60cf6ccd8e0f99aa0a6e9561bc3a662655f55f9ff6bcdaab40637154",
+          "target_sha256": "52f16f671791fbb232b6040652471d1a2e6ba72c1680a017aa79a170cbbd9042",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e2af763a5f28355ef147f7429a35f02261a1cc081ca3bf0037166fd033dd167",
+          "target_sha256": "a8c77179a1cb4643146f9f8ca0940b156ccf12996b0e2f6098056d284b204db1",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e2af763a5f28355ef147f7429a35f02261a1cc081ca3bf0037166fd033dd167",
+          "target_sha256": "a8c77179a1cb4643146f9f8ca0940b156ccf12996b0e2f6098056d284b204db1",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1140,7 +1140,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "63960d160bc6c49e4067b2d9b46d94fc784396243ac2d1a390ae71818bb1ff49",
+          "target_sha256": "9cb82e97df86dce01af9da72b4ca80dcc280c11d4a0c78a47c285ff3eb0cf454",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1859,10 +1859,41 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "integrations/qwen/blender.json",
+          "target_sha256": "d34be92625bee403ccc36ed439a5dd5f5772a6c66ee1cd7db14c6727e3f454e5",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+        },
+        {
+          "target_path": "scripts/blender_session.py",
+          "target_sha256": "c96a089e53a7d6bbec75e80011e62e6fa0a8e7628ba31b9cf63e96ecceca9308",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+        },
+        {
+          "target_path": "scripts/blender_startup.py",
+          "target_sha256": "04ccd77e7c11f6980eb3d554396b78602b47deef78242256b5bd8aa20df24e57",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+        },
+        {
+          "target_path": "docs/integrations/qwen-blender.md",
+          "target_sha256": "5186789b30f3862b660356b48130a20b5549f17903abb6ba3e82349a65108891",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+        },
+        {
+          "target_path": "skills/research-visualization-blender/SKILL.md",
+          "target_sha256": "ff7d32a15a06de3d47c0495a33544257f07e1d4f24d15d145c7988109eec22d3",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+        },
+        {
+          "target_path": "scripts/blender_stdio.py",
+          "target_sha256": "071d325827255003fff7a556919b4d2f2f74d4fb14d6b2f48e6e26af6a9a7a3f",
+          "provenance": "Owned EOF forwarding closes native before original cancellation-shielded tool workers join; no foreign handler source copied."
+        }
+      ]
     },
     {
       "unit_key": "qwen_freecad",
@@ -2894,7 +2925,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e2af763a5f28355ef147f7429a35f02261a1cc081ca3bf0037166fd033dd167",
+          "target_sha256": "a8c77179a1cb4643146f9f8ca0940b156ccf12996b0e2f6098056d284b204db1",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2948,7 +2979,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "c0f686bddc1c8e22a930ce59f61f92080ee9f762c789d3889af5bac85ab8c6cc",
+          "target_sha256": "c30cbd8198b4f18e3a441b40807bc8205d726404bdd9b57bb30c65524eb7808a",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -3075,7 +3106,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e2af763a5f28355ef147f7429a35f02261a1cc081ca3bf0037166fd033dd167",
+          "target_sha256": "a8c77179a1cb4643146f9f8ca0940b156ccf12996b0e2f6098056d284b204db1",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -4099,7 +4130,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "0e2af763a5f28355ef147f7429a35f02261a1cc081ca3bf0037166fd033dd167",
+          "target_sha256": "a8c77179a1cb4643146f9f8ca0940b156ccf12996b0e2f6098056d284b204db1",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -4338,7 +4369,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "63960d160bc6c49e4067b2d9b46d94fc784396243ac2d1a390ae71818bb1ff49",
+          "target_sha256": "9cb82e97df86dce01af9da72b4ca80dcc280c11d4a0c78a47c285ff3eb0cf454",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -4654,7 +4685,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "63960d160bc6c49e4067b2d9b46d94fc784396243ac2d1a390ae71818bb1ff49",
+          "target_sha256": "9cb82e97df86dce01af9da72b4ca80dcc280c11d4a0c78a47c285ff3eb0cf454",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {

@@ -1780,10 +1780,13 @@
           "rationale": "[CONFIRMED source; proposed transfer] Integrate external live Blender addon/process; preserve MIT-derived attribution and separately record downloaded asset/service rights instead of vendoring duplicate modeling stack.",
           "target_paths": [
             "integrations/qwen/blender.json",
+            "scripts/blender_session.py",
+            "scripts/blender_startup.py",
+            "docs/integrations/qwen-blender.md",
             "skills/research-visualization-blender/SKILL.md",
-            "docs/integrations/qwen-blender.md"
+            "scripts/blender_stdio.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Reconciled owned adapter/doc/skill targets; external34source-body runtime selection remains separate from ordinary onboarding.",
           "dependencies": [
             "qwen_reuse_manifest"
           ],

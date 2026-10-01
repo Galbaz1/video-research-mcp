@@ -22,7 +22,12 @@
     "scripts/validate_video_skill.py",
     "scripts/package_video_skill.py",
     "licenses/fpdf2",
-    "docs/integrations/video-tutorial-notes.md"
+    "docs/integrations/video-tutorial-notes.md",
+    "docs/integrations/qwen-blender.md",
+    "integrations/qwen/blender.json",
+    "scripts/blender_session.py",
+    "scripts/blender_startup.py",
+    "scripts/blender_stdio.py"
   ],
   "engines": {
     "node": ">=22"

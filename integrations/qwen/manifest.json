@@ -70,7 +70,13 @@
       "copied_paths": [],
       "imported_packages": [],
       "target_files": [
-        "integrations/qwen/manifest.json"
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/blender.json",
+        "scripts/blender_session.py",
+        "scripts/blender_startup.py",
+        "docs/integrations/qwen-blender.md",
+        "skills/research-visualization-blender/SKILL.md",
+        "scripts/blender_stdio.py"
       ],
       "applicable_notice_receipts": [
         {
@@ -100,7 +106,8 @@
         "Independently installed Blender; owner-selected application/addon and any socket/device operation require separate authority."
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
-      "blocked_assets": []
+      "blocked_assets": [],
+      "verification_boundary": "Exact pinned source/grant selection and owned local adapter; ordinary onboarding stays disabled. Actual native/scene/render/viewport acceptance is separately receipted."
     },
     {
       "id": "core",
