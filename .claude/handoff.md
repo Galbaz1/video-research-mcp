@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T00:58+00:00
+date: 2026-10-01T03:47+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,52 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and provider-adapter resume
+### Current acceptance and external-harness resume
+
+Provider adapters (`vrm-0e8.5.2`) are accepted, closed and normally pushed at
+`ef5811495b1b233525ca2086f8f7f917fa36d4f6`; exact remote readback matches.
+Private evidence is `provider-adapters` beneath the fixed programme evidence
+root. `group-receipt.committed.json` SHA256
+`297442868c3f88296d0257aa09af92ba20bcff74cf36440be5203f032c653892`
+binds23 owned Git blobs,193 root plus38 companion runtime files and three
+unchanged locks. Candidate69 tools preserve all65 prior full tool objects and
+published34/15/2. Seven final gates PASS:2310 root tests, Ruff, baseline,
+programme85units74packages, reuse28adopted116locked,9security and5offline.
+
+Explicit text profiles, read-only capability inspection, four search providers
+and direct/provider extraction are bounded and source preserving. Existing
+Gemini defaults are unchanged. Model/page representations, physical wire and
+charges remain unverified. Source preparation fully read7/7 mapped bodies.
+The sole original review returned CHANGES_REQUIRED3P2; owner repairs reject
+schema regex before transport, withhold credential-bearing capability metadata,
+and reject conflicting extraction identities. Original findings/failures are
+retained; focused8/11/14 repairs PASS, with no second independent review.
+Original report SHA256
+`a56e9e15042f0872c650b3ea6741b76e5e5974da3417f267a20a76956b95f760`.
+
+Fresh isolated offline wheel/sdist and193 source/archive/private-install bytes
+PASS. Initial no-build-isolation failed for missing Hatchling; the declared
+cached isolated build succeeded without runtime dependency installation.
+Wheel SHA256 `dc4e4259fc744e1903c726a87c2ebf2ac6fb37551b768deb6daeee7e4011adf8`;
+sdist SHA256 `04b13faf44cf9ef4b90e445b3bb9607eb623b41ac37a4730e0b08271244cdb1f`.
+Fixed40-call installed journey PASS36+4 in fresh PIDs31479/31487,23 mocked HTTP
+exchanges through actual HTTP/URL policies, all streams/controllers joined.
+Receipt SHA256 `0cbaeab1743499c88d7066d64753326f937daaf5e7794a19f8fe7c8d4f880f40`.
+First actual run9PASS1oracleFAIL30unrun is retained; one harness-only usage
+normalization repair preserved source, fixtures, plan and all40 cases. Before
+execution, combined-runtime admission failed; root-only projection corrected
+that input. Process-local guards observed zero actual guarded DNS/INET/provider
+or native children; this is not OS-wide egress attestation.
+
+Fresh Beads readiness selected and root claimed `vrm-0e8.5.4`, maintained
+external MCP research harnesses. Source-only lane reads exact mapped consumer,
+selector and Deep Agents tool/agent bodies before choosing the smallest working
+integration example. Root owns implementation/configuration/docs/metadata and
+acceptance. No framework install or provider call is authorized by readiness.
+Human9 development audit remains pending10.2, not waived; held-out evidence is
+sealed, comparison and verified release remain open. Continue live dependencies.
+
+### Previously accepted grounded research
 
 Grounded source-preserving research (`vrm-0e8.5.1`) is accepted, closed and
 normally pushed at `1af336a825faedc412815159f4552933cf4d24fc`; exact remote
@@ -75,22 +120,8 @@ later fixtures disabled it. Do not overstate all unit history as zero INET.
 Human9 audit remains pending10.2, not waived. Factual/media/editorial production,
 provider wire/currency, integrated comparison and verified release remain open.
 
-Fresh live readiness selected and claimed `vrm-0e8.5.2`. Source-only mapped6
-full bodies (1293lines/46783bytes), one Serper helper, two actual Apache2 grants
-and10 official pages are joined. Private `provider-adapters/source-contracts`:
-receipt SHA256 `1d749cc80d7da79977c46520c2b5d144f2613413597f653723fadda04d847453`;
-requirements-license report SHA256
-`ab9e3ef03ccae2e1cd82e78d9d125a571b0a54b4e5810558c62c2ae3dca244be`.
-Both units use independent implementation; no foreign framework/SDK/assets
-adopted. Keep existing Gemini defaults/web_search and exact capability boundaries.
-Implement configured Serper/Tavily/Exa/Serply search, one-URL raw extraction
-with URL policy and per-source failures, and a concrete operator-selected
-regional DashScope-compatible text profile using existing bounded HTTP.
-No automatic installs/fallback across paid accounts, no general provider registry.
-Provider returned markdown is a representation, not original webpage byte proof.
-Serper current service acceptance, regional account/model capabilities, literal
-input-token/currency ceilings and live telemetry remain unverified. At resume,
-read live source/Bead and this primary report before choosing exact contracts.
+Historical `.5.2` source preparation and acceptance are bound by the current
+committed provider receipt above.
 
 ### Previously accepted joint audio/video and source preparation
 
