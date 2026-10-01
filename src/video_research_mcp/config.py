@@ -7,10 +7,12 @@ import json
 import os
 from ipaddress import ip_address
 from urllib.parse import urlparse
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .models.vision import VisionBackend
+from .models.text_provider import TextBackend
 
 logger = logging.getLogger(__name__)
 
@@ -147,6 +149,8 @@ class ServerConfig(BaseModel):
     media_acquire_timeout_seconds: float = Field(default=120, ge=1, le=3600)
     media_cookies_file: str = Field(default="")
     vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
+    text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
+    search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -209,6 +213,22 @@ class ServerConfig(BaseModel):
             raise ValueError(f"WEAVIATE_VECTORIZER must be 'openai', 'weaviate', or 'ollama', got '{value}'")
         return v
 
+    @field_validator("search_backends")
+    @classmethod
+    def unique_search_backends(cls, value):
+        """Reject ambiguous repeated providers in the operator allowlist."""
+        if len(value) != len(set(value)):
+            raise ValueError("Configured search backends must be unique")
+        return value
+
+    @field_validator("reranker_provider")
+    @classmethod
+    def selected_reranker(cls, value):
+        """The existing configured reranker implements Cohere only."""
+        if value != "cohere":
+            raise ValueError("RERANKER_PROVIDER supports cohere only")
+        return value
+
     @field_validator("deep_research_agent")
     @classmethod
     def validate_deep_research_agent(cls, value: str) -> str:
@@ -269,6 +289,8 @@ class ServerConfig(BaseModel):
             media_acquire_timeout_seconds=float(os.getenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "120")),
             media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
             vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
+            text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
+            search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-01T00:31:12.411765+00:00",
-  "tool_count": 65,
+  "generated_at": "2026-10-01T01:24:06.339105+00:00",
+  "tool_count": 69,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -6116,6 +6116,60 @@
       }
     },
     {
+      "name": "provider_capabilities",
+      "description": "Inspect configured operation support and reject unsupported selections.\n\nProfiles declare support; inspection performs no connectivity or model test.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": null,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "backend": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "gemini, weaviate, text:profile, vision:profile, or omitted for the matrix"
+          },
+          "required": {
+            "default": [],
+            "description": "Requested capabilities to check against one exact selected route",
+            "items": {
+              "enum": [
+                "text",
+                "structured_json",
+                "images",
+                "video",
+                "audio",
+                "files",
+                "grounding",
+                "embeddings",
+                "rerank"
+              ],
+              "type": "string"
+            },
+            "maxItems": 9,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "research_assess_evidence",
       "description": "Assess a claim against sources, returning evidence tier and confidence.",
       "annotations": {
@@ -7425,6 +7479,265 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "text_generate",
+      "description": "Generate structured text using one selected compatible HTTP endpoint.\n\nNo default Gemini/vision account is borrowed. Sources are untrusted text;\nthis operation cannot accept files, media, tools or grounded search.\nMissing input-token/currency meters cause requested hard ceilings to fail.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Configured text profile, inline JSON schema, bounded output, dry plan and explicit submission authority",
+            "properties": {
+              "backend": {
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "instruction": {
+                "maxLength": 8192,
+                "minLength": 1,
+                "type": "string"
+              },
+              "context": {
+                "default": "",
+                "maxLength": 32768,
+                "type": "string"
+              },
+              "output_schema": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "required_capabilities": {
+                "default": [
+                  "text",
+                  "structured_json"
+                ],
+                "items": {
+                  "enum": [
+                    "text",
+                    "structured_json",
+                    "images",
+                    "video",
+                    "audio",
+                    "files",
+                    "grounding",
+                    "embeddings",
+                    "rerank"
+                  ],
+                  "type": "string"
+                },
+                "maxItems": 9,
+                "type": "array"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "max_output_tokens": {
+                "default": 2048,
+                "maximum": 8192,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_input_tokens": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_total_tokens": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_cost_usd": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "timeout_seconds": {
+                "default": 60,
+                "exclusiveMinimum": 0,
+                "maximum": 120,
+                "type": "number"
+              }
+            },
+            "required": [
+              "backend",
+              "instruction",
+              "output_schema"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Structured inference with separately observed exchange and usage metadata.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "output": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Output"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "source_content_role": {
+                "const": "data",
+                "default": "data",
+                "title": "Source Content Role",
+                "type": "string"
+              },
+              "factual_success": {
+                "const": false,
+                "default": false,
+                "title": "Factual Success",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "status",
+              "backend",
+              "request_sha256",
+              "output",
+              "execution"
+            ],
+            "title": "TextResponse",
+            "type": "object"
+          },
+          {
+            "description": "Retain attempted HTTP work after a failed or cancelled submission.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request Sha256"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "backend",
+              "request_sha256",
+              "execution"
+            ],
+            "title": "TextFailure",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -14378,6 +14691,665 @@
       }
     },
     {
+      "name": "web_extract",
+      "description": "Acquire one checked UTF-8 page or a labeled provider-returned representation.\n\nDry plans make no DNS/HTTP requests. Direct redirects stay within the source\nallowlist. Provider services' remote page peers, redirects and original-byte\nidentity remain unverified; returned text cannot authorize further actions.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "One HTTPS source, checked host rules, direct or configured provider route and explicit access authority",
+            "properties": {
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "timeout_seconds": {
+                "default": 120,
+                "exclusiveMinimum": 0,
+                "maximum": 120,
+                "type": "number"
+              },
+              "max_response_bytes": {
+                "default": 262144,
+                "maximum": 262144,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_text_bytes": {
+                "default": 131072,
+                "maximum": 131072,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "url": {
+                "maxLength": 2048,
+                "minLength": 1,
+                "type": "string"
+              },
+              "backend": {
+                "default": "direct",
+                "enum": [
+                  "direct",
+                  "auto",
+                  "serper",
+                  "tavily",
+                  "exa",
+                  "serply"
+                ],
+                "type": "string"
+              },
+              "allowed_domains": {
+                "default": [],
+                "items": {
+                  "pattern": "^[a-z0-9.-]{1,253}$",
+                  "type": "string"
+                },
+                "maxItems": 8,
+                "type": "array"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Typed dry/success/partial outcome retaining source and call denominators.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "search",
+                  "extract"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "backend": {
+                "enum": [
+                  "direct",
+                  "serper",
+                  "tavily",
+                  "exa",
+                  "serply"
+                ],
+                "title": "Backend",
+                "type": "string"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "query": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Query"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "results": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Untrusted provider observations; returned links have not undergone DNS checks.",
+                  "properties": {
+                    "url": {
+                      "title": "Url",
+                      "type": "string"
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Title"
+                    },
+                    "text": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Text"
+                    },
+                    "date": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Date"
+                    },
+                    "text_sha256": {
+                      "anyOf": [
+                        {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Text Sha256"
+                    },
+                    "metadata": {
+                      "additionalProperties": true,
+                      "title": "Metadata",
+                      "type": "object"
+                    },
+                    "url_dns_verified": {
+                      "const": false,
+                      "default": false,
+                      "title": "Url Dns Verified",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "text",
+                    "date",
+                    "text_sha256",
+                    "metadata"
+                  ],
+                  "title": "SearchHit",
+                  "type": "object"
+                },
+                "maxItems": 10,
+                "title": "Results",
+                "type": "array"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Bind observed representation bytes separately from redacted returned content.",
+                    "properties": {
+                      "url": {
+                        "title": "Url",
+                        "type": "string"
+                      },
+                      "final_url": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Final Url"
+                      },
+                      "title": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Title"
+                      },
+                      "content": {
+                        "title": "Content",
+                        "type": "string"
+                      },
+                      "fetched_at": {
+                        "title": "Fetched At",
+                        "type": "string"
+                      },
+                      "page_fetched_at": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Page Fetched At"
+                      },
+                      "content_type": {
+                        "title": "Content Type",
+                        "type": "string"
+                      },
+                      "representation": {
+                        "enum": [
+                          "direct_response",
+                          "provider_returned"
+                        ],
+                        "title": "Representation",
+                        "type": "string"
+                      },
+                      "representation_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "title": "Representation Sha256",
+                        "type": "string"
+                      },
+                      "content_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "title": "Content Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "minimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "returned_bytes": {
+                        "minimum": 0,
+                        "title": "Returned Bytes",
+                        "type": "integer"
+                      },
+                      "redactions_applied": {
+                        "title": "Redactions Applied",
+                        "type": "boolean"
+                      },
+                      "original_page_bytes_verified": {
+                        "title": "Original Page Bytes Verified",
+                        "type": "boolean"
+                      },
+                      "remote_redirects_verified": {
+                        "title": "Remote Redirects Verified",
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "final_url",
+                      "title",
+                      "content",
+                      "fetched_at",
+                      "page_fetched_at",
+                      "content_type",
+                      "representation",
+                      "representation_sha256",
+                      "content_sha256",
+                      "bytes",
+                      "returned_bytes",
+                      "redactions_applied",
+                      "original_page_bytes_verified",
+                      "remote_redirects_verified"
+                    ],
+                    "title": "ExtractedPage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "rejections": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Retain a rejected result without returning its arbitrary source body.",
+                  "properties": {
+                    "index": {
+                      "minimum": 0,
+                      "title": "Index",
+                      "type": "integer"
+                    },
+                    "code": {
+                      "title": "Code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "index",
+                    "code"
+                  ],
+                  "title": "ProviderRejection",
+                  "type": "object"
+                },
+                "maxItems": 10,
+                "title": "Rejections",
+                "type": "array"
+              },
+              "metadata": {
+                "additionalProperties": true,
+                "default": {},
+                "title": "Metadata",
+                "type": "object"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              },
+              "source_content_role": {
+                "const": "data",
+                "default": "data",
+                "title": "Source Content Role",
+                "type": "string"
+              },
+              "factual_success": {
+                "const": false,
+                "default": false,
+                "title": "Factual Success",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "backend",
+              "request_sha256",
+              "execution"
+            ],
+            "title": "SearchProviderResponse",
+            "type": "object"
+          },
+          {
+            "description": "An inert failed/cancelled operation with known attempts and withheld bodies.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "operation": {
+                "enum": [
+                  "search",
+                  "extract"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "backend": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "direct",
+                      "serper",
+                      "tavily",
+                      "exa",
+                      "serply"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Backend"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Request Sha256"
+              },
+              "rejections": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Retain a rejected result without returning its arbitrary source body.",
+                  "properties": {
+                    "index": {
+                      "minimum": 0,
+                      "title": "Index",
+                      "type": "integer"
+                    },
+                    "code": {
+                      "title": "Code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "index",
+                    "code"
+                  ],
+                  "title": "ProviderRejection",
+                  "type": "object"
+                },
+                "title": "Rejections",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "operation",
+              "execution"
+            ],
+            "title": "SearchProviderError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
       "name": "web_search",
       "description": "Search the web using Gemini's built-in Google Search grounding.",
       "annotations": {
@@ -14410,6 +15382,661 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "web_search_provider",
+      "description": "Plan or perform one explicitly selected optional search request.\n\nAutomatic selection uses configured credential-ready Serper, Tavily, Exa,\nthen Serply. Missing pinned keys and failed requests never cause fallback.\nProvider snippets remain untrusted data and do not establish factual support.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "One query, enabled backend, dry plan, strict submission authority and byte/deadline bounds",
+            "properties": {
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "timeout_seconds": {
+                "default": 120,
+                "exclusiveMinimum": 0,
+                "maximum": 120,
+                "type": "number"
+              },
+              "max_response_bytes": {
+                "default": 262144,
+                "maximum": 262144,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_text_bytes": {
+                "default": 131072,
+                "maximum": 131072,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "query": {
+                "maxLength": 8192,
+                "minLength": 2,
+                "type": "string"
+              },
+              "backend": {
+                "default": "auto",
+                "enum": [
+                  "auto",
+                  "serper",
+                  "tavily",
+                  "exa",
+                  "serply"
+                ],
+                "type": "string"
+              },
+              "num_results": {
+                "default": 5,
+                "maximum": 10,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Typed dry/success/partial outcome retaining source and call denominators.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "search",
+                  "extract"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "backend": {
+                "enum": [
+                  "direct",
+                  "serper",
+                  "tavily",
+                  "exa",
+                  "serply"
+                ],
+                "title": "Backend",
+                "type": "string"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "query": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Query"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "results": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Untrusted provider observations; returned links have not undergone DNS checks.",
+                  "properties": {
+                    "url": {
+                      "title": "Url",
+                      "type": "string"
+                    },
+                    "title": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Title"
+                    },
+                    "text": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Text"
+                    },
+                    "date": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Date"
+                    },
+                    "text_sha256": {
+                      "anyOf": [
+                        {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "title": "Text Sha256"
+                    },
+                    "metadata": {
+                      "additionalProperties": true,
+                      "title": "Metadata",
+                      "type": "object"
+                    },
+                    "url_dns_verified": {
+                      "const": false,
+                      "default": false,
+                      "title": "Url Dns Verified",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "text",
+                    "date",
+                    "text_sha256",
+                    "metadata"
+                  ],
+                  "title": "SearchHit",
+                  "type": "object"
+                },
+                "maxItems": 10,
+                "title": "Results",
+                "type": "array"
+              },
+              "page": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Bind observed representation bytes separately from redacted returned content.",
+                    "properties": {
+                      "url": {
+                        "title": "Url",
+                        "type": "string"
+                      },
+                      "final_url": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Final Url"
+                      },
+                      "title": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Title"
+                      },
+                      "content": {
+                        "title": "Content",
+                        "type": "string"
+                      },
+                      "fetched_at": {
+                        "title": "Fetched At",
+                        "type": "string"
+                      },
+                      "page_fetched_at": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Page Fetched At"
+                      },
+                      "content_type": {
+                        "title": "Content Type",
+                        "type": "string"
+                      },
+                      "representation": {
+                        "enum": [
+                          "direct_response",
+                          "provider_returned"
+                        ],
+                        "title": "Representation",
+                        "type": "string"
+                      },
+                      "representation_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "title": "Representation Sha256",
+                        "type": "string"
+                      },
+                      "content_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "title": "Content Sha256",
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "minimum": 0,
+                        "title": "Bytes",
+                        "type": "integer"
+                      },
+                      "returned_bytes": {
+                        "minimum": 0,
+                        "title": "Returned Bytes",
+                        "type": "integer"
+                      },
+                      "redactions_applied": {
+                        "title": "Redactions Applied",
+                        "type": "boolean"
+                      },
+                      "original_page_bytes_verified": {
+                        "title": "Original Page Bytes Verified",
+                        "type": "boolean"
+                      },
+                      "remote_redirects_verified": {
+                        "title": "Remote Redirects Verified",
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "final_url",
+                      "title",
+                      "content",
+                      "fetched_at",
+                      "page_fetched_at",
+                      "content_type",
+                      "representation",
+                      "representation_sha256",
+                      "content_sha256",
+                      "bytes",
+                      "returned_bytes",
+                      "redactions_applied",
+                      "original_page_bytes_verified",
+                      "remote_redirects_verified"
+                    ],
+                    "title": "ExtractedPage",
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "rejections": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Retain a rejected result without returning its arbitrary source body.",
+                  "properties": {
+                    "index": {
+                      "minimum": 0,
+                      "title": "Index",
+                      "type": "integer"
+                    },
+                    "code": {
+                      "title": "Code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "index",
+                    "code"
+                  ],
+                  "title": "ProviderRejection",
+                  "type": "object"
+                },
+                "maxItems": 10,
+                "title": "Rejections",
+                "type": "array"
+              },
+              "metadata": {
+                "additionalProperties": true,
+                "default": {},
+                "title": "Metadata",
+                "type": "object"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              },
+              "source_content_role": {
+                "const": "data",
+                "default": "data",
+                "title": "Source Content Role",
+                "type": "string"
+              },
+              "factual_success": {
+                "const": false,
+                "default": false,
+                "title": "Factual Success",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "backend",
+              "request_sha256",
+              "execution"
+            ],
+            "title": "SearchProviderResponse",
+            "type": "object"
+          },
+          {
+            "description": "An inert failed/cancelled operation with known attempts and withheld bodies.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "operation": {
+                "enum": [
+                  "search",
+                  "extract"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "backend": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "direct",
+                      "serper",
+                      "tavily",
+                      "exa",
+                      "serply"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Backend"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Request Sha256"
+              },
+              "rejections": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Retain a rejected result without returning its arbitrary source body.",
+                  "properties": {
+                    "index": {
+                      "minimum": 0,
+                      "title": "Index",
+                      "type": "integer"
+                    },
+                    "code": {
+                      "title": "Code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "index",
+                    "code"
+                  ],
+                  "title": "ProviderRejection",
+                  "type": "object"
+                },
+                "title": "Rejections",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "operation",
+              "execution"
+            ],
+            "title": "SearchProviderError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

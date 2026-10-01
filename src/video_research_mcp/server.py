@@ -35,6 +35,8 @@ from .tools.image import image_server
 from .tools.vision import vision_server
 from .tools.media_perceive import media_perceive_server
 from .tools.media_scenes import media_scenes_server
+from .tools.text_provider import text_provider_server
+from .tools.search_provider import search_provider_server
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +85,8 @@ app.mount(image_server)
 app.mount(vision_server)
 app.mount(media_perceive_server)
 app.mount(media_scenes_server)
+app.mount(text_provider_server)
+app.mount(search_provider_server)
 
 
 def main() -> None:

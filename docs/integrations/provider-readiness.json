@@ -16,7 +16,9 @@
     "src/video_research_mcp/tools/research_web.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
     "packages/video-agent-mcp/src/video_agent_mcp/sdk_runner.py",
-    "src/video_research_mcp/image_ops.py"
+    "src/video_research_mcp/image_ops.py",
+    "src/video_research_mcp/provider_readiness.py",
+    "src/video_research_mcp/models/text_provider.py"
   ],
   "states": [
     "disabled",

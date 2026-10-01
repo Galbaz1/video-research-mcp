@@ -15,6 +15,7 @@ import re
 import shutil
 
 from video_research_mcp.dotenv import DEFAULT_ENV_PATH, _is_unset_or_placeholder, parse_dotenv
+from video_research_mcp.provider_readiness import optional_adapter_profiles
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = "docs/integrations/provider-readiness.json"
@@ -31,6 +32,8 @@ SOURCE_CONTRACTS = {
     "src/video_research_mcp/academic_client.py",
     "src/video_research_mcp/client.py",
     "src/video_research_mcp/image_ops.py",
+    "src/video_research_mcp/provider_readiness.py",
+    "src/video_research_mcp/models/text_provider.py",
     "src/video_research_mcp/tools/research_web.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
     "packages/video-agent-mcp/src/video_agent_mcp/sdk_runner.py",
@@ -346,6 +349,7 @@ def inspect_readiness(
         "provider_calls": 0,
         "source_sha256": {p: digest(root / p) for p in source_paths},
         "integrations": rows,
+        "optional_adapter_profiles": optional_adapter_profiles(resolved),
         "proposed_aggregate_spend_ceiling_usd": manifest["live_run_proposal"][
             "aggregate_spend_ceiling_usd"
         ],

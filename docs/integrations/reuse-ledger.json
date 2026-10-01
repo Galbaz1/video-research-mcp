@@ -585,13 +585,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -720,7 +720,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -912,7 +912,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
+          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -922,7 +922,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -952,7 +952,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -987,7 +987,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "d8d6d2b4ebc5f9befa0c7fce462ad38673b816708eea548ce92ce47dcf502026",
+          "target_sha256": "2f539e8306ff9917cef6e16c02ca8095a1b9b42fc5721949e6c35f246443120d",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
+          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1080,7 +1080,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
+          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1135,7 +1135,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1200,7 +1200,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1225,7 +1225,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         }
       ]
@@ -1298,10 +1298,101 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/search_provider.py",
+          "target_sha256": "44346d082a8962bee6a30798bfefc26de01fbe2c40804b7552c92307b4497d77",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/search_backends.py",
+          "target_sha256": "7e88f848436a123aa934ef31a0063221dffbb6fed50c327030c4bfb7a5ecb478",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/search_provider_results.py",
+          "target_sha256": "bb6400b713dfd784e223f4d5cf8fe2085393c16ec5528de08698fac630f13575",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/web_extraction.py",
+          "target_sha256": "eaaa289bcb985443f7d32d9c87e95011bd1d5d38215c9b08690010ab0dc0e4e6",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/search_provider.py",
+          "target_sha256": "e5fca51154c22dfeedee8d63e2379bc82ced6d0a59992a8b36bcafb89d0d77c2",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_search_backends.py",
+          "target_sha256": "80fd958aa85401158275a404bcdaedfe7261027569e0c658a5538462b2566a2c",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_web_extract.py",
+          "target_sha256": "0355387b95564acba4013e7d397c07c42aadd4f7606c9154257d9db03a79a0a2",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/integrations/search-providers.md",
+          "target_sha256": "984fe505c3ac6994be2d477315d24317d67c47f00b936a878339e25f716af4f3",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        }
+      ],
+      "source_file_receipts": [
+        {
+          "path": "src/capabilities/search/qwen_mm_plugins_search/backends.py",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+          "sha256": "7994fe25b3117c0b071646266d2a9ae3030b0e8809187409b883e30580a65093",
+          "git_blob_sha1": "fb38c69e2452796260e909fdfdbdd640375910e1",
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/search/qwen_mm_plugins_search/backends.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "src/capabilities/search/qwen_mm_plugins_search/tools/web_search.py",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+          "sha256": "7abddfb93a33990a275b2006b4efa06b9591a04bc9f34f281bfffe78055dfaff",
+          "git_blob_sha1": "fb70a4ba3adca706a8c0c55b98409c2247909f22",
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/search/qwen_mm_plugins_search/tools/web_search.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "src/capabilities/search/qwen_mm_plugins_search/tools/web_extractor.py",
+          "revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+          "sha256": "b21e9cd35586dd54a04cb6aaa8edeaf2133e85047d1e451dc4475dfe96d2ab53",
+          "git_blob_sha1": "d900d1139e2e08617266ebe9b8fdeecb18d9388c",
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/search/qwen_mm_plugins_search/tools/web_extractor.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.2",
+        "source_contract_report_sha256": "ab9e3ef03ccae2e1cd82e78d9d125a571b0a54b4e5810558c62c2ae3dca244be",
+        "supplemental_config_report_sha256": "f4f4e38d549a7be4f6ed6dae4d8cf1ab3e1ab4db186db711d101779dd1d52664",
+        "source_read_scope": "7/7 mapped bodies, exact original grants plus current primary HTTP contract supplement; no foreign bodies/runtime adopted",
+        "acceptance_scope": "bounded offline contracts; live service, physical charges, factual truth, human/heldout comparison and release remain separate",
+        "supplemental_disposition": "Four explicit named text profile/model/output-limit calls exercise role selection. Supplemental config has no phase executor; no automatic multi-provider orchestration or uninspected external MCP helper framework imported."
+      }
     },
     {
       "unit_key": "qwen_reverse_image",
@@ -1686,7 +1777,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
+          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1726,7 +1817,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1841,13 +1932,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1997,7 +2088,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2324,7 +2415,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2344,7 +2435,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2510,7 +2601,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "712eedf1626e8703b17e17589d6b04e7f2fcda71f2ba6e8e4ebcd0d230f92894",
+          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2520,7 +2611,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2550,7 +2641,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2575,7 +2666,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "d8d6d2b4ebc5f9befa0c7fce462ad38673b816708eea548ce92ce47dcf502026",
+          "target_sha256": "2f539e8306ff9917cef6e16c02ca8095a1b9b42fc5721949e6c35f246443120d",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2585,7 +2676,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
+          "target_sha256": "cc621a1f14d39d21b68709edc032c390e0fbf2a080ef94ee548e2abeb7f12b02",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3025,7 +3116,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -3191,10 +3282,181 @@
       "component": "assafelovic/gpt-researcher@0957c301ed06c2a5857b834358c7227c739041d4",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/compatible-providers.md",
+          "target_sha256": "18d9e4800c6941811e34be8749783246af21d8d22be38e2261a81074fe4fd17f",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/integrations/provider-readiness.json",
+          "target_sha256": "7437f747c31fe0877dc1e6394ea9c9a2946b04b7631e22c16d451809414669bf",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "docs/integrations/search-providers.md",
+          "target_sha256": "984fe505c3ac6994be2d477315d24317d67c47f00b936a878339e25f716af4f3",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "scripts/inspect_provider_readiness.py",
+          "target_sha256": "2f539e8306ff9917cef6e16c02ca8095a1b9b42fc5721949e6c35f246443120d",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/search_provider.py",
+          "target_sha256": "44346d082a8962bee6a30798bfefc26de01fbe2c40804b7552c92307b4497d77",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/text_provider.py",
+          "target_sha256": "3d492d8f6e8676d96da802fb3ca9a2adc9ecb343c0d1b4d84e012abd61a7b24d",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/provider_capabilities.py",
+          "target_sha256": "c3afad1521c87b78c69182130224106559bee76957c6abd157d1838069ebf2a3",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/provider_readiness.py",
+          "target_sha256": "87feb260f2903bfc6f3e84563ac8dca7ab86556149085b95217fa4847444f999",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/search_backends.py",
+          "target_sha256": "7e88f848436a123aa934ef31a0063221dffbb6fed50c327030c4bfb7a5ecb478",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/search_provider_results.py",
+          "target_sha256": "bb6400b713dfd784e223f4d5cf8fe2085393c16ec5528de08698fac630f13575",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/text_provider.py",
+          "target_sha256": "828f642369c310855f52600642ec6fb49b2b923e2309edfa39c635934fc62a81",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/knowledge/search.py",
+          "target_sha256": "177cdb75251a4c39159ad2b10060164d03388e33060ca443f4b25b4eecac5582",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/search_provider.py",
+          "target_sha256": "e5fca51154c22dfeedee8d63e2379bc82ced6d0a59992a8b36bcafb89d0d77c2",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/text_provider.py",
+          "target_sha256": "f21b2d03b86b37d4317df6d934518bc6cea5c8cc67b4b9c58a120f9d877bcffa",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/weaviate_client.py",
+          "target_sha256": "ddf7eaacb8209b49a0e950d90af3da2e805f1fb472bae1ef32a483c9b210dd5d",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/weaviate_schema/base.py",
+          "target_sha256": "5cf7e5d83bad81ed4caa7059b4c9105aae3002e2d534e50aed4274497ab8fa5c",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/web_extraction.py",
+          "target_sha256": "eaaa289bcb985443f7d32d9c87e95011bd1d5d38215c9b08690010ab0dc0e4e6",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_search_backends.py",
+          "target_sha256": "80fd958aa85401158275a404bcdaedfe7261027569e0c658a5538462b2566a2c",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_text_provider.py",
+          "target_sha256": "bf805852e5adcc1e9f896c7b212bfe530902906805bbaf3d11bb855d73918274",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        },
+        {
+          "target_path": "tests/test_web_extract.py",
+          "target_sha256": "0355387b95564acba4013e7d397c07c42aadd4f7606c9154257d9db03a79a0a2",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+        }
+      ],
+      "source_file_receipts": [
+        {
+          "path": "gpt_researcher/llm_provider/generic/base.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "d4247a548188ca5e2a3710658884dbbda95a1096fb2c3e3a7a0a410134823818",
+          "git_blob_sha1": "e7e20023ffa14ac2d2ac616464ce8ecf75704f4e",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/llm_provider/generic/base.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "gpt_researcher/retrievers/utils.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "2a75eb93c7244ce899cb54ca0e231b8209f068e04c76fd6b1c97ce0b52c62a81",
+          "git_blob_sha1": "bb8260f75537ed5ce41ccd713769746d6b650a0a",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/retrievers/utils.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "gpt_researcher/retrievers/mcp/retriever.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "cb87868e84d9813f2469ee72e78cafeeccb5216305b8e724044153843e5ce435",
+          "git_blob_sha1": "3e67af0309c47fc83916f4dd049b0ca7a847a6e2",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/retrievers/mcp/retriever.py",
+          "grant": "Apache-2.0 original code grant; per-file grant retained, whole-project mixed metadata not blanket rights",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "src/open_deep_research/configuration.py",
+          "revision": "1b7d2e80db9faa586165c60e09096dbbfd483a64",
+          "sha256": "61e1a62ada20d16cb7b876c10b15a3ddb71f61248a53a05d7511ca6930af98da",
+          "git_blob_sha1": "1c5bac9e9d6134b917e98ccc75cdbf862900586e",
+          "source_url": "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/configuration.py",
+          "grant": "MIT",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        },
+        {
+          "path": "LICENSE",
+          "revision": "1b7d2e80db9faa586165c60e09096dbbfd483a64",
+          "sha256": "3404cb66935968edefe1149c9bfcb44bd8532c437c01ac095ec53b6e195ce110",
+          "git_blob_sha1": "82dc7c43f7ba98b72ac619ebfe7599576dc3ce7f",
+          "source_url": "https://github.com/langchain-ai/open_deep_research/blob/1b7d2e80db9faa586165c60e09096dbbfd483a64/LICENSE",
+          "grant": "MIT",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body or grant text"
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.2",
+        "source_contract_report_sha256": "ab9e3ef03ccae2e1cd82e78d9d125a571b0a54b4e5810558c62c2ae3dca244be",
+        "supplemental_config_report_sha256": "f4f4e38d549a7be4f6ed6dae4d8cf1ab3e1ab4db186db711d101779dd1d52664",
+        "source_read_scope": "7/7 mapped bodies, exact original grants plus current primary HTTP contract supplement; no foreign bodies/runtime adopted",
+        "acceptance_scope": "bounded offline contracts; live service, physical charges, factual truth, human/heldout comparison and release remain separate",
+        "supplemental_disposition": "Four explicit named text profile/model/output-limit calls exercise role selection. Supplemental config has no phase executor; no automatic multi-provider orchestration or uninspected external MCP helper framework imported."
+      }
     },
     {
       "unit_key": "adj_external_harness",
@@ -3912,7 +4174,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3929,7 +4191,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
+          "target_sha256": "79e25257378d0274b923488118c198a2bb703f120da2422ede9528f32879edd9",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -4021,7 +4283,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {

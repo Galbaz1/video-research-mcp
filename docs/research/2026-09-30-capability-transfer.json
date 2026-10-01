@@ -716,12 +716,18 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt alternate-provider/page-extraction delta around existing search and URL safety policy; do not duplicate already available Gemini search.",
           "target_paths": [
-            "src/video_research_mcp/tools/web_extract.py",
+            "src/video_research_mcp/models/search_provider.py",
             "src/video_research_mcp/search_backends.py",
+            "src/video_research_mcp/search_provider_results.py",
+            "src/video_research_mcp/web_extraction.py",
+            "src/video_research_mcp/tools/search_provider.py",
+            "tests/test_search_backends.py",
+            "tests/test_web_extract.py",
+            "docs/integrations/search-providers.md",
             "src/video_research_mcp/config.py",
-            "tests/test_web_extract.py"
+            "src/video_research_mcp/server.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Concrete independently authored selected adapters and verified existing embeddings/rerank paths; exact implementation receipts in reuse ledger. Offline acceptance only; live provider/account/charges/human/heldout/release remain separate.",
           "dependencies": [
             "qwen_reuse_manifest"
           ],
@@ -7968,11 +7974,28 @@
           "reuse_mode": "adapt",
           "rationale": "Capture useful cloud/local/OpenAI-compatible provider choice and search retrievers while preserving concrete capabilities: file upload, true video/audio vision, structured output, grounding, usage and error behavior cannot be assumed interchangeable. Merge with sibling Qwen/provider inventory.",
           "target_paths": [
-            "src/video_research_mcp/client.py",
+            "docs/integrations/compatible-providers.md",
+            "docs/integrations/provider-readiness.json",
+            "docs/integrations/search-providers.md",
+            "scripts/inspect_provider_readiness.py",
             "src/video_research_mcp/config.py",
-            "src/video_research_mcp/academic_client.py",
-            "src/video_research_mcp/tools/search.py",
-            "tests/test_provider_capabilities.py"
+            "src/video_research_mcp/models/search_provider.py",
+            "src/video_research_mcp/models/text_provider.py",
+            "src/video_research_mcp/provider_capabilities.py",
+            "src/video_research_mcp/provider_readiness.py",
+            "src/video_research_mcp/search_backends.py",
+            "src/video_research_mcp/search_provider_results.py",
+            "src/video_research_mcp/server.py",
+            "src/video_research_mcp/text_provider.py",
+            "src/video_research_mcp/tools/knowledge/search.py",
+            "src/video_research_mcp/tools/search_provider.py",
+            "src/video_research_mcp/tools/text_provider.py",
+            "src/video_research_mcp/weaviate_client.py",
+            "src/video_research_mcp/weaviate_schema/base.py",
+            "src/video_research_mcp/web_extraction.py",
+            "tests/test_search_backends.py",
+            "tests/test_text_provider.py",
+            "tests/test_web_extract.py"
           ],
           "dependencies": [
             "adj_research_eval"
@@ -8016,7 +8039,8 @@
             "src/video_research_mcp/tools/search.py",
             "tests/test_provider_capabilities.py"
           ],
-          "bead_id": "vrm-0e8.5.2"
+          "bead_id": "vrm-0e8.5.2",
+          "target_status": "Concrete independently authored selected adapters and verified existing embeddings/rerank paths; exact implementation receipts in reuse ledger. Offline acceptance only; live provider/account/charges/human/heldout/release remain separate."
         },
         {
           "key": "adj_external_harness",
@@ -10397,13 +10421,27 @@
         "onboarding"
       ],
       "target_paths": [
-        "src/video_research_mcp/academic_client.py",
-        "src/video_research_mcp/client.py",
+        "docs/integrations/compatible-providers.md",
+        "docs/integrations/provider-readiness.json",
+        "docs/integrations/search-providers.md",
+        "scripts/inspect_provider_readiness.py",
         "src/video_research_mcp/config.py",
+        "src/video_research_mcp/models/search_provider.py",
+        "src/video_research_mcp/models/text_provider.py",
+        "src/video_research_mcp/provider_capabilities.py",
+        "src/video_research_mcp/provider_readiness.py",
         "src/video_research_mcp/search_backends.py",
-        "src/video_research_mcp/tools/search.py",
-        "src/video_research_mcp/tools/web_extract.py",
-        "tests/test_provider_capabilities.py",
+        "src/video_research_mcp/search_provider_results.py",
+        "src/video_research_mcp/server.py",
+        "src/video_research_mcp/text_provider.py",
+        "src/video_research_mcp/tools/knowledge/search.py",
+        "src/video_research_mcp/tools/search_provider.py",
+        "src/video_research_mcp/tools/text_provider.py",
+        "src/video_research_mcp/weaviate_client.py",
+        "src/video_research_mcp/weaviate_schema/base.py",
+        "src/video_research_mcp/web_extraction.py",
+        "tests/test_search_backends.py",
+        "tests/test_text_provider.py",
         "tests/test_web_extract.py"
       ],
       "declared_dependencies": [
