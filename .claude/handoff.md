@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T03:47+02:00
+date: 2026-10-01T04:17+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,47 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and external-harness resume
+### Current acceptance and reverse-search resume
+
+External harness (`vrm-0e8.5.4`) is accepted, closed and normally pushed at
+`9b08087ca652b521a5c1ab1fc3051cab88b54960`; fresh exact remote readback matches.
+Private evidence `external-harness/group-receipt.committed.json` SHA256
+`e5b2b1ceea0829783263828eab782d795ee2dc58dd119873e5fe2aa67ab23ec4`
+binds14 owned Git blobs,195 root plus38 companion runtime files, three unchanged
+locks and the unchanged69-tool manifest. Source preparation read all5 mapped
+bodies,885lines37301bytes; optional GPT/Deep runtime APIs and grants have declared
+read scopes. Foreign runtimes remain uninstalled/unqualified.
+
+The bounded collector discovers/selects one native point and preserves exact
+source/result/reference commitments. Optional isolated report examples use the
+maintained GPT report hook or one Deep specialist task/source read. Seven final
+gates PASS:2353 root tests, Ruff, baseline, programme85units74packages,
+reuse29adopted116locked,9security and5offline. Sole original review retained
+CHANGES_REQUIRED1P2; six owner cancellation controls PASS, with no second review.
+Original review SHA256
+`53323a741de966b0ebe43d064161946b19c77ee332c93616cfef414e5f1e5b74`.
+
+Cached isolated offline wheel/sdist/private install verify195 runtime source
+bytes and all14 owned sdist paths. Wheel SHA256
+`65592fa719e930c4d7b6876b9316732ff917073d33b971a8b9d495ae1edddc69`;
+sdist SHA256 `46be6cce515631f0a4906a5ec34258d081153310a67c225782b0cbdf51180b84`.
+Fixed5 installed stdio/native collections PASS:3 mocked reports,2 rejected
+sources, PIDs45310/45319,5 discoveries/5 direct calls/8 joined native processes.
+Restart source/reference/PNG exact; no failed/unrun cases or repeat. Receipt
+SHA256 `afb85274dfe619f0423987bfab264f54fe2c92acf272ce8f70b48d270be790dd`.
+Actual root execution is separate from immutable custodian preparation wording.
+
+`vrm-0e8.5.3` is freshly claimed/in_progress from live Beads readiness. Next read
+its three pinned Qwen reverse-image bodies and official Serper Lens contract,
+then implement the smallest complete source-frame query and identity-verification
+workflow. Source-only licensing lane owns private `reverse-search/source-contracts`;
+root owns implementation/shared metadata. No current product probes or paid jobs.
+Human development audit remains pending `.10.2`, not waived; heldout is untouched.
+Foreign-model quality, semantic citations, physical costs, comparative advantage
+and integrated verified release remain open. Continue live eligible dependencies;
+do not reopen completed transcript/PDF/Word/mail.
+
+### Previous provider acceptance and external-harness resume
 
 Provider adapters (`vrm-0e8.5.2`) are accepted, closed and normally pushed at
 `ef5811495b1b233525ca2086f8f7f917fa36d4f6`; exact remote readback matches.
