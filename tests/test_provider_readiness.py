@@ -70,8 +70,10 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     """GIVEN no credentials THEN local presence and mock output are not live proof."""
     report = run(workspace)
     observed = rows(report)
-    assert len(observed) == 28
-    assert sum(row["adopted"] for row in observed.values()) == 17
+    assert len(observed) == 30
+    assert sum(row["adopted"] for row in observed.values()) == 19
+    assert observed["source-ingestion-local"]["state"] == "installed"
+    assert observed["source-ingestion-pdf"]["state"] == "installed"
     assert observed["gemini-generation"]["state"] == "missing"
     assert observed["semantic-scholar"]["state"] == "installed"
     assert observed["weaviate-store"]["state"] == "disabled"

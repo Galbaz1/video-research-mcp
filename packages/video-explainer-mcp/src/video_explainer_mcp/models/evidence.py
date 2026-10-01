@@ -62,7 +62,7 @@ class EvidenceSource(EvidenceModel):
     revision: Identifier
     sha256: Digest
     path: Identifier
-    modality: Literal["text", "image", "video", "audio", "geometry", "tabular"]
+    modality: Literal["text", "image", "video", "audio", "geometry", "tabular", "document"]
     asset_kind: Literal["original", "extracted", "synthetic"]
     snapshot: SourceSnapshot
     passages: list[SourcePassage] = Field(default_factory=list)

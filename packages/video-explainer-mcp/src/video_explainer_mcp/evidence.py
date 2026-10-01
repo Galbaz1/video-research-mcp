@@ -69,6 +69,8 @@ def _source_issues(source: dict, root: Path) -> list[str]:
             if _source_hash(path) != source["sha256"]:
                 issues.append("original source hash mismatch")
             issues.extend(_media_record_issues(source))
+            if source["modality"] == "document":
+                issues.extend(_document_record_issues(source))
         if source["asset_kind"] != "original":
             issues.append("support must bind an original source, not a derived/synthetic asset")
         for span in source["observed_intervals"]:
@@ -138,6 +140,36 @@ def _claim_support(claim: dict, passages: dict) -> str:
         passages.get((ref["source_id"], ref["passage_id"])) == claim["text"] for ref in references
     )
     return "exact_source_text" if references and matched else "unknown"
+
+
+def _document_record_issues(source: dict) -> list[str]:
+    """Require typed document positions and exact extraction-method observations."""
+    from .models.ingestion_location import IngestionLocation
+
+    try:
+        record = json.loads(source["snapshot"]["text"])
+        if not isinstance(record, dict):
+            raise ValueError("Document snapshot must be a JSON observation object")
+        locations, methods = {}, {}
+        for passage in source["passages"]:
+            location = IngestionLocation.model_validate(passage.get("location"))
+            if not location.model_dump(exclude_none=True):
+                raise ValueError("Document passage has no observed location")
+            method = passage.get("method")
+            if not isinstance(method, str) or not 0 < len(method) <= 128:
+                raise ValueError("Document passage has no bounded extraction method")
+            locations[passage["id"]] = location.model_dump(mode="json")
+            methods[passage["id"]] = method
+        if record.get("locations") != locations or record.get("methods") != methods:
+            raise ValueError("Document locations/methods differ from frozen extraction record")
+        if record.get("extraction_sha256") != source.get("extraction_sha256"):
+            raise ValueError("Document extraction revision differs from frozen record")
+        digest = record.get("extraction_sha256")
+        if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+            raise ValueError("Document observation has no full extraction commitment")
+        return []
+    except (ValueError, TypeError) as error:
+        return [str(error)]
 
 
 def _lineage_issues(node: dict, nodes: dict, claims: dict, support: dict) -> list[str]:

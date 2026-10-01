@@ -8375,11 +8375,30 @@
           "reuse_mode": "integration-only",
           "rationale": "Extend current File API/document and knowledge ingestion through optional parsers rather than silently flattening tables, equations, images, audio or long documents. Preserve page/element/source locations and observable queued/processing/failed lifecycle. Open Notebook content-core also offers selectable URL/PDF/audio/YouTube processing and transformations.",
           "target_paths": [
-            "src/video_research_mcp/research_document_file.py",
-            "src/video_research_mcp/tools/research_document.py",
-            "src/video_research_mcp/tools/knowledge/ingest.py",
-            "src/video_research_mcp/models/research_document.py",
-            "tests/test_ingestion_provenance.py"
+            "src/video_research_mcp/ingestion.py",
+            "src/video_research_mcp/ingestion_read.py",
+            "src/video_research_mcp/ingestion_jobs.py",
+            "src/video_research_mcp/ingestion_sources.py",
+            "src/video_research_mcp/ingestion_pdf.py",
+            "src/video_research_mcp/ingestion_audio.py",
+            "src/video_research_mcp/ingestion_text.py",
+            "src/video_research_mcp/ingestion_docx.py",
+            "src/video_research_mcp/models/ingestion.py",
+            "src/video_research_mcp/tools/ingestion.py",
+            "src/video_research_mcp/models/evidence.py",
+            "src/video_research_mcp/evidence.py",
+            "src/video_research_mcp/server.py",
+            "tests/test_ingestion_provenance.py",
+            "tests/test_ingestion_text.py",
+            "tests/test_ingestion_docx.py",
+            "docs/integrations/source-ingestion.md",
+            "src/video_research_mcp/models/ingestion_location.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+            "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py",
+            "packages/video-explainer-mcp/tests/test_document_evidence.py",
+            "packages/video-explainer-mcp/pyproject.toml",
+            "pyproject.toml"
           ],
           "dependencies": [
             "adj_evidence_packet",
@@ -8415,7 +8434,13 @@
             "src/video_research_mcp/models/research_document.py",
             "tests/test_ingestion_provenance.py"
           ],
-          "bead_id": "vrm-0e8.7.3"
+          "bead_id": "vrm-0e8.7.3",
+          "implementation_boundary": "Independently authored local located extraction, original-byte retention, shared durable deduplication and restart readback. Native Poppler external CLI preserves word/page bounds and embedded-image descriptors. DOCX/text structures and PCM16 time observations have explicit limits. Optional OCR, full PDF table/image extraction, parser services, ASR and index insertion remain separately unqualified.",
+          "implementation_public_tools": [
+            "video-research-mcp::source_ingest",
+            "video-research-mcp::source_ingest_read",
+            "video-research-mcp::source_ingest_cancel"
+          ]
         },
         {
           "key": "adj_notebook_interface",

@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T10:31+02:00
+date: 2026-10-01T11:49+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -216,22 +216,100 @@ Group render-readiness/group-receipt.json SHA
 4b74446c5b8b38c27780bb71319125f7c986c93848870d19538de6f4cdce83dc.
 No active owned render/nativejobs. No provider/browser/heldout/human/releaseproof.
 .8.8 journeys complete; do not redo. Human auditpending, notwaived.
-`.7.3` ingestionprovenance is freshlyclaimed and inprogress. Source/grant lane
-joined14bindings: receipt1a6baf03a205835a082da28b5c6377d72516819dc4ed275be1a223a4977ca3eb,
-8mappedbodies11498lines616012B+21lineMITgrant. Existing-code observation terminal:
-20fullproduction2841lines,13targeted1027lines;2fulltests502lines29functions plus
-455targetedlines29functions. Reuse exact originalcopies/manifests/SQLite dedup
-and fenced URL/native helpers; knowledge insert alone is not ingestion acceptance.
-PDF/DOCX binary observations need explicit modality/typed location validation.
-No current pypdf/docling dependency; configuredhost pdftotext/textutil/swift/FFmpeg
-presence only, not parserqualification. No existing PDF/DOCX/ASR backend qualified.
-Narrow optional service transport supplement is a read-only licensing lane; owns
-ingestion/source-contracts/transport-supplement only. Root owns all product/tests/
-metadata/tracker/handoff; no .7.3 source writes or fixtures executed yet.
-Read concrete parser/service contracts, choose smallest complete firstparty route,
-then implement. Preserve original bytes/revision and separately derived chunks,
-page/table/image/time/method, terminalempty/error and samehash/settings dedup.
-All prior .8.9 lanes terminal; no ownedrender/nativeprocess remains.
+`.7.3` ingestion provenance is claimed and in progress; HEAD is still
+18a4b019657094fa087192c62ceb62215755a8ce. Root has uncommitted local ingestion,
+source retention, typed positions, native PDF descriptors, PCM observations,
+joined durable deduplication, restart readback, three public tools and matching
+standalone companion document-evidence validation. Existing source helpers,
+manifest and SQLite store are reused. No foreign parser/framework is imported.
+
+Source-only packets are terminal and root joined. Original receipt
+1a6baf03a205835a082da28b5c6377d72516819dc4ed275be1a223a4977ca3eb covers8mapped
+LightRAG bodies,11498lines616012B+MIT grant. Transport supplement receipt
+a06f80d2f40c11497204e54b4397820ff6451fa9075432a00ff1b9873a40813c covers14full
+helpers,5079lines195654B;17retainedfiles rehashed. Native grant receipt
+5000403cdc23faf37f7008528ff704353faf58db1d9fd503027cd91181ab2daa has13rehashed
+files: installed Poppler26.03.0 GPL2 permits selected local external CLI use;
+linkage, redistribution, dependencies and encoding-data clearance remain open.
+Actual installed native PDF fixtures later executed as recorded below; runtime redistribution remains unqualified.
+
+All implementation/test/source/fixture lanes are terminal and root joined.
+Parser receipt SHA74dbd34902678e6c984cb0e72a26ad417002e3b964f0532c352ccd19dbae544e:
+70fixedcases, first63PASS/7HTMLFAIL, only offset-helper collision repaired,
+affected23textPASS;47DOCXPASS carry. Controller receipt
+500704ee12429ae484b38ac64bdcf826641c969a5f34d33fadd1cf24a31c6332:
+35fixedcases first33PASS/2FAIL, affected2PASS after same HTML repair and explicit
+claim defaults. All initial failures and focused repairs remain retained.
+
+The ONE original source review is terminal changes_requested with1P2 timeout
+diagnostic finding; exact report SHA
+7a3dd7bab60fe74f6f468289a6299d994e76c369c78338bc7ceb208c095d2217.
+Root joined29immutable source copies and3probe buffers. Root repaired the existing
+failure boundary, with2public/persisted/restart/dedup regressions PASS. Repairs
+were not independently re-reviewed; no second review.
+
+Final source ingestion/final-source-corrected.json SHA
+b28cf3df458861241e113fbba80295f5143a562a14b7a8692de56e5699aa8d2c binds30owned,
+233root/37companion/13agent runtime and3unchanged locks. Fresh gates PASS:
+2676root/309companion/32installer/9security/5offline, Ruff/public-baseline/
+programme/reuse/release-metadata/4fresharchive checks. Exact unchanged13agent
+runtime carries prior acceptance. Component-gates receipt SHA
+be1f6826c9836b2a337888fd2a49277ac39370b77e5379cc6bcd782db83d831e.
+Initial6root metadata failures retained:2670PASS; original audited public tools
+restored, new implementation tools separate and2readinessgroups reflected in
+owned expectation. Frozen source criteria/surfaces/evaluator never changed.
+Four archives match233/37runtime; root/companion sdists match29/5owned paths.
+Fresh isolated Python3.14.7 installs match all233/37runtime bytes. First companion
+install used existing3.11venv and offline wheel was unavailable; retained then
+one explicit3.14 correction passed. No source or lock change for this correction.
+Actual76root/18companion contracts:72priorroot objects exact, research_execute
+adds document to its enum preserving6oldvalues, all18companion objects full exact.
+
+Fixed original17 controls and separately frozen pinned URL were executed on the
+unchanged installed candidate. First SAME18 attempt retained16verified/1PDFpartial/
+1URLfailure; restart18 and auxiliary5 UNRUN after the harness rejected the real
+URL policy's DNS port=None. One controlled harness-only admission correction
+retained exact source, fixture, oracle, plan and bounds; no source change.
+
+Second SAME18 is terminal FAIL_OR_INCOMPLETE:16verified/1PDFpartial/1URLfailure;
+16available restart reads and all5auxiliary flows verified. All3uncached
+installed discoveries are exact. Supplied research, companion original injection
+and draft plan create/show were verified with editorial/factual approval false.
+The URL entered one actual HTTPX.send wrapper and failed during bytes JSON
+serialization before a response was recorded. One bounded no-network diagnostic demonstrated guard logging of an AnyIO
+bytes hostname through JSON without normalization; report SHA
+4fc156df698b36d7a5c33977b0ff166fb66770b53d73cdaf5793bf4303afefdf.
+No product defect is established; this installed URL route remains unqualified. Do not launch a third journey after
+this one controlled intervention. Preserve both failures and the stronger fixed
+PDF cell/pixel gaps without weakening the cohort or acceptance.
+
+Second receipt SHA d173c0378cb887f0c06ed15180f4f1330652396a1151c38a437cccb6b6f8ffa4;
+root join SHA2f20f83bcaf4f2c5c55f1e5b6f6e70d2a580bab09ea4132d8adab448fbe37e57
+rehashes313retained files and all30owned/283runtime/3locks. Seven owned second
+attempt PIDs/groups absent;3native stdout/stderr EOF joins verified. First182
+files and5owned PIDs/groups were also root joined. Group ingestion/group-receipt.final.json SHA
+b317bb2fba36704dc404c500795de48a54ce6dca05f336bbf7d7e6e15f5867b1
+binds all joined receipts and both failures. Cumulative57public calls,
+4actual stdio processes and6native invocations, including2expected malformedPDF
+exit1 controls. No active owned ingestion process remains. Human audit pending,
+heldout reads0/provider generations0; comparison and release remain unverified.
+
+The independently authored local component is verified; the full `.7.3` leaf
+must remain blocked, not closed, on stronger PDF details, installed URL harness
+qualification and optional service/ASR routes. Next commit/push owned component
+and handoff, verify Git blobs/remote, update Beads, then select fresh eligible
+`.9.6` hardware simulators if still ready. Hardware source-only lane already
+joined16full pinned bodies99120B2310lines/21retained files. Receipt
+c153b27ad1ac7b608ab61d9a71e2ffb763222386af230a262c7831d2d6849ee6.
+Physical operations are not authorized; model confirm is not human authority.
+
+Native PDF keeps word bounds/page units and embedded-image identities; OCR,
+reconstructed table cells and image pixels remain unavailable. The fixed PDF
+cell/pixel controls must retain this gap. DOCX supports bounded explicit body
+XML/cells/images/equation descriptors with rendered positions unknown; text
+references stay inert; PCM16 WAV reports source time and speech abstention.
+Optional Docling/MinerU/content-core/ASR service workflows remain unqualified.
+All prior .8.9 lanes terminal; no owned render/native process remains.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release

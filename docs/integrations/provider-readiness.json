@@ -28,7 +28,21 @@
     "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
-    "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py"
+    "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
+    "src/video_research_mcp/ingestion.py",
+    "src/video_research_mcp/ingestion_read.py",
+    "src/video_research_mcp/ingestion_jobs.py",
+    "src/video_research_mcp/ingestion_sources.py",
+    "src/video_research_mcp/ingestion_pdf.py",
+    "src/video_research_mcp/ingestion_audio.py",
+    "src/video_research_mcp/ingestion_text.py",
+    "src/video_research_mcp/ingestion_docx.py",
+    "src/video_research_mcp/models/ingestion.py",
+    "src/video_research_mcp/tools/ingestion.py",
+    "src/video_research_mcp/models/ingestion_location.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py"
   ],
   "states": [
     "disabled",
@@ -622,6 +636,45 @@
         "session_recent_turns": "GEMINI_SESSION_RECENT_TURNS"
       },
       "usage_visibility": "Local deterministic text-budget estimate only; provider expanded media/cache tokens and inference charges unknown. History/profile operations have no provider calls. SDK continuation retains separate provider activity.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "source-ingestion-pdf",
+      "adopted": true,
+      "capabilities": [
+        "source_ingest optional installed Poppler PDF word/page and image-object descriptors"
+      ],
+      "packages": [],
+      "executables": [
+        "pdftotext",
+        "pdfimages"
+      ],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Presence is not extraction acceptance. PDF needs external GPL Poppler; no runtime bundled. No OCR, table-cell reconstruction, image pixel export, service upload or inference.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "source-ingestion-local",
+      "adopted": true,
+      "capabilities": [
+        "source_ingest/source_ingest_read/source_ingest_cancel; bounded stdlib DOCX/Markdown/HTML/text/PCM16 WAV"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Bounded local extraction and shared SQLite receipts. No inference, service upload or index insertion; rendered DOCX positions, referenced pixels and speech remain unqualified.",
       "live_verified": false,
       "run_authority": "not-granted"
     }
