@@ -23,9 +23,11 @@ work remains outside this programme and was not reopened or modified.
 
 ### Current hardware implementation checkpoint
 
-`vrm-0e8.9.6` simulator acceptance is complete and ready for atomic source
-commit. The exact commit/Git blob receipt will be retained at
-`hardware/group-receipt.committed.json` under the evidence root below.
+`vrm-0e8.9.6` is closed. The simulator component is committed and normally
+pushed at d91f09a5ed75b6c7db7f9e0212143cb3bd60ad94; exact remote readback matches.
+`hardware/group-receipt.committed.json` SHA7d91468fc1662bfa36f4aa23c26aae988c6a629555f4eb550a3acebce4dd2847
+binds23 Git paths/287 runtime/3 locks. Remote receipt
+SHA22a5f9102dae8700a8d0c9c7046ac36324ae434f1e78fa4031ca4acf1cfc2dfd.
 Final source SHA86059d460e064aa47735d9086bbf977bdf8922aa36fe4da3f4eb4e52130f9a0b
 binds22 owned paths,287 runtime bodies (237 root/37 companion/13 agent),3
 unchanged locks. Joined group SHA6732902941a82a4d9ea5c116eb89935522be0ab91143e3095407958d0f3c3be4.
@@ -58,9 +60,11 @@ Ingestion accepted local component stays committed at39a4070190df3f5f971a6d85aab
 `.7.3` remains blocked, not closed, and neither terminal journey may be repeated.
 Human audit remains pending, not waived. `.7.2` source-only packet is fully joined
 (11 bodies/158020 bytes/2820 lines); no video-skill execution/adoption yet.
-Next verify Git identities, commit/push/readback, close simulator leaf, then fresh
-Beads readiness selects the next implementation (likely `.7.2`). Continue the
-epic; integrated comparison and verified release remain open.
+Fresh Beads readiness selected and claimed `.7.2`. Next implement strict validation
+and packaging around the existing host SKILL.md directory format, then qualify
+actual source/asset/run evidence and the installed authoring journey. No second
+skill system or optional paid trigger evaluation. Continue the epic; integrated
+comparison and verified release remain open.
 
 ### Current DSP component and recoverable-session resume
 
