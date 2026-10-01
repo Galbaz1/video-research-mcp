@@ -32,7 +32,14 @@
     "scripts/freecad_startup.py",
     "scripts/freecad_jobs.py",
     "integrations/qwen/freecad.json",
-    "docs/integrations/qwen-freecad.md"
+    "docs/integrations/qwen-freecad.md",
+    "scripts/spatial_session.py",
+    "scripts/spatial_inputs.py",
+    "scripts/spatial_dispatch.py",
+    "scripts/spatial_motion.py",
+    "integrations/qwen/video-spatio.json",
+    "docs/integrations/qwen-spatial.md",
+    "skills/spatial-video-analysis/SKILL.md"
   ],
   "engines": {
     "node": ">=22"

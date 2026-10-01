@@ -11085,9 +11085,17 @@
         "media-read"
       ],
       "target_paths": [
-        "docs/integrations/qwen-spatial.md",
+        "scripts/spatial_session.py",
+        "scripts/spatial_inputs.py",
+        "scripts/spatial_dispatch.py",
+        "scripts/spatial_motion.py",
         "integrations/qwen/video-spatio.json",
-        "skills/spatial-video-analysis/SKILL.md"
+        "docs/integrations/qwen-spatial.md",
+        "skills/spatial-video-analysis/SKILL.md",
+        "tests/test_spatial_session.py",
+        "tests/test_spatial_inputs.py",
+        "tests/test_spatial_dispatch.py",
+        "tests/test_spatial_motion.py"
       ],
       "declared_dependencies": [
         "contract",

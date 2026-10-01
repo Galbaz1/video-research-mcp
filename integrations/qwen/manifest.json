@@ -540,7 +540,18 @@
       "copied_paths": [],
       "imported_packages": [],
       "target_files": [
-        "integrations/qwen/manifest.json"
+        "integrations/qwen/manifest.json",
+        "scripts/spatial_session.py",
+        "scripts/spatial_inputs.py",
+        "scripts/spatial_dispatch.py",
+        "scripts/spatial_motion.py",
+        "integrations/qwen/video-spatio.json",
+        "docs/integrations/qwen-spatial.md",
+        "skills/spatial-video-analysis/SKILL.md",
+        "tests/test_spatial_session.py",
+        "tests/test_spatial_inputs.py",
+        "tests/test_spatial_dispatch.py",
+        "tests/test_spatial_motion.py"
       ],
       "applicable_notice_receipts": [
         {
@@ -555,7 +566,9 @@
         "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
-      "blocked_assets": []
+      "blocked_assets": [],
+      "verification_boundary": "Owned source/stub checks pending; original19generated schemas and frozen28synthetic geometry controls UNRUN; physical/model/hardware/human/comparison/release unqualified.",
+      "runtime_clearance": "blocked-missing-font-grant"
     }
   ],
   "runtime_isolation": {

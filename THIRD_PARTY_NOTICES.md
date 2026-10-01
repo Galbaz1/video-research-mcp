@@ -250,3 +250,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+## Optional spatial integration
+
+The owned spatial source/input/provider boundary uses the audited contracts of
+QwenLM/Qwen-MM-Plugins at 07736672525443c7f8a3f6405eed37d2236f023f.
+The external source remains unmodified and is not redistributed. Its selected
+spatial and shared source is covered by the full Apache-2.0 grant retained in
+its admitted source tree; the earlier Apache notice applies. The source describes
+ports from standalone spatial-agent research without a separate attribution or
+permission grant. Preserve that source provenance without inventing a licensor.
+
+No scientific wheel, font, model, native library or synthetic acceptance asset
+is bundled. Runtime activation remains blocked: the original OpenCV profile has
+an FFmpeg grant contradiction, and the narrower Matplotlib profile lacks a grant
+mapping for 41 legacy AFM font-metric files. Source-level tests do not qualify
+those runtimes, physical geometry, perception or hardware safety.

@@ -18,6 +18,60 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
+### Spatial source component verified; actual geometry blocked
+
+Current leaf `vrm-0e8.9.3` has completed owned source verification. Parent HEAD
+acc51d0fa24f48749a7216dbf99eecd41991aeb8; source commit/push and blocked tracker
+transition follow this checkpoint. Private evidence is capability-programme/
+2026-09-30/spatial/. All primary/source/runtime/advisor lanes and the sole
+original independent review are terminal and root joined. No native job remains.
+
+Source:63 full bodies/535264B/12606lines,77 artifact bindings and full Apache grant
+joined31fb377375ba05ed47cdd6bd37ce8fda1837cd75748fea2a339691a8f4a0e93c.
+All19 actual tools retain mandatory16;54 execution paths are a static upper
+bound. Owned adapters keep original source external/unmodified, admit exact
+sources/frames/finite scene assumptions and deny actual provider dispatch.
+Caller persistent IDs remain assertions; generated IDs bind source frame/index.
+Mobile signature, missing motion and original polynomial result-shape defects
+are retained before owned repairs. Proximity collisions refuse before dispatch.
+
+Original review found one P2: equal-label guard missed upstream compatible
+substring labels and canonical-ID edges. Four regressions failed original source;
+root repaired the guard, retained an intermediate misplaced-assertion failure,
+then all113 focused tests passed. No second independent review occurred.
+Fresh3111 root tests,37 installer,9 security,5 offline controls,Ruff,baseline,
+programme/reuse/release/skill gates passed. Exact83 root tool objects,245 runtime
+bodies and3 locks unchanged. Seven fresh archives pass reuse/byte readback;
+511 byte comparisons include7 packaged spatial resources. Actual extracted
+wheel/npm check and serve all exit2 with source54/grant1/frames8 admitted,
+zero foreign/provider attempts and no session output. This is source-only refusal
+proof; no spatial scientific runtime was activated.
+
+Both profiles remain terminal/root joined87f75ff014fe478511fb06e7df02f68f1662d79d922ef5f4d37f825a99939a6d.
+Original12 wheels: BLOCKED_GRANT_CONTRADICTION (OpenCV FFmpeg binary GPLv3-or-later
+versus accompanying LGPL2.1 notice). Distinct10: BLOCKED_MISSING_FONT_GRANT
+(41 legacy Matplotlib AFM metrics without established grant;5 CM correspondence
+candidates partial).35 packaged full grants/7 supplemental grants/4 build
+contracts read; original44 grants not all semantically read. Base36 packages/
+2157 files preserved. No install/import/font/native/provider/model/assets,
+no third profile, no locality-based grant waiver or legality verdict.
+
+Descriptor remains external-disabled/blocked-missing-font-grant with null
+runtime executable. Frozen28 known-scene controls remain0PASS/0FAILED/28UNRUN;
+plan8fb1f660e2e45807583041e6b429c189f3545b9c9d08160d0a465acdda76d883
+and declared tolerances/geometry assumptions unchanged. Do not close9.3 or
+claim actual geometry, model/physical, comparison, human or release acceptance.
+
+Next after atomic source commit and normal authorized push: record9.3 blocked,
+resolve fresh Beads readiness and claim8.2 if still eligible. Narration source
+lane terminal/root joined:34 full pinned bodies/419324B/10480lines,2 grants,
+67 artifacts, no foreign execution_sources. Existing-code advisor33bindings
+root joined. Current companion narration/render remain external CLI delegates;
+there is no owned production FFmpeg renderer. Implement concrete measured WAV/
+alignment/cache/custom-audio behavior; enum expansion alone is insufficient.
+Human9 audit is pending/not waived; heldout unread and live providers unauthorized.
+Completed transcript/PDF/Word/mail delivery remains outside this programme.
+
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 

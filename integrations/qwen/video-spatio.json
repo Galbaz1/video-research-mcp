@@ -1,0 +1,354 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.9.3",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "state": "external-disabled",
+  "runtime_route": "owned source/input/provider boundary around unmodified pinned external19tools; runtime activation blocked",
+  "copied_paths": [],
+  "imported_packages": [],
+  "bundled_assets": [],
+  "execution_sources": [
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/__init__.py",
+      "sha256": "768c363ee81c9d8275dd8ecc7a2d9910f5bcd07b620a19366aedffc6e16b0327",
+      "bytes": 936
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/__main__.py",
+      "sha256": "74c288116ebbf0da993ef56ba947231e463a4d39fd62b975adf3f9eb00992cba",
+      "bytes": 535
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/camera_poses.py",
+      "sha256": "05ca5a754efb8206396b26e95f3719081366ff024a5e2a17bd1588875359711a",
+      "bytes": 6467
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/__init__.py",
+      "sha256": "30cc16ee28c0cb6fae93a59673110db6dd17df37a25dbfb79242b3bf9fde32a4",
+      "bytes": 264
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/base.py",
+      "sha256": "6ea1e8e77fe61ffb7fb30b92f43801abbbc90ce65fd69a7438c0ede423f9e08c",
+      "bytes": 2262
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/counting_expert.py",
+      "sha256": "ca77eb5482ef4e034b0eb0be255b7a02c94c7fa1fb4bcefd4db035fb164d879f",
+      "bytes": 16958
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/entity_matcher.py",
+      "sha256": "7665fd7728d133f7337a8032f2baf63ab5f41af119fd7b8d2758d6fa5d286a38",
+      "bytes": 16671
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/grounding_verifier.py",
+      "sha256": "627e24d0d0dea92364f4957ce2c3ead6e1ebbe83bd38b977e198e634133969e7",
+      "bytes": 8939
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/keyframe_selector.py",
+      "sha256": "bbcf0968e6327a743f1abd64228d0365df41286cefd8f519c2b2ce8a6a623b4b",
+      "bytes": 12769
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/mobile_expert.py",
+      "sha256": "78d0f1adbd3b7cf64a909f1475e3dbbb7699e7bd7da0c46c92867bb8b7b3b44f",
+      "bytes": 39801
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/motion_expert.py",
+      "sha256": "f3b6c1bb279c64a715999c7b765af950320e9be8f82ba70c140df127fa0e90de",
+      "bytes": 6724
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/orientation_expert.py",
+      "sha256": "6f81d3c9e51a401fc5d1ddf16483dedf2c32c5ec671e89c510552c083c7a622f",
+      "bytes": 21060
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/reconstruct.py",
+      "sha256": "3b01c5fa8d11cbca9d4a1e57983bf4cb367c4a919bf172543f42abb7ab0d0eda",
+      "bytes": 49277
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/scene_expert.py",
+      "sha256": "a2144480d93584badb030edf2abc84eaa7619679353298968edd8d59cd5315fc",
+      "bytes": 15793
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/experts/view_expert.py",
+      "sha256": "c92d61a1d4aee33de1c83d666ac6073737f19ab6c6ffb182e73d8ae81387d105",
+      "bytes": 22535
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/frame_image.py",
+      "sha256": "ddc1422c04ea0c6aba6c05b792f038e0a1edcea58761614009483123b32017cc",
+      "bytes": 2408
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/geometry.py",
+      "sha256": "37fecee16192a3f7baba8ba0c5f7b84f73475707e8275287c2767ceec019d7f6",
+      "bytes": 11586
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/prompts.py",
+      "sha256": "b0426685103de55ca1bae95cf23d70e4682fce5f856a542c95feaf9a34d86a55",
+      "bytes": 24783
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/scene_types.py",
+      "sha256": "496c780656dc7c52978c84d011b6caf895744629d97acfd7389db47e8de32740",
+      "bytes": 19314
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/_scene.py",
+      "sha256": "4a000e21d92cc27effca391c6014c3a094771b9eb56c9dbf380345b8c3d8667c",
+      "bytes": 2961
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/_vlm.py",
+      "sha256": "0e5d69a6ad6395fc629e99c7a271414d17a35081de672859678ed5a140da020d",
+      "bytes": 2868
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/assess_reachable.py",
+      "sha256": "86ef4473282f41bba9fe9bf35248c727d8b4ed73fbe44200af8761e119da8ac6",
+      "bytes": 443
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/build_scene.py",
+      "sha256": "540a5fe431228d23a418ea0ac981df0a14c460d8a2b348be2079c7cb1247ff2f",
+      "bytes": 10179
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/calibrate_scale.py",
+      "sha256": "d9443011926aeffb64432dac01d983f9a9263d2bc3c592c5f3b870582b4b6511",
+      "bytes": 2004
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/camera_motion.py",
+      "sha256": "efb2d3443b8c2f10811e79347455f4607b3bea3ab93385658168a70ae8838c4c",
+      "bytes": 3837
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/count_objects.py",
+      "sha256": "36a2113ce4523fbb70cbae5c04b5b4a63b44e4a4222c2b4d65bd4d0dd3dc25b1",
+      "bytes": 2398
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/explore.py",
+      "sha256": "ca48b9ddaa7d04f09960544223ad203fb08b055fca4a8a40df8817a20cbc1dc6",
+      "bytes": 39658
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/match_entities.py",
+      "sha256": "f308936167e9010d98c402fa3e5c4cc29ff27585742de2da421831daf104f972",
+      "bytes": 2380
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/mobile_manip.py",
+      "sha256": "b5801feb01a5b1a4833513cf2ccec5b18e4e453f57f671e8282a8033dc2e28f3",
+      "bytes": 6153
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/motion.py",
+      "sha256": "fafe9d5ea00d97c2accd8ad3bff0187349c8e6fc312d0a48f836f06702e3f9c5",
+      "bytes": 2647
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/object_world_motion.py",
+      "sha256": "9bcd789006a40458335dbc4537d27548aa805a6571924636b7d69e4232fa8709",
+      "bytes": 1952
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/orient_facing.py",
+      "sha256": "3adf1964c57b83ae3f7768573206854484b6cc6059fe607c15927a0f392bb81f",
+      "bytes": 2104
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/plan_exploration.py",
+      "sha256": "65dc33f84a64e908ccd00e11546422b0b3caa546fe908d46a42f073f5016d768",
+      "bytes": 403
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/render_scene_views.py",
+      "sha256": "c5941a5b5ca5b4e67137f4adfde537c81554fed7daa671ea47c358cbfdb19437",
+      "bytes": 2251
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/scene_map.py",
+      "sha256": "327a28b0735fa23a509863ee85613a377528f345f3ae5117573221d6ade09cec",
+      "bytes": 3239
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/select_keyframes.py",
+      "sha256": "bad018adcc844a9f9482125599deac53e0e628c6646e0ee4ff24c2b1d02bb10b",
+      "bytes": 2808
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/triangulate.py",
+      "sha256": "a12ba7396f7d71d88e2235193268f8670f510c5c608c197583cbccb97bc57216",
+      "bytes": 1698
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/verify_grounding.py",
+      "sha256": "0712b3cf599a42e695a46f6207ea6803b3c66b4a1bb9f3a9373b3d8f0af741a6",
+      "bytes": 1618
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/view_reason.py",
+      "sha256": "325e56ade4492a999b4050abc2aa6fbfb22588cc5e3ebafcb16bf2a3db121f43",
+      "bytes": 2746
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/tools/visualize_bev.py",
+      "sha256": "36a73a8e46c229267d62ddddf8a6165ea5ab154483ebf6a44f297bb0cf4afb36",
+      "bytes": 19254
+    },
+    {
+      "path": "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio/visual_feedback.py",
+      "sha256": "e7a3021b26597d166ca7149b2812570ca8a14e821df5cc83f33e87c3e8b996fb",
+      "bytes": 1447
+    },
+    {
+      "path": "src/mcp_framework.py",
+      "sha256": "099cf71f563ae2966e4e47bdf0f13b28d8ab10bfd9ce1abedeb99c4a4fb8c760",
+      "bytes": 22956
+    },
+    {
+      "path": "src/shared/__init__.py",
+      "sha256": "5f4191e20f833c967b42ab99d25ec360a687bebcc7147a5aa90cc1d2fd181783",
+      "bytes": 1770
+    },
+    {
+      "path": "src/shared/api_openai.py",
+      "sha256": "8bc206072ea1e4ac916773bba493518f33597f41513bd80686b7963d84a275a0",
+      "bytes": 15941
+    },
+    {
+      "path": "src/shared/content.py",
+      "sha256": "924450a441959213862b5d817644534712d247d56e353347eb7c6db1eac3bed4",
+      "bytes": 2304
+    },
+    {
+      "path": "src/shared/dashscope_upload.py",
+      "sha256": "b834913568a502d7734284f5393ab46cfbd793f49c3b8670aebc785d022c439d",
+      "bytes": 6795
+    },
+    {
+      "path": "src/shared/env.py",
+      "sha256": "75f1f6fb8f784e336c3d12d909ec7641a19b750cdfd17a667eca0d79e328de83",
+      "bytes": 15026
+    },
+    {
+      "path": "src/shared/image.py",
+      "sha256": "59e2ce2df8111cf5515fc68383b0e31297578a34d84e30b751f94a8f4f5783c5",
+      "bytes": 8583
+    },
+    {
+      "path": "src/shared/native_mode.py",
+      "sha256": "c59f61dd46214464cba036d89dd3d057b53725655379590fe2333b9e955b729c",
+      "bytes": 4536
+    },
+    {
+      "path": "src/shared/oss.py",
+      "sha256": "ded42fba22f0d6db75118d3565f32d04db535c699067727f8b78055ab5708ae0",
+      "bytes": 3772
+    },
+    {
+      "path": "src/shared/retry.py",
+      "sha256": "aacfbdbbd182706f05046eadf6155aadcfefc112f80af52feedb464feb5988c6",
+      "bytes": 3446
+    },
+    {
+      "path": "src/shared/syscmd.py",
+      "sha256": "6748c9406c0324c0a83a0f19baa61fac5ca1e36618dbac9b09d2f181e31df2d4",
+      "bytes": 2920
+    },
+    {
+      "path": "src/shared/video.py",
+      "sha256": "ae41bd24570860745ee61dd25ba602e027a71f38510fc4046739dc172b4f93d1",
+      "bytes": 8172
+    }
+  ],
+  "license_sources": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    }
+  ],
+  "expected_tools": [
+    "assess_coverage",
+    "assess_reachable",
+    "build_scene",
+    "calibrate_scale",
+    "camera_motion",
+    "count_objects",
+    "match_entities",
+    "mobile_manip",
+    "motion",
+    "object_world_motion",
+    "orient_facing",
+    "plan_exploration",
+    "render_scene_views",
+    "scene_map",
+    "select_keyframes",
+    "triangulate",
+    "verify_grounding",
+    "view_reason",
+    "visualize_bev"
+  ],
+  "mandatory_source_tools": [
+    "build_scene",
+    "calibrate_scale",
+    "camera_motion",
+    "count_objects",
+    "match_entities",
+    "mobile_manip",
+    "motion",
+    "object_world_motion",
+    "orient_facing",
+    "render_scene_views",
+    "scene_map",
+    "select_keyframes",
+    "triangulate",
+    "verify_grounding",
+    "view_reason",
+    "visualize_bev"
+  ],
+  "selected_python": "3.12.13",
+  "selected_direct_packages": {
+    "mcp": "1.30.0",
+    "pillow": "11.3.0",
+    "openai": "1.109.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "docstring-parser": "0.18.0",
+    "numpy": "2.4.4",
+    "matplotlib": "3.10.9"
+  },
+  "runtime_fields": {
+    "python_executable": null,
+    "bootstrap_sources": []
+  },
+  "runtime_clearance": "blocked-missing-font-grant",
+  "source_contract_receipt_sha256": "49171378700e198f079e73fee933dcb732d9285e6048d44f8fd6ee9f12025fc0",
+  "source_root_join_sha256": "31fb377375ba05ed47cdd6bd37ce8fda1837cd75748fea2a339691a8f4a0e93c",
+  "runtime_status": "Original12 OpenCV bundled FFmpeg GPLv3 self-declaration conflicts with LGPL2.1 notice. Narrow10 has unmapped41Matplotlib legacy AFM grants. Neither profile activated; no foreignimport/install.",
+  "verification_boundary": "Owned source/stub checks pending; original19generated schemas and frozen28synthetic geometry controls UNRUN; physical/model/hardware/human/comparison/release unqualified.",
+  "static_source_upper_bound": 54,
+  "actual_import_footprint": null,
+  "frame_identity_policy": "generated IDs are frame-qualified; provided persistent IDs caller-asserted; no physical identity or geometry accuracy inferred from source hashes",
+  "runtime_terminal_receipt_sha256": "55d10838e5e6883389e9ca69f1a2cbf6772717a741379883a2f09d597fce0793",
+  "runtime_root_join_sha256": "87f75ff014fe478511fb06e7df02f68f1662d79d922ef5f4d37f825a99939a6d"
+}
