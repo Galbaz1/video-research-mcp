@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T22:47:15.593781+00:00",
-  "tool_count": 63,
+  "generated_at": "2026-09-30T23:35:59.486651+00:00",
+  "tool_count": 64,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -5573,6 +5573,515 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_perceive",
+      "description": "Infer separate spoken and visible source evidence across bounded AV windows.\n\nLocal dry plans prepare exact sampled frames and decoded PCM with no provider\ncalls. Submission requires the exact workflow grant and configured account.\nModel intervals map back to source seconds; sampled images leave visual gaps.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local media, bounded ordered windows and explicit Gemini submission grant; dry plans are the default",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "instruction": {
+                "maxLength": 8192,
+                "minLength": 1,
+                "type": "string"
+              },
+              "media_type": {
+                "default": "auto",
+                "enum": [
+                  "auto",
+                  "audio",
+                  "video"
+                ],
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "window_seconds": {
+                "default": 30,
+                "maximum": 30,
+                "minimum": 1,
+                "type": "number"
+              },
+              "fps": {
+                "default": 1,
+                "maximum": 4,
+                "minimum": 0.1,
+                "type": "number"
+              },
+              "max_pixels": {
+                "default": 250000,
+                "maximum": 1000000,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_frames_per_window": {
+                "default": 32,
+                "maximum": 48,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "limits": {
+                "additionalProperties": false,
+                "description": "Reserve every count/generation transmission under one operation deadline.",
+                "properties": {
+                  "max_calls": {
+                    "default": 8,
+                    "maximum": 24,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_tokens": {
+                    "default": 100000,
+                    "maximum": 2000000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "default": 2048,
+                    "maximum": 8192,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_windows": {
+                    "default": 4,
+                    "maximum": 4,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_frames": {
+                    "default": 128,
+                    "maximum": 128,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_payload_bytes": {
+                    "default": 8388608,
+                    "maximum": 8388608,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_transmitted_bytes": {
+                    "default": 33554432,
+                    "maximum": 67108864,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "timeout_seconds": {
+                    "default": 120,
+                    "exclusiveMinimum": 0,
+                    "maximum": 120,
+                    "type": "number"
+                  }
+                },
+                "type": "object",
+                "default": {
+                  "max_calls": 8,
+                  "max_tokens": 100000,
+                  "max_output_tokens": 2048,
+                  "max_windows": 4,
+                  "max_frames": 128,
+                  "max_payload_bytes": 8388608,
+                  "max_transmitted_bytes": 33554432,
+                  "timeout_seconds": 120.0
+                }
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256",
+              "instruction"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Exact transmitted lineage and a separately labeled inferred timeline.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "operation": {
+                "const": "media_perceive",
+                "default": "media_perceive",
+                "title": "Operation",
+                "type": "string"
+              },
+              "source": {
+                "additionalProperties": true,
+                "title": "Source",
+                "type": "object"
+              },
+              "backend": {
+                "additionalProperties": true,
+                "title": "Backend",
+                "type": "object"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "windows": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Windows",
+                "type": "array"
+              },
+              "timeline": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Window-local support indices with model times mapped to the original source.",
+                  "properties": {
+                    "modality": {
+                      "enum": [
+                        "spoken",
+                        "visible"
+                      ],
+                      "title": "Modality",
+                      "type": "string"
+                    },
+                    "start_seconds": {
+                      "minimum": 0,
+                      "title": "Start Seconds",
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "minimum": 0,
+                      "title": "End Seconds",
+                      "type": "number"
+                    },
+                    "description": {
+                      "maxLength": 2048,
+                      "minLength": 1,
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    "frame_indices": {
+                      "default": [],
+                      "items": {
+                        "maximum": 47,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "maxItems": 48,
+                      "title": "Frame Indices",
+                      "type": "array"
+                    },
+                    "window_index": {
+                      "maximum": 3,
+                      "minimum": 0,
+                      "title": "Window Index",
+                      "type": "integer"
+                    },
+                    "evidence_status": {
+                      "const": "model_inference",
+                      "default": "model_inference",
+                      "title": "Evidence Status",
+                      "type": "string"
+                    },
+                    "coordinate_basis": {
+                      "const": "absolute_source_seconds",
+                      "default": "absolute_source_seconds",
+                      "title": "Coordinate Basis",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "modality",
+                    "start_seconds",
+                    "end_seconds",
+                    "description",
+                    "window_index"
+                  ],
+                  "title": "AVSourceEvidence",
+                  "type": "object"
+                },
+                "title": "Timeline",
+                "type": "array"
+              },
+              "summaries": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Summaries",
+                "type": "array"
+              },
+              "abstentions": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Abstentions",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "provenance": {
+                "additionalProperties": true,
+                "title": "Provenance",
+                "type": "object"
+              }
+            },
+            "required": [
+              "status",
+              "source",
+              "backend",
+              "request_sha256",
+              "windows",
+              "timeline",
+              "summaries",
+              "abstentions",
+              "execution",
+              "provenance"
+            ],
+            "title": "AVPerceptionResponse",
+            "type": "object"
+          },
+          {
+            "description": "Retain completed windows and unsuccessful attempt accounting without raw diagnostics.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Source"
+              },
+              "windows": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Windows",
+                "type": "array"
+              },
+              "timeline": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Window-local support indices with model times mapped to the original source.",
+                  "properties": {
+                    "modality": {
+                      "enum": [
+                        "spoken",
+                        "visible"
+                      ],
+                      "title": "Modality",
+                      "type": "string"
+                    },
+                    "start_seconds": {
+                      "minimum": 0,
+                      "title": "Start Seconds",
+                      "type": "number"
+                    },
+                    "end_seconds": {
+                      "minimum": 0,
+                      "title": "End Seconds",
+                      "type": "number"
+                    },
+                    "description": {
+                      "maxLength": 2048,
+                      "minLength": 1,
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    "frame_indices": {
+                      "default": [],
+                      "items": {
+                        "maximum": 47,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "maxItems": 48,
+                      "title": "Frame Indices",
+                      "type": "array"
+                    },
+                    "window_index": {
+                      "maximum": 3,
+                      "minimum": 0,
+                      "title": "Window Index",
+                      "type": "integer"
+                    },
+                    "evidence_status": {
+                      "const": "model_inference",
+                      "default": "model_inference",
+                      "title": "Evidence Status",
+                      "type": "string"
+                    },
+                    "coordinate_basis": {
+                      "const": "absolute_source_seconds",
+                      "default": "absolute_source_seconds",
+                      "title": "Coordinate Basis",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "modality",
+                    "start_seconds",
+                    "end_seconds",
+                    "description",
+                    "window_index"
+                  ],
+                  "title": "AVSourceEvidence",
+                  "type": "object"
+                },
+                "title": "Timeline",
+                "type": "array"
+              },
+              "summaries": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Summaries",
+                "type": "array"
+              },
+              "abstentions": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Abstentions",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request Sha256"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "source",
+              "windows",
+              "timeline",
+              "summaries",
+              "abstentions",
+              "execution",
+              "request_sha256"
+            ],
+            "title": "AVPerceptionFailure",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

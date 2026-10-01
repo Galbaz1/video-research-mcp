@@ -480,9 +480,16 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt joint AV evidence schemas and bounded failure handling to existing provider client; preserve explicit audio-versus-visual source evidence rather than blindly copy Qwen transport.",
           "target_paths": [
+            "src/video_research_mcp/models/media_perception.py",
+            "src/video_research_mcp/media_perception_prepare.py",
+            "src/video_research_mcp/media_perception_provider.py",
+            "src/video_research_mcp/media_perception.py",
             "src/video_research_mcp/tools/media_perceive.py",
-            "src/video_research_mcp/models/media.py",
-            "tests/test_media_perceive.py"
+            "src/video_research_mcp/server.py",
+            "tests/test_media_perception_prepare.py",
+            "tests/test_media_perceive.py",
+            "tests/test_media_perceive_native.py",
+            "docs/integrations/JOINT_AV_PERCEPTION.md"
           ],
           "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
           "dependencies": [
@@ -10208,9 +10215,16 @@
         "media-read"
       ],
       "target_paths": [
-        "src/video_research_mcp/models/media.py",
+        "src/video_research_mcp/models/media_perception.py",
+        "src/video_research_mcp/media_perception_prepare.py",
+        "src/video_research_mcp/media_perception_provider.py",
+        "src/video_research_mcp/media_perception.py",
         "src/video_research_mcp/tools/media_perceive.py",
-        "tests/test_media_perceive.py"
+        "src/video_research_mcp/server.py",
+        "tests/test_media_perception_prepare.py",
+        "tests/test_media_perceive.py",
+        "tests/test_media_perceive_native.py",
+        "docs/integrations/JOINT_AV_PERCEPTION.md"
       ],
       "declared_dependencies": [
         "contract",

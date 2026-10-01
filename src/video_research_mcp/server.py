@@ -32,6 +32,7 @@ from .tools.jobs import jobs_server
 from .tools.media_assets import media_assets_server
 from .tools.image import image_server
 from .tools.vision import vision_server
+from .tools.media_perceive import media_perceive_server
 from .tools.media_scenes import media_scenes_server
 
 logger = logging.getLogger(__name__)
@@ -78,6 +79,7 @@ app.mount(jobs_server)
 app.mount(media_assets_server)
 app.mount(image_server)
 app.mount(vision_server)
+app.mount(media_perceive_server)
 app.mount(media_scenes_server)
 
 
