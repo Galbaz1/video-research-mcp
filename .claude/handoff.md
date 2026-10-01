@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T04:17+02:00
+date: 2026-10-01T04:44+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,50 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and reverse-search resume
+### Current reverse-search acceptance and TwelveLabs resume
+
+Reverse-search leaf `vrm-0e8.5.3` is accepted, closed and normally pushed at
+`9cd310423a69cae629674603036ed8898a0dbb16`; exact remote readback matches.
+Private `reverse-search/group-receipt.committed.json` SHA256
+`df71b3b59fb0a403a77a2916379a1e676de70acc9d32c81cd4a8c801308f7a57`
+binds 13 owned Git blobs, 198 root plus 38 companion runtime files and three
+unchanged locks. The new `reverse_search_frame` makes 70 tools; all 69 prior
+complete tool objects are unchanged. The installed verification skill requires
+observed appearance, text and page context before reporting identity.
+
+Eight final gates passed, including 2,394 root tests, installer, Ruff, baseline,
+programme 85 units/74 packages, reuse 30 adopted/116 locked, security and offline.
+The sole original review retains NEEDS_FIXES with two P2 findings: separate PNG
+path admission and installed skill delivery. Owner repairs use one fenced
+bounded buffer and install a self-contained skill. Two real file-admission race
+controls and all 45 mapped private copy hashes passed; no second review.
+Original review SHA256
+`99394b2f830bdae9865e7e5dc40bff5b0b57117dd1c17897ba45bd0b186f6391`.
+
+Fresh offline wheel/sdist/private install match all 198 root runtime files and
+13 owned sdist paths. Wheel SHA256
+`5ad9672c168b52931625648d430f0dc91448f770a5127ad53cc71d6f0a3b0722`;
+sdist SHA256 `c7e7e01dd0b1b834f23776967f734b30cfc6acd3c687aa7f8d87170e514db639`.
+The first installed run failed before its first reply because the harness passed
+an obsolete timedelta timeout: 0 verified, 1 failed and 11 unrun are retained.
+One harness-only float-timeout correction kept candidate, plan, fixtures, limits
+and criteria fixed. All 12 calls then passed in PIDs 57378/57381 with 18 mocked
+HTTPX exchanges, four joined native decoders and 73 artifact hashes verified.
+Restart source reference and PNG bytes are exact. Corrected receipt SHA256
+`c666576d443929fe091181c9db04a249f5fe8deb309f6ddb6d65b65f88d7e843`.
+
+`vrm-0e8.9.8` is freshly claimed/in_progress from live Beads readiness.
+Read its eleven pinned TwelveLabs client-plugin files and current official service
+contracts; implement the smallest optional adapter with exact attributed IDs,
+clip offsets and terminal async status. Licensing owns private
+`twelvelabs/source-contracts`; a read-only lane checks existing helper reuse;
+root owns product/config/tool metadata. No running runtime/provider/native jobs.
+Human nine-case development audit remains pending `.10.2`, not waived; heldout
+is untouched. Live provider/data disclosure/charges, semantic identity, comparative
+advantage and registry release remain unverified and separately authorized.
+Continue eligible dependencies; completed transcript/PDF/Word/mail stays skipped.
+
+### Previous external-harness acceptance and reverse-search resume
 
 External harness (`vrm-0e8.5.4`) is accepted, closed and normally pushed at
 `9b08087ca652b521a5c1ab1fc3051cab88b54960`; fresh exact remote readback matches.
