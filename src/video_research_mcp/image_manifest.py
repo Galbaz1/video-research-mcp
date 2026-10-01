@@ -34,8 +34,11 @@ def _records(payload):
     source, artifacts = payload.get("source"), payload.get("artifacts")
     if not isinstance(source, dict) or not isinstance(artifacts, list) or not 1 <= len(artifacts) <= 64:
         raise ValueError("Manifest requires one source and 1..64 explicit artifacts")
+    sources = payload.get("sources", [source])
+    if not isinstance(sources, list) or not 1 <= len(sources) <= 2 or sources[0] != source:
+        raise ValueError("Manifest requires 1..2 explicit source inputs including its primary source")
     total, paths = 0, set()
-    for record in [source, *artifacts]:
+    for record in [*sources, *artifacts]:
         if not isinstance(record, dict) or not isinstance(record.get("path"), str):
             raise ValueError("Manifest file record has no valid path")
         if not isinstance(record.get("sha256"), str) or not re.fullmatch(r"[a-f0-9]{64}", record["sha256"]):
@@ -53,15 +56,18 @@ def _records(payload):
         raise ValueError("Manifest artifacts exceed the 8 MiB aggregate byte limit")
     if "artifact" in payload and payload["artifact"] not in artifacts:
         raise ValueError("Manifest primary artifact is not committed in artifacts")
-    return source, artifacts
+    return sources, artifacts
 
 
 def _verify(payload, cancelled, deadline):
     """Read every committed regular file under the same caller deadline."""
-    source, artifacts = _records(payload)
-    for record in [source, *artifacts]:
+    sources, artifacts = _records(payload)
+    for record in [*sources, *artifacts]:
         check_worker(cancelled, deadline)
-        limit = get_config().media_max_input_bytes if record is source else MAX_ARTIFACT_BYTES
+        limit = (
+            get_config().media_max_input_bytes
+            if any(record is source for source in sources) else MAX_ARTIFACT_BYTES
+        )
         path = checked_path(record["path"])
         actual = _copy_hash(path, cancelled=cancelled, max_bytes=limit)
         if actual != (record["sha256"], record["bytes"]):

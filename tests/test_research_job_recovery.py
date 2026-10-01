@@ -307,10 +307,10 @@ async def test_job_status_artifact_readback_keeps_event_loop_responsive(tmp_path
     started, release = asyncio.Event(), threading.Event()
     loop = asyncio.get_running_loop()
 
-    def controlled_readback(values):
+    def controlled_readback(values, check=None):
         loop.call_soon_threadsafe(started.set)
         assert release.wait(timeout=5)
-        return original(values)
+        return original(values, check)
 
     monkeypatch.setattr(store_module, "_artifact_readback", controlled_readback)
     task = asyncio.create_task(job_status("slow-artifact"))

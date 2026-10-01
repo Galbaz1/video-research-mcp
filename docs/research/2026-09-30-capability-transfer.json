@@ -5943,9 +5943,26 @@
           "reuse_mode": "integration-only",
           "rationale": "Use optional Rust DSP MCP executables for measured audio evidence in explainer quality checks. Avoid porting complete DSP libraries to Python; compare useful output contracts and license/model independence on fixed fixtures first.",
           "target_paths": [
-            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
-            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
-            "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py"
+            "src/video_research_mcp/audio_dsp.py",
+            "src/video_research_mcp/audio_dsp_backend.py",
+            "src/video_research_mcp/audio_dsp_jobs.py",
+            "src/video_research_mcp/audio_dsp_measure.py",
+            "src/video_research_mcp/audio_dsp_native.py",
+            "src/video_research_mcp/audio_dsp_pcm.py",
+            "src/video_research_mcp/audio_dsp_stdio.py",
+            "src/video_research_mcp/audio_dsp_visuals.py",
+            "src/video_research_mcp/models/audio_dsp.py",
+            "src/video_research_mcp/tools/audio_dsp.py",
+            "src/video_research_mcp/provider_readiness.py",
+            "src/video_research_mcp/server.py",
+            "docs/integrations/AUDIO_DSP.md",
+            "tests/test_audio_dsp_contract.py",
+            "tests/test_audio_dsp_measure.py",
+            "src/video_research_mcp/image_manifest.py",
+            "src/video_research_mcp/job_store.py",
+            "tests/test_audio_dsp_regressions.py",
+            "tests/test_research_job_recovery.py",
+            "tests/test_reuse_ledger.py"
           ],
           "dependencies": [
             "direct.providers"
@@ -11982,9 +11999,26 @@
         "onboarding"
       ],
       "target_paths": [
-        "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
-        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py"
+        "src/video_research_mcp/audio_dsp.py",
+        "src/video_research_mcp/audio_dsp_backend.py",
+        "src/video_research_mcp/audio_dsp_jobs.py",
+        "src/video_research_mcp/audio_dsp_measure.py",
+        "src/video_research_mcp/audio_dsp_native.py",
+        "src/video_research_mcp/audio_dsp_pcm.py",
+        "src/video_research_mcp/audio_dsp_stdio.py",
+        "src/video_research_mcp/audio_dsp_visuals.py",
+        "src/video_research_mcp/models/audio_dsp.py",
+        "src/video_research_mcp/tools/audio_dsp.py",
+        "src/video_research_mcp/provider_readiness.py",
+        "src/video_research_mcp/server.py",
+        "docs/integrations/AUDIO_DSP.md",
+        "tests/test_audio_dsp_contract.py",
+        "tests/test_audio_dsp_measure.py",
+        "src/video_research_mcp/image_manifest.py",
+        "src/video_research_mcp/job_store.py",
+        "tests/test_audio_dsp_regressions.py",
+        "tests/test_research_job_recovery.py",
+        "tests/test_reuse_ledger.py"
       ],
       "declared_dependencies": [
         "contract",

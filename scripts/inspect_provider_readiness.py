@@ -33,6 +33,7 @@ SOURCE_CONTRACTS = {
     "src/video_research_mcp/client.py",
     "src/video_research_mcp/image_ops.py",
     "src/video_research_mcp/provider_readiness.py",
+    "src/video_research_mcp/audio_dsp_backend.py",
     "src/video_research_mcp/models/text_provider.py",
     "src/video_research_mcp/tools/research_web.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
@@ -216,6 +217,12 @@ def inspect_integration(root: Path, row: dict, env: dict) -> dict:
         status, details = companion_observation(root, row, env, missing)
     elif not enabled(row["enable"], env):
         status = "disabled"
+    if row["id"] == "rust-dsp":
+        profiles = optional_adapter_profiles(env)["audio_dsp"]
+        status = "configured-but-unverified" if any(
+            p["state"] == "configured-but-unverified" for p in profiles
+        ) else "missing" if any(p["state"] == "missing" for p in profiles) else "disabled"
+        details["profiles"] = profiles
     if row["id"] == "weaviate-vectorizer":
         selected = env.get("WEAVIATE_VECTORIZER", "").strip().lower() or (
             "openai" if present(env, "OPENAI_API_KEY") else "weaviate"

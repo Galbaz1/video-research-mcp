@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-01T03:15:34.474713+00:00",
-  "tool_count": 71,
+  "generated_at": "2026-10-01T04:21:35.383313+00:00",
+  "tool_count": 72,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -789,6 +789,232 @@
               "native_images"
             ],
             "title": "SourceAssetResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "audio_dsp_analyze",
+      "description": "Measure audio or invoke one separately installed operator-pinned native DSP workflow.\n\nLocal analysis preserves stereo, finite silence/abstentions and absolute\nclipping intervals. A/B uses reference-minus-primary differences with units.\nOptional Juzzy modes preserve harmonic/rhythm/masking/section observations;\nFerrous receives an explicit mono derivation and retains heuristic quality,\ncontent and fingerprint output. Standards and semantic claims are unverified.\nReusing an exact job_id reads its attested artifacts without launching again.\nUse job_status for durable status, including interrupted/failed work.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local source SHA and windows, optional reference and fixed DSP operation;30-second aggregate audio and8MiB artifact limits",
+            "properties": {
+              "file_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_source_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "start_seconds": {
+                "default": 0,
+                "minimum": 0,
+                "type": "number"
+              },
+              "end_seconds": {
+                "anyOf": [
+                  {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "operation": {
+                "default": "analyze",
+                "enum": [
+                  "analyze",
+                  "compare",
+                  "audio_info",
+                  "spectral_features",
+                  "harmonic_analysis",
+                  "rhythm_analysis",
+                  "full_analysis",
+                  "juzzy_compare",
+                  "ferrous_analyze",
+                  "ferrous_compare"
+                ],
+                "type": "string"
+              },
+              "reference": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Omitted endpoints select the whole source within the operation's limits.",
+                    "properties": {
+                      "file_path": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "expected_source_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "start_seconds": {
+                        "default": 0,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      "end_seconds": {
+                        "anyOf": [
+                          {
+                            "exclusiveMinimum": 0,
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "required": [
+                      "file_path",
+                      "expected_source_sha256"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_events": {
+                "default": 128,
+                "maximum": 128,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "native_return_format": {
+                "default": "summary",
+                "enum": [
+                  "summary",
+                  "full",
+                  "visual_only"
+                ],
+                "type": "string"
+              },
+              "job_id": {
+                "anyOf": [
+                  {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "file_path",
+              "expected_source_sha256"
+            ],
+            "type": "object"
+          },
+          "include_image": {
+            "default": false,
+            "description": "Include verified bounded waveform/spectrogram PNG blocks; text keeps exact artifact identities",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "description": "Finite source-bound report or retained terminal error with an independently attested job.",
+            "properties": {
+              "metadata": {
+                "additionalProperties": true,
+                "title": "Metadata",
+                "type": "object"
+              },
+              "job_receipt": {
+                "additionalProperties": true,
+                "title": "Job Receipt",
+                "type": "object"
+              },
+              "native_images": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Native Images",
+                "type": "array"
+              }
+            },
+            "required": [
+              "metadata",
+              "job_receipt"
+            ],
+            "title": "AudioDspResponse",
             "type": "object"
           },
           {

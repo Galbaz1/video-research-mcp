@@ -22,6 +22,15 @@ def optional_adapter_profiles(env: dict) -> dict:
     result["twelvelabs"] = {"provider": "twelvelabs", "credential_present": available,
         "state": "disabled" if not enabled else "configured-but-unverified" if available else "missing",
         "external_mcp_discovery_verified": False}
+    result["audio_dsp"] = []
+    for backend in ("juzzy", "ferrous"):
+        key = "AUDIO_DSP_" + backend.upper()
+        path_present = bool(env.get(key + "_PATH", ""))
+        hash_present = bool(re.fullmatch(r"[a-f0-9]{64}", env.get(key + "_SHA256", "")))
+        result["audio_dsp"].append({"backend": backend,
+            "state": "configured-but-unverified" if path_present and hash_present else "missing" if path_present or hash_present else "disabled",
+            "path_configured": path_present, "binary_sha256_configured": hash_present,
+            "binary_presence_or_native_discovery_verified": False})
     try:
         profiles = json.loads(env.get("TEXT_BACKENDS_JSON", "{}"))
         if not isinstance(profiles, dict) or len(profiles) > 32:

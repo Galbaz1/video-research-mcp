@@ -71,7 +71,7 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     report = run(workspace)
     observed = rows(report)
     assert len(observed) == 27
-    assert sum(row["adopted"] for row in observed.values()) == 15
+    assert sum(row["adopted"] for row in observed.values()) == 16
     assert observed["gemini-generation"]["state"] == "missing"
     assert observed["semantic-scholar"]["state"] == "installed"
     assert observed["weaviate-store"]["state"] == "disabled"
@@ -90,6 +90,21 @@ def test_credential_presence_never_promotes_live_verification(workspace):
     assert row["state"] == "configured-but-unverified"
     assert row["credential_presence"] == {"GEMINI_API_KEY": True}
     assert row["live_verified"] is False
+
+
+@pytest.mark.parametrize("configured,expected", [(False, "missing"), (True, "configured-but-unverified")])
+def test_native_dsp_profiles_do_not_probe_or_reveal_operator_paths(workspace, configured, expected):
+    """GIVEN an operator profile THEN doctor reports configuration without native execution or path disclosure."""
+    env = {"AUDIO_DSP_JUZZY_PATH": "/private/operator-secret/dsp-server"}
+    if configured:
+        env["AUDIO_DSP_JUZZY_SHA256"] = "a" * 64
+    report = run(workspace, env)
+    observed = rows(report)["rust-dsp"]
+    assert observed["state"] == expected
+    assert observed["details"]["profiles"][0]["binary_presence_or_native_discovery_verified"] is False
+    assert "operator-secret" not in json.dumps(report)
+    assert "a" * 64 not in json.dumps(report)
+    assert report["network_requests"] == report["provider_calls"] == 0
 
 
 def test_secret_endpoint_model_and_path_values_are_redacted(workspace):

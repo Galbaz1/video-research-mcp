@@ -18,7 +18,8 @@
     "packages/video-agent-mcp/src/video_agent_mcp/sdk_runner.py",
     "src/video_research_mcp/image_ops.py",
     "src/video_research_mcp/provider_readiness.py",
-    "src/video_research_mcp/models/text_provider.py"
+    "src/video_research_mcp/models/text_provider.py",
+    "src/video_research_mcp/audio_dsp_backend.py"
   ],
   "states": [
     "disabled",
@@ -478,17 +479,18 @@
     },
     {
       "id": "rust-dsp",
-      "adopted": false,
+      "adopted": true,
       "capabilities": [
-        "audio-analyzer-rs/ferrous-waves executable, pinned build/runtime dependency licenses and deterministic DSP fixture"
+        "audio_dsp_analyze: deterministic measurements, absolute clipping intervals, A/B units, MFCC heuristics and source-bound PNG artifacts",
+        "Optional pinned Juzzy six tools and Ferrous analyze/compare/job-status with private joined stdio and executable SHA admission"
       ],
       "packages": [],
       "executables": [],
       "credential_any": [],
-      "enable": "planned",
+      "enable": "audio-dsp",
       "config_source": null,
       "config_bindings": {},
-      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "usage_visibility": "Core local measurements use declared NumPy/Pillow/FFmpeg. Optional native profiles are disabled until exact executable path and SHA are configured; doctor does not probe binary presence, build origin, native discovery or standards conformance. No inference/API charges; local resource accounting remains unknown.",
       "live_verified": false,
       "run_authority": "not-granted"
     },
