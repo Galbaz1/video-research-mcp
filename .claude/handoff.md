@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T08:20+02:00
+date: 2026-10-01T08:22+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -64,12 +64,13 @@ full-analysis and plots remain unqualified; successful own plots are separate.
 Next DSP cause-finding is exact source/indexing and a separately scoped future
 bounded native stderr diagnostic. All owned recorded PIDs/groups are absent.
 
-`vrm-0e8.6.4` bounded component is verified, pending exact source commit and Beads
-closure. Private `session-compaction/group-receipt.json` SHA256
+`vrm-0e8.6.4` is accepted, closed and normally pushed at
+`eb6768f5ef52dca0aa8cccfca80f3de7053ed484`; exact remote readback matches. Private `session-compaction/group-receipt.json` SHA256
 45b0f01d78f3b405ae749c32683c060a491f2e35f428fb3b6289ff75d474f16c binds final24owned,
 222root Python+Swift/38companion bodies and3 unchanged locks at candidate freeze
-4d644d128311ea8fa4e90a6d6000abd6a67308ff47514051a3b3537740ed8c62. Source/commit
-readback will be retained in group-receipt.committed.json after commit. No source
+4d644d128311ea8fa4e90a6d6000abd6a67308ff47514051a3b3537740ed8c62. Exact25owned Git blobs,260runtime bodies/3locks and no-reply author/committer
+are verified in group-receipt.committed.json SHA256
+ca3f7dcdf5a5eeec7cbff47ceba5da480e24109852c22dbf368c7a0e1f996f44. No source
 or dependencies changed during installed qualification. All required lanes joined.
 
 Full original SDK history, media/signatures, source identity and exact scope are
@@ -113,9 +114,16 @@ second23verified/1failed/15unrun used standardBase64 on SDKURLsafeencoding.
 Harness-only venv-path and decoder repairs preserve candidate, fixed39plan,
 fixtures, bounds and exact full-byte assertions. Third SAME39 PASS; final receipt
 is bound by group-receipt.json. No hidden retry/cohort, native/provider run or
-semantic/human success inferred. Next: commit explicit25paths with verified
-no-reply identities, normal authorized push/readback, close .6.4 only after exact
-Git-source proof, then select and claim a fresh eligible programme leaf.
+semantic/human success inferred. Fresh Beads dependency query selected and claimed
+`vrm-0e8.8.8`: create/show/revise/approve multi-source video plans through MCP,
+both supplied sources explicit, revision invalidates approval and exact script/
+storyboard binding. Source/grant lane owns only private video-planning/source-contracts;
+existing-code explorer is read-only on current project/evidence/pipeline contracts.
+Root owns all product changes. The pinned prajwal-y/video_explainer grant remains
+unresolved: no code copying/import/bundling; independently author the selected
+plan contract. Next join these bounded read-only lanes, implement end to end,
+verify exact source/package/installed journeys, commit/push accepted owned files.
+No active .6.4 processes remain; no next-leaf provider/native run or source edit yet.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release
