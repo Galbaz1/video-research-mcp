@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T08:22+02:00
+date: 2026-10-01T10:31+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -173,8 +173,11 @@ receipts and all negative attempts. .8.8 is accepted/closed and normally pushed 
 Committed receiptba24440f36215bd20d4e6fe0002dacfe3ee97f7ab7b08312c8b68275bf32b58f
 verifies25owned Git blobs/267runtime/3unchanged locks and no-reply identities. No provider/native/heldout
 reads, real renderer/TTS/upstream-runtime/factual/human or programme release claim.
-`vrm-0e8.8.9` has verified firstparty readiness/artifact core; source commit follows
-this checkpoint. The leaf remains blocked, not closed, on actual pinned Remotion
+`vrm-0e8.8.9` verified core is committed and normally pushed at
+907ac582dc0b9e8f7bf50ead7956ef205d210257; exact remote readback matches.
+Committed receipt SHA3e7c5ab99b8b9ce8e43158d3199f9d5ed7321387e45b35065c6bcb08cc90d340
+verifies29Gitpaths/271runtime/3locks and no-reply identities.
+The leaf is blocked, not closed, on actual pinned Remotion
 qualification: configured modules/headless browser absent and grants/eligibility
 unresolved. No foreign source/runtime/assets are copied, imported or bundled.
 Primary source receipt662244e932f85b2ba067f165bc18352ed0f488d0ebf01712658be39b12a845f7
@@ -213,9 +216,22 @@ Group render-readiness/group-receipt.json SHA
 4b74446c5b8b38c27780bb71319125f7c986c93848870d19538de6f4cdce83dc.
 No active owned render/nativejobs. No provider/browser/heldout/human/releaseproof.
 .8.8 journeys complete; do not redo. Human auditpending, notwaived.
-Next fresh eligibleleaf is .7.3 ingestionprovenance; exact8pinnedLightRAG source
-preparation and existing-code observations are read-only independent lanes.
-Root owns all mutations; claim onlyafter this rendercore is committed and recorded.
+`.7.3` ingestionprovenance is freshlyclaimed and inprogress. Source/grant lane
+joined14bindings: receipt1a6baf03a205835a082da28b5c6377d72516819dc4ed275be1a223a4977ca3eb,
+8mappedbodies11498lines616012B+21lineMITgrant. Existing-code observation terminal:
+20fullproduction2841lines,13targeted1027lines;2fulltests502lines29functions plus
+455targetedlines29functions. Reuse exact originalcopies/manifests/SQLite dedup
+and fenced URL/native helpers; knowledge insert alone is not ingestion acceptance.
+PDF/DOCX binary observations need explicit modality/typed location validation.
+No current pypdf/docling dependency; configuredhost pdftotext/textutil/swift/FFmpeg
+presence only, not parserqualification. No existing PDF/DOCX/ASR backend qualified.
+Narrow optional service transport supplement is a read-only licensing lane; owns
+ingestion/source-contracts/transport-supplement only. Root owns all product/tests/
+metadata/tracker/handoff; no .7.3 source writes or fixtures executed yet.
+Read concrete parser/service contracts, choose smallest complete firstparty route,
+then implement. Preserve original bytes/revision and separately derived chunks,
+page/table/image/time/method, terminalempty/error and samehash/settings dedup.
+All prior .8.9 lanes terminal; no ownedrender/nativeprocess remains.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release
