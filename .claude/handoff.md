@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T18:49+02:00
+date: 2026-10-01T20:29+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,11 +18,52 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
+### Narration implementation active
+
+Current claimed leaf: `vrm-0e8.8.2`. Current accepted source HEAD is
+6490c7b51b0a2a920a08e5365d163bf02e142ebb, normally pushed/exact remote verified.
+Spatial9.3 is blocked, not closed; no owned native jobs. Continue implementation
+through the dependency graph. Human9 audit remains pending, not waived.
+
+/root/freecad_adapter is the sole primary writer for new companion narration
+PCM/provider/run/timing modules, model, matching tests and measured-narration doc.
+Root owns tool/approval binding, optional dependency/lock, descriptor/metadata,
+Git/Beads/handoff and the frozen actual acceptance journey. No duplicate writer,
+foreign source import, provider/native launch, install or paid request.
+
+Source preparation terminal/root joined a2ee1f3b9415ab11bb7a4c93ab9e18789618ad35a6809e5fb03de78495398d9f:
+34 full pinned Qwen/MoneyPrinter bodies/419324B/10480lines,2 full grants,
+67 artifact bindings. Existing-code advisor33 bindings joined; source receipt
+b890d0ea37346ac07b26967fcedb0c9523bff6c689812db576918e1ab996e7c0.
+Exact current HTTP contracts retained; foreign_execution_sources=[]; whole
+foreign renderer/voice pipelines, assets/weights and service rights not qualified.
+
+Frozen16 controls in narration/acceptance-plan.frozen.json:
+01a4063860df58d294435efc0e07176b48358b08c9199209a76a2bf1c83c1e6e.
+Two-sentence exact 'One. Two.' synthetic PCM fixture at24kHz/mono16-bit,
+4800 frames/word at rate1,2400 silence frames after EACH sentence including last,
+14400 total/.6s, audio intervals[0,.2]/[.3,.5]; rate2 total9600frames/.4s.
+RMSdBFS[-40,-6],0 clipped samples, one-sample duration tolerance fixed.
+One HTTP-mocked configured MiniMax word-subtitle fixture; no billable call.
+This establishes synthetic/media/request contracts, not real speech content.
+
+Root declared optional companion[narration] and dev httpx0.28.1. Offline lock
+resolution added existing root-qualified certifi2026.7.22/httpcore1.0.9/httpx0.28.1;
+no installation. Root/core and agent locks unchanged. Refresh companion lock
+receipt and all shared ledger hash references before final gates/builds.
+Preserve existing mock/ElevenLabs/Edge CLI contracts. Own new WAV entrypoint
+must bind exact approved script; word timings require real provider declaration
+or exact mock synthesis events, never text-proportional estimates. Current
+render/narration legacy production remains delegated; no owned FFmpeg renderer.
+Primary is active; no independent narration review dispatched yet. Join primary,
+then sole original review, repair findings, final tests/archives and actual packed
+16-control journey. Stop after one repeated failure under controlled correction.
+
 ### Spatial source component verified; actual geometry blocked
 
-Current leaf `vrm-0e8.9.3` has completed owned source verification. Parent HEAD
-acc51d0fa24f48749a7216dbf99eecd41991aeb8; source commit/push and blocked tracker
-transition follow this checkpoint. Private evidence is capability-programme/
+Leaf `vrm-0e8.9.3` is blocked. Owned source6490c7b51b0a2a920a08e5365d163bf02e142ebb
+is committed and normally pushed; exact remote and19 Git blobs verified.
+Source-final a0bbfc14c3b025b6f0266e21d5232ca0f4dc9b5ccde5223063bc376c2ea3c0eb. Private evidence is capability-programme/
 2026-09-30/spatial/. All primary/source/runtime/advisor lanes and the sole
 original independent review are terminal and root joined. No native job remains.
 
@@ -62,8 +103,7 @@ plan8fb1f660e2e45807583041e6b429c189f3545b9c9d08160d0a465acdda76d883
 and declared tolerances/geometry assumptions unchanged. Do not close9.3 or
 claim actual geometry, model/physical, comparison, human or release acceptance.
 
-Next after atomic source commit and normal authorized push: record9.3 blocked,
-resolve fresh Beads readiness and claim8.2 if still eligible. Narration source
+Fresh readiness selected8.2; it is claimed/in_progress as recorded above. Narration source
 lane terminal/root joined:34 full pinned bodies/419324B/10480lines,2 grants,
 67 artifacts, no foreign execution_sources. Existing-code advisor33bindings
 root joined. Current companion narration/render remain external CLI delegates;
