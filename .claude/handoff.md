@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T17:19+02:00
+date: 2026-10-01T18:49+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,59 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Accepted Blender component and next FreeCAD leaf
+### FreeCAD source component verified; native acceptance blocked
+
+`vrm-0e8.9.5` is blocked, not closed. Sourcea0816f51a78a1d03e307682314df24b5d64db89e
+was normally pushed and exact remote HEAD matches. Fifteen Git blobs match
+source-final29facc3a3d689c26fefb05a5a3474fea8fa96d696f87dac09a74b9af0da6b883.
+Native rootjoinf367c16c34df70d70cb86b6958a5e75046479e647eff85c13e4930c2c0b57ce8; evidence
+capability-programme/2026-09-30/freecad/. No owned native jobs remain.
+
+Pinned Qwen source gate:52fullsemanticfiles/200701B/5049lines,39selected
+Python bodies and3fullgrants, original14tools/2workflows. Source/native/primary
+lanes and sole original review are terminal/joined. Installed FreeCAD1.1.3 direct
+inner binary and selected Gmsh/CalculiX hashes are admitted; whole native package
+dependency/source-build/licensing certification remainspartial. MacOS deprecated
+home-plist reads are not universally isolated; ordinarytrustedPythonprivileges
+are not a sandbox. Selected30homefiles/modes were preserved in both actualruns.
+
+Original187wirecases:140PASS/44expectedmodelrefusals/1expectedsourceexception/
+2FAIL retained. Malformed FEM omitted failureflag; omittedvenvbootstrap caused
+loaded-footprint artifactgap. Two bootstrap bodies/fulluv-PyPAgrants now have
+separate static qualification; original failure/missingfullmodulelist stay.
+No secondwirepass. Owned source validates FEM completion and corresponding
+INP/FRD/DAT, async pending-to-terminal receipts, contained docs/parts, caller
+deadline includingqueuewait and smaller explicitFEMtimeouts. Selected native
+ccxtools directory-reset adapter keeps actualresults in reportedworkingdir.
+
+Originalreview3P2 repaired9RED→68GREEN; no secondreview. Fresh2998root,
+37installer,9security,5offline,Ruff/baseline/programme/reuse/release/sevenfresh
+archives pass. Core245runtimebodies/83tools and3locks unchanged;8adapter/helper
+resources match freshwheel. Final metadata promotion preserves exact executed
+source and selection; native acceptance remainsblocked in shipped doc/descriptor.
+
+Frozen20controlplan28a5b5e10a4ed61a30a5891fff011e317442b673238ccabad88679ec4af91d1b.
+Attempt01:6PASS/1FAILED/13UNRUN; controller required printed marker at line start
+but actualnative output follows Output:. Wrapper49676/native49677 absent.
+ONEcontroller-only parsercorrection, samefixture/oracles/source; attempt02:
+7PASS/1FAILED/12UNRUN. Live15tools/original14schemas and disposablecreate/read/edit
+observed. F06literalfloatvolumecomparison failed9999.999999999998vs10000mm³;
+actual100x10x10dims/bbox/validsolid correct. Wrapper50089/native50090 absent,
+groupsgone/drainsjoined/source42/binaries3/home30hashmodes preserved. Save/export/
+reload/requestedview/parts/async/FEM remainUNRUN. No thirdsamejourney, no oracle
+weakening; a separately frozenprecisionprotocolreview is the futurecausefinding
+step. No actualFEM/manufacturing/provider/comparative/releaseclaim follows.
+
+Fresh Beads readiness selected/claimed `vrm-0e8.9.3`: spatialgeometry andmulti-view
+evidence tools. /root/freecad_source_contracts now owns private spatial/source-
+contracts source/grant qualification only; /root/compaction_existing_code owns
+spatial/existing-code read-only currentprimitive andmetadata leads. No spatial
+foreignimport/provider/model/nativeinstallation has occurred. Root owns all
+product/sharedmetadata/Git/Beads. Continue dependencygraph after sourcegate;
+do not stop at component. Human9audit pending/notwaived,heldoutunread/providers
+unauthorized. Completedtranscript/PDF/Word/maildelivery remainsoutsideprogramme.
+
+### Accepted Blender component
 
 `vrm-0e8.9.4` is closed. Source6808a14367b97e7bdc0e6e899eded7cb97937d9f
 was normally pushed; exact remote readback matches. Fourteen owned source blobs
@@ -65,12 +117,6 @@ remain. NativeRequests179present/16absent RECORD rows still have a partial
 whole-package certificate. No OS-wide egress, sandbox, provider, physical,
 human, comparison or registry-release claim follows.
 
-Fresh Beads readiness selected/claimed `vrm-0e8.9.5`: external FreeCAD
-parametric/parts/FEM workflows. Next read pinned source/grants and existing-code/
-installed-runtime authority before activation; use disposable document only.
-No FreeCAD source/runtime/native journey has started. Broader epic open;
-human9case audit pending/notwaived, heldout unread and providers unauthorized.
-Continue the dependency graph after this checkpoint; do not stop at a component.
 
 ### Current video-skill implementation and installer correction
 
