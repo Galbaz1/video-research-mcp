@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T15:23+02:00
+date: 2026-10-01T17:19+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -20,6 +20,57 @@ closure for completion of the product or a proved superiority claim.
 
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
+
+### Accepted Blender component and next FreeCAD leaf
+
+`vrm-0e8.9.4` is closed. Source6808a14367b97e7bdc0e6e899eded7cb97937d9f
+was normally pushed; exact remote readback matches. Fourteen owned source blobs
+match accepted freeze09fcb69ed85ec2b328ea4228d50c5c7918b0b307db61160d2a1e11e755d80945.
+Committed receipt2ff7fbb91c5c68e0f972a1bbc9a8763fa5e7b0acbcaf74ff22ffc81e1b2ea53d;
+joined group5bf43d616a6a4decad9e95279d2255ced51ebe9530852d0fdd7e59e4faddce52.
+Private evidence is capability-programme/2026-09-30/blender/.
+
+Pinned Qwen07736672525443c7f8a3f6405eed37d2236f023f source gate is terminal:
+46full bodies/276631B/6549lines,22tools,2launch workflows, full addon; exact Git
+blobs/hashes and full MIT/Apache grants joined. /root/blender_source_contracts,
+/root/blender_adapter and sole /root/blender_review lanes are terminal/joined.
+The unmodified34source-body runtime stays external in Python3.12.13/MCP1.30/Pillow11.3;
+core source/dependencies/locks stay unchanged. Own factory GUI/profile/loopback,
+source/binary admission, empty config/cwd, full-handler lock, Requestsdenial,
+nativePIDreceipt and EOF transport qualify the selected local scene. Original
+review1P2 (EOF waits for shielded native worker) repaired; original primaryRED,
+30GREEN and actual pinned framework/stub-native orderingPASS. No secondreview.
+
+Final2930root,37installer,9security,5offline, Ruff/baseline/programme/reuse/release
+passed. One adopted-list omission and its stale5shared hash bindings caused the
+retained1/23test failures; corrected without acceptance changes. Seven actual
+archives passed reuse/bytes;245root runtime and6adapter resource bodies match.
+Wheel doc/skill relative trees are valid. Final metadata promotion preserves
+exact accepted code and execution-selection fields; metadata-promotion.json
+retains prior/current manifest digests. Ordinary14capabilities stay external-disabled.
+
+Fixed16native plan408095c41a23cd3da573defe7e5b5d0bee7e27e112c987f9cb0143cbe7abdc1f:
+first attempt started/identified addon but Python-I excluded owned helper path,
+so MCP initialization never completed (7PASS/1FAILED/8UNRUN). Wrapper14927/native14928
+are absent. ONE controlled explicit helper-path correction,31focused+2930full
+PASS, then SAMEplan/scene/oracles16PASS/0failed/0unrun. Actual22tool discovery,
+known cube/material/light/camera mesh/AABB/properties, CPUCycles8samples320x240RGBA
+render, saved.blend and ImageContent viewport pass. Root viewed both images:
+expected red cube/grayrenderbackground and same cube/grid/axes in viewport.
+Four service statuses disabled; Requests-denied JSONL empty. No externalassets.
+Native rootjoin3df3b17fca9b91b8ef75b52f3a80f3345e51b76e501d4c61c355307a3a28fd54:
+50retainedfiles/46selectedsource bodies rehashed; wrapper20469/native20470 freshly
+absent/drains joined; selected homeBlender5.2/Qwenconfig unchanged. No nativejobs
+remain. NativeRequests179present/16absent RECORD rows still have a partial
+whole-package certificate. No OS-wide egress, sandbox, provider, physical,
+human, comparison or registry-release claim follows.
+
+Fresh Beads readiness selected/claimed `vrm-0e8.9.5`: external FreeCAD
+parametric/parts/FEM workflows. Next read pinned source/grants and existing-code/
+installed-runtime authority before activation; use disposable document only.
+No FreeCAD source/runtime/native journey has started. Broader epic open;
+human9case audit pending/notwaived, heldout unread and providers unauthorized.
+Continue the dependency graph after this checkpoint; do not stop at a component.
 
 ### Current video-skill implementation and installer correction
 
@@ -144,15 +195,17 @@ archive checks do not establish actual readable tutorial output or product accep
 
 Human audit remains pending/not waived; heldout unread, providers unauthorized,
 comparison and registry release unqualified. Preserve this blocker and continue
-fresh ready work. Read-only Blender reconnaissance is joined; source-contract lane
-is active in /root/compaction_existing_code under blender/source-contracts/.
-Blender5.2.1 arm64 installed metadata/executable hash only; actual addon/scene/
-render/viewport journey has not started. Current ready vrm-0e8.9.4 is claimed. Its actual CLI --version verifies
-Blender5.2.1LTS build9e2066aef7ef; no scene/addon execution. Read pinned
-source/grants before activation and use an owned
-factory scene with primitive geometry and optional asset/providers disabled.
-A separate read-only tutorial startup diagnosis is active in /root/licensing;
-no execution/retry/source changes authorized in that lane.
+fresh ready work. Read-only Blender reconnaissance and /root/blender_source_contracts are now
+terminal/joined; accepted native component is recorded in the current checkpoint.
+Blender .9.4 is now accepted/closed after the actual fixed local scene/render/
+viewport journey; .9.5 FreeCAD is the newly claimed eligible leaf. The selected
+Blender host is5.2.1LTS9e2066aef7ef; see the current accepted checkpoint above.
+Tutorial startup diagnosis /root/licensing is terminal/joined:22boundfiles,
+13full/7targeted/2filtered reads,2258semanticlines; rootjoin
+8a689bbb87b175afee05166f716efac6613ffe7dff6b4e3d077f8a579e5e0341.
+Exact cause remains unknown; Docket is absent and no Redis cause is supported.
+Two httpx modules and global Python guards were observed, without OSattestation.
+No third tutorial attempt or new diagnostic execution occurred; .7.1 stays blocked.
 
 ### Current hardware implementation checkpoint
 
