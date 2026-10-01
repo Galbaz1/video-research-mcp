@@ -4,7 +4,7 @@ import asyncio
 import hashlib
 import json
 from datetime import datetime, timezone
-from urllib.parse import quote, quote_plus
+from urllib.parse import quote, quote_plus, unquote, unquote_plus
 
 from .models.search_provider import ExtractedPage, SearchHit, SearchProviderError, source_url
 from .redaction import redact_text
@@ -30,6 +30,8 @@ def protect(value, credential):
         if credential:
             for secret in {credential, quote(credential, safe=""), quote_plus(credential)}:
                 value = value.replace(secret, "[redacted]")
+            if credential in unquote(value) or credential in unquote_plus(value):
+                value = "[redacted]"
         return redact_text(value)
     if isinstance(value, dict):
         return {protect(k, credential): protect(v, credential) for k, v in value.items()}

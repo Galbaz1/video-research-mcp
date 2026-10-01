@@ -585,13 +585,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -720,7 +720,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -877,7 +877,7 @@
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
-          "target_sha256": "13a8a2cb78e74104395371e1c6e6d9576167019387c5fb508497cbcd6bd1ebfe",
+          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -912,7 +912,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -922,12 +922,12 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
           "target_path": "tests/test_vision_http.py",
-          "target_sha256": "3381294e3a81f25d7329129d93b28d6233810f38d741407165f586bea0d24257",
+          "target_sha256": "09445252a682f98d0ad18dee358b582a3c5f789f20306c3a13e7b9ce57accc4b",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -952,7 +952,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
+          "target_sha256": "86848eea30fffd21959ea428f5bf6eacf81da94095e315362d4b374e663492d7",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1080,7 +1080,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
+          "target_sha256": "86848eea30fffd21959ea428f5bf6eacf81da94095e315362d4b374e663492d7",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1135,7 +1135,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1200,7 +1200,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1225,7 +1225,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         }
       ]
@@ -1314,7 +1314,7 @@
         },
         {
           "target_path": "src/video_research_mcp/search_provider_results.py",
-          "target_sha256": "bb6400b713dfd784e223f4d5cf8fe2085393c16ec5528de08698fac630f13575",
+          "target_sha256": "fcef33ded175795d9310acea2ddb907f77524ae9b56770214eefa3ee1c6a3e3e",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -1344,12 +1344,12 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         }
       ],
@@ -1837,7 +1837,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1877,7 +1877,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1992,13 +1992,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2148,7 +2148,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2475,7 +2475,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2495,7 +2495,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2626,7 +2626,7 @@
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
-          "target_sha256": "13a8a2cb78e74104395371e1c6e6d9576167019387c5fb508497cbcd6bd1ebfe",
+          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2661,7 +2661,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2671,12 +2671,12 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
           "target_path": "tests/test_vision_http.py",
-          "target_sha256": "3381294e3a81f25d7329129d93b28d6233810f38d741407165f586bea0d24257",
+          "target_sha256": "09445252a682f98d0ad18dee358b582a3c5f789f20306c3a13e7b9ce57accc4b",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2701,7 +2701,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2736,7 +2736,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9f0e75cc197fc3cd946c8ac9a9c2899b9ebd3721c1c2424e9a6310f660f5f2f6",
+          "target_sha256": "86848eea30fffd21959ea428f5bf6eacf81da94095e315362d4b374e663492d7",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2958,10 +2958,111 @@
       "component": "twelvelabs-io/twelve-labs-claude-code-plugin@c9d4936dbee87ecfd4fb8c54f7369d9b83439f14",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/twelvelabs.md",
+          "target_sha256": "e41463221c6ab31d0292d2f3c76cdc07ced2202a97aee283a3450f048c46307a",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/provider_readiness.py",
+          "target_sha256": "6c27f980a9aa364a9a8bc10a5c24e16812a17a6774aab187467d91de1469a13f",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_http.py",
+          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/twelvelabs.py",
+          "target_sha256": "48637603726ac818dbaff89a1d1fe0db2d7378941507f1d49c511ebde251ea86",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/twelvelabs.py",
+          "target_sha256": "93e81f24022620d1a084d5e320533f315c9cdc62542c8c65fcc145c07e6d2cb2",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_twelvelabs.py",
+          "target_sha256": "fa973c28db756be61aa3822c789700847865e81c7224815720da4c3863402b58",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_twelvelabs_bounds.py",
+          "target_sha256": "0dc1f0fd80a8d815e5c93b1155fa9cbc1d4355813decf6923212b5dcfe4cabb2",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_client.py",
+          "target_sha256": "90722cbc65efbf463318a73214497a29ec3ad5cd751152441dcce5cd26d50ac0",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_jobs.py",
+          "target_sha256": "a3ca200bd1d1414bae946b24da4f7ee97846a932b366d26776391415b7e16d07",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_payloads.py",
+          "target_sha256": "b49ac16d9d6a270557e59cd28aa7ff6b5e357bd695e1e497dd8566f14f1e198c",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_results.py",
+          "target_sha256": "83a381bb4d9642a8ae6c022dbce5ab4a2750389ca7735cdd43ba683cdeacb619",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_routes.py",
+          "target_sha256": "f2ebf090e451874dc4d2d58adefa29f4934d7c696ace1e5fa4507e82c4733464",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/twelvelabs_validation.py",
+          "target_sha256": "a2582a93709a7091f17fee44c9bfc91bfd1b301add7bd012614013b61591dfad",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/search_provider_results.py",
+          "target_sha256": "fcef33ded175795d9310acea2ddb907f77524ae9b56770214eefa3ee1c6a3e3e",
+          "provenance": "Own shared privacy fix after fixed installedjourney exposed mixedpercent encoded credential echo; no foreignsourcebody copied/imported."
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.9.8",
+        "route": "integration-only via independently authored optional REST adapter",
+        "source_contract_receipt": "twelvelabs/source-contracts/receipt.json in fixed private evidence root",
+        "source_contract_receipt_sha256": "9cd5dc89d7f4a61c17fec9f8cf86a403d125ef79af9f6a9ef660a7c7744dbe84",
+        "source_contract_report_sha256": "b26c016aaf20db282e6b937b16982d01cb738879f4811be03b72c2509e5e8ba0",
+        "route_table_sha256": "cb0f0563f6e4326096180b4debaaa1dc159149e89cd582ec8780f473932ed378",
+        "mapped_files": 12,
+        "full_read_files": 14,
+        "full_read_lines": 2895,
+        "full_read_bytes": 87823,
+        "implementation_operations": 27,
+        "documented_external_tool_names": 24,
+        "external_mcp_discovery_verified": false,
+        "actual_provider_calls": 0,
+        "source_verified_truth": false,
+        "heldout_used": false,
+        "human_development_audit": "pending vrm-0e8.10.2",
+        "source_supplement_receipt_sha256": "ff74454ecadb7df9515a6139b4c2a1b0373f32e896bb50575b37b61a644191f1"
+      }
     },
     {
       "unit_key": "adj_research_eval",
@@ -3176,7 +3277,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -3368,7 +3469,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "6c7a26666e1730b773406d45b84d2a4bd4cc87bfa2273ecaf009bf94a0bbc478",
+          "target_sha256": "9c1fc9211d0e3fd5738b586cc2d9a27ae5d4023a1ec86ace70013b1e17b2bcb7",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3388,7 +3489,7 @@
         },
         {
           "target_path": "src/video_research_mcp/provider_readiness.py",
-          "target_sha256": "87feb260f2903bfc6f3e84563ac8dca7ab86556149085b95217fa4847444f999",
+          "target_sha256": "6c27f980a9aa364a9a8bc10a5c24e16812a17a6774aab187467d91de1469a13f",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3398,12 +3499,12 @@
         },
         {
           "target_path": "src/video_research_mcp/search_provider_results.py",
-          "target_sha256": "bb6400b713dfd784e223f4d5cf8fe2085393c16ec5528de08698fac630f13575",
+          "target_sha256": "fcef33ded175795d9310acea2ddb907f77524ae9b56770214eefa3ee1c6a3e3e",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -4320,7 +4421,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -4337,7 +4438,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "af833a329b6baa83767fefa78007c91e503ee6c694459d42c659497c7ed9e43e",
+          "target_sha256": "e3a167810c6d9ad40a8c28af1845071151897b659b4c6beb2c65e688661d0ccd",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -4429,7 +4530,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "7e7ed6da3d9a142a2fd6a49e465028752237d933cf3cd35ec155e87510d5d8b3",
+          "target_sha256": "a227424fdab5f0f7a7d305cc0e4d4c68d1814bbf8545e9b804f1a066feafe73e",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {

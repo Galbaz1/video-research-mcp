@@ -151,6 +151,7 @@ class ServerConfig(BaseModel):
     vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
     text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
     search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
+    twelvelabs_enabled: bool = Field(default=False)
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -291,6 +292,7 @@ class ServerConfig(BaseModel):
             vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
             text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
             search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
+            twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")

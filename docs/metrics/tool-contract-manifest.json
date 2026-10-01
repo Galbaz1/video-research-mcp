@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-01T02:29:46.096072+00:00",
-  "tool_count": 70,
+  "generated_at": "2026-10-01T03:15:34.474713+00:00",
+  "tool_count": 71,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -9276,6 +9276,751 @@
               "execution"
             ],
             "title": "TextFailure",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "twelvelabs_call",
+      "description": "Plan or perform one bounded TwelveLabs asset/index/search/embed/entity/analysis operation.\n\nDisabled by default. Dry plans read only selected fenced local media and make\nno DNS, provider or database calls. Execution requires explicit BYOK/network\nauthority; media disclosure and deletion/cancellation have separate grants.\nEach call makes at most one HTTP request with no retries or automatic polling.\nReusing an identical job_id reads the attested local receipt without resending.\nRemote readiness, exact clip seconds and IDs stay provider observations.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "One current hosted REST operation with explicit IDs, parameters, BYOK enablement and separate submission/media/destruction grants",
+            "properties": {
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "timeout_seconds": {
+                "default": 120,
+                "exclusiveMinimum": 0,
+                "maximum": 120,
+                "type": "number"
+              },
+              "max_response_bytes": {
+                "default": 262144,
+                "maximum": 262144,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_text_bytes": {
+                "default": 131072,
+                "maximum": 131072,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "operation": {
+                "enum": [
+                  "asset_create",
+                  "asset_get",
+                  "asset_list",
+                  "asset_delete",
+                  "index_create",
+                  "index_list",
+                  "index_delete",
+                  "indexed_asset_create",
+                  "indexed_asset_get",
+                  "indexed_asset_list",
+                  "indexed_asset_delete",
+                  "search_text_image_composed_entity",
+                  "embedding_task_create",
+                  "embedding_task_get",
+                  "embedding_task_list",
+                  "entity_collection_create",
+                  "entity_collection_list",
+                  "entity_collection_delete",
+                  "entity_create",
+                  "entity_list",
+                  "entity_delete",
+                  "analysis_sync",
+                  "analysis_task_create",
+                  "analysis_task_get",
+                  "analysis_task_list",
+                  "analysis_task_cancel",
+                  "analysis_task_delete"
+                ],
+                "type": "string"
+              },
+              "ids": {
+                "additionalProperties": {
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                  "type": "string"
+                },
+                "default": {},
+                "maxProperties": 6,
+                "propertyNames": {
+                  "enum": [
+                    "asset_id",
+                    "index_id",
+                    "indexed_asset_id",
+                    "task_id",
+                    "collection_id",
+                    "entity_id"
+                  ]
+                },
+                "type": "object"
+              },
+              "parameters": {
+                "additionalProperties": {},
+                "default": {},
+                "maxProperties": 64,
+                "type": "object"
+              },
+              "local_file": {
+                "anyOf": [
+                  {
+                    "maxLength": 4096,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "expected_source_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "max_media_bytes": {
+                "default": 8388608,
+                "maximum": 8388608,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "authorize_media_transfer": {
+                "default": false,
+                "type": "boolean"
+              },
+              "authorize_destruction": {
+                "default": false,
+                "type": "boolean"
+              },
+              "job_id": {
+                "anyOf": [
+                  {
+                    "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "ready_asset_job_id": {
+                "anyOf": [
+                  {
+                    "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "operation"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Keep successful transport, remote task status and complete generation separate.",
+            "properties": {
+              "provider": {
+                "const": "twelvelabs",
+                "default": "twelvelabs",
+                "title": "Provider",
+                "type": "string"
+              },
+              "operation": {
+                "enum": [
+                  "asset_create",
+                  "asset_get",
+                  "asset_list",
+                  "asset_delete",
+                  "index_create",
+                  "index_list",
+                  "index_delete",
+                  "indexed_asset_create",
+                  "indexed_asset_get",
+                  "indexed_asset_list",
+                  "indexed_asset_delete",
+                  "search_text_image_composed_entity",
+                  "embedding_task_create",
+                  "embedding_task_get",
+                  "embedding_task_list",
+                  "entity_collection_create",
+                  "entity_collection_list",
+                  "entity_collection_delete",
+                  "entity_create",
+                  "entity_list",
+                  "entity_delete",
+                  "analysis_sync",
+                  "analysis_task_create",
+                  "analysis_task_get",
+                  "analysis_task_list",
+                  "analysis_task_cancel",
+                  "analysis_task_delete"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete",
+                  "partial",
+                  "processing",
+                  "ready",
+                  "failed",
+                  "canceled",
+                  "unknown"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "request_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "ids": {
+                "additionalProperties": {
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                  "type": "string"
+                },
+                "default": {},
+                "propertyNames": {
+                  "enum": [
+                    "asset_id",
+                    "index_id",
+                    "indexed_asset_id",
+                    "task_id",
+                    "collection_id",
+                    "entity_id"
+                  ]
+                },
+                "title": "Ids",
+                "type": "object"
+              },
+              "provider_status": {
+                "anyOf": [
+                  {
+                    "maxLength": 64,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Provider Status"
+              },
+              "provider_data": {
+                "anyOf": [
+                  {
+                    "additionalProperties": {},
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Provider Data"
+              },
+              "provider_response_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Provider Response Sha256"
+              },
+              "observed_at": {
+                "title": "Observed At",
+                "type": "string"
+              },
+              "clips": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Exact returned seconds and provider IDs; no source-byte or factual attestation.",
+                  "properties": {
+                    "index_id": {
+                      "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                      "title": "Index Id",
+                      "type": "string"
+                    },
+                    "video_id": {
+                      "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                      "title": "Video Id",
+                      "type": "string"
+                    },
+                    "start": {
+                      "minimum": 0,
+                      "title": "Start",
+                      "type": "number"
+                    },
+                    "end": {
+                      "exclusiveMinimum": 0,
+                      "title": "End",
+                      "type": "number"
+                    },
+                    "rank": {
+                      "anyOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null,
+                      "title": "Rank"
+                    },
+                    "provider_reference": {
+                      "title": "Provider Reference",
+                      "type": "string"
+                    },
+                    "source_reference_origin": {
+                      "const": "provider_identifiers_and_offsets",
+                      "default": "provider_identifiers_and_offsets",
+                      "title": "Source Reference Origin",
+                      "type": "string"
+                    },
+                    "source_bytes_verified": {
+                      "const": false,
+                      "default": false,
+                      "title": "Source Bytes Verified",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "index_id",
+                    "video_id",
+                    "start",
+                    "end",
+                    "provider_reference"
+                  ],
+                  "title": "ProviderClip",
+                  "type": "object"
+                },
+                "maxItems": 50,
+                "title": "Clips",
+                "type": "array"
+              },
+              "rejections": {
+                "default": [],
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "maxItems": 50,
+                "title": "Rejections",
+                "type": "array"
+              },
+              "media": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Media"
+              },
+              "enabled": {
+                "title": "Enabled",
+                "type": "boolean"
+              },
+              "job_receipt": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Job Receipt"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              },
+              "source_content_role": {
+                "const": "data",
+                "default": "data",
+                "title": "Source Content Role",
+                "type": "string"
+              },
+              "external_mcp_discovery_verified": {
+                "const": false,
+                "default": false,
+                "title": "External Mcp Discovery Verified",
+                "type": "boolean"
+              },
+              "source_verified_truth": {
+                "const": false,
+                "default": false,
+                "title": "Source Verified Truth",
+                "type": "boolean"
+              },
+              "entity_identity_verified": {
+                "const": false,
+                "default": false,
+                "title": "Entity Identity Verified",
+                "type": "boolean"
+              },
+              "factual_success": {
+                "const": false,
+                "default": false,
+                "title": "Factual Success",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "request_sha256",
+              "observed_at",
+              "enabled",
+              "execution"
+            ],
+            "title": "TwelveLabsResponse",
+            "type": "object"
+          },
+          {
+            "description": "Preserve failed and interrupted attempts without exposing upstream secrets.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "provider": {
+                "const": "twelvelabs",
+                "default": "twelvelabs",
+                "title": "Provider",
+                "type": "string"
+              },
+              "operation": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "asset_create",
+                      "asset_get",
+                      "asset_list",
+                      "asset_delete",
+                      "index_create",
+                      "index_list",
+                      "index_delete",
+                      "indexed_asset_create",
+                      "indexed_asset_get",
+                      "indexed_asset_list",
+                      "indexed_asset_delete",
+                      "search_text_image_composed_entity",
+                      "embedding_task_create",
+                      "embedding_task_get",
+                      "embedding_task_list",
+                      "entity_collection_create",
+                      "entity_collection_list",
+                      "entity_collection_delete",
+                      "entity_create",
+                      "entity_list",
+                      "entity_delete",
+                      "analysis_sync",
+                      "analysis_task_create",
+                      "analysis_task_get",
+                      "analysis_task_list",
+                      "analysis_task_cancel",
+                      "analysis_task_delete"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Operation"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Request Sha256"
+              },
+              "ids": {
+                "additionalProperties": {
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$",
+                  "type": "string"
+                },
+                "default": {},
+                "propertyNames": {
+                  "enum": [
+                    "asset_id",
+                    "index_id",
+                    "indexed_asset_id",
+                    "task_id",
+                    "collection_id",
+                    "entity_id"
+                  ]
+                },
+                "title": "Ids",
+                "type": "object"
+              },
+              "media": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Media"
+              },
+              "job_receipt": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Job Receipt"
+              },
+              "execution": {
+                "additionalProperties": false,
+                "description": "Record attempts and reservations without inventing wire or currency usage.",
+                "properties": {
+                  "calls": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Calls",
+                    "type": "array"
+                  },
+                  "provider_requests_attempted": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Provider Requests Attempted",
+                    "type": "integer"
+                  },
+                  "direct_requests_reserved": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Direct Requests Reserved",
+                    "type": "integer"
+                  },
+                  "physical_requests": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 0,
+                    "title": "Physical Requests"
+                  },
+                  "physical_request_upper_bound": {
+                    "default": 0,
+                    "minimum": 0,
+                    "title": "Physical Request Upper Bound",
+                    "type": "integer"
+                  },
+                  "cost_usd": {
+                    "default": null,
+                    "title": "Cost Usd",
+                    "type": "null"
+                  },
+                  "charge_bound_verified": {
+                    "const": false,
+                    "default": false,
+                    "title": "Charge Bound Verified",
+                    "type": "boolean"
+                  },
+                  "retries": {
+                    "const": 0,
+                    "default": 0,
+                    "title": "Retries",
+                    "type": "integer"
+                  },
+                  "cache_used": {
+                    "const": false,
+                    "default": false,
+                    "title": "Cache Used",
+                    "type": "boolean"
+                  }
+                },
+                "title": "SearchExecution",
+                "type": "object"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "execution"
+            ],
+            "title": "TwelveLabsError",
             "type": "object"
           }
         ],

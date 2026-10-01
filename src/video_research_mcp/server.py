@@ -37,6 +37,7 @@ from .tools.media_perceive import media_perceive_server
 from .tools.media_scenes import media_scenes_server
 from .tools.text_provider import text_provider_server
 from .tools.search_provider import search_provider_server
+from .tools.twelvelabs import twelvelabs_server
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +88,7 @@ app.mount(media_perceive_server)
 app.mount(media_scenes_server)
 app.mount(text_provider_server)
 app.mount(search_provider_server)
+app.mount(twelvelabs_server)
 
 
 def main() -> None:

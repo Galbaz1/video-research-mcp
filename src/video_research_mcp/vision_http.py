@@ -194,7 +194,7 @@ async def _exchange(
     url: str, *, headers: dict[str, str], content: bytes, method: str, local: bool = False,
 ) -> tuple[int, bytes]:
     """Validate and perform one owned exchange under the overall deadline."""
-    if type(local) is not bool or method not in {"GET", "POST"} or not isinstance(content, bytes):
+    if type(local) is not bool or method not in {"GET", "POST", "DELETE"} or not isinstance(content, bytes):
         raise ValueError("Vision HTTP requires GET/POST, byte content and a boolean local flag")
     if len(content) > MAX_REQUEST_BYTES:
         raise ValueError("Vision HTTP request exceeds the byte limit")

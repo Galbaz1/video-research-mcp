@@ -66,6 +66,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
     assert len(data["dependency_packages"]) == 116
     assert {u["unit_key"] for u in data["units"] if u["adoption"] == "adopted"} == {
         "qwen_reverse_image",
+        "direct.twelvelabs",
         "adj_research_eval",
         "adj_video_eval",
         "direct.security",

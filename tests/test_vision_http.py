@@ -83,6 +83,17 @@ async def test_public_destination_is_pinned_with_original_host_and_tls_name(netw
     assert network["stream"].closed
 
 
+async def test_delete_uses_same_pinned_peer_and_retains_empty_204(network):
+    """GIVEN explicit destructive authority upstream WHEN DELETE transmits THEN transport stays bounded."""
+    from video_research_mcp.vision_http import exchange
+
+    network["stream"].response = b"HTTP/1.1 204 No Content\r\n\r\n"
+    assert await exchange("https://api.twelvelabs.io/v1.3/assets/assetA", headers={"x-api-key": "mock-key"},
+                          content=b"", method="DELETE") == (204, b"")
+    assert b"".join(network["stream"].writes).startswith(b"DELETE /v1.3/assets/assetA HTTP/1.1\r\n")
+    assert network["connections"] == [("8.8.8.8", 443)] and network["stream"].closed
+
+
 @pytest.mark.parametrize("answers", [[], ["127.0.0.1"], ["10.0.0.1"], ["169.254.169.254"],
                                     ["8.8.8.8", "::1"], ["8.8.8.8", "224.0.0.1"]])
 async def test_all_dns_answers_must_be_public_before_credentials_are_sent(network, answers):

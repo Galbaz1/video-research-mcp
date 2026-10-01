@@ -17,6 +17,11 @@ def optional_adapter_profiles(env: dict) -> dict:
     from video_research_mcp.models.text_provider import TextBackend
 
     result = {"text": [], "search": [], "live_verified": False, "run_authority": "not-granted"}
+    enabled = env.get("TWELVELABS_ENABLED", "").lower() in {"1", "true", "yes"}
+    available = present(env, "TWELVELABS_API_KEY")
+    result["twelvelabs"] = {"provider": "twelvelabs", "credential_present": available,
+        "state": "disabled" if not enabled else "configured-but-unverified" if available else "missing",
+        "external_mcp_discovery_verified": False}
     try:
         profiles = json.loads(env.get("TEXT_BACKENDS_JSON", "{}"))
         if not isinstance(profiles, dict) or len(profiles) > 32:
@@ -48,4 +53,3 @@ def optional_adapter_profiles(env: dict) -> dict:
     except (TypeError, ValueError):
         result["search_config_invalid"] = True
     return result
-
