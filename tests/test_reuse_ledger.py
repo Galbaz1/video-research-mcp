@@ -89,6 +89,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "direct.image_vision",
         "qwen_scene_assets",
         "qwen_av_perception",
+        "own.grounded-research-routing",
+        "adj_research_workflow",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

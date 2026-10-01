@@ -19,6 +19,9 @@ class Finding(BaseModel):
     supporting: list[str] = Field(default_factory=list)
     contradicting: list[str] = Field(default_factory=list)
     reasoning: str = ""
+    proposed_evidence_tier: str | None = None
+    evidence_authority: str = "model_proposal"
+    support_status: str = "not_verified"
 
 
 class FindingsContainer(BaseModel):
@@ -65,7 +68,7 @@ class Phase(BaseModel):
     name: str
     description: str
     tasks: list[str] = Field(default_factory=list)
-    recommended_model: str = "haiku"
+    recommended_model: str = "configured"
 
 
 class ResearchPlan(BaseModel):
@@ -81,6 +84,10 @@ class ResearchPlan(BaseModel):
     phases: list[Phase] = Field(default_factory=list)
     recommended_models: dict[str, str] = Field(default_factory=dict)
     task_decomposition: list[str] = Field(default_factory=list)
+    subquestions: list[str] = Field(default_factory=list)
+    source_rules: dict = Field(default_factory=dict)
+    stop_conditions: list[str] = Field(default_factory=list)
+    execution_budget: dict = Field(default_factory=dict)
 
 
 class EvidenceAssessment(BaseModel):
@@ -97,3 +104,7 @@ class EvidenceAssessment(BaseModel):
     supporting: list[str] = Field(default_factory=list)
     contradicting: list[str] = Field(default_factory=list)
     reasoning: str = ""
+    proposed_tier: str | None = None
+    evidence_authority: str = "model_proposal"
+    source_access: str = "not_observed"
+    factual_success: bool = False

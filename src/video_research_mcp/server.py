@@ -19,6 +19,7 @@ from .tools.research import (
     _ensure_document_tool,
     _ensure_web_tools,
     _ensure_academic_tools,
+    _ensure_execution_tool,
 )
 from .tools.content import content_server, _ensure_batch_tool
 from .tools.search import search_server
@@ -66,6 +67,7 @@ app.mount(video_windows_server)
 _ensure_document_tool()  # register research_document on research_server
 _ensure_web_tools()  # register Deep Research tools on research_server
 _ensure_academic_tools()  # register Semantic Scholar tools on research_server
+_ensure_execution_tool()
 app.mount(research_server)
 _ensure_batch_tool()  # register content_batch_analyze on content_server
 app.mount(content_server)

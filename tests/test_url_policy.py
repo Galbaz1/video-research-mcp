@@ -13,6 +13,7 @@ from video_research_mcp.url_policy import (
     UrlPolicyError,
     _verify_peer_ip,
     download_checked,
+    checked_response,
     validate_url,
 )
 
@@ -184,6 +185,24 @@ class TestValidateUrl:
         """DNS resolution failure is blocked."""
         with pytest.raises(UrlPolicyError, match="DNS resolution failed"):
             await validate_url("https://nonexistent.example.invalid/doc.pdf")
+
+
+async def test_research_allowlist_blocks_initial_host_before_dns():
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock) as dns:
+        with pytest.raises(UrlPolicyError, match="allowlist"):
+            async with checked_response("https://blocked.example/file", allowed_hosts={"allowed.example"}):
+                pytest.fail("Unpermitted host opened")
+        dns.assert_not_called()
+
+
+async def test_research_allowlist_blocks_redirect_before_dns_and_http():
+    response = _FakeResponse([], status_code=302, headers={"location": "https://blocked.example/file"})
+    client = _FakeClient(response)
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=_mock_getaddrinfo("93.184.216.34")) as dns, patch("httpx.AsyncClient", return_value=client):
+        with pytest.raises(UrlPolicyError, match="allowlist"):
+            async with checked_response("https://allowed.example/file", allowed_hosts={"allowed.example"}):
+                pytest.fail("Unpermitted redirect opened")
+    assert client.called_urls == ["https://allowed.example/file"] and dns.call_count == 1
 
 
 class TestVerifyPeerIp:

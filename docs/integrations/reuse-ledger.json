@@ -585,13 +585,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -720,7 +720,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -922,7 +922,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -952,7 +952,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9c3808d782227659dac691a8cc0846107eada42662c3d2a129801ea1104333e7",
+          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1080,7 +1080,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9c3808d782227659dac691a8cc0846107eada42662c3d2a129801ea1104333e7",
+          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1135,7 +1135,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1200,7 +1200,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1225,7 +1225,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         }
       ]
@@ -1726,7 +1726,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1757,7 +1757,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "015d2b0af8f5463bd98d1fe5af46c7f4570494a77331fafe463d7af9f02eddb9",
+          "target_sha256": "1cd1a0c8d3e79f1e20b13c7a45b0dcbbe8a7a2264d961f77d35a912a30675eaa",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1841,13 +1841,13 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1997,7 +1997,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2324,7 +2324,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2344,7 +2344,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2520,7 +2520,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2550,7 +2550,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2585,7 +2585,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9c3808d782227659dac691a8cc0846107eada42662c3d2a129801ea1104333e7",
+          "target_sha256": "4f3ca3cede2046be730be2e62e8c058a89ca5c74d3f589d4c77c1da76d5b0868",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2760,7 +2760,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "015d2b0af8f5463bd98d1fe5af46c7f4570494a77331fafe463d7af9f02eddb9",
+          "target_sha256": "1cd1a0c8d3e79f1e20b13c7a45b0dcbbe8a7a2264d961f77d35a912a30675eaa",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -2931,7 +2931,7 @@
         },
         {
           "target_path": "src/video_research_mcp/evidence.py",
-          "target_sha256": "cfa9c501011d81a817c4a3a3f4867093b32030b0a34c533e9f52850cc15156b9",
+          "target_sha256": "94fb7d34f7351a804bb07e7b7ce9cb37f746bf3c0382afd2e245bed2d8cf9307",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -2951,7 +2951,7 @@
         },
         {
           "target_path": "commands/explain-video.md",
-          "target_sha256": "a713ec68f0b78a5ac459333961e90e2f0774f12210732b0b09e9d3b5b4fc4ca5",
+          "target_sha256": "fbbf33182ac691c0a5747aae3bcb7f2cf15a6edab6757d88e8b93c04e7df7e7e",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         }
       ]
@@ -2974,10 +2974,209 @@
       "component": "assafelovic/gpt-researcher@0957c301ed06c2a5857b834358c7227c739041d4",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "docs/integrations/grounded-research.md",
+          "target_sha256": "e944644d61a8d37992546a9bf50e15c3cf25ea5f05fb891df445ef999b6bcecf",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/research.py",
+          "target_sha256": "4302db22ae38c68bcd56a5f681bc927e6d7d4f3903a4454ac8f6a4547b396cc5",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/research_execution.py",
+          "target_sha256": "5e29d2bc4f14712284c661afa7bebf1516b0cf76f281dbe94b0cb017b718c64f",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/prompts/research.py",
+          "target_sha256": "d3fdff694505f4b194889d1e9f07aefd47eab81526883db31e87b3fe1451acef",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_curate.py",
+          "target_sha256": "29a43d8760ba316010483d16cafbc7d7ef6fed02c304b9136aedc9c3ef0dfe8d",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_execution_provider.py",
+          "target_sha256": "9e2c18a98d2960cf7ccaf535ef97139171550aac97ec60e50d8caabf58374e98",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_recovery.py",
+          "target_sha256": "3870ce1f9e771feb26009379be3c11b70ee3c9962b0c76f9a685c17a04475bf6",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_sources.py",
+          "target_sha256": "39a3e5779f49a2efb82cc43c35022049b1b201eced5716adbfd3902541488fd4",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_workflow.py",
+          "target_sha256": "b6ce898a370f4d0309411bf3e8e92b7cc77d31f9bf22325a428d9c56b673ec02",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/research.py",
+          "target_sha256": "c7f6030dcf41cbe56a34f1f3b35eb6c556d7a38fa74d058afd702aa4c1c20497",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/research_execute.py",
+          "target_sha256": "8efa34099dc460f3c7ccf8a524b874554d11b72c73c56e35b3b83c22fff704d4",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/url_policy.py",
+          "target_sha256": "1cd1a0c8d3e79f1e20b13c7a45b0dcbbe8a7a2264d961f77d35a912a30675eaa",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_execution.py",
+          "target_sha256": "aba7180236f2a3016df2ba749a815be41ca13973bed908656bc6ddcda4e4233a",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_sources.py",
+          "target_sha256": "d3ede81219724b4708972cdc5faa445d46fd4c43fcfe4cf99aca431e69f5101b",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_tools.py",
+          "target_sha256": "4d1ab5f11ad6725f6f29fa265aa863bd8ada7e5b4dd827cb34dbf01e40f358c3",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_url_policy.py",
+          "target_sha256": "5fc1da9c9b9b91cd6340a269e5af953c0f61f701ccc627c044cf0d9da43c149d",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/evidence.py",
+          "target_sha256": "94fb7d34f7351a804bb07e7b7ce9cb37f746bf3c0382afd2e245bed2d8cf9307",
+          "provenance": "Owner F1 repair uses existing nonblocking own-source regular-file reader at reused evidence validation sinks; no foreign body/runtime copied/imported."
+        }
+      ],
+      "source_file_receipts": [
+        {
+          "path": "gpt_researcher/skills/deep_research.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "260fe19e0c6d5b5252b1901cb1c2f0ef9fe2a849a330d9f7eac34b1b1d0c892c",
+          "git_blob_sha1": "9866fc7d5fc2a2a16e730b37751b8f90d9462aa9",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/skills/deep_research.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "gpt_researcher/skills/browser.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "22646b1cf8cf0a9578e9b431e80aa7b51a12751c609433ab139eb3f8f094f2fc",
+          "git_blob_sha1": "27d92d64fdf2533c6bab33c923dd2fcd0e88bb64",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/skills/browser.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "gpt_researcher/skills/curator.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "0f3f2658a8185f3401eb5c587a9325f8c4d524389954c1605cd9dd66bf8a0f01",
+          "git_blob_sha1": "fd2be9f7f9b8f591a497d50e11fc5f6b2aaeafee",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/skills/curator.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "gpt_researcher/skills/context_manager.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "8403bab89ab159af94622cd04d181b43036920a53cdaf30b003ef21ca5bd22ba",
+          "git_blob_sha1": "67d873d5f79fe386247e672d387a6843f65f53f0",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/skills/context_manager.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "multi_agents/agents/plan_review.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "fa106adf52a3fa6afe77302d688e7963bb658ba4f447d07bdac6d4ebe872ff05",
+          "git_blob_sha1": "c83d7de0eed854a0637f83a5c2df71853ea34808",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/multi_agents/agents/plan_review.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "multi_agents/agents/draft_review.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "5f1a741839d9dfb8a0872101a2bc4450b7b7d92c78252e201235837e82b56c30",
+          "git_blob_sha1": "36a165fdacd1d77719a876548247345c56cb0f6d",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/multi_agents/agents/draft_review.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "multi_agents/agents/fact_review.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "5369d9cddcebffffc8f44c188faa73cb6037570dc7ddeef39fd1f38074328a43",
+          "git_blob_sha1": "2947398d6e579e03d80aaaa7fae9e88afaf2854c",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/multi_agents/agents/fact_review.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "multi_agents/agents/researcher.py",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "2d13c15df77bba7d61fa70a988aaa1f4cc6ca2a86fad0eff4a6ec6786e9b6eeb",
+          "git_blob_sha1": "c383bc67b026fdeeb8024ef27b163bad7f2a4e12",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/multi_agents/agents/researcher.py",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full body"
+        },
+        {
+          "path": "LICENSE",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "git_blob_sha1": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/LICENSE",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full grant or metadata text"
+        },
+        {
+          "path": "pyproject.toml",
+          "revision": "0957c301ed06c2a5857b834358c7227c739041d4",
+          "sha256": "53b8d59bb05e5e1ec854703b6e487ababaeab53d49f0a25a3e549947312dfcd6",
+          "git_blob_sha1": "037171e623b822b3e2282dbf9545b033e7887614",
+          "source_url": "https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/pyproject.toml",
+          "grant": "Apache-2.0 root grant; conflicting MIT metadata is not the selected grant",
+          "permitted_route": "independent-implementation",
+          "read_depth": "full grant or metadata text"
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.1",
+        "source_contract_report_sha256": "67bfc3242c9c8d7c2eb16e645d4e2f0de9f6c60f59ace821b0b45f996fb48ba4",
+        "source_read_scope": "13 full mapped bodies plus primary typed SDK/HTTP contract supplement; no foreign body/runtime adopted",
+        "acceptance_scope": "bounded offline contracts; provider semantic truth, physical wire charges, human/heldout comparison and release remain separate"
+      }
     },
     {
       "unit_key": "adj_provider_adapters",
@@ -3713,7 +3912,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "b9bd4193603bbabbe01284ab5602fb43e7da7796d134c6f2a278f6f1fabc54e4",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3730,7 +3929,7 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "2a90b3cfcce494399770ae64cbc2687c24a86808d781a8f206101ad4ef92366f",
+          "target_sha256": "76dbf100e577a194d6af53e3844f52efe0957a218519d8db9a375c2ba6390cd4",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -3761,10 +3960,179 @@
       "component": "Galbaz1/video-research-mcp@a3d75f6ab87bd893c7d167394fb5bace717f23ec",
       "audited_reuse_mode": "adapt",
       "permitted_route": "own-source",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "agents/content-to-video.md",
+          "target_sha256": "8e108f524c33be26b45533f920b5da8b008dc5089c86f283e5f7b47bcab1ac30",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "commands/explain-video.md",
+          "target_sha256": "fbbf33182ac691c0a5747aae3bcb7f2cf15a6edab6757d88e8b93c04e7df7e7e",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "docs/integrations/grounded-research.md",
+          "target_sha256": "e944644d61a8d37992546a9bf50e15c3cf25ea5f05fb891df445ef999b6bcecf",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/research.py",
+          "target_sha256": "4302db22ae38c68bcd56a5f681bc927e6d7d4f3903a4454ac8f6a4547b396cc5",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/research_execution.py",
+          "target_sha256": "5e29d2bc4f14712284c661afa7bebf1516b0cf76f281dbe94b0cb017b718c64f",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/prompts/research.py",
+          "target_sha256": "d3fdff694505f4b194889d1e9f07aefd47eab81526883db31e87b3fe1451acef",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_curate.py",
+          "target_sha256": "29a43d8760ba316010483d16cafbc7d7ef6fed02c304b9136aedc9c3ef0dfe8d",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_execution_provider.py",
+          "target_sha256": "9e2c18a98d2960cf7ccaf535ef97139171550aac97ec60e50d8caabf58374e98",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_recovery.py",
+          "target_sha256": "3870ce1f9e771feb26009379be3c11b70ee3c9962b0c76f9a685c17a04475bf6",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_sources.py",
+          "target_sha256": "39a3e5779f49a2efb82cc43c35022049b1b201eced5716adbfd3902541488fd4",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/research_workflow.py",
+          "target_sha256": "b6ce898a370f4d0309411bf3e8e92b7cc77d31f9bf22325a428d9c56b673ec02",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "586cc00b6e274da23ffd5affd92b4d93282be2c0ac69c1c226bac4a7f31e26b1",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/research.py",
+          "target_sha256": "c7f6030dcf41cbe56a34f1f3b35eb6c556d7a38fa74d058afd702aa4c1c20497",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/research_execute.py",
+          "target_sha256": "8efa34099dc460f3c7ccf8a524b874554d11b72c73c56e35b3b83c22fff704d4",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/url_policy.py",
+          "target_sha256": "1cd1a0c8d3e79f1e20b13c7a45b0dcbbe8a7a2264d961f77d35a912a30675eaa",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_execution.py",
+          "target_sha256": "aba7180236f2a3016df2ba749a815be41ca13973bed908656bc6ddcda4e4233a",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_sources.py",
+          "target_sha256": "d3ede81219724b4708972cdc5faa445d46fd4c43fcfe4cf99aca431e69f5101b",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_research_tools.py",
+          "target_sha256": "4d1ab5f11ad6725f6f29fa265aa863bd8ada7e5b4dd827cb34dbf01e40f358c3",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "tests/test_url_policy.py",
+          "target_sha256": "5fc1da9c9b9b91cd6340a269e5af953c0f61f701ccc627c044cf0d9da43c149d",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+        },
+        {
+          "target_path": "src/video_research_mcp/evidence.py",
+          "target_sha256": "94fb7d34f7351a804bb07e7b7ce9cb37f746bf3c0382afd2e245bed2d8cf9307",
+          "provenance": "Owner F1 repair uses existing nonblocking own-source regular-file reader at reused evidence validation sinks; no foreign body/runtime copied/imported."
+        }
+      ],
+      "source_file_receipts": [
+        {
+          "path": "src/video_research_mcp/tools/research.py",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "22e55fc15beab368562efccc0d3d1d2786618422b9ff3378061bdff39d6f6575",
+          "git_blob_sha1": "c06c973388f27b463250901449b1de4cff27b1de",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/src/video_research_mcp/tools/research.py",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full body"
+        },
+        {
+          "path": "src/video_research_mcp/tools/research_web.py",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "95a90eca123a739ca51fe48fff51cda06f1a464a6c588b7082c5b7dad367f8d5",
+          "git_blob_sha1": "e0cdd4f44edc8685c2eda09ff8f1eec05399a16b",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/src/video_research_mcp/tools/research_web.py",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full body"
+        },
+        {
+          "path": "commands/explain-video.md",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "eff065c7ee24b5170f4178d98f8bca652172a159df7670e08d63e132386ba876",
+          "git_blob_sha1": "e697e76d09b5258ce451c9062b9e75b9a2d74731",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/commands/explain-video.md",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full body"
+        },
+        {
+          "path": "agents/content-to-video.md",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "e0d7cabc041617557ac25c5dde668bc707853a4f1ef354937ca0400318b7c1a6",
+          "git_blob_sha1": "4ec0dea0bc52bbaff158dfcf5741f4d5f125e47c",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/agents/content-to-video.md",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full body"
+        },
+        {
+          "path": "src/video_research_mcp/models/research_document.py",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "4958b30bfe1a5b912292a361fc2f1a094e799dee62f820a7aaf80348a7cad879",
+          "git_blob_sha1": "182d49b7e7a667ffed7a8b2976cbf79d2049d6cd",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/src/video_research_mcp/models/research_document.py",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full body"
+        },
+        {
+          "path": "LICENSE",
+          "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+          "sha256": "fe21c170a8ca250f6c9869357fe0eda2df4995fe0e44f50af9a000452970e76e",
+          "git_blob_sha1": "c672b2afb0f3a1e08c15e390cdf1fc881ec15019",
+          "source_url": "https://github.com/Galbaz1/video-research-mcp/blob/a3d75f6ab87bd893c7d167394fb5bace717f23ec/LICENSE",
+          "grant": "MIT own source",
+          "permitted_route": "own-source",
+          "read_depth": "full grant or metadata text"
+        }
+      ],
+      "implementation_evidence": {
+        "bead_id": "vrm-0e8.5.1",
+        "source_contract_report_sha256": "67bfc3242c9c8d7c2eb16e645d4e2f0de9f6c60f59ace821b0b45f996fb48ba4",
+        "source_read_scope": "13 full mapped bodies plus primary typed SDK/HTTP contract supplement; no foreign body/runtime adopted",
+        "acceptance_scope": "bounded offline contracts; provider semantic truth, physical wire charges, human/heldout comparison and release remain separate"
+      }
     }
   ],
   "blocks": [

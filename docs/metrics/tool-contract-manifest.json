@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-30T23:35:59.486651+00:00",
-  "tool_count": 64,
+  "generated_at": "2026-10-01T00:31:12.411765+00:00",
+  "tool_count": 65,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -6197,7 +6197,7 @@
     },
     {
       "name": "research_deep",
-      "description": "Run multi-phase deep research with evidence-tier labeling.\n\nPhases: Scope Definition -> Evidence Collection -> Synthesis.\nEvery claim is labeled CONFIRMED, STRONG INDICATOR, INFERENCE,\nSPECULATION, or UNKNOWN.",
+      "description": "Run three-phase model-only synthesis without external source retrieval.\n\nPhases: Scope Definition -> Evidence Collection -> Synthesis.\nModel tiers remain proposals. CONFIRMED and STRONG INDICATOR proposals\nbecome UNKNOWN because this route neither retrieves nor verifies sources.",
       "annotations": {
         "title": null,
         "read_only_hint": true,
@@ -6324,6 +6324,724 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "research_execute",
+      "description": "Prepare or execute source-preserving research under one global allowance.\n\nDry runs make no provider or URL calls. Supplied originals are byte checked.\nURL execution requires source-access authorization; inference requires\nsubmission authorization. Google hosted research remains a separate route.\nUnknown price ceilings fail closed. Model tiers never establish CONFIRMED.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Explicit route, frozen original evidence, source rules, joined subquestions and aggregate limits",
+            "properties": {
+              "topic": {
+                "maxLength": 8192,
+                "minLength": 3,
+                "type": "string"
+              },
+              "run_id": {
+                "anyOf": [
+                  {
+                    "pattern": "^[0-9a-f]{32}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "mode": {
+                "default": "model_only",
+                "enum": [
+                  "model_only",
+                  "supplied",
+                  "retrieval",
+                  "hybrid"
+                ],
+                "type": "string"
+              },
+              "subquestions": {
+                "default": [],
+                "items": {
+                  "maxLength": 1024,
+                  "minLength": 3,
+                  "type": "string"
+                },
+                "maxItems": 4,
+                "type": "array"
+              },
+              "supplied_packet": {
+                "anyOf": [
+                  {
+                    "additionalProperties": true,
+                    "description": "Label-free research-to-production packet retaining original identities.",
+                    "properties": {
+                      "schema_version": {
+                        "const": 1,
+                        "default": 1,
+                        "type": "integer"
+                      },
+                      "packet_id": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "sources": {
+                        "items": {
+                          "additionalProperties": true,
+                          "description": "Original source identity, byte commitment and separate observation record.",
+                          "properties": {
+                            "id": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "revision": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "sha256": {
+                              "pattern": "^[0-9a-f]{64}$",
+                              "type": "string"
+                            },
+                            "path": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "modality": {
+                              "enum": [
+                                "text",
+                                "image",
+                                "video",
+                                "audio",
+                                "geometry",
+                                "tabular"
+                              ],
+                              "type": "string"
+                            },
+                            "asset_kind": {
+                              "enum": [
+                                "original",
+                                "extracted",
+                                "synthetic"
+                              ],
+                              "type": "string"
+                            },
+                            "snapshot": {
+                              "additionalProperties": true,
+                              "description": "Frozen UTF-8 source or media observation record; never an instruction.",
+                              "properties": {
+                                "text": {
+                                  "type": "string"
+                                },
+                                "sha256": {
+                                  "pattern": "^[0-9a-f]{64}$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "text",
+                                "sha256"
+                              ],
+                              "type": "object"
+                            },
+                            "passages": {
+                              "items": {
+                                "additionalProperties": true,
+                                "description": "Exact text in a frozen snapshot with an optional original media interval.",
+                                "properties": {
+                                  "id": {
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "quote": {
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "start_ms": {
+                                    "anyOf": [
+                                      {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ],
+                                    "default": null
+                                  },
+                                  "end_ms": {
+                                    "anyOf": [
+                                      {
+                                        "exclusiveMinimum": 0,
+                                        "type": "integer"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ],
+                                    "default": null
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "quote"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "observed_intervals": {
+                              "items": {
+                                "additionalProperties": true,
+                                "description": "Actually observed interval in the original source clock.",
+                                "properties": {
+                                  "start_ms": {
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "end_ms": {
+                                    "exclusiveMinimum": 0,
+                                    "type": "integer"
+                                  }
+                                },
+                                "required": [
+                                  "start_ms",
+                                  "end_ms"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "duration_ms": {
+                              "anyOf": [
+                                {
+                                  "exclusiveMinimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "revision",
+                            "sha256",
+                            "path",
+                            "modality",
+                            "asset_kind",
+                            "snapshot"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "claims": {
+                        "items": {
+                          "additionalProperties": true,
+                          "description": "Editorial approval and confidence do not certify factual support.",
+                          "properties": {
+                            "id": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "text": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "support": {
+                              "items": {
+                                "additionalProperties": true,
+                                "description": "Binding to an original source passage rather than research prose.",
+                                "properties": {
+                                  "source_id": {
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "passage_id": {
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "source_id",
+                                  "passage_id"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "editorial_approved": {
+                              "default": false,
+                              "type": "boolean"
+                            },
+                            "abstained": {
+                              "default": false,
+                              "type": "boolean"
+                            },
+                            "confidence": {
+                              "anyOf": [
+                                {
+                                  "maximum": 1,
+                                  "minimum": 0,
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "text"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "lineage": {
+                        "items": {
+                          "additionalProperties": true,
+                          "description": "Exact factual text and parent references for one production stage.",
+                          "properties": {
+                            "id": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "stage": {
+                              "enum": [
+                                "script",
+                                "narration",
+                                "storyboard",
+                                "rendered_text"
+                              ],
+                              "type": "string"
+                            },
+                            "channel": {
+                              "default": "text",
+                              "enum": [
+                                "text",
+                                "caption",
+                                "voiceover"
+                              ],
+                              "type": "string"
+                            },
+                            "text": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "claim_ids": {
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "parent_ids": {
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "stage",
+                            "text",
+                            "claim_ids",
+                            "parent_ids"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "packet_id",
+                      "sources",
+                      "claims"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "source_root": {
+                "anyOf": [
+                  {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "urls": {
+                "default": [],
+                "items": {
+                  "maxLength": 2048,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "maxItems": 8,
+                "type": "array"
+              },
+              "allowed_domains": {
+                "default": [],
+                "items": {
+                  "pattern": "^[a-z0-9.-]{1,253}$",
+                  "type": "string"
+                },
+                "maxItems": 8,
+                "type": "array"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              },
+              "authorize_submission": {
+                "default": false,
+                "type": "boolean"
+              },
+              "authorize_source_access": {
+                "default": false,
+                "type": "boolean"
+              },
+              "thinking_level": {
+                "default": "medium",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "limits": {
+                "additionalProperties": false,
+                "description": "One aggregate allowance for sources, required branches and revisions.",
+                "properties": {
+                  "max_calls": {
+                    "default": 12,
+                    "maximum": 24,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_tokens": {
+                    "default": 100000,
+                    "maximum": 2000000,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "default": 2048,
+                    "maximum": 8192,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "concurrency": {
+                    "default": 2,
+                    "maximum": 4,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_revisions": {
+                    "default": 1,
+                    "maximum": 2,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "max_source_bytes": {
+                    "default": 1048576,
+                    "maximum": 4194304,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_total_source_bytes": {
+                    "default": 4194304,
+                    "maximum": 8388608,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_source_requests": {
+                    "default": 48,
+                    "maximum": 48,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "timeout_seconds": {
+                    "default": 120,
+                    "exclusiveMinimum": 0,
+                    "maximum": 180,
+                    "type": "number"
+                  },
+                  "max_cost_usd": {
+                    "anyOf": [
+                      {
+                        "exclusiveMinimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "type": "object",
+                "default": {
+                  "max_calls": 12,
+                  "max_tokens": 100000,
+                  "max_output_tokens": 2048,
+                  "concurrency": 2,
+                  "max_revisions": 1,
+                  "max_source_bytes": 1048576,
+                  "max_total_source_bytes": 4194304,
+                  "max_source_requests": 48,
+                  "timeout_seconds": 120.0,
+                  "max_cost_usd": null
+                }
+              }
+            },
+            "required": [
+              "topic"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Inspectable execution outcome with factual and semantic acceptance separate.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "run_id": {
+                "title": "Run Id",
+                "type": "string"
+              },
+              "request_sha256": {
+                "title": "Request Sha256",
+                "type": "string"
+              },
+              "mode": {
+                "title": "Mode",
+                "type": "string"
+              },
+              "plan": {
+                "additionalProperties": true,
+                "title": "Plan",
+                "type": "object"
+              },
+              "sources": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Sources",
+                "type": "array"
+              },
+              "rejections": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Rejections",
+                "type": "array"
+              },
+              "branches": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Branches",
+                "type": "array"
+              },
+              "findings": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Findings",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "artifacts": {
+                "additionalProperties": true,
+                "title": "Artifacts",
+                "type": "object"
+              },
+              "factual_success": {
+                "const": false,
+                "default": false,
+                "title": "Factual Success",
+                "type": "boolean"
+              },
+              "semantic_support": {
+                "const": "not_verified",
+                "default": "not_verified",
+                "title": "Semantic Support",
+                "type": "string"
+              },
+              "source_content_role": {
+                "const": "data",
+                "default": "data",
+                "title": "Source Content Role",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "run_id",
+              "request_sha256",
+              "mode",
+              "plan",
+              "sources",
+              "rejections",
+              "branches",
+              "findings",
+              "execution",
+              "artifacts"
+            ],
+            "title": "ResearchExecutionResponse",
+            "type": "object"
+          },
+          {
+            "description": "Retain the attempted run and its failed/pending population on refusal.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              },
+              "run_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Run Id"
+              },
+              "request_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Request Sha256"
+              },
+              "plan": {
+                "additionalProperties": true,
+                "title": "Plan",
+                "type": "object"
+              },
+              "branches": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Branches",
+                "type": "array"
+              },
+              "execution": {
+                "additionalProperties": true,
+                "title": "Execution",
+                "type": "object"
+              },
+              "state_path": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "State Path"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint",
+              "plan",
+              "branches",
+              "execution"
+            ],
+            "title": "ResearchExecutionError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },

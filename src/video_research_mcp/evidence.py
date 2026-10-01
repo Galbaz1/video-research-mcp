@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .models.evidence import EvidencePacket
+from .media_local_io import _open_regular
 
 STAGES = ("script", "narration", "storyboard", "rendered_text")
 MAX_SOURCE_BYTES = 512 * 1024 * 1024
@@ -13,7 +14,7 @@ MAX_TEXT_BYTES = 8 * 1024 * 1024
 
 def _read_original_text(path: Path) -> bytes:
     """Use one bounded buffer for original SHA and exact snapshot comparison."""
-    with path.open("rb") as stream:
+    with _open_regular(path) as stream:
         original = stream.read(MAX_TEXT_BYTES + 1)
     if len(original) > MAX_TEXT_BYTES:
         raise ValueError("Original text exceeds 8 MiB byte ceiling")
@@ -23,7 +24,7 @@ def _read_original_text(path: Path) -> bytes:
 def _source_hash(path: Path) -> str:
     """Hash bounded original bytes without allocating the full asset."""
     digest, consumed = hashlib.sha256(), 0
-    with path.open("rb") as stream:
+    with _open_regular(path) as stream:
         while chunk := stream.read(64 * 1024):
             consumed += len(chunk)
             if consumed > MAX_SOURCE_BYTES:

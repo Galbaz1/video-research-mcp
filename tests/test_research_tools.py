@@ -18,6 +18,8 @@ from video_research_mcp.tools.research import (
     research_plan,
 )
 
+pytestmark = pytest.mark.usefixtures("mock_weaviate_disabled")
+
 
 class TestResearchDeep:
     @pytest.mark.asyncio
@@ -48,7 +50,10 @@ class TestResearchDeep:
         assert result["executive_summary"] == "AI safety is a critical concern"
         assert len(result["findings"]) == 2
         assert result["findings"][0]["claim"] == "AI risk is real"
-        assert result["findings"][0]["evidence_tier"] == "CONFIRMED"
+        assert result["findings"][0]["evidence_tier"] == "UNKNOWN"
+        assert result["findings"][0]["proposed_evidence_tier"] == "CONFIRMED"
+        assert result["findings"][0]["evidence_authority"] == "model_proposal"
+        assert result["retrieval_mode"] == "model_only" and not result["factual_success"]
         assert result["findings"][1]["evidence_tier"] == "INFERENCE"
         assert result["open_questions"] == ["What about alignment?"]
         assert result["methodology_critique"] == "Good coverage"
@@ -97,7 +102,7 @@ class TestResearchPlan:
                     name="Scan",
                     description="Scan papers",
                     tasks=["Find papers"],
-                    recommended_model="haiku",
+                    recommended_model="configured",
                 ),
             ],
             task_decomposition=["Scan literature", "Analyze methods"],
@@ -123,6 +128,8 @@ class TestResearchPlan:
         assert len(result["phases"]) == 1
         assert result["phases"][0]["name"] == "Full Plan"
         assert "Phase 1: Do scanning" in result["phases"][0]["description"]
+        assert result["execution_status"] == "proposed_not_executed"
+        assert result["source_access"] == "not_observed"
 
     @pytest.mark.asyncio
     async def test_research_plan_both_fail_returns_error(self, mock_gemini_client):
@@ -176,7 +183,9 @@ class TestResearchAssessEvidence:
             sources=["NASA satellite data"],
         )
 
-        assert result["tier"] == "CONFIRMED"
+        assert result["tier"] == "UNKNOWN"
+        assert result["proposed_tier"] == "CONFIRMED" and not result["factual_success"]
+        assert result["source_access"] == "not_observed"
         assert result["confidence"] == 0.99
         assert result["supporting"] == ["Satellite imagery"]
         assert result["reasoning"] == "Overwhelming evidence"

@@ -119,8 +119,13 @@ def _verify_peer_ip(response: httpx.Response) -> None:
 
 
 @asynccontextmanager
-async def checked_response(url: str, method: str = "GET"):
+async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[str] | None = None):
     """Open an HTTPS response after checking every redirect and actual peer."""
+    def check_host(value: str) -> None:
+        if allowed_hosts is not None and urlparse(value).hostname not in allowed_hosts:
+            raise UrlPolicyError("Source domain is outside the requested allowlist")
+
+    check_host(url)
     await validate_url(url)
     async with httpx.AsyncClient(
         follow_redirects=False, timeout=60, trust_env=False,
@@ -135,6 +140,7 @@ async def checked_response(url: str, method: str = "GET"):
                     if hop == 5:
                         raise UrlPolicyError("Too many redirects (>5) while downloading URL")
                     url = str(response.url.join(location))
+                    check_host(url)
                     await validate_url(url)
                     continue
                 response.raise_for_status()

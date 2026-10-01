@@ -1,7 +1,7 @@
 ---
 description: Bridge workflow — analyze content with Gemini research tools, then synthesize an explainer video
 argument-hint: "<url-or-topic> <project-id>"
-allowed-tools: mcp__video-research__video_analyze, mcp__video-research__research_deep, mcp__video-research__content_analyze, mcp__video-research__web_search, mcp__video-explainer__explainer_create, mcp__video-explainer__explainer_inject, mcp__video-explainer__explainer_generate, mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_render, mcp__video-explainer__explainer_render_start, mcp__video-explainer__explainer_render_poll, Read, Write, Glob
+allowed-tools: mcp__video-research__video_analyze, mcp__video-research__research_execute, mcp__video-research__research_web, mcp__video-research__research_web_status, mcp__video-research__research_deep, mcp__video-research__content_analyze, mcp__video-research__web_search, mcp__video-explainer__explainer_create, mcp__video-explainer__explainer_inject, mcp__video-explainer__explainer_generate, mcp__video-explainer__explainer_status, mcp__video-explainer__explainer_render, mcp__video-explainer__explainer_render_start, mcp__video-explainer__explainer_render_poll, Read, Write, Glob
 ---
 
 # Explain Video: $ARGUMENTS
@@ -22,9 +22,25 @@ Based on input type:
 
 **YouTube URL**: Call `video_analyze(url, instruction="Extract key concepts, structure, and talking points for creating an educational explainer video")`
 
-**Webpage URL**: Call `content_analyze(url=url, instruction="Extract main topics, key facts, and narrative structure")`
+**Webpage URL or supplied evidence**: Prepare `research_execute` with mode
+`retrieval`, `supplied`, or `hybrid`, explicit permitted URLs/domains or the
+original `EvidencePacket` and `source_root`, and `dry_run: true`. Execution needs
+actual source-access/submission authority and a shared call/token/source allowance.
+Use only returned retained sources; keep rejected and failed branches visible.
 
-**Topic text**: Call `research_deep(topic="<topic text — include research context for an educational explainer video. Focus on: key concepts, common misconceptions, real-world examples, and logical narrative flow>", scope="moderate")`
+**Topic text**: Select the route explicitly. Use `research_execute` in
+`model_only` mode for an unverified model draft; label its findings accordingly.
+For fresh external facts, use authorized `research_web` and poll the exact job,
+or provide permitted seed URLs to the bounded retrieval route. Hosted research
+does not expose enforceable internal search/token/USD ceilings. A citation URI
+from hosted research is a lead until the original source bytes are retained.
+Never describe `research_deep` as observed retrieval: its three model calls are
+model-only synthesis, and model-written tiers do not establish CONFIRMED facts.
+
+Read `docs/integrations/grounded-research.md` for the request, recovery and source
+contract. A dry plan and the executed request have distinct run identities. Save
+the executed `run_id`; replay its same request to inspect an accepted terminal
+packet or an ambiguous failure without automatically resubmitting paid work.
 
 ## Phase 2: Content Preparation
 
@@ -61,7 +77,16 @@ Based on input type:
      (`source_id`, `passage_id`), optional `confidence`, `abstained`, and
      `editorial_approved`. Approval and a model citation do not verify a fact.
      Paraphrased, unsupported and unreviewed claims remain explicit unknowns.
-   - Production `lineage` starts empty. Later, retain exact factual text for
+   - Import `research_execute`'s saved packet and copy its exact original assets
+     into `input/`, preserving every field except checked relative asset paths.
+     Keep original and new claim IDs, pages, source-clock intervals, failures,
+     rejected citations and contradicting evidence; include the returned run
+     report beside the packet. Superseded research rounds stay in the report;
+     only `retained_in_packet` findings reference its current new claims.
+     New claims are unapproved even when their text matches a source. Do not
+     infer approval from model tiers or confidence. Flag proposed additions and
+     abstentions through script and storyboard instead of inventing citations.
+   - Preserve existing supplied production `lineage`. For new work, retain exact factual text for
      `script`, `narration`, `storyboard`, and `rendered_text`. Each node keeps an
      `id`, `stage`, `channel` (`text`, `caption`, or `voiceover`), `claim_ids`,
      and `parent_ids`. Script parents are claim IDs; every later stage names its
