@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T00:04+00:00
+date: 2026-10-01T00:58+00:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -21,7 +21,78 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and bounded research resume
+### Current acceptance and provider-adapter resume
+
+Grounded source-preserving research (`vrm-0e8.5.1`) is accepted, closed and
+normally pushed at `1af336a825faedc412815159f4552933cf4d24fc`; exact remote
+branch readback matches. Private evidence root:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/grounded-research`.
+`group-receipt.committed.json` SHA256
+`b36a331acbeab6ee857a83579a6b92d0015f4f512aceed4e20f03831c5c0ecdb`
+binds24 owned Git blobs and183 source/Git/archive/private-install runtime files.
+One additive `research_execute` gives65 root tools, preserving all64 prior
+structural contracts, published34/15/2 and three locks. Fresh2190 root tests,
+Ruff, baseline, programme85units74packages, reuse26adopted116locked,
+9security and5offline gates PASS. First final1FAIL2189PASS stale adopted-unit
+expectation is retained. Exact expectation plus three existing test-file hash
+receipts repaired; intermediate19FAIL8PASS hash drift retained, then27focused
+PASS and only affected root/reuse gates repeated.
+
+Explicit model-only/supplied/checked retrieval/hybrid routes preserve exact
+original source bytes/IDs/revisions/hash/page/time/approved claims/lineage.
+Plans and state retain subquestions, domain rules, rejections, failed branches,
+contradictions and bounded revisions. Joined concurrency, aggregate calls,
+full prompt+schema/output token reservations, source/JSON bytes and deadline
+are enforced. Requested USD ceiling fails before SDK; physical wire/charges
+remain unknown. Model tiers remain UNKNOWN/proposal and semantic truth is
+unverified. Terminal three-file commitment replay makes no new calls;
+ambiguous/tampered historical calls remain null, with explicit zero replay
+new calls. The source reader rejects special files without blocking.
+
+The sole original review returned CHANGES_REQUIRED2P2 (FIFO reads and failed
+checkpoint call accounting); owner repairs have focused public/race/accounting
+proof, with no second review. Original report SHA256
+`4c4fae5873e9af04b67083e056e89b7ac8dcd65e63c30590eae81d9b21131273`.
+Final gate receipt SHA256
+`4318c392dc88b9959fe4c5c0fb3b981e9797bb269f8cbd050f74264eec8331a5`.
+Fresh private wheel SHA256
+`22437cfd5d28527ed7ab49d8994a934dacff50208083eae5277562462d0efe5e`;
+sdist SHA256 `9d0b28902cc07e6fab2453af712727a85d538c41c65ce29b670f0d054160a825`.
+Both archive reuse gates and183 exact byte checks PASS.
+
+The fixed installed journey passed36/36 public calls on its first actual run,
+27 first plus9 restart, actual PIDs12947/13023,24SDK count/20generation/6HTTP
+mocks, no real provider/guardedDNSINET/native child, all tasks joined.
+Receipt SHA256
+`a6d9892f5b9866ed2a4b2d718cd90152c85d305fcc0fdeee28876a2ee384cf79`.
+One pre-execution helper correction distinguished unknown historical calls
+from zero new replay calls, retaining original preparation identity and fixed
+36case plan/fixtures/criteria; no actual-run intervention. Historical inherited
+prepared-only plan text is not the execution state. No provider spend, user
+upload/content, heldout, hardware or registry publication. Preliminary legacy
+RED twice reached optional localhost Weaviate and was connection-refused;
+later fixtures disabled it. Do not overstate all unit history as zero INET.
+Human9 audit remains pending10.2, not waived. Factual/media/editorial production,
+provider wire/currency, integrated comparison and verified release remain open.
+
+Fresh live readiness selected and claimed `vrm-0e8.5.2`. Source-only mapped6
+full bodies (1293lines/46783bytes), one Serper helper, two actual Apache2 grants
+and10 official pages are joined. Private `provider-adapters/source-contracts`:
+receipt SHA256 `1d749cc80d7da79977c46520c2b5d144f2613413597f653723fadda04d847453`;
+requirements-license report SHA256
+`ab9e3ef03ccae2e1cd82e78d9d125a571b0a54b4e5810558c62c2ae3dca244be`.
+Both units use independent implementation; no foreign framework/SDK/assets
+adopted. Keep existing Gemini defaults/web_search and exact capability boundaries.
+Implement configured Serper/Tavily/Exa/Serply search, one-URL raw extraction
+with URL policy and per-source failures, and a concrete operator-selected
+regional DashScope-compatible text profile using existing bounded HTTP.
+No automatic installs/fallback across paid accounts, no general provider registry.
+Provider returned markdown is a representation, not original webpage byte proof.
+Serper current service acceptance, regional account/model capabilities, literal
+input-token/currency ceilings and live telemetry remain unverified. At resume,
+read live source/Bead and this primary report before choosing exact contracts.
+
+### Previously accepted joint audio/video and source preparation
 
 Joint audio/video perception (`vrm-0e8.3.6`) is accepted, closed and normally
 pushed at `ff8cc21bcf210d4d9ebe745a5ca65c7b11f20878`; exact remote branch
@@ -75,25 +146,9 @@ and no installed aiohttp; optional aiohttp has a hidden connection retry and
 HTTPX follows redirects. SDK attempts1 and reserved call counts therefore do
 not establish a portable physical-wire bound. Keep this in provider qualification.
 
-Fresh live readiness selected and claimed `vrm-0e8.5.1`: grounded, iterative,
-source-preserving research. Source-only13-file packet is fully read (1985lines/
-75646bytes), exact pinned Git bodies/grants verified. Receipt at
-`grounded-research/source-contracts/receipt.json` SHA256
-`188a11bd9bdccc5e4b58d3b73b5d9bf2777b5c5500fc1f49e00e8b58c08587d0`;
-requirements/license report SHA256
-`67bfc3242c9c8d7c2eb16e645d4e2f0de9f6c60f59ace821b0b45f996fb48ba4`.
-Upstream `assafelovic/gpt-researcher` revision0957c301ed06c2a5857b834358c7227c739041d4
-is requirements-only independent implementation under actual Apache2 grant;
-wrong MIT metadata is retained. No foreign runtime imported/installed.
-Current research_deep is three model-only prompts, accepts model-written tiers,
-and both topic bridges route there. Preserve current durable research_web jobs,
-account/source IDs, cancellation/readback and accepted EvidencePacket lineage.
-Implement explicit retrieval/supplied/model-only routes, source/domain and
-subquestion plans, aggregate budgets/concurrency/joins, retained rejected sources/
-failures/contradictions and bounded reflection. No general agent framework.
-Installed SDK countTokens cannot include grounded tool/system context, and
-GoogleSearch exposes no internal-query/currency ceiling; pending read-only SDK
-supplement must bind those limits before choosing an execution route.
+Historical `.5.1` source preparation is retained in its committed group receipt;
+the formerly pending SDK supplement is now joined and its count/tool/currency
+limits drove the accepted explicit source route above.
 
 Human9 development audit remains pending10.2 under “review pending, but continue
 anyway”; it is not waived. Original comparative corpus, labels, thresholds and
