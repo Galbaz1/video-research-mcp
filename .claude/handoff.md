@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T22:38+02:00
+date: 2026-10-02T00:17+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -17,6 +17,51 @@ contract, and hands implementation to a fresh chat. Do not mistake preparation
 closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
+
+### Footage accepted; AV event implementation next
+
+Fresh source HEAD ff7a2c57be01588c8d1ead7d57acb8864f671939, clean implementation
+worktree. vrm-0e8.8.3 is CLOSED with exact normal-push/remote/20 Git blobs proof.
+Footage source-final SHA68e0361415600584f30aaadf2308ea1c6753d5cd333c6cff4af3e36bd501cf58;
+push-readback SHA3d4786e4adb696191950504c03f578fd8db2cfff04fb05846d29c52b621a47da.
+3299 root tests and all required local gates PASS. Final seven archives each
+691 byte comparisons; all303 prior runtime bodies,84 prior tool objects and
+three locks preserved. Root85 tools. Sole original review P2 measurement/file
+identity reproduced and repaired. Original actual18 controls4PASS1FAIL13UNRUN
+retained; one controlled timeline-reference correction, same fixed second18PASS.
+37 actual MCP calls plus one direct cancellation;192 public native PIDs and12
+independent visual PIDs joined/dead. Root viewed six source/final frame pairs;
+12 RGB hashes match full source/timeline records.1091 retained files/2688 loaded
+bindings rehashed. No provider/install/foreign runtime/fonts/assets. Whole native
+certificate remains partial; ordinary host privileges, no OS sandbox.
+
+vrm-0e8.4.2 is CLAIMED/in_progress. AV source12 full pinned bodies119217B2979lines,
+31 bindings/full Apache grant root joined; original15 defects retained, foreign
+closure INCOMPLETE_CAP and no foreign execution admission. Source receipt
+bc80c6e0e95dac15c2a8b2f893ada99fb0b6e3106861ddb17e662e5297b50fa6.
+Existing-helper advisor terminal/root joined20 source bindings;16full/4targeted,
+seven production bodies and33 complete named tests, report SHA
+6646aecf6d59aa7bb7a40f59ad44ae0142c12cabe999bdd51b273e53adbec978.
+Frozen20 offline component/provider-contract plan SHA
+9acf097ea12a88dc7a32c721079077e332d6759a2a2b777d6531bdf4073e7220 prepared BEFORE
+implementation tuning. First-party four-second flash/overlap/tone fixture and
+silent variant frozen, four file bindings rehashed; two FFmpeg fixture encodes
+exit0/reaped using prior selected installed binary. This proves preparation,
+not provider recognition. Actual extracted-wheel20 controls UNRUN.
+
+Next dispatch sole primary /root/freecad_adapter on nine explicit AV core/model/
+provider/tests/doc/skill paths. Root owns four public AV tool surfaces, metadata,
+packaging, Beads/Git and actual offline acceptance. Reuse exact measured root
+AV preparation/budget; preserve old media_perceive prompt/schema and all85 tools.
+After primary join, one original review /root/freecad_review and required final
+checks/build/readback. LIVE fleeting/overlap/music semantic acceptance remains
+UNRUN_RESOURCE_UNAUTHORIZED, so do not close AV leaf from mocked contracts.
+Continue independent ready implementation after verified component checkpoint.
+
+Human nine-case audit remains pending/not waived at10.2; heldout unread,
+comparisons and verified registry release open. No provider/spend/device/content
+publication authority. User steering "review pending, but continue anyway"
+persists. All advisory/primary/review lanes and native jobs currently terminal.
 
 ### Segmentation offline leaf accepted; footage edit claimed
 
