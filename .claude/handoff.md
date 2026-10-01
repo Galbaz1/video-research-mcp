@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T12:39+02:00
+date: 2026-10-01T13:54+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -23,8 +23,13 @@ work remains outside this programme and was not reopened or modified.
 
 ### Current video-skill implementation and installer correction
 
-`vrm-0e8.7.2` is in progress at checkpoint
-`7313f619c01acf0afc5c1dbb935a9a76a3d6cbd5`. Candidate source is frozen in
+`vrm-0e8.7.2` is closed. Accepted source
+`fbf3a6fed0098a8bfe934375c53085eb7c7db3ec` was normally pushed and exact remote
+readback verified. Committed receipt SHA256
+`febbf81fa2c22de9de1a6baa6e5561a7c4067aa7c4aed6d241221c815b3e1d0a`;
+remote receipt SHA256
+`8a5907067142c2ff5cadb07d96e018c02d22e7bd0e62427f37e6e4951a1d5a88`.
+Candidate source is frozen in
 `video-to-skill/final-source.json`, SHA256
 `fcc0eaa43f8ccdbd165b4125550fb671b09e9a9419d1ff5e804c35c422db113f`:
 26 owned paths, 287 runtime bodies, three locks. The explicit PyYAML 6 dependency
@@ -96,6 +101,22 @@ children; actual candidate Python loader selected its project sentinel. No paid 
 
 Human audit is pending, not waived. Continue eligible implementation after
 component acceptance, explicit commit and normal push. The epic remains open.
+
+### Next tutorial-note implementation
+
+Fresh Beads readiness selected and claimed `vrm-0e8.7.1`, source-linked illustrated
+tutorial PDFs. This is a new programme capability; completed transcript/PDF/Word/
+mail delivery remains outside scope. Work in the same implementation checkout.
+Pinned source is QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f,
+unit qwen_tutorial_note, four mapped source bodies. Source-contract/licensing
+preparation is active in /root/licensing and the narrow existing-code explorer
+in /root/compaction_existing_code. Both are read-only for product/Beads/Git;
+no implementation or candidate task/model/native execution yet. Evidence belongs
+under private capability-programme/2026-09-30/tutorial-note/. Join both required
+results before choosing the smallest implementation and exclusive ownership.
+Read docs/loops/multimodal-capability-programme/LOOP.md and current Bead criteria.
+The PDF skill has been loaded for actual raster/artifact inspection. Human audit
+remains pending, not waived; heldout remains unread and providers unauthorized.
 
 ### Current hardware implementation checkpoint
 
