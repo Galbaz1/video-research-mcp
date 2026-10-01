@@ -168,15 +168,25 @@ no source change/second review. Original prepared driver/helpers remain sealed;
 corrected receipt7227b44027f430448c4b8696064b2f663d0f2d9ced0aa4ab2564449923a12610.
 Group receipt3445acd9c935f1ad9610fa238998e218eb1e156ed8f0a0a9af5578ab313c8714
 binds24owned/267runtime/3locks, source/grant/test/review/archive/install/journey
-receipts and all negative attempts. .8.8 bounded acceptance met, pending atomic
-25-path commit/push/exact readback and Beads closure. No provider/native/heldout
+receipts and all negative attempts. .8.8 is accepted/closed and normally pushed at
+0e062923a2b989242fd7ee2266badf4df7770334; exact remote readback matches.
+Committed receiptba24440f36215bd20d4e6fe0002dacfe3ee97f7ab7b08312c8b68275bf32b58f
+verifies25owned Git blobs/267runtime/3unchanged locks and no-reply identities. No provider/native/heldout
 reads, real renderer/TTS/upstream-runtime/factual/human or programme release claim.
 Independent source/grant preparation for next .8.9 owns only private
 render-readiness/source-contracts. Pinned CLI custom storyboard config is checked
 but render.mjs reads a fixed storyboard path; separate renderer API uses unsupported
 --props without required --project. Source-only findings, no implementation yet.
-Next commit/push accepted owned files, close .8.8 and continue fresh eligible
-Beads work, naturally renderer readiness if still eligible.
+Fresh Beads readiness selected and claimed vrm-0e8.8.9 in_progress: renderer
+readiness/capability diagnostics and actual playable MP4/current-request artifacts.
+Root owns product/shared files. Licensing owns only private pinned source/grant
+readback; join its receipt before choosing the smallest concrete route. Existing
+companion prereqs check Python/Node/FFmpeg/path/console/Remotion directory presence;
+Claude/provider, actual supported render entry, playability and configured
+storyboard identity remain to implement/qualify. No .8.9 code/CLI/render/provider/
+heldout execution yet. Next inspect existing doctor/render/job/artifact contracts,
+resolve source path/flag gaps, implement end to end and retain exact installed,
+process/artifact/decode evidence. .8.8 journeys are complete; do not redo them.
 Human review remains pending, not waived.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
