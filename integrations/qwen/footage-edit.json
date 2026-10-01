@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.8.3",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "route": "independent-implementation",
+  "state": "owned fixed two-scene native edit and visual frame integrity verified; whole native certificate partial",
+  "source_reference_gate": {
+    "full_text_bodies": 41,
+    "bytes": 258338,
+    "lines": 5076,
+    "mandatory_mapped_bodies": 38,
+    "direct_helper_bodies": 2,
+    "full_grants": 1,
+    "artifact_bindings": 65,
+    "original_static_findings": 12,
+    "source_receipt_sha256": "ae6d1a8321f5ed453fff5d04ae6dff1467533850698be884082c6fd331a70220",
+    "full_apache_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "unread_subtree_text_bodies": 64,
+    "unfetched_binary_blobs": 327,
+    "foreign_execution_sources": []
+  },
+  "entrypoint": {
+    "tool": "media_edit_footage",
+    "module": "video_research_mcp.tools.footage_edit",
+    "workflow": "prepare measured scenes -> inspect exact scene previews -> assemble complete full-hash scene approvals -> manifest full-byte restart readback"
+  },
+  "scope": [
+    "exact local source revisions and decoded frame lineage",
+    "typed chosen brief and source/scene/timeline/mix decisions",
+    "bounded neutral-default grade analysis/application",
+    "explicit no-music or declared beat grid; no inferred beat detection",
+    "hash-bound scene approvals",
+    "file-only owned FFmpeg production and full-decode/black/loudness gate",
+    "source-bound timeline PNG previews"
+  ],
+  "limits": {
+    "source_inputs_max": 2,
+    "scene_count_max": 8,
+    "aggregate_frames_max": 256,
+    "fps_max": 30,
+    "frame_pixels_max": 1000000,
+    "aggregate_artifact_bytes_max": 8388608,
+    "manifest_bytes_max": 131072,
+    "process_stream_bytes_max": 1048576
+  },
+  "grants": {
+    "source_text": "Full Apache-2.0 applies to admitted original Qwen source texts; they are reference-only, unmodified and not distributed. Own implementation remains MIT.",
+    "referenced_renderer_fonts_SFX_JS_assets": "separate and unqualified, not bundled or executed",
+    "installed_native_runtime": "Operator installed FFmpeg/ffprobe byte identities observed/rejoined; native distribution, source-build and whole transitive grant certificate partial; no binaries bundled",
+    "input_media": "caller-selected exact local source; no automatic footage/audio rights determination"
+  },
+  "qualification": {
+    "actual_fixed_edit": "eighteen frozen controls passed through the actual extracted wheel",
+    "independent_visual_frames": "root viewed source/final first-middle-last and exact hard-cut seam frames; twelve independent decoded identities matched",
+    "HyperFrames_GSAP_external_fonts_SFX_JS": "not selected; unqualified",
+    "musical_beat_semantics": "unverified; declared grid is an assertion",
+    "standards_conformance": "unverified",
+    "human_programme_audit": "pending, not waived",
+    "comparison_release_acceptance": false
+  },
+  "copied_paths": [],
+  "imports": [],
+  "bundled_fonts": [],
+  "bundled_media": [],
+  "bundled_weights": [],
+  "verification": {
+    "controls": {
+      "passed": 18,
+      "failed": 0,
+      "unrun": 0
+    },
+    "attempt": 2,
+    "actual_receipt_sha256": "a9aa970a7447e331e90710de695a1e77085d35228e121efa35817219665d402a",
+    "root_join_sha256": "c668c2c355bb65d83a9980fb895d8bf500222659e8de4f13c44cc6e11b04f61e",
+    "public_mcp_calls": 37,
+    "direct_public_cancel_calls": 1,
+    "native_public_commands": 192,
+    "root_visual_native_commands": 12,
+    "provider_socket_attempts": 0,
+    "root_tests": 3299,
+    "original_review_findings_repaired": 1,
+    "prior_root_tool_objects_exact": 84,
+    "preserved_runtime_bodies": 303,
+    "locks_preserved": 3,
+    "accepted_core_scope": "local linear hard cuts, source audio, bounded grade and declared/no-music grid",
+    "human_programme_audit": "pending, not waived",
+    "comparison_release_acceptance": false
+  }
+}

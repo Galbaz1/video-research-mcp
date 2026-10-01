@@ -34,6 +34,7 @@ from .tools.media_assets import media_assets_server
 from .tools.image import image_server
 from .tools.vision import vision_server
 from .tools.segmentation import segmentation_server
+from .tools.footage_edit import footage_edit_server
 from .tools.media_perceive import media_perceive_server
 from .tools.media_scenes import media_scenes_server
 from .tools.text_provider import text_provider_server
@@ -91,6 +92,7 @@ app.mount(media_assets_server)
 app.mount(image_server)
 app.mount(vision_server)
 app.mount(segmentation_server)
+app.mount(footage_edit_server)
 app.mount(media_perceive_server)
 app.mount(media_scenes_server)
 app.mount(text_provider_server)

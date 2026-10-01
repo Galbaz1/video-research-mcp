@@ -301,3 +301,29 @@ existing receipted HTTPX version. Provider services, voice identity/output right
 paid requests, real spoken-content validation and renderer consumption require
 their own qualification. Synthetic PCM and mocked HTTP establish only the stated
 offline contracts; they supply no live-provider or comparative performance claim.
+
+
+## Existing-footage editing adaptation
+
+The owned local footage prepare/assemble workflow independently implements
+source-bound scene, timeline, grade, audio, declared-grid and technical review
+contracts referenced in QwenLM/Qwen-MM-Plugins at
+07736672525443c7f8a3f6405eed37d2236f023f. Forty-one exact original source texts,
+including the complete Apache-2.0 grant, were read before implementation. Their
+per-file Git blobs and full SHA256 identities are retained in the source receipt
+identified by `integrations/qwen/footage-edit.json`. No foreign script or renderer
+body is copied, imported or distributed. The original partial-hash, scene-lock,
+black-measurement and loudness failure gaps remain recorded as source evidence.
+
+Pinned source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit>.
+The full source grant is at the pinned root `LICENSE`; its digest is
+cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.
+
+HyperFrames, GSAP, JavaScript, external fonts, SFX, music, stock footage, model
+weights and upstream asset libraries are not bundled or selected by this path.
+Their referenced rights and runtime closures remain separate and unqualified.
+FFmpeg/ffprobe must already be installed; their observed executable hashes do not
+certify the whole native distribution or its source-build/transitive grants.
+No native binary is redistributed. Input media rights and visual/audio meaning
+remain caller responsibilities; technical checks and declared beat grids supply
+no model, human-audit, comparative or release acceptance.

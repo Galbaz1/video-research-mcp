@@ -1380,11 +1380,21 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt production craft, source selection and measurable gates around chosen renderer; use project/user brief instead of inheriting upstream stylistic mandates or asset rights.",
           "target_paths": [
-            "skills/footage-edit/SKILL.md",
-            "skills/footage-edit/scripts",
-            "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py"
+            "docs/integrations/FOOTAGE_EDIT.md",
+            "integrations/qwen/footage-edit.json",
+            "src/video_research_mcp/server.py",
+            "src/video_research_mcp/tools/footage_edit.py",
+            "src/video_research_mcp/models/footage_edit.py",
+            "src/video_research_mcp/footage_edit.py",
+            "src/video_research_mcp/footage_edit_native.py",
+            "src/video_research_mcp/footage_edit_qa.py",
+            "src/video_research_mcp/footage_edit_timeline.py",
+            "tests/test_footage_edit.py",
+            "tests/test_footage_edit_native.py",
+            "tests/test_footage_edit_qa.py",
+            "skills/footage-edit/SKILL.md"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Owned local prepare/scene approval/final native edit accepted through frozen18 actual controls, independent decoded/viewed visual frames and required gates; optional engines/fonts/JS/SFX, native whole certificate, musical semantics, human/comparison/release acceptance unqualified.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_scene_assets",
@@ -10952,9 +10962,19 @@
         "tts"
       ],
       "target_paths": [
-        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
-        "skills/footage-edit/SKILL.md",
-        "skills/footage-edit/scripts"
+        "docs/integrations/FOOTAGE_EDIT.md",
+        "integrations/qwen/footage-edit.json",
+        "src/video_research_mcp/server.py",
+        "src/video_research_mcp/tools/footage_edit.py",
+        "src/video_research_mcp/models/footage_edit.py",
+        "src/video_research_mcp/footage_edit.py",
+        "src/video_research_mcp/footage_edit_native.py",
+        "src/video_research_mcp/footage_edit_qa.py",
+        "src/video_research_mcp/footage_edit_timeline.py",
+        "tests/test_footage_edit.py",
+        "tests/test_footage_edit_native.py",
+        "tests/test_footage_edit_qa.py",
+        "skills/footage-edit/SKILL.md"
       ],
       "declared_dependencies": [
         "assets",

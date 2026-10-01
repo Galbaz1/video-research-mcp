@@ -43,7 +43,9 @@
     "integrations/qwen/tts.json",
     "docs/integrations/measured-narration.md",
     "integrations/qwen/segmentation.json",
-    "docs/integrations/qwen-segmentation.md"
+    "docs/integrations/qwen-segmentation.md",
+    "docs/integrations/FOOTAGE_EDIT.md",
+    "integrations/qwen/footage-edit.json"
   ],
   "engines": {
     "node": ">=22"
