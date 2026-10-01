@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T04:44+02:00
+date: 2026-10-01T05:46+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -20,6 +20,55 @@ closure for completion of the product or a proved superiority claim.
 
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
+
+### Current TwelveLabs acceptance and deterministic audio resume
+
+TwelveLabs leaf `vrm-0e8.9.8` is accepted, closed and normally pushed at
+`54b6c37d1e6c0d5964612610e258acfec36ff6eb`; exact remote readback matches.
+Private `twelvelabs/group-receipt.committed.json` SHA256
+`b15a60b940ad3fb8eb0c79f83cb4773c16eb46510e474a38eae247b3197ecd49`
+binds20 owned Git blobs,206 root plus38 companion runtime files and three
+unchanged locks, including the companion symlink and committed target body.
+One new `twelvelabs_call` exposes27 explicit optional REST routes; all prior70
+complete tool objects are unchanged, making71 root tools. Hosted results preserve
+exact provider IDs/clip offsets and remote lifecycle; embedding/entity output is
+provider-attributed data. Default disabled; BYOK/submission/media/destruction
+boundaries are explicit. Restart does not resubmit an attempted call.
+
+Source preparation read14 exact pinned bodies,2895 lines87823 bytes and verified55
+bindings plus7 focused embedding-contract supplement bindings. Twelve mapped
+files comprise11 commands plus config. The24 documented foreign MCP tool names
+remain discovery-only, actual foreign discovery0. No foreign runtime/code/assets
+were bundled. Ledger31 adopted units/85 mappings; programme85 units/74 packages.
+
+Final2488 root tests, Ruff/reuse/security PASS. Baseline/programme/offline carry
+exact unaffected-input proof after only privacy and receipt binding changed.
+Fresh isolated offline wheel/sdist/private install matches all206 runtime bytes
+and20 owned sdist paths. Sole original review retains NEEDS_FIXES1P2 local-worker
+join finding; owner cancellation/timeout repair verifies2 actual closed-stream
+controls. Original review SHA256
+`6a8907a02c9ba9a7d03b283223e7a7e9de321471bf4f82a9b5c084c4e7901b82`.
+No second review. First installed run23 verified/1 failed/4 unrun is retained:
+partially percent-encoded credential output was fixed and replay is bound to18
+concrete privacy/admission/transport/storage source files. Second run26 verified/
+1 failed/1 unrun is retained: replay oracle mistakenly required fresh attestation
+checked_at equality. One harness-only correction preserves candidate,28-case
+plan, fixtures, limits and all result/receipt equality except a fresh monotone
+attestation time. Corrected28 calls PASS across PIDs80961/81010 with22 closed
+mocked HTTPX exchanges and96 artifact hashes. Receipt SHA256
+`c9ae2a8cbef570a36057f5a3d47e300a688631297d4f3aa196be6adfb2722bfd`.
+Real provider/network/native processes0; charged cost unknown.
+
+`vrm-0e8.4.4` is freshly claimed/in_progress from live Beads readiness: deterministic
+audio DSP, A/B comparison, fingerprints and bounded waveform/spectrogram artifacts.
+Licensing owns private `audio-dsp/source-contracts`, source-only pinned Rust DSP
+contracts. Root owns product and any isolated optional private build. Inspect
+existing native audio/fingerprint/job/process/artifact helpers first; avoid a full
+DSP library port. No runtime/provider/native jobs at this accepted checkpoint.
+Human nine-case audit remains pending `.10.2`, not waived; heldout untouched.
+Live service/charges, independent loudness standards conformance, semantic labels,
+comparative advantage and registry release remain separate and unverified.
+Continue eligible dependencies; completed transcript/PDF/Word/mail stays skipped.
 
 ### Current reverse-search acceptance and TwelveLabs resume
 
@@ -54,7 +103,7 @@ Restart source reference and PNG bytes are exact. Corrected receipt SHA256
 `c666576d443929fe091181c9db04a249f5fe8deb309f6ddb6d65b65f88d7e843`.
 
 `vrm-0e8.9.8` is freshly claimed/in_progress from live Beads readiness.
-Read its eleven pinned TwelveLabs client-plugin files and current official service
+Read its twelve pinned TwelveLabs client-plugin files and current official service
 contracts; implement the smallest optional adapter with exact attributed IDs,
 clip offsets and terminal async status. Licensing owns private
 `twelvelabs/source-contracts`; a read-only lane checks existing helper reuse;
