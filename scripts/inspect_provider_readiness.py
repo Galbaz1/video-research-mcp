@@ -26,6 +26,10 @@ CONFIG_SOURCES = {
     "packages/video-agent-mcp/src/video_agent_mcp/config.py",
 }
 SOURCE_CONTRACTS = {
+    "src/video_research_mcp/tools/hardware.py",
+    "src/video_research_mcp/hardware_simulator.py",
+    "src/video_research_mcp/hardware_store.py",
+    "src/video_research_mcp/hardware_authority.py",
     'src/video_research_mcp/models/ingestion_location.py',
     'packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py',
     'packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py',
@@ -133,6 +137,8 @@ def enabled(kind: str, env: dict) -> bool:
         return False
     if kind == "session-memory":
         return present(env, "GEMINI_SESSION_DB")
+    if kind == "hardware-simulator":
+        return env.get("MHS_MODE", "disabled") == "simulator"
     if kind == "weaviate":
         return present(env, "WEAVIATE_URL")
     if kind == "reranker":
@@ -243,6 +249,12 @@ def inspect_integration(root: Path, row: dict, env: dict) -> dict:
         status, details = companion_observation(root, row, env, missing)
     elif not enabled(row["enable"], env):
         status = "disabled"
+    if row["id"] == "hardware":
+        status = "mocked" if enabled("hardware-simulator", env) else "disabled"
+        details = {"physical_adapters_available": False,
+                   "authority_file_configured": present(env, "MHS_AUTHORITY_FILE"),
+                   "authority_file_read": False,
+                   "physical_stop_or_calibration_verified": False}
     if row["id"] == "rust-dsp":
         profiles = optional_adapter_profiles(env)["audio_dsp"]
         status = "configured-but-unverified" if any(

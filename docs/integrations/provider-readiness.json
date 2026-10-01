@@ -42,7 +42,11 @@
     "src/video_research_mcp/models/ingestion_location.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
-    "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py"
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py",
+    "src/video_research_mcp/tools/hardware.py",
+    "src/video_research_mcp/hardware_simulator.py",
+    "src/video_research_mcp/hardware_store.py",
+    "src/video_research_mcp/hardware_authority.py"
   ],
   "states": [
     "disabled",
@@ -572,17 +576,20 @@
     },
     {
       "id": "hardware",
-      "adopted": false,
+      "adopted": true,
       "capabilities": [
         "Named device/adapter/session, simulator first, exact operation authorization and measurable physical limits"
       ],
       "packages": [],
       "executables": [],
       "credential_any": [],
-      "enable": "planned",
-      "config_source": null,
-      "config_bindings": {},
-      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "enable": "hardware-simulator",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "mhs_mode": "MHS_MODE",
+        "mhs_authority_file": "MHS_AUTHORITY_FILE"
+      },
+      "usage_visibility": "First-party simulator only; no external device/provider/transport. Host authority is exact-command bound and separately configured; physical adapters remain unavailable.",
       "live_verified": false,
       "run_authority": "not-granted"
     },

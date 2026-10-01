@@ -41,6 +41,7 @@ from .tools.twelvelabs import twelvelabs_server
 from .tools.audio_dsp import audio_dsp_server
 from .tools.session_memory import session_memory_server
 from .tools.ingestion import ingestion_server
+from .tools.hardware import hardware_server
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +96,7 @@ app.mount(twelvelabs_server)
 app.mount(audio_dsp_server)
 app.mount(session_memory_server)
 app.mount(ingestion_server)
+app.mount(hardware_server)
 
 
 def main() -> None:

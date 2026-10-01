@@ -22,6 +22,7 @@ _SENSITIVE_CONFIG_FIELDS = {
     "weaviate_api_key",
     "infra_admin_token",
     "s2_api_key",
+    "mhs_authority_file",
 }
 
 

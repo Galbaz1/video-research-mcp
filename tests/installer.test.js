@@ -23,6 +23,17 @@ function runInstaller(home, ...args) {
   });
 }
 
+test('hardware evidence skill installs byte-exactly and unchanged uninstall removes it', (t) => {
+  const directory = fixture(t);
+  const installed = path.join(directory, '.claude/skills/hardware-evidence-capture/SKILL.md');
+  const result = runInstaller(directory, '--local');
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(fs.readFileSync(installed),
+    fs.readFileSync(path.resolve(__dirname, '../skills/hardware-evidence-capture/SKILL.md')));
+  assert.equal(runInstaller(directory, '--local', '--uninstall').status, 0);
+  assert.equal(fs.existsSync(installed), false);
+});
+
 test('installed video planning command is complete without checkout documentation', (t) => {
   const home = fixture(t);
   const result = runInstaller(home, '--global');

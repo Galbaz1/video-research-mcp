@@ -14,7 +14,9 @@
     "docs/integrations/reuse-ledger.json",
     "docs/integrations/ONBOARDING.md",
     "docs/integrations/QWEN_REUSE.md",
-    "integrations/qwen/manifest.json"
+    "integrations/qwen/manifest.json",
+    "docs/integrations/qwen-hardware.md",
+    "integrations/qwen/mhs.json"
   ],
   "engines": {
     "node": ">=22"

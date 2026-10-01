@@ -71,7 +71,7 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     report = run(workspace)
     observed = rows(report)
     assert len(observed) == 30
-    assert sum(row["adopted"] for row in observed.values()) == 19
+    assert sum(row["adopted"] for row in observed.values()) == 20
     assert observed["source-ingestion-local"]["state"] == "installed"
     assert observed["source-ingestion-pdf"]["state"] == "installed"
     assert observed["gemini-generation"]["state"] == "missing"
@@ -79,12 +79,26 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     assert observed["weaviate-store"]["state"] == "disabled"
     assert observed["explainer-tts"]["state"] == "mocked"
     assert observed["session-scoped-memory"]["state"] == "disabled"
+    assert observed["hardware"]["state"] == "disabled"
     assert all(row["state"] == "disabled" for row in observed.values() if not row["adopted"])
     assert all(
         row["live_verified"] is False and row["run_authority"] == "not-granted"
         for row in observed.values()
     )
     assert report["provider_calls"] == report["network_requests"] == 0
+
+
+def test_hardware_selection_is_simulated_without_reading_authority(workspace, monkeypatch):
+    """GIVEN host simulator selection THEN readiness remains mock-only and reads no approval file."""
+    report = run(workspace, {"MHS_MODE": "simulator",
+                             "MHS_AUTHORITY_FILE": "/private/not-opened.json"})
+    row = rows(report)["hardware"]
+    assert row["state"] == "mocked"
+    assert row["details"]["authority_file_configured"] is True
+    assert row["details"]["authority_file_read"] is False
+    assert row["details"]["physical_adapters_available"] is False
+    assert row["live_verified"] is False and row["run_authority"] == "not-granted"
+    assert "/private/not-opened.json" not in str(report)
 
 
 def test_session_memory_requires_configured_storage_without_opening_or_revealing_path(workspace, monkeypatch):

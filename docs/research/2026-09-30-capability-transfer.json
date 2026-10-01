@@ -1921,9 +1921,20 @@
           "target_paths": [
             "integrations/qwen/mhs.json",
             "docs/integrations/qwen-hardware.md",
-            "skills/hardware-evidence-capture/SKILL.md"
+            "skills/hardware-evidence-capture/SKILL.md",
+            "src/video_research_mcp/tools/hardware.py",
+            "src/video_research_mcp/hardware_simulator.py",
+            "src/video_research_mcp/hardware_store.py",
+            "src/video_research_mcp/hardware_authority.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/server.py",
+            "tests/test_hardware_simulator.py",
+            "tests/test_hardware_tools.py",
+            "package.json",
+            "src/video_research_mcp/tools/infra.py",
+            "scripts/inspect_provider_readiness.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Reconciled actual independent simulator implementation; physical adapters unavailable.",
           "dependencies": [
             "qwen_reuse_manifest"
           ],
@@ -1958,7 +1969,16 @@
             "/Users/fausto_home/Coding/video-research-mcp/docs/integrations/qwen-hardware.md",
             "/Users/fausto_home/Coding/video-research-mcp/skills/hardware-evidence-capture/SKILL.md"
           ],
-          "bead_id": "vrm-0e8.9.6"
+          "bead_id": "vrm-0e8.9.6",
+          "implementation_public_tools": [
+            "mhs_discover",
+            "mhs_health_check",
+            "mhs_meta_info",
+            "mhs_read",
+            "mhs_write",
+            "mhs_reset"
+          ],
+          "implementation_boundary": "First-party six-operation simulator with strict limits, separate host authority, durable commands, health gate and latched stop/recovery. Physical transport remains unavailable pending named owner qualification. No Qwen code/runtime or assets imported."
         }
       ],
       "omissions": [
@@ -11127,9 +11147,20 @@
         "onboarding"
       ],
       "target_paths": [
-        "docs/integrations/qwen-hardware.md",
         "integrations/qwen/mhs.json",
-        "skills/hardware-evidence-capture/SKILL.md"
+        "docs/integrations/qwen-hardware.md",
+        "skills/hardware-evidence-capture/SKILL.md",
+        "src/video_research_mcp/tools/hardware.py",
+        "src/video_research_mcp/hardware_simulator.py",
+        "src/video_research_mcp/hardware_store.py",
+        "src/video_research_mcp/hardware_authority.py",
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/server.py",
+        "tests/test_hardware_simulator.py",
+        "tests/test_hardware_tools.py",
+        "package.json",
+        "src/video_research_mcp/tools/infra.py",
+        "scripts/inspect_provider_readiness.py"
       ],
       "declared_dependencies": [
         "contract",

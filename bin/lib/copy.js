@@ -51,6 +51,7 @@ const FILE_MAP = {
   'skills/video-production/references/workflow-patterns.md':     'skills/video-production/references/workflow-patterns.md',
   'skills/image-generation/SKILL.md':                            'skills/image-generation/SKILL.md',
   'skills/reverse-search-video-frame/SKILL.md':                 'skills/reverse-search-video-frame/SKILL.md',
+  'skills/hardware-evidence-capture/SKILL.md':                  'skills/hardware-evidence-capture/SKILL.md',
 
   'agents/researcher.md':      'agents/researcher.md',
   'agents/video-analyst.md':   'agents/video-analyst.md',
@@ -81,6 +82,7 @@ const CLEANUP_DIRS = [
   'skills/video-production',
   'skills/image-generation',
   'skills/reverse-search-video-frame',
+  'skills/hardware-evidence-capture',
   'commands/gr',
   'commands/ve',
 ];

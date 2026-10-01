@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T11:49+02:00
+date: 2026-10-01T12:39+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -20,6 +20,47 @@ closure for completion of the product or a proved superiority claim.
 
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
+
+### Current hardware implementation checkpoint
+
+`vrm-0e8.9.6` simulator acceptance is complete and ready for atomic source
+commit. The exact commit/Git blob receipt will be retained at
+`hardware/group-receipt.committed.json` under the evidence root below.
+Final source SHA86059d460e064aa47735d9086bbf977bdf8922aa36fe4da3f4eb4e52130f9a0b
+binds22 owned paths,287 runtime bodies (237 root/37 companion/13 agent),3
+unchanged locks. Joined group SHA6732902941a82a4d9ea5c116eb89935522be0ab91143e3095407958d0f3c3be4.
+
+All six mhs operations have actual persistent lamp/camera simulator behavior;
+hard/soft limits, separate host-file authority, exact pending resume/terminal
+replay, failed-write health, latched stop/recovery and owned synthetic PNG/state
+artifacts are verified. Physical adapters, devices, calibration and safety remain
+unavailable/unqualified. Model confirm flags never grant host authority.
+
+Original review found2P2: receipt saturation blocked stop and concurrent cold
+creation raced. Root repaired both;6 focused regressions PASS. Total512 receipts
+is unchanged; one stop slot is reserved per projected online device, including
+recovery. Historical negative probe and original41PASS/lint-import failure are
+retained. No second review. Final2735 root/33 installer/9 security/5 offline,
+Ruff/baseline/programme/reuse/release and5 actual archive checks PASS.
+Companion309 and agent13 test evidence carries against exact unchanged code.
+Fresh isolated3.14.7 installed237/37 bytes match. All76 previous tool objects are
+exact within82 (manifest SHAea6537f166da13062e940d83cf2830ce852a2f2ecb060c5c9835390f13027650).
+
+Fixed installed40 journey passed first attempt:40verified/0failed/0unrun,
+2 actual discoveries/2 stdio/5 fixture approvals/0 native-HTTP-provider calls,
+188 retained files rehashed, PIDs/groups44728/44740 freshly absent and all threads
+joined. Receipt SHA4ba8b5a0c4c63a5bf92dd3172c2e1842f79dd10e71621e12a3b0c118daddb8eb.
+Packed installer5 actual local CLI steps PASS, including edited-skill preservation.
+Initial npm pack ENOENT output-directory failure is retained; one setup correction
+packed the unchanged source. No provider/heldout/human/physical/release claim.
+
+Ingestion accepted local component stays committed at39a4070190df3f5f971a6d85aab87c2e5f614393;
+`.7.3` remains blocked, not closed, and neither terminal journey may be repeated.
+Human audit remains pending, not waived. `.7.2` source-only packet is fully joined
+(11 bodies/158020 bytes/2820 lines); no video-skill execution/adoption yet.
+Next verify Git identities, commit/push/readback, close simulator leaf, then fresh
+Beads readiness selects the next implementation (likely `.7.2`). Continue the
+epic; integrated comparison and verified release remain open.
 
 ### Current DSP component and recoverable-session resume
 

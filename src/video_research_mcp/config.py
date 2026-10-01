@@ -154,6 +154,8 @@ class ServerConfig(BaseModel):
     text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
     search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
     twelvelabs_enabled: bool = Field(default=False)
+    mhs_mode: Literal["disabled", "simulator"] = Field(default="disabled")
+    mhs_authority_file: str = Field(default="")
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -297,6 +299,8 @@ class ServerConfig(BaseModel):
             text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
             search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
             twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),
+            mhs_mode=os.getenv("MHS_MODE", "disabled"),
+            mhs_authority_file=os.getenv("MHS_AUTHORITY_FILE", ""),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")

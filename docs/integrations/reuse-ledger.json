@@ -591,7 +591,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -740,7 +740,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -912,7 +912,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -922,7 +922,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -987,17 +987,17 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
           "target_path": "tests/test_provider_readiness.py",
-          "target_sha256": "7f4680dfc7967ea962a84d2ea27ae5741c1b41716e29d9ceeb6bbb4a6d0b3bc7",
+          "target_sha256": "74012957db3640db6aae3178e8ca92beebcbecc7d2f6131995b0c409066afc59",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec0545f611fc16d0cb20a3b2f035693850a2e9f6aa027b2f818c859de5983e61",
+          "target_sha256": "00ee937d7eed4f0856760f812c4b6e8a8f3a892c824fdbf8ed42774ea627dcf6",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1080,7 +1080,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec0545f611fc16d0cb20a3b2f035693850a2e9f6aa027b2f818c859de5983e61",
+          "target_sha256": "00ee937d7eed4f0856760f812c4b6e8a8f3a892c824fdbf8ed42774ea627dcf6",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1200,7 +1200,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1344,12 +1344,12 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         }
       ],
@@ -1453,7 +1453,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "a6f86c3f9d5f2a023d8bbb5e7f9d3b6534fe11da2b9eb3d40f34472689d17cdf",
+          "target_sha256": "a622d6802bf592841f9b90737c3f3bc35036e5edb41803bc7a6c51700c4e1cdc",
           "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred."
         }
       ],
@@ -1809,10 +1809,76 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/hardware_simulator.py",
+          "target_sha256": "7db3b2a7a1dd7b0d2c154ea7bee7c7a52aa563a3b8d7ce82e74fd15927afe20f",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/hardware_store.py",
+          "target_sha256": "91fcd966c19ac049f25b7b772c61926d6aa4f5f74a5044fb5bc2c5173e21cae4",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/hardware_authority.py",
+          "target_sha256": "e71f6f9058b9c40d1ee58e9a3147e3ccc3e09e6364f83a6bc53b038f777a254c",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/hardware.py",
+          "target_sha256": "358b64ced8a10135ecc27b47ef356b5e19de172a1ab5997d23b6f36123e50087",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/config.py",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/infra.py",
+          "target_sha256": "e56700f41d03639c0ad947241496f0e66bb0e9efd65a4b4d4c8b94e069092d1a",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "scripts/inspect_provider_readiness.py",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "docs/integrations/provider-readiness.json",
+          "target_sha256": "221399aa56b4c9008120c8b7087837f4fc2d725c438ccf3b736f96328495498c",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "docs/integrations/qwen-hardware.md",
+          "target_sha256": "5a35cce5d92152a42a97db874854e125fd570d1d3a2e3daccd5fb71c691cbf73",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "integrations/qwen/mhs.json",
+          "target_sha256": "c104a63defc63a7a9b4d480c3cc55aabb0ccbb09709db7cbc146829e8fb74724",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "skills/hardware-evidence-capture/SKILL.md",
+          "target_sha256": "e101c92f51e97f87b583a3eff23e3dbdcd84add7de10eba0a80c18adcbc5afc9",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        },
+        {
+          "target_path": "bin/lib/copy.js",
+          "target_sha256": "a622d6802bf592841f9b90737c3f3bc35036e5edb41803bc7a6c51700c4e1cdc",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+        }
+      ]
     },
     {
       "unit_key": "direct.acquisition",
@@ -1837,7 +1903,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -1877,7 +1943,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -1998,7 +2064,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2148,7 +2214,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -2495,7 +2561,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -2661,7 +2727,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2671,7 +2737,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -2726,17 +2792,17 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
           "target_path": "tests/test_provider_readiness.py",
-          "target_sha256": "7f4680dfc7967ea962a84d2ea27ae5741c1b41716e29d9ceeb6bbb4a6d0b3bc7",
+          "target_sha256": "74012957db3640db6aae3178e8ca92beebcbecc7d2f6131995b0c409066afc59",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec0545f611fc16d0cb20a3b2f035693850a2e9f6aa027b2f818c859de5983e61",
+          "target_sha256": "00ee937d7eed4f0856760f812c4b6e8a8f3a892c824fdbf8ed42774ea627dcf6",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2790,7 +2856,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "fa6d80845de48ef7c95534608e247cc1feed1b20ea5443421c0e0f6ebc16c665",
+          "target_sha256": "41897a6d87a0cd695026a7f3e609a0010a0e2441fc7fc951c63141d66fda5e8b",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -2872,7 +2938,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -2892,7 +2958,7 @@
         },
         {
           "target_path": "tests/test_provider_readiness.py",
-          "target_sha256": "7f4680dfc7967ea962a84d2ea27ae5741c1b41716e29d9ceeb6bbb4a6d0b3bc7",
+          "target_sha256": "74012957db3640db6aae3178e8ca92beebcbecc7d2f6131995b0c409066afc59",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -2917,7 +2983,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec0545f611fc16d0cb20a3b2f035693850a2e9f6aa027b2f818c859de5983e61",
+          "target_sha256": "00ee937d7eed4f0856760f812c4b6e8a8f3a892c824fdbf8ed42774ea627dcf6",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -3075,7 +3141,7 @@
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
         },
         {
@@ -3085,7 +3151,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
         },
         {
@@ -3383,7 +3449,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -3560,7 +3626,7 @@
         },
         {
           "target_path": "docs/integrations/provider-readiness.json",
-          "target_sha256": "a89057016f6bf83f4efaa045f526c8ea2c7d4237d0ed05c3eb831c1f97370e51",
+          "target_sha256": "221399aa56b4c9008120c8b7087837f4fc2d725c438ccf3b736f96328495498c",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3570,12 +3636,12 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3610,7 +3676,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3851,7 +3917,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/config.py",
-          "target_sha256": "f13255ead76ca9648fe730b390f45fed3edf6453c5d8c59a7a30c5778f9c3390",
+          "target_sha256": "b23c3ec013e5668cf04ea94b51d36ed971a637cc4ef4d770e02ef863019f7b39",
           "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles."
         },
         {
@@ -3866,7 +3932,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles."
         },
         {
@@ -3936,17 +4002,17 @@
         },
         {
           "target_path": "tests/test_provider_readiness.py",
-          "target_sha256": "7f4680dfc7967ea962a84d2ea27ae5741c1b41716e29d9ceeb6bbb4a6d0b3bc7",
+          "target_sha256": "74012957db3640db6aae3178e8ca92beebcbecc7d2f6131995b0c409066afc59",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec0545f611fc16d0cb20a3b2f035693850a2e9f6aa027b2f818c859de5983e61",
+          "target_sha256": "00ee937d7eed4f0856760f812c4b6e8a8f3a892c824fdbf8ed42774ea627dcf6",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         }
       ]
@@ -4125,7 +4191,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -4185,12 +4251,12 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
           "target_path": "docs/integrations/provider-readiness.json",
-          "target_sha256": "a89057016f6bf83f4efaa045f526c8ea2c7d4237d0ed05c3eb831c1f97370e51",
+          "target_sha256": "221399aa56b4c9008120c8b7087837f4fc2d725c438ccf3b736f96328495498c",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         }
       ],
@@ -4360,7 +4426,7 @@
         },
         {
           "target_path": "tests/installer.test.js",
-          "target_sha256": "910f9abe0fd4c164981ecd3b9e40dd3b6a5a0a21c643749f87672848862beb6b",
+          "target_sha256": "f27898fdb35145c9c70e0cc5cbf1c237c1f146d90bc7ff07ee8e1e3a283aaeda",
           "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
         }
       ]
@@ -4501,7 +4567,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "ef82d6f883444757f7573ae6764bccc5e0ef94dc1fb1133dbb96fb9df34022d4",
+          "target_sha256": "c55b2a717053a34fc13118acd0f88ca89d148a2513ae9101c4f3010cc5289ab9",
           "provenance": "Own offline inspector exact source allowlist extended by the four declared firstparty renderer-readiness contracts; source guards and authority/provider rules unchanged."
         }
       ]
@@ -4987,7 +5053,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
         },
@@ -5096,7 +5162,7 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "5802e58aa6ae0bbc99aed9bf7f2c2a7ecf8943ed6f42e5ab7faac6a9e407d4bd",
+          "target_sha256": "0fb16c4a93fb5280c461c1efc7352e6cd3eeccfd4882a1ecce8b6b18c9ac4139",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
