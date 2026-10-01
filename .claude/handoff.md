@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T21:40+02:00
+date: 2026-10-01T22:38+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,40 +18,52 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-### Segmentation implementation active
+### Segmentation offline leaf accepted; footage edit claimed
 
-Current claimed leaf: `vrm-0e8.9.2`. Accepted source HEAD74e77594414e59abac5bdfb7050d48feaacaaa13
-is normally pushed/exact remote verified; narration8.2 is closed under offline
-synthetic/mocked acceptance. Human9audit remains pending/notwaived. Continue
-implementation through the graph, not final-answer at component boundaries.
+vrm-0e8.9.2 is CLOSED at fe40287bd6970cef8b84997707970f4a3b2b6d91. Normal
+source push and exact remote HEAD/20 Git blobs verified. Private segmentation/
+source-final.json SHA ad50bf9b4e63de85975d59fd601f21224742cdcf1f485fc9fe689fda76ae8f24;
+push-readback.json SHA 4d1b12d0aa7c1475494cf6057a4ddc8cc135531e18e1f02364e83be3680c9b70.
+Sole original review found mutable-profile alias P2; root reproduced public RED,
+repaired with a validated separate snapshot, affected28PASS; no secondreview.
+Original primary88PASS2FAIL and root fixture-placement2FAIL are retained.
+Final3210rootPASS; Ruff/37installer/9security/5offline/programme/reuse/baseline/
+release-contract PASS. Initial and promoted7archives each676bytecomparisons;
+isolated companion sdistwheel exact. All297previous runtime bodies and3locks
+unchanged;83prior roottoolobjects exact plus image_segment=84.
 
-/root/freecad_adapter is the sole primary for root segmentation orchestration,
-image/service helpers, model, matching three tests and qwen-segmentation doc.
-Root exclusively owns config/server/public native tool, descriptor/notices/ledger/
-packaging/Git/Beads and frozen actual acceptance. Sole original reviewer reused
-only after primary terminal and complete root integration. No native jobs,
-foreign import, service/model/GPU/provider launch/install/download or paid calls.
+Frozen20 first actual extracted-wheel attempt20PASS0FAIL0UNRUN.64publiccalls
+(63MCPclient+1directpacked cancellation),46writtenmockHTTP47connections,
+0real socketattempts.318retainedfiles and2717loaded-file bindings rehashed.
+Known32x24 source/mask/actualoverlay/fullprecisioncoordinates/native delivery/
+refusals/restart match frozen controls. Config defaultempty; no modeldownload,
+service launch or inference. Model/checkpoint declarations are UNATTESTED;
+live SAM/model grants/semantic mask accuracy/human/comparison/release unverified.
 
-Source preparation terminal/root joined segmentation/preparation-root-joined.json:
-8 full Qwen bodies/59877B/1354lines/fullApache grant,4 full official SAM reference
-bodies/40534B/827lines including complete custom SAM license,42artifact bindings.
-Advisor33bindings unchanged and joined. Qwen07736672525443c7f8a3f6405eed37d2236f023f;
-SAM2345a4ad109ac29c569da749c91d84f10dc08c40. HFmanualgatedcard401 retained/unread,
-checkpoint/runtime/model reuse unresolved; foreign_execution_sources=[].
-Original wrapper discards masks/dimensions; healthok/startedworker does not prove
-loaded model. Own optional declared external/mock HTTP route preserves raster
-masks and actual overlay; no wrapper/schema-only success or model readiness claim.
+Next ready vrm-0e8.8.3 is CLAIMED/in_progress: edit existing footage with source
+timeline and artifact QA. Footage-edit/source-contracts terminal/root joined:
+receipt ae6d1a8321f5ed453fff5d04ae6dff1467533850698be884082c6fd331a70220;
+41fullpinned bodies/258338B/5076lines/fullApachegrant,65artifactbindings exact.
+38mandatorymapped+2directhelper+grant1; original40capgap retained and extension
+admitted only black_check.sh/loudness_check.sh.12staticdefects retained; notably
+missing/emptylocks, partialheadhash, failedblackmeasurement and excessive
+loudness canpass.64textcandidates327binaryblobs unread/unfetched. Foreign
+execution_sources=[]; HyperFrames/GSAP/fonts/SFX/fullnativeclosure unqualified.
 
-Frozen20 controls before tuning: segmentation/acceptance-plan.frozen.json
-SHA20ef5a0b4f076b35115b7f2b6e4d359cde53271b7525e80ce10395392e48d4ab.
-Firstparty known32x24 RGB image, binaryL mask192/768 pixels=.25coverage,
-boxxyxy[8,6,24,18],score.875 uncalibrated; overlay inside[225,55,28],background
-[40,60,80]. Exact3PNG/rawpixel hashes frozen. Existing bounded HTTPX/HTTPCore/H11
-mock network, Pillow helpers/snapshot/manifest/native delivery; no resize/grid
-substitution/non1EXIF,16MiBsource/1MPgrid/16masks/4MPaggregate/256KiBHTTP/8MiBoutputs.
-Config defaultempty SEGMENTATION_SERVICES_JSON selects typed profiles; request
-requires exact source/service/prompt, dryplan0HTTP or explicit workflow submission.
-Mask/model semantics remain unverified; no hidden download or service autostart.
+/root/compaction_existing_code is the only active READONLY current-helper
+advisor, <=25files, private footage-edit/existing-code. All segmentation and
+source lanes terminal. No implementation worker is active yet. Root owns
+sharedproductmetadata/Git/Beads/actualacceptance, will join advisor and freeze
+actualfixedtwo-scene brief/timeline/beat/mix/black/loudness/locks/full-decode/
+visual controls BEFORE implementing/tuning. Existing exact installed FFmpeg/
+ffprobe binary hashes rechecked in footage-edit/native-selection.json;
+whole native transitive/source-build/grant certificate remains partial.
+No owned nativejobs/providers/models/install/download/assets/devices.
+
+User steering review pending, but continue anyway persists. Human9audit pending
+NOTwaived, staged at10.2; heldout unread and live-provider proposal unauthorized.
+Continue eligible implementation through graph, not final-answer at components.
+Completed transcript/PDF/Word/mail delivery remains outside programme.
 
 ### Narration offline leaf accepted
 
