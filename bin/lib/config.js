@@ -22,6 +22,11 @@ function getConfigPath(mode) {
   return path.join(home, '.claude.json');
 }
 
+/** Keep the credential template within the selected installation scope. */
+function getEnvPath(mode) {
+  return path.join(path.dirname(getConfigPath(mode)), '.config/video-research-mcp/.env');
+}
+
 /** Refuse links at installer-owned destinations before reading or writing. */
 function assertRegularDestination(filePath) {
   for (const candidate of [path.dirname(filePath), filePath]) {
@@ -72,13 +77,14 @@ function entryHash(entry) {
 }
 
 /** Add the core entry; update only an entry proved unchanged since this installer owned it. */
-function mergedConfig(existing, owned = {}) {
+function mergedConfig(existing, owned = {}, mode = 'global') {
   existing = structuredClone(existing || {});
   existing.mcpServers = existing.mcpServers || {};
   for (const [name, entry] of Object.entries(MCP_SERVERS)) {
     const current = existing.mcpServers[name];
     if (current === undefined || (owned[name] && entryHash(current) === owned[name])) {
-      existing.mcpServers[name] = entry;
+      existing.mcpServers[name] = mode === 'local'
+        ? { ...entry, env: { VIDEO_RESEARCH_ENV_FILE: getEnvPath(mode) } } : entry;
     }
   }
   return existing;
@@ -128,22 +134,8 @@ function envTemplate(existing) {
   return existing + header + missing.map((key) => `# ${key}=`).join('\n') + '\n';
 }
 
-/** Ensure the shared template exists without choosing provider or model defaults. */
-function ensureEnvFile() {
-  const home = process.env.HOME || process.env.USERPROFILE;
-  if (!home) return null;
-  const envPath = path.join(home, '.config', 'video-research-mcp', '.env');
-  assertRegularDestination(envPath);
-  let existing = '';
-  try { existing = fs.readFileSync(envPath, 'utf8'); }
-  catch (err) { if (err.code !== 'ENOENT') throw err; }
-  const template = envTemplate(existing);
-  if (template !== existing) atomicWrite(envPath, template);
-  return { path: envPath, created: !existing, added: ENV_TEMPLATE_KEYS.filter((key) => !existing.includes(`${key}=`)).length };
-}
-
 module.exports = {
   MCP_SERVERS, OPTIONAL_SERVERS, DEPRECATED_SERVERS, ENV_TEMPLATE_KEYS,
-  getConfigPath, readConfig, mergeConfig, removeFromConfig, ensureEnvFile,
+  getConfigPath, getEnvPath, readConfig, mergeConfig, removeFromConfig,
   atomicWrite, assertRegularDestination, entryHash, mergedConfig, envTemplate,
 };

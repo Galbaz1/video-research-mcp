@@ -4,17 +4,16 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { hashFile, MANIFEST_FILE } = require('./manifest');
-const { atomicWrite, assertRegularDestination, getConfigPath, entryHash, MCP_SERVERS } = require('./config');
+const { atomicWrite, assertRegularDestination, getConfigPath, getEnvPath, entryHash, MCP_SERVERS } = require('./config');
 const VERSION = require('../../package.json').version;
 const CHECKPOINT_DIR = 'gr-install-backups';
 const ID = /^[a-f0-9-]{36}$/;
 
 /** Map owned slots to the selected installation, never caller-supplied absolute paths. */
 function slotPath(mode, target, slot) {
-  const home = process.env.HOME || process.env.USERPROFILE;
   const fixed = { '@config': getConfigPath(mode), '@manifest': path.join(target, MANIFEST_FILE),
-    '@env': path.join(home, '.config/video-research-mcp/.env') };
-  if (fixed[slot]) { guard(fixed[slot], slot === '@env' ? home : path.dirname(fixed[slot])); return fixed[slot]; }
+    '@env': getEnvPath(mode) };
+  if (fixed[slot]) { guard(fixed[slot], slot === '@env' ? path.dirname(getConfigPath(mode)) : path.dirname(fixed[slot])); return fixed[slot]; }
   if (!/^(commands|skills|agents)\//.test(slot) || slot.includes('\\') ||
       slot.split('/').some((part) => !part || part === '.' || part === '..')) {
     throw new Error('Invalid checkpoint ownership path');
@@ -55,6 +54,9 @@ function checkpoint(mode, target, id) {
   if (fs.statSync(file).size > 32 * 1024 * 1024) throw new Error('Checkpoint exceeds size bound');
   const result = JSON.parse(fs.readFileSync(file, 'utf8'));
   if (result.id !== id || result.mode !== mode || result.schema_version !== 1) throw new Error('Invalid checkpoint');
+  if (mode === 'local' && Object.hasOwn(result.before, '@env') && result.env_scope !== 'local') {
+    throw new Error('Legacy local checkpoint used home credentials; restore those separately after checking exact hashes');
+  }
   for (const slot of Object.keys(result.before)) {
     slotPath(mode, target, slot);
     if (!(slot in result.expected)) throw new Error('Corrupted checkpoint');
@@ -141,7 +143,7 @@ function runTransaction(mode, target, operation, operations, expectedBefore = nu
       hash: bytes === null ? null : crypto.createHash('sha256').update(bytes).digest('hex') };
   }
   if (total > 16 * 1024 * 1024) throw new Error('Install plan exceeds 16 MiB');
-  const record = { schema_version: 1, id, mode, operation, package_version: VERSION,
+  const record = { schema_version: 1, id, mode, env_scope: mode, operation, package_version: VERSION,
     created_at: new Date().toISOString(), state: 'prepared', before, expected };
   const file = path.join(target, CHECKPOINT_DIR, `${id}.json`);
   guard(file, target); fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
@@ -171,12 +173,12 @@ function binaryPresent(name) {
 }
 
 /** Report only key presence, matching process precedence without outputting local values. */
-function credentials(home) {
+function credentials(mode) {
   const names = ['GEMINI_API_KEY', 'YOUTUBE_API_KEY', 'S2_API_KEY', 'SEMANTIC_SCHOLAR_API_KEY',
     'WEAVIATE_URL', 'COHERE_API_KEY', 'ELEVENLABS_API_KEY', 'ANTHROPIC_API_KEY'];
   let content = '';
   try {
-    const envPath = path.join(home, '.config/video-research-mcp/.env'); guard(envPath, home);
+    const envPath = getEnvPath(mode); guard(envPath, path.dirname(getConfigPath(mode)));
     if (fs.statSync(envPath).size <= 1024 * 1024) content = fs.readFileSync(envPath, 'utf8');
   } catch { /* absent, oversized, linked or unreadable */ }
   const observed = {};
@@ -216,12 +218,11 @@ function qwenReadiness(source) {
 
 /** Portable read-only doctor: npm assets cannot prove a Python server or native client acceptance. */
 function doctor(mode, target, source) {
-  const home = process.env.HOME || process.env.USERPROFILE;
   const binaries = Object.fromEntries(['uv', 'uvx', 'python3', 'ffmpeg', 'ffprobe', 'yt-dlp', 'blender', 'FreeCAD']
     .map((name) => [name, binaryPresent(name)]));
   const checker = fs.existsSync(path.join(source, 'scripts/inspect_provider_readiness.py'));
   return { schema_version: 1, package_version: VERSION, mode, inspection: 'read-only-local-presence',
-    binaries_present: binaries, credential_presence: credentials(home), checkpoints: history(target),
+    binaries_present: binaries, credential_presence: credentials(mode), checkpoints: history(target),
     prerequisites: Object.entries(binaries).filter(([, found]) => !found).map(([name]) => ({ name,
       verification_command: [name, ['ffmpeg', 'ffprobe'].includes(name) ? '-version' : '--version'],
       required_action: `Install or select ${name} separately, then rerun --doctor; no repair is performed.` })),

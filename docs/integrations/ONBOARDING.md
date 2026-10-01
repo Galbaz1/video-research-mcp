@@ -30,7 +30,7 @@ Doctor reports executable **presence**, credential **presence**, interrupted
 checkpoints and actionable missing prerequisites. It runs no subprocess and makes
 no network request. Binary versions/compatibility, accounts, quota, reachability,
 Python package installation, discovery and analysis quality remain unverified.
-The shared env file is read only for bounded key presence; values, endpoint URLs,
+The selected scope's env file is read only for bounded key presence; values, endpoint URLs,
 local paths and credential-store contents are never printed.
 
 The detailed source-only [provider inspector](../../scripts/inspect_provider_readiness.py)
@@ -60,8 +60,14 @@ matches the prior installation receipt. Existing customized or unmanaged entries
 unrelated servers and other client settings are retained. Optional Playwright and
 MLflow declarations are available in the configuration module for deliberate
 manual selection; they are not automatically registered or added as core extras.
-The shared env template leaves model/provider settings unset so the selected
-Python runtime owns their defaults.
+The env template leaves model/provider settings unset so the selected Python
+runtime owns their defaults. Global scope uses `~/.config/video-research-mcp/.env`;
+local scope uses `./.config/video-research-mcp/.env`. Local registration sets
+`VIDEO_RESEARCH_ENV_FILE` to that exact project path. The candidate Python loader
+honors it without falling back to home credentials when the selected file is
+missing. That behavior requires the candidate runtime or its separately verified
+release; an older registry package may not honor the selection. Doctor does not
+establish the running Python version or its credential-file behavior.
 
 `--force` explicitly replaces modified workflow assets. It does not force a
 customized MCP entry or overwrite credential values. Every install/update creates
@@ -85,6 +91,11 @@ files are retained. When unrelated client settings have changed, only the still
 unchanged owned MCP entry is restored; unrelated settings remain current. A
 malformed later config is retained for manual repair. Recovery does not claim to
 restore a file that it preserved as modified.
+
+Legacy local checkpoints that captured a home env file have no explicit local
+env scope and are refused before recovery writes. Restore that home file separately
+only after its current hash matches the old checkpoint's expected output. New
+local checkpoints bind their env slot to the project file.
 
 The durable `prepared` checkpoint supports interrupted-process recovery. A new
 mutation refuses to run while such a checkpoint remains; doctor identifies its

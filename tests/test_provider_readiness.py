@@ -70,8 +70,10 @@ def test_every_adopted_and_optional_group_has_a_honest_state(workspace):
     """GIVEN no credentials THEN local presence and mock output are not live proof."""
     report = run(workspace)
     observed = rows(report)
-    assert len(observed) == 30
-    assert sum(row["adopted"] for row in observed.values()) == 20
+    assert len(observed) == 31
+    assert sum(row["adopted"] for row in observed.values()) == 21
+    assert observed["video-skill-authoring"]["state"] == "installed"
+    assert observed["video-skill-authoring"]["packages"]["PyYAML"]["installed"] is True
     assert observed["source-ingestion-local"]["state"] == "installed"
     assert observed["source-ingestion-pdf"]["state"] == "installed"
     assert observed["gemini-generation"]["state"] == "missing"
@@ -177,6 +179,22 @@ def test_dotenv_precedence_is_mirrored_without_environment_injection(workspace):
     )
     assert "file-secret" not in json.dumps(report)
     assert "process-secret" not in json.dumps(report)
+
+
+def test_installer_selected_env_avoids_home_presence_and_honors_explicit_override(workspace, monkeypatch):
+    """Local readiness uses the same selected file as the candidate runtime."""
+    root, home_env, _ = workspace
+    home_env.write_text("GEMINI_API_KEY=synthetic-home-only\n")
+    project_env = root / "project.env"
+    project_env.write_text("# no project credentials\n")
+    monkeypatch.setattr(inspector, "DEFAULT_ENV_PATH", home_env)
+    supplied = {"VIDEO_RESEARCH_ENV_FILE": str(project_env)}
+    assert rows(inspector.inspect_readiness(root, env=supplied))["gemini-generation"]["state"] == "missing"
+    project_env.unlink()
+    assert rows(inspector.inspect_readiness(root, env=supplied))["gemini-generation"]["state"] == "missing"
+    explicit = inspector.inspect_readiness(root, env=supplied, env_file=home_env)
+    assert rows(explicit)["gemini-generation"]["state"] == "configured-but-unverified"
+    assert "synthetic-home-only" not in json.dumps(explicit)
 
 
 def test_unresolved_credentials_are_missing(workspace):

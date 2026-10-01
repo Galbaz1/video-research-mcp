@@ -46,7 +46,10 @@
     "src/video_research_mcp/tools/hardware.py",
     "src/video_research_mcp/hardware_simulator.py",
     "src/video_research_mcp/hardware_store.py",
-    "src/video_research_mcp/hardware_authority.py"
+    "src/video_research_mcp/hardware_authority.py",
+    "scripts/video_skill_contract.py",
+    "scripts/validate_video_skill.py",
+    "scripts/package_video_skill.py"
   ],
   "states": [
     "disabled",
@@ -682,6 +685,24 @@
         "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
       },
       "usage_visibility": "Bounded local extraction and shared SQLite receipts. No inference, service upload or index insertion; rendered DOCX positions, referenced pixels and speech remain unqualified.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "video-skill-authoring",
+      "adopted": true,
+      "capabilities": [
+        "Ordinary host SKILL.md provenance/event/media-plan/asset validation; retained task-record checks and atomic positive-file-set packaging"
+      ],
+      "packages": [
+        "PyYAML"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {},
+      "usage_visibility": "Local validation and actual archive bytes. Does not observe a task run or authenticate execution/rights declarations. Trigger judgment and independently observed task success remain separate; optional model evaluation requires bounded authorization.",
       "live_verified": false,
       "run_authority": "not-granted"
     }

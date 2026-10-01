@@ -21,6 +21,82 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
+### Current video-skill implementation and installer correction
+
+`vrm-0e8.7.2` is in progress at checkpoint
+`7313f619c01acf0afc5c1dbb935a9a76a3d6cbd5`. Candidate source is frozen in
+`video-to-skill/final-source.json`, SHA256
+`fcc0eaa43f8ccdbd165b4125550fb671b09e9a9419d1ff5e804c35c422db113f`:
+26 owned paths, 287 runtime bodies, three locks. The explicit PyYAML 6 dependency
+was already locked transitively; registry versions remain unchanged.
+
+Primary implementation returned 76 passing cases. The sole original independent
+review found two P2 issues: a FIFO replacement could block the final retained-file
+open, and quoted JSON credential keys escaped the package pattern screen. Root
+repaired both with nonblocking open and quoted-key matching. All ten regressions
+failed against original source, then all 86 affected cases passed; no second review.
+`original-review-root-return.json` SHA256
+`46f4d6d2448cd0214e4fae2226752f3297f44e0f5f982644bbc5cacf6fceb5d6`
+and `original-review-repairs.json` SHA256
+`7286bca7911a6e5dc0003bfb90f2c61e4075cb9a2a0be348d2666fb78399d020`
+retain source-boundary findings and repair evidence.
+
+Fresh final gates passed 2,824 root tests, 37 installer tests, nine security and
+five offline controls, Ruff, baseline/programme/reuse/release metadata and host
+skill format. Five fresh archives passed reuse clearance and byte readback;
+237 root and 37 companion installed bodies match on isolated Python 3.14.7.
+All 82 previous tool contract objects are exact. The initial whole-manifest
+comparison included generated_at and failed; its retained metadata-only failure
+was corrected without re-exporting or changing tool contracts.
+`component-gates.json` SHA256
+`6243c7f29c526413dffa041f83d361d3f4d61f900d4cda29667912f68b5d7327`.
+
+The actual synthetic source first attempt passed three native commands. Video
+SHA256 `0c6a7b0631b764cb07c56a4132665c0a1cfd8e9083325789d9061e753407b91a`.
+All 30 frames passed fixed PTS/pixel predicates, independently decoded with
+Pillow and viewed as red/green/blue contact-sheet bands. All 41 files and 33
+first-party grants were rehashed; native PIDs/groups joined. Source join SHA256
+`68ecd7b26add2a80c1cd2f188c9026e6cf7aaf7d61cf5f4702f18b2b8d2654d1`.
+Fixed 12-control/task preparation is terminal and root-joined:
+`installed-plan-root-joined.json` SHA256
+`c451ae58ecf65a7d36041dbdf39883c84724c31d08894937f7a2978a82debe00`.
+The root-owned packed journey passed on its first attempt: all 12 fixed controls
+verified, zero failures/unrun, 13 public validation and three package calls, two
+actual packed install/check calls and one host task with three FFmpeg children.
+All three actual PNG hashes and parsed end state match the pre-task oracle.
+Both ZIPs passed all-member/manifest readback; existing ZIP survived refusal.
+All 492 retained files were rehashed; all 22 command/native PIDs and groups freshly
+absent and captured drains joined. Active home env bytes/hash/mode are unchanged.
+Actual receipt SHA256
+`5b202f4c25aa4699c970ac9dc6e2230e8c5a7b093cb7ed78512457631d0448b1`;
+root join SHA256
+`f0e8b0440c32bb12e9cbb59ebcbdc34c8553d11a7c11831a45f95c6432eaf20b`.
+The acceptance-runner preparation lane was interrupted before any files or
+execution; root authored and statically checked its explicit runner. The sealed
+12-case plan/oracles remained unchanged. No qualification retry occurred.
+Source remains synthetic; human audit,
+physical/semantic truth, live providers, comparison and release remain unqualified.
+
+Preparation found a legacy --local installer defect: the prior packed hardware
+journey addressed the active home .env, appended 264 comment/template bytes and
+retained a private checkpoint snapshot. The npm credential-isolation claim is
+retracted; the 40 simulator controls remain valid. Current home bytes matched
+that installer output hash; root restored exact 1,836 pre-run bytes and 0600 mode.
+No credential values were printed. `installer-scope-audit.json` SHA256
+`bff1c1cda3f374e296637c25bd28148edb0e23ce35aa53b3c886e3dfc0bd65e3`
+retains the finding/restoration; the original private snapshot is preserved.
+Current source fixes local install/doctor/recovery to use the project template;
+registration selects VIDEO_RESEARCH_ENV_FILE and missing selection never falls
+back to home. Legacy local env checkpoints without env_scope=local are refused.
+Candidate runtime and older registry runtime remain separate: old registry may
+ignore the new selection and is unqualified. The actual packed journey hashed
+the active home env before/after, preserved HOME/CODEX_HOME and executed the fresh
+installed candidate explicitly. Node setup guarded home dotenv, network and
+children; actual candidate Python loader selected its project sentinel. No paid trigger evaluation is authorized.
+
+Human audit is pending, not waived. Continue eligible implementation after
+component acceptance, explicit commit and normal push. The epic remains open.
+
 ### Current hardware implementation checkpoint
 
 `vrm-0e8.9.6` is closed. The simulator component is committed and normally

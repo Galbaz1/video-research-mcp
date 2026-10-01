@@ -26,6 +26,9 @@ CONFIG_SOURCES = {
     "packages/video-agent-mcp/src/video_agent_mcp/config.py",
 }
 SOURCE_CONTRACTS = {
+    "scripts/video_skill_contract.py",
+    "scripts/validate_video_skill.py",
+    "scripts/package_video_skill.py",
     "src/video_research_mcp/tools/hardware.py",
     "src/video_research_mcp/hardware_simulator.py",
     "src/video_research_mcp/hardware_store.py",
@@ -376,12 +379,16 @@ def validate_plans(root: Path, manifest: dict) -> None:
 
 
 def inspect_readiness(
-    root: Path = ROOT, *, env: dict | None = None, env_file: Path = DEFAULT_ENV_PATH
+    root: Path = ROOT, *, env: dict | None = None, env_file: Path | None = None
 ) -> dict:
     """Build a side-effect-free matrix from current source and local presence."""
     manifest = json.loads((root / MANIFEST).read_text())
     validate_plans(root, manifest)
-    resolved = effective_environment(dict(os.environ) if env is None else env, env_file)
+    process_env = dict(os.environ) if env is None else env
+    if env_file is None:
+        selected = process_env.get("VIDEO_RESEARCH_ENV_FILE")
+        env_file = Path(selected) if selected else DEFAULT_ENV_PATH
+    resolved = effective_environment(process_env, env_file)
     rows = [inspect_integration(root, row, resolved) for row in manifest["integrations"]]
     source_paths = (
         list(manifest["config_sources"].values()) + manifest["additional_source_contracts"]
@@ -411,7 +418,7 @@ def inspect_readiness(
 def main() -> None:
     """Print safe JSON to stdout, with no configuration or artifact writes."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--env-file", type=Path, default=DEFAULT_ENV_PATH)
+    parser.add_argument("--env-file", type=Path)
     args = parser.parse_args()
     try:
         result = inspect_readiness(env_file=args.env_file)

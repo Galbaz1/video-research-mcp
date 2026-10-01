@@ -1116,9 +1116,11 @@
             "skills/video-to-skill/SKILL.md",
             "scripts/validate_video_skill.py",
             "scripts/package_video_skill.py",
-            "tests/test_video_skill.py"
+            "tests/test_video_skill.py",
+            "scripts/video_skill_contract.py",
+            "docs/integrations/video-derived-skills.md"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Candidate independently authored host validation and packaging targets; source/task/rights observation claims require separately joined actual evidence.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_av_perception",
@@ -1157,7 +1159,13 @@
             "/Users/fausto_home/Coding/video-research-mcp/scripts/package_video_skill.py",
             "/Users/fausto_home/Coding/video-research-mcp/tests/test_video_skill.py"
           ],
-          "bead_id": "vrm-0e8.7.2"
+          "bead_id": "vrm-0e8.7.2",
+          "implementation_public_tools": [],
+          "implementation_public_workflows": [
+            "video-to-skill",
+            "scripts/validate_video_skill.py",
+            "scripts/package_video_skill.py"
+          ]
         },
         {
           "key": "qwen_image_generation",
@@ -10776,7 +10784,9 @@
         "scripts/package_video_skill.py",
         "scripts/validate_video_skill.py",
         "skills/video-to-skill/SKILL.md",
-        "tests/test_video_skill.py"
+        "tests/test_video_skill.py",
+        "scripts/video_skill_contract.py",
+        "docs/integrations/video-derived-skills.md"
       ],
       "declared_dependencies": [
         "assets",

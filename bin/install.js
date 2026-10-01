@@ -7,7 +7,7 @@ const readline = require('readline');
 const ui = require('./lib/ui');
 const { FILE_MAP, cleanEmptyDirs } = require('./lib/copy');
 const { hashFile, readManifest, computeActions } = require('./lib/manifest');
-const { getConfigPath, readConfig, mergedConfig, MCP_SERVERS, entryHash, envTemplate } = require('./lib/config');
+const { getConfigPath, getEnvPath, readConfig, mergedConfig, MCP_SERVERS, entryHash, envTemplate } = require('./lib/config');
 const { guard, capture, runTransaction, restore, history, doctor, clientConfig } = require('./lib/onboarding');
 const VERSION = require('../package.json').version;
 
@@ -95,7 +95,7 @@ function install(mode, force = false) {
   expectedBefore['@manifest'] = manifestInput.hash;
   expectedBefore['@config'] = capture(configPath).hash;
   const actions = computeActions(source, target, FILE_MAP, manifest, force);
-  const beforeConfig = readConfig(configPath), afterConfig = mergedConfig(beforeConfig, manifest.config_entries || {});
+  const beforeConfig = readConfig(configPath), afterConfig = mergedConfig(beforeConfig, manifest.config_entries || {}, mode);
   const operations = {}, files = {}, ownedEntries = {};
   for (const action of actions.toCopy) {
     const artifact = capture(path.join(source, action.src));
@@ -113,7 +113,7 @@ function install(mode, force = false) {
     }
   }
   if (JSON.stringify(beforeConfig) !== JSON.stringify(afterConfig)) operations['@config'] = JSON.stringify(afterConfig, null, 2) + '\n';
-  const envPath = path.join(homeDir(), '.config/video-research-mcp/.env'); guard(envPath, homeDir());
+  const envPath = getEnvPath(mode); guard(envPath, path.dirname(configPath));
   const env = capture(envPath), currentEnv = env.bytes === null ? '' : Buffer.from(env.bytes, 'base64').toString('utf8');
   expectedBefore['@env'] = env.hash;
   if (envTemplate(currentEnv) !== currentEnv) operations['@env'] = envTemplate(currentEnv);

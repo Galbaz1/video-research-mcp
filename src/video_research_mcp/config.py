@@ -325,7 +325,7 @@ _config: ServerConfig | None = None
 def get_config() -> ServerConfig:
     """Return the global config singleton, creating it on first access.
 
-    Loads ``~/.config/video-research-mcp/.env`` before reading env vars.
+    Loads the selected installer credential file before reading env vars.
     Process environment always takes precedence over the config file.
     """
     global _config

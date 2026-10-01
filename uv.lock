@@ -2111,6 +2111,7 @@ dependencies = [
     { name = "google-genai" },
     { name = "httpx" },
     { name = "pydantic" },
+    { name = "pyyaml" },
     { name = "weaviate-client" },
 ]
 
@@ -2157,6 +2158,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.13.5,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.1.1,<10" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.4.0,<2" },
+    { name = "pyyaml", specifier = ">=6.0.3,<7" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.16.9,<0.17" },
     { name = "weaviate-agents", marker = "extra == 'agents'", specifier = ">=1.8.0,<2" },
     { name = "weaviate-client", specifier = ">=4.23.1,<5" },

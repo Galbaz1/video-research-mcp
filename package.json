@@ -16,7 +16,11 @@
     "docs/integrations/QWEN_REUSE.md",
     "integrations/qwen/manifest.json",
     "docs/integrations/qwen-hardware.md",
-    "integrations/qwen/mhs.json"
+    "integrations/qwen/mhs.json",
+    "docs/integrations/video-derived-skills.md",
+    "scripts/video_skill_contract.py",
+    "scripts/validate_video_skill.py",
+    "scripts/package_video_skill.py"
   ],
   "engines": {
     "node": ">=22"

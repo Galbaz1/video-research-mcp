@@ -34,6 +34,27 @@ test('hardware evidence skill installs byte-exactly and unchanged uninstall remo
   assert.equal(fs.existsSync(installed), false);
 });
 
+test('video skill authoring scripts install exactly and retain a user-edited validator', (t) => {
+  const directory = fixture(t);
+  const relative = ['SKILL.md', 'scripts/video_skill_contract.py',
+    'scripts/validate_video_skill.py', 'scripts/package_video_skill.py'];
+  const installed = path.join(directory, '.claude/skills/video-to-skill');
+  assert.equal(runInstaller(directory, '--local').status, 0);
+  for (const name of relative) {
+    const source = name === 'SKILL.md' ? 'skills/video-to-skill/SKILL.md' : name;
+    assert.deepEqual(fs.readFileSync(path.join(installed, name)),
+      fs.readFileSync(path.resolve(__dirname, '..', source)));
+  }
+  const validator = path.join(installed, 'scripts/validate_video_skill.py');
+  fs.appendFileSync(validator, '\n# User customization\n');
+  assert.equal(runInstaller(directory, '--local').status, 0);
+  assert.match(fs.readFileSync(validator, 'utf8'), /User customization/);
+  assert.equal(runInstaller(directory, '--local', '--uninstall').status, 0);
+  assert.equal(fs.existsSync(validator), true);
+  assert.equal(fs.existsSync(path.join(installed, 'SKILL.md')), false);
+  assert.equal(fs.existsSync(path.join(installed, 'scripts/package_video_skill.py')), false);
+});
+
 test('installed video planning command is complete without checkout documentation', (t) => {
   const home = fixture(t);
   const result = runInstaller(home, '--global');
@@ -85,6 +106,78 @@ test('local install registers at the project root and creates private credential
   assert.match(fs.readFileSync(envPath, 'utf8'), /# GEMINI_MODEL=\n/);
   assert.doesNotMatch(fs.readFileSync(envPath, 'utf8'), /gemini-\d/);
   if (process.platform !== 'win32') assert.equal(fs.statSync(envPath).mode & 0o777, 0o600);
+});
+
+test('local lifecycle and doctor use project credentials with a distinct home directory', (t) => {
+  const home = fixture(t), project = path.join(home, 'project');
+  fs.mkdirSync(project);
+  const globalEnv = path.join(home, '.config/video-research-mcp/.env');
+  fs.mkdirSync(path.dirname(globalEnv), { recursive: true });
+  fs.writeFileSync(globalEnv, 'GEMINI_API_KEY=synthetic-home-only\n');
+  const homeBytes = fs.readFileSync(globalEnv), homeMode = fs.statSync(globalEnv).mode;
+  const run = (...args) => spawnSync(process.execPath,
+    [path.resolve(__dirname, '../bin/install.js'), '--local', ...args], {
+      cwd: project, env: { ...process.env, HOME: home, USERPROFILE: home, GEMINI_API_KEY: '' }, encoding: 'utf8',
+    });
+  assert.equal(run().status, 0);
+  const envPath = path.join(project, '.config/video-research-mcp/.env');
+  assert.equal(fs.existsSync(envPath), true);
+  const registered = JSON.parse(fs.readFileSync(path.join(project, '.mcp.json')));
+  assert.deepEqual(registered.mcpServers['video-research'].env,
+    { VIDEO_RESEARCH_ENV_FILE: fs.realpathSync(envPath) });
+  const first = JSON.parse(run('--doctor').stdout);
+  assert.equal(first.credential_presence.GEMINI_API_KEY, false);
+  fs.writeFileSync(envPath, 'GEMINI_API_KEY=synthetic-project-only\n', { mode: 0o600 });
+  assert.equal(JSON.parse(run('--doctor').stdout).credential_presence.GEMINI_API_KEY, true);
+  for (const args of [[], ['--check'], ['--uninstall'], ['--rollback']]) {
+    const result = run(...args);
+    assert.equal(result.status, 0, result.stderr);
+    assert.deepEqual(fs.readFileSync(globalEnv), homeBytes);
+    assert.equal(fs.statSync(globalEnv).mode, homeMode);
+  }
+  const checkpoints = path.join(project, '.claude/gr-install-backups');
+  for (const file of fs.readdirSync(checkpoints)) {
+    const record = JSON.parse(fs.readFileSync(path.join(checkpoints, file)));
+    assert.equal(record.env_scope, 'local');
+    assert.doesNotMatch(JSON.stringify(record), /synthetic-home-only/);
+    if (record.before['@env']?.bytes) {
+      assert.doesNotMatch(Buffer.from(record.before['@env'].bytes, 'base64').toString(), /synthetic-home-only/);
+    }
+  }
+});
+
+test('local install and rollback never follow the home credential path', (t) => {
+  const home = fixture(t), project = path.join(home, 'project');
+  fs.mkdirSync(project);
+  const homeConfig = path.join(home, '.config');
+  fs.symlinkSync(project, homeConfig, process.platform === 'win32' ? 'junction' : 'dir');
+  const run = (...args) => spawnSync(process.execPath,
+    [path.resolve(__dirname, '../bin/install.js'), '--local', ...args], {
+      cwd: project, env: { ...process.env, HOME: home, USERPROFILE: home }, encoding: 'utf8',
+    });
+  const installed = run();
+  assert.equal(installed.status, 0, installed.stderr);
+  assert.equal(run('--doctor').status, 0);
+  assert.equal(run('--rollback').status, 0);
+  assert.equal(fs.existsSync(path.join(project, '.config/video-research-mcp/.env')), false);
+  assert.equal(fs.lstatSync(homeConfig).isSymbolicLink(), true);
+});
+
+test('legacy local env checkpoints cannot transplant home credentials into a project', (t) => {
+  const directory = fixture(t);
+  const installed = runInstaller(directory, '--local');
+  assert.equal(installed.status, 0);
+  const id = JSON.parse(installed.stdout).checkpoint_id;
+  const checkpoint = path.join(directory, '.claude/gr-install-backups', id + '.json');
+  const record = JSON.parse(fs.readFileSync(checkpoint));
+  delete record.env_scope;
+  fs.writeFileSync(checkpoint, JSON.stringify(record));
+  const envPath = path.join(directory, '.config/video-research-mcp/.env');
+  const before = fs.readFileSync(envPath);
+  const result = runInstaller(directory, '--local', '--restore', id);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Installer failed safely/);
+  assert.deepEqual(fs.readFileSync(envPath), before);
 });
 
 test('upgrade and uninstall retain modified files and their ownership evidence', (t) => {

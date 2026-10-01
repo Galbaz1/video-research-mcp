@@ -42,10 +42,19 @@ Without a scope flag, the installer prompts for global or local installation.
 | Commands, skills, agents | `~/.claude/` | `./.claude/` |
 | MCP registration | `~/.claude.json` | `./.mcp.json` |
 | Ownership manifest | `~/.claude/gr-file-manifest.json` | `./.claude/gr-file-manifest.json` |
-| Shared configuration template | `~/.config/video-research-mcp/.env` | Same user-level file |
+| Private configuration template | `~/.config/video-research-mcp/.env` | `./.config/video-research-mcp/.env` |
 
-The copy map contains 44 files: 17 commands, 20 skill files across 13 skills,
-and 7 agents. They are prompts and workflow resources. The installer does not
+Local MCP registration sets `VIDEO_RESEARCH_ENV_FILE` to the project template.
+The candidate Python runtime reads that selected file without falling back to home
+credentials when it is missing. This requires that candidate runtime or its
+separately verified release; an older registry package may ignore the selection.
+Nonempty process environment values still take precedence.
+Local install, update, doctor and recovery use only the selected project template.
+Legacy local checkpoints that contain a home `.env` snapshot cannot be restored
+automatically; compare their before/after hashes and restore that home file separately.
+
+The copy map contains 50 files: 17 commands, 26 skill files across 16 skills,
+and 7 agents. They are prompts, workflow resources and local authoring scripts. The installer does not
 install the upstream video renderer or start an MCP server.
 
 Restart Claude Code after installation and use `/gr:getting-started` for setup.
@@ -59,7 +68,7 @@ verify provider authentication or the active runtime version.
 | [`bin/install.js`](../bin/install.js) | Scope selection, prerequisites, install, status, uninstall |
 | [`bin/lib/copy.js`](../bin/lib/copy.js) | `FILE_MAP`, destination paths, empty-directory cleanup |
 | [`bin/lib/manifest.js`](../bin/lib/manifest.js) | SHA-256 ownership evidence and upgrade decisions |
-| [`bin/lib/config.js`](../bin/lib/config.js) | MCP registration merge and shared `.env` template |
+| [`bin/lib/config.js`](../bin/lib/config.js) | MCP registration merge and scoped `.env` template |
 | [`bin/lib/ui.js`](../bin/lib/ui.js) | Installer messages |
 | [`package.json`](../package.json) | npm version, Node requirement, entry point, published assets |
 
@@ -149,7 +158,7 @@ installer default. Customized entries remain for manual inspection. A malformed
 client configuration produces a warning: files and their manifest may still
 install, so check registration separately.
 
-The shared `.env` template is created with owner-only permissions. Upgrades
+The selected `.env` template is created with owner-only permissions. Upgrades
 append missing commented keys and preserve existing values. Nonempty process
 environment values take precedence. Selected content and authentication
 credentials are sent to their configured providers.

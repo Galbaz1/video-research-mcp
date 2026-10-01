@@ -52,6 +52,10 @@ const FILE_MAP = {
   'skills/image-generation/SKILL.md':                            'skills/image-generation/SKILL.md',
   'skills/reverse-search-video-frame/SKILL.md':                 'skills/reverse-search-video-frame/SKILL.md',
   'skills/hardware-evidence-capture/SKILL.md':                  'skills/hardware-evidence-capture/SKILL.md',
+  'skills/video-to-skill/SKILL.md':                             'skills/video-to-skill/SKILL.md',
+  'scripts/video_skill_contract.py':                           'skills/video-to-skill/scripts/video_skill_contract.py',
+  'scripts/validate_video_skill.py':                           'skills/video-to-skill/scripts/validate_video_skill.py',
+  'scripts/package_video_skill.py':                            'skills/video-to-skill/scripts/package_video_skill.py',
 
   'agents/researcher.md':      'agents/researcher.md',
   'agents/video-analyst.md':   'agents/video-analyst.md',
@@ -64,6 +68,8 @@ const FILE_MAP = {
 
 /** Directories to clean up during uninstall (deepest first). */
 const CLEANUP_DIRS = [
+  'skills/video-to-skill/scripts',
+  'skills/video-to-skill',
   'skills/gemini-visualize/templates',
   'skills/gemini-visualize',
   'skills/video-research',
