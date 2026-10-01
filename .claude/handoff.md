@@ -1,5 +1,5 @@
 ---
-date: 2026-10-01T05:46+02:00
+date: 2026-10-01T07:30+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -20,6 +20,66 @@ closure for completion of the product or a proved superiority claim.
 
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
+
+### Current DSP component and recoverable-session resume
+
+DSP core component is committed and normally pushed at
+`2084017ca65b9f1f7dd77688f947fb60875d357d`; exact remote readback matches.
+`vrm-0e8.4.4` remains **blocked, not closed** on two optional-native qualification
+gaps. Private `audio-dsp/group-receipt.committed.json` SHA256
+`e18781f569a787c253f02b6e0e53c1827e0d3ae713277f2a1c201ddca50c690f`
+binds26 owned Git blobs,216 root plus38 companion runtime bodies and3 unchanged
+locks, including the companion JobStore symlink and committed target body.
+
+The new `audio_dsp_analyze` makes72 tools; all previous71 objects are exact.
+Own finite PCM duration/spectrum/clipping/loudness, source-absolute windows,
+measured A/B units, MFCC heuristic abstentions, bounded waveform/spectrogram,
+all comparison originals and attested terminal/restart jobs are verified.
+Optional pinned Juzzy/Ferrous private processes are disabled without exact
+operator profiles. Foreign source, binaries, crates and fixture media are not
+redistributed. Standards, music/quality/identity labels remain unqualified.
+
+Original source review NEEDS_FIXES3P2 was repaired by root with11 independent
+regressions PASS; no second review. Required eight scoped gates passed with2531
+root,196 companion,9 security and5 offline cases. Fresh offline wheel/sdist and
+isolated install match216 runtime bytes and26 owned sdist paths. Final runtime
+candidate `d6cf93bab70d9d10e16c7cae1914613040e5d864095db2c68b404640630f79fd`
+was unchanged for later qualification documentation/ledger-only changes; final
+owned freeze `ef0800bac98489c0df5887dba772834ddac3d09fc723e2c4a852396a19c38d5d`.
+Exact unchanged checks/journey carry and refreshed archive bytes are retained.
+
+First installed fixed32 run16verified/1failed/15unrun retained an empty local
+TimeoutError; root corrected DSP-specific formatting only. Second SAME32 plan
+finished **COMPLETE_WITH_NATIVE_FAILURES**,32 verified outcomes/0unrun, nine
+native jobs complete and two native failures. Installed receipt SHA256
+`8d114c542ed6cd4a3d453a9a356ecb4ebb7de8a3e8d9dd994fa7592333b053d9`.
+Fresh root PIDs79330/85015,193 owned process drains joined;107 retained artifact
+copies rehashed. Juzzy full_analysis twice reached120s on the selected2s stereo
+fixture. One1s sample of its owned PID79930 showed20 waiting threads; it does not
+establish cause. Ferrous visual_only failed the line/closure collector check
+before native images were exported; actual response size/closure cause unknown.
+Both errors are durable/attested and remain in the denominator. Do not raise
+limits/change oracle or repeat unchanged full-analysis attempts. Native exact
+full-analysis and plots remain unqualified; successful own plots are separate.
+Next DSP cause-finding is exact source/indexing and a separately scoped future
+bounded native stderr diagnostic. All owned recorded PIDs/groups are absent.
+
+`vrm-0e8.6.4` is freshly claimed/in_progress from live eligible dependencies:
+recoverable session compaction and scoped derived memory. Root owns product.
+Read-only existing-code lane is joined: current add_turn destructively trims
+history before SQLite save; persisted sessions bypass timeout/max checks on reload;
+workspace/notebook scope and persistent memory inspect/edit/delete are absent.
+Current source-only lane owns private `session-compaction/source-contracts/`,
+DeepAgents four mapped files at exact pin
+`1756bbe1eb348e20b925598ed49665b0d34b4b2d`. No next-leaf product/runtime/provider
+changes yet. Preserve originals durably before selecting a bounded replay view;
+keep synopsis separate/non-authoritative and require exact scope for memory.
+Join source/grant report before implementation. No SDK host/shell is justified.
+
+Fixed private evidence remains under September30. Human nine-case audit pending
+`.10.2`, not waived; heldout untouched, comparative advantage and registry release
+unverified. Continue eligible implementation, preserving completed transcript,
+PDF, Word and mail work outside this programme. No active DSP jobs remain.
 
 ### Current TwelveLabs acceptance and deterministic audio resume
 
