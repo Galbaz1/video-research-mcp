@@ -13,12 +13,27 @@ from .jobs import adapter_revision, create_job, get_job, reconcile_job
 from .redaction import redact_text
 from .render_artifacts import file_revision, project_revision, render_outputs, verify_output
 from .runner import SubprocessResult, run_cli
+from .prereqs import require_render_ready
+from .render_contract import project_contract, source_contract
+from .render_validation import qualify_render
 
 _background_tasks: set[asyncio.Task] = set()
 _job_tasks: dict[str, tuple[str, asyncio.Task]] = {}
 HEARTBEAT_SECONDS = 1
 MAX_CONCURRENT_RENDERS = 2
 _draining_enabled = True
+
+
+def _check_dispatch_binding(request: dict) -> None:
+    """Reject changed dispatch settings or console bytes without an await gap."""
+    cfg = get_config()
+    if (cfg.resolved_projects_path / request["project_id"]).resolve() != Path(request["project_dir"]):
+        raise ValueError("Render project settings changed after admission")
+    if str(Path(cfg.explainer_path).expanduser().resolve()) != request["explainer_path"]:
+        raise ValueError("Render CLI settings changed after admission")
+    cli = Path(request["explainer_path"]) / ".venv/bin/video-explainer"
+    if request["cli_revision"] and file_revision(cli, 8 * 1024 * 1024) != request["cli_revision"]:
+        raise ValueError("Render CLI changed after admission")
 
 
 async def _heartbeat(job_id: str, owner: str, task: asyncio.Task) -> None:
@@ -112,17 +127,10 @@ async def _validate_request(row: dict) -> tuple[Path, dict]:
     source = await asyncio.to_thread(project_revision, project_dir)
     if source != request["source"]:
         raise ValueError("Project inputs changed after render admission")
-    cfg = get_config()
-    if (cfg.resolved_projects_path / request["project_id"]).resolve() != project_dir:
-        raise ValueError("Render project settings changed after admission")
-    if str(Path(cfg.explainer_path).expanduser().resolve()) != request["explainer_path"]:
-        raise ValueError("Render CLI settings changed after admission")
-    cli = Path(request["explainer_path"]) / ".venv/bin/video-explainer"
-    if (
-        request["cli_revision"]
-        and await asyncio.to_thread(file_revision, cli) != request["cli_revision"]
-    ):
-        raise ValueError("Render CLI changed after admission")
+    _check_dispatch_binding(request)
+    if project_contract(project_dir, request["resolution"]) != request["render_contract"]:
+        raise ValueError("Render input/output route changed after admission")
+    await require_render_ready(request["project_id"])
     return project_dir, source
 
 
@@ -145,26 +153,42 @@ async def _run_request(row: dict, owner: str) -> tuple[SubprocessResult, dict, d
         raise RuntimeError("Render lost ownership before dispatch")
     if before != request["before_outputs"]:
         raise ValueError("Render outputs changed while queued")
+    if await asyncio.to_thread(project_revision, project_dir) != source:
+        raise ValueError("Project inputs changed during render readiness")
+    _check_dispatch_binding(request)
     result = await run_cli(
         *args,
         timeout=request["render_timeout"],
         process_started=process_started,
     )
+    _check_dispatch_binding(request)
+    renderer = source_contract(Path(request["explainer_path"]))
+    if not renderer["mapped_source_verified"]:
+        raise ValueError(
+            "Renderer source changed during execution: " + "; ".join(renderer["errors"])
+        )
     after = await asyncio.to_thread(render_outputs, project_dir / "output")
     changed = [path for path, revision in after.items() if before.get(path) != revision]
     if not changed:
         raise FileNotFoundError("Render exited successfully but produced no new nonempty video")
     if await asyncio.to_thread(project_revision, project_dir) != source:
         raise ValueError("Project inputs changed during render")
-    output = max(changed, key=lambda path: Path(path).stat().st_mtime_ns)
+    output = request["render_contract"]["expected_output"]
+    if output not in changed:
+        raise FileNotFoundError("Render did not produce the expected current-request MP4")
     artifact = {"path": output, **after[output]}
     if not await asyncio.to_thread(verify_output, artifact):
         raise ValueError("Rendered output changed before acceptance")
+    artifact["qualification"] = await qualify_render(artifact, request["resolution"])
+    if await asyncio.to_thread(project_revision, project_dir) != source:
+        raise ValueError("Project inputs changed during output qualification")
+    _check_dispatch_binding(request)
     return result, artifact, dispatch
 
 
 async def _admit_render(project_id: str, resolution: str, fast: bool) -> tuple[dict, str]:
     """Atomically admit and acquire one project render before any subprocess starts."""
+    await require_render_ready(project_id)
     row = await asyncio.to_thread(create_job, project_id, resolution, fast)
     if len(_job_tasks) >= MAX_CONCURRENT_RENDERS:
         JobStore().cancel(row["job_id"])
@@ -258,6 +282,7 @@ def _next_queued() -> tuple[dict | None, str]:
 
 async def start_render(project_id: str, resolution: str, fast: bool) -> dict:
     """Persist a request and launch it only when this process has worker capacity."""
+    await require_render_ready(project_id)
     row = await asyncio.to_thread(create_job, project_id, resolution, fast)
     if len(_job_tasks) < MAX_CONCURRENT_RENDERS:
         owner = "render:" + uuid.uuid4().hex

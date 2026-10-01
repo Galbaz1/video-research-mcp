@@ -27,10 +27,37 @@ from video_explainer_mcp.tools.pipeline import (
 pytestmark = pytest.mark.unit
 
 
+@pytest.fixture(autouse=True)
+def _controller_native_boundaries(monkeypatch, request):
+    """Keep controller outcomes synthetic; the two owned FFmpeg cases decode actual bytes."""
+    import video_explainer_mcp.render_worker as worker
+    from video_explainer_mcp.render_validation import qualify_render
+
+    monkeypatch.setattr(worker, "require_render_ready", AsyncMock(return_value=None))
+    monkeypatch.setattr(worker, "source_contract", lambda directory: {
+        "mapped_source_verified": True, "errors": [],
+        "test_fixture": "Controller edge stub; no pinned external renderer qualification",
+    })
+
+    async def synthetic_qualification(artifact, resolution):
+        return {"policy": "mp4-full-decode-v1", "artifact_sha256": artifact["sha256"],
+                "size_bytes": artifact["size_bytes"], "full_decode": True,
+                "real_renderer_verified": False,
+                "test_fixture": "Synthetic controller output; codec subprocess explicitly mocked"}
+
+    monkeypatch.setattr(worker, "qualify_render", qualify_render if request.node.name.startswith(
+        "test_real_ffmpeg_") else synthetic_qualification)
+
+
 def _project(tmp_path, monkeypatch, name="test"):
     project = tmp_path / "projects" / name
     (project / "output").mkdir(parents=True, exist_ok=True)
     (project / "source.json").write_text('{"claim":"owned source"}')
+    (project / "storyboard").mkdir(exist_ok=True)
+    (project / "storyboard/storyboard.json").write_text('{"scenes":[]}')
+    (project / "config.json").write_text(json.dumps({"paths": {
+        "storyboard": "storyboard/storyboard.json", "final_video": "output/final.mp4",
+    }}))
     monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
     monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(tmp_path / "projects"))
     return project
@@ -47,7 +74,7 @@ async def _join_workers():
 
 async def test_digest_newness_rejects_same_bytes_with_new_timestamp(tmp_path, monkeypatch):
     project = _project(tmp_path, monkeypatch)
-    output = project / "output/video.mp4"
+    output = project / "output/final-720p.mp4"
     output.write_bytes(b"prior video")
 
     async def render(*args, **kwargs):
@@ -61,7 +88,7 @@ async def test_digest_newness_rejects_same_bytes_with_new_timestamp(tmp_path, mo
 
 async def test_changed_completed_artifact_cannot_pass_poll(tmp_path, monkeypatch):
     project = _project(tmp_path, monkeypatch)
-    output = project / "output/video.mp4"
+    output = project / "output/final-720p.mp4"
 
     async def render(*args, **kwargs):
         output.write_bytes(b"accepted output")
@@ -88,7 +115,7 @@ async def test_queued_restart_recovers_once_without_duplicate_cli(tmp_path, monk
     row = create_job("test")
 
     async def render(*args, **kwargs):
-        (project / "output/video.mp4").write_bytes(b"recovered first launch")
+        (project / "output/final-720p.mp4").write_bytes(b"recovered first launch")
         return _cli_result()
 
     with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render) as cli:
@@ -106,7 +133,7 @@ async def test_queued_restart_recovers_once_without_duplicate_cli(tmp_path, monk
 async def test_output_written_while_queued_cannot_satisfy_noop_render(drift, tmp_path, monkeypatch):
     """Only output created after dispatch can satisfy the queued render request."""
     project = _project(tmp_path, monkeypatch)
-    output = project / "output/video.mp4"
+    output = project / "output/final-720p.mp4"
     if drift != "created":
         output.write_bytes(b"admitted retained output")
     row = create_job("test")
@@ -153,7 +180,7 @@ async def test_mutated_source_during_render_cannot_complete(tmp_path, monkeypatc
     project = _project(tmp_path, monkeypatch)
 
     async def render(*args, **kwargs):
-        (project / "output/video.mp4").write_bytes(b"new output")
+        (project / "output/final-720p.mp4").write_bytes(b"new output")
         (project / "source.json").write_text('{"claim":"changed during render"}')
         return _cli_result()
 
@@ -222,7 +249,7 @@ async def test_queue_drain_keeps_two_workers_and_all_denominator_items(tmp_path,
         maximum = max(maximum, active)
         await asyncio.sleep(0.03)
         project = tmp_path / "projects" / args[1]
-        (project / "output/video.mp4").write_bytes(args[1].encode())
+        (project / "output/final-720p.mp4").write_bytes(args[1].encode())
         active -= 1
         if args[1] == "three":
             raise RuntimeError("retained failure")
@@ -242,8 +269,8 @@ async def test_queue_drain_keeps_two_workers_and_all_denominator_items(tmp_path,
 def _owned_ffmpeg_cli(tmp_path, monkeypatch, seconds):
     """A small, owned CLI invokes installed FFmpeg without any provider or install."""
     ffmpeg = shutil.which("ffmpeg")
-    if os.name != "posix" or not ffmpeg:
-        pytest.skip("POSIX ownership and locally installed FFmpeg required")
+    if os.name != "posix" or not ffmpeg or not shutil.which("ffprobe"):
+        pytest.skip("POSIX ownership and locally installed FFmpeg/FFprobe required")
     project = _project(tmp_path, monkeypatch)
     script = tmp_path / ".venv/bin/video-explainer"
     script.parent.mkdir(parents=True)
@@ -252,7 +279,7 @@ import json, pathlib, subprocess, sys
 root = pathlib.Path(sys.argv[sys.argv.index("--projects-dir")+1])
 name = sys.argv[sys.argv.index("render")+1]
 out = root/name/"output"
-proc = subprocess.Popen([{ffmpeg!r}, "-hide_banner", "-loglevel", "error", "-re", "-f", "lavfi", "-i", "color=c=blue:s=32x32:r=1:d={seconds}", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-y", str(out/"video.mp4")])
+proc = subprocess.Popen([{ffmpeg!r}, "-hide_banner", "-loglevel", "error", "-re", "-f", "lavfi", "-i", "color=c=blue:s=1280x720:r=1:d={seconds}", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-y", str(out/"final-720p.mp4")])
 (out/"owned-process.json").write_text(json.dumps({{"child_pid":proc.pid}}))
 sys.exit(proc.wait())
 """)
@@ -334,3 +361,44 @@ async def test_unbound_source_or_output_paths_stop_before_cli(unsafe, tmp_path, 
     assert "error" in result
     cli.assert_not_awaited()
     assert original.read_text() == '{"private":"owned test fixture"}'
+
+
+async def test_mapped_renderer_source_changed_after_dispatch_cannot_be_accepted(tmp_path, monkeypatch):
+    """A source-contract edge transition denies output before codec acceptance."""
+    project = _project(tmp_path, monkeypatch)
+    monkeypatch.setattr("video_explainer_mcp.render_worker.source_contract", lambda directory: {
+        "mapped_source_verified": False, "errors": ["owned source changed after dispatch"],
+    })
+    qualifier = AsyncMock()
+    monkeypatch.setattr("video_explainer_mcp.render_worker.qualify_render", qualifier)
+
+    async def render(*args, **kwargs):
+        (project / "output/final-720p.mp4").write_bytes(b"Synthetic unaccepted renderer output")
+        return _cli_result()
+
+    with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render) as cli:
+        reply = await explainer_render_start("test")
+        await _join_workers()
+    row = get_job(reply["job_id"])
+    assert row["status"] == "failed" and row["artifact_hashes"] == {}
+    assert "changed after dispatch" in row["error"]
+    cli.assert_awaited_once()
+    qualifier.assert_not_awaited()
+
+
+async def test_fresh_wrong_named_video_cannot_satisfy_exact_output_contract(tmp_path, monkeypatch):
+    project = _project(tmp_path, monkeypatch)
+    qualifier = AsyncMock()
+    monkeypatch.setattr("video_explainer_mcp.render_worker.qualify_render", qualifier)
+
+    async def render(*args, **kwargs):
+        (project / "output/unrelated-fresh.mp4").write_bytes(b"Synthetic different output")
+        return _cli_result()
+
+    with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render):
+        reply = await explainer_render_start("test")
+        await _join_workers()
+    row = get_job(reply["job_id"])
+    assert row["status"] == "failed" and row["artifact_hashes"] == {}
+    assert "expected current-request MP4" in row["error"]
+    qualifier.assert_not_awaited()

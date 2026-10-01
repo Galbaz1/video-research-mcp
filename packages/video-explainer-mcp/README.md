@@ -2,7 +2,7 @@
 
 Create explainer projects, run pipeline steps, and render videos through MCP.
 This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
-with 17 tools for projects, editorial plans, generation, rendering, audio, and quality checks.
+with 18 tools for projects, editorial plans, generation, rendering, audio, and quality checks.
 The upstream checkout owns provider integrations, model selection, Remotion
 code, and rendering dependencies. The pinned upstream licence grant remains
 unresolved: this package independently authors the plan contract and ships no
@@ -103,15 +103,31 @@ These are MCP calls, made through your client after registration:
    before continuing. `force=True` reruns already completed generation steps.
 4. Read `explainer_status` and inspect the actual generated files. Review and
    typecheck TSX upstream, then preview scenes before rendering.
-5. Start a render with `explainer_render_start(project_id="my-video")`. Poll the
+5. Inspect `explainer_doctor(project_id="my-video")` before rendering. It reads
+   local Node/FFmpeg/ffprobe versions, selected Remotion packages and cached browser,
+   the reviewed external source and project paths. It makes no provider call and
+   installs or downloads nothing. `all_ok` means technical prerequisites are present;
+   real renderer execution, runtime grants and picture/sound quality remain unverified.
+6. Start a render with `explainer_render_start(project_id="my-video")`. Poll the
    returned `job_id` with `explainer_render_poll` until `completed` or `failed`.
    Use blocking `explainer_render` for a short render.
 
-Render acceptance requires exit code zero and a new or updated, nonempty regular
-`.mp4` or `.webm` file in the project's `output/`. An unchanged older video does
-not satisfy the current render. Inspect the returned output path, decode/play
-that file, and review picture, sound, timing, and claims before publication.
-The wrapper's artifact check establishes file production, not those quality checks.
+Render acceptance requires a fresh regular H264 MP4 at the exact selected CLI output
+path, requested dimensions, finite duration and a complete FFmpeg decode. The
+maximum file size is 512 MiB; probe/decode limits are 10/60 seconds. An unchanged
+older video or a different output path cannot satisfy the current request. The
+canonical storyboard path must be `storyboard/storyboard.json`: the selected public
+CLI's Node entry ignores configured alternatives. The 720p/4k output is
+`output/final-720p.mp4`/`output/final-4k.mp4`; 1080p uses `paths.final_video`, which
+must be a direct MP4 in `output/`; nested/traversal output paths are unsupported.
+
+`playability_verified` reports full decoding of the exact output bytes. It does
+not certify actual Remotion/TTS production or picture, sound, timing and factual
+claims. `real_renderer_verified` remains false. Polling older completed jobs without
+a byte-bound decode receipt reports `unknown` and withholds the output path.
+Legacy full generation prepares through storyboard then uses this same render
+gate; it bypasses upstream mock rendering and retained-output skipping. Managed
+editorial generation still stops at storyboard and renders separately.
 
 ## Status and recovery
 

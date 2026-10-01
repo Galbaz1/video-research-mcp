@@ -173,21 +173,49 @@ receipts and all negative attempts. .8.8 is accepted/closed and normally pushed 
 Committed receiptba24440f36215bd20d4e6fe0002dacfe3ee97f7ab7b08312c8b68275bf32b58f
 verifies25owned Git blobs/267runtime/3unchanged locks and no-reply identities. No provider/native/heldout
 reads, real renderer/TTS/upstream-runtime/factual/human or programme release claim.
-Independent source/grant preparation for next .8.9 owns only private
-render-readiness/source-contracts. Pinned CLI custom storyboard config is checked
-but render.mjs reads a fixed storyboard path; separate renderer API uses unsupported
---props without required --project. Source-only findings, no implementation yet.
-Fresh Beads readiness selected and claimed vrm-0e8.8.9 in_progress: renderer
-readiness/capability diagnostics and actual playable MP4/current-request artifacts.
-Root owns product/shared files. Licensing owns only private pinned source/grant
-readback; join its receipt before choosing the smallest concrete route. Existing
-companion prereqs check Python/Node/FFmpeg/path/console/Remotion directory presence;
-Claude/provider, actual supported render entry, playability and configured
-storyboard identity remain to implement/qualify. No .8.9 code/CLI/render/provider/
-heldout execution yet. Next inspect existing doctor/render/job/artifact contracts,
-resolve source path/flag gaps, implement end to end and retain exact installed,
-process/artifact/decode evidence. .8.8 journeys are complete; do not redo them.
-Human review remains pending, not waived.
+`vrm-0e8.8.9` has verified firstparty readiness/artifact core; source commit follows
+this checkpoint. The leaf remains blocked, not closed, on actual pinned Remotion
+qualification: configured modules/headless browser absent and grants/eligibility
+unresolved. No foreign source/runtime/assets are copied, imported or bundled.
+Primary source receipt662244e932f85b2ba067f165bc18352ed0f488d0ebf01712658be39b12a845f7
+and browser supplementd2a98ffc62f2d5f6f9a0791f7c6404ecc0361baefec75b24349113dbf195b357
+are joined; all38 files rehashed. Five mapped bodies5243lines183191B and nine
+browser helpers853lines24432B were read. Configured c033e28 source matches.
+Root reused unchanged own bounded media_process, materialized by standalone
+companion packages. Publicdoctor checks actual native versions and exact source/
+module/browser/project prerequisites. Existing render flags and17 full previous
+MCP objects are unchanged; onlyexplainer_doctor added, total18. Current request
+must produce its exact MP4; full bounded probe/decode qualifiesplayability.
+Legacy full generation prepares storyboard then uses sharedrender; mock/oldoutput
+cannot claim success. Actualrenderer, audio provenance and semantics remain unknown.
+ONE original review SHAa163e28a6ae025dd2f18a376b7a642b2f27e1e1e10c2f8faac5df3edc99a21e9
+confirmed console replacement during asynchronous diagnostics. Root repaired
+frozen console/settings checks immediately beforedispatch, afterdispatch and after
+qualification;2replacement+3priorqueueddrift controls PASS. No secondreview.
+Final source SHA f858870915c8dc854bc238de7bcf03d12f8e34ed4e3f34101ad69d396738342e
+binds28owned/271runtime/3unchangedlocks. All235root+agent runtime match previousHEAD.
+Final2569root/301explainer/32installer/9security/5offline, Ruff/baseline/programme/
+reuse checks PASS. Fresh4archives verify222root/36companion runtime,27root/20companion
+owned sdists. Sharedaliases materialized incompanion, excludedfromroot sdists.
+Isolated Python3.14.7 install verifiesall36bodies. Current18manifest SHA
+fda78253204efcf71be8de212801f88586bce01a301e182f6b9c9925d23e2bb3.
+Fixed10 installed controls PASS_COMPONENT_EVIDENCE_ONLY,3public+7internal,
+0failed/0unrun;1uncached discovery/1stdio/14authorednativeinvocations. Receipt SHA
+93363dc0b4aed3ea75cd6cf45af6d94ce7b8482961f47916e6c92b603a9beada.
+All60files rehashed,15ownedPIDs freshlyabsent,14nativepipe drainsjoined and SDK
+stdio/logclosed. Positive1sH2641280x720tenframesfullydecoded; fixturehasnoaudio.
+Original source review,82/84workerfirstgate+affected2passes,30initialrootreadiness
+failures+2539passes,19staleledger failures+8passes, initialrootarchive symlink,
+and guardv:0preflight mismatch are retained. Exactsource-allowlist/ownedhash/
+rootaliaspackaging repairs and affectedchecks+onefinalrootrerun resolvedthem.
+Guardselector correctedbeforeexecution; same10/oracles/fixtures/bounds unchanged.
+Group render-readiness/group-receipt.json SHA
+4b74446c5b8b38c27780bb71319125f7c986c93848870d19538de6f4cdce83dc.
+No active owned render/nativejobs. No provider/browser/heldout/human/releaseproof.
+.8.8 journeys complete; do not redo. Human auditpending, notwaived.
+Next fresh eligibleleaf is .7.3 ingestionprovenance; exact8pinnedLightRAG source
+preparation and existing-code observations are read-only independent lanes.
+Root owns all mutations; claim onlyafter this rendercore is committed and recorded.
 
 Fixed private evidence remains under September30. Human nine-case audit pending
 `.10.2`, not waived; heldout untouched, comparative advantage and registry release

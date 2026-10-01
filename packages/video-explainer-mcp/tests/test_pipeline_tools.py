@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from unittest.mock import ANY, AsyncMock, patch
 
 import pytest
@@ -24,11 +25,46 @@ pytestmark = pytest.mark.unit
 
 @pytest.fixture(autouse=True)
 def _render_project(tmp_path, monkeypatch):
-    """Give mocked render launches a real, isolated source revision."""
+    """Exercise real admission/state with explicitly mocked native prerequisites/codecs."""
     projects = tmp_path / "projects"
-    (projects / "test" / "output").mkdir(parents=True, exist_ok=True)
+    _setup_project(projects / "test")
     (projects / "test" / "input.json").write_text('{"claim":"owned fixture"}')
     monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
+    monkeypatch.setattr("video_explainer_mcp.render_worker.require_render_ready", AsyncMock())
+    monkeypatch.setattr(
+        "video_explainer_mcp.render_worker.source_contract",
+        lambda directory: {"mapped_source_verified": True, "errors": []},
+    )
+
+    async def synthetic_qualification(artifact, resolution):
+        from video_explainer_mcp.render_validation import POLICY
+
+        return {
+            "policy": POLICY,
+            "artifact_sha256": artifact["sha256"],
+            "size_bytes": artifact["size_bytes"],
+            "full_decode": True,
+            "mocked_native_boundary": True,
+        }
+
+    monkeypatch.setattr("video_explainer_mcp.render_worker.qualify_render", synthetic_qualification)
+
+
+def _setup_project(project):
+    """Author the canonical selected CLI input/output paths for controller controls."""
+    (project / "output").mkdir(parents=True, exist_ok=True)
+    (project / "storyboard").mkdir(exist_ok=True)
+    (project / "storyboard/storyboard.json").write_text('{"scenes": []}')
+    (project / "config.json").write_text(
+        json.dumps(
+            {
+                "paths": {
+                    "storyboard": "storyboard/storyboard.json",
+                    "final_video": "output/final.mp4",
+                }
+            }
+        )
+    )
 
 
 def _mock_cli_result(stdout: str = "OK", duration: float = 1.0):
@@ -45,11 +81,27 @@ class TestExplainerGenerate:
     """Tests for explainer_generate tool."""
 
     async def test_full_pipeline(self, monkeypatch):
-        """Runs full pipeline with mock TTS."""
+        """Prepare through storyboard then use the shared qualified render route."""
         monkeypatch.setenv("EXPLAINER_PATH", "/fake")
-        with patch("video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()):
+        with (
+            patch(
+                "video_explainer_mcp.tools.pipeline.require_render_ready", new_callable=AsyncMock
+            ) as readiness,
+            patch(
+                "video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()
+            ) as cli,
+            patch(
+                "video_explainer_mcp.tools.pipeline._run_render",
+                return_value=(_mock_cli_result(), "/owned/final-720p.mp4"),
+            ) as render,
+        ):
             result = await explainer_generate(project_id="test")
         assert result["success"] is True
+        readiness.assert_awaited_once_with(None)
+        cli.assert_awaited_once_with("generate", "test", "--to", "storyboard", "--mock")
+        render.assert_awaited_once_with("test", "720p", True)
+        assert result["playability_verified"] is True
+        assert result["real_renderer_verified"] is False
 
     async def test_partial_pipeline(self, monkeypatch):
         """Runs from/to subset."""
@@ -71,7 +123,7 @@ class TestExplainerGenerate:
         with patch(
             "video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()
         ) as mock_cli:
-            await explainer_generate(project_id="test", force=True)
+            await explainer_generate(project_id="test", to_step="storyboard", force=True)
         assert "--force" in mock_cli.call_args.args
 
     async def test_error_handling(self, monkeypatch):
@@ -126,9 +178,9 @@ class TestExplainerStep:
         with patch(
             "video_explainer_mcp.tools.pipeline.run_cli", return_value=_mock_cli_result()
         ) as mock_cli:
-            await explainer_generate(project_id="test")
+            await explainer_generate(project_id="test", to_step="storyboard")
         flags = ["--mock"] if provider == "mock" else ["--voice-provider", provider]
-        mock_cli.assert_awaited_once_with("generate", "test", *flags)
+        mock_cli.assert_awaited_once_with("generate", "test", "--to", "storyboard", *flags)
 
     async def test_tts_args_script_no_tts(self, monkeypatch):
         """Script step does not receive TTS args."""
@@ -159,7 +211,8 @@ class TestExplainerRender:
         monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
 
         async def render(*args, **kwargs):
-            (output / "video.mp4").write_bytes(b"rendered-video")
+            name = "final.mp4" if resolution == "1080p" else f"final-{resolution}.mp4"
+            (output / name).write_bytes(b"rendered-video")
             return _mock_cli_result()
 
         tool = await pipeline_server.get_tool("explainer_render")
@@ -214,7 +267,7 @@ class TestExplainerRenderStart:
         monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
 
         async def render(*args, **kwargs):
-            (output / "video.mp4").write_bytes(b"rendered-video")
+            (output / "final-720p.mp4").write_bytes(b"rendered-video")
             return _mock_cli_result()
 
         with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render):
@@ -253,7 +306,7 @@ class TestExplainerRenderPoll:
         assert "error" in result
 
     async def test_poll_existing_job(self, tmp_path):
-        """Returns a completed job only with current artifact digest readback."""
+        """Legacy byte-attested completion remains unknown without a decode receipt."""
         from video_explainer_mcp.job_store import JobStore
         from video_explainer_mcp.jobs import create_job
         from video_explainer_mcp.render_artifacts import file_revision
@@ -271,9 +324,11 @@ class TestExplainerRenderPoll:
             artifact_hashes={str(output): artifact["sha256"]},
         )
         result = await explainer_render_poll(job_id=job["job_id"])
-        assert result["status"] == "completed"
-        assert result["output_file"] == str(output)
+        assert result["status"] == "unknown"
+        assert result["recorded_status"] == "completed"
+        assert result["output_file"] == ""
         assert result["artifact_verified"] is True
+        assert result["playability_verified"] is False
 
 
 class TestExplainerShort:
@@ -287,7 +342,7 @@ class TestExplainerShort:
         assert result["success"] is True
 
 
-@pytest.mark.parametrize("artifact", ["missing", "empty", "stale"])
+@pytest.mark.parametrize("artifact", ["missing", "empty", "stale", "wrong_output"])
 async def test_render_requires_fresh_nonempty_artifact(artifact, monkeypatch, tmp_path):
     """Exit zero cannot prove a render when output is missing, empty, or from an earlier job."""
     output = tmp_path / "projects" / "test" / "output"
@@ -299,12 +354,16 @@ async def test_render_requires_fresh_nonempty_artifact(artifact, monkeypatch, tm
     async def render(*args, **kwargs):
         if artifact == "empty":
             (output / "empty.mp4").touch()
+        if artifact == "wrong_output":
+            (output / "different.mp4").write_bytes(b"different-request")
         return _mock_cli_result()
 
     with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render):
         result = await explainer_render("test")
     assert "error" in result
-    assert "no new nonempty video" in result["error"]
+    assert (
+        "expected current-request MP4" if artifact == "wrong_output" else "no new nonempty video"
+    ) in result["error"]
 
 
 async def test_background_render_requires_artifact(monkeypatch, tmp_path):
@@ -367,7 +426,7 @@ async def test_overlapping_same_project_renders_are_rejected(
     async def render(*args, **kwargs):
         started.set()
         await release.wait()
-        (output / "video.mp4").write_bytes(b"first-resolution")
+        (output / "final-720p.mp4").write_bytes(b"first-resolution")
         return _mock_cli_result()
 
     with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render) as cli:
@@ -427,7 +486,7 @@ async def test_different_projects_can_render_concurrently(monkeypatch, tmp_path)
 
     projects = tmp_path / "projects"
     for name in ["one", "two"]:
-        (projects / name / "output").mkdir(parents=True, exist_ok=True)
+        _setup_project(projects / name)
     monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
     both_started = asyncio.Event()
     active = 0
@@ -438,7 +497,8 @@ async def test_different_projects_can_render_concurrently(monkeypatch, tmp_path)
         if active == 2:
             both_started.set()
         await both_started.wait()
-        (projects / args[1] / "output" / "video.mp4").write_bytes(b"rendered")
+        name = "final.mp4" if args[3] == "1080p" else f"final-{args[3]}.mp4"
+        (projects / args[1] / "output" / name).write_bytes(b"rendered")
         return _mock_cli_result()
 
     with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render):
@@ -485,7 +545,7 @@ async def test_cancelled_render_releases_project_admission(background, monkeypat
                 await task
 
     async def render(*args, **kwargs):
-        (output / "video.mp4").write_bytes(b"retry-render")
+        (output / "final.mp4").write_bytes(b"retry-render")
         return _mock_cli_result()
 
     with patch("video_explainer_mcp.render_worker.run_cli", side_effect=render):

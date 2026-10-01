@@ -8,6 +8,7 @@ from pathlib import Path
 from .config import get_config
 from .job_store import JobStore
 from .planning_production import freeze_render_source
+from .render_contract import project_contract
 from .render_artifacts import file_revision, render_outputs
 
 
@@ -22,6 +23,10 @@ def adapter_revision() -> dict:
             "render_artifacts.py",
             "runner.py",
             "job_store.py",
+            "render_contract.py",
+            "render_validation.py",
+            "prereqs.py",
+            "media_process.py",
         )
     }
 
@@ -33,6 +38,7 @@ def create_job(project_id: str, resolution: str = "720p", fast: bool = True) -> 
     if not project_dir.is_relative_to(cfg.resolved_projects_path):
         raise ValueError("Render project resolves outside configured projects directory")
     source = freeze_render_source(project_dir)
+    contract = project_contract(project_dir, resolution)
     cli = Path(cfg.explainer_path).expanduser().resolve() / ".venv/bin/video-explainer"
     request = {
         "project_id": project_id,
@@ -42,6 +48,7 @@ def create_job(project_id: str, resolution: str = "720p", fast: bool = True) -> 
         "render_timeout": cfg.render_timeout,
         "explainer_path": str(Path(cfg.explainer_path).expanduser().resolve()),
         "source": source,
+        "render_contract": contract,
         "before_outputs": render_outputs(project_dir / "output"),
         "execution_token": uuid.uuid4().hex,
         "adapter_revision": adapter_revision(),

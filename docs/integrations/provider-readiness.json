@@ -24,7 +24,11 @@
     "src/video_research_mcp/session_memory_store.py",
     "src/video_research_mcp/session_sources.py",
     "src/video_research_mcp/session_history.py",
-    "src/video_research_mcp/tools/session_memory.py"
+    "src/video_research_mcp/tools/session_memory.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py"
   ],
   "states": [
     "disabled",
@@ -312,7 +316,8 @@
       ],
       "executables": [
         "node",
-        "ffmpeg"
+        "ffmpeg",
+        "ffprobe"
       ],
       "credential_any": [],
       "enable": "explainer",
@@ -322,7 +327,7 @@
         "explainer_python": "EXPLAINER_PYTHON",
         "render_timeout": "EXPLAINER_RENDER_TIMEOUT"
       },
-      "usage_visibility": "Wrapper delegates external CLI. Requires console script, Remotion dependencies and rights-cleared runtime; exit/artifact/decode/source validation remain separate.",
+      "usage_visibility": "Public doctor checks exact selected source, actual native version commands, ordinary Remotion4.0.242 modules and cached browser without provider/install/download. Full MP4 decode/current-request receipt is byte-bound; actual renderer/TTS, source/runtime grants and content remain unqualified.",
       "live_verified": false,
       "run_authority": "not-granted"
     },

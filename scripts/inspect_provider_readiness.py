@@ -42,6 +42,10 @@ SOURCE_CONTRACTS = {
     "src/video_research_mcp/models/text_provider.py",
     "src/video_research_mcp/tools/research_web.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
     "packages/video-agent-mcp/src/video_agent_mcp/sdk_runner.py",
 }
 PRIVATE_DEV_ROOT = (

@@ -17,6 +17,7 @@ from ..job_store import JobStore
 from ..jobs import get_job, reconcile_job
 from ..models.pipeline import RenderResult
 from ..render_artifacts import verify_output
+from ..render_validation import qualification_valid
 from ..render_worker import (
     _background_tasks as _background_tasks,
     _job_tasks,
@@ -55,8 +56,12 @@ async def explainer_render(
             output_file=output,
             duration_seconds=result.duration_seconds,
             resolution=resolution,
-            message="Render complete",
-        ).model_dump()
+            message="MP4 fully decoded; renderer identity and content semantics remain unverified",
+        ).model_dump() | {
+            "playability_verified": True,
+            "real_renderer_verified": False,
+            "visual_audio_semantics": "not_verified",
+        }
     except Exception as exc:
         return make_tool_error(exc)
 
@@ -100,11 +105,12 @@ async def _poll_response(row: dict) -> dict:
         and row["attestation"]["verified"]
         and await asyncio.to_thread(verify_output, artifact)
     )
+    playable = verified and qualification_valid(artifact)
     status, error = row["status"], row["error"] or ""
     if status == "running" and (row["lease_until"] or 0) <= time.time():
         status, error = "unknown", "Process lease expired; execution and termination are unverified"
-    if status == "completed" and not verified:
-        status, error = "unknown", "Completed output is missing or changed; integrity is unverified"
+    if status == "completed" and not playable:
+        status, error = "unknown", "Completed output lacks current byte-bound full-decode proof"
     if row["attestation"]["request_integrity"] != "verified":
         status, error = "unknown", "Render request failed integrity readback"
     return {
@@ -112,7 +118,7 @@ async def _poll_response(row: dict) -> dict:
         "project_id": row["request"]["project_id"],
         "status": status,
         "recorded_status": row["status"],
-        "output_file": artifact["path"] if verified else "",
+        "output_file": artifact["path"] if playable else "",
         "error": error,
         "duration_seconds": result.get("duration_seconds", 0.0),
         "started_at": datetime.fromtimestamp(row["created_at"], timezone.utc).isoformat(),
@@ -130,6 +136,10 @@ async def _poll_response(row: dict) -> dict:
         "provider_operation_id": row["external_id"],
         "artifact_hashes": row["artifact_hashes"],
         "artifact_verified": verified,
+        "playability_verified": playable,
+        "qualification": artifact.get("qualification") if playable else None,
+        "real_renderer_verified": False,
+        "visual_audio_semantics": "not_verified",
         "attestation": row["attestation"],
         "lease_until": row["lease_until"],
         "attempts": row["attempts"],

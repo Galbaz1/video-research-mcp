@@ -18,6 +18,15 @@ chosen destinations. Supply credentials through the environment or credential
 store; keep tokens out of commands, notes, and logs. Identify the exact source
 commit, versions, and destinations before building.
 
+The explainer wrapper's installed `explainer_doctor` inspects the separately
+configured renderer without installing dependencies or downloading a browser.
+Archive/install tests must preserve the shared bounded media-process implementation.
+Rendered MP4 qualification binds the exact current-request path, dimensions,
+duration, SHA256 and full decode; it does not clear upstream/Remotion grants or
+establish actual renderer/TTS provenance. Keep real renderer qualification separate
+from an authored FFmpeg fixture and mocked controller tests. See
+[renderer readiness](integrations/render-readiness.md) for the supported route.
+
 ## Version sync policy
 
 The root [`pyproject.toml`](../pyproject.toml) is the core version authority.

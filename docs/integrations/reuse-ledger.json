@@ -987,7 +987,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "b69329e6f042b84676e85b2a52b791253ac4a1ddef3f44b11b64ba35b5e53f46",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
+          "target_sha256": "fbdbbbae25e3a91550047cb9029019357c3e7fccbe5b34eb184dcbe61e49d38c",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
+          "target_sha256": "fbdbbbae25e3a91550047cb9029019357c3e7fccbe5b34eb184dcbe61e49d38c",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1140,7 +1140,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "cd1f818bc0b4709ef89739bcfbd335d2f5112b597d573ea053059b49ce05ef65",
+          "target_sha256": "d8eefb8799b74f7fcf2d9db507e2e48bb19cd6e1fd9be6df1094e11b8fed211f",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -2726,7 +2726,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "b69329e6f042b84676e85b2a52b791253ac4a1ddef3f44b11b64ba35b5e53f46",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2736,7 +2736,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
+          "target_sha256": "fbdbbbae25e3a91550047cb9029019357c3e7fccbe5b34eb184dcbe61e49d38c",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -2872,7 +2872,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "b69329e6f042b84676e85b2a52b791253ac4a1ddef3f44b11b64ba35b5e53f46",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -2917,7 +2917,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
+          "target_sha256": "fbdbbbae25e3a91550047cb9029019357c3e7fccbe5b34eb184dcbe61e49d38c",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -3560,7 +3560,7 @@
         },
         {
           "target_path": "docs/integrations/provider-readiness.json",
-          "target_sha256": "e7c3876d68d2f8f3025dd86b989db6c1d7ca64151e8bf1709f3f12fe549b099b",
+          "target_sha256": "0df6caf51d0539db259f5d2693de8a5183a7160cbae931f4139d67ec29db0b62",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3570,7 +3570,7 @@
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "b69329e6f042b84676e85b2a52b791253ac4a1ddef3f44b11b64ba35b5e53f46",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -3941,12 +3941,12 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "ec877851d4e0dd40515c389fd37ccb7da8ee85373111977f8c19b15e468cda76",
+          "target_sha256": "fbdbbbae25e3a91550047cb9029019357c3e7fccbe5b34eb184dcbe61e49d38c",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
-          "target_sha256": "b69329e6f042b84676e85b2a52b791253ac4a1ddef3f44b11b64ba35b5e53f46",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         }
       ]
@@ -4001,22 +4001,22 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "0b6e4b6d079be088e2304ec11120ca04d498b54fd7147522e3a05911d124612c",
+          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "30f5d40eebcebbc76364dbf9d10448eb35efa1ba366c2fd164be16c8cc2f8a69",
+          "target_sha256": "3cf58e24c3428e2e0f5a40c8844891a469183b2e78f95093e38c1ff4bc44bc94",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
-          "target_sha256": "d9adefa8473dc7fff456ee909fe637a93c24988db6157aeffe3cb68d3c807200",
+          "target_sha256": "90f08fbb7d50342600ed37d6506b46ad1fe69caa61e6ea3aea8c056bce2fdf11",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
-          "target_sha256": "9d3d2cb84b5460710b913247c961a4684e6f351e5b9878fb7343c44589001c40",
+          "target_sha256": "8a21188e21febda20b38b00e0051d42a6c9ee5e99b6cf6d53e77712f0ba2f213",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         }
       ]
@@ -4158,7 +4158,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
-          "target_sha256": "8dd7922903e3cdcbd11a96b70937fcc6f83abe10ba845b337914adc538fe272c",
+          "target_sha256": "4a9a61885c51fa50c28f9c53691fd2a93de376f2cdecf434547941a409f4328e",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -4173,12 +4173,12 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "0b6e4b6d079be088e2304ec11120ca04d498b54fd7147522e3a05911d124612c",
+          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
-          "target_sha256": "777fd2aa8c661dcd5999f704dfa8d80490f89b9c09f11561f2ccb1feaa18735f",
+          "target_sha256": "96d0944ed5d54377c361afa3c6169aeadda673acd40270d90c730efc28b4768d",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -4188,7 +4188,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "d287996c761b6c3874dff920976af1880422ff68b2ca1539483229f8a01936f3",
+          "target_sha256": "cd88b936ddbff902ba05be9ae06b53085654f78c9cdee9527e9ccc4c45541ddb",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -4218,7 +4218,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
-          "target_sha256": "d9adefa8473dc7fff456ee909fe637a93c24988db6157aeffe3cb68d3c807200",
+          "target_sha256": "90f08fbb7d50342600ed37d6506b46ad1fe69caa61e6ea3aea8c056bce2fdf11",
           "provenance": "Owned original-review repair: standalone nonblocking regular descriptor source/render readback, aggregate durable citation/state envelopes, and installed self-contained command regression. Exact original three P2 retained; no foreign code imported/copied/bundled."
         },
         {
@@ -4248,10 +4248,131 @@
       "component": "prajwal-y/video_explainer@c033e28d6eccae43c1762f4653f9c320b16b050e",
       "audited_reuse_mode": "already-present",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
+          "target_sha256": "79dd3e2a53eac6751ff91d9a2989ba91b9981633b04dcbf2b7c06662a8800c4c",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
+          "target_sha256": "300ea19154575a250cc75739a43afbc2116d8cc1e89525b7dfeadccd75b858f3",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
+          "target_sha256": "b7eb6717ede02cbcd805cc21d434ce3b8be39ab8dee83eb3bfbdc5245cd8911f",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
+          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
+          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
+          "target_sha256": "90f08fbb7d50342600ed37d6506b46ad1fe69caa61e6ea3aea8c056bce2fdf11",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
+          "target_sha256": "3cf58e24c3428e2e0f5a40c8844891a469183b2e78f95093e38c1ff4bc44bc94",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
+          "target_sha256": "96d0944ed5d54377c361afa3c6169aeadda673acd40270d90c730efc28b4768d",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
+          "target_sha256": "64cc90cbb485dc62fe1d5510009c8aff528795c3e05e4fe896ca0843a99bc36e",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
+          "target_sha256": "8a21188e21febda20b38b00e0051d42a6c9ee5e99b6cf6d53e77712f0ba2f213",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
+          "target_sha256": "4a9a61885c51fa50c28f9c53691fd2a93de376f2cdecf434547941a409f4328e",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/pyproject.toml",
+          "target_sha256": "cc214ad63eb61df9d84b20533404033ad6ce48232c04a09b701f70e2b26c21b4",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/README.md",
+          "target_sha256": "cd88b936ddbff902ba05be9ae06b53085654f78c9cdee9527e9ccc4c45541ddb",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_readiness.py",
+          "target_sha256": "323e64075e0e01503eb440973bca10485d0c9f1ce390534456275203f27cda8a",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_validation.py",
+          "target_sha256": "05432faada52131c3e88de5cf8bf226b5bc52f68047fda5c74592eaa9efbc38d",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_jobs.py",
+          "target_sha256": "203c1f3db1f0369259156cfea12702a524a6b820e5544e513cb3ac6bcf8acd6b",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_recovery.py",
+          "target_sha256": "7221cd49a8211dd39f6ca9831ebf2801446d58f874c675fbd157db53715a4dad",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_pipeline_tools.py",
+          "target_sha256": "23e34eca86ef891eb452ee0bdee8fd4703085563a0a4b0ce6e335074cb271ab9",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_generation.py",
+          "target_sha256": "2eea09713639ae4c5910d0e9dc04da9f64ad9c453c6ad132ffc59bffc25133e8",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "docs/PUBLISHING.md",
+          "target_sha256": "aa51f434f826a625c3b1a1939c28820b0d88d22208962aa52fed29a92e211f0f",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "docs/integrations/render-readiness.md",
+          "target_sha256": "24baec78380f930459cd828c10059b83305c8068a7a84d86a8535827831e0541",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_dispatch_binding.py",
+          "target_sha256": "6316555663684d5bcc19740df5c7cd35ed1c5088320968a4a5de388ab15a1545",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+        },
+        {
+          "target_path": "pyproject.toml",
+          "target_sha256": "d8eefb8799b74f7fcf2d9db507e2e48bb19cd6e1fd9be6df1094e11b8fed211f",
+          "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
+        },
+        {
+          "target_path": "scripts/inspect_provider_readiness.py",
+          "target_sha256": "83694c434e5084132ef944c04a801979a0e2b5918716647a84a2aa4f5e9d2260",
+          "provenance": "Own offline inspector exact source allowlist extended by the four declared firstparty renderer-readiness contracts; source guards and authority/provider rules unchanged."
+        }
+      ]
     },
     {
       "unit_key": "adj_storyboard_sync",

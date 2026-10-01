@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 
 import pytest
 
@@ -17,6 +18,11 @@ def _project(tmp_path, monkeypatch):
     project = tmp_path / "projects" / "test"
     project.mkdir(parents=True)
     (project / "source.json").write_text('{"original":"fixture"}')
+    (project / "storyboard").mkdir()
+    (project / "storyboard/storyboard.json").write_text('{"scenes":[]}')
+    (project / "config.json").write_text(json.dumps({"paths": {
+        "storyboard": "storyboard/storyboard.json", "final_video": "output/final.mp4",
+    }}))
     monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
 
 
