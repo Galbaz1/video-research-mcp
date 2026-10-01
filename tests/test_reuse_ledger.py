@@ -72,6 +72,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "qwen_reverse_image",
         "qwen_segmentation",
         "qwen_footage_edit",
+        "qwen_av_events",
         "direct.twelvelabs",
         "direct.audio_qa",
         "adj_research_eval",

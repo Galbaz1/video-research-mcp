@@ -608,11 +608,20 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt task-specific temporal/caption/count/music contracts using existing inference path; return occurrence evidence rather than naked counts/model assertions.",
           "target_paths": [
-            "src/video_research_mcp/tools/media_events.py",
-            "src/video_research_mcp/models/media_events.py",
-            "tests/test_media_events.py"
+            "integrations/qwen/av-events.json",
+            "src/video_research_mcp/models/av_events.py",
+            "src/video_research_mcp/av_events.py",
+            "src/video_research_mcp/av_event_support.py",
+            "src/video_research_mcp/media_perception_provider.py",
+            "src/video_research_mcp/tools/media_perceive.py",
+            "tests/test_av_events.py",
+            "tests/test_av_event_support.py",
+            "tests/test_av_events_provider.py",
+            "tests/test_reuse_ledger.py",
+            "docs/integrations/AV_EVENTS.md",
+            "skills/av-events/SKILL.md"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Owned source task contracts using existing measured preparation/Gemini budgets; per-candidate offline receipts separate, reviewed LIVE semantic criterion and human/comparison/release unqualified.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_av_perception",
@@ -10522,9 +10531,18 @@
         "scenes"
       ],
       "target_paths": [
-        "src/video_research_mcp/models/media_events.py",
-        "src/video_research_mcp/tools/media_events.py",
-        "tests/test_media_events.py"
+        "integrations/qwen/av-events.json",
+        "src/video_research_mcp/models/av_events.py",
+        "src/video_research_mcp/av_events.py",
+        "src/video_research_mcp/av_event_support.py",
+        "src/video_research_mcp/media_perception_provider.py",
+        "src/video_research_mcp/tools/media_perceive.py",
+        "tests/test_av_events.py",
+        "tests/test_av_event_support.py",
+        "tests/test_av_events_provider.py",
+        "tests/test_reuse_ledger.py",
+        "docs/integrations/AV_EVENTS.md",
+        "skills/av-events/SKILL.md"
       ],
       "declared_dependencies": [
         "contract",

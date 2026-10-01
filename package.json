@@ -45,7 +45,9 @@
     "integrations/qwen/segmentation.json",
     "docs/integrations/qwen-segmentation.md",
     "docs/integrations/FOOTAGE_EDIT.md",
-    "integrations/qwen/footage-edit.json"
+    "integrations/qwen/footage-edit.json",
+    "docs/integrations/AV_EVENTS.md",
+    "integrations/qwen/av-events.json"
   ],
   "engines": {
     "node": ">=22"

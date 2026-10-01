@@ -70,6 +70,9 @@ build-backend = "hatchling.build"
 packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"integrations/qwen/av-events.json" = "av-events/integrations/qwen/av-events.json"
+"docs/integrations/AV_EVENTS.md" = "av-events/docs/integrations/AV_EVENTS.md"
+"skills/av-events/SKILL.md" = "av-events/skills/av-events/SKILL.md"
 "integrations/qwen/footage-edit.json" = "footage-edit/integrations/qwen/footage-edit.json"
 "docs/integrations/FOOTAGE_EDIT.md" = "footage-edit/docs/integrations/FOOTAGE_EDIT.md"
 "skills/footage-edit/SKILL.md" = "footage-edit/skills/footage-edit/SKILL.md"

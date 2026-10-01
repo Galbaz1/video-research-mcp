@@ -327,3 +327,25 @@ certify the whole native distribution or its source-build/transitive grants.
 No native binary is redistributed. Input media rights and visual/audio meaning
 remain caller responsibilities; technical checks and declared beat grids supply
 no model, human-audit, comparative or release acceptance.
+
+
+## Temporal AV events and music contracts
+
+The owned caption/count/ground/music tasks independently implement requirements
+from QwenLM/Qwen-MM-Plugins at 07736672525443c7f8a3f6405eed37d2236f023f. Twelve
+exact original bodies, including all four Omni tasks and the complete Apache-2.0
+grant, were read before implementation. Full source identities, original fifteen
+static gaps and bounded source closure are retained in the receipt identified by
+`integrations/qwen/av-events.json`. Source bodies are reference-only, unmodified
+and not distributed or imported. The owned implementation remains MIT.
+
+Pinned source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/api/qwen_mm_plugins_api/omni>.
+The complete root `LICENSE` grant digest is
+cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.
+
+Foreign Omni transports, automatic uploads, model weights, fonts and media are
+not bundled or executed. Existing configured Gemini and installed FFmpeg/ffprobe
+remain separate provider/native qualifications. Exact submitted frame and PCM
+clocks support a returned claim's source reference; model event boundaries,
+music labels and scores remain inference. Mocked contracts do not establish
+semantic accuracy, human audit, comparative advantage or release acceptance.
