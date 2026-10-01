@@ -18,6 +18,51 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
+### AV component verified and blocked on LIVE criterion; education claimed
+
+Fresh source HEAD bbff2eed603912e94be9a8143cc6cfced1a5bf1b, normal source push
+and exact remote HEAD/18 Git blobs verified. AV source-final SHA
+44ee51f3e22b368ec53d4111f10be372866ed434ea610895b5d1ab89e1cb0221; push-readback
+SHA47306b7a7467ef40f792967fbc339b411b60a73575df9c42675c9c1d5c786e57.
+vrm-0e8.4.2 is BLOCKED, not closed: required reviewed LIVE fleeting/overlap/music
+semantic set remains UNRUN_RESOURCE_UNAUTHORIZED. Four owned caption/count/
+ground/music tools are integrated; root89tools, all85prior objects preserved.
+3391 root tests, required10gates, seven archives/697bytecomparisons and isolated
+companion sdistwheel passed;308prior runtime bodies and3locks exact.
+Sole original review128PASS+1P2 publiccount2 for reordered duplicate frame refs;
+root preserved2RED and fixed canonical support order, affected130PASS. No second
+review. Frozen firstactual20PASS0FAIL0UNRUN,60MCP+1direct cancellation,117mock SDK
+calls,619native PIDs joined/dead,0real sockets.1837retained files/2681loaded
+bindings/463payload refs rehashed. Root viewed actual submitted overlap/blue
+PNGs; model recognition, physical event truth and music semantics unverified.
+All AV evidence lives under private capability-programme/2026-09-30/av-events.
+Native whole certificate remains partial; ordinary host privileges/no OS sandbox.
+
+vrm-0e8.8.7 education CLAIMED/in_progress. Required source22 full pinned bodies,
+684766B11702lines/fullApache grant,47artifact bindings root joined. Receipt SHA
+aca7dd9576ec99c58c4d2fbcb02b865dcc1956f5df2baad6ab9e861efab7ed3e. Original
+300KB cap gap and explicit exact22/685KB extension retained.39direct helper/
+validator bodies and192other source blobs unread/unqualified; no foreign import.
+Original20static source findings remain: square/reflection equation mismatch,
+comment-only geometry, all-skipped circuit PASS and DOM-only curve checking.
+Existing-helper advisor source20bindings+4artifacts root joined: measured WAV/
+footage/native QA useful, no full interactive page/lesson compositor. All source/
+advisor lanes terminal. Education frozen17 offline controls BEFORE implementation
+at bbff2ee: acceptance-plan.frozen.json SHA
+ded4d4ed3748a97d97fc84596fd4fcef678c8eaf8a8128244d21eeaee3d757f4. Independently
+authored bounded right-triangle/reflected-square/series-circuit page+local video,
+own glyphs/JS, declared synthetic6s PCM fixture; no synthetic speech claim.
+Required actual spoken lesson, broader multilingual/template semantics, human/
+comparison/release acceptance remain unqualified. Sole primary not yet dispatched;
+root owns shared metadata/packaging, actual fixtures/controller, Git/Beads/handoff.
+
+User steering "review pending, but continue anyway" persists. Human fixed9audit
+is pending not waived at10.2; heldout remains unread; live proposal unauthorized.
+No registry/content publication, installs/assets/models/devices/provider authority.
+No active agents/native jobs at this checkpoint. Continue eligible implementation
+through the graph, not final-answer at component boundaries.
+
+
 ### Footage accepted; AV event implementation next
 
 Fresh source HEAD ff7a2c57be01588c8d1ead7d57acb8864f671939, clean implementation
