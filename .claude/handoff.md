@@ -1,5 +1,5 @@
 ---
-date: 2026-09-30T23:23+00:00
+date: 2026-10-01T00:04+00:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -10,7 +10,7 @@ status: open
 
 # Handoff: implement the comprehensive multimodal programme
 
-**Programme is prepared; implementation and comparative acceptance remain open.**
+**Implementation is in progress; integrated product and comparative acceptance remain open.**
 Main Beads epic: `vrm-0e8`. Preparation item: `vrm-0e8.1`. This session audits
 omissions, maps useful capabilities, creates the Beads execution graph and loop
 contract, and hands implementation to a fresh chat. Do not mistake preparation
@@ -21,7 +21,86 @@ closure for completion of the product or a proved superiority claim.
 Implementation resumed September 30, 2026. The completed transcript/PDF/Word/mail
 work remains outside this programme and was not reopened or modified.
 
-### Current acceptance and joint AV perception
+### Current acceptance and bounded research resume
+
+Joint audio/video perception (`vrm-0e8.3.6`) is accepted, closed and normally
+pushed at `ff8cc21bcf210d4d9ebe745a5ca65c7b11f20878`; exact remote branch
+readback matches. Private evidence root:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/joint-av`.
+`group-receipt.committed.json` SHA256
+`d728205843d2994fe08514467388b0b8e9b687ce6e76332d9dc94babcd238732`
+binds14 owned Git blobs and176 source/Git/archive/installed runtime files.
+One additive `media_perceive` tool gives64 root tools; all63 prior contract
+objects, published34/15/2 and three locks remain unchanged. Final2110 root
+tests/Ruff/baseline/programme85units74packages/reuse24adopted116locked/
+9security/5offline gates PASS, each required gate executed once. Sole original
+review found no material findings against14 owned/176 runtime bindings;
+report SHA256 `44bb1c9e42ab587a211db71108d680149008a432d9e9d2ac6249503ac22c0306`.
+No owner repair or second review was needed.
+
+The fixed installed-wheel journey passed25/25 public calls on its first run:
+22 first plus3 restart, actual PIDs93344/93562,224 recorded FFmpeg/ffprobe
+children,16 SDK count plus14 SDK generation mocks. Receipt
+`installed-journey-harness/run-final/receipt.json` SHA256
+`8a386d7f3b7937ce3775020c43f3c62857410915217cd2a6fe302d049c2474f9`.
+The fixed plan/preparation and original corpus are unchanged; no intervention.
+All invocation-owned views were cleaned and original hashes remain unchanged;
+only the separate owned mutation copy changes after counting, blocking generation.
+Fresh private wheel SHA256
+`861f42f528cefa19d2a61601f5504606f91846be8251a79ae1f8180f93c32f3c`;
+sdist SHA256 `eced69e97de1f370a7cae9fe3aa4b4559d6461130e0908ff5924c2fb6e05134c`.
+Both archive reuse gates and176-byte readback PASS; no registry/version change.
+
+The implemented route submits immutable sampled PNG frames plus measured full
+PCM WAV in ordered half-open source windows. Relative model events map to
+absolute source seconds with separate spoken/visible sample support. Windows
+<=30s/4/120s, local payload8MiB/128frames; call/token and repeated serialized
+Content+schema byte reservations apply to count/generation attempts. Typed
+401/403/429 are terminal; typed500/502/503/504 have at most3 owner attempts;
+ambiguous timeouts, malformed JSON, refusals and truncation get no owner retry.
+Source/artifacts/buffers recheck before count, after count before generation,
+and after generation; output JSON<=128KiB and clock containment tolerance1us.
+Historical first36SDK PASS, combined1FAIL41PASS (positiveVFR1.20 beyond fixed
+1.16 source extent), cause-only dry refusal, valid1.16 plus retained1.20 refusal,
+7budget/cancel/JSON and4source/account controls remain recorded. Preparation21
+PASS includes unchanged rotated PCM16000/1600 sample windows; its initial RED
+and2FAIL17PASS floating-point assertion correction are retained.
+
+All installed provider responses are controlled and unverified. No real
+provider, guarded INET/DNS, user upload, paid spend, heldout read or hardware call.
+Physical wire attempts/bytes/framing, provider currency bound, live mixed-media
+acceptance, speaker identity, continuous watching, factual/perceptual AV quality
+and OS-wide egress remain unverified. Current SDK follow-up observes HTTPX0.28.1
+and no installed aiohttp; optional aiohttp has a hidden connection retry and
+HTTPX follows redirects. SDK attempts1 and reserved call counts therefore do
+not establish a portable physical-wire bound. Keep this in provider qualification.
+
+Fresh live readiness selected and claimed `vrm-0e8.5.1`: grounded, iterative,
+source-preserving research. Source-only13-file packet is fully read (1985lines/
+75646bytes), exact pinned Git bodies/grants verified. Receipt at
+`grounded-research/source-contracts/receipt.json` SHA256
+`188a11bd9bdccc5e4b58d3b73b5d9bf2777b5c5500fc1f49e00e8b58c08587d0`;
+requirements/license report SHA256
+`67bfc3242c9c8d7c2eb16e645d4e2f0de9f6c60f59ace821b0b45f996fb48ba4`.
+Upstream `assafelovic/gpt-researcher` revision0957c301ed06c2a5857b834358c7227c739041d4
+is requirements-only independent implementation under actual Apache2 grant;
+wrong MIT metadata is retained. No foreign runtime imported/installed.
+Current research_deep is three model-only prompts, accepts model-written tiers,
+and both topic bridges route there. Preserve current durable research_web jobs,
+account/source IDs, cancellation/readback and accepted EvidencePacket lineage.
+Implement explicit retrieval/supplied/model-only routes, source/domain and
+subquestion plans, aggregate budgets/concurrency/joins, retained rejected sources/
+failures/contradictions and bounded reflection. No general agent framework.
+Installed SDK countTokens cannot include grounded tool/system context, and
+GoogleSearch exposes no internal-query/currency ceiling; pending read-only SDK
+supplement must bind those limits before choosing an execution route.
+
+Human9 development audit remains pending10.2 under “review pending, but continue
+anyway”; it is not waived. Original comparative corpus, labels, thresholds and
+failure denominators stay fixed. Continue eligible offline implementation;
+whole-programme integration, comparison and verified release remain open.
+
+### Previously accepted scene assets
 
 Scene boundaries, actual timestamped storyboards, full frame/audio deduplication
 populations, and whole/one-sided audio/video exports (`vrm-0e8.3.5`) are accepted,
@@ -59,32 +138,6 @@ are cleared/read back. Root lock SHA256
 companion locks unchanged. Other-platform native redistribution/source builds
 and Sigstore verification remain unverified. Source-only13-file Qwen contract
 receipt SHA256 `fa8abbfebec05c5e5a00ff0e196b59713eb4510d04ba8a46d0ad0a12146a34c5`.
-
-Fresh Beads readiness selected/claimed `vrm-0e8.3.6`: joint audio/video perception
-with distinct spoken/visible evidence, absolute ordered windows, measured
-payload/time/attempt budgets, terminal authentication/quota failures, classified
-transient retries and credential-safe untrusted output. Its only blocker3.2 is
-closed. Four exact pinned Qwen files are observed read-only under
-`joint-av/source-contracts/receipt.json` SHA256
-`af420f54b195a148f436b0fd5aeb90f733540cae9ea7d5f1c82229cd83af25d2`.
-Only perceive API fully read so far; selected portions of other files observed,
-not all-file read depth. No3.6 implementation/provider/foreign execution yet.
-Read current client/accepted media controls and primary API/license contracts,
-then implement the smallest full outcome. Root owns shared registration/config/
-client/dependencies/ledger/Beads/Git; read-only bounded source lanes are active.
-
-Previous accepted vision source3.4 is
-`937c60a23ec3cb1ceeceab7ffe9da4856d3b0410`; committed receipt SHA256
-`685a83123caa2036e92875fa64c7f04432ac461778805c6fe2ede934d25fd148`.
-All original failures and sole4P2 review owner repairs remain in vision-analysis.
-Accepted57-tool private installed journey14 calls across two processes is offline
-integration only; pinned external Qwen actual13-tool/4-call journey is separate.
-No live quality/comparative claim. Historical sourcejourneys v1/v2 remain FAIL.
-
-Human9-case audit remains pending at10.2 under “continue anyway,” not waived.
-Do not read held-out prompts/labels or claim comparison/release/superiority.
-Do not reopen completed transcript/PDF/Word/mail work. Programme remains active;
-continue implementation to integrated acceptance, comparison and verified release.
 
 ### Previously accepted image exports
 
