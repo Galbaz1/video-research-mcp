@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T04:30+02:00
+date: 2026-10-02T06:30+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,58 +18,86 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-### Preview source checkpoint verified; actual acceptance blocked; ASR claimed
+### ASR source verified; dependency frontier blocked; preview diagnosis prepared
 
-Current source HEAD `6b311572f4c51df06d74be67399cd914aa3ccf8d` is normal-pushed;
-remote commit and all sixteen committed file blobs match. Preview source-final
-SHA c79415d68c8a2e60e9c827d15b6ac7685b3740a115ebc8cd8fb41bdcea72a886;
-push-readback SHA b8b5feb3ab2e3937c39d227c8ab21077703be353e053512f3c193a103f0ab612.
-`vrm-0e8.9.1` is BLOCKED. Its optional owned core adapter source component is
-verified: 3588 root tests, all ten required gates, 37 installer tests, seven
-archives with 719 direct byte comparisons and an actual isolated companion
-sdist-to-wheel build pass. All 321 prior production Python bodies, 89 full tool
-contracts and three locks remain exact. Sole original review found two P2 issues:
-planned extreme-aspect image allocation and Unicode physical-line counting.
-Sixteen RED cases were retained and the smallest fixes passed; no second review.
+Latest functional source commit `55291a8d45bcc0abb0f40a98492c0a88eca88e69` is
+normal-pushed to origin/codex/multimodal-capability-programme. Exact remote commit
+and all23 committed source blobs match. Later HEAD may be a handoff-only checkpoint.
+Implementation remains /Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09.
 
-Frozen actual preview attempt one retained 1 PASS, 1 FAIL, 18 UNRUN: stdio startup
-refused ten original schema-description newlines flattened by the descriptor.
-One exact-description correction was made. Attempt two retained 1 FAIL, 19 UNRUN:
-root's archive-controller output path was wrong, before startup. No third cohort.
-Root corrected archive metadata once without rebuilding; the original seven
-archive bodies remain, but the first original build receipt/logs were overwritten
-and are unavailable. Actual seven-tool MCP discovery and eleven format families
-remain UNRUN. Two explicitly recorded native PIDs are dead; no active native jobs.
-Original core distribution remains uninstalled; font/native/heavy/provider profiles
-are unqualified. Future diagnosis requires a separately frozen startup/controller
-proof. Do not relabel diagnostic discovery or archive checks as actual acceptance.
-Evidence: private capability-programme/2026-09-30/previews/source-final.json,
-acceptance-attempt-01/terminal.json, acceptance-attempt-02/terminal.json and
-build-results-repaired/archive-readback.json. Ordinary host privileges, no OS sandbox.
+`vrm-0e8.4.1` is BLOCKED, not closed. Its bounded captions/backend-contract source
+component is verified. The admitted local Qwen /asr route provides untimed text and
+refuses words/timestamps/language/glossary requirements. Current structured timed
+inference uses Gemini. Frozen A19 requires a qualified timed local adapter/runtime/
+model plus actual spoken/word reference; A20 requires an independent source-checked
+speaker fixture. These are UNRUN_RESOURCE_UNQUALIFIED; configuring a plain Qwen
+endpoint cannot satisfy them. Supplied caption/word times, synthetic tones and
+mock responses do not establish acoustic accuracy or identity.
 
-`vrm-0e8.4.1` is CLAIMED/in_progress. Sole primary /root/freecad_adapter owns ten
-focused transcript model/caption/timing/provider/workflow/test/doc paths. Root owns
-public tool, registration/config, shared metadata, actual fixtures/controller,
-Git/Beads and handoff. ASR source and existing-helper advisor lanes are terminal
-and root joined: 48 full pinned bodies, 319925 bytes, 8375 lines, two full grants;
-receipt SHA 7afc1f5fb4146f8eb6d13fcea99e6f9e5168e2d24f67c3b2697c767fe7c27122.
-Advisor twenty files (nineteen full, one targeted), 175106 bytes, 52 named tests;
-receipt SHA 6b356052a57440d4908b0774009c8e1e3911435436a7c7dcd001c3a08f4dbac9.
-Do not repeat research or foreign execution. Frozen twenty controls SHA
-12678d570332809395fffbf748ecfcd52b2e48a4193bfa2706badc75ea393030 and eight first-party
-masters SHA 73893d9f236b5b970ca71f206b6bc36b990e669e8329a09f9748cf2effa0ec9d
-precede implementation. WAVs are silence and declared synthetic tone, not speech;
-caption word times are supplied source assertions, not measured speech alignment.
-No ASR actual cohort or final gates started. Local service/provider calls, model
-weights and actual speaker/word accuracy remain unqualified and unauthorized.
+Fresh3690root tests, all10 required gates,37installer/9security/5offline checks PASS;
+two inherited SDK/grpc warnings. Seven private archives,741 direct byte comparisons
+and actual isolated companion sdist-to-wheel PASS. Final root wheel SHA256
+ aa793c9543ded7dab359a2e730cd2f98210a0e1d76a88a15f9a94927cae4d3b7.
+319 prior runtime Python bodies exact; config/server are the two authorized prior
+extensions. All89 prior complete tool objects exact; root90tools; three locks and
+three prior preview scripts unchanged. Source48full319925B8375lines/two complete
+grants; broader foreign runtime closure unqualified, no foreign imports/models.
 
-Next: join sole primary, integrate focused audio_transcribe/config/metadata, freeze
-candidate, one original review, minimal proven fixes, then required gates and the
-fixed actual twenty controls. Preserve all refusals/failures/UNRUN and continue the
-actual eligible graph. Human nine-case review remains pending at vrm-0e8.10.2,
-not waived; held-out material stays unread. Product/comparison/release are open.
-Skip completed transcription/PDF/Word/mail delivery. Do not final-answer at a
-component boundary or create scheduled/background continuation.
+Sole original review127PASS found two P2 deadline/cancellation defects. Five RED
+cases retained; smallest repairs132affectedPASS. No second review. Frozen actual
+attempt1 retains3PASS1FAIL16UNRUN: audio-only MKV caption selection discarded finite
+container extent when audio-stream duration was absent. One measured correction
+removed redundant caption-only decoding;1RED/47affectedGREEN. Second fixed20 retains
+18PASS0FAIL2UNRUN,46actualMCP+one direct cancellation,22SDKmocks/twoHTTPmocks,
+95native commands+one independent restart child96PIDs joined/dead. First three
+children and both controllers are also dead. Root7337binding observations/3753unique
+files rehashed;233packed project modules byte-exact in each attempt. Eight masters
+unchanged, zero real socket attempts, no third cohort. Ordinary host/no OS sandbox;
+whole native certificate partial. First/second sources, gates, archives and logs
+remain distinct; do not rerun gates, reviews, builds or cohorts for reassurance.
+
+ASR evidence under private capability-programme/2026-09-30/asr:
+source-final.json SHA d76a515b29c89d99125fd28a507bb4cd998f07ef13e285fd9e67a74854e20cd2;
+push-readback.json SHA d4ddfb8c9cee3c530daf04d3e114a715b0d784cfdeca317426ba2a154a3ba66f;
+actual-root-joined.json SHA d6dc36f31502fef50371e03c89e979a37474123f5ebf465b4ef41224afb6f227.
+Fixed20 plan SHA12678d570332809395fffbf748ecfcd52b2e48a4193bfa2706badc75ea393030;
+eight first-party masters SHA73893d9f236b5b970ca71f206b6bc36b990e669e8329a09f9748cf2effa0ec9d.
+
+Fresh Beads graph85issues/75leaves:31closed,10blocked,34open, ready[]. Every34open
+leaf has an unfinished prerequisite and reaches a blocked leaf; all10blocked leaves
+have closed prerequisites and unmet own acceptance. No dependency-eligible leaf was
+missed. programme-frontier.json SHA3531d38978e458dca76e38211545ede1b529da5eb42086283f10dcf8f20a0ae6
+records exact edges/barriers. ASR has five direct open dependents and reaches21open
+leaves, including the final three gates; its qualified timed-local path is the
+largest unlock. Do not weaken acceptance or silently change dependency edges.
+
+`vrm-0e8.9.1` remains BLOCKED. Preview preparation-only static diagnosis is terminal
+and root joined:12retained bodies10full/two targeted62976B/1251lines; conservative
+retrieval145000B below150000. The historical outer controller launch occurred after
+verifier exit1; the inner controller correctly refused missing receipt before
+activation. Current repaired producer/consumer path strings agree but do not prove
+historical combined-output identity. Original outer argv/source are unavailable in
+the selected packet. Original first20 retains1PASS1FAIL18UNRUN and second20 retains
+1FAIL19UNRUN. Seven first archive bodies survive; overwritten first original build
+receipt/logs remain unavailable. No diagnostic launch or third cohort occurred.
+Evidence previews/startup-diagnostic-preparation/report.md SHA
+9b054636314edbc8cef2ff5df2da70873009fd611670844a88e3292c0a13bdd2;
+binding-receipt.json SHA71eb888655e7c577ecffad57bfe3d09846eb4605c6f7a1b8bc35414c3bc21fa6;
+root-joined.json SHAbc58da9581d93c6277f86941161ff7c35607db3bd954d2a5bfa218b5846c8f34.
+
+Next: supply/qualify a timed local ASR adapter/runtime/model and cleared spoken,
+word and speaker reference fixtures; do not substitute the untimed Qwen endpoint.
+For preview diagnosis, separately bound missing outer orchestration/combined metadata
+and RPC reads, prove candidate/archive/readback generation and fail-fast guard, then
+freeze an initialization+one tools/list+close diagnostic only after exact profile
+eligibility. No fixture/renderer/browser/native/provider calls or original20loop in
+that diagnostic. Other exact blocked inputs are in programme-frontier.json and Beads.
+Continue implementation when prerequisites are accepted; current frontier is a real
+impasse. No active agents, native/provider jobs, goal, automation or unattended worker.
+Human nine-case audit remains pending/notwaived at vrm-0e8.10.2; heldout remains
+unread. Integrated product, comparison and verified release10.1-10.3 remain open.
+No new installs/assets/models/provider spend/devices/registry/content publication
+authority. Skip completed transcription/PDF/Word/mail delivery.
 
 ### AV component verified and blocked on LIVE criterion; education claimed
 
