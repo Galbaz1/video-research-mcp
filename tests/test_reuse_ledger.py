@@ -75,6 +75,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "qwen_av_events",
         "qwen_educational",
         "qwen_file_visualization",
+        "qwen_speech",
+        "direct.speech",
         "direct.twelvelabs",
         "direct.audio_qa",
         "adj_research_eval",

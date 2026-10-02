@@ -51,7 +51,23 @@
         "tests/test_av_events_provider.py",
         "tests/test_reuse_ledger.py",
         "docs/integrations/AV_EVENTS.md",
-        "skills/av-events/SKILL.md"
+        "skills/av-events/SKILL.md",
+        "src/video_research_mcp/models/transcript.py",
+        "src/video_research_mcp/transcript.py",
+        "src/video_research_mcp/transcript_audio.py",
+        "src/video_research_mcp/transcript_provider.py",
+        "src/video_research_mcp/transcript_timing.py",
+        "src/video_research_mcp/transcript_captions.py",
+        "src/video_research_mcp/transcript_formats.py",
+        "tests/test_transcript_captions.py",
+        "tests/test_transcript_timing.py",
+        "tests/test_transcript_workflow.py",
+        "docs/integrations/audio-transcription.md",
+        "src/video_research_mcp/tools/audio_transcribe.py",
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/server.py",
+        "integrations/qwen/asr.json",
+        "tests/test_audio_transcribe.py"
       ],
       "applicable_notice_receipts": [
         {
@@ -79,6 +95,12 @@
         ],
         "state": "owned caption/count/ground/music integration; live semantic criterion unqualified",
         "claim_boundary": "No Qwen foreign transport/body import; own Gemini schema/account/budget integration does not establish event/music correctness."
+      },
+      "owned_asr": {
+        "descriptor": "integrations/qwen/asr.json",
+        "tool": "audio_transcribe",
+        "state": "independently authored source component; optional original service/model remains disabled and unqualified",
+        "claim_boundary": "Caption boundaries are source assertions; inferred words/speakers are unverified. No foreign runtime or model weights imported/bundled."
       }
     },
     {

@@ -552,12 +552,25 @@
           "reuse_mode": "adapt",
           "rationale": "[CONFIRMED source; proposed transfer] Adapt transcription/result contracts for current provider and retain optional Qwen ASR integration; actual timing/identity accuracy requires evidence rather than assuming prompt parity.",
           "target_paths": [
+            "src/video_research_mcp/models/transcript.py",
+            "src/video_research_mcp/transcript.py",
+            "src/video_research_mcp/transcript_audio.py",
+            "src/video_research_mcp/transcript_provider.py",
+            "src/video_research_mcp/transcript_timing.py",
+            "src/video_research_mcp/transcript_captions.py",
+            "src/video_research_mcp/transcript_formats.py",
+            "tests/test_transcript_captions.py",
+            "tests/test_transcript_timing.py",
+            "tests/test_transcript_workflow.py",
+            "docs/integrations/audio-transcription.md",
             "src/video_research_mcp/tools/audio_transcribe.py",
-            "src/video_research_mcp/models/audio.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/server.py",
             "integrations/qwen/asr.json",
-            "tests/test_audio_transcribe.py"
+            "tests/test_audio_transcribe.py",
+            "tests/test_reuse_ledger.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Reconciled independently authored caption/timing/export and optional provider component; service, speech/alignment/speaker accuracy, product and comparison acceptance remain separate.",
           "dependencies": [
             "qwen_reuse_manifest",
             "qwen_av_perception"
@@ -3700,10 +3713,23 @@
           "reuse_mode": "adapt",
           "rationale": "Add a transcript evidence path that prefers available captions/sidecars and optionally transcribes audio locally. Keep text extraction distinct from Gemini whole-video interpretation; reuse root download and file policy.",
           "target_paths": [
-            "src/video_research_mcp/tools/youtube_download.py",
-            "src/video_research_mcp/tools/video_file.py",
-            "src/video_research_mcp/tools/audio.py",
-            "src/video_research_mcp/models/transcript.py"
+            "src/video_research_mcp/models/transcript.py",
+            "src/video_research_mcp/transcript.py",
+            "src/video_research_mcp/transcript_audio.py",
+            "src/video_research_mcp/transcript_provider.py",
+            "src/video_research_mcp/transcript_timing.py",
+            "src/video_research_mcp/transcript_captions.py",
+            "src/video_research_mcp/transcript_formats.py",
+            "tests/test_transcript_captions.py",
+            "tests/test_transcript_timing.py",
+            "tests/test_transcript_workflow.py",
+            "docs/integrations/audio-transcription.md",
+            "src/video_research_mcp/tools/audio_transcribe.py",
+            "src/video_research_mcp/config.py",
+            "src/video_research_mcp/server.py",
+            "integrations/qwen/asr.json",
+            "tests/test_audio_transcribe.py",
+            "tests/test_reuse_ledger.py"
           ],
           "dependencies": [
             "direct.acquisition"
@@ -3842,7 +3868,8 @@
             "src/video_research_mcp/tools/audio.py (proposed)",
             "src/video_research_mcp/models/transcript.py (proposed)"
           ],
-          "bead_id": "vrm-0e8.4.1"
+          "bead_id": "vrm-0e8.4.1",
+          "target_status": "Reconciled independently authored caption/timing/export and optional provider component; service, speech/alignment/speaker accuracy, product and comparison acceptance remain separate."
         },
         {
           "key": "direct.speakers",
@@ -10508,14 +10535,23 @@
         "perception"
       ],
       "target_paths": [
-        "integrations/qwen/asr.json",
-        "src/video_research_mcp/models/audio.py",
         "src/video_research_mcp/models/transcript.py",
-        "src/video_research_mcp/tools/audio.py",
+        "src/video_research_mcp/transcript.py",
+        "src/video_research_mcp/transcript_audio.py",
+        "src/video_research_mcp/transcript_provider.py",
+        "src/video_research_mcp/transcript_timing.py",
+        "src/video_research_mcp/transcript_captions.py",
+        "src/video_research_mcp/transcript_formats.py",
+        "tests/test_transcript_captions.py",
+        "tests/test_transcript_timing.py",
+        "tests/test_transcript_workflow.py",
+        "docs/integrations/audio-transcription.md",
         "src/video_research_mcp/tools/audio_transcribe.py",
-        "src/video_research_mcp/tools/video_file.py",
-        "src/video_research_mcp/tools/youtube_download.py",
-        "tests/test_audio_transcribe.py"
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/server.py",
+        "integrations/qwen/asr.json",
+        "tests/test_audio_transcribe.py",
+        "tests/test_reuse_ledger.py"
       ],
       "declared_dependencies": [
         "acquisition",

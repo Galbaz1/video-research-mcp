@@ -377,3 +377,23 @@ bundled by this adapter. The unread shared.api_openai caption branch is forbidde
 Source admission and optional code/subtitle/image execution do not establish
 original distribution installation, all eleven format families, GIS or clinical
 geometry, human review, comparative performance or release acceptance.
+
+## Captions-first optional audio transcription
+
+The independently authored transcript models, strict caption parsers, source-clock
+reconciliation, exports, restart receipts and explicit provider selection refer to
+Qwen-MM-Plugins speech contracts (Apache-2.0) and mcp-video-analyzer caption/STT
+contracts (MIT). No original implementation, local model, checkpoint or service
+runtime is copied, imported or bundled. The complete source grants and six mapped
+body hashes are retained in the bounded source packet and the static ASR descriptor.
+
+Qwen reference: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/api/qwen_mm_plugins_api>.
+Direct caption/STT reference: <https://github.com/guimatheus92/mcp-video-analyzer/tree/9e476c02f8426f5c277ed5e7f5729c1aee75b31a>.
+
+Existing native source preparation and configured Gemini are retained; a Qwen
+`/asr` service is optional and disabled by default. Operator profile declarations
+are not model, runtime, license, word-alignment or speaker-accuracy attestations.
+Supplied captions remain source assertions; generated transcript/speaker labels
+remain model inference. Untimed service text never becomes invented aligned words.
+Service/model/weight rights and concrete activation require separate qualification.
+See integrations/qwen/asr.json and docs/integrations/audio-transcription.md.

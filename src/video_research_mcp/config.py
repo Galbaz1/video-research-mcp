@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from .models.vision import VisionBackend
 from .models.text_provider import TextBackend
 from .models.segmentation import SegmentationService
+from .models.transcript import ASRService
 
 logger = logging.getLogger(__name__)
 
@@ -153,6 +154,7 @@ class ServerConfig(BaseModel):
     media_cookies_file: str = Field(default="")
     vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
     segmentation_services: dict[Annotated[str, Field(pattern=r"^[a-z][a-z0-9_-]{0,63}$")], SegmentationService] = Field(default_factory=dict, max_length=8)
+    asr_service: ASRService | None = None
     text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
     search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
     twelvelabs_enabled: bool = Field(default=False)
@@ -299,6 +301,7 @@ class ServerConfig(BaseModel):
             media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
             vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
             segmentation_services=json.loads(os.getenv("SEGMENTATION_SERVICES_JSON", "{}")),
+            asr_service=json.loads(os.getenv("ASR_SERVICE_JSON", "null")),
             text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
             search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
             twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),

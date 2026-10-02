@@ -54,7 +54,9 @@
     "docs/integrations/qwen-core.md",
     "scripts/core_session.py",
     "scripts/core_inputs.py",
-    "scripts/core_dispatch.py"
+    "scripts/core_dispatch.py",
+    "integrations/qwen/asr.json",
+    "docs/integrations/audio-transcription.md"
   ],
   "engines": {
     "node": ">=22"
