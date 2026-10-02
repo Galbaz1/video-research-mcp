@@ -21,6 +21,10 @@ credential values. Claude and Cursor receive `mcpServers` JSON; Codex receives a
 `mcp_servers` TOML table. Review and merge the example in the selected client's
 configuration yourself. The installer modifies only Claude's explicit `--global`
 user scope or `--local` project scope; it never edits Cursor or Codex configuration.
+For Codex, prefer the [native plugin](../PLUGIN_DISTRIBUTION.md#native-codex-plugin)
+installed from a Codex marketplace: it packages the skills with the same pinned
+server. The TOML example registers only the server, and keeping both declares the
+`video-research` server twice.
 The [OpenAI MCP configuration documentation](https://developers.openai.com/codex/config-reference)
 and [client setup examples](https://developers.openai.com/learn/docs-mcp) describe
 the client-side configuration families. Emitting a declaration does not prove that

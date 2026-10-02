@@ -1,11 +1,13 @@
 {
   "name": "video-research-mcp",
-  "version": "0.7.1",
-  "description": "Claude Code workflows and installer for video analysis, document extraction and cited research",
+  "version": "0.8.0-rc.1",
+  "description": "Native Codex plugin plus Claude Code workflows and installer for video analysis, document extraction and cited research",
   "bin": {
     "video-research-mcp": "bin/install.js"
   },
   "files": [
+    "plugin.json",
+    "mcp.json",
     "bin",
     "commands",
     "skills",
@@ -56,7 +58,8 @@
     "scripts/core_inputs.py",
     "scripts/core_dispatch.py",
     "integrations/qwen/asr.json",
-    "docs/integrations/audio-transcription.md"
+    "docs/integrations/audio-transcription.md",
+    "docs/integrations/qwen-search.md"
   ],
   "engines": {
     "node": ">=22"
@@ -75,6 +78,6 @@
     "url": "https://github.com/Galbaz1/video-research-mcp"
   },
   "scripts": {
-    "test": "node --test tests/installer.test.js"
+    "test": "node --test tests/installer.test.js tests/codex-plugin.test.js"
   }
 }

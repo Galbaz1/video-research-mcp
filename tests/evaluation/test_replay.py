@@ -197,7 +197,11 @@ def test_protocol_covers_frozen_inventory_and_all_families():
     assert protocol["inventory_sha256"] == "deacee9b11e9b853a6534949320b5c708c2f72c40413c84bcfc3170a83da6683"
     for name, lane in inventory["source_lanes"].items():
         validate_source_audit(name, lane)
-    assert set(protocol["workflows"]) == {p["key"] for p in inventory["work_packages"]}
+    # Native Codex installation was added after the comparison cohort was frozen.
+    assert "codex-install" not in protocol["workflows"]
+    assert set(protocol["workflows"]) | {"codex-install"} == {
+        p["key"] for p in inventory["work_packages"]
+    }
     assert set(protocol["families"]) == {p["family"] for p in inventory["work_packages"]}
     assert protocol["minimum_cases_per_family"] == 30
 

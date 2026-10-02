@@ -14,7 +14,7 @@ python scripts/validate_video_skill.py /absolute/authoring-directory
 python scripts/package_video_skill.py /absolute/authoring-directory /absolute/output.skill
 ```
 
-In the source repository, those same scripts live under the repository's `scripts/` directory. Both commands print JSON, returning exit 0 for pass and exit 1 for failure. The first concrete failure is retained in `error`.
+Paths are relative to this skill's directory, where the Claude installer places `scripts/`. In the native plugin package and the source repository, the same scripts are at `../../scripts/validate_video_skill.py` and `../../scripts/package_video_skill.py`. Both commands print JSON, returning exit 0 for pass and exit 1 for failure. The first concrete failure is retained in `error`.
 
 ## Retain the original and describe coverage
 

@@ -554,7 +554,7 @@
         },
         {
           "target_path": "docs/integrations/ONBOARDING.md",
-          "target_sha256": "b74386f1aa66b82fbba1f2f5e6d4cf5eddd73ecf3750f88d11e212a2ae258da6",
+          "target_sha256": "ad49bb59d98581b07bd78cd433823faf432be2f8ebd311b63adc5ce0f7443d6f",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -1048,7 +1048,7 @@
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
-          "target_sha256": "3b26a58eefeda62d5a2c6998a7a73d0051fe71bef5fda0045cfd83b0dd03237c",
+          "target_sha256": "2a4867a82d21291d551fcd45b89728b83a8424f2d2986071b4f301bcbf020486",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         }
       ]
@@ -1186,7 +1186,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "c96f0eb8517327c6815991dd7b3fc6d053fe44f02ed8be2b40777ad394485bc5",
+          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1906,7 +1906,7 @@
         },
         {
           "target_path": "skills/video-to-skill/SKILL.md",
-          "target_sha256": "04450c6b2b6fc767ef0f193f6437d711aabf8b4d2518bc8c9403e299dc807335",
+          "target_sha256": "9db5a641714aa29bb468affab9106abe374a34ca45e4f0f4b3cc31b66a9543ab",
           "provenance": "Independently authored ordinary host skill provenance, event/media/asset and retained task-record checks plus deterministic atomic packaging from pinned requirements. No Qwen code/model/demo/runtime copied or imported. Byte/declaration checks remain separate from actual source/task observations and human rights audit."
         },
         {
@@ -3590,7 +3590,7 @@
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
-          "target_sha256": "3b26a58eefeda62d5a2c6998a7a73d0051fe71bef5fda0045cfd83b0dd03237c",
+          "target_sha256": "2a4867a82d21291d551fcd45b89728b83a8424f2d2986071b4f301bcbf020486",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         }
       ]
@@ -3634,12 +3634,12 @@
         },
         {
           "target_path": "docs/integrations/ONBOARDING.md",
-          "target_sha256": "b74386f1aa66b82fbba1f2f5e6d4cf5eddd73ecf3750f88d11e212a2ae258da6",
+          "target_sha256": "ad49bb59d98581b07bd78cd433823faf432be2f8ebd311b63adc5ce0f7443d6f",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
           "target_path": "package.json",
-          "target_sha256": "60fd42e43ce38ad8b2929302bab60ba7360ee234affd391ddef295cd51918ce6",
+          "target_sha256": "08579091ea81b9d213b239a943995a76b68d42ab920a83bb169a1cedc3e6da1b",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -5029,7 +5029,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "c96f0eb8517327c6815991dd7b3fc6d053fe44f02ed8be2b40777ad394485bc5",
+          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -5330,7 +5330,7 @@
         },
         {
           "target_path": "docs/PUBLISHING.md",
-          "target_sha256": "aa51f434f826a625c3b1a1939c28820b0d88d22208962aa52fed29a92e211f0f",
+          "target_sha256": "4381ec215748b305466a2e10a57d6c1422c5ea468f56cb43686ab52d65585126",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
         },
         {
@@ -5345,7 +5345,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "c96f0eb8517327c6815991dd7b3fc6d053fe44f02ed8be2b40777ad394485bc5",
+          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {
@@ -5930,7 +5930,7 @@
         },
         {
           "target_path": "scripts/smoke_built_mcp.py",
-          "target_sha256": "d8d90f70bdf6cec1ef09e9c7679ec8186e199533bd7a87419a2c1fa33a6e10cf",
+          "target_sha256": "5cebd84eaf19bd3ef35f8c5e60a969c9b3c2aa97298570063455cff49103c910",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -6257,7 +6257,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "ef03133623a03917c8ddf865de5d88ebdbf105417a2eda74dbccf348249bd881",
+      "sha256": "b358bc387cad92a6bd52dca41a212a3ab1599612470faa51c4c3ef6bb0528907",
       "registry_packages": [
         {
           "name": "aiofile",

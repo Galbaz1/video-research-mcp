@@ -49,6 +49,8 @@ jobs:
               raise SystemExit('Matching release notes are required')
           print(match.group(1).strip())
           PYEOF
+      - name: Install native media smoke prerequisite
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - name: Build release artifacts
         shell: bash
         run: |

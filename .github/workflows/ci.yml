@@ -23,6 +23,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -33,9 +34,12 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: uv sync --locked --extra dev
+      - name: Install native media test prerequisites
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: uv run --locked pytest tests/ -q
         env:
           GEMINI_API_KEY: test-key-not-real
+          PYTEST_ADDOPTS: "-v -o faulthandler_timeout=60"
 
   companion-packages:
     runs-on: ubuntu-latest
@@ -68,9 +72,12 @@ jobs:
           python-version: '3.11'
       - run: uv sync --locked --extra dev
       - run: node --test tests/installer.test.js
+      - run: node --test tests/codex-plugin.test.js
       - run: ./scripts/run_security_smoke.sh
       - run: PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py
       - run: uv run --locked python scripts/check_release.py
       - run: uv build
+      - name: Install native media smoke prerequisite
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: uv run --locked python scripts/smoke_built_mcp.py dist/*.whl
       - run: npm pack --dry-run

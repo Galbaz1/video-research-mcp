@@ -11,12 +11,35 @@ import json
 import os
 import shutil
 import struct
+import subprocess
+import sys
 import tempfile
 import zlib
 from pathlib import Path
 
 from fastmcp import Client
 from fastmcp.client.transports import StdioTransport
+
+
+SOURCE_CONTRACT_CODE = """
+import asyncio, json
+from video_research_mcp.server import app
+async def run():
+    tools = await app.list_tools()
+    return [tool.to_mcp_tool().model_dump(by_alias=True, exclude_none=True)
+            for tool in sorted(tools, key=lambda tool: tool.name)]
+print(json.dumps(asyncio.run(run())))
+"""
+
+
+def check_tool_contract(tools: list, expected: list[dict]) -> None:
+    """Reject missing, extra or changed wire contracts in the installed wheel."""
+    actual = [
+        tool.model_dump(by_alias=True, exclude_none=True)
+        for tool in sorted(tools, key=lambda tool: tool.name)
+    ]
+    if actual != expected:
+        raise RuntimeError("Built artifact tool contract differs from candidate source")
 
 
 async def media_journey(client: Client, scratch: Path) -> None:
@@ -70,6 +93,7 @@ async def smoke(wheel: Path) -> None:
             "GEMINI_THINKING_LEVEL",
             "DEEP_RESEARCH_AGENT",
             "GEMINI_SESSION_DB",
+            "PYTHONPATH",
         }
         env = {key: value for key, value in os.environ.items() if key not in overrides}
         env.update(
@@ -81,6 +105,19 @@ async def smoke(wheel: Path) -> None:
             WEAVIATE_API_KEY="",
             WEAVIATE_VECTORIZER="weaviate",
         )
+        env["VIDEO_RESEARCH_ENV_FILE"] = str(Path(scratch) / "absent.env")
+        env.setdefault(
+            "UV_CACHE_DIR", subprocess.check_output(["uv", "cache", "dir"], text=True).strip()
+        )
+        source_env = {**env, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
+        expected = json.loads(
+            subprocess.check_output(
+                [sys.executable, "-c", SOURCE_CONTRACT_CODE],
+                env=source_env,
+                cwd=scratch,
+                text=True,
+            )
+        )
         transport = StdioTransport(
             command="uv",
             args=["run", "--no-project", "--with", str(wheel), "video-research-mcp"],
@@ -89,18 +126,19 @@ async def smoke(wheel: Path) -> None:
         )
         async with Client(transport) as client:
             tools = await client.list_tools()
+            check_tool_contract(tools, expected)
             response = await client.call_tool("infra_configure", {})
             config = response.data["current_config"]
             if (
-                len(tools) != 35
-                or config["default_model"] != "gemini-3.8-flash"
+                config["default_model"] != "gemini-3.8-flash"
                 or config["deep_research_agent"] != "deep-research-preview-04-2026"
             ):
-                raise RuntimeError("Built artifact tool/model contract differs from this release")
+                raise RuntimeError("Built artifact model configuration differs from this release")
             if "s2_api_key" in config or "built-wheel-secret-sentinel" in str(response.data):
                 raise RuntimeError("Built artifact exposes the Semantic Scholar API key")
             print(
-                "PASS: built wheel stdio discovery (35 tools), configuration and secret redaction"
+                f"PASS: built wheel matches all {len(tools)} source tool contracts; "
+                "configuration and secret redaction"
             )
             await media_journey(client, Path(scratch))
 

@@ -9,6 +9,33 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.8.0-rc.1] - 2026-10-02
+
+### Added
+
+- Native Codex plugin packaging with 22 bundled skills and an exact core MCP
+  runtime pin. Codex marketplace installation supports the packed local candidate
+  and the matching npm version without running the Claude installer.
+- The multimodal programme's current core exposes 90 tools, including local image
+  inspection/cropping, structured audio/video workflows, evidence-aware research,
+  and optional adapters. Adapter prerequisites and evidence limitations remain
+  documented; packaging does not qualify an external runtime or model.
+
+### Fixed
+
+- Corrected the packaged video-to-skill helper paths for native Codex installs
+  while preserving the existing Claude layout.
+- Built-wheel verification now compares every MCP tool contract with candidate
+  source instead of requiring an obsolete tool count, and retains configuration
+  redaction and actual local image-crop checks.
+
+### Acceptance boundary
+
+- This is a core/plugin release candidate. Companion packages retain their own
+  versions. Human source audit, held-out comparison, live-provider quality and
+  blocked native-runtime qualifications remain open; no programme-wide acceptance
+  or superiority claim is implied.
+
 ## [0.7.1] - 2026-09-30
 
 ### Changed

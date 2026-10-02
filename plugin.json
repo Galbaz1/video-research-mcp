@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "video-research",
+  "version": "0.8.0-rc.1",
+  "description": "Video analysis, document extraction, cited research and knowledge workflows backed by the video-research MCP server.",
+  "author": {
+    "name": "Fausto Albers"
+  },
+  "homepage": "https://github.com/Galbaz1/video-research-mcp",
+  "repository": "https://github.com/Galbaz1/video-research-mcp",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "gemini",
+    "research",
+    "video-analysis",
+    "content-extraction"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Video Research",
+        "shortDescription": "Analyze video and documents with cited research",
+        "developerName": "Fausto Albers",
+        "category": "Productivity"
+      }
+    }
+  }
+}
