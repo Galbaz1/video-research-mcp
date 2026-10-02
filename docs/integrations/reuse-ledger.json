@@ -1043,7 +1043,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1161,7 +1161,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1186,7 +1186,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
+          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1376,7 +1376,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         }
       ]
@@ -1446,7 +1446,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
@@ -2140,7 +2140,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         }
       ]
@@ -2794,7 +2794,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         }
       ]
@@ -3585,7 +3585,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3766,7 +3766,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -4790,7 +4790,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "c629c9945937d1426c2b0a416fd74c7148478a15f97b7af6b037a267c7180946",
+          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -5029,7 +5029,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
+          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -5330,7 +5330,7 @@
         },
         {
           "target_path": "docs/PUBLISHING.md",
-          "target_sha256": "4381ec215748b305466a2e10a57d6c1422c5ea468f56cb43686ab52d65585126",
+          "target_sha256": "07687a2978c2998a63d854349943dbb142fc1b9bdbdce9ce2d1186e404627351",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
         },
         {
@@ -5345,7 +5345,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "afd71b33b081d3cbfce12d303471eb189ff34729792cfdb514f45d2d41ea7f35",
+          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {

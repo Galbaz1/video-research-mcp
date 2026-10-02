@@ -116,6 +116,7 @@ packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [
+    "/packages/video-explainer/**",
     "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/job_store.py",
     "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",

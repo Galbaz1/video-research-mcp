@@ -29,6 +29,11 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   source instead of requiring an obsolete tool count, and retains configuration
   redaction and actual local image-crop checks.
 
+- Reconcile FFmpeg 6.1 MP3 encoder padding against exact packet timing so complete
+  tracks export successfully while truncated tracks remain rejected.
+- Exclude the uncleared external renderer subtree from the core source archive
+  and reject its payload in archive checks, including equivalent path spellings.
+
 ### Acceptance boundary
 
 - This is a core/plugin release candidate. Companion packages retain their own

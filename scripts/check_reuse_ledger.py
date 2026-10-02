@@ -282,6 +282,10 @@ def check_archive(path: Path, root: Path = ROOT, ledger: dict | None = None) -> 
     is_wheel = path.suffix == ".whl"
     normalized = [(n if is_wheel else n.split("/", 1)[-1], data) for n, data in members]
     by_name = dict(normalized)
+    require(
+        not any(PurePosixPath(name).parts[:2] == ("packages", "video-explainer") for name in by_name),
+        "Uncleared renderer submodule is bundled in archive",
+    )
     if archive_package(by_name, is_wheel) == "video-research-mcp":
         required = {
             "THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",

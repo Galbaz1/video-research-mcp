@@ -352,3 +352,40 @@ def test_actual_npm_tar_bytes_pass(receipt_root, tmp_path):
             info.size = len(data)
             archive.addfile(info, io.BytesIO(data))
     assert check_archive(path, receipt_root)["files"] == 6
+
+
+@pytest.mark.parametrize("name", ["generate_video.py", "README.md", ".dockerignore"])
+def test_archive_rejects_uncleared_renderer_text(receipt_root, tmp_path, name):
+    """A root MIT grant cannot authorize the blocked renderer subtree's text."""
+    path = wheel(
+        receipt_root, tmp_path / "fixture.whl",
+        {f"packages/video-explainer/{name}": b"foreign renderer text"},
+    )
+    with pytest.raises(ValueError, match="Uncleared renderer submodule"):
+        check_archive(path, receipt_root)
+
+
+def test_archive_allows_own_renderer_adapter_path(receipt_root, tmp_path):
+    """The own companion wrapper remains distinct from the uncleared renderer."""
+    path = wheel(
+        receipt_root, tmp_path / "fixture.whl",
+        {"packages/video-explainer-mcp/README.md": b"own wrapper"},
+    )
+    assert check_archive(path, receipt_root)["files"] == 8
+
+
+def test_archive_rejects_renderer_dot_path_alias(receipt_root, tmp_path):
+    """Equivalent safe tar paths must enforce the same renderer subtree boundary."""
+    members = {
+        "fixture/PKG-INFO": b"Name: video-explainer-mcp\nVersion: 1.0\n",
+        "fixture/LICENSE": (receipt_root / "LICENSE").read_bytes(),
+        "fixture/packages/./video-explainer/README.md": b"synthetic renderer text",
+    }
+    path = tmp_path / "fixture.tar.gz"
+    with tarfile.open(path, "w:gz") as archive:
+        for name, data in members.items():
+            info = tarfile.TarInfo(name)
+            info.size = len(data)
+            archive.addfile(info, io.BytesIO(data))
+    with pytest.raises(ValueError, match="Uncleared renderer submodule"):
+        check_archive(path, receipt_root)

@@ -60,6 +60,11 @@ jobs:
           uv build --project packages/video-agent-mcp --out-dir "$PWD/dist"
           npm pack --pack-destination dist
           uvx --from twine twine check dist/*.whl dist/*.tar.gz
+          ARCHIVE_ARGS=()
+          for artifact in dist/*.whl dist/*.tar.gz dist/*.tgz; do
+            ARCHIVE_ARGS+=(--archive "$artifact")
+          done
+          uv run --locked python scripts/check_reuse_ledger.py "${ARCHIVE_ARGS[@]}"
           uv run --locked python scripts/smoke_built_mcp.py dist/video_research_mcp-*.whl
       - name: Publish verified GitHub artifacts
         env:

@@ -37,8 +37,9 @@ Add a matching
 section to [CHANGELOG.md](../CHANGELOG.md).
 
 For a prerelease, use a shared source spelling such as `0.8.0-rc.1`. Python
-normalizes it to `0.8.0rc1` in built metadata; both spellings select the same exact
-PEP 440 version. Publish the npm archive with `--tag next` so it does not replace
+normalizes it to `0.8.0rc1` in archive filenames and dependency resolution;
+built metadata can retain the source spelling. Both spellings select the same
+exact PEP 440 version. Publish the npm archive with `--tag next` so it does not replace
 `latest`. A prerelease still needs all applicable source and installation gates.
 
 Companions have independent versions in their own `pyproject.toml` files. Check

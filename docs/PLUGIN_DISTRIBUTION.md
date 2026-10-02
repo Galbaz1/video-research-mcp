@@ -334,9 +334,14 @@ Write `$CANDIDATE/marketplace/.agents/plugins/marketplace.json` like the npm
 example, named `video-research-local`, with
 `"source": { "source": "local", "path": "./plugins/video-research" }`. Then run
 `codex plugin marketplace add "$CANDIDATE/marketplace"` and
-`codex plugin add video-research@video-research-local`. Codex CLI 0.159.3 copies
+`codex plugin add video-research@video-research-local`. Codex CLI 0.159.3 and 0.160.0 copy
 local sources to `$CODEX_HOME/plugins/cache/video-research-local/video-research/<plugin.json version>/`;
 compare that copy with the tarball. `codex plugin remove` deletes it again.
+On 0.160.0, updating the local catalog to a new version and repeating `plugin add`
+replaces the managed cache. Repeating `plugin add` at the same version also replaces
+edited files and removes unowned cache files. Before an upgrade, reinstall or
+removal, copy any local edits and unowned resources to a backup outside that cache;
+Codex does not preserve them there. Keep credentials outside the package.
 In an isolated install on that client, app-server `skills/list` loaded all shipped
 skills from the cache, and a new thread started the `video-research` server with
 plugin provenance, the installed copy as working directory and only `HOME`,
@@ -357,16 +362,22 @@ instead. Do not add a test-only runtime override to `mcp.json`.
 The server reads `~/.config/video-research-mcp/.env` on start. Keep keys there:
 Codex filters the environment it gives plugin servers. A `[mcp_servers.video-research]`
 table in `~/.codex/config.toml`, for example from `--client-config codex`, declares
-a second server with the same name. Inspect it and disable or remove only an
-identified duplicate you own. Plugin-scoped server policy, such as tool approval,
+a second server with the same name. On Codex 0.160.0, that manual entry takes
+precedence even when `enabled = false`, hiding the plugin server. When migrating
+to the plugin, back up the configuration and remove only the identified manual
+`mcp_servers.video-research` table (including its nested settings); preserve all
+unrelated configuration and the shared credential file. Disabling that manual
+table alone does not complete this migration. Plugin-scoped server policy, such as tool approval,
 uses `plugins.<plugin>.mcp_servers.video-research` in Codex configuration.
 
-These host behaviors still require the actual client with the candidate runtime:
-the live tool inventory and calls, other client versions such as the desktop app,
-`uvx` on the desktop app's `PATH`, first-launch download time against the MCP
-startup timeout, same-name server precedence and the handling of Claude-specific
-skill content (`allowed-tools`, `disable-model-invocation`, `/gr:` command
-references).
+An isolated 0.160.0 install was verified with the exact packed candidate and built
+wheel: all 22 skills came from the managed cache, all 90 MCP tools connected,
+read-only configuration and local image-crop/error journeys passed, and a fresh
+session repeated the runtime checks. The loaded Python modules and metadata
+matched the selected wheel. These checks used offline resolution and a dummy key.
+They do not establish registry installation, the running desktop app's `PATH`,
+first-launch download timing or live-provider quality. The shared advisor selects
+discovered MCP tools in Codex and registered `/gr:*` commands in Claude.
 
 Consult the current [Claude Code skills documentation](https://code.claude.com/docs/en/skills)
 before changing the Claude route.
