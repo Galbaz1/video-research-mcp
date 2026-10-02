@@ -48,7 +48,7 @@ Start source exploration with these files:
 
 ## 2. Composite Server Pattern
 
-`server.py` mounts seven domain servers without a namespace prefix. Tool names
+`server.py` mounts eight domain servers without a namespace prefix. Tool names
 such as `video_analyze` are therefore the names exposed by the root app.
 
 | Server | Owning module | Registered tools |
@@ -60,6 +60,7 @@ such as `video_analyze` are therefore the names exposed by the root app.
 | Infrastructure | `tools/infra.py` | 2 |
 | YouTube | `tools/youtube.py` | 3 |
 | Knowledge | `tools/knowledge/` | 8 |
+| Local media | `tools/media.py` | 1 |
 
 Research and content use deferred registration helpers before mounting. These
 helpers import modules that register tools on the already-created domain
@@ -134,7 +135,7 @@ Annotations describe behavior to the client. They do not authorize operations or
 enforce access policy. When extending a tool, account for uploads, cache writes,
 knowledge writes, and provider work as well as its primary result.
 
-## 5. Tool Reference (34 tools)
+## 5. Tool Reference (35 tools)
 
 The [generated manifest](metrics/tool-contract-manifest.json) contains the full
 registered surface. It is a snapshot of local registration, not evidence that
@@ -183,18 +184,91 @@ parallel strategy and concept-map generation, artifact rendering, quality checks
 then promotion of the temporary files to their final directory.
 
 Successful output includes `analysis.md`, `strategy.md`, `concept-map.html`, and
-a quality report. `VIDEO_OUTPUT_DIR` selects the base directory; otherwise it is
+a quality report retained both in the response and `quality-report.json`.
+`VIDEO_OUTPUT_DIR` selects the base directory; otherwise it is
 `output` relative to the server's working directory. Failed quality checks return
 the report and analysis, remove temporary output, and do not return final artifact
 paths. This path does not use the ordinary result cache or its write-through store.
 
-The gates check timestamp formatting/order, minimum key-point length, the last
-timestamp relative to the stated duration, concept edge references, artifact
-presence, relative links, and basic HTML envelope tags. Those checks establish
-structural properties. They do not verify factual claims, observed video coverage,
-or browser behavior. See [pipeline.py](../src/video_research_mcp/contract/pipeline.py),
+The gates check timestamp formatting/order, minimum key-point length, concept
+edge references, nonempty artifacts within the output fence, relative links and
+basic HTML envelope tags. `status=pass` has the explicit scope
+`artifact_and_structure`. Claim support, source timestamp correctness, media
+review and human review remain separate pending fields; `factual_success=false`.
+
+[MediaCoverage](../src/video_research_mcp/models/coverage.py) keeps requested,
+extracted and observed intervals, observed frame points, source revision/hash,
+measured duration and missing stages separate. Observed coverage is the union of
+actual observation intervals divided by independently measured duration. It
+retains uncovered gaps and never fills time between extracted frames. Unknown
+duration or a missing observation stage cannot pass the coverage gate. A final
+model timestamp and a model-declared duration never create an observation receipt.
+The current provider pipeline has no such receipt, so it reports coverage as
+unknown with `coverage_ratio=null`. Artifacts carry an explicit draft review
+status. Existing input parameters remain compatible, including
+`coverage_min_ratio`; that threshold applies when actual observations exist.
+See [pipeline.py](../src/video_research_mcp/contract/pipeline.py),
 [quality.py](../src/video_research_mcp/contract/quality.py), and
 [validation.py](../src/video_research_mcp/validation.py).
+
+### Original-source packets and production lineage
+
+[EvidencePacket](../src/video_research_mcp/models/evidence.py) version one retains
+stable source/claim IDs, original revision and byte hash, a frozen text or media
+observation snapshot, exact passages/intervals, approval and abstention, and
+script → narration → storyboard → rendered-text parents. Source content is data.
+The deterministic validator checks original bytes, exact passage binding and
+approved claim text at every stage. Added captions or voiceover facts are flagged.
+Exact quoted text does not establish semantic entailment or factual truth;
+`contract_passed` and `factual_success` are separate.
+
+The independently packaged explainer validates `evidence-packet.json` before
+atomic injection. Missing or stale sources expose no promoted input path and
+preserve the previous input. Initial packets can retain incomplete/unsupported
+claims with an explicit failing lineage report. Production acceptance requires
+re-injecting the actual narration, storyboard, caption and voiceover text; this
+contract does not pretend to inspect a renderer's output automatically.
+
+### Native media and optional external MCPs
+
+`image_crop` is an additive deterministic local operation. It validates PNG
+metadata, byte/pixel/crop ceilings and the local path fence before optional
+FFmpeg decoding. It writes a fresh atomic crop and returns original pixel
+coordinates, dimensions and source/output hashes. The source's original versus
+synthetic status remains unverified; the output is an extracted asset.
+
+This tool uses the documented native-media exception in [src/AGENTS.md](../src/AGENTS.md):
+an explicit success/error schema, `CallToolResult.structuredContent`, a JSON text
+block and a PNG `ImageContent` block of at most 1 MiB. `include_image=false` and
+larger crops return metadata and the artifact path for text-only clients. Errors
+use the shared redacted `ToolError`, set the protocol error flag and contain no
+success artifact path. Annotations describe a local non-destructive write, and
+the shared tracing decorator still applies. Deterministic operations invoke no
+model. Existing generative tools retain their dictionary/schema/client patterns.
+
+`image_edit` uses lazy optional Pillow preparation and one owned source snapshot.
+It records EXIF/crop/resize transforms, explicit annotation/cutout provenance,
+actual encoded bytes and a digest-bound manifest. `image_ocr` consumes that same
+preparation through an explicitly selected local Tesseract or Apple Vision
+backend. The optional native backend compiles only the project's own Swift source
+and verifies cached executable bytes. `video_clip_export` measures selected
+original PTS and decoded output timing under frame, pixel and byte limits.
+`image_manifest_read` verifies the retained manifest, original source and every
+declared artifact after restart. Native/text transport both rehash all artifacts.
+See [image exports](integrations/IMAGE_EXPORTS.md) for public requests and limits.
+
+`vision_chat`, `vision_ocr` and `vision_grounding` submit exact prepared sources
+through the existing metered Gemini client or a server-configured compatible
+endpoint. Dry plans make no provider calls; submission requires a current workflow
+grant. The selected model, account and effective settings are bound to a digest.
+Strict inferred boxes map back through preparation transforms to actual original
+pixel crops. Model text/object correctness remains unverified. Compatible HTTP
+attests the selected peer before transmission and joins independently bounded
+cleanup. See [configured vision](integrations/IMAGE_VISION.md).
+
+Optional external MCPs keep their own schemas, pinned subprocess environments,
+dependency notices and payload boundaries. Readiness does not authorize installs,
+uploads or inference. They add no imports or startup dependencies to the core.
 
 ## 6. Singletons
 
@@ -311,16 +385,29 @@ There are three stored caches and one bridge between video workflows:
 | Context cache | `context_cache.py`; provider resource with local registry | Reuses provider-side video context for sessions |
 | Video cache bridge | `tools/video_cache.py` | Coordinates prewarm, lookup, TTL refresh, and fallback |
 
-Only ordinary video analysis and its batch path use the result cache. Its key is
-`{content_id}_{tool}_{instruction_hash}_{model_hash}.json`; local content IDs are
-SHA-256 prefixes and YouTube IDs come from the URL. Cached results return
-`cached: true`. TTL is based on file modification time, and expired or unreadable
-entries become misses. Saves use a temporary file and replacement.
+Only ordinary video analysis and its batch path use the result cache. Version-two
+filenames contain a SHA-256 of the normalized complete request contract; caller
+paths and URLs never become filename components. The envelope binds original
+source digest/revision, provider and credential scope, model, schema, thinking,
+actual prompt/metadata, preprocessing, window/sampling and retrieval revision.
+The current caller performs no retrieval and records a null retrieval revision.
+Equivalent original inline bytes at renamed paths reuse one identity and retain
+aliases; changed bytes create a new revision. Controller source fields survive
+response projection. Legacy entries and incomplete contracts are explicit misses.
 
-The result key does not include `output_schema` or `thinking_level`. Use
-`use_cache=False` when changing those settings in a controlled comparison. Source
-preparation and YouTube metadata optimization happen before the result-cache
-lookup, so a result hit does not imply that no other work occurred.
+Every replay/write rechecks original bytes. Missing/deleted/changed sources
+invalidate dependent result and local context-cache registry state. Unfetched URLs
+have unknown freshness and cannot replay results. Local File API references remain
+unverifiable for result reuse until uploaded bytes have an immutable commitment:
+the existing uploader hashes and reads a path separately. A local prepared hash
+alone does not verify the provider's bytes. Inline payloads are directly bound to
+the original snapshot; mismatches before or during analysis fail closed.
+
+`use_cache=False` bypasses result and identity-cache reads/writes and context
+prewarm. Ordinary source preparation and YouTube metadata optimization still occur;
+the [explicit bounded mode](integrations/EXECUTION_BUDGETS.md) additionally skips
+those optional remote operations and knowledge enrichment. TTL expiration and
+unreadable/malformed/error/proof-artifact entries are misses. Saves are atomic.
 
 File uploads are deduplicated by content hash and a per-hash lock. A cached URI is
 checked through the File API before reuse. One-shot local videos below 20 MiB use

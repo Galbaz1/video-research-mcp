@@ -1,0 +1,1176 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.2.9",
+  "scope": "Read-only current-source/environment/runtime presence inspection and proposed bounded development live runs. Does not authorize or execute calls.",
+  "config_sources": {
+    "core": "src/video_research_mcp/config.py",
+    "explainer": "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
+    "agent": "packages/video-agent-mcp/src/video_agent_mcp/config.py"
+  },
+  "additional_source_contracts": [
+    "src/video_research_mcp/dotenv.py",
+    "src/video_research_mcp/weaviate_client.py",
+    "src/video_research_mcp/weaviate_migrate.py",
+    "src/video_research_mcp/academic_client.py",
+    "src/video_research_mcp/client.py",
+    "src/video_research_mcp/tools/research_web.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
+    "packages/video-agent-mcp/src/video_agent_mcp/sdk_runner.py",
+    "src/video_research_mcp/image_ops.py",
+    "src/video_research_mcp/provider_readiness.py",
+    "src/video_research_mcp/models/text_provider.py",
+    "src/video_research_mcp/audio_dsp_backend.py",
+    "src/video_research_mcp/session_compaction.py",
+    "src/video_research_mcp/session_memory_store.py",
+    "src/video_research_mcp/session_sources.py",
+    "src/video_research_mcp/session_history.py",
+    "src/video_research_mcp/tools/session_memory.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
+    "src/video_research_mcp/ingestion.py",
+    "src/video_research_mcp/ingestion_read.py",
+    "src/video_research_mcp/ingestion_jobs.py",
+    "src/video_research_mcp/ingestion_sources.py",
+    "src/video_research_mcp/ingestion_pdf.py",
+    "src/video_research_mcp/ingestion_audio.py",
+    "src/video_research_mcp/ingestion_text.py",
+    "src/video_research_mcp/ingestion_docx.py",
+    "src/video_research_mcp/models/ingestion.py",
+    "src/video_research_mcp/tools/ingestion.py",
+    "src/video_research_mcp/models/ingestion_location.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/evidence.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/evidence.py",
+    "src/video_research_mcp/tools/hardware.py",
+    "src/video_research_mcp/hardware_simulator.py",
+    "src/video_research_mcp/hardware_store.py",
+    "src/video_research_mcp/hardware_authority.py",
+    "scripts/video_skill_contract.py",
+    "scripts/validate_video_skill.py",
+    "scripts/package_video_skill.py",
+    "src/video_research_mcp/models/video_note.py",
+    "src/video_research_mcp/tools/video_note.py",
+    "src/video_research_mcp/video_note/__init__.py",
+    "src/video_research_mcp/video_note/frames.py",
+    "src/video_research_mcp/video_note/io.py",
+    "src/video_research_mcp/video_note/perception.py",
+    "src/video_research_mcp/video_note/pipeline.py",
+    "src/video_research_mcp/video_note/render.py"
+  ],
+  "states": [
+    "disabled",
+    "missing",
+    "mocked",
+    "installed",
+    "configured-but-unverified",
+    "live-verified"
+  ],
+  "integrations": [
+    {
+      "id": "gemini-generation",
+      "adopted": true,
+      "capabilities": [
+        "video",
+        "image",
+        "content",
+        "structured reasoning",
+        "Google Search/URL grounding"
+      ],
+      "packages": [
+        "google-genai"
+      ],
+      "executables": [],
+      "credential_any": [
+        "GEMINI_API_KEY"
+      ],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "default_model": "GEMINI_MODEL",
+        "flash_model": "GEMINI_FLASH_MODEL",
+        "default_thinking_level": "GEMINI_THINKING_LEVEL",
+        "retry_max_attempts": "GEMINI_RETRY_MAX_ATTEMPTS"
+      },
+      "usage_visibility": "GeminiClient.generate returns text and discards response usage. Optional MLflow autolog may capture SDK response metadata; capture/cost completeness is unverified.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "gemini-deep-research",
+      "adopted": true,
+      "capabilities": [
+        "research_web",
+        "status",
+        "followup",
+        "cancel"
+      ],
+      "packages": [
+        "google-genai"
+      ],
+      "executables": [],
+      "credential_any": [
+        "GEMINI_API_KEY"
+      ],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "deep_research_agent": "DEEP_RESEARCH_AGENT"
+      },
+      "usage_visibility": "research_web_status extracts input/output/thought/total tokens. Search/browsing charges and asynchronous billing after cancellation require provider receipts.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "gemini-file-api",
+      "adopted": true,
+      "capabilities": [
+        "local video/document upload",
+        "File API lifecycle"
+      ],
+      "packages": [
+        "google-genai"
+      ],
+      "executables": [],
+      "credential_any": [
+        "GEMINI_API_KEY"
+      ],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "doc_max_download_bytes": "DOC_MAX_DOWNLOAD_BYTES",
+        "local_file_access_root": "LOCAL_FILE_ACCESS_ROOT",
+        "media_max_input_bytes": "MEDIA_MAX_INPUT_BYTES"
+      },
+      "usage_visibility": "Unknown until an authorized raw provider usage/billing receipt exists.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "gemini-context-cache",
+      "adopted": true,
+      "capabilities": [
+        "prewarm",
+        "cached/session analysis"
+      ],
+      "packages": [
+        "google-genai"
+      ],
+      "executables": [],
+      "credential_any": [
+        "GEMINI_API_KEY"
+      ],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "context_cache_ttl_seconds": "GEMINI_CONTEXT_CACHE_TTL",
+        "clear_cache_on_shutdown": "CLEAR_CACHE_ON_SHUTDOWN"
+      },
+      "usage_visibility": "Cache creation/storage/reuse/deletion and elapsed TTL must be counted separately; no current billing receipt.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "youtube-data-api",
+      "adopted": true,
+      "capabilities": [
+        "metadata",
+        "comments",
+        "playlists"
+      ],
+      "packages": [
+        "google-api-python-client"
+      ],
+      "executables": [],
+      "credential_any": [
+        "YOUTUBE_API_KEY",
+        "GEMINI_API_KEY"
+      ],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "youtube_api_key": "YOUTUBE_API_KEY"
+      },
+      "usage_visibility": "Client prefers YOUTUBE_API_KEY and falls back to GEMINI_API_KEY. Service activation/scope/quota is unverified; preserve per-request quota and pagination.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "semantic-scholar",
+      "adopted": true,
+      "capabilities": [
+        "papers",
+        "authors",
+        "citations"
+      ],
+      "packages": [
+        "httpx"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "s2_api_key": "S2_API_KEY"
+      },
+      "usage_visibility": "S2_API_KEY falls back to SEMANTIC_SCHOLAR_API_KEY; key optional. Client rate limits to 1 RPS; account/service quota remains unverified.",
+      "live_verified": false,
+      "run_authority": "not-granted",
+      "credential_optional": [
+        "S2_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY"
+      ]
+    },
+    {
+      "id": "weaviate-store",
+      "adopted": true,
+      "capabilities": [
+        "knowledge ingest/search/fetch/graph"
+      ],
+      "packages": [
+        "weaviate-client"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "weaviate",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "weaviate_url": "WEAVIATE_URL",
+        "weaviate_api_key": "WEAVIATE_API_KEY",
+        "weaviate_auto_migrate": "WEAVIATE_AUTO_MIGRATE"
+      },
+      "usage_visibility": "Server, embeddings and storage charges are distinct; metadata presence does not prove connectivity/tenant access.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "weaviate-vectorizer",
+      "adopted": true,
+      "capabilities": [
+        "OpenAI/Weaviate/Ollama embeddings"
+      ],
+      "packages": [
+        "weaviate-client"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "weaviate",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "weaviate_vectorizer": "WEAVIATE_VECTORIZER"
+      },
+      "usage_visibility": "Selection derives from WEAVIATE_VECTORIZER or OPENAI_API_KEY presence. Provider headers may also use COHERE/HUGGINGFACE/JINAAI/VOYAGEAI keys; external embedding model/billing terms require separate receipt.",
+      "live_verified": false,
+      "run_authority": "not-granted",
+      "credential_optional": [
+        "OPENAI_API_KEY",
+        "COHERE_API_KEY",
+        "HUGGINGFACE_API_KEY",
+        "JINAAI_API_KEY",
+        "VOYAGEAI_API_KEY"
+      ]
+    },
+    {
+      "id": "cohere-reranker",
+      "adopted": true,
+      "capabilities": [
+        "knowledge reranking"
+      ],
+      "packages": [
+        "weaviate-client"
+      ],
+      "executables": [],
+      "credential_any": [
+        "COHERE_API_KEY"
+      ],
+      "enable": "reranker",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "reranker_enabled": "RERANKER_ENABLED",
+        "reranker_provider": "RERANKER_PROVIDER"
+      },
+      "usage_visibility": "Configured flag or key enables reranking; actual Weaviate code configures Cohere. Different declared provider values are not established runtime support.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "weaviate-agents",
+      "adopted": true,
+      "capabilities": [
+        "knowledge agent query"
+      ],
+      "packages": [
+        "weaviate-agents"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "weaviate",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {},
+      "usage_visibility": "Optional cloud agent and its auxiliary inference/search costs require separate account/service telemetry.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "mlflow-tracing",
+      "adopted": true,
+      "capabilities": [
+        "Gemini autolog",
+        "tool spans"
+      ],
+      "packages": [
+        "mlflow-tracing"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "tracing",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "tracing_enabled": "GEMINI_TRACING_ENABLED",
+        "mlflow_tracking_uri": "MLFLOW_TRACKING_URI"
+      },
+      "usage_visibility": "Inspector never imports tracing.setup or probes its URI. Installed/configured tracing is not demonstrated token/cost capture.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "explainer-renderer",
+      "adopted": true,
+      "capabilities": [
+        "project/planning/pipeline/render/refine/export"
+      ],
+      "packages": [
+        "pydantic"
+      ],
+      "executables": [
+        "node",
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "credential_any": [],
+      "enable": "explainer",
+      "config_source": "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
+      "config_bindings": {
+        "explainer_path": "EXPLAINER_PATH",
+        "explainer_python": "EXPLAINER_PYTHON",
+        "render_timeout": "EXPLAINER_RENDER_TIMEOUT"
+      },
+      "usage_visibility": "Public doctor checks exact selected source, actual native version commands, ordinary Remotion4.0.242 modules and cached browser without provider/install/download. Full MP4 decode/current-request receipt is byte-bound; actual renderer/TTS, source/runtime grants and content remain unqualified.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "explainer-tts",
+      "adopted": true,
+      "capabilities": [
+        "voiceover",
+        "word timing"
+      ],
+      "packages": [
+        "pydantic"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "tts",
+      "config_source": "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
+      "config_bindings": {
+        "tts_provider": "EXPLAINER_TTS_PROVIDER",
+        "elevenlabs_api_key": "ELEVENLABS_API_KEY",
+        "openai_api_key": "OPENAI_API_KEY"
+      },
+      "usage_visibility": "Allowed current TTS routes: mock, ElevenLabs, Edge. Mock is synthetic; provider characters/audio/time/cost must be captured separately.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "scene-agent-sdk",
+      "adopted": true,
+      "capabilities": [
+        "single/parallel text scene generation"
+      ],
+      "packages": [
+        "claude-agent-sdk"
+      ],
+      "executables": [
+        "claude"
+      ],
+      "credential_any": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "enable": "scene",
+      "config_source": "packages/video-agent-mcp/src/video_agent_mcp/config.py",
+      "config_bindings": {
+        "agent_model": "AGENT_MODEL",
+        "agent_concurrency": "AGENT_CONCURRENCY",
+        "agent_timeout": "AGENT_TIMEOUT",
+        "agent_max_turns": "AGENT_MAX_TURNS"
+      },
+      "usage_visibility": "Claude login may exist without ANTHROPIC_API_KEY, but inspector never reads login stores. Current AgentResult preserves duration but drops SDK terminal usage/cost; raw terminal telemetry required before a billed pilot.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "local-media-tools",
+      "adopted": true,
+      "capabilities": [
+        "download",
+        "decode",
+        "media windows",
+        "bounded PNG inspection",
+        "local PNG source crop"
+      ],
+      "packages": [],
+      "executables": [
+        "yt-dlp",
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_max_input_bytes": "MEDIA_MAX_INPUT_BYTES"
+      },
+      "usage_visibility": "Process timing and exact produced bytes are locally observable; external download/rights and retention need source-specific authority. Current image_ops PNG decode/crop requires independently installed FFmpeg, reported as executable presence only. Native image/media MCP registration remains pending in vrm-0e8.2.8/vrm-0e8.3.2.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "qwen-cloud",
+      "adopted": false,
+      "capabilities": [
+        "Qwen vision/OCR/grounding, speech/TTS, AV perception, image/video generation; own adapters and selected provider terms/credential/service budgets"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "local-speech",
+      "adopted": false,
+      "capabilities": [
+        "ASR/diarization model/runtime, weight grant/hash, GPU/CPU capacity, speaker consent; simulator or original synthetic fixtures first"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "local-vision-models",
+      "adopted": false,
+      "capabilities": [
+        "Segmentation/embeddings model/runtime and weight/license/checksum; ImageBind noncommercial route blocked"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "document-parsers",
+      "adopted": false,
+      "capabilities": [
+        "Docling/MinerU/content-core runtime, parser/model licenses and sandbox/input limits"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "graph-notebook",
+      "adopted": false,
+      "capabilities": [
+        "LightRAG/Open Notebook/external research harness, pinned runtime/store/service locks and tenant isolation"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "rust-dsp",
+      "adopted": true,
+      "capabilities": [
+        "audio_dsp_analyze: deterministic measurements, absolute clipping intervals, A/B units, MFCC heuristics and source-bound PNG artifacts",
+        "Optional pinned Juzzy six tools and Ferrous analyze/compare/job-status with private joined stdio and executable SHA admission"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "audio-dsp",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "Core local measurements use declared NumPy/Pillow/FFmpeg. Optional native profiles are disabled until exact executable path and SHA are configured; doctor does not probe binary presence, build origin, native discovery or standards conformance. No inference/API charges; local resource accounting remains unknown.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "blender",
+      "adopted": false,
+      "capabilities": [
+        "Blender runtime/version and external MIT-derived adapter notices; scoped disposable session"
+      ],
+      "packages": [],
+      "executables": [
+        "blender"
+      ],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "freecad-fem",
+      "adopted": false,
+      "capabilities": [
+        "FreeCAD/FEM solver executables, licensed dependencies and exact original geometry/load simulator fixtures"
+      ],
+      "packages": [],
+      "executables": [
+        "FreeCAD"
+      ],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "spatial",
+      "adopted": false,
+      "capabilities": [
+        "Exact camera/media/calibration or geometry fixtures and model/runtime terms; host estimates are not measured dimensions"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "hardware",
+      "adopted": true,
+      "capabilities": [
+        "Named device/adapter/session, simulator first, exact operation authorization and measurable physical limits"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "hardware-simulator",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "mhs_mode": "MHS_MODE",
+        "mhs_authority_file": "MHS_AUTHORITY_FILE"
+      },
+      "usage_visibility": "First-party simulator only; no external device/provider/transport. Host authority is exact-command bound and separately configured; physical adapters remain unavailable.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "media-generation",
+      "adopted": false,
+      "capabilities": [
+        "Selected image/video/TTS/music provider, terms/output rights, pinned settings and explicit spend; MusicGen commercial weights blocked"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "publication",
+      "adopted": false,
+      "capabilities": [
+        "Named account/destination/artifact/output hashes and exact publication authorization; no account creation or incidental upload"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "planned",
+      "config_source": null,
+      "config_bindings": {},
+      "usage_visibility": "No integration selected; prerequisite/license/billing visibility must be receipted before activation.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "session-scoped-memory",
+      "adopted": true,
+      "capabilities": [
+        "Complete bounded SDK original archives; exact scoped derived memory revision CRUD; paged original recovery/list/glob/literal search; disclosed deterministic replay selection"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "session-memory",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "session_db_path": "GEMINI_SESSION_DB",
+        "session_max_turns": "GEMINI_SESSION_MAX_TURNS",
+        "session_context_token_budget": "GEMINI_SESSION_CONTEXT_TOKEN_BUDGET",
+        "session_recent_turns": "GEMINI_SESSION_RECENT_TURNS"
+      },
+      "usage_visibility": "Local deterministic text-budget estimate only; provider expanded media/cache tokens and inference charges unknown. History/profile operations have no provider calls. SDK continuation retains separate provider activity.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "source-ingestion-pdf",
+      "adopted": true,
+      "capabilities": [
+        "source_ingest optional installed Poppler PDF word/page and image-object descriptors"
+      ],
+      "packages": [],
+      "executables": [
+        "pdftotext",
+        "pdfimages"
+      ],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Presence is not extraction acceptance. PDF needs external GPL Poppler; no runtime bundled. No OCR, table-cell reconstruction, image pixel export, service upload or inference.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "source-ingestion-local",
+      "adopted": true,
+      "capabilities": [
+        "source_ingest/source_ingest_read/source_ingest_cancel; bounded stdlib DOCX/Markdown/HTML/text/PCM16 WAV"
+      ],
+      "packages": [],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Bounded local extraction and shared SQLite receipts. No inference, service upload or index insertion; rendered DOCX positions, referenced pixels and speech remain unqualified.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "video-skill-authoring",
+      "adopted": true,
+      "capabilities": [
+        "Ordinary host SKILL.md provenance/event/media-plan/asset validation; retained task-record checks and atomic positive-file-set packaging"
+      ],
+      "packages": [
+        "PyYAML"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {},
+      "usage_visibility": "Local validation and actual archive bytes. Does not observe a task run or authenticate execution/rights declarations. Trigger judgment and independently observed task success remain separate; optional model evaluation requires bounded authorization.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    },
+    {
+      "id": "video-tutorial-notes",
+      "adopted": true,
+      "capabilities": [
+        "video_note_create; source-bound supplied or explicitly granted AV step plan, point illustrations, durable lineage and validated atomic PDF"
+      ],
+      "packages": [
+        "fpdf2",
+        "fonttools",
+        "defusedxml",
+        "pypdfium2",
+        "Pillow"
+      ],
+      "executables": [],
+      "credential_any": [],
+      "enable": "always",
+      "config_source": "src/video_research_mcp/config.py",
+      "config_bindings": {
+        "media_acquire_timeout_seconds": "MEDIA_ACQUIRE_TIMEOUT_SECONDS"
+      },
+      "usage_visibility": "Local hash/byte counts and page/raster checks. Optional illustrations use installed FFmpeg; failures retain text and warnings. AV inference requires its existing explicit bounded grant. Installed metadata is not rendered output, source correctness or human/model review.",
+      "live_verified": false,
+      "run_authority": "not-granted"
+    }
+  ],
+  "live_verification_receipts": [],
+  "development_fixtures": [
+    {
+      "case_id": "dev-research-current",
+      "input_manifest": "tests/evaluation/fixtures/inputs.json",
+      "mode": "development-text-observation-snapshot",
+      "source_receipts": [
+        {
+          "source_id": "current",
+          "path": "tests/evaluation/fixtures/sources/current.txt",
+          "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+        },
+        {
+          "source_id": "stale",
+          "path": "tests/evaluation/fixtures/sources/stale.txt",
+          "sha256": "b20e101e886b86b409c23a7a3c834bb63a91d91b53699096dd898802198c6669"
+        }
+      ],
+      "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+      "case_sha256": "057fc7bb09a4559ab4cfdc01f5810bcc91facc5dfd782794d723c12e171517fb"
+    },
+    {
+      "case_id": "dev-research-absent",
+      "input_manifest": "tests/evaluation/fixtures/inputs.json",
+      "mode": "development-text-observation-snapshot",
+      "source_receipts": [
+        {
+          "source_id": "current",
+          "path": "tests/evaluation/fixtures/sources/current.txt",
+          "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+        }
+      ],
+      "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+      "case_sha256": "7ec98b0648e23e2674b6ebbfae269c8a782ccfa3892f721eb42f653dce93543e"
+    },
+    {
+      "case_id": "dev-plan",
+      "input_manifest": "tests/evaluation/fixtures/inputs.json",
+      "mode": "development-text-observation-snapshot",
+      "source_receipts": [
+        {
+          "source_id": "artifact",
+          "path": "tests/evaluation/fixtures/sources/artifact.txt",
+          "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4"
+        }
+      ],
+      "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+      "case_sha256": "4cf433628af65f6913c2f32d97ad4730911c2dbc4bb541b71f1e8ab7cbf8dbd6"
+    },
+    {
+      "case_ids": [
+        "dev-original-visual-marker",
+        "dev-original-audio-beep",
+        "dev-original-av-order"
+      ],
+      "mode": "native-original-synthetic-video-audio",
+      "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/provider-readiness/dev-fixtures/marker-beep.mp4",
+      "sha256": "cda238ed53248ca3ce04900055984e98c91bb2f5af10e0275519f7dfb3c5ffb5",
+      "bytes": 6107,
+      "duration_seconds": 3,
+      "frame_rate": 10,
+      "dimensions": [
+        160,
+        90
+      ],
+      "audio_sample_rate": 16000,
+      "rights": "Original deterministic synthetic development fixture created for this programme; no human voices or third-party assets.",
+      "known_construction": "Red box enabled at 1.0-2.0 seconds; synthetic 1kHz tone at 1.5-1.75 seconds. Frame/codec boundaries require inspection; no natural speech/diarization acceptance claim.",
+      "cases": [
+        {
+          "id": "dev-original-visual-marker",
+          "question": "Describe the colored marker, report its observed time interval in seconds, and abstain if the marker cannot be located.",
+          "case_sha256": "269e09b20c643b4ee9e49366dadc32f1986096aa22414cede8b8738b5d9b5644"
+        },
+        {
+          "id": "dev-original-audio-beep",
+          "question": "Describe the audible signal, report its observed time interval in seconds, and abstain if no signal can be detected.",
+          "case_sha256": "87abc4298b0fdb830d8837d7f0cdc58c4fe5380db3904648b5132cc8fea01352"
+        },
+        {
+          "id": "dev-original-av-order",
+          "question": "Report the observed onset order of the visual marker and audible signal, with timestamps and explicit uncertainty.",
+          "case_sha256": "032d31733c57eee8a2f0fe9ecf32fdc68390ff7b6c1b93f4934ec9a12b70b11c"
+        }
+      ]
+    }
+  ],
+  "live_run_proposal": {
+    "authority": "not-granted",
+    "aggregate_spend_ceiling_usd": 10,
+    "currency": "USD",
+    "total_generation_or_synthesis_attempts_max": 10,
+    "total_provider_http_operations_max": 25,
+    "concurrency_max": 1,
+    "plans": [
+      {
+        "id": "text-grounding",
+        "state": "draft-not-authorized",
+        "integration": "gemini-generation",
+        "case_ids": [
+          "dev-research-current",
+          "dev-research-absent"
+        ],
+        "source_receipts": [
+          {
+            "case_id": "dev-research-current",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "current",
+                "path": "tests/evaluation/fixtures/sources/current.txt",
+                "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+              },
+              {
+                "source_id": "stale",
+                "path": "tests/evaluation/fixtures/sources/stale.txt",
+                "sha256": "b20e101e886b86b409c23a7a3c834bb63a91d91b53699096dd898802198c6669"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "057fc7bb09a4559ab4cfdc01f5810bcc91facc5dfd782794d723c12e171517fb"
+          },
+          {
+            "case_id": "dev-research-absent",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "current",
+                "path": "tests/evaluation/fixtures/sources/current.txt",
+                "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "7ec98b0648e23e2674b6ebbfae269c8a782ccfa3892f721eb42f653dce93543e"
+          }
+        ],
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 2,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 2,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 120,
+        "allocated_spend_ceiling_usd": 0.5,
+        "provider_http_operations_max": 2,
+        "operations_requiring_authorization": [
+          "Send only the named original development text source bytes to the selected Gemini model; receive structured cited/abstaining answers."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "exact account/project/model/thinking/schema freeze",
+          "maximum output tokens and preflight billable-token bound"
+        ],
+        "required_runtime_override": {
+          "GEMINI_RETRY_MAX_ATTEMPTS": 1
+        },
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown."
+      },
+      {
+        "id": "native-av",
+        "state": "draft-not-authorized",
+        "integration": "gemini-generation",
+        "case_ids": [
+          "dev-original-visual-marker",
+          "dev-original-audio-beep",
+          "dev-original-av-order"
+        ],
+        "source_receipts": {
+          "case_ids": [
+            "dev-original-visual-marker",
+            "dev-original-audio-beep",
+            "dev-original-av-order"
+          ],
+          "mode": "native-original-synthetic-video-audio",
+          "path": "/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/provider-readiness/dev-fixtures/marker-beep.mp4",
+          "sha256": "cda238ed53248ca3ce04900055984e98c91bb2f5af10e0275519f7dfb3c5ffb5",
+          "bytes": 6107,
+          "duration_seconds": 3,
+          "frame_rate": 10,
+          "dimensions": [
+            160,
+            90
+          ],
+          "audio_sample_rate": 16000,
+          "rights": "Original deterministic synthetic development fixture created for this programme; no human voices or third-party assets.",
+          "known_construction": "Red box enabled at 1.0-2.0 seconds; synthetic 1kHz tone at 1.5-1.75 seconds. Frame/codec boundaries require inspection; no natural speech/diarization acceptance claim.",
+          "cases": [
+            {
+              "id": "dev-original-visual-marker",
+              "question": "Describe the colored marker, report its observed time interval in seconds, and abstain if the marker cannot be located.",
+              "case_sha256": "269e09b20c643b4ee9e49366dadc32f1986096aa22414cede8b8738b5d9b5644"
+            },
+            {
+              "id": "dev-original-audio-beep",
+              "question": "Describe the audible signal, report its observed time interval in seconds, and abstain if no signal can be detected.",
+              "case_sha256": "87abc4298b0fdb830d8837d7f0cdc58c4fe5380db3904648b5132cc8fea01352"
+            },
+            {
+              "id": "dev-original-av-order",
+              "question": "Report the observed onset order of the visual marker and audible signal, with timestamps and explicit uncertainty.",
+              "case_sha256": "032d31733c57eee8a2f0fe9ecf32fdc68390ff7b6c1b93f4934ec9a12b70b11c"
+            }
+          ]
+        },
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 3,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 3,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 120,
+        "allocated_spend_ceiling_usd": 1,
+        "provider_http_operations_max": 8,
+        "operations_requiring_authorization": [
+          "Upload the single named original MP4 once via File API; submit three bounded native-media prompts; read provider file status at most three times; delete the owned remote file once."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "exact File API source-upload/retention/delete authority",
+          "raw response usage capture",
+          "no unbounded SDK or application retries"
+        ],
+        "required_runtime_override": {
+          "GEMINI_RETRY_MAX_ATTEMPTS": 1
+        },
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown."
+      },
+      {
+        "id": "cache-reuse",
+        "state": "draft-not-authorized",
+        "integration": "gemini-context-cache",
+        "case_ids": [
+          "dev-research-current"
+        ],
+        "source_receipts": [
+          {
+            "case_id": "dev-research-current",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "current",
+                "path": "tests/evaluation/fixtures/sources/current.txt",
+                "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+              },
+              {
+                "source_id": "stale",
+                "path": "tests/evaluation/fixtures/sources/stale.txt",
+                "sha256": "b20e101e886b86b409c23a7a3c834bb63a91d91b53699096dd898802198c6669"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "057fc7bb09a4559ab4cfdc01f5810bcc91facc5dfd782794d723c12e171517fb"
+          }
+        ],
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 2,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 2,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 120,
+        "allocated_spend_ceiling_usd": 0.5,
+        "provider_http_operations_max": 5,
+        "operations_requiring_authorization": [
+          "Upload only declared text; create one source-scoped context cache, perform two generation requests, get status once, delete the owned cache once; maximum TTL 60 seconds."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "cache create/store/read/delete authority",
+          "cache TTL and storage price upper bound",
+          "full billing reconciliation"
+        ],
+        "required_runtime_override": {
+          "GEMINI_RETRY_MAX_ATTEMPTS": 1
+        },
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown."
+      },
+      {
+        "id": "deep-research",
+        "state": "draft-not-authorized",
+        "integration": "gemini-deep-research",
+        "case_ids": [
+          "dev-research-current"
+        ],
+        "source_receipts": [
+          {
+            "case_id": "dev-research-current",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "current",
+                "path": "tests/evaluation/fixtures/sources/current.txt",
+                "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35"
+              },
+              {
+                "source_id": "stale",
+                "path": "tests/evaluation/fixtures/sources/stale.txt",
+                "sha256": "b20e101e886b86b409c23a7a3c834bb63a91d91b53699096dd898802198c6669"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "057fc7bb09a4559ab4cfdc01f5810bcc91facc5dfd782794d723c12e171517fb"
+          }
+        ],
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 1,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 1,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 180,
+        "allocated_spend_ceiling_usd": 5,
+        "provider_http_operations_max": 8,
+        "operations_requiring_authorization": [
+          "Submit one source-limited development research question; allow only reviewed public primary URLs if required; poll at most six times; cancel once at 180 seconds; no follow-up."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "reviewed seed URLs and bounded browsing scope still required",
+          "account-enforced total backend spend cap; asynchronous task cancellation alone is insufficient",
+          "search/auxiliary/token/raw billing telemetry"
+        ],
+        "required_runtime_override": {
+          "GEMINI_RETRY_MAX_ATTEMPTS": 1
+        },
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown."
+      },
+      {
+        "id": "scene-text",
+        "state": "draft-not-authorized",
+        "integration": "scene-agent-sdk",
+        "case_ids": [
+          "dev-plan"
+        ],
+        "source_receipts": [
+          {
+            "case_id": "dev-plan",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "artifact",
+                "path": "tests/evaluation/fixtures/sources/artifact.txt",
+                "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "4cf433628af65f6913c2f32d97ad4730911c2dbc4bb541b71f1e8ab7cbf8dbd6"
+          }
+        ],
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 1,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 1,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 120,
+        "allocated_spend_ceiling_usd": 1,
+        "provider_http_operations_max": 1,
+        "operations_requiring_authorization": [
+          "Send only the named original text development plan to one text-only scene query; tools disabled, one turn, no project execution, no render and no publication."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "account/session authority; no credential-store inspection",
+          "raw SDK terminal usage/cost capture",
+          "preflight exact model/input/output price bound"
+        ],
+        "required_runtime_override": {
+          "AGENT_CONCURRENCY": 1,
+          "AGENT_MAX_TURNS": 1
+        },
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown."
+      },
+      {
+        "id": "voiceover",
+        "state": "draft-not-authorized",
+        "integration": "explainer-tts",
+        "case_ids": [
+          "dev-plan"
+        ],
+        "source_receipts": [
+          {
+            "case_id": "dev-plan",
+            "input_manifest": "tests/evaluation/fixtures/inputs.json",
+            "mode": "development-text-observation-snapshot",
+            "source_receipts": [
+              {
+                "source_id": "artifact",
+                "path": "tests/evaluation/fixtures/sources/artifact.txt",
+                "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4"
+              }
+            ],
+            "input_manifest_sha256": "80c9c85f031974fec45e874df7e58770e362ad2636cf6190a50a2b1ea9ce5b8c",
+            "case_sha256": "4cf433628af65f6913c2f32d97ad4730911c2dbc4bb541b71f1e8ab7cbf8dbd6"
+          }
+        ],
+        "settings_binding": "Resolve current integration config fields at authorized launch; freeze exact effective model/provider/settings privately with source commit before any request. No model ID is pinned in prose.",
+        "logical_calls_max": 1,
+        "attempts_per_logical_call_max": 1,
+        "generation_or_synthesis_attempts_max": 1,
+        "concurrency_max": 1,
+        "wall_time_seconds_max": 120,
+        "allocated_spend_ceiling_usd": 2,
+        "provider_http_operations_max": 1,
+        "operations_requiring_authorization": [
+          "After rights-cleared renderer/TTS selection, submit at most 160 characters from the original declared plan source to configured non-mock TTS; write one private audio artifact and decode locally."
+        ],
+        "publication_authority": "none; private outputs only",
+        "launch_blockers": [
+          "non-mock provider and permitted runtime selection",
+          "service/output voice rights and per-character upper price bound"
+        ],
+        "required_runtime_override": {},
+        "telemetry": "Record every request/attempt (including failures), server request/task/file/cache IDs, input/source/config/output hashes, raw input/output/thought/cached/search/auxiliary usage, price revision/currency, elapsed time, account billing and cleanup receipt. Missing costs remain unknown.",
+        "payload_recipe": "UTF-8 text in tests/evaluation/fixtures/sources/artifact.txt, first 160 Unicode characters, encoded UTF-8.",
+        "payload_sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4",
+        "payload_characters": 123
+      }
+    ],
+    "stop_rules": [
+      "No launch without exact account/source-upload/output and allocated spend authority.",
+      "Use one shared $10 aggregate ledger across all six plans, not a fresh $10 allowance per plan.",
+      "Hard backend/account limit or proven preflight upper charge bound must fit remaining allocation; otherwise plan stays blocked.",
+      "No hidden retries, extra models, cache/search/embedding/auxiliary work or expansion to another fixture.",
+      "Stop on first terminal result or infrastructure failure; preserve failures/refusals/abstentions and costs.",
+      "Timeout/cancellation does not prove backend billing stopped. Reconcile cleanup and provider account receipt."
+    ],
+    "coverage_limits": [
+      "Development text fixtures are observation snapshots, not source-media inference.",
+      "Synthetic three-second AV is a provider contract smoke, not native-video superiority/natural speech/long-recording acceptance.",
+      "Human source audit and full independently sealed heldout comparisons remain mandatory at vrm-0e8.10.2.",
+      "Heldout manifests are commitment metadata only; inspector reads no heldout inputs, labels, snapshots or media."
+    ]
+  }
+}

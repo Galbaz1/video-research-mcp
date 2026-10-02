@@ -41,11 +41,11 @@ async def research_deep(
     scope: Scope = "moderate",
     thinking_level: ThinkingLevel = "high",
 ) -> dict:
-    """Run multi-phase deep research with evidence-tier labeling.
+    """Run three-phase model-only synthesis without external source retrieval.
 
     Phases: Scope Definition -> Evidence Collection -> Synthesis.
-    Every claim is labeled CONFIRMED, STRONG INDICATOR, INFERENCE,
-    SPECULATION, or UNKNOWN.
+    Model tiers remain proposals. CONFIRMED and STRONG INDICATOR proposals
+    become UNKNOWN because this route neither retrieves nor verifies sources.
 
     Args:
         topic: Research question or subject area.
@@ -73,6 +73,12 @@ async def research_deep(
             thinking_level=thinking_level,
         )
         findings = findings_result.findings
+        for finding in findings:
+            finding.proposed_evidence_tier = finding.evidence_tier
+            if finding.evidence_tier not in {"INFERENCE", "SPECULATION", "UNKNOWN"}:
+                finding.evidence_tier = "UNKNOWN"
+            finding.evidence_authority = "model_proposal"
+            finding.support_status = "not_verified"
 
         # Phase 3: Synthesis (structured)
         findings_text = (
@@ -95,6 +101,8 @@ async def research_deep(
             open_questions=synthesis.open_questions,
             methodology_critique=synthesis.methodology_critique,
         ).model_dump(mode="json")
+        report.update(retrieval_mode="model_only", observed_sources=[], factual_success=False,
+                      semantic_support="not_verified")
         from ..weaviate_store import store_research_finding, extract_and_store_graph
         await store_research_finding(report)
         await extract_and_store_graph(
@@ -137,6 +145,7 @@ async def research_plan(
             thinking_level="high",
         )
         result = plan.model_dump(mode="json")
+        result.update(execution_status="proposed_not_executed", source_access="not_observed")
         from ..weaviate_store import store_research_plan
         await store_research_plan(result)
         return result
@@ -155,6 +164,7 @@ async def research_plan(
                 phases=[Phase(name="Full Plan", description=raw[:2000], tasks=[])],
                 task_decomposition=[raw],
             ).model_dump(mode="json")
+            fallback.update(execution_status="proposed_not_executed", source_access="not_observed")
             from ..weaviate_store import store_research_plan
             await store_research_plan(fallback)
             return fallback
@@ -193,6 +203,10 @@ async def research_assess_evidence(
             thinking_level="high",
         )
         result = assessment.model_dump(mode="json")
+        result.update(proposed_tier=assessment.tier, evidence_authority="model_proposal",
+                      source_access="not_observed", factual_success=False)
+        if assessment.tier not in {"INFERENCE", "SPECULATION", "UNKNOWN"}:
+            result["tier"] = "UNKNOWN"
         from ..weaviate_store import store_evidence_assessment
         await store_evidence_assessment(result)
         return result
@@ -227,3 +241,8 @@ def _ensure_academic_tools() -> None:
     Called by server.py alongside _ensure_document_tool.
     """
     from . import academic  # noqa: F401
+
+
+def _ensure_execution_tool() -> None:
+    """Register the explicit bounded research executor after research_server exists."""
+    from . import research_execute  # noqa: F401

@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.2.11",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "reuse_ledger": "docs/integrations/reuse-ledger.json",
+  "source_index": {
+    "url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/plugin-versions.json",
+    "sha256": "67070f1149e98a5d776ceb1767579a74dac96d6bf7f1b63af8e31f05bb2ef537",
+    "bytes": 476,
+    "distribution_version": "1.1.9",
+    "tag_format": "qwen-mm-plugins-{cap}-v{version}"
+  },
+  "route": "Own onboarding/configuration/receipt implementation informed by audited release discipline; no upstream source code/assets/runtime transferred.",
+  "copied_paths": [],
+  "imported_packages": [],
+  "bundled_fonts": [],
+  "bundled_media": [],
+  "bundled_weights": [],
+  "managed_binaries": [],
+  "managed_binary_policy": "No binary is downloaded or redistributed. A future selected managed executable requires exact version/platform/SHA256/source/license notices and separately authorized install; PATH presence is not such a receipt.",
+  "capabilities": [
+    {
+      "id": "api",
+      "declared_version": "1.1.2",
+      "declared_tag": "qwen-mm-plugins-api-v1.1.2",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/api"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/api.json",
+        "docs/integrations/qwen-api.md",
+        "docs/integrations/IMAGE_VISION.md",
+        "integrations/qwen/segmentation.json",
+        "docs/integrations/qwen-segmentation.md",
+        "integrations/qwen/av-events.json",
+        "src/video_research_mcp/models/av_events.py",
+        "src/video_research_mcp/av_events.py",
+        "src/video_research_mcp/av_event_support.py",
+        "src/video_research_mcp/media_perception_provider.py",
+        "src/video_research_mcp/tools/media_perceive.py",
+        "tests/test_av_events.py",
+        "tests/test_av_event_support.py",
+        "tests/test_av_events_provider.py",
+        "tests/test_reuse_ledger.py",
+        "docs/integrations/AV_EVENTS.md",
+        "skills/av-events/SKILL.md",
+        "src/video_research_mcp/models/transcript.py",
+        "src/video_research_mcp/transcript.py",
+        "src/video_research_mcp/transcript_audio.py",
+        "src/video_research_mcp/transcript_provider.py",
+        "src/video_research_mcp/transcript_timing.py",
+        "src/video_research_mcp/transcript_captions.py",
+        "src/video_research_mcp/transcript_formats.py",
+        "tests/test_transcript_captions.py",
+        "tests/test_transcript_timing.py",
+        "tests/test_transcript_workflow.py",
+        "docs/integrations/audio-transcription.md",
+        "src/video_research_mcp/tools/audio_transcribe.py",
+        "src/video_research_mcp/config.py",
+        "src/video_research_mcp/server.py",
+        "integrations/qwen/asr.json",
+        "tests/test_audio_transcribe.py"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [],
+      "verification_boundary": "Private pinned API discovery/SDK-mocked contracts and own segmentation raster/HTTP route have separately receipted qualification. Live provider/checkpoint readiness remains unverified; ordinary external activation remains disabled.",
+      "owned_av_events": {
+        "descriptor": "integrations/qwen/av-events.json",
+        "tools": [
+          "media_caption_events",
+          "media_count_events",
+          "media_ground_events",
+          "media_analyze_music"
+        ],
+        "state": "owned caption/count/ground/music integration; live semantic criterion unqualified",
+        "claim_boundary": "No Qwen foreign transport/body import; own Gemini schema/account/budget integration does not establish event/music correctness."
+      },
+      "owned_asr": {
+        "descriptor": "integrations/qwen/asr.json",
+        "tool": "audio_transcribe",
+        "state": "independently authored source component; optional original service/model remains disabled and unqualified",
+        "claim_boundary": "Caption boundaries are source assertions; inferred words/speakers are unverified. No foreign runtime or model weights imported/bundled."
+      }
+    },
+    {
+      "id": "blender",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-blender-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/blender"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/blender.json",
+        "scripts/blender_session.py",
+        "scripts/blender_startup.py",
+        "docs/integrations/qwen-blender.md",
+        "skills/research-visualization-blender/SKILL.md",
+        "scripts/blender_stdio.py"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/blender/NOTICE.md",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/blender/NOTICE.md",
+          "http_status": 200,
+          "sha256": "3566ca7041195b843c60444d8e981f09fc7615f019bbb7aa385d8d337a81b667",
+          "bytes": 1711
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/blender/qwen_mm_plugins_blender/vendor/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/blender/qwen_mm_plugins_blender/vendor/LICENSE",
+          "http_status": 200,
+          "sha256": "049501fd54d27852507853a5b88094ca1c6ff97404418a5032f3310eecc9cde6",
+          "bytes": 1071
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Independently installed Blender; owner-selected application/addon and any socket/device operation require separate authority."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [],
+      "verification_boundary": "Exact pinned source/grant selection and owned local adapter; ordinary onboarding stays disabled. Actual native/scene/render/viewport acceptance is separately receipted."
+    },
+    {
+      "id": "core",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-core-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/core"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "scripts/core_session.py",
+        "scripts/core_inputs.py",
+        "scripts/core_dispatch.py",
+        "tests/test_core_session.py",
+        "tests/test_core_inputs.py",
+        "tests/test_core_dispatch.py",
+        "integrations/qwen/core.json",
+        "docs/integrations/qwen-core.md",
+        "tests/test_core_review.py"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [],
+      "owned_core": {
+        "descriptor": "integrations/qwen/core.json",
+        "entrypoint": "scripts/core_session.py",
+        "state": "optional adapter; packaged source-only profile blocked",
+        "claim_boundary": "Seven original tool schemas and full registry remain source contracts until actual discovery. Only independently qualified code/subtitle/PNG profiles can execute. Native, fonts, providers and remaining formats are unqualified."
+      },
+      "verification_boundary": "Actual selected-source stdio startup and per-call output checks are separate receipts. The eleven-format denominator and original distribution installation remain required; partial text/image admission does not close the capability."
+    },
+    {
+      "id": "edu-agent",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-edu-agent-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/edu-agent"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/education.json",
+        "src/video_research_mcp/models/education.py",
+        "src/video_research_mcp/education.py",
+        "src/video_research_mcp/education_domain.py",
+        "src/video_research_mcp/education_glyphs.py",
+        "src/video_research_mcp/education_page.py",
+        "src/video_research_mcp/education_frames.py",
+        "src/video_research_mcp/education_native.py",
+        "src/video_research_mcp/education_review.py",
+        "tests/test_education_domain.py",
+        "tests/test_education_workflow.py",
+        "tests/test_education_review.py",
+        "skills/educational-explainer/SKILL.md",
+        "skills/educational-explainer/scripts/lesson.py",
+        "docs/integrations/qwen-education.md"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [],
+      "owned_educational": {
+        "descriptor": "integrations/qwen/education.json",
+        "entrypoint": {
+          "module": "video_research_mcp.education",
+          "script": "skills/educational-explainer/scripts/lesson.py",
+          "workflows": [
+            "validate",
+            "build",
+            "check"
+          ],
+          "public_MCP_tools_added": 0
+        },
+        "state": "owned finite lesson component; required spoken/multilingual/broader-template acceptance unqualified",
+        "claim_boundary": "Exact local supplied audio and rendered domain contracts; no general proof, provider speech, broader template or multilingual acceptance inferred."
+      },
+      "verification_boundary": "Bounded owned local workflow has separate source/artifact/browser receipts. Foreign renderer/assets/runtime remains disabled and incomplete; no wrappers substitute for decoded video."
+    },
+    {
+      "id": "freecad",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-freecad-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/freecad"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "scripts/freecad_session.py",
+        "scripts/freecad_startup.py",
+        "scripts/freecad_jobs.py",
+        "scripts/blender_session.py",
+        "scripts/blender_stdio.py",
+        "integrations/qwen/freecad.json",
+        "docs/integrations/qwen-freecad.md",
+        "skills/research-visualization-freecad/SKILL.md"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/freecad/NOTICE.md",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/freecad/NOTICE.md",
+          "http_status": 200,
+          "sha256": "7f8b75f95c6f2cbfaf81d749287093a8a469cd9af46566dad464d56ede9e0715",
+          "bytes": 1215
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/LICENSE",
+          "http_status": 200,
+          "sha256": "396a409dd7ea20bb4f0bf2e2478daae4b8e28648d3c2d5b56f53b5b8715959c1",
+          "bytes": 1077
+        }
+      ],
+      "dependencies": [
+        "Explicitly selected compatible Python3.12.13/MCP1.30.0 external environment; exact source/grant descriptor, manually installed app/solver binary hashes and native runtime license receipt before activation.",
+        "Owned disposable local FreeCAD+addon process; no stock launcher, home addon installation, auto download, assets or provider activation."
+      ],
+      "payload_boundary": "Original native image blocks and CAD/FEM observations stay local in an explicitly owned process. Native image mode is mandatory; provider captioning is not selected.",
+      "blocked_assets": []
+    },
+    {
+      "id": "mhs",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-mhs-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/mhs"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "omni-chatcut",
+      "declared_version": "1.0.2",
+      "declared_tag": "qwen-mm-plugins-omni-chatcut-v1.0.2",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/omni-chatcut"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/omni-chatcut/NOTICE.md",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/omni-chatcut/NOTICE.md",
+          "http_status": 200,
+          "sha256": "0ce5309845be4969fe58c4cc230c5296a96ecae352be585235fb9808dc4dac3c",
+          "bytes": 562
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/omni-chatcut/skill/music-to-mv/workflows/video-generation/assets/fonts/OFL.txt",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/omni-chatcut/skill/music-to-mv/workflows/video-generation/assets/fonts/OFL.txt",
+          "http_status": 200,
+          "sha256": "b950d5e7c20c41b82b16c2e6e63b12ac7fa162dab89cfc6a19b47c4fa57d836a",
+          "bytes": 4387
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [
+        "Smiley Sans",
+        "unattributed media",
+        "unreceipted model weights"
+      ]
+    },
+    {
+      "id": "omni-memory",
+      "declared_version": "1.1.3",
+      "declared_tag": "qwen-mm-plugins-omni-memory-v1.1.3",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/omni-memory"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "omni-skill-creator",
+      "declared_version": "1.0.1",
+      "declared_tag": "qwen-mm-plugins-omni-skill-creator-v1.0.1",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/omni-skill-creator"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "omni-video2note",
+      "declared_version": "1.0.3",
+      "declared_tag": "qwen-mm-plugins-omni-video2note-v1.0.3",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/omni-video2note"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "search",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-search-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/search"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "video-edit",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-video-edit-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/video-edit"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/tts.json",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_pcm.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_provider.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_run.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/narration_timing.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/models/narration.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/plan_artifacts.py",
+        "packages/video-explainer-mcp/tests/test_narration_pcm.py",
+        "packages/video-explainer-mcp/tests/test_narration_provider.py",
+        "packages/video-explainer-mcp/tests/test_narration_run.py",
+        "packages/video-explainer-mcp/tests/test_narration_admission.py",
+        "docs/integrations/measured-narration.md",
+        "packages/video-explainer-mcp/hatch_resources.py",
+        "docs/integrations/FOOTAGE_EDIT.md",
+        "integrations/qwen/footage-edit.json",
+        "src/video_research_mcp/server.py",
+        "src/video_research_mcp/tools/footage_edit.py",
+        "src/video_research_mcp/models/footage_edit.py",
+        "src/video_research_mcp/footage_edit.py",
+        "src/video_research_mcp/footage_edit_native.py",
+        "src/video_research_mcp/footage_edit_qa.py",
+        "src/video_research_mcp/footage_edit_timeline.py",
+        "tests/test_footage_edit.py",
+        "tests/test_footage_edit_native.py",
+        "tests/test_footage_edit_qa.py",
+        "skills/footage-edit/SKILL.md"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/lxgw-wenkai/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/lxgw-wenkai/LICENSE",
+          "http_status": 200,
+          "sha256": "93f6a553f49fa44ce45308a386c320a665b36ca10b4e96ae5f110827d9c2dd3c",
+          "bytes": 1108
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/ma-shan-zheng/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/ma-shan-zheng/LICENSE",
+          "http_status": 200,
+          "sha256": "37784825d863bab31cdff1f4bfabae5b8d8e9913b91db2064a6b803b2edc92db",
+          "bytes": 4394
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/zcool-kuaile/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/zcool-kuaile/LICENSE",
+          "http_status": 200,
+          "sha256": "fedb735f9b624acc40c8b926a8220dc0992a9034c48a5175ebee2f9e6ea942ef",
+          "bytes": 4396
+        },
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/smiley-sans/package.json",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/video-edit/skill/assets/fonts/zh/smiley-sans/package.json",
+          "http_status": 200,
+          "sha256": "7e9eedcbdaf370438fd56905e1f103f2f6dd44e2b301d39dc4b252c15fd42a61",
+          "bytes": 1271
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation.",
+        "Explicit account/source-upload/output/spend authority; local plugin installation does not establish local inference."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [
+        "Smiley Sans",
+        "unattributed media",
+        "unreceipted model weights"
+      ],
+      "verification_boundary": "Owned measured narration passed16 actual extracted-wheel synthetic/mocked contract controls; external video-edit registry remains disabled. Other owned editing behavior remains separately receipted. No live providers/fonts/models/renderer consumption or human/comparison/release accepted.",
+      "owned_footage_edit": {
+        "descriptor": "integrations/qwen/footage-edit.json",
+        "tool": "media_edit_footage",
+        "state": "owned fixed two-scene native edit/visual frame checks verified; optional creative engines/native whole certificate unqualified",
+        "claim_boundary": "Independent file-only owned FFmpeg local edit; external Qwen/HyperFrames/font/SFX/GSAP runtime stays disabled and unqualified. Exact source/artifact/full-decode/timeline checks are separate from visual/human/comparison/release acceptance."
+      }
+    },
+    {
+      "id": "video-memory",
+      "declared_version": "1.1.0",
+      "declared_tag": "qwen-mm-plugins-video-memory-v1.1.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/video-memory"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": []
+    },
+    {
+      "id": "video-spatio",
+      "declared_version": "1.0.0",
+      "declared_tag": "qwen-mm-plugins-video-spatio-v1.0.0",
+      "tag_commit_verified": false,
+      "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+      "source_paths": [
+        "src/capabilities/video-spatio"
+      ],
+      "permitted_route": "independent-implementation-or-separately-receipted-external-subprocess",
+      "state": "external-disabled",
+      "copied_paths": [],
+      "imported_packages": [],
+      "target_files": [
+        "integrations/qwen/manifest.json",
+        "scripts/spatial_session.py",
+        "scripts/spatial_inputs.py",
+        "scripts/spatial_dispatch.py",
+        "scripts/spatial_motion.py",
+        "integrations/qwen/video-spatio.json",
+        "docs/integrations/qwen-spatial.md",
+        "skills/spatial-video-analysis/SKILL.md",
+        "tests/test_spatial_session.py",
+        "tests/test_spatial_inputs.py",
+        "tests/test_spatial_dispatch.py",
+        "tests/test_spatial_motion.py"
+      ],
+      "applicable_notice_receipts": [
+        {
+          "source_url": "https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "retrieved_url": "https://raw.githubusercontent.com/QwenLM/Qwen-MM-Plugins/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE",
+          "http_status": 200,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bytes": 11358
+        }
+      ],
+      "dependencies": [
+        "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
+      ],
+      "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
+      "blocked_assets": [],
+      "verification_boundary": "Owned source/stub checks pending; original19generated schemas and frozen28synthetic geometry controls UNRUN; physical/model/hardware/human/comparison/release unqualified.",
+      "runtime_clearance": "blocked-missing-font-grant"
+    }
+  ],
+  "runtime_isolation": {
+    "activation": "separate-explicit-operation",
+    "core_lock_changes": false,
+    "automatic_install": false,
+    "model_download": false,
+    "inference": false,
+    "device_operation": false,
+    "publication": false
+  },
+  "applicable_blocks": [
+    "renderer-grant",
+    "qwen-uncleared-assets",
+    "foreign-runtime-transitives",
+    "community-qwen-grant"
+  ],
+  "own_target_files": [
+    "bin/install.js",
+    "bin/lib/onboarding.js",
+    "bin/lib/config.js",
+    "bin/lib/manifest.js",
+    "docs/integrations/ONBOARDING.md",
+    "docs/integrations/QWEN_REUSE.md",
+    "tests/installer.test.js"
+  ],
+  "source_tag_limit": "Declared capability tags are metadata from the exact source index. No tagged release tree/byte identity, executable, weight or asset clearance is established."
+}

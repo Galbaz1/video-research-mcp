@@ -1,7 +1,8 @@
 # Plugin Distribution — Two-Package Architecture
 
-The npm package installs Claude Code workflows and registers MCP servers. The
-Python package runs the research server. Use this guide to understand what an
+The npm package installs Claude Code workflows and registers the core MCP
+server. The same npm package root is also a native Codex plugin. The Python
+package runs the research server. Use this guide to understand what an
 installation changes, how upgrades preserve local work, and which source files
 control the distribution.
 
@@ -11,10 +12,13 @@ The core ships under the same name on two registries:
 
 | Package | Registry | Purpose | Used by |
 | --- | --- | --- | --- |
-| `video-research-mcp` | npm | Node.js installer and workflow Markdown | `npx video-research-mcp@latest` |
+| `video-research-mcp` | npm | Claude installer, workflow Markdown and native Codex plugin root | `npx video-research-mcp@latest`; Codex npm marketplace source |
 | `video-research-mcp` | PyPI | Python research MCP runtime | `uvx` when the MCP client starts the server |
 
-Core versions must match across Python, npm, and the Claude plugin manifest.
+Core versions must match across `pyproject.toml`, `package.json`,
+`.claude-plugin/plugin.json` and the root Codex `plugin.json`. The root
+`mcp.json` pins `video-research-mcp==<core version>`.
+[`scripts/check_release.py`](../scripts/check_release.py) enforces both.
 Companion servers are separate Python packages with their own versions. A GitHub
 release can contain all package archives; uploading those archives to PyPI and
 npm is a separate step. See [Publishing](PUBLISHING.md).
@@ -42,10 +46,19 @@ Without a scope flag, the installer prompts for global or local installation.
 | Commands, skills, agents | `~/.claude/` | `./.claude/` |
 | MCP registration | `~/.claude.json` | `./.mcp.json` |
 | Ownership manifest | `~/.claude/gr-file-manifest.json` | `./.claude/gr-file-manifest.json` |
-| Shared configuration template | `~/.config/video-research-mcp/.env` | Same user-level file |
+| Private configuration template | `~/.config/video-research-mcp/.env` | `./.config/video-research-mcp/.env` |
 
-The copy map contains 44 files: 17 commands, 20 skill files across 13 skills,
-and 7 agents. They are prompts and workflow resources. The installer does not
+Local MCP registration sets `VIDEO_RESEARCH_ENV_FILE` to the project template.
+The candidate Python runtime reads that selected file without falling back to home
+credentials when it is missing. This requires that candidate runtime or its
+separately verified release; an older registry package may ignore the selection.
+Nonempty process environment values still take precedence.
+Local install, update, doctor and recovery use only the selected project template.
+Legacy local checkpoints that contain a home `.env` snapshot cannot be restored
+automatically; compare their before/after hashes and restore that home file separately.
+
+The copy map contains 50 files: 17 commands, 26 skill files across 16 skills,
+and 7 agents. They are prompts, workflow resources and local authoring scripts. The installer does not
 install the upstream video renderer or start an MCP server.
 
 Restart Claude Code after installation and use `/gr:getting-started` for setup.
@@ -59,9 +72,11 @@ verify provider authentication or the active runtime version.
 | [`bin/install.js`](../bin/install.js) | Scope selection, prerequisites, install, status, uninstall |
 | [`bin/lib/copy.js`](../bin/lib/copy.js) | `FILE_MAP`, destination paths, empty-directory cleanup |
 | [`bin/lib/manifest.js`](../bin/lib/manifest.js) | SHA-256 ownership evidence and upgrade decisions |
-| [`bin/lib/config.js`](../bin/lib/config.js) | MCP registration merge and shared `.env` template |
+| [`bin/lib/config.js`](../bin/lib/config.js) | MCP registration merge and scoped `.env` template |
 | [`bin/lib/ui.js`](../bin/lib/ui.js) | Installer messages |
 | [`package.json`](../package.json) | npm version, Node requirement, entry point, published assets |
+| [`plugin.json`](../plugin.json) | Codex plugin identity and OpenAI presentation metadata |
+| [`mcp.json`](../mcp.json) | Codex plugin's version-pinned stdio MCP server |
 
 ### FILE_MAP — the central registry
 
@@ -116,52 +131,45 @@ The shared `.env` file remains.
 
 ### MCP config merge
 
-The installer registers these server command defaults:
+The installer registers only the core server, pinned to the npm package version:
 
 ```json
 {
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["--refresh", "video-research-mcp[tracing]"]
-    },
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@0.0.83", "--headless", "--caps=vision,pdf"]
-    },
-    "mlflow-mcp": {
-      "command": "uvx",
-      "args": ["--with", "mlflow[mcp]>=3.16.1,<4", "mlflow", "mcp", "run"]
+      "args": ["video-research-mcp==X.Y.Z"]
     }
   }
 }
 ```
 
-An upgrade replaces the `command` and `args` of these three entries while
-preserving custom environment and other fields. Unrelated servers remain.
-Legacy companion entries matching the old single-argument `uvx` registration
-are removed; manually configured local companion entries remain. The installer
-does not register either companion. Follow
-[onboarding](tutorials/GETTING_STARTED.md) to add them explicitly.
+Local installation adds `env.VIDEO_RESEARCH_ENV_FILE` for the project template.
+The entry is added when absent. An existing entry is replaced only when its hash
+matches the receipt of the previous installation; customized or unmanaged
+entries and unrelated servers remain. Optional Playwright and MLflow
+declarations in [`config.js`](../bin/lib/config.js) and the companion servers are
+not registered automatically. Follow [onboarding](tutorials/GETTING_STARTED.md)
+to add them explicitly.
 
-Uninstall removes a server entry only if its full configuration matches the
-installer default. Customized entries remain for manual inspection. A malformed
+Uninstall removes a server entry only if it still matches the hash recorded at
+installation. Customized entries remain for manual inspection. A malformed
 client configuration produces a warning: files and their manifest may still
 install, so check registration separately.
 
-The shared `.env` template is created with owner-only permissions. Upgrades
+The selected `.env` template is created with owner-only permissions. Upgrades
 append missing commented keys and preserve existing values. Nonempty process
 environment values take precedence. Selected content and authentication
 credentials are sent to their configured providers.
 
 ## PyPI Package — The Server
 
-The runtime is defined in [`pyproject.toml`](../pyproject.toml). Its generated
-registration uses `uvx --refresh video-research-mcp[tracing]` to resolve PyPI at
-server launch. Source edits and npm workflow upgrades do not themselves change
-that published package.
+The runtime is defined in [`pyproject.toml`](../pyproject.toml). Claude
+registration and the Codex `mcp.json` both run `uvx video-research-mcp==X.Y.Z`,
+which resolves that exact version at server launch. Source edits and npm
+workflow upgrades do not themselves change that published package.
 
-The core registers 34 tools across seven sub-servers. See
+The current core registers 90 tools. See
 [Architecture](ARCHITECTURE.md) and the generated
 [tool contract manifest](metrics/tool-contract-manifest.json) for the current
 surface. Other clients can register the same stdio server in their own format.
@@ -261,10 +269,115 @@ agent file does not grant access to an absent server.
 5. The client presents the result. Installation, a returned analysis, and
    verification of its evidence are separate checks.
 
-## Client portability
+## Native Codex plugin
 
-The installer targets Claude Code. Other standard MCP clients can register the
-stdio runtime. This repository does not ship native Codex plugin packaging.
+The npm package root is a portable Agent Plugins package as described in the
+[OpenAI plugin packaging documentation](https://developers.openai.com/plugins/build/plugins):
+
+| Path | Role in Codex |
+| --- | --- |
+| [`plugin.json`](../plugin.json) | Agent Plugins 1.0.0 manifest. `video-research` is the stable plugin identifier; `extensions.com.openai.interface` supplies presentation. |
+| [`mcp.json`](../mcp.json) | One stdio server, `video-research`, launched as `uvx video-research-mcp==X.Y.Z`: the same name and command as the Claude registration. Keep `command` a bare executable name (or a contained `./` path): Codex silently ignores a stdio server with an absolute command. |
+| `skills/` | Discovered without a manifest field. Codex sees every shipped skill, including optional integration skills such as `av-events` and `footage-edit` that the Claude installer does not copy. |
+| `commands/`, `agents/`, `bin/` | Claude assets; Codex does not load them. |
+
+The package has no lifecycle hooks, `.app.json`, `.codex-plugin/` overlay or npm
+lifecycle scripts. Codex downloads npm plugin sources without running lifecycle
+scripts, so the plugin consists of static files only. `npx video-research-mcp`
+copies Claude assets and `--client-config codex` prints a `config.toml` example;
+neither installs the Codex plugin.
+
+### Install a released version from npm
+
+Create a marketplace root that selects the npm package, for example
+`<root>/.agents/plugins/marketplace.json`:
+
+```json
+{
+  "name": "video-research-npm",
+  "interface": { "displayName": "Video Research" },
+  "plugins": [
+    {
+      "name": "video-research",
+      "source": { "source": "npm", "package": "video-research-mcp", "version": "X.Y.Z" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+```sh
+codex plugin marketplace add <root>
+codex plugin add video-research@video-research-npm
+codex plugin list --json -m video-research-npm
+```
+
+Pin an exact release: its `mcp.json` pins the matching Python package, so the npm
+version selects the whole runtime pair. Only releases that contain `plugin.json`
+are native plugins; `0.7.1` is not. Codex needs the `npm` CLI (registry
+authentication comes from its configuration) and `uvx` on the `PATH` it gives MCP
+servers. Start a new Codex session after installing.
+
+### Test an unreleased candidate
+
+Install the exact packed bytes from a local marketplace:
+
+```sh
+npm pack --ignore-scripts --pack-destination "$CANDIDATE"
+mkdir -p "$CANDIDATE/marketplace/plugins/video-research" "$CANDIDATE/marketplace/.agents/plugins"
+tar -xzf "$CANDIDATE/video-research-mcp-X.Y.Z.tgz" --strip-components 1 \
+  -C "$CANDIDATE/marketplace/plugins/video-research"
+```
+
+Write `$CANDIDATE/marketplace/.agents/plugins/marketplace.json` like the npm
+example, named `video-research-local`, with
+`"source": { "source": "local", "path": "./plugins/video-research" }`. Then run
+`codex plugin marketplace add "$CANDIDATE/marketplace"` and
+`codex plugin add video-research@video-research-local`. Codex CLI 0.159.3 and 0.160.0 copy
+local sources to `$CODEX_HOME/plugins/cache/video-research-local/video-research/<plugin.json version>/`;
+compare that copy with the tarball. `codex plugin remove` deletes it again.
+On 0.160.0, updating the local catalog to a new version and repeating `plugin add`
+replaces the managed cache. Repeating `plugin add` at the same version also replaces
+edited files and removes unowned cache files. Before an upgrade, reinstall or
+removal, copy any local edits and unowned resources to a backup outside that cache;
+Codex does not preserve them there. Keep credentials outside the package.
+In an isolated install on that client, app-server `skills/list` loaded all shipped
+skills from the cache, and a new thread started the `video-research` server with
+plugin provenance, the installed copy as working directory and only `HOME`,
+`PATH`, `USER`, `LOGNAME`, `TMPDIR`, `PLUGIN_ROOT` and `PLUGIN_DATA` (plus macOS
+defaults) in its environment.
+
+The exact version pin in `mcp.json` binds the runtime. A unique candidate version
+cannot resolve to an older registry release, so launch fails instead of pairing
+the candidate plugin with, for example, `0.7.1`. Make the candidate wheel available
+to `uv` (a find-links directory with offline resolution, or a prepared uv cache)
+and confirm which version the launched server runs. Codex filters the server
+environment (in that install, `CODEX_HOME` set for Codex did not reach it), so do not
+rely on `UV_*` variables set for Codex; bind the wheel through the launch context
+instead. Do not add a test-only runtime override to `mcp.json`.
+
+### Credentials and coexistence
+
+The server reads `~/.config/video-research-mcp/.env` on start. Keep keys there:
+Codex filters the environment it gives plugin servers. A `[mcp_servers.video-research]`
+table in `~/.codex/config.toml`, for example from `--client-config codex`, declares
+a second server with the same name. On Codex 0.160.0, that manual entry takes
+precedence even when `enabled = false`, hiding the plugin server. When migrating
+to the plugin, back up the configuration and remove only the identified manual
+`mcp_servers.video-research` table (including its nested settings); preserve all
+unrelated configuration and the shared credential file. Disabling that manual
+table alone does not complete this migration. Plugin-scoped server policy, such as tool approval,
+uses `plugins.<plugin>.mcp_servers.video-research` in Codex configuration.
+
+An isolated 0.160.0 install was verified with the exact packed candidate and built
+wheel: all 22 skills came from the managed cache, all 90 MCP tools connected,
+read-only configuration and local image-crop/error journeys passed, and a fresh
+session repeated the runtime checks. The loaded Python modules and metadata
+matched the selected wheel. These checks used offline resolution and a dummy key.
+They do not establish registry installation, the running desktop app's `PATH`,
+first-launch download timing or live-provider quality. The shared advisor selects
+discovered MCP tools in Codex and registered `/gr:*` commands in Claude.
+
 Consult the current [Claude Code skills documentation](https://code.claude.com/docs/en/skills)
-and [OpenAI plugin packaging documentation](https://developers.openai.com/plugins/build/plugins)
-before adding a platform-specific route.
+before changing the Claude route.

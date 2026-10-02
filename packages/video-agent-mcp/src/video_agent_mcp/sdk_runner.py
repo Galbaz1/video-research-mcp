@@ -9,6 +9,7 @@ import time
 import claude_agent_sdk
 
 from .config import get_config
+from .redaction import redact_text
 from .types import AgentResult
 
 logger = logging.getLogger(__name__)
@@ -69,7 +70,7 @@ async def run_agent_query(
     except TimeoutError:
         error = f"Agent query timed out after {timeout}s"
     except Exception as exc:
-        error = str(exc)
+        error = redact_text(str(exc))
 
     full_text = (terminal.result if terminal and terminal.result else "\n".join(text_parts))
     if error is None and terminal is None:
@@ -80,7 +81,7 @@ async def run_agent_query(
         text="" if error else full_text,
         success=error is None,
         duration_seconds=time.monotonic() - start,
-        error=error,
+        error=redact_text(error) if error else None,
     )
 
 

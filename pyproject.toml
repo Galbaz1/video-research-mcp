@@ -1,6 +1,6 @@
 [project]
 name = "video-research-mcp"
-version = "0.7.1"
+version = "0.8.0-rc.1"
 description = "MCP server for video analysis, document extraction, cited research and optional knowledge storage"
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -21,6 +21,7 @@ dependencies = [
     "google-genai>=2.25.0,<3",
     "httpx>=0.28.1,<0.29",
     "pydantic>=2.13.5,<3",
+    "PyYAML>=6.0.3,<7",
     "weaviate-client>=4.23.1,<5",
 ]
 
@@ -35,12 +36,27 @@ Changelog = "https://github.com/Galbaz1/video-research-mcp/blob/main/CHANGELOG.m
 tracing = ["mlflow-tracing>=3.16.1,<4"]
 agents = ["weaviate-agents>=1.8.0,<2"]
 strict = ["jsonschema>=4.26.0,<5"]
+images = ["Pillow>=12.3.0,<13"]
+audio = ["numpy>=2.4.6,<2.5"]
+tutorial = [
+    "fpdf2>=2.8.9,<3",
+    "pypdfium2>=5.13.0,<6",
+    "fonttools>=4.66.1,<5",
+    "defusedxml>=0.7.1,<1",
+    "Pillow>=12.3.0,<13",
+]
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
     "ruff>=0.16.9,<0.17",
     "mlflow-tracing>=3.16.1,<4",
     "jsonschema>=4.26.0,<5",
+    "Pillow>=12.3.0,<13",
+    "numpy>=2.4.6,<2.5",
+    "fpdf2>=2.8.9,<3",
+    "pypdfium2>=5.13.0,<6",
+    "fonttools>=4.66.1,<5",
+    "defusedxml>=0.7.1,<1",
 ]
 
 [project.scripts]
@@ -52,6 +68,65 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/video_research_mcp"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"integrations/qwen/core.json" = "core/integrations/qwen/core.json"
+"docs/integrations/qwen-core.md" = "core/docs/integrations/qwen-core.md"
+"scripts/core_session.py" = "core/scripts/core_session.py"
+"scripts/core_inputs.py" = "core/scripts/core_inputs.py"
+"scripts/core_dispatch.py" = "core/scripts/core_dispatch.py"
+"integrations/qwen/asr.json" = "asr/integrations/qwen/asr.json"
+"docs/integrations/audio-transcription.md" = "asr/docs/integrations/audio-transcription.md"
+"integrations/qwen/education.json" = "education/integrations/qwen/education.json"
+"docs/integrations/qwen-education.md" = "education/docs/integrations/qwen-education.md"
+"skills/educational-explainer" = "education/skills/educational-explainer"
+"integrations/qwen/av-events.json" = "av-events/integrations/qwen/av-events.json"
+"docs/integrations/AV_EVENTS.md" = "av-events/docs/integrations/AV_EVENTS.md"
+"skills/av-events/SKILL.md" = "av-events/skills/av-events/SKILL.md"
+"integrations/qwen/footage-edit.json" = "footage-edit/integrations/qwen/footage-edit.json"
+"docs/integrations/FOOTAGE_EDIT.md" = "footage-edit/docs/integrations/FOOTAGE_EDIT.md"
+"skills/footage-edit/SKILL.md" = "footage-edit/skills/footage-edit/SKILL.md"
+"integrations/qwen/segmentation.json" = "segmentation/integrations/qwen/segmentation.json"
+"docs/integrations/qwen-segmentation.md" = "segmentation/docs/integrations/qwen-segmentation.md"
+"integrations/qwen/tts.json" = "narration/integrations/qwen/tts.json"
+"docs/integrations/measured-narration.md" = "narration/docs/integrations/measured-narration.md"
+"scripts/spatial_session.py" = "spatial/scripts/spatial_session.py"
+"scripts/spatial_inputs.py" = "spatial/scripts/spatial_inputs.py"
+"scripts/spatial_dispatch.py" = "spatial/scripts/spatial_dispatch.py"
+"scripts/spatial_motion.py" = "spatial/scripts/spatial_motion.py"
+"integrations/qwen/video-spatio.json" = "spatial/integrations/qwen/video-spatio.json"
+"docs/integrations/qwen-spatial.md" = "spatial/docs/integrations/qwen-spatial.md"
+"skills/spatial-video-analysis/SKILL.md" = "spatial/skills/spatial-video-analysis/SKILL.md"
+"scripts/freecad_session.py" = "freecad/scripts/freecad_session.py"
+"scripts/freecad_startup.py" = "freecad/scripts/freecad_startup.py"
+"scripts/freecad_jobs.py" = "freecad/scripts/freecad_jobs.py"
+"integrations/qwen/freecad.json" = "freecad/integrations/qwen/freecad.json"
+"docs/integrations/qwen-freecad.md" = "freecad/docs/integrations/qwen-freecad.md"
+"skills/research-visualization-freecad/SKILL.md" = "freecad/skills/research-visualization-freecad/SKILL.md"
+"scripts/blender_session.py" = "blender/scripts/blender_session.py"
+"scripts/blender_startup.py" = "blender/scripts/blender_startup.py"
+"scripts/blender_stdio.py" = "blender/scripts/blender_stdio.py"
+"integrations/qwen/blender.json" = "blender/integrations/qwen/blender.json"
+"docs/integrations/qwen-blender.md" = "blender/docs/integrations/qwen-blender.md"
+"skills/research-visualization-blender/SKILL.md" = "blender/skills/research-visualization-blender/SKILL.md"
+"THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
+"docs/integrations/reuse-ledger.json" = "reuse-ledger.json"
+"licenses/fpdf2/GPL-3.0.txt" = "licenses/fpdf2/GPL-3.0.txt"
+"licenses/fpdf2/LGPL-3.0.txt" = "licenses/fpdf2/LGPL-3.0.txt"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/packages/video-explainer/**",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/models/ingestion_location.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/job_store.py",
+    "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"THIRD_PARTY_NOTICES.md" = "THIRD_PARTY_NOTICES.md"
+"docs/integrations/reuse-ledger.json" = "docs/integrations/reuse-ledger.json"
+"licenses/fpdf2/GPL-3.0.txt" = "licenses/fpdf2/GPL-3.0.txt"
+"licenses/fpdf2/LGPL-3.0.txt" = "licenses/fpdf2/LGPL-3.0.txt"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

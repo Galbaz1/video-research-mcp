@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 import logging
+import json
 import os
 from ipaddress import ip_address
 from urllib.parse import urlparse
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
+
+from .models.vision import VisionBackend
+from .models.text_provider import TextBackend
+from .models.segmentation import SegmentationService
+from .models.transcript import ASRService
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +130,8 @@ class ServerConfig(BaseModel):
     max_sessions: int = Field(default=50)
     session_timeout_hours: int = Field(default=2)
     session_max_turns: int = Field(default=24)
+    session_context_token_budget: int = Field(default=32768, ge=1024, le=1048576)
+    session_recent_turns: int = Field(default=2, ge=1, le=24)
     retry_max_attempts: int = Field(default=3)
     retry_base_delay: float = Field(default=1.0)
     retry_max_delay: float = Field(default=60.0)
@@ -140,6 +149,17 @@ class ServerConfig(BaseModel):
     mlflow_tracking_uri: str = Field(default="")
     mlflow_experiment_name: str = Field(default="video-research-mcp")
     doc_max_download_bytes: int = Field(default=50 * 1024 * 1024)
+    media_max_input_bytes: int = Field(default=512 * 1024 * 1024, ge=1)
+    media_acquire_timeout_seconds: float = Field(default=120, ge=1, le=3600)
+    media_cookies_file: str = Field(default="")
+    vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
+    segmentation_services: dict[Annotated[str, Field(pattern=r"^[a-z][a-z0-9_-]{0,63}$")], SegmentationService] = Field(default_factory=dict, max_length=8)
+    asr_service: ASRService | None = None
+    text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
+    search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
+    twelvelabs_enabled: bool = Field(default=False)
+    mhs_mode: Literal["disabled", "simulator"] = Field(default="disabled")
+    mhs_authority_file: str = Field(default="")
     research_document_max_sources: int = Field(default=12)
     research_document_phase_concurrency: int = Field(default=4)
     local_file_access_root: str = Field(default="")
@@ -202,6 +222,22 @@ class ServerConfig(BaseModel):
             raise ValueError(f"WEAVIATE_VECTORIZER must be 'openai', 'weaviate', or 'ollama', got '{value}'")
         return v
 
+    @field_validator("search_backends")
+    @classmethod
+    def unique_search_backends(cls, value):
+        """Reject ambiguous repeated providers in the operator allowlist."""
+        if len(value) != len(set(value)):
+            raise ValueError("Configured search backends must be unique")
+        return value
+
+    @field_validator("reranker_provider")
+    @classmethod
+    def selected_reranker(cls, value):
+        """The existing configured reranker implements Cohere only."""
+        if value != "cohere":
+            raise ValueError("RERANKER_PROVIDER supports cohere only")
+        return value
+
     @field_validator("deep_research_agent")
     @classmethod
     def validate_deep_research_agent(cls, value: str) -> str:
@@ -235,6 +271,8 @@ class ServerConfig(BaseModel):
             max_sessions=int(os.getenv("GEMINI_MAX_SESSIONS", "50")),
             session_timeout_hours=int(os.getenv("GEMINI_SESSION_TIMEOUT_HOURS", "2")),
             session_max_turns=int(os.getenv("GEMINI_SESSION_MAX_TURNS", "24")),
+            session_context_token_budget=int(os.getenv("GEMINI_SESSION_CONTEXT_TOKEN_BUDGET", "32768")),
+            session_recent_turns=int(os.getenv("GEMINI_SESSION_RECENT_TURNS", "2")),
             retry_max_attempts=int(os.getenv("GEMINI_RETRY_MAX_ATTEMPTS", "3")),
             retry_base_delay=float(os.getenv("GEMINI_RETRY_BASE_DELAY", "1.0")),
             retry_max_delay=float(os.getenv("GEMINI_RETRY_MAX_DELAY", "60.0")),
@@ -258,6 +296,17 @@ class ServerConfig(BaseModel):
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
             doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+            media_max_input_bytes=int(os.getenv("MEDIA_MAX_INPUT_BYTES", str(512 * 1024 * 1024))),
+            media_acquire_timeout_seconds=float(os.getenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "120")),
+            media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
+            vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
+            segmentation_services=json.loads(os.getenv("SEGMENTATION_SERVICES_JSON", "{}")),
+            asr_service=json.loads(os.getenv("ASR_SERVICE_JSON", "null")),
+            text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
+            search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
+            twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),
+            mhs_mode=os.getenv("MHS_MODE", "disabled"),
+            mhs_authority_file=os.getenv("MHS_AUTHORITY_FILE", ""),
             research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
             research_document_phase_concurrency=int(
                 os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")
@@ -282,7 +331,7 @@ _config: ServerConfig | None = None
 def get_config() -> ServerConfig:
     """Return the global config singleton, creating it on first access.
 
-    Loads ``~/.config/video-research-mcp/.env`` before reading env vars.
+    Loads the selected installer credential file before reading env vars.
     Process environment always takes precedence over the config file.
     """
     global _config

@@ -6,6 +6,8 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from .redaction import redact_text
+
 
 class ErrorCategory(str, Enum):
     """Categories of errors for diagnostics."""
@@ -182,9 +184,9 @@ def make_tool_error(error: Exception) -> dict:
         ErrorCategory.S2_RATE_LIMITED,
     }
     return ToolError(
-        error=str(error),
+        error=redact_text(str(error)),
         category=cat.value,
-        hint=hint,
+        hint=redact_text(hint),
         retryable=retryable,
         retry_after_seconds=60 if cat == ErrorCategory.API_QUOTA_EXCEEDED else None,
     ).model_dump(mode="json")

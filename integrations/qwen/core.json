@@ -1,0 +1,1018 @@
+{
+  "schema_version": 1,
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "source_project": "QwenLM/Qwen-MM-Plugins",
+  "execution_sources": [
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/__init__.py",
+      "bytes": 2801,
+      "sha256": "423c9bbac04261248a537923d3faafc4bf1d1e6ed94965073f278688933da6cc"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/__main__.py",
+      "bytes": 700,
+      "sha256": "4d6b60b02c69584972e812aafbde7893b9520b7f7013f1969d9f8f18820cb94d"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/producers/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/producers/crop.py",
+      "bytes": 2688,
+      "sha256": "ef5de53097ff10ae71f8a2d4b352e422c0dc766c38d0ad2c94a3ab668ca6df82"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/producers/draw_bbox.py",
+      "bytes": 2804,
+      "sha256": "c56a37c84ea3c3638a4b983ad5ec4579caab83c8f8ae6e71536a9ef4971d24f6"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/producers/save_view.py",
+      "bytes": 6183,
+      "sha256": "77e0b156cde419b02c99e2e8e465fa1484f33a3f3716c2b8453b679ac48fa33e"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/readers/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/readers/image.py",
+      "bytes": 1609,
+      "sha256": "42b620f93f669a0c6a4e1d36f44f8f59f662ec602fbb75085de044220ed2cb3b"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/readers/media_info.py",
+      "bytes": 7983,
+      "sha256": "38203c99b955421d3349caf19f1258d2fbb12b0b0e76afc49425343a2f000466"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/readers/video.py",
+      "bytes": 6391,
+      "sha256": "8e28fa2bc9e0953fbb1c8eff9aed71be37835296f511f2be70073b4f5ed57df3"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/__init__.py",
+      "bytes": 6688,
+      "sha256": "b8a6018086b809bdd87d0d1bc392161ec4baa15bfabe8b85e10d18cf46412bce"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/_blender_render.py",
+      "bytes": 5442,
+      "sha256": "d27d6fceb46c3499d657397ca8d50bec2065df64dbc272c845465930b433f301"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/_pyrender_worker.py",
+      "bytes": 1544,
+      "sha256": "cf90cb9589607c7542ff670a5afb82926f961e8fccee8db8752dc00b89abfa13"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/code.py",
+      "bytes": 1515,
+      "sha256": "8e6f22a38d88cc6a41ab126ea2b58dc1be8752e74d3a71656f25c34cd74fd8b7"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/data.py",
+      "bytes": 4068,
+      "sha256": "04fe005dbfb3a22fb2bd2250396bd8d3ac7449981dbe894ab587dbb8b43624b4"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/drawio.py",
+      "bytes": 5538,
+      "sha256": "da08ebe4c5050707f9392cde6ccfe82f9d7edfe60f50c2803fd93630d88524ae"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/geo.py",
+      "bytes": 2938,
+      "sha256": "03ac1c1d254a14648c0cbbaf64900cbdcd296c8db57f8dac624f8e5d42485a7a"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/latex.py",
+      "bytes": 7058,
+      "sha256": "49298db3e99963e4231dba2c878cfedc1ac88fd96ff28cbc419e13db88afcd14"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/model3d.py",
+      "bytes": 16798,
+      "sha256": "f1b9baa5b9c35b0b3ae1858a96e2976d4541fa73f190797cecd1d11ca90c475b"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/nifti.py",
+      "bytes": 7145,
+      "sha256": "5f808ca1f3c3526cda233e8f568d61026db2cea647f01b190350130402662174"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/notebook.py",
+      "bytes": 4292,
+      "sha256": "1eb18880bf0f47ec24555e0d9d23fc3ace67e79f5bafbdbd0b8ca13d2c16021a"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/office.py",
+      "bytes": 2638,
+      "sha256": "bc7407e990e94d98168b5509adfe944573aab9f07e8d7928e336c18fe9184557"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/pdf.py",
+      "bytes": 4261,
+      "sha256": "3ea46d87d613ed563d9b487006bf0dfb6bd6436b2c2ce6190a901674d041e303"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/subtitle.py",
+      "bytes": 1872,
+      "sha256": "ed7a3f9ff7128d07a4d724869ed83f6ca39d011f2446ce3532c6e74fb24d1881"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/svg.py",
+      "bytes": 899,
+      "sha256": "c157a3b30fbead2a468c2dbf56bbf02684ef35a5363353603bc09157deb3aa80"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/renderers/web.py",
+      "bytes": 4423,
+      "sha256": "8c31b3bb78c286c90036de4cc739e3321d2c5ac38ba8cf9b9a527933c6d47ed1"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/stdio_streaming.py",
+      "bytes": 4118,
+      "sha256": "30eacc05ad567d351e75cf39b4a07114ca71fb2ffa0102645cc5fbd1a978c857"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/visualizers/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/capabilities/core/qwen_mm_plugins_core/visualizers/visualize.py",
+      "bytes": 3397,
+      "sha256": "c003ec98f2dc96f988ce2462726897586cc10c30c4b716f827a8106fc9e0ab0c"
+    },
+    {
+      "path": "src/mcp_framework.py",
+      "bytes": 22956,
+      "sha256": "099cf71f563ae2966e4e47bdf0f13b28d8ab10bfd9ce1abedeb99c4a4fb8c760"
+    },
+    {
+      "path": "src/shared/__init__.py",
+      "bytes": 1770,
+      "sha256": "5f4191e20f833c967b42ab99d25ec360a687bebcc7147a5aa90cc1d2fd181783"
+    },
+    {
+      "path": "src/shared/cache.py",
+      "bytes": 2016,
+      "sha256": "a6c53ef0d90b594821ec31b91bbd863ac820fb1a4bf8c2ad5399ef13b617add2"
+    },
+    {
+      "path": "src/shared/content.py",
+      "bytes": 2304,
+      "sha256": "924450a441959213862b5d817644534712d247d56e353347eb7c6db1eac3bed4"
+    },
+    {
+      "path": "src/shared/env.py",
+      "bytes": 15026,
+      "sha256": "75f1f6fb8f784e336c3d12d909ec7641a19b750cdfd17a667eca0d79e328de83"
+    },
+    {
+      "path": "src/shared/image.py",
+      "bytes": 8583,
+      "sha256": "59e2ce2df8111cf5515fc68383b0e31297578a34d84e30b751f94a8f4f5783c5"
+    },
+    {
+      "path": "src/shared/isolated_worker.py",
+      "bytes": 9305,
+      "sha256": "80af34c82b85288a08db0561772c808bade2a50791fbce5ba771dad60e92b5b8"
+    },
+    {
+      "path": "src/shared/native_mode.py",
+      "bytes": 4536,
+      "sha256": "c59f61dd46214464cba036d89dd3d057b53725655379590fe2333b9e955b729c"
+    },
+    {
+      "path": "src/shared/paths.py",
+      "bytes": 315,
+      "sha256": "c2ad87aebb7eb05afbde7fce12c10ccd4c3888977c70bf397b2bf4fe6f1577a6"
+    },
+    {
+      "path": "src/shared/syscmd.py",
+      "bytes": 2920,
+      "sha256": "6748c9406c0324c0a83a0f19baa61fac5ca1e36618dbac9b09d2f181e31df2d4"
+    },
+    {
+      "path": "src/shared/video.py",
+      "bytes": 8172,
+      "sha256": "ae41bd24570860745ee61dd25ba602e027a71f38510fc4046739dc172b4f93d1"
+    }
+  ],
+  "license_sources": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ],
+  "declaration_sources": [
+    {
+      "path": "pyproject.toml",
+      "bytes": 9173,
+      "sha256": "b34543034f01ae287880239aeaf23f904507bfd612f1ac3e3903df5c7a6764fd"
+    }
+  ],
+  "expected_tools": [
+    {
+      "name": "crop",
+      "input_schema": {
+        "properties": {
+          "image_path": {
+            "description": "Absolute path to the source image file",
+            "type": "string"
+          },
+          "box": {
+            "description": "Crop region as [x1, y1, x2, y2] in normalized coordinates (0-1000)",
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 4,
+            "minItems": 4,
+            "type": "array"
+          },
+          "output_path": {
+            "description": "Where to save the cropped image. Defaults to {stem}_cropped.{ext} next to the\noriginal.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "image_path",
+          "box"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "draw_bbox",
+      "input_schema": {
+        "properties": {
+          "image_path": {
+            "description": "Absolute path to the source image file",
+            "type": "string"
+          },
+          "bboxes": {
+            "description": "Boxes to draw. Each item has bbox=[x1, y1, x2, y2] in normalized coordinates\n(0-1000), an optional label above the box, and an optional hex color such as\n'#FF0000'. Omitted colors cycle through the default palette.",
+            "items": {
+              "properties": {
+                "bbox": {
+                  "items": {
+                    "type": "integer"
+                  },
+                  "maxItems": 4,
+                  "minItems": 4,
+                  "type": "array"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bbox"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "output_path": {
+            "description": "Where to save the annotated image. Defaults to {stem}_annotated.{ext} next to\nthe original.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "image_path",
+          "bboxes"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "save_view",
+      "input_schema": {
+        "properties": {
+          "file_path": {
+            "description": "Absolute path to the source document or video.",
+            "type": "string"
+          },
+          "pages": {
+            "description": "Page range for documents, e.g. '1', '1-5', '2,4,7'. Default: '1'. Ignored for video.",
+            "type": "string"
+          },
+          "times": {
+            "description": "Timestamps for video frames \u2014 seconds (52, 58.5) or a clock string\n('MM:SS'/'HH:MM:SS'). Required for video. Ignored for docs.",
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            "type": "array"
+          },
+          "dpi": {
+            "description": "Render resolution for document pages (default 200). Ignored for video (native).",
+            "type": "integer"
+          },
+          "budget": {
+            "default": "normal",
+            "description": "Resolution of the returned previews (the saved files are always full/native).",
+            "enum": [
+              "small",
+              "normal",
+              "large"
+            ],
+            "type": "string"
+          },
+          "output_dir": {
+            "description": "Directory to write the images to. Default: next to the source file.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file_path"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "read_image",
+      "input_schema": {
+        "properties": {
+          "image_path": {
+            "description": "Absolute path to the image file",
+            "type": "string"
+          },
+          "budget": {
+            "default": "normal",
+            "description": "Resolution preset: small (~512\u00d7512), normal (~1024\u00d71024), large (~1448\u00d71448).",
+            "enum": [
+              "small",
+              "normal",
+              "large"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "image_path"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "media_info",
+      "input_schema": {
+        "properties": {
+          "path": {
+            "description": "Absolute path to the media file (video or audio)",
+            "type": "string"
+          },
+          "raw": {
+            "default": false,
+            "description": "Also return the raw ffprobe JSON (format + streams + chapters) for fields not covered\nby the summary. Default: false",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "read_video",
+      "input_schema": {
+        "properties": {
+          "video_path": {
+            "description": "Absolute path to the video file",
+            "type": "string"
+          },
+          "fps": {
+            "default": 0,
+            "description": "Sampling FPS. 0 = auto-detect based on duration (recommended). Default: 0",
+            "type": "number"
+          },
+          "max_frames": {
+            "default": 600,
+            "description": "Maximum frames to extract (capped at 600). Actual count may be lower or stripped\ndepending on video length and response size limits.",
+            "type": "integer"
+          },
+          "budget": {
+            "default": "normal",
+            "description": "Per-frame resolution preset: small (~288\u00d7288), normal (~512\u00d7512), large\n(~1024\u00d71024).",
+            "enum": [
+              "small",
+              "normal",
+              "large"
+            ],
+            "type": "string"
+          },
+          "start_time": {
+            "description": "Start time \u2014 seconds or a clock string ('MM:SS'/'HH:MM:SS'). Default: 0\n(beginning).",
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "end_time": {
+            "description": "End time \u2014 seconds or a clock string ('MM:SS'/'HH:MM:SS'). Default: end of video.",
+            "type": [
+              "number",
+              "string"
+            ]
+          }
+        },
+        "required": [
+          "video_path"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "visualize",
+      "input_schema": {
+        "properties": {
+          "file_path": {
+            "description": "Absolute path to the file to visualize.",
+            "type": "string"
+          },
+          "pages": {
+            "description": "Page range for multi-page documents (e.g. '1-5', '3', '1,3,5-8'). 1-based. Default:\nfirst 20 pages.",
+            "type": "string"
+          },
+          "budget": {
+            "default": "large",
+            "description": "Resolution preset per page/image: small (~512x512), normal (~1024x1024), large\n(~1448x1448).",
+            "enum": [
+              "small",
+              "normal",
+              "large"
+            ],
+            "type": "string"
+          },
+          "max_pages": {
+            "default": 20,
+            "description": "Maximum number of pages to render (default 20).",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "file_path"
+        ],
+        "type": "object"
+      }
+    }
+  ],
+  "supported_extensions": [
+    ".R",
+    ".avi",
+    ".bmp",
+    ".c",
+    ".cpp",
+    ".css",
+    ".csv",
+    ".dart",
+    ".docx",
+    ".drawio",
+    ".fbx",
+    ".geojson",
+    ".gif",
+    ".glb",
+    ".gltf",
+    ".go",
+    ".h",
+    ".hpp",
+    ".htm",
+    ".html",
+    ".ini",
+    ".ipynb",
+    ".java",
+    ".jpeg",
+    ".jpg",
+    ".js",
+    ".json",
+    ".jsx",
+    ".kml",
+    ".kt",
+    ".log",
+    ".lua",
+    ".md",
+    ".mhtml",
+    ".mkv",
+    ".mov",
+    ".mp4",
+    ".nii",
+    ".nii.gz",
+    ".obj",
+    ".pdf",
+    ".php",
+    ".ply",
+    ".png",
+    ".pptx",
+    ".py",
+    ".r",
+    ".rb",
+    ".rs",
+    ".scala",
+    ".sh",
+    ".shp",
+    ".sql",
+    ".srt",
+    ".step",
+    ".stl",
+    ".stp",
+    ".svg",
+    ".swift",
+    ".tex",
+    ".text",
+    ".tif",
+    ".tiff",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".vsdx",
+    ".vtt",
+    ".webm",
+    ".webp",
+    ".xlsx",
+    ".xml",
+    ".yaml",
+    ".yml"
+  ],
+  "registry": {
+    ".R": [
+      "code",
+      "render"
+    ],
+    ".c": [
+      "code",
+      "render"
+    ],
+    ".cpp": [
+      "code",
+      "render"
+    ],
+    ".css": [
+      "code",
+      "render"
+    ],
+    ".csv": [
+      "data",
+      "render"
+    ],
+    ".dart": [
+      "code",
+      "render"
+    ],
+    ".docx": [
+      "office",
+      "render"
+    ],
+    ".drawio": [
+      "drawio",
+      "render"
+    ],
+    ".fbx": [
+      "model3d",
+      "render"
+    ],
+    ".geojson": [
+      "geo",
+      "render"
+    ],
+    ".glb": [
+      "model3d",
+      "render"
+    ],
+    ".gltf": [
+      "model3d",
+      "render"
+    ],
+    ".go": [
+      "code",
+      "render"
+    ],
+    ".h": [
+      "code",
+      "render"
+    ],
+    ".hpp": [
+      "code",
+      "render"
+    ],
+    ".htm": [
+      "web",
+      "render"
+    ],
+    ".html": [
+      "web",
+      "render"
+    ],
+    ".ini": [
+      "code",
+      "render"
+    ],
+    ".ipynb": [
+      "notebook",
+      "render"
+    ],
+    ".java": [
+      "code",
+      "render"
+    ],
+    ".js": [
+      "code",
+      "render"
+    ],
+    ".json": [
+      "code",
+      "render"
+    ],
+    ".jsx": [
+      "code",
+      "render"
+    ],
+    ".kml": [
+      "geo",
+      "render"
+    ],
+    ".kt": [
+      "code",
+      "render"
+    ],
+    ".log": [
+      "code",
+      "render"
+    ],
+    ".lua": [
+      "code",
+      "render"
+    ],
+    ".md": [
+      "code",
+      "render"
+    ],
+    ".mhtml": [
+      "web",
+      "render"
+    ],
+    ".nii": [
+      "nifti",
+      "render"
+    ],
+    ".nii.gz": [
+      "nifti",
+      "render"
+    ],
+    ".obj": [
+      "model3d",
+      "render"
+    ],
+    ".pdf": [
+      "pdf",
+      "render"
+    ],
+    ".php": [
+      "code",
+      "render"
+    ],
+    ".ply": [
+      "model3d",
+      "render"
+    ],
+    ".pptx": [
+      "office",
+      "render"
+    ],
+    ".py": [
+      "code",
+      "render"
+    ],
+    ".r": [
+      "code",
+      "render"
+    ],
+    ".rb": [
+      "code",
+      "render"
+    ],
+    ".rs": [
+      "code",
+      "render"
+    ],
+    ".scala": [
+      "code",
+      "render"
+    ],
+    ".sh": [
+      "code",
+      "render"
+    ],
+    ".shp": [
+      "geo",
+      "render"
+    ],
+    ".sql": [
+      "code",
+      "render"
+    ],
+    ".srt": [
+      "subtitle",
+      "render"
+    ],
+    ".step": [
+      "model3d",
+      "render"
+    ],
+    ".stl": [
+      "model3d",
+      "render"
+    ],
+    ".stp": [
+      "model3d",
+      "render"
+    ],
+    ".svg": [
+      "svg",
+      "render"
+    ],
+    ".swift": [
+      "code",
+      "render"
+    ],
+    ".tex": [
+      "latex",
+      "render"
+    ],
+    ".text": [
+      "code",
+      "render"
+    ],
+    ".toml": [
+      "code",
+      "render"
+    ],
+    ".ts": [
+      "code",
+      "render"
+    ],
+    ".tsx": [
+      "code",
+      "render"
+    ],
+    ".txt": [
+      "code",
+      "render"
+    ],
+    ".vsdx": [
+      "office",
+      "render"
+    ],
+    ".vtt": [
+      "subtitle",
+      "render"
+    ],
+    ".xlsx": [
+      "data",
+      "render"
+    ],
+    ".xml": [
+      "code",
+      "render"
+    ],
+    ".yaml": [
+      "code",
+      "render"
+    ],
+    ".yml": [
+      "code",
+      "render"
+    ]
+  },
+  "family_extensions": {
+    "code": [
+      ".R",
+      ".c",
+      ".cpp",
+      ".css",
+      ".dart",
+      ".go",
+      ".h",
+      ".hpp",
+      ".ini",
+      ".java",
+      ".js",
+      ".json",
+      ".jsx",
+      ".kt",
+      ".log",
+      ".lua",
+      ".md",
+      ".php",
+      ".py",
+      ".r",
+      ".rb",
+      ".rs",
+      ".scala",
+      ".sh",
+      ".sql",
+      ".swift",
+      ".text",
+      ".toml",
+      ".ts",
+      ".tsx",
+      ".txt",
+      ".xml",
+      ".yaml",
+      ".yml"
+    ],
+    "data": [
+      ".csv",
+      ".xlsx"
+    ],
+    "drawio": [
+      ".drawio"
+    ],
+    "geo": [
+      ".geojson",
+      ".kml",
+      ".shp"
+    ],
+    "latex": [
+      ".tex"
+    ],
+    "model3d": [
+      ".fbx",
+      ".glb",
+      ".gltf",
+      ".obj",
+      ".ply",
+      ".step",
+      ".stl",
+      ".stp"
+    ],
+    "nifti": [
+      ".nii",
+      ".nii.gz"
+    ],
+    "notebook": [
+      ".ipynb"
+    ],
+    "office": [
+      ".docx",
+      ".pptx",
+      ".vsdx"
+    ],
+    "pdf": [
+      ".pdf"
+    ],
+    "subtitle": [
+      ".srt",
+      ".vtt"
+    ],
+    "svg": [
+      ".svg"
+    ],
+    "web": [
+      ".htm",
+      ".html",
+      ".mhtml"
+    ],
+    "image": [
+      ".bmp",
+      ".gif",
+      ".jpeg",
+      ".jpg",
+      ".png",
+      ".tif",
+      ".tiff",
+      ".webp"
+    ],
+    "video": [
+      ".avi",
+      ".mkv",
+      ".mov",
+      ".mp4",
+      ".webm"
+    ]
+  },
+  "runtime_clearance": "source-only-runtime-unqualified",
+  "selected_python": "3.12.13",
+  "selected_direct_packages": {
+    "mcp": "1.30.0",
+    "pillow": "11.3.0",
+    "openai": "1.109.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "docstring-parser": "0.18.0"
+  },
+  "runtime_fields": {
+    "python_executable": null,
+    "python_prefix": null,
+    "python_binary": null,
+    "bootstrap_sources": [],
+    "runtime_manifest": null,
+    "runtime_grants": null
+  },
+  "format_clearance": {
+    "code": {
+      "state": "unqualified",
+      "reason": "runtime requalification and actual original format checks remain unrun"
+    },
+    "data": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "drawio": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "geo": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "latex": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "model3d": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "nifti": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "notebook": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "office": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "pdf": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "subtitle": {
+      "state": "unqualified",
+      "reason": "runtime requalification and actual original format checks remain unrun"
+    },
+    "svg": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "web": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    },
+    "image": {
+      "state": "unqualified",
+      "reason": "runtime requalification and actual original format checks remain unrun"
+    },
+    "video": {
+      "state": "unqualified",
+      "reason": "selected heavy/native/font/format prerequisites remain unqualified"
+    }
+  },
+  "font_clearance": "unqualified; original draw_bbox refused",
+  "native_clearance": "unqualified; no subprocess backend permitted",
+  "provider_clearance": "unqualified and unauthorized; api_openai branch forbidden",
+  "original_distribution_installation": "unaccepted; unchanged external source integration only",
+  "limits": {
+    "authority_bytes": 131072,
+    "runtime_manifest_bytes": 1048576,
+    "input_files": 32,
+    "input_file_bytes": 8388608,
+    "result_bytes": 4194304,
+    "max_pages": 4,
+    "timeout_seconds": 30,
+    "concurrency": 1
+  },
+  "acceptance": {
+    "actual_preview": "unrun",
+    "required_family_denominator": [
+      "pdf",
+      "office",
+      "table",
+      "html",
+      "diagram",
+      "notebook",
+      "code",
+      "subtitle",
+      "3d",
+      "gis",
+      "nifti"
+    ],
+    "whole_leaf": "unaccepted"
+  }
+}

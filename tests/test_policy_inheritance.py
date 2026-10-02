@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from unittest.mock import AsyncMock, patch
+import pytest
 
 import video_research_mcp.tools.content as content_mod
 from tests.conftest import unwrap_tool
@@ -12,11 +13,28 @@ from video_research_mcp.tools.research_document_file import (
     _prepare_all_documents_with_issues,
 )
 from video_research_mcp.tools.video_file import _validate_video_path
+from video_research_mcp.local_path_policy import enforce_local_access_root, resolve_path
 
 content_analyze = unwrap_tool(content_mod.content_analyze)
 
 
 class TestPolicyInheritance:
+    @pytest.mark.parametrize("uri", ["file:///etc/passwd", "https://example.org/file", "ftp://example.org/file"])
+    def test_local_adapter_cannot_treat_uri_as_a_path(self, uri):
+        with pytest.raises(PermissionError, match="not URIs"):
+            resolve_path(uri)
+
+    def test_adapter_must_resolve_parent_and_symlink_before_fence(self, tmp_path, monkeypatch, clean_config):
+        root = tmp_path / "root"
+        root.mkdir()
+        outside = tmp_path / "outside"
+        outside.write_text("private")
+        (root / "link").symlink_to(outside)
+        monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(root))
+        for path in (root / ".." / "outside", root / "link"):
+            with pytest.raises(PermissionError, match="outside LOCAL_FILE_ACCESS_ROOT"):
+                enforce_local_access_root(path)
+
     async def test_content_analyze_url_calls_validate_url(self):
         """URL analysis must invoke shared URL policy validation helper."""
         with (
@@ -99,7 +117,7 @@ class TestPolicyInheritance:
         video.write_bytes(b"\x00" * 10)
 
         with patch(
-            "video_research_mcp.tools.video_file.enforce_local_access_root",
+            "video_research_mcp.media_snapshot.enforce_local_access_root",
             side_effect=lambda p: p,
         ) as mock_enforce:
             path, mime = _validate_video_path(str(video))

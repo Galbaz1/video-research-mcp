@@ -40,9 +40,11 @@ def mock_subprocess():
 
     Returns a factory that produces (process_mock, create_mock) tuples.
     """
+
     def _factory(returncode: int = 0, stdout: bytes = b"", stderr: bytes = b""):
         proc = AsyncMock()
         proc.returncode = returncode
+        proc.pid = 12345
         proc.communicate = AsyncMock(return_value=(stdout, stderr))
         proc.terminate = MagicMock()
         proc.kill = MagicMock()
@@ -57,6 +59,7 @@ def mock_project_dir(tmp_path):
 
     Returns a factory that creates project dirs with optional completed steps.
     """
+
     def _factory(
         project_id: str = "test-project",
         completed_steps: list[str] | None = None,
@@ -99,10 +102,12 @@ def mock_explainer_venv(tmp_path):
     return tmp_path
 
 
-@pytest.fixture()
-def _isolate_jobs():
-    """Clear the in-memory job registry."""
-    from video_explainer_mcp.jobs import _jobs
-    _jobs.clear()
+@pytest.fixture(autouse=True)
+async def _isolate_jobs(tmp_path, monkeypatch):
+    """Keep every test's durable rows away from the user's database."""
+    monkeypatch.setenv("VRM_JOB_DB", str(tmp_path / "jobs.sqlite3"))
+    import video_explainer_mcp.render_worker as worker
+
+    worker._draining_enabled = True
     yield
-    _jobs.clear()
+    await worker.cancel_background_renders()

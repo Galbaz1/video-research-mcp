@@ -7,6 +7,7 @@ Stages: analysis → strategy + concept map (parallel) → render → quality ga
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import os
 import re
@@ -18,6 +19,7 @@ from pathlib import Path
 
 from ..client import GeminiClient
 from ..errors import ErrorCategory, make_tool_error
+from ..models.coverage import MediaCoverage
 from ..models.video_contract import ConceptMap, StrategyReport, StrictVideoResult
 from .quality import run_quality_gates
 from .render import render_artifacts
@@ -158,15 +160,30 @@ async def run_strict_pipeline(
     try:
         tmp_dir.mkdir(parents=True, exist_ok=True)
         artifact_paths = render_artifacts(
-            tmp_dir, analysis, strategy, concept_map,
-            source_label=source_label, report_language=report_language,
+            tmp_dir,
+            analysis,
+            strategy,
+            concept_map,
+            source_label=source_label,
+            report_language=report_language,
         )
 
         # Stage 5: Quality gates
         quality_report = run_quality_gates(
-            analysis, strategy, concept_map, tmp_dir,
+            analysis,
+            concept_map,
+            tmp_dir,
             coverage_min_ratio=coverage_min_ratio,
             start_time=start_time,
+            observation=MediaCoverage(
+                source_id=content_id or source_label,
+                missing_stages=[
+                    "media_observation",
+                    "claim_support",
+                    "timestamp_verification",
+                    "human_review",
+                ],
+            ),
         )
 
         if quality_report.status != "pass":
@@ -182,6 +199,11 @@ async def run_strict_pipeline(
                 "analysis": analysis,
             }
 
+        (tmp_dir / "quality-report.json").write_text(
+            json.dumps(quality_report.model_dump(mode="json"), indent=2) + "\n",
+            encoding="utf-8",
+        )
+
         # Stage 6: Atomic rename on success
         # Remove the placeholder dir created by _resolve_output_dir so
         # shutil.move replaces it rather than nesting inside it.
@@ -189,9 +211,7 @@ async def run_strict_pipeline(
         shutil.move(str(tmp_dir), str(output_dir))
 
         # Update paths to final location
-        final_paths = {
-            k: str(output_dir / Path(v).name) for k, v in artifact_paths.items()
-        }
+        final_paths = {k: str(output_dir / Path(v).name) for k, v in artifact_paths.items()}
 
     except Exception as exc:
         shutil.rmtree(tmp_dir, ignore_errors=True)

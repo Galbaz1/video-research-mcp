@@ -5,7 +5,6 @@ from __future__ import annotations
 from video_research_mcp.validation import (
     validate_analysis,
     validate_concept_edges,
-    validate_coverage,
     validate_key_points,
     validate_timestamps,
 )
@@ -82,26 +81,6 @@ class TestValidateConceptEdges:
         assert "target" in issues[0]
 
 
-class TestValidateCoverage:
-    def test_good_coverage(self):
-        timestamps = [{"time": "00:00"}, {"time": "09:30"}]
-        assert validate_coverage(timestamps, 600, min_ratio=0.90) == []
-
-    def test_low_coverage(self):
-        timestamps = [{"time": "00:00"}, {"time": "03:00"}]
-        issues = validate_coverage(timestamps, 600, min_ratio=0.90)
-        assert len(issues) == 1
-        assert "below minimum" in issues[0]
-
-    def test_zero_duration_skipped(self):
-        """Live streams (duration=0) skip coverage check."""
-        timestamps = [{"time": "01:00"}]
-        assert validate_coverage(timestamps, 0) == []
-
-    def test_empty_timestamps_skipped(self):
-        assert validate_coverage([], 600) == []
-
-
 class TestValidateAnalysis:
     def test_valid_analysis(self):
         result = {
@@ -129,3 +108,14 @@ class TestValidateAnalysis:
         vr = validate_analysis(result)
         assert not vr.passed
         assert len(vr.issues) >= 2
+
+
+def test_invalid_clock_and_measured_bounds_are_structural_checks():
+    assert "invalid clock" in validate_timestamps([{"time": "01:99"}])[0]
+    assert (
+        "measured duration"
+        in validate_timestamps(
+            [{"time": "59:59"}],
+            duration_seconds=60,
+        )[0]
+    )

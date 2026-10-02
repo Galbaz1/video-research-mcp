@@ -11,16 +11,19 @@ from __future__ import annotations
 import asyncio
 import logging
 import socket
+from contextlib import asynccontextmanager
 from ipaddress import ip_address
 from pathlib import Path
 from urllib.parse import urlparse
 
 import httpx
 
+from .redaction import redact_text
+
 logger = logging.getLogger(__name__)
 
 _BLOCKED_RANGES_MSG = (
-    "private, loopback, link-local, multicast, and reserved addresses are not allowed"
+    "non-public, multicast, and reserved addresses are not allowed"
 )
 
 
@@ -31,10 +34,7 @@ class UrlPolicyError(Exception):
 def _is_blocked_ip(ip_str: str) -> bool:
     """Check if an IP address falls in a blocked range."""
     ip = ip_address(ip_str)
-    return (
-        ip.is_loopback or ip.is_private or ip.is_link_local
-        or ip.is_multicast or ip.is_reserved
-    )
+    return not ip.is_global or ip.is_multicast or ip.is_reserved
 
 
 async def _resolve_dns(hostname: str) -> list:
@@ -80,6 +80,9 @@ async def validate_url(url: str) -> None:
     except socket.gaierror as exc:
         raise UrlPolicyError(f"DNS resolution failed for '{hostname}': {exc}") from exc
 
+    if not addr_infos:
+        raise UrlPolicyError(f"DNS resolution returned no addresses for '{hostname}'")
+
     for _family, _type, _proto, _canonname, sockaddr in addr_infos:
         ip_str = sockaddr[0]
         if _is_blocked_ip(ip_str):
@@ -101,11 +104,11 @@ def _verify_peer_ip(response: httpx.Response) -> None:
     """
     stream = response.extensions.get("network_stream")
     if stream is None:
-        return
+        raise UrlPolicyError("Cannot verify connected peer: missing network stream")
 
-    peername = stream.get_extra_info("peername")
+    peername = stream.get_extra_info("server_addr")
     if peername is None:
-        return
+        raise UrlPolicyError("Cannot verify connected peer: missing server address")
 
     ip_str = peername[0]
     if _is_blocked_ip(ip_str):
@@ -113,6 +116,36 @@ def _verify_peer_ip(response: httpx.Response) -> None:
             f"DNS rebinding detected: peer IP {ip_str} is in a blocked range — "
             f"{_BLOCKED_RANGES_MSG}"
         )
+
+
+@asynccontextmanager
+async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[str] | None = None):
+    """Open an HTTPS response after checking every redirect and actual peer."""
+    def check_host(value: str) -> None:
+        if allowed_hosts is not None and urlparse(value).hostname not in allowed_hosts:
+            raise UrlPolicyError("Source domain is outside the requested allowlist")
+
+    check_host(url)
+    await validate_url(url)
+    async with httpx.AsyncClient(
+        follow_redirects=False, timeout=60, trust_env=False,
+    ) as client:
+        for hop in range(6):
+            async with client.stream(method, url) as response:
+                _verify_peer_ip(response)
+                if response.status_code in {301, 302, 303, 307, 308}:
+                    location = response.headers.get("location")
+                    if not location:
+                        raise UrlPolicyError("Redirect response missing Location header")
+                    if hop == 5:
+                        raise UrlPolicyError("Too many redirects (>5) while downloading URL")
+                    url = str(response.url.join(location))
+                    check_host(url)
+                    await validate_url(url)
+                    continue
+                response.raise_for_status()
+                yield response
+                return
 
 
 async def download_checked(url: str, tmp_dir: Path, *, max_bytes: int) -> Path:
@@ -134,49 +167,28 @@ async def download_checked(url: str, tmp_dir: Path, *, max_bytes: int) -> Path:
             detected, or the response exceeds max_bytes.
         httpx.HTTPStatusError: If the server returns an error status.
     """
-    await validate_url(url)
-
     url_path = url.rsplit("/", 1)[-1].split("?")[0]
     filename = url_path if "." in url_path else "document.pdf"
+    if filename in {".", ".."}:
+        filename = "document.pdf"
     local = tmp_dir / filename
-
-    max_redirects = 5
-    current_url = url
-    redirects_followed = 0
-
-    async with httpx.AsyncClient(follow_redirects=False, timeout=60) as client:
-        while True:
-            async with client.stream("GET", current_url) as resp:
-                _verify_peer_ip(resp)
-
-                if resp.status_code in {301, 302, 303, 307, 308}:
-                    location = resp.headers.get("location")
-                    if not location:
+    accumulated = 0
+    created = False
+    try:
+        async with checked_response(url) as resp:
+            with local.open("xb") as f:
+                created = True
+                async for chunk in resp.aiter_bytes():
+                    accumulated += len(chunk)
+                    if accumulated > max_bytes:
                         raise UrlPolicyError(
-                            f"Redirect response missing Location header (status {resp.status_code})"
+                            f"Response exceeds size limit ({max_bytes} bytes)"
                         )
-                    if redirects_followed >= max_redirects:
-                        raise UrlPolicyError(
-                            f"Too many redirects (>{max_redirects}) while downloading URL"
-                        )
+                    f.write(chunk)
+    except BaseException:
+        if created:
+            local.unlink(missing_ok=True)
+        raise
 
-                    next_url = str(resp.url.join(location))
-                    await validate_url(next_url)
-                    current_url = next_url
-                    redirects_followed += 1
-                    continue
-
-                resp.raise_for_status()
-                accumulated = 0
-                with local.open("wb") as f:
-                    async for chunk in resp.aiter_bytes():
-                        accumulated += len(chunk)
-                        if accumulated > max_bytes:
-                            raise UrlPolicyError(
-                                f"Response exceeds size limit ({max_bytes} bytes)"
-                            )
-                        f.write(chunk)
-                break
-
-    logger.info("Downloaded %s (%d bytes) to %s", url, accumulated, local)
+    logger.info("Downloaded %s (%d bytes) to %s", redact_text(url), accumulated, local)
     return local

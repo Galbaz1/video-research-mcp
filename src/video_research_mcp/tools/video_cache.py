@@ -113,7 +113,7 @@ async def ensure_session_cache(video_id: str, video_url: str) -> tuple[str, str,
 
 
 async def prepare_cached_request(
-    session, prompt: str
+    session, prompt: str, store
 ) -> tuple[bool, list[types.Content], dict]:
     """Prepare request contents and config for a cached/uncached session continuation.
 
@@ -123,6 +123,7 @@ async def prepare_cached_request(
     Args:
         session: The active VideoSession.
         prompt: User follow-up question.
+        store: Current session/archive registry and its scoped derived-memory table.
 
     Returns:
         (use_cache, contents, config_kwargs) — ready for generate_content.
@@ -145,7 +146,12 @@ async def prepare_cached_request(
             types.Part(text=prompt),
         ]
     user_content = types.Content(role="user", parts=user_parts)
-    contents = list(session.history) + [user_content]
+    from ..session_compaction import memory_key, replay_view
+    memory = None
+    if session.workspace_id and store.memory is not None:
+        memory = store.memory.get(memory_key(session))
+    contents, selection = replay_view(session, user_content, memory,
+                                     persisted=store._db is not None)
 
     cfg = get_config()
     config_kwargs: dict = {
@@ -156,5 +162,6 @@ async def prepare_cached_request(
 
     model = session.model if use_cache and session.model else cfg.default_model
     config_kwargs["_model"] = model  # passed through for caller convenience
+    config_kwargs["_context"] = selection
 
     return use_cache, contents, config_kwargs

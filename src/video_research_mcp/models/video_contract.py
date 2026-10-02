@@ -7,7 +7,11 @@ output that passes quality gates.
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+from .coverage import CoverageReport
 
 
 class StrictTimestamp(BaseModel):
@@ -38,7 +42,9 @@ class StrictVideoResult(BaseModel):
         description="Topics covered in the video",
     )
     sentiment: str = Field(min_length=1, description="Overall sentiment or tone")
-    duration_seconds: int = Field(default=0, ge=0, description="Video duration in seconds")
+    duration_seconds: int = Field(
+        default=0, ge=0, description="Model-declared duration; not a measured media receipt"
+    )
 
 
 class StrategySection(BaseModel):
@@ -55,9 +61,7 @@ class StrategyReport(BaseModel):
     sections: list[StrategySection] = Field(
         min_length=1, description="Report sections with strategic analysis"
     )
-    strategic_notes: list[str] = Field(
-        min_length=1, description="Key strategic takeaways"
-    )
+    strategic_notes: list[str] = Field(min_length=1, description="Key strategic takeaways")
 
 
 class ConceptMapNode(BaseModel):
@@ -79,12 +83,8 @@ class ConceptMapEdge(BaseModel):
 class ConceptMap(BaseModel):
     """A concept map with nodes and edges."""
 
-    nodes: list[ConceptMapNode] = Field(
-        min_length=2, description="Concept nodes"
-    )
-    edges: list[ConceptMapEdge] = Field(
-        min_length=1, description="Relationships between concepts"
-    )
+    nodes: list[ConceptMapNode] = Field(min_length=2, description="Concept nodes")
+    edges: list[ConceptMapEdge] = Field(min_length=1, description="Relationships between concepts")
 
 
 class QualityCheck(BaseModel):
@@ -96,9 +96,22 @@ class QualityCheck(BaseModel):
 
 
 class QualityReport(BaseModel):
-    """Aggregated quality gate results."""
+    """Artifact/structure readiness with independent, unresolved factual gates."""
 
-    status: str = Field(description="'pass' or 'fail'")
-    coverage_ratio: float = Field(ge=0.0, le=1.0, description="Video coverage ratio")
+    status: Literal["pass", "fail"] = Field(description="Artifact and structure gates only")
+    scope: Literal["artifact_and_structure"] = "artifact_and_structure"
+    coverage_ratio: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Observed interval union / measured duration; null when unknown",
+    )
+    coverage: CoverageReport | None = None
+    declared_duration_seconds: int = Field(default=0, ge=0)
+    claim_support: Literal["pending"] = "pending"
+    timestamp_correctness: Literal["pending"] = "pending"
+    human_review: Literal["pending"] = "pending"
+    media_review: Literal["pending"] = "pending"
+    factual_success: Literal[False] = False
     checks: list[QualityCheck] = Field(default_factory=list)
     duration_seconds: float = Field(default=0.0, ge=0.0)

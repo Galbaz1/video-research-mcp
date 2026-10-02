@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -22,7 +24,11 @@ def _make_analysis():
     return StrictVideoResult(
         title="Test Video Analysis",
         summary="A" * 60,
-        key_points=["Point one is detailed enough to pass", "Point two is also quite detailed", "Point three has enough detail"],
+        key_points=[
+            "Point one is detailed enough to pass",
+            "Point two is also quite detailed",
+            "Point three has enough detail",
+        ],
         timestamps=[
             StrictTimestamp(time="00:00", description="Introduction to the topic"),
             StrictTimestamp(time="05:00", description="Main discussion begins"),
@@ -182,13 +188,10 @@ class TestRunStrictPipeline:
         concept_map = _make_concept_map()
         mock_gemini_client["generate_structured"].side_effect = [analysis, strategy, concept_map]
 
-        with patch(
-            "video_research_mcp.contract.quality.validate_analysis"
-        ) as mock_validate:
+        with patch("video_research_mcp.contract.quality.validate_analysis") as mock_validate:
             from video_research_mcp.validation import ValidationResult
-            mock_validate.return_value = ValidationResult(
-                passed=False, issues=["Coverage too low"]
-            )
+
+            mock_validate.return_value = ValidationResult(passed=False, issues=["Coverage too low"])
 
             result = await run_strict_pipeline(
                 "test contents",
@@ -224,3 +227,49 @@ class TestRunStrictPipeline:
         # First generate_structured call is Stage 1 (analysis)
         first_call = mock_gemini_client["generate_structured"].call_args_list[0]
         assert first_call.kwargs["system_instruction"] == "YouTube: Test Video by TestChannel"
+
+
+async def test_actual_failed_validation_promotes_no_artifacts(
+    mock_gemini_client, tmp_path, monkeypatch
+):
+    monkeypatch.setenv("VIDEO_OUTPUT_DIR", str(tmp_path / "output"))
+    analysis = _make_analysis()
+    analysis.key_points = ["short"] * 3
+    mock_gemini_client["generate_structured"].side_effect = [
+        analysis,
+        _make_strategy(),
+        _make_concept_map(),
+    ]
+    result = await run_strict_pipeline(
+        "fixture",
+        instruction="analyze",
+        content_id="owned-fixture",
+        source_label="owned-fixture",
+    )
+    assert result["category"] == "QUALITY_GATE_FAILED"
+    assert "artifacts" not in result
+    assert result["quality_report"]["factual_success"] is False
+    assert list((tmp_path / "output").iterdir()) == []
+
+
+async def test_promoted_artifacts_retain_the_same_quality_receipt(
+    mock_gemini_client, tmp_path, monkeypatch
+):
+    monkeypatch.setenv("VIDEO_OUTPUT_DIR", str(tmp_path / "output"))
+    mock_gemini_client["generate_structured"].side_effect = [
+        _make_analysis(),
+        _make_strategy(),
+        _make_concept_map(),
+    ]
+    result = await run_strict_pipeline(
+        "fixture",
+        instruction="analyze",
+        content_id="owned-fixture",
+        source_label="owned-fixture",
+    )
+    artifact = Path(result["artifacts"]["analysis"])
+    report = json.loads((artifact.parent / "quality-report.json").read_text())
+    assert report == result["quality_report"]
+    assert report["coverage_ratio"] is None
+    assert report["factual_success"] is False
+    assert "review are pending" in artifact.read_text()

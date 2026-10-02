@@ -11,7 +11,7 @@ from typing import Annotated
 
 from fastmcp import FastMCP
 from mcp.types import ToolAnnotations
-from pydantic import Field
+from pydantic import Field, StrictStr
 
 from video_research_mcp.tracing import trace
 
@@ -21,12 +21,18 @@ from .. import context_cache
 from ..config import get_config
 from ..errors import make_tool_error
 from ..models.video import SessionInfo, SessionResponse
+from ..models.session_memory import SessionScope
+from ..models.execution import ExecutionLimits
+from ..output_view import project_output, validate_output_request
+from ..video_window_metadata import normalize_window, window_description, window_instruction
 from ..prompts.video import METADATA_OPTIMIZER, METADATA_PREAMBLE
 from ..sessions import session_store
 from ..types import ThinkingLevel, VideoFilePath, YouTubeUrl, coerce_json_param
 from ..youtube import YouTubeClient
 from .video_cache import ensure_session_cache, prewarm_cache, prepare_cached_request
 from .video_core import analyze_video
+from .video_execution import cache_bypass_effects, execute_bounded_video
+from .video_plan import plan_video
 from .video_file import _upload_large_file, _video_file_content, _video_file_uri
 from .video_url import (
     _extract_video_id,
@@ -42,6 +48,7 @@ video_server = FastMCP("video")
 
 _SHORT_VIDEO_THRESHOLD = 5 * 60  # 5 minutes
 _LONG_VIDEO_THRESHOLD = 30 * 60  # 30 minutes
+
 
 async def _youtube_metadata_pipeline(
     video_id: str, instruction: str
@@ -115,21 +122,76 @@ async def _youtube_metadata_pipeline(
 async def video_analyze(
     url: YouTubeUrl | None = None,
     file_path: VideoFilePath | None = None,
-    instruction: Annotated[str, Field(
-        description="What to analyze — e.g. 'summarize key points', "
-        "'extract all CLI commands shown', 'list all recipes and ingredients'"
-    )] = "Provide a comprehensive analysis of this video.",
-    output_schema: Annotated[dict | None, Field(
-        description="Optional JSON Schema for the response. "
-        "If omitted, uses default VideoResult schema."
-    )] = None,
+    instruction: Annotated[
+        str,
+        Field(
+            description="What to analyze — e.g. 'summarize key points', "
+            "'extract all CLI commands shown', 'list all recipes and ingredients'"
+        ),
+    ] = "Provide a comprehensive analysis of this video.",
+    output_schema: Annotated[
+        dict | None,
+        Field(
+            description="Optional JSON Schema for the response. "
+            "If omitted, uses default VideoResult schema."
+        ),
+    ] = None,
     thinking_level: ThinkingLevel = "high",
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
-    strict_contract: Annotated[bool, Field(
-        description="Enable strict contract pipeline with quality gates, "
-        "artifact rendering, and semantic validation. Produces richer output "
-        "with strategy report, concept map, and HTML/Markdown artifacts."
-    )] = False,
+    fps: Annotated[
+        float | None,
+        Field(gt=0, le=30, strict=True, description="Local files only: requested static sampling frames per second; observed coverage remains unknown"),
+    ] = None,
+    start_offset: Annotated[
+        str | None,
+        Field(max_length=64, strict=True, description="Local source interval start, using h/m/s units, for example '27m' or '1m30.5s'"),
+    ] = None,
+    end_offset: Annotated[
+        str | None,
+        Field(max_length=64, strict=True, description="Local source interval end using h/m/s units; timestamps retain the original source origin"),
+    ] = None,
+    strict_contract: Annotated[
+        bool,
+        Field(
+            description="Enable strict contract pipeline with quality gates, "
+            "artifact rendering, and structural validation. Factual/media review "
+            "and observed coverage remain explicitly pending or unknown. Produces richer output "
+            "with strategy report, concept map, and HTML/Markdown artifacts."
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool, Field(description="Plan source reads/sends without provider calls")
+    ] = False,
+    execution_budget: Annotated[
+        dict | None,
+        Field(
+            description="Explicit max_calls/max_tokens/max_output_tokens/max_frames/max_windows and start_ms/end_ms/fps. Bounded execution skips optional enrichment and cache reuse."
+        ),
+    ] = None,
+    output_fields: Annotated[
+        list[StrictStr] | None,
+        Field(
+            description="Select top-level response fields; complete source/citation/provenance carriers remain included"
+        ),
+    ] = None,
+    transcript_offset: Annotated[
+        int,
+        Field(
+            ge=0,
+            le=2**31 - 1,
+            strict=True,
+            description="Original custom-schema transcript string offset in Unicode code points",
+        ),
+    ] = 0,
+    transcript_limit: Annotated[
+        int | None,
+        Field(
+            ge=1,
+            le=10000,
+            strict=True,
+            description="Page a top-level transcript string without truncating stored evidence or citations",
+        ),
+    ] = None,
 ) -> dict:
     """Analyze a video (YouTube URL or local file) with any instruction.
 
@@ -139,7 +201,8 @@ async def video_analyze(
 
     When strict_contract=True, runs the full contract pipeline: analysis with
     strict Pydantic models, parallel strategy/concept-map generation, artifact
-    rendering, and quality gates. Returns richer output but takes longer.
+    rendering, and structural quality gates. Factual/media review and observed
+    coverage remain explicit pending/unknown fields. Returns richer output but takes longer.
 
     Args:
         url: YouTube video URL.
@@ -148,7 +211,15 @@ async def video_analyze(
         output_schema: Optional JSON Schema dict for custom output shape.
         thinking_level: Gemini thinking depth.
         use_cache: Whether to use cached results.
+        fps: Requested static sampling rate for a local file, at most 30.
+        start_offset: Local window start, normalized to milliseconds.
+        end_offset: Local window end, greater than the start when supplied.
         strict_contract: Run strict contract pipeline with quality gates.
+        dry_run: Return a local execution plan with zero provider calls.
+        execution_budget: Explicit request limits and a static sampling window.
+        output_fields: Sparse response selection, preserving complete evidence.
+        transcript_offset: Original transcript string code-point offset.
+        transcript_limit: Maximum code points in the returned transcript page.
 
     Returns:
         Dict matching VideoResult schema (default), custom output_schema,
@@ -167,15 +238,53 @@ async def video_analyze(
         }
 
     try:
+        validate_output_request(output_fields, transcript_offset, transcript_limit)
         sources = sum(x is not None for x in (url, file_path))
         if sources == 0:
             raise ValueError("Provide exactly one of: url or file_path")
         if sources > 1:
             raise ValueError("Provide exactly one of: url or file_path — got both")
+        window = normalize_window(fps, start_offset, end_offset)
+        if window is not None and url is not None:
+            raise ValueError("fps/start_offset/end_offset apply to local files only (file_path)")
+        if window is not None and execution_budget is not None:
+            raise ValueError("Use the execution_budget window or fps/start_offset/end_offset, not both")
     except ValueError as exc:
         return make_tool_error(exc)
 
+    result = None
     try:
+        instruction = window_instruction(instruction, window)
+        limits = (
+            ExecutionLimits.model_validate(execution_budget)
+            if execution_budget is not None
+            else None
+        )
+        if dry_run or limits is not None:
+            plan = plan_video(
+                url=url,
+                file_path=file_path,
+                instruction=instruction,
+                limits=limits,
+                strict_contract=strict_contract,
+                output_schema=output_schema,
+                thinking_level=thinking_level,
+                video_metadata=window,
+            )
+            if dry_run:
+                return plan
+            result = await execute_bounded_video(
+                plan, limits, instruction, output_schema, thinking_level
+            )
+            if "error" in result:
+                return result
+            return project_output(
+                result,
+                fields=output_fields,
+                transcript_offset=transcript_offset,
+                transcript_limit=transcript_limit,
+            )
+
         metadata_context = None
         local_filepath = ""
         screenshot_dir = ""
@@ -184,18 +293,19 @@ async def video_analyze(
             content_id = _extract_video_id(url)
             source_label = clean_url
 
-            meta_ctx, fps_override = await _youtube_metadata_pipeline(
-                content_id, instruction
-            )
+            meta_ctx, fps_override = await _youtube_metadata_pipeline(content_id, instruction)
             if meta_ctx:
                 metadata_context = meta_ctx
-                contents = _video_content_with_metadata(
-                    clean_url, instruction, fps=fps_override
-                )
+                contents = _video_content_with_metadata(clean_url, instruction, fps=fps_override)
             else:
                 contents = _video_content(clean_url, instruction)
         else:
-            contents, content_id, file_uri = await _video_file_content(file_path, instruction)
+            if window is None:
+                contents, content_id, file_uri = await _video_file_content(file_path, instruction)
+            else:
+                contents, content_id, file_uri = await _video_file_content(
+                    file_path, instruction, video_metadata=window
+                )
             source_label = file_path
             local_filepath = str(Path(file_path).expanduser().resolve())
 
@@ -210,7 +320,18 @@ async def video_analyze(
             )
             result["local_filepath"] = local_filepath
             result["screenshot_dir"] = screenshot_dir
-            return result
+            if window is not None:
+                result["analysis_window"] = window_description(window)
+            if not use_cache:
+                result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
+            if "error" in result:
+                return result
+            return project_output(
+                result,
+                fields=output_fields,
+                transcript_offset=transcript_offset,
+                transcript_limit=transcript_limit,
+            )
 
         result = await analyze_video(
             contents,
@@ -226,31 +347,41 @@ async def video_analyze(
         )
         result["local_filepath"] = local_filepath
         result["screenshot_dir"] = screenshot_dir
+        if window is not None:
+            result["analysis_window"] = window_description(window)
+        if not use_cache:
+            result["cache_effects"] = cache_bypass_effects(bool(file_path and file_uri))
 
         # Pre-warm context cache for future session reuse
-        if content_id:
+        if use_cache and content_id and window is None:
             cache_uri = clean_url if url else file_uri
             if cache_uri:
                 prewarm_cache(content_id, cache_uri)
 
-        return result
+        return project_output(
+            result,
+            fields=output_fields,
+            transcript_offset=transcript_offset,
+            transcript_limit=transcript_limit,
+        )
 
-    except (ValueError, FileNotFoundError) as exc:
-        return make_tool_error(exc)
     except Exception as exc:
-        return make_tool_error(exc)
+        error = make_tool_error(exc)
+        if isinstance(result, dict) and "execution_usage" in result:
+            error["execution_usage"] = result["execution_usage"]
+        return error
 
 
 async def _download_and_cache(
     video_id: str,
-) -> tuple[str, str, str, str, str]:
+) -> tuple[str, str, str, str, str, str]:
     """Download YouTube video, upload to File API, and create context cache.
 
     Args:
         video_id: YouTube video ID.
 
     Returns:
-        (cache_name, model, download_status, file_api_uri, local_filepath) where
+        (cache_name, model, download_status, file_api_uri, local_filepath, uploaded_sha256) where
         download_status is "downloaded" on success or "failed"/"unavailable".
     """
     try:
@@ -258,15 +389,17 @@ async def _download_and_cache(
     except Exception as exc:
         status = "unavailable" if "not found" in str(exc).lower() else "failed"
         logger.warning("Download failed for %s: %s", video_id, exc)
-        return "", "", status, "", ""
+        return "", "", status, "", "", ""
 
     try:
+        from ..session_sources import local_digest
+        content_digest = await local_digest(local_path)
         file_uri = await _upload_large_file(
-            local_path, "video/mp4", content_hash=video_id
+            local_path, "video/mp4", content_hash=content_digest
         )
     except Exception as exc:
         logger.warning("File API upload failed for %s: %s", video_id, exc)
-        return "", "", "failed", "", str(local_path)
+        return "", "", "failed", "", str(local_path), ""
 
     from google.genai import types
 
@@ -274,16 +407,16 @@ async def _download_and_cache(
     try:
         file_part = types.Part(file_data=types.FileData(file_uri=file_uri))
         cache_name = await context_cache.get_or_create(
-            video_id, [file_part], cfg.default_model
+            content_digest, [file_part], cfg.default_model
         )
         if cache_name:
-            return cache_name, cfg.default_model, "downloaded", file_uri, str(local_path)
+            return cache_name, cfg.default_model, "downloaded", file_uri, str(local_path), content_digest
     except Exception:
         logger.debug("Cache creation failed for %s, session will use File API URI", video_id)
 
     # Cache creation failed but upload succeeded — session can still use the
     # File API URI (uncached but avoids re-fetching YouTube URL each turn)
-    return "", "", "downloaded", file_uri, str(local_path)
+    return "", "", "downloaded", file_uri, str(local_path), content_digest
 
 
 @video_server.tool(
@@ -304,6 +437,9 @@ async def video_create_session(
         "Slower startup (~2 min) but faster and cheaper per turn. "
         "Requires yt-dlp installed."
     )] = False,
+    scope: Annotated[dict[str, str] | None, Field(
+        description="Exact workspace/notebook isolation for sessions and derived memory; omit for legacy unscoped sessions"
+    )] = None,
 ) -> dict:
     """Create a persistent session for multi-turn video exploration.
 
@@ -316,12 +452,14 @@ async def video_create_session(
         file_path: Path to a local video file.
         description: Optional focus area for the session.
         download: Download YouTube video for cached sessions.
+        scope: Exact optional workspace and notebook identifiers.
 
     Returns:
         Dict with session_id, status, video_title, source_type, cache/download status,
         and optional local_filepath when a local file is available.
     """
     try:
+        scope = SessionScope.model_validate(scope) if scope is not None else None
         sources = sum(x is not None for x in (url, file_path))
         if sources == 0:
             raise ValueError("Provide exactly one of: url or file_path")
@@ -368,7 +506,7 @@ async def video_create_session(
     cache_name, cache_model, cache_reason, download_status = "", "", "", ""
 
     if download and source_type == "youtube":
-        cache_name, cache_model, download_status, file_uri, local_filepath = (
+        cache_name, cache_model, download_status, file_uri, local_filepath, content_id = (
             await _download_and_cache(video_id)
         )
         if file_uri:
@@ -379,14 +517,18 @@ async def video_create_session(
             content_id, clean_url
         )
 
-    session = session_store.create(
-        clean_url, "general",
-        video_title=title,
-        cache_name=cache_name,
-        model=cache_model,
-        local_filepath=local_filepath,
-    )
-    return SessionInfo(
+    try:
+        from ..session_sources import bind_source
+        identity = await bind_source(_normalize_youtube_url(url) if url else local_filepath,
+                                     local_filepath if source_type == "local" or content_id else "", content_id)
+        session = session_store.create(
+            clean_url, "general", video_title=title, cache_name=cache_name,
+            model=cache_model, local_filepath=local_filepath, scope=scope,
+            source_identity=identity,
+        )
+    except Exception as error:
+        return make_tool_error(error)
+    result = SessionInfo(
         session_id=session.session_id,
         status="created",
         video_title=title,
@@ -396,6 +538,9 @@ async def video_create_session(
         cache_reason=cache_reason,
         local_filepath=local_filepath,
     ).model_dump(mode="json")
+    return {**result, "scope": scope.model_dump() if scope else None,
+            "source_identity": identity, "history_complete": session.history_complete,
+            "originals_persisted": session_store._db is not None}
 
 
 @video_server.tool(
@@ -410,17 +555,25 @@ async def video_create_session(
 async def video_continue_session(
     session_id: Annotated[str, Field(min_length=1, description="Session ID from video_create_session")],
     prompt: Annotated[str, Field(min_length=1, description="Follow-up question or instruction")],
+    scope: Annotated[dict[str, str] | None, Field(
+        description="Exact workspace/notebook from creation; required for scoped sessions"
+    )] = None,
 ) -> dict:
     """Continue analysis within an existing video session.
 
     Args:
         session_id: Session ID returned by video_create_session.
         prompt: Follow-up question about the video.
+        scope: Exact workspace/notebook from session creation.
 
     Returns:
         Dict with response text and turn_count.
     """
-    session = session_store.get(session_id)
+    try:
+        scope = SessionScope.model_validate(scope) if scope is not None else None
+        session = session_store.get(session_id, scope)
+    except Exception as error:
+        return make_tool_error(error)
     if session is None:
         return {
             "error": f"Session {session_id} not found or expired",
@@ -431,9 +584,12 @@ async def video_continue_session(
     from google.genai import types
 
     try:
-        _, contents, config_kwargs = await prepare_cached_request(session, prompt)
+        from ..session_sources import recover_media
+        await recover_media(session, session_store)
+        _, contents, config_kwargs = await prepare_cached_request(session, prompt, session_store)
         user_content = contents[-1]
         model = config_kwargs.pop("_model")
+        selection = config_kwargs.pop("_context", None)
         client = GeminiClient.get()
 
         response = await with_retry(
@@ -458,7 +614,8 @@ async def video_continue_session(
             text,
             local_filepath=session.local_filepath,
         )
-        return SessionResponse(response=text, turn_count=turn).model_dump(mode="json")
+        return {**SessionResponse(response=text, turn_count=turn).model_dump(mode="json"),
+                "context_selection": selection}
     except Exception as exc:
         return make_tool_error(exc)
 

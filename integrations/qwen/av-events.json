@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.4.2",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "route": "independent-implementation",
+  "state": "owned caption/count/ground/music integration; live event and musical semantics unqualified",
+  "source_reference_gate": {
+    "full_text_bodies": 12,
+    "bytes": 119217,
+    "lines": 2979,
+    "mandatory_tools": 4,
+    "full_grants": 1,
+    "artifact_bindings": 31,
+    "original_static_findings": 15,
+    "source_receipt_sha256": "bc80c6e0e95dac15c2a8b2f893ada99fb0b6e3106861ddb17e662e5297b50fa6",
+    "full_apache_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "foreign_execution_closure": "INCOMPLETE_CAP; five direct helpers and three package initializers unread; no foreign execution admission",
+    "foreign_execution_sources": []
+  },
+  "entrypoint": {
+    "tools": [
+      "media_caption_events",
+      "media_count_events",
+      "media_ground_events",
+      "media_analyze_music"
+    ],
+    "module": "video_research_mcp.tools.media_perceive"
+  },
+  "scope": [
+    "Exact local sampled visual points and continuous decoded PCM windows",
+    "Task-specific event occurrence support and derived retained-record counts",
+    "Grounding with explicit retained/available/truncated populations and uncalibrated scores",
+    "Timed music structure and inferred properties with actual audio windows",
+    "Default local dry preparation; explicit configured-account submission grant"
+  ],
+  "grants": {
+    "source_text": "Full Apache-2.0 applies to reference-only pinned Qwen texts; unmodified, not imported or distributed. Own implementation remains MIT.",
+    "media_models_provider": "Separate source upload, inference spend, media/output rights and semantic evaluation; no implied grant from readiness",
+    "installed_native_runtime": "Prior operator-installed FFmpeg/ffprobe byte identities observed; whole transitive/native source-build grant certificate partial. No binaries bundled."
+  },
+  "qualification": {
+    "fixed_offline_contracts": "Per-candidate component and extracted-wheel preparation/SDK-mocked receipts are separate; no bundled semantic acceptance result.",
+    "fixed_live_fleeting_overlap_music": "UNRUN_RESOURCE_UNAUTHORIZED",
+    "semantic_accuracy": false,
+    "human_programme_audit": "pending, not waived",
+    "comparison_release_acceptance": false
+  },
+  "copied_paths": [],
+  "imports": [],
+  "bundled_fonts": [],
+  "bundled_media": [],
+  "bundled_weights": []
+}

@@ -1,0 +1,332 @@
+[
+  {
+    "case_id": "dev-research-current",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "The Atlas trial used 12 units.",
+        "citations": [
+          {
+            "source_id": "current",
+            "quote": "the Atlas trial used 12 units.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-research-absent",
+    "status": "abstained",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-visual-time",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "A blue marker appears.",
+        "citations": [
+          {
+            "source_id": "video",
+            "quote": "a blue marker appears from 1000 to 2000 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [
+      {
+        "id": "marker",
+        "start_ms": 1000,
+        "end_ms": 2000
+      }
+    ],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-audio-time",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "A bell sounds.",
+        "citations": [
+          {
+            "source_id": "video",
+            "quote": "a bell sounds from 3000 to 3500 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [
+      {
+        "id": "bell",
+        "start_ms": 3000,
+        "end_ms": 3500
+      }
+    ],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-order",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "The blue marker precedes the bell.",
+        "citations": [
+          {
+            "source_id": "video",
+            "quote": "The blue marker precedes the bell.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-cross-video",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "Both videos contain a blue marker.",
+        "citations": [
+          {
+            "source_id": "video",
+            "quote": "a blue marker appears from 1000 to 2000 ms.",
+            "start_ms": null,
+            "end_ms": null
+          },
+          {
+            "source_id": "other",
+            "quote": "a blue marker appears from 500 to 1500 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-restart",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "Restart resumes the same job without duplicate publication.",
+        "citations": [
+          {
+            "source_id": "artifact",
+            "quote": "Restart resumes the same job without duplicate publication.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-note",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "Export an offline source-linked report.",
+        "citations": [
+          {
+            "source_id": "artifact",
+            "quote": "export an offline source-linked report.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-plan",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "Export an offline source-linked report.",
+        "citations": [
+          {
+            "source_id": "artifact",
+            "quote": "export an offline source-linked report.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-spatial-absent",
+    "status": "abstained",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-release",
+    "status": "ok",
+    "claims": [
+      {
+        "fact_id": "f0",
+        "text": "Restart resumes the same job without duplicate publication.",
+        "citations": [
+          {
+            "source_id": "artifact",
+            "quote": "Restart resumes the same job without duplicate publication.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-unavailable",
+    "status": "unavailable",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-error",
+    "status": "error",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-timeout",
+    "status": "timeout",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  {
+    "case_id": "dev-refused",
+    "status": "refused",
+    "claims": [],
+    "temporal": [],
+    "artifacts": [],
+    "latency_ms": 1,
+    "calls": 0,
+    "auxiliary_calls": 0,
+    "cost_usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  }
+]

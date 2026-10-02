@@ -7,7 +7,7 @@ upload to PyPI or npm.
 
 | Destination | Package | Contents |
 | --- | --- | --- |
-| npm | `video-research-mcp` | Claude Code installer, commands, skills, agents |
+| npm | `video-research-mcp` | Native Codex plugin and Claude Code installer, commands, skills, agents |
 | PyPI | `video-research-mcp` | Research MCP runtime |
 | PyPI | `video-explainer-mcp` | Wrapper for a separately installed upstream renderer |
 | PyPI | `video-agent-mcp` | Claude Agent SDK scene generator |
@@ -18,12 +18,29 @@ chosen destinations. Supply credentials through the environment or credential
 store; keep tokens out of commands, notes, and logs. Identify the exact source
 commit, versions, and destinations before building.
 
+The explainer wrapper's installed `explainer_doctor` inspects the separately
+configured renderer without installing dependencies or downloading a browser.
+Archive/install tests must preserve the shared bounded media-process implementation.
+Rendered MP4 qualification binds the exact current-request path, dimensions,
+duration, SHA256 and full decode; it does not clear upstream/Remotion grants or
+establish actual renderer/TTS provenance. Keep real renderer qualification separate
+from an authored FFmpeg fixture and mocked controller tests. See
+[renderer readiness](integrations/render-readiness.md) for the supported route.
+
 ## Version sync policy
 
 The root [`pyproject.toml`](../pyproject.toml) is the core version authority.
 Keep it identical to [`package.json`](../package.json) and
-[`.claude-plugin/plugin.json`](../.claude-plugin/plugin.json). Add a matching
+[`.claude-plugin/plugin.json`](../.claude-plugin/plugin.json), and the native
+[`plugin.json`](../plugin.json). Pin the same core version in [`mcp.json`](../mcp.json).
+Add a matching
 section to [CHANGELOG.md](../CHANGELOG.md).
+
+For a prerelease, use a shared source spelling such as `0.8.0-rc.1`. Python
+normalizes it to `0.8.0rc1` in archive filenames and dependency resolution;
+built metadata can retain the source spelling. Both spellings select the same
+exact PEP 440 version. Publish the npm archive with `--tag next` so it does not replace
+`latest`. A prerelease still needs all applicable source and installation gates.
 
 Companions have independent versions in their own `pyproject.toml` files. Check
 core version agreement and installer mappings with:
@@ -55,8 +72,9 @@ uv run --locked python scripts/smoke_built_mcp.py "$release_dir"/video_research_
 ```
 
 Expect one wheel and one sdist per Python package, plus one npm `.tgz`.
-The core wheel smoke discovers tools and reads configuration over stdio with a
-dummy key; it sends no provider requests. Record archive hashes with the source
+The core wheel smoke compares every discovered tool contract with the candidate
+source, reads configuration with a dummy key, and verifies a local image-crop
+journey. It sends no provider requests and requires FFmpeg. Record archive hashes with the source
 commit and package versions.
 
 When publishing existing GitHub assets, download and verify those exact assets
@@ -135,6 +153,15 @@ Compare the downloaded wheel's hash with the upload. `--check` confirms that the
 registry installer executes and reports local state; isolated installer tests
 cover file/configuration changes. Confirm expected tool discovery for each
 published companion separately.
+
+For native Codex acceptance, follow the [marketplace route](PLUGIN_DISTRIBUTION.md)
+with the exact npm version. First verify the packed candidate through an isolated
+local marketplace and the exact built Python wheel. Then repeat installation from
+npm after publication. In a fresh Codex session, require installed skill provenance,
+live MCP discovery and a successful `infra_configure` call with empty arguments.
+Retain archive/cache byte identity and the actual client version. An installer
+`--check`, catalog listing or valid manifest alone does not establish a working
+Codex plugin. Preserve existing user configuration and unrelated plugins.
 
 Restart the user's client, inspect the active runtime registration and package
 version, and call `infra_configure()` without arguments. Record active settings

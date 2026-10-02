@@ -11,6 +11,7 @@ from pydantic import Field
 
 from ..config import get_config
 from ..errors import make_tool_error
+from ..planning_production import produce, production_transaction
 from ..runner import run_cli
 from ..types import ProjectId, RefinePhase
 
@@ -33,10 +34,13 @@ async def explainer_refine(
         Dict with success status and refinement details.
     """
     try:
-        result = await run_cli(
-            "refine", project_id, "--phase", phase,
-            "--projects-dir", str(get_config().resolved_projects_path),
-        )
+        args = ["refine", project_id, "--phase", phase,
+                "--projects-dir", str(get_config().resolved_projects_path)]
+        with production_transaction(project_id) as (project, connection, state):
+            if state is not None:
+                result = await produce(project, connection, state, args, run_cli)
+            else:
+                result = await run_cli(*args)
         return {
             "project_id": project_id,
             "phase": phase,

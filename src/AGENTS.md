@@ -13,7 +13,11 @@ Applies to source files under `src/`.
 
 - Tools are async functions and should stay directly callable.
 - Do not add FastMCP 2.x compatibility code.
-- Return `dict` values; serialize Pydantic models using `model_dump()`.
+- Generative tools return `dict` values; serialize Pydantic models using `model_dump()`.
+- Native media tools may return `mcp.types.CallToolResult` with typed
+  `structuredContent`, a JSON text block, and bounded `ImageContent`. Declare an
+  explicit success/error output schema and offer the same metadata without images.
+  Existing tools keep their published return contracts.
 - Never let tool exceptions escape; return `make_tool_error()` instead.
 - All tools must have `@trace(name="tool_name", span_type="TOOL")` decorator — no-op when mlflow not installed.
 
@@ -27,6 +31,9 @@ Applies to source files under `src/`.
 
 - Use the singleton `GeminiClient.get()`; do not instantiate `genai.Client()` directly.
 - Route generation through `GeminiClient.generate()`, `.generate_structured()`, or `.generate_json_validated()`.
+- Deterministic local operations validate typed inputs/results directly and do not
+  invoke Gemini. Optional external MCPs run separately and use their own schemas;
+  they must not add provider/runtime requirements to core startup.
 - Use async generation via `client.aio.models.generate_content()`.
 - Import SDK types from `google.genai import types`.
 
@@ -40,4 +47,3 @@ Key usage:
 - The default model supports `low`, `medium`, `high`; reject unsupported `minimal` with an actionable validation error.
 - Keep defensive attribute checks such as `getattr(..., "thought", False)` and grounding metadata checks.
 - Use cached content in `GenerateContentConfig`; prewarm and lookup through context cache helpers.
-

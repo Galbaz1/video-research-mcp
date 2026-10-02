@@ -1,9 +1,4 @@
-"""Semantic validation for video analysis results.
-
-Checks that go beyond schema conformance: timestamp ordering,
-key-point substance, concept-map referential integrity, and
-video coverage ratio. Used by the strict pipeline's quality gates.
-"""
+"""Structural video checks; timestamps and text length do not verify facts."""
 
 from __future__ import annotations
 
@@ -19,7 +14,9 @@ class ValidationResult:
     issues: list[str] = field(default_factory=list)
 
 
-def validate_timestamps(timestamps: list[dict]) -> list[str]:
+def validate_timestamps(
+    timestamps: list[dict], *, duration_seconds: float | None = None
+) -> list[str]:
     """Check timestamp ordering and format.
 
     Returns:
@@ -30,17 +27,21 @@ def validate_timestamps(timestamps: list[dict]) -> list[str]:
 
     for i, ts in enumerate(timestamps):
         time_str = ts.get("time", "")
-        if not re.match(r"^\d{1,2}:\d{2}(:\d{2})?$", time_str):
+        if not isinstance(time_str, str) or not re.fullmatch(r"\d{1,2}:\d{2}(:\d{2})?", time_str):
             issues.append(f"Timestamp {i}: invalid format '{time_str}'")
             continue
 
         parts = time_str.split(":")
+        if any(int(part) >= 60 for part in parts[1:]):
+            issues.append(f"Timestamp {i}: invalid clock component '{time_str}'")
+            continue
         seconds = sum(int(p) * (60 ** (len(parts) - 1 - j)) for j, p in enumerate(parts))
 
+        if duration_seconds is not None and seconds > duration_seconds:
+            issues.append(f"Timestamp {i}: '{time_str}' exceeds measured duration")
+
         if seconds < prev_seconds:
-            issues.append(
-                f"Timestamp {i}: '{time_str}' is out of order (before previous)"
-            )
+            issues.append(f"Timestamp {i}: '{time_str}' is out of order (before previous)")
         prev_seconds = seconds
 
     return issues
@@ -79,53 +80,16 @@ def validate_concept_edges(nodes: list[dict], edges: list[dict]) -> list[str]:
     return issues
 
 
-def validate_coverage(
-    timestamps: list[dict],
-    duration_seconds: int,
-    *,
-    min_ratio: float = 0.90,
-) -> list[str]:
-    """Check that timestamps cover enough of the video duration.
-
-    Skips check when duration_seconds <= 0 (live streams, unknown duration).
-
-    Returns:
-        List of issue strings if coverage is below threshold.
-    """
-    if duration_seconds <= 0 or not timestamps:
-        return []
-
-    max_ts = 0
-    for ts in timestamps:
-        time_str = ts.get("time", "")
-        parts = time_str.split(":")
-        try:
-            seconds = sum(int(p) * (60 ** (len(parts) - 1 - j)) for j, p in enumerate(parts))
-            max_ts = max(max_ts, seconds)
-        except (ValueError, TypeError):
-            continue
-
-    ratio = max_ts / duration_seconds if duration_seconds > 0 else 0
-    if ratio < min_ratio:
-        return [
-            f"Coverage {ratio:.0%} is below minimum {min_ratio:.0%} "
-            f"(last timestamp at {max_ts}s of {duration_seconds}s)"
-        ]
-    return []
-
-
 def validate_analysis(
     result: dict,
     *,
-    duration_seconds: int = 0,
-    min_coverage: float = 0.90,
+    duration_seconds: float | None = None,
 ) -> ValidationResult:
-    """Run all semantic validations on a video analysis result.
+    """Run structural validations on a video analysis result.
 
     Args:
         result: Dict with timestamps, key_points, etc.
-        duration_seconds: Video duration (0 = skip coverage check).
-        min_coverage: Minimum coverage ratio for quality gate.
+        duration_seconds: Independently measured duration, when available.
 
     Returns:
         ValidationResult with passed flag and collected issues.
@@ -138,8 +102,7 @@ def validate_analysis(
             t if isinstance(t, dict) else t.model_dump() if hasattr(t, "model_dump") else {}
             for t in timestamps
         ]
-        issues.extend(validate_timestamps(ts_dicts))
-        issues.extend(validate_coverage(ts_dicts, duration_seconds, min_ratio=min_coverage))
+        issues.extend(validate_timestamps(ts_dicts, duration_seconds=duration_seconds))
 
     key_points = result.get("key_points", [])
     if isinstance(key_points, list):

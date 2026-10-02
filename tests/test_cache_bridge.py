@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import hashlib
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from google.genai import types
 
 import video_research_mcp.config as cfg_mod
 import video_research_mcp.context_cache as cc_mod
@@ -29,6 +30,8 @@ async def _passthrough_retry(fn):
 @pytest.fixture(autouse=True)
 def _clean_config(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setenv("WEAVIATE_URL", "")
+    monkeypatch.setenv("WEAVIATE_API_KEY", "")
     cfg_mod._config = None
     yield
     cfg_mod._config = None
@@ -257,10 +260,11 @@ class TestCreateSessionCache:
         assert session.cache_name == ""
 
     async def test_download_true_creates_cached_session(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download=True WHEN video_create_session called THEN downloads, uploads, caches."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -274,20 +278,26 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
                 new_callable=AsyncMock,
                 return_value=FILE_API_URI,
-            ),
+            ) as upload,
             patch("video_research_mcp.context_cache.GeminiClient.get", return_value=mock_client),
         ):
             result = await video_create_session(url=TEST_URL, download=True)
 
+        import hashlib
+
+        digest = hashlib.sha256(downloaded_file.read_bytes()).hexdigest()
+        upload.assert_awaited_once_with(downloaded_file, "video/mp4", content_hash=digest)
+        assert any(key[0] == digest for key in cc_mod._registry)
+        assert all(key[0] != TEST_VIDEO_ID for key in cc_mod._registry)
         assert result["cache_status"] == "cached"
         assert result["download_status"] == "downloaded"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
         session = _mock_session_store.get(result["session_id"])
         assert session.cache_name == TEST_CACHE_NAME
         # Session URL should be the File API URI, not the YouTube URL
@@ -310,10 +320,11 @@ class TestCreateSessionCache:
         assert result["download_status"] == "unavailable"
 
     async def test_download_true_upload_fails_gracefully(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download succeeds but upload fails WHEN download=True THEN fails gracefully."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -321,7 +332,7 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
@@ -333,13 +344,14 @@ class TestCreateSessionCache:
 
         assert result["cache_status"] == "uncached"
         assert result["download_status"] == "failed"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
 
     async def test_download_true_cache_fails_but_upload_succeeds(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN download+upload succeed but cache creation fails THEN session uses File API URI uncached."""
-        from pathlib import Path
+        downloaded_file = tmp_path / "test.mp4"
+        downloaded_file.write_bytes(b"owned downloaded fixture")
 
         mock_gemini_client["generate"].return_value = "Test Title"
 
@@ -350,7 +362,7 @@ class TestCreateSessionCache:
             patch(
                 "video_research_mcp.tools.video.download_youtube_video",
                 new_callable=AsyncMock,
-                return_value=Path("/tmp/test.mp4"),
+                return_value=downloaded_file,
             ),
             patch(
                 "video_research_mcp.tools.video._upload_large_file",
@@ -364,7 +376,7 @@ class TestCreateSessionCache:
         # Cache failed but download+upload succeeded — still uses File API URI
         assert result["cache_status"] == "uncached"
         assert result["download_status"] == "downloaded"
-        assert result["local_filepath"] == "/tmp/test.mp4"
+        assert result["local_filepath"] == str(downloaded_file)
         session = _mock_session_store.get(result["session_id"])
         # Session should use File API URI even without cache
         assert session.url == FILE_API_URI
@@ -415,7 +427,7 @@ class TestContinueSessionCache:
         """GIVEN a session with cache_name WHEN continue called THEN cached_content set."""
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
 
         mock_client = MagicMock()
@@ -453,7 +465,7 @@ class TestContinueSessionCache:
 
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
         mock_client = MagicMock()
         mock_client.aio.models.generate_content = AsyncMock(return_value=mock_response)
@@ -478,7 +490,7 @@ class TestContinueSessionCache:
         """GIVEN a cached session WHEN refresh_ttl fails THEN falls back to inline video."""
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
         mock_client = MagicMock()
         mock_client.aio.models.generate_content = AsyncMock(return_value=mock_response)
@@ -510,7 +522,7 @@ class TestContinueSessionCache:
         """GIVEN a cached session WHEN continue called THEN user content has text only."""
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
 
         mock_client = MagicMock()
@@ -539,7 +551,7 @@ class TestContinueSessionCache:
         """GIVEN a cached session WHEN continue called THEN refresh_ttl invoked."""
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
 
         mock_client = MagicMock()
@@ -563,7 +575,7 @@ class TestContinueSessionCache:
         """GIVEN an uncached session WHEN continue called THEN user content has video+text."""
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
 
         mock_client = MagicMock()
@@ -599,7 +611,7 @@ class TestContinueSessionCache:
 
         mock_response = MagicMock()
         mock_response.candidates = [
-            MagicMock(content=MagicMock(parts=[MagicMock(text="Answer", thought=False)]))
+            types.Candidate(content=types.Content(role="model", parts=[types.Part(text="Answer")]))
         ]
         mock_client = MagicMock()
         mock_client.aio.models.generate_content = AsyncMock(return_value=mock_response)
@@ -624,10 +636,13 @@ class TestLocalFileCaching:
     """Verify local file paths activate caching (via File API URI)."""
 
     async def test_local_file_session_creates_cache(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN a local file WHEN video_create_session(file_path=...) THEN returns cached status."""
         mock_gemini_client["generate"].return_value = "Local Video Title"
+        original = tmp_path / "test.mp4"
+        original.write_bytes(b"actual local session fixture")
+        digest = hashlib.sha256(original.read_bytes()).hexdigest()
 
         mock_cached = MagicMock()
         mock_cached.name = TEST_CACHE_NAME
@@ -639,23 +654,26 @@ class TestLocalFileCaching:
             patch(
                 "video_research_mcp.tools.video._video_file_uri",
                 new_callable=AsyncMock,
-                return_value=(FILE_API_URI, "abcdef1234567890"),
+                return_value=(FILE_API_URI, digest),
             ),
             patch("video_research_mcp.context_cache.GeminiClient.get", return_value=mock_client),
         ):
-            result = await video_create_session(file_path="/tmp/test.mp4")
+            result = await video_create_session(file_path=str(original))
 
         assert result["cache_status"] == "cached"
         assert result["source_type"] == "local"
-        assert result["local_filepath"] == str(Path("/tmp/test.mp4").resolve())
+        assert result["local_filepath"] == str(original.resolve())
         session = _mock_session_store.get(result["session_id"])
         assert session.cache_name == TEST_CACHE_NAME
 
     async def test_local_file_session_cache_failure_returns_reason(
-        self, mock_gemini_client, _mock_session_store
+        self, mock_gemini_client, _mock_session_store, tmp_path
     ):
         """GIVEN cache creation fails WHEN video_create_session(file_path=...) THEN returns reason."""
         mock_gemini_client["generate"].return_value = "Local Video Title"
+        original = tmp_path / "test.mp4"
+        original.write_bytes(b"actual local session fixture")
+        digest = hashlib.sha256(original.read_bytes()).hexdigest()
 
         mock_client = MagicMock()
         mock_client.aio.caches.create = AsyncMock(side_effect=Exception("Cache API down"))
@@ -664,20 +682,23 @@ class TestLocalFileCaching:
             patch(
                 "video_research_mcp.tools.video._video_file_uri",
                 new_callable=AsyncMock,
-                return_value=(FILE_API_URI, "abcdef1234567890"),
+                return_value=(FILE_API_URI, digest),
             ),
             patch("video_research_mcp.context_cache.GeminiClient.get", return_value=mock_client),
         ):
-            result = await video_create_session(file_path="/tmp/test.mp4")
+            result = await video_create_session(file_path=str(original))
 
         assert result["cache_status"] == "uncached"
         assert result["cache_reason"] != ""
-        assert result["local_filepath"] == str(Path("/tmp/test.mp4").resolve())
+        assert result["local_filepath"] == str(original.resolve())
         session = _mock_session_store.get(result["session_id"])
         assert session.cache_name == ""
 
-    async def test_video_analyze_prewarms_for_local_file(self, mock_gemini_client):
-        """GIVEN a local file with File API URI WHEN video_analyze THEN calls prewarm_cache."""
+    @pytest.mark.parametrize("use_cache", [True, False])
+    async def test_video_analyze_local_file_prewarm_respects_cache_choice(
+        self, mock_gemini_client, use_cache
+    ):
+        """GIVEN a File API URI THEN only cache-enabled analysis may prewarm."""
         from video_research_mcp.models.video import VideoResult
 
         mock_gemini_client["generate_structured"].return_value = VideoResult(
@@ -692,10 +713,10 @@ class TestLocalFileCaching:
             ),
             patch.object(cc_mod, "start_prewarm", return_value=MagicMock()) as mock_prewarm,
         ):
-            result = await video_analyze(file_path="/tmp/test.mp4", use_cache=False)
+            result = await video_analyze(file_path="/tmp/test.mp4", use_cache=use_cache)
 
         assert "error" not in result
-        mock_prewarm.assert_called_once()
+        assert mock_prewarm.call_count == int(use_cache)
 
     async def test_local_file_small_skips_prewarm(self, mock_gemini_client):
         """GIVEN a small local file (inline bytes, no URI) WHEN video_analyze THEN skips prewarm."""
@@ -743,8 +764,8 @@ class TestSessionResponseContract:
             await video_continue_session(session.session_id, "Second question")
 
         replay = client.aio.models.generate_content.call_args.kwargs["contents"]
-        assert replay[1] is signed
-        assert replay[1].parts[1].thought_signature == b"opaque-signature"
+        assert replay[2] is signed
+        assert replay[2].parts[1].thought_signature == b"opaque-signature"
 
     async def test_cache_preparation_error_becomes_tool_error(self, _mock_session_store):
         session = _mock_session_store.create(FILE_API_URI, "general")

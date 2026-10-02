@@ -4,384 +4,186 @@
 const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
-const { execSync } = require('child_process');
-
 const ui = require('./lib/ui');
-const { FILE_MAP, copyFiles, removeFiles, cleanEmptyDirs } = require('./lib/copy');
-const {
-  hashFile,
-  readManifest,
-  writeManifest,
-  deleteManifest,
-  computeActions,
-} = require('./lib/manifest');
-const { getConfigPath, mergeConfig, removeFromConfig, ensureEnvFile } = require('./lib/config');
-
+const { FILE_MAP, cleanEmptyDirs } = require('./lib/copy');
+const { hashFile, readManifest, computeActions } = require('./lib/manifest');
+const { getConfigPath, getEnvPath, readConfig, mergedConfig, MCP_SERVERS, entryHash, envTemplate } = require('./lib/config');
+const { guard, capture, runTransaction, restore, history, doctor, clientConfig } = require('./lib/onboarding');
 const VERSION = require('../package.json').version;
 
-// ---------------------------------------------------------------------------
-// CLI parsing
-// ---------------------------------------------------------------------------
-
+/** Parse bounded commands; read-only modes never prompt or mutate installation state. */
 function parseArgs(argv) {
-  const args = argv.slice(2);
-  return {
-    global: args.includes('--global'),
-    local: args.includes('--local'),
-    check: args.includes('--check'),
-    uninstall: args.includes('--uninstall'),
-    force: args.includes('--force'),
-    help: args.includes('--help') || args.includes('-h'),
-  };
+  const flags = {};
+  const booleans = ['global', 'local', 'check', 'doctor', 'uninstall', 'force', 'rollback', 'help'];
+  for (let i = 2; i < argv.length; i++) {
+    const name = argv[i] === '-h' ? 'help' : argv[i].slice(2);
+    if (!argv[i].startsWith('--') && argv[i] !== '-h') throw new Error('Unknown installer option');
+    if (booleans.includes(name)) flags[name] = true;
+    else if (['restore', 'client-config'].includes(name) && argv[i + 1] && !argv[i + 1].startsWith('--')) flags[name] = argv[++i];
+    else throw new Error('Unknown or incomplete installer option');
+  }
+  if (flags.global && flags.local) throw new Error('Choose one installation scope');
+  if (['check', 'doctor', 'uninstall', 'rollback', 'restore', 'client-config'].filter((key) => flags[key]).length > 1) {
+    throw new Error('Choose one installer operation');
+  }
+  return flags;
 }
 
 function showHelp() {
-  process.stderr.write(`
-video-research-mcp installer v${VERSION}
-
-Usage: npx video-research-mcp@latest [options]
-
-Options:
-  --global      Install globally to ~/.claude/
-  --local       Install locally to ./.claude/
-  --check       Show current install status
-  --uninstall   Remove installed files and config
-  --force       Overwrite user-modified files
-  --help, -h    Show this help
-
-Without flags, prompts for global vs local install.
-\n`);
+  process.stderr.write(`video-research-mcp installer v${VERSION}\n\n` +
+    'Usage: video-research-mcp [--global|--local] [operation]\n' +
+    '  (default)           Install/update owned workflows and the pinned core MCP entry\n' +
+    '  --doctor            Read-only runtime/key presence and recovery prerequisites\n' +
+    '  --check             Read-only installation hashes/checkpoint status\n' +
+    '  --client-config C   Print claude/cursor JSON or codex TOML; change no client\n' +
+    '  --rollback          Restore the latest operation, preserving later edits\n' +
+    '  --restore ID        Restore an exact private checkpoint, preserving later edits\n' +
+    '  --uninstall         Remove unchanged owned files/config; retain edits/backups/env\n' +
+    '  --force             Explicitly replace modified workflow assets during install\n' +
+    '  --help, -h          Show help\n');
 }
-
-// ---------------------------------------------------------------------------
-// Prompts & checks
-// ---------------------------------------------------------------------------
 
 async function promptMode() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stderr,
-  });
-  return new Promise((resolve) => {
-    process.stderr.write('Install mode:\n');
-    process.stderr.write('  1) Global (~/.claude/) \u2014 available in all projects\n');
-    process.stderr.write('  2) Local  (./.claude/) \u2014 this project only\n\n');
-    rl.question('Choice [1]: ', (answer) => {
-      rl.close();
-      resolve(answer.trim() === '2' ? 'local' : 'global');
-    });
-  });
+  const rl = readline.createInterface({ input: process.stdin, output: process.stderr });
+  return new Promise((resolve) => rl.question('Install globally [1] or in this project [2]? ', (answer) => {
+    rl.close(); resolve(answer.trim() === '2' ? 'local' : 'global');
+  }));
 }
 
-/** Check for uv and python3 — warn if missing, never block. */
-function checkPrereqs() {
-  const checks = [];
-  // Safe: hardcoded commands, no user input
-  try {
-    execSync('uv --version', { stdio: 'pipe' });
-    checks.push({ name: 'uv', ok: true });
-  } catch {
-    checks.push({
-      name: 'uv',
-      ok: false,
-      hint: 'Install from https://docs.astral.sh/uv/',
-    });
-  }
-  try {
-    execSync('python3 --version', { stdio: 'pipe' });
-    checks.push({ name: 'python3', ok: true });
-  } catch {
-    checks.push({ name: 'python3', ok: false, hint: 'Python >= 3.11 required' });
-  }
-  return checks;
-}
-
-// ---------------------------------------------------------------------------
-// Paths
-// ---------------------------------------------------------------------------
-
-function getHomeDir() {
+function homeDir() {
   const home = process.env.HOME || process.env.USERPROFILE;
-  if (!home) {
-    throw new Error(
-      'Cannot determine home directory: HOME and USERPROFILE are both unset',
-    );
-  }
+  if (!home) throw new Error('Home directory is unavailable');
   return home;
 }
 
-function getTargetDir(mode) {
-  if (mode === 'global') {
-    return path.join(getHomeDir(), '.claude');
-  }
-  return path.join(process.cwd(), '.claude');
+function targetDir(mode) {
+  return path.join(mode === 'global' ? homeDir() : process.cwd(), '.claude');
 }
 
-function getSourceDir() {
-  return path.resolve(__dirname, '..');
+/** Bound package/user workflow files before the existing hash/action planner reads them. */
+function preflightFiles(source, target, manifest) {
+  const paths = [...Object.keys(FILE_MAP).map((rel) => path.join(source, rel)),
+    ...new Set([...Object.values(FILE_MAP), ...Object.keys(manifest.files)])].map((value) =>
+      path.isAbsolute(value) ? value : path.join(target, value));
+  for (const file of paths) {
+    try { if (fs.statSync(file).size > 16 * 1024 * 1024) throw new Error('Workflow exceeds installer size bound'); }
+    catch (err) { if (err.code !== 'ENOENT') throw err; }
+  }
 }
 
-// ---------------------------------------------------------------------------
-// Status
-// ---------------------------------------------------------------------------
+/** Identify managed files without displaying local contents, endpoints or credentials. */
+function status(mode) {
+  const target = targetDir(mode); guard(path.join(target, 'gr-file-manifest.json'), target);
+  capture(path.join(target, 'gr-file-manifest.json'));
+  const manifest = readManifest(target);
+  preflightFiles(path.resolve(__dirname, '..'), target, manifest);
+  return { mode, installed: Boolean(manifest.installedAt), package_version: VERSION,
+    files: Object.fromEntries(Object.entries(manifest.files).map(([rel, entry]) =>
+      [rel, { installed_sha256: entry.hash, current_sha256: hashFile(path.join(target, rel)) }])),
+    configuration_sha256: hashFile(getConfigPath(mode)), checkpoints: history(target) };
+}
 
-function showStatus(mode) {
-  const targetDir = getTargetDir(mode);
-  const manifest = readManifest(targetDir);
-
-  if (!manifest.installedAt) {
-    ui.info(`No ${mode} installation found`);
-    return;
+/** Plan assets/config/template before writing anything; ownership is never inferred from equal bytes. */
+function install(mode, force = false) {
+  const source = path.resolve(__dirname, '..'), target = targetDir(mode), configPath = getConfigPath(mode);
+  guard(path.join(target, 'gr-file-manifest.json'), target);
+  const manifestInput = capture(path.join(target, 'gr-file-manifest.json'));
+  const manifest = readManifest(target);
+  preflightFiles(source, target, manifest);
+  const expectedBefore = Object.fromEntries([...new Set([...Object.values(FILE_MAP), ...Object.keys(manifest.files)])]
+    .map((rel) => [rel, hashFile(path.join(target, rel))]));
+  expectedBefore['@manifest'] = manifestInput.hash;
+  expectedBefore['@config'] = capture(configPath).hash;
+  const actions = computeActions(source, target, FILE_MAP, manifest, force);
+  const beforeConfig = readConfig(configPath), afterConfig = mergedConfig(beforeConfig, manifest.config_entries || {}, mode);
+  const operations = {}, files = {}, ownedEntries = {};
+  for (const action of actions.toCopy) {
+    const artifact = capture(path.join(source, action.src));
+    operations[action.dest] = Buffer.from(artifact.bytes, 'base64');
+    files[action.dest] = { hash: artifact.hash };
   }
+  for (const action of actions.toSkip) {
+    if (manifest.files[action.dest]) files[action.dest] = manifest.files[action.dest];
+  }
+  for (const action of actions.toRemove) operations[action.dest] = null;
+  for (const name of Object.keys(MCP_SERVERS)) {
+    const before = beforeConfig?.mcpServers?.[name];
+    if (before === undefined || entryHash(before) === manifest.config_entries?.[name]) {
+      ownedEntries[name] = entryHash(afterConfig.mcpServers[name]);
+    }
+  }
+  if (JSON.stringify(beforeConfig) !== JSON.stringify(afterConfig)) operations['@config'] = JSON.stringify(afterConfig, null, 2) + '\n';
+  const envPath = getEnvPath(mode); guard(envPath, path.dirname(configPath));
+  const env = capture(envPath), currentEnv = env.bytes === null ? '' : Buffer.from(env.bytes, 'base64').toString('utf8');
+  expectedBefore['@env'] = env.hash;
+  if (envTemplate(currentEnv) !== currentEnv) operations['@env'] = envTemplate(currentEnv);
+  operations['@manifest'] = JSON.stringify({ version: VERSION, mode, installedAt: new Date().toISOString(),
+    package_sha256: hashFile(path.join(source, 'package.json')), files, config_entries: ownedEntries }, null, 2) + '\n';
+  const receipt = runTransaction(mode, target, 'install-or-update', operations, expectedBefore);
+  receipt.preserved_workflow_files = actions.toSkip.filter((action) => action.reason.startsWith('user modified')).length;
+  receipt.configuration_sha256 = hashFile(configPath);
+  receipt.configured_entry_preserved = Boolean(beforeConfig?.mcpServers?.['video-research'] && !ownedEntries['video-research']);
+  return receipt;
+}
 
-  ui.header(`${mode} installation`);
-  ui.step(`Version:   ${manifest.version || 'unknown'}`);
-  ui.step(`Installed: ${manifest.installedAt}`);
-  ui.step(`Mode:      ${manifest.mode || mode}`);
-  ui.step(`Files:     ${Object.keys(manifest.files).length}`);
-
-  let modified = 0;
+/** Uninstall only unchanged owned entries; shared credentials and recovery snapshots remain private. */
+function uninstall(mode) {
+  const target = targetDir(mode); guard(path.join(target, 'gr-file-manifest.json'), target);
+  const manifestInput = capture(path.join(target, 'gr-file-manifest.json'));
+  const manifest = readManifest(target);
+  if (!manifest.installedAt) return { operation: 'uninstall', mode, state: 'no-installation' };
+  preflightFiles(path.resolve(__dirname, '..'), target, manifest);
+  const operations = {}, retained = {}, expectedBefore = { '@manifest': manifestInput.hash };
   for (const [rel, entry] of Object.entries(manifest.files)) {
-    const currentHash = hashFile(path.join(targetDir, rel));
-    if (currentHash && currentHash !== entry.hash) modified++;
+    const current = hashFile(path.join(target, rel));
+    expectedBefore[rel] = current;
+    if (current && current === entry.hash) operations[rel] = null;
+    else if (current) retained[rel] = entry;
   }
-  if (modified > 0) ui.warn(`${modified} file(s) modified since install`);
-}
-
-// ---------------------------------------------------------------------------
-// Install
-// ---------------------------------------------------------------------------
-
-async function install(mode, force) {
-  const sourceDir = getSourceDir();
-  const targetDir = getTargetDir(mode);
   const configPath = getConfigPath(mode);
-
-  ui.header(`video-research-mcp v${VERSION}`);
-
-  // Prerequisites
-  const prereqs = checkPrereqs();
-  for (const p of prereqs) {
-    if (p.ok) {
-      ui.success(`${p.name} found`);
-    } else {
-      ui.warn(`${p.name} not found \u2014 ${p.hint}`);
+  expectedBefore['@config'] = capture(configPath).hash;
+  const existing = readConfig(configPath);
+  if (existing?.mcpServers) {
+    const cleaned = structuredClone(existing);
+    for (const [name, hash] of Object.entries(manifest.config_entries || {})) {
+      if (Object.hasOwn(MCP_SERVERS, name) && entryHash(cleaned.mcpServers[name]) === hash) delete cleaned.mcpServers[name];
     }
+    if (JSON.stringify(cleaned) !== JSON.stringify(existing)) operations['@config'] = JSON.stringify(cleaned, null, 2) + '\n';
   }
-  ui.blank();
-
-  // Compute actions
-  const manifest = readManifest(targetDir);
-  const actions = computeActions(sourceDir, targetDir, FILE_MAP, manifest, force);
-
-  // Copy files
-  if (actions.toCopy.length > 0) {
-    copyFiles(sourceDir, targetDir, actions.toCopy);
-    for (const a of actions.toCopy) {
-      ui.success(`${a.reason === 'new' ? 'Added' : 'Updated'} ${a.dest}`);
-    }
-  }
-
-  // Report user-modified skips
-  for (const s of actions.toSkip) {
-    if (s.reason === 'user modified') {
-      ui.warn(`Skipped ${s.dest} (user modified \u2014 use --force to overwrite)`);
-    }
-  }
-
-  // Remove obsolete files
-  if (actions.toRemove.length > 0) {
-    removeFiles(targetDir, actions.toRemove);
-    for (const r of actions.toRemove) {
-      ui.info(`Removed obsolete ${r.dest}`);
-    }
-  }
-
-  // Merge MCP config — degrade gracefully so the manifest is still written
-  try {
-    mergeConfig(configPath);
-    ui.success(`MCP config updated: ${configPath}`);
-  } catch (err) {
-    ui.warn(`MCP config not updated: ${err.message}`);
-  }
-
-  // Ensure shared env file exists
-  try {
-    const envResult = ensureEnvFile();
-    if (envResult?.created) {
-      ui.success(`Created config template: ${envResult.path}`);
-    } else if (envResult?.added > 0) {
-      ui.success(`Added ${envResult.added} new key(s) to ${envResult.path}`);
-    }
-  } catch {
-    // Non-fatal — server works without it
-  }
-
-  // Write manifest — preserve old hash for user-modified files so uninstall
-  // can still detect the modification and skip removal.
-  const userModified = new Set(
-    actions.toSkip.filter((s) => s.reason.startsWith('user modified')).map((s) => s.dest),
-  );
-  const newManifest = {
-    version: VERSION,
-    mode,
-    installedAt: new Date().toISOString(),
-    files: {},
-  };
-  for (const destRel of userModified) {
-    if (manifest.files[destRel]) newManifest.files[destRel] = manifest.files[destRel];
-  }
-  for (const destRel of Object.values(FILE_MAP)) {
-    if (!userModified.has(destRel)) {
-      const hash = hashFile(path.join(targetDir, destRel));
-      if (hash) newManifest.files[destRel] = { hash };
-    }
-  }
-  writeManifest(targetDir, newManifest);
-
-  // Summary
-  ui.blank();
-  const upToDate = actions.toSkip.filter((s) => s.reason === 'up to date').length;
-  const userMod = actions.toSkip.filter((s) => s.reason === 'user modified').length;
-  ui.step(
-    `${actions.toCopy.length} copied, ${upToDate} up to date, ` +
-    `${userMod} user-modified, ${actions.toRemove.length} removed`,
-  );
-  ui.blank();
-
-  // Next steps
-  ui.header('Next steps');
-  let stepNum = 1;
-  if (!process.env.GEMINI_API_KEY) {
-    ui.step(`${stepNum}. Get a Gemini API key (free):`);
-    ui.step('   https://aistudio.google.com/apikey');
-    ui.blank();
-    stepNum++;
-    ui.step(`${stepNum}. Paste it in the config file:`);
-    ui.step('   ~/.config/video-research-mcp/.env');
-    ui.step('   (Credentials stay in local config and authenticate provider requests)');
-    ui.blank();
-    stepNum++;
-  }
-  ui.step(`${stepNum}. Restart Claude Code, then run:`);
-  ui.step('   /gr:getting-started');
-  ui.blank();
-  ui.step('   This will verify your setup and show you what\'s available.');
-  ui.blank();
+  operations['@manifest'] = Object.keys(retained).length ? JSON.stringify({ ...manifest, files: retained,
+    config_entries: {} }, null, 2) + '\n' : null;
+  const receipt = runTransaction(mode, target, 'uninstall', operations, expectedBefore);
+  cleanEmptyDirs(target, Object.keys(manifest.files).map((rel) => path.dirname(rel)));
+  return { ...receipt, preserved_workflow_files: Object.keys(retained).length, shared_credentials_retained: true };
 }
-
-// ---------------------------------------------------------------------------
-// Uninstall
-// ---------------------------------------------------------------------------
-
-async function uninstall(mode) {
-  const targetDir = getTargetDir(mode);
-  const configPath = getConfigPath(mode);
-  const manifest = readManifest(targetDir);
-
-  if (!manifest.installedAt) {
-    ui.info(`No ${mode} installation found`);
-    return;
-  }
-
-  ui.header(`Uninstalling video-research-mcp (${mode})`);
-
-  let removed = 0;
-  let skipped = 0;
-  const retainedFiles = {};
-  const dirsToClean = new Set();
-
-  for (const [destRel, entry] of Object.entries(manifest.files)) {
-    const destPath = path.join(targetDir, destRel);
-    const currentHash = hashFile(destPath);
-
-    if (!currentHash) continue;
-
-    if (currentHash !== entry.hash) {
-      ui.warn(`Kept ${destRel} (user modified)`);
-      skipped++;
-      retainedFiles[destRel] = entry;
-    } else {
-      try {
-        fs.unlinkSync(destPath);
-        ui.success(`Removed ${destRel}`);
-        removed++;
-        dirsToClean.add(path.dirname(destRel));
-      } catch {
-        skipped++;
-        retainedFiles[destRel] = entry;
-      }
-    }
-  }
-
-  cleanEmptyDirs(targetDir, [...dirsToClean]);
-
-  // Remove MCP config entries
-  try {
-    if (removeFromConfig(configPath)) {
-      ui.success(`MCP config cleaned: ${configPath}`);
-    }
-  } catch {
-    // Config file might not exist
-  }
-
-  if (skipped > 0) {
-    writeManifest(targetDir, { ...manifest, files: retainedFiles });
-  } else {
-    deleteManifest(targetDir);
-  }
-
-  ui.blank();
-  ui.step(`${removed} removed, ${skipped} kept`);
-  ui.blank();
-}
-
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
 
 async function main() {
   const flags = parseArgs(process.argv);
-
-  if (flags.help) {
-    showHelp();
-    return;
-  }
-
+  if (flags.help) { showHelp(); return; }
+  if (flags['client-config']) { process.stdout.write(clientConfig(flags['client-config'])); return; }
+  let mode = flags.local ? 'local' : 'global';
   if (flags.check) {
-    showStatus('global');
-    showStatus('local');
-    return;
+    const scopes = flags.global || flags.local ? [mode] : ['global', 'local'];
+    process.stdout.write(JSON.stringify(scopes.map(status), null, 2) + '\n'); return;
   }
-
-  // Determine mode
-  let mode;
-  if (flags.global) {
-    mode = 'global';
-  } else if (flags.local) {
-    mode = 'local';
-  } else if (flags.uninstall) {
-    // Uninstall without mode flag: clean up whichever installations exist
-    const globalManifest = readManifest(getTargetDir('global'));
-    const localManifest = readManifest(getTargetDir('local'));
-    if (globalManifest.installedAt) await uninstall('global');
-    if (localManifest.installedAt) await uninstall('local');
-    if (!globalManifest.installedAt && !localManifest.installedAt) {
-      ui.info('No installation found');
-    }
-    return;
-  } else {
-    mode = await promptMode();
+  if (flags.doctor) {
+    process.stdout.write(JSON.stringify(doctor(mode, targetDir(mode), path.resolve(__dirname, '..')), null, 2) + '\n'); return;
   }
-
-  if (flags.uninstall) {
-    await uninstall(mode);
-  } else {
-    await install(mode, flags.force);
-  }
+  if (!flags.global && !flags.local && !flags.uninstall && !flags.rollback && !flags.restore) mode = await promptMode();
+  let receipt;
+  if (flags.rollback || flags.restore) {
+    const records = history(targetDir(mode));
+    const id = flags.restore || records.at(-1)?.id;
+    receipt = restore(mode, targetDir(mode), id);
+  } else if (flags.uninstall) receipt = uninstall(mode);
+  else receipt = install(mode, flags.force);
+  process.stdout.write(JSON.stringify(receipt, null, 2) + '\n');
+  ui.success(`${receipt.state}: local operation recorded; use --doctor to inspect prerequisites.`);
 }
 
-main().catch((err) => {
-  ui.error(err.message);
-  process.exit(1);
+if (require.main === module) main().catch(() => {
+  ui.error('Installer failed safely. Check configuration/ownership paths or restore an interrupted checkpoint; diagnostic values are withheld.');
+  process.exitCode = 1;
 });
+
+module.exports = { parseArgs, install, uninstall, status, main };

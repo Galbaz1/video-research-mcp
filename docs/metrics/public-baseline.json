@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+  "frozen_from_worktree_head": "d541d5438ad753aaa3dc66bb04ab61ec2bf145e9",
+  "frozen_at": "2026-09-30T11:06:12Z",
+  "tool_contracts_path": "docs/metrics/public-baseline-tool-contracts.json",
+  "tool_contracts_sha256": "d861389f72debb2d2cd68e500428d7165e5d89d4313f0934ec60ef8bdea99791",
+  "tool_counts": {
+    "root": 34,
+    "explainer": 15,
+    "agent": 2
+  },
+  "published_root_manifest": {
+    "path": "docs/metrics/tool-contract-manifest.json",
+    "sha256": "e17c61456ac798fc29467eb5fc8ff690b7d11e2da76e82199f2aaed8351c9868",
+    "matches_actual_source_discovery": true
+  },
+  "source_evidence": {
+    "uv.lock": {
+      "sha256": "69153a456ce80a812ff47fbc9e98a6d55e9a6301dcf6e5d96e378b43fc1dd155"
+    },
+    "packages/video-explainer-mcp/uv.lock": {
+      "sha256": "0be8c03093dfa1ca78356bb3f99dfa5ee33480aba7821ceb60ea64730b231120"
+    },
+    "packages/video-agent-mcp/uv.lock": {
+      "sha256": "a041de01a7b46991a12fc1b77f6c46deb0c87dcee4d31f8e89cdad39a37769d1"
+    },
+    "pyproject.toml": {
+      "sha256": "b154700c918b08e97535b80aa925bf4af197aeadf433f5997c977830ba4808c4"
+    },
+    "packages/video-explainer-mcp/pyproject.toml": {
+      "sha256": "803e65eb79fc78905186616d76e79ca711c62bf612739a090d26477866d75b56"
+    },
+    "packages/video-agent-mcp/pyproject.toml": {
+      "sha256": "e62438c2d96db0875e9e39600df39023cc26c36db6eef0526967981d4f609335"
+    },
+    "package.json": {
+      "sha256": "ca078cc6521773d1536d78711975ec99572ba508fafc948301d2e52b33a76ee8"
+    },
+    ".claude-plugin/plugin.json": {
+      "sha256": "093d1f60028b44355e92e8342cf7412aef4047f14346446c720a03dbeb9fd2b1"
+    },
+    "docs/metrics/tool-contract-manifest.json": {
+      "sha256": "e17c61456ac798fc29467eb5fc8ff690b7d11e2da76e82199f2aaed8351c9868"
+    },
+    "docs/RELEASE_CHECKLIST.md": {
+      "sha256": "d74d674aa32d10f754144c0c1e9b42f96320f5a13004e865f94d7b716045a60d"
+    },
+    "docs/PUBLISHING.md": {
+      "sha256": "7dd5f6d7b747ce5c0e594dd0058c776a29724201fb419b1088cdc6e4ba3a84e2"
+    },
+    ".github/workflows/ci.yml": {
+      "sha256": "72cc4cb5752123eff2b5d18fb2121b1ee3286e8026a435950764d5cd7822a1e6"
+    },
+    ".github/workflows/release.yml": {
+      "sha256": "887184bd30cb1ce3e1c37134982d9c62df5c30305450d6099529a95c02e34f1e"
+    },
+    "scripts/run_security_smoke.sh": {
+      "sha256": "053cf042874de826d2e44bb04ea1a3f1993ccc250c9613a72bb04d77823b3a1b"
+    },
+    "scripts/run_live_tool_security_checks.py": {
+      "sha256": "c61ec233240b211218b40224003b1956158762b840c033b7d5c96817be9a1b52"
+    },
+    "scripts/check_release.py": {
+      "sha256": "0f89fe306995edf0101a6074b52b88c237f6f640e65341d3be177157bffd513d"
+    },
+    "scripts/smoke_built_mcp.py": {
+      "sha256": "366b97d27896ec281c38e20eec2949f6134fcc4ad755a76807e9e6b4d050ee27"
+    },
+    "src/video_research_mcp/url_policy.py": {
+      "sha256": "d51ee068da98c5d20088e40b652c8fe2026e9f870cc99943236c3ac6c8ce8581"
+    },
+    "src/video_research_mcp/local_path_policy.py": {
+      "sha256": "6fac22c471c1f41a0e91ce5e24f5b6e10ff255c0b7fe880cf2b7ed9f5d1625c5"
+    },
+    "src/video_research_mcp/schema_guard.py": {
+      "sha256": "11691c1e60c99fc34c4dc56b84bbfcf2694f244e58b47aa2e4b8cf4c2abfa676"
+    },
+    "src/video_research_mcp/retry.py": {
+      "sha256": "7dd6468911f9df1e261e375314e04cf8a3cfb9512b37762e9160dd0d950a5387"
+    },
+    "src/video_research_mcp/validation.py": {
+      "sha256": "6ec7a16938df58c424618f03da58abb46cdfee51730e800711e797f1acf4e499"
+    },
+    "src/video_research_mcp/tools/infra.py": {
+      "sha256": "ca66307add613228fe5e1cbbc9bbabf2fd731ed0fd81d1cc91f2294663cb704c"
+    },
+    "src/video_research_mcp/tools/video_cache.py": {
+      "sha256": "97f3305d5c45590485f4e0692b575c161da63b9d3e9220187a0b6d16890a57fc"
+    },
+    "src/video_research_mcp/tools/video_file.py": {
+      "sha256": "21a3a44207e96fce6a02cf80411b209e2021a5a9b4fa987636f53b19b68831b2"
+    },
+    "src/video_research_mcp/cache.py": {
+      "sha256": "d42ed03e2c3ee71134184c8baa8aa551e7aa4d992810054b8e4e8f3dfcd4f94c"
+    },
+    "src/video_research_mcp/context_cache.py": {
+      "sha256": "87f678f73413b34e196c723ea9c08d609bcb73cf298917f3038be70a08211158"
+    },
+    "src/video_research_mcp/tools/youtube_download.py": {
+      "sha256": "92a16afb1739c60de1a2aa2b655b1a1dafaacf18ca7837bd5330140ba45ff9f8"
+    },
+    "src/video_research_mcp/tools/content.py": {
+      "sha256": "48bc72a31e966287b8af7dc9f33e3d19efe7b170084cf7869b0c6da9607a700b"
+    },
+    "tests/test_url_policy.py": {
+      "sha256": "1f8fb0a997db26d18e98075b0e67e764edfcd6156190c61235d64fa8567e70fa"
+    },
+    "tests/test_video_file.py": {
+      "sha256": "43c2d22248c03e7b13b2701aa683fe41a8d6a8706a262776e17825eb140b5928"
+    },
+    "tests/test_policy_inheritance.py": {
+      "sha256": "f6c1010f8425176e8e859c9470b070a931036d36174843c40d8dfb617c9936f8"
+    },
+    "tests/test_content_tools.py": {
+      "sha256": "eb60c5f44ae744226c5e0f3058a20ebf30cddd9d6341dd94e3b1d0d4b6e2de93"
+    },
+    "tests/test_infra_tools.py": {
+      "sha256": "5ba5a21e6dbf1dad0bd425946e5adca3df6af1fe69836d7711eaf5b5ebc99282"
+    },
+    "tests/test_research_document_tools.py": {
+      "sha256": "7497c08b069b2abe0878d7af50b073388a96bcfffb35ee868f826dd70f95549f"
+    },
+    "tests/test_content_batch_tools.py": {
+      "sha256": "c6376f05bb985edee640c534ae67ae5fbc39cf7baad91f6be1d7ee34cad06a15"
+    },
+    "tests/installer.test.js": {
+      "sha256": "3cf5a893df831ede6db7d32cfe07de8927dcf434cbab18f8b8abf664e1d5bae8"
+    }
+  },
+  "baseline_locks": {
+    "uv.lock": "69153a456ce80a812ff47fbc9e98a6d55e9a6301dcf6e5d96e378b43fc1dd155",
+    "packages/video-explainer-mcp/uv.lock": "0be8c03093dfa1ca78356bb3f99dfa5ee33480aba7821ceb60ea64730b231120",
+    "packages/video-agent-mcp/uv.lock": "a041de01a7b46991a12fc1b77f6c46deb0c87dcee4d31f8e89cdad39a37769d1"
+  },
+  "current_locks_at_freeze": {
+    "uv.lock": "69153a456ce80a812ff47fbc9e98a6d55e9a6301dcf6e5d96e378b43fc1dd155",
+    "packages/video-explainer-mcp/uv.lock": "0be8c03093dfa1ca78356bb3f99dfa5ee33480aba7821ceb60ea64730b231120",
+    "packages/video-agent-mcp/uv.lock": "a041de01a7b46991a12fc1b77f6c46deb0c87dcee4d31f8e89cdad39a37769d1"
+  },
+  "package_versions": {
+    "root": "0.7.1",
+    "explainer": "0.2.1",
+    "agent": "0.2.1"
+  },
+  "protected_originals": {
+    "manifest": {
+      "path": "/Users/fausto_home/.local/state/writing-mastery/work/video-research-docs-2026-09-29/protected.json",
+      "sha256": "8992e66f340a8bb2e9b09d23ca0bc2f90bd297ae3c737a528fadf15ea441c16f"
+    },
+    "files": [
+      {
+        "path": "/Users/fausto_home/Coding/video-research-mcp/docs/metrics/installer-state-matrix.json",
+        "sha256": "dce4c4a00aa5a6a39176dd558b7c214d1401ff147c7ffc42d88733d0713bd317"
+      },
+      {
+        "path": "/Users/fausto_home/Coding/video-research-mcp/docs/update-plugin.md",
+        "sha256": "deee3e89fd6ad042df8a7132a1af174854a05d8be9e1ffd90b82debbf22105c1"
+      },
+      {
+        "path": "/Users/fausto_home/Coding/video-research-mcp/AGENTS.md",
+        "sha256": "877be0c5d1733b8b79abe86ec2c8ae6ea3b4fe990d953c81b35b7857b0cb2549"
+      },
+      {
+        "path": "/Users/fausto_home/Coding/video-research-mcp/CLAUDE.md",
+        "sha256": "b70c7594b4af1ff991cab15ef07e27cf2aa0ef2c317587cd0b25bf8a83fc72f5"
+      },
+      {
+        "path": "/Users/fausto_home/Coding/video-research-mcp/CODE_OF_CONDUCT.md",
+        "sha256": "e20783cf38009bf25f4d4a1435e3eb347f4a413b3cc1ed07a2b14c2d3cfd3d98"
+      }
+    ],
+    "checkout": {
+      "path": "/Users/fausto_home/Coding/video-research-mcp",
+      "head": "bd980e834929c291ca3766180fb1a44d1f615efd",
+      "branch": "feat/local-video-windowing",
+      "dirty_files": [
+        "docs/metrics/installer-state-matrix.json",
+        "docs/update-plugin.md"
+      ]
+    }
+  },
+  "required_commands": [
+    {
+      "cwd": ".",
+      "command": "uv sync --locked --extra dev"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked pytest tests/ -q"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py"
+    },
+    {
+      "cwd": "packages/video-explainer-mcp",
+      "command": "uv sync --locked --extra dev"
+    },
+    {
+      "cwd": "packages/video-explainer-mcp",
+      "command": "uv run --locked pytest tests/ -q"
+    },
+    {
+      "cwd": "packages/video-explainer-mcp",
+      "command": "uv run --locked ruff check src/ tests/"
+    },
+    {
+      "cwd": "packages/video-agent-mcp",
+      "command": "uv sync --locked --extra dev"
+    },
+    {
+      "cwd": "packages/video-agent-mcp",
+      "command": "uv run --locked pytest tests/ -q"
+    },
+    {
+      "cwd": "packages/video-agent-mcp",
+      "command": "uv run --locked ruff check src/ tests/"
+    },
+    {
+      "cwd": ".",
+      "command": "node --test tests/installer.test.js"
+    },
+    {
+      "cwd": ".",
+      "command": "./scripts/run_security_smoke.sh"
+    },
+    {
+      "cwd": ".",
+      "command": "PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked python scripts/export_tool_contract_manifest.py --output /tmp/video-research-tools.json"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked python scripts/check_release.py"
+    },
+    {
+      "cwd": ".",
+      "command": "npm pack --dry-run"
+    },
+    {
+      "cwd": ".",
+      "command": "release_dir=\"$(mktemp -d)\""
+    },
+    {
+      "cwd": ".",
+      "command": "uv build --out-dir \"$release_dir\""
+    },
+    {
+      "cwd": ".",
+      "command": "uv build --project packages/video-explainer-mcp --out-dir \"$release_dir\""
+    },
+    {
+      "cwd": ".",
+      "command": "uv build --project packages/video-agent-mcp --out-dir \"$release_dir\""
+    },
+    {
+      "cwd": ".",
+      "command": "npm pack --pack-destination \"$release_dir\""
+    },
+    {
+      "cwd": ".",
+      "command": "uvx --from twine twine check \"$release_dir\"/*.whl \"$release_dir\"/*.tar.gz"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked python scripts/smoke_built_mcp.py \"$release_dir\"/video_research_mcp-*.whl"
+    },
+    {
+      "cwd": ".",
+      "command": "uv build"
+    },
+    {
+      "cwd": ".",
+      "command": "uv run --locked python scripts/smoke_built_mcp.py dist/*.whl"
+    }
+  ],
+  "full_gate_criteria_sources": {
+    "docs/RELEASE_CHECKLIST.md": {
+      "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+      "sha256": "d74d674aa32d10f754144c0c1e9b42f96320f5a13004e865f94d7b716045a60d",
+      "text": "# Release Checklist\n\nUse this checklist on the final release source. Record its commit, versions,\nartifact hashes, and intended destinations. GitHub, PyPI, and npm publication\nhave separate verified outcomes. Commands run from the repository root unless\na different directory is specified.\n\n## Pre-release\n\n- [ ] Scope is explicit: core, companions, installer, and intended registries.\n- [ ] Root environment/tests pass: `uv sync --locked --extra dev`, then\n  `uv run --locked pytest tests/ -q`.\n- [ ] Root lint passes:\n  `uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py`.\n- [ ] In each companion directory, run `uv sync --locked --extra dev`,\n  `uv run --locked pytest tests/ -q`, and `uv run --locked ruff check src/ tests/`.\n- [ ] Installer journeys pass: `node --test tests/installer.test.js`.\n- [ ] Security smoke passes: `./scripts/run_security_smoke.sh`.\n- [ ] Offline tool security checks pass:\n  `PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py`.\n- [ ] Export actual core registrations with\n  `uv run --locked python scripts/export_tool_contract_manifest.py --output /tmp/video-research-tools.json`\n  and compare with the documented surface.\n- [ ] Core versions match in `pyproject.toml`, `package.json`, and\n  `.claude-plugin/plugin.json`; `CHANGELOG.md` has the matching release section.\n- [ ] Companion versions match the releases being prepared.\n- [ ] Release contract passes: `uv run --locked python scripts/check_release.py`.\n- [ ] `npm pack --dry-run` includes mapped workflows and their referenced resources.\n- [ ] Build approved packages into a fresh directory using\n  [Publishing](PUBLISHING.md#pre-publish-checklist). Python metadata checks pass.\n- [ ] The exact core wheel passes `scripts/smoke_built_mcp.py`: tool discovery and\n  read-only configuration work over stdio without provider requests.\n- [ ] Archive hashes are recorded and no stale archive enters the release.\n\nHosted CI covers the root on Python 3.11–3.14 and both companions on 3.11 and 3.14.\nInspect its result for the exact release source. Hosted AI review is a separate\ncheck; a green local suite does not establish that it ran.\n\n## Registry publish (only when authorized)\n\n- [ ] Registry ownership/authentication is verified without disclosing tokens.\n- [ ] Optional TestPyPI staging is completed or explicitly omitted.\n- [ ] Only approved Python archives are uploaded to PyPI.\n- [ ] The exact npm archive is published with the intended dist-tag.\n- [ ] Each version and archive identity is verified at its registry.\n- [ ] Partial publication is recorded; retries use the same verified artifacts.\n\n## Source release and post-publication verification\n\n- [ ] The source tag points to the verified commit and matches the core version.\n- [ ] The exact release workflow succeeds; notes, prerelease/latest status, and\n  all approved assets/hashes are correct on the GitHub release.\n- [ ] The exact registry core wheel passes stdio discovery/configuration smoke.\n- [ ] Each published companion resolves and exposes its expected tools.\n- [ ] The registry npm installer executes `--check`; isolated journeys cover\n  install, upgrade, preservation, and uninstall behavior.\n- [ ] The client is restarted; active registration/version is inspected and\n  `infra_configure()` is read without arguments.\n- [ ] Authorized live provider smoke is recorded, or live inference remains\n  explicitly unverified.\n\nRetain failed gates and unresolved stages in the release record. Claim completion\nonly for destinations whose final artifacts and runtime checks are verified.\nSee [Publishing](PUBLISHING.md) for commands and recovery guidance.\n"
+    },
+    "docs/PUBLISHING.md": {
+      "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+      "sha256": "7dd5f6d7b747ce5c0e594dd0058c776a29724201fb419b1088cdc6e4ba3a84e2",
+      "text": "# Publishing Guide\n\nPublish the archives built from the verified release source, then verify each\ndestination separately. A GitHub source release, a PyPI upload, and an npm upload\nare distinct outcomes. The release workflow creates GitHub releases; it does not\nupload to PyPI or npm.\n\n| Destination | Package | Contents |\n| --- | --- | --- |\n| npm | `video-research-mcp` | Claude Code installer, commands, skills, agents |\n| PyPI | `video-research-mcp` | Research MCP runtime |\n| PyPI | `video-explainer-mcp` | Wrapper for a separately installed upstream renderer |\n| PyPI | `video-agent-mcp` | Claude Agent SDK scene generator |\n| GitHub Releases | Tagged source release | Python wheels/sdists and npm installer archive |\n\nPublishing requires explicit release authority and authenticated access to the\nchosen destinations. Supply credentials through the environment or credential\nstore; keep tokens out of commands, notes, and logs. Identify the exact source\ncommit, versions, and destinations before building.\n\n## Version sync policy\n\nThe root [`pyproject.toml`](../pyproject.toml) is the core version authority.\nKeep it identical to [`package.json`](../package.json) and\n[`.claude-plugin/plugin.json`](../.claude-plugin/plugin.json). Add a matching\nsection to [CHANGELOG.md](../CHANGELOG.md).\n\nCompanions have independent versions in their own `pyproject.toml` files. Check\ncore version agreement and installer mappings with:\n\n```sh\nuv run --locked python scripts/check_release.py\n```\n\nThis verifies the core manifests, changelog heading, mapped source files, and\nunique destinations. It does not verify registry state or replace tests/builds.\n\n## Pre-publish checklist\n\nComplete the [Release Checklist](RELEASE_CHECKLIST.md) on the final release\nsource. It covers locked environments, mocked tests, lint, isolated installer\njourneys, offline security checks, tool discovery, and package contents.\n\nBuild into a fresh directory to exclude stale archives. Run these commands from\nthe repository root in one shell session:\n\n```sh\nrelease_dir=\"$(mktemp -d)\"\nuv build --out-dir \"$release_dir\"\nuv build --project packages/video-explainer-mcp --out-dir \"$release_dir\"\nuv build --project packages/video-agent-mcp --out-dir \"$release_dir\"\nnpm pack --pack-destination \"$release_dir\"\nuvx --from twine twine check \"$release_dir\"/*.whl \"$release_dir\"/*.tar.gz\nuv run --locked python scripts/smoke_built_mcp.py \"$release_dir\"/video_research_mcp-*.whl\n```\n\nExpect one wheel and one sdist per Python package, plus one npm `.tgz`.\nThe core wheel smoke discovers tools and reads configuration over stdio with a\ndummy key; it sends no provider requests. Record archive hashes with the source\ncommit and package versions.\n\nWhen publishing existing GitHub assets, download and verify those exact assets\ninstead of rebuilding changed source under the same version. Later source edits\nare not part of an already published archive.\n\n## GitHub source releases\n\nThe [release workflow](../.github/workflows/release.yml) runs reusable CI before\nbuilding assets. Its tag must match the core version and have matching changelog\nnotes. A tagged commit outside the ancestry of `origin/main` becomes a prerelease\nand is not marked latest.\n\nAfter reviewed source is committed and the branch is published under repository\npolicy, tag that exact verified commit. Replace `vX.Y.Z` and\n`VERIFIED_COMMIT_SHA` with the approved version and full commit hash:\n\n```sh\ngit tag vX.Y.Z VERIFIED_COMMIT_SHA\ngit push origin vX.Y.Z\n```\n\nInspect the exact workflow run, tag target, release page, prerelease status, and\nasset hashes. A tag push or running workflow is not a completed release. If\ncreation fails, preserve the failure and repair its cause. Manual recovery must\nretain matching notes, assets, source identity, and prerelease status.\n\n## Publishing to PyPI\n\nAn authorized TestPyPI upload can provide an optional staging check. TestPyPI may\nlack dependency versions; resolution failure there does not itself prove a\npackaging failure. A second package index changes dependency provenance and\nshould be selected deliberately.\n\nUpload the verified Python archives:\n\n```sh\nuvx --from twine twine upload \"$release_dir\"/*.whl \"$release_dir\"/*.tar.gz\n```\n\nThis uploads all three packages. For a narrower release, pass only the exact\napproved wheel and sdist paths. Published version files cannot be replaced with\nnew content; corrections require a new version.\n\n## Publishing to npm\n\nCheck package contents and authenticated ownership, then publish the verified\narchive instead of repacking the current working tree:\n\n```sh\nnpm publish \"$release_dir\"/video-research-mcp-*.tgz\n```\n\nSelect a dist-tag explicitly if this version should not become `latest`. A GitHub\nprerelease flag does not control npm tags or PyPI version semantics.\n\n## Post-publish verification\n\nConfirm the version and archive identity at each registry. For the core, also\nverify the exact registry wheel through MCP. The console script starts a stdio\nserver; `--help` is not its runtime acceptance check.\n\nReplace `X.Y.Z` with the published core version:\n\n```sh\nregistry_dir=\"$(mktemp -d)\"\nuvx --from pip pip download --no-deps --only-binary=:all: \\\n  --dest \"$registry_dir\" \"video-research-mcp==X.Y.Z\"\nuv run --locked python scripts/smoke_built_mcp.py \"$registry_dir\"/video_research_mcp-*.whl\nnpm view video-research-mcp@X.Y.Z version dist.integrity\nnpm view video-research-mcp dist-tags\nnpx --yes video-research-mcp@X.Y.Z --check\n```\n\nCompare the downloaded wheel's hash with the upload. `--check` confirms that the\nregistry installer executes and reports local state; isolated installer tests\ncover file/configuration changes. Confirm expected tool discovery for each\npublished companion separately.\n\nRestart the user's client, inspect the active runtime registration and package\nversion, and call `infra_configure()` without arguments. Record active settings\nseparately from the installed package version. Run a bounded provider smoke only\nwhen authorized; otherwise report live inference as unverified. Builds and stdio\nchecks do not demonstrate provider authentication or result quality.\n\n## Git tagging\n\nThe tag identifies the source release and may precede registry uploads. Do not\nmove it to include later edits. Publish its verified archives, or use a new\nversion and tag for changed content.\n\n## Troubleshooting\n\n| Problem | Next step |\n| --- | --- |\n| Version contract fails | Align core manifests and changelog before rebuilding. |\n| Metadata check fails | Fix the owning `pyproject.toml`, rebuild, and recheck. |\n| npm returns 403 | Verify login, ownership, and required registry authentication. |\n| An old version resolves | Query the exact version/dist-tag, inspect registration, and restart the client. |\n| One upload succeeds and another fails | Record completed destinations and hashes; retry only missing uploads with the same archives. |\n| A published package needs correction | Release a new version; pin clients to a known working release while it is prepared. |\n\nFor client rollback, restore backed-up workflows and pin the runtime registration\nto the known working package version. Installer upgrades replace managed server\ncommands and arguments, so recheck runtime pins afterward. Registry yanks,\ndeprecations, and dist-tag changes require their own publication authority.\n"
+    },
+    ".github/workflows/ci.yml": {
+      "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+      "sha256": "72cc4cb5752123eff2b5d18fb2121b1ee3286e8026a435950764d5cd7822a1e6",
+      "text": "name: CI\n\non:\n  push:\n    branches: [main, 'codex/**']\n  pull_request:\n  workflow_call:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\njobs:\n  lint:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v7\n      - uses: astral-sh/setup-uv@v10.2.0\n        with:\n          python-version: '3.11'\n      - run: uv sync --locked --extra dev\n      - run: uv run --locked ruff check src/ tests/ scripts/check_release.py scripts/smoke_built_mcp.py\n\n  test:\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false\n      matrix:\n        python: ['3.11', '3.12', '3.13', '3.14']\n    steps:\n      - uses: actions/checkout@v7\n      - uses: astral-sh/setup-uv@v10.2.0\n        with:\n          python-version: ${{ matrix.python }}\n      - run: uv sync --locked --extra dev\n      - run: uv run --locked pytest tests/ -q\n        env:\n          GEMINI_API_KEY: test-key-not-real\n\n  companion-packages:\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false\n      matrix:\n        python: ['3.11', '3.14']\n        package: [video-explainer-mcp, video-agent-mcp]\n    defaults:\n      run:\n        working-directory: packages/${{ matrix.package }}\n    steps:\n      - uses: actions/checkout@v7\n      - uses: astral-sh/setup-uv@v10.2.0\n        with:\n          python-version: ${{ matrix.python }}\n      - run: uv sync --locked --extra dev\n      - run: uv run --locked pytest tests/ -q\n      - run: uv run --locked ruff check src/ tests/\n\n  release-contract:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v7\n      - uses: actions/setup-node@v7\n        with:\n          node-version: '24'\n      - uses: astral-sh/setup-uv@v10.2.0\n        with:\n          python-version: '3.11'\n      - run: uv sync --locked --extra dev\n      - run: node --test tests/installer.test.js\n      - run: ./scripts/run_security_smoke.sh\n      - run: PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py\n      - run: uv run --locked python scripts/check_release.py\n      - run: uv build\n      - run: uv run --locked python scripts/smoke_built_mcp.py dist/*.whl\n      - run: npm pack --dry-run\n"
+    },
+    ".github/workflows/release.yml": {
+      "source_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+      "sha256": "887184bd30cb1ce3e1c37134982d9c62df5c30305450d6099529a95c02e34f1e",
+      "text": "name: Release\n\non:\n  push:\n    tags: ['v*.*.*']\n\npermissions:\n  contents: read\n\njobs:\n  verify:\n    uses: ./.github/workflows/ci.yml\n\n  github-release:\n    needs: verify\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    env:\n      REF_NAME: ${{ github.ref_name }}\n    steps:\n      - uses: actions/checkout@v7\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-node@v7\n        with:\n          node-version: '24'\n      - uses: astral-sh/setup-uv@v10.2.0\n        with:\n          python-version: '3.11'\n      - name: Validate version and extract release notes\n        shell: bash\n        run: |\n          set -euo pipefail\n          uv run --locked python scripts/check_release.py\n          uv run --locked python - <<'PYEOF' > release-notes.md\n          import os\n          import pathlib\n          import re\n          import tomllib\n\n          version = os.environ['REF_NAME'].removeprefix('v')\n          metadata = tomllib.loads(pathlib.Path('pyproject.toml').read_text())\n          if metadata['project']['version'] != version:\n              raise SystemExit('Release tag differs from package version')\n          src = pathlib.Path('CHANGELOG.md').read_text()\n          match = re.search(rf'## \\[{re.escape(version)}\\][^\\n]*\\n(.*?)(?=\\n## \\[|\\Z)', src, re.S)\n          if not match:\n              raise SystemExit('Matching release notes are required')\n          print(match.group(1).strip())\n          PYEOF\n      - name: Build release artifacts\n        shell: bash\n        run: |\n          set -euo pipefail\n          uv build\n          uv build --project packages/video-explainer-mcp --out-dir \"$PWD/dist\"\n          uv build --project packages/video-agent-mcp --out-dir \"$PWD/dist\"\n          npm pack --pack-destination dist\n          uvx --from twine twine check dist/*.whl dist/*.tar.gz\n          uv run --locked python scripts/smoke_built_mcp.py dist/video_research_mcp-*.whl\n      - name: Publish verified GitHub artifacts\n        env:\n          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n        shell: bash\n        run: |\n          set -euo pipefail\n          RELEASE_FLAGS=()\n          if ! git merge-base --is-ancestor HEAD origin/main; then\n            RELEASE_FLAGS+=(--prerelease --latest=false)\n          fi\n          gh release create \"$REF_NAME\" dist/* --title \"$REF_NAME\" \\\n            --notes-file release-notes.md --verify-tag \"${RELEASE_FLAGS[@]}\"\n"
+    }
+  },
+  "future_decode_requirement": "Every introduced media decode/crop adapter must preflight source byte ceilings, decoded pixel counts, valid crop extents and bounded output size/frames/duration before allocation or subprocess work.",
+  "source_policy_scope": {
+    "published_mcp_wrapper_trees": [
+      "src/video_research_mcp",
+      "packages/video-explainer-mcp/src/video_explainer_mcp",
+      "packages/video-agent-mcp/src/video_agent_mcp"
+    ],
+    "local_image_crop_decoders": "No registered local image/crop decoder in these published MCP wrapper source trees. Remote model interpretation and delegated external pipeline decoding are different operations.",
+    "implementation_native_png_helper": "The implementation adds src/video_research_mcp/image_ops.py as a local PNG helper. It inspects a 33-byte IHDR and CRC before decode, applies MEDIA_MAX_INPUT_BYTES, 8,000,000 input pixels, 4,000,000 crop output pixels and in-bounds integer crop extents, and invokes one-frame FFmpeg with 64 MiB max_alloc, max_pixels, one decode/filter thread and a 30-second timeout. It uses the local path fence and promotes a fresh checked output atomically. This source inspection is not a passing integration or media acceptance result; the coordinator owns its final fixtures and gates.",
+    "local_video": "Published root reads/hashes local video and may send inline content or Files API uploads; acquisition delegates to yt-dlp. Its source policies and frozen regression criteria remain protected.",
+    "future_decode_crop_owner": "The foundation helper is owned by vrm-0e8.2.10. vrm-0e8.3.2 and later concrete decode adapters must retain byte/pixel/crop/output preflight limits and supply acceptance fixtures for every added format or operation.",
+    "semantic_security_limits": "Schema discovery and source hashes do not prove current SSRF, redaction, cache-corruption, decoded-bound or rendered-artifact behavior; run the required security/regression gates on final source."
+  },
+  "claim_boundary": {
+    "discovery": "Published and current source-tree registrations only; installed user client and registry package artifacts are not inspected by this check.",
+    "required_commands": "Frozen acceptance requirements, not recorded passing executions. Environment sync/build/wheel installation remain separate authorized gates.",
+    "compatibility": "Conservative guard: preserve existing field validation/defaults, annotations and output schemas; allow new tools and optional inputs. Descriptions/titles/examples are documentation metadata.",
+    "locks": "Published lock bytes stay tied to the immutable Git source. Current lock hashes are separately reported; a dependency update still requires the frozen full validation gates.",
+    "no_provider_or_install_operations": true
+  }
+}
