@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T06:59+02:00
+date: 2026-10-02T12:42+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -11,14 +11,124 @@ status: open
 # Handoff: implement the comprehensive multimodal programme
 
 **Implementation is in progress; integrated product and comparative acceptance remain open.**
-Main Beads epic: `vrm-0e8`. Preparation item: `vrm-0e8.1`. This session audits
-omissions, maps useful capabilities, creates the Beads execution graph and loop
-contract, and hands implementation to a fresh chat. Do not mistake preparation
-closure for completion of the product or a proved superiority claim.
+Main Beads epic: `vrm-0e8`. Follow its live dependency graph and the execution
+contract. The current core/plugin release candidate establishes only its recorded
+source, artifact and installed journeys; complete product/comparative acceptance
+requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
-### Codex distribution requirement added; native installation work is ready
+### Native release published and plugin installed; final acceptance remains open
+
+The release source is `97f53fea6143008f5a1acf3921f8ded223d33521`, tagged
+`v0.8.0-rc.1`, on `codex/multimodal-capability-programme` in
+`/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`.
+Normal branch/tag pushes and all 11 changed remote source blobs are verified.
+Later handoff-only commits do not change this immutable release identity.
+The original checkout remains protected at `bd980e834929c291ca3766180fb1a44d1f615efd`
+on `feat/local-video-windowing`, with its two unrelated dirty docs preserved.
+
+GitHub prerelease: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.1.
+Both core PyPI files are published and were downloaded byte-identical to the
+qualified release assets: https://pypi.org/project/video-research-mcp/0.8.0rc1/.
+Core wheel SHA256: `e71f45296011c0ab497d7b7ec27d4ab35aee154a746c53fd101d5f186f03b692`.
+Plugin/npm/source spelling is `0.8.0-rc.1`; Python filenames normalize to
+`0.8.0rc1`. The exact npm tar is a verified GitHub asset, SHA256
+`fea642dca13d9534ffdd3238d092964eb4e8bbbafcc116617b8b17f480935553`.
+Companions 0.2.1 were built as GitHub assets, not republished to PyPI.
+
+**npm 0.8.0-rc.1 is not published.** Its intended tag is `next`; stable `latest`
+remains 0.7.1. Ordinary npm browser login succeeded, but publication requires
+separate security-key authentication. A noninteractive attempt stopped at EOTP;
+one interactive continuation expired at its auth completion URL with E404.
+The subsequent exact-version registry query returned 404. Both publishers exited.
+Do not reuse expired URLs or loop publication attempts. Resume with fresh human
+publishing authentication when the user is available. No security exemption or
+new credential was created. The npm homepage was opened in Chrome as requested.
+
+Verified changes: `d8602a9` portable native plugin/MCP manifests, 22 skills, exact
+runtime pin, installed-wheel import isolation and native advisor routing;
+`13bbdaa` exact MP3 signalled-padding repair; `97f53fe` renderer-submodule sdist
+exclusion and canonical archive boundary. Herdr Claude implementation and Codex
+independent review were joined; the import-isolation, advisor-route and archive
+path-alias findings were fixed. No foreign grant, frozen criterion or comparison
+population was weakened. Final local root: 3706 passed; reuse: 36 passed; npm:
+41 passed; source lint/release/reuse passed. CI 36982954549 passed all ten jobs,
+including root Python 3.11–3.14 (Linux 3.11: 3705 passed, one platform skip).
+Release workflow 36983526819 passed. Companions 388/64 and security 9/offline 5
+checks passed, with hosted CI also confirming the companion suites.
+
+Seven fresh archives pass metadata/reuse checks. All 1366 own packaged source
+members match exact Git blobs. GitHub's core sdist adds only release-notes.md,
+independently matched to the tagged changelog; the other six archives match the
+local builds byte-for-byte. Never publish the older local artifacts-rc1 directory:
+its sdist included 269 uncleared renderer files and is rejected by the corrected
+gate. Current safe release assets are github-assets-rc1/ under the evidence base.
+
+Isolated Codex 0.160.0 acceptance passed: 113 installed files, 22 skills, 90 tools,
+274 runtime module bodies plus entire METADATA equal to the wheel, first/restart
+config/error/PNG-crop checks, and all eight final owned processes exited. The real
+host config was unchanged in that isolated test. Retain its initial premature
+readiness assertion and successful bounded correction. Managed reinstall replaces
+cache edits/unowned files; verified outside-cache backups are required. A disabled
+same-name manual MCP entry still shadows the native plugin.
+
+**Actual main-profile installation is complete; host journey acceptance is partial.**
+The user authorized this local-folder fallback while npm publishing is blocked.
+Herdr assignment `VRM-HOST-INSTALL r4` installed `video-research@video-research`
+0.8.0-rc.1. Payload: `~/.local/share/video-research-mcp/codex-plugin-0.8.0-rc.1`.
+Marketplace: `~/.local/share/video-research-mcp/.agents/plugins/marketplace.json`,
+with relative source `./codex-plugin-0.8.0-rc.1`. The initial sibling catalog was
+rejected; one common-parent layout correction succeeded. All 113 payload/cache
+files match the qualified tar. The inventory contains the original 55 plugins
+plus this one. Main config changes are limited to removing the backed-up disabled
+`mcp_servers.video-research` table and adding the native marketplace/plugin.
+Account 2 config and the shared credential file remain unchanged.
+
+The actual host runtime uses bare `uvx video-research-mcp==0.8.0-rc.1`, resolving
+the published PyPI package, without a shim, find-links or source PYTHONPATH.
+A fresh owned app-server discovered 22 skills and connected 90 plugin tools.
+Post-shutdown inspection of its observed runtime confirms all 274 module bodies
+and entire METADATA match the registry wheel. Host tool calls/restart/cancellation
+were NOT completed: the acceptance harness first used invalid quoted CLI override
+keys, then assumed the status list omitted disabled servers. After those retained
+corrections, it found a real additional `codex_apps` server starting with 101 tools;
+the 28 manual MCP entries were disabled. The repeated isolation failure ended this
+path under the loop contract. No model turn or provider inference was requested.
+All 25 observed owned process IDs subsequently exited; no unrelated process was
+stopped. The plugin remains installed and enabled. Current-chat hot reload is
+unverified; no running desktop/Herdr session was restarted.
+
+Both required Herdr lanes are terminal and joined, with zero agent children:
+`vrm-codex-review`, `w1:pA`, native `01a0fb3a-8b89-7340-a12c-b6a1b7e5ff61`,
+and `vrm-claude-package`, `w1:p9`, native `b1be2ec6-ce3d-4d63-bd89-a81fde33fee6`,
+on server `fausto-max`. Account 2 existing credits were expressly authorized;
+Standard/Fast off, no credit purchase. No task-owned publisher or test process
+remains active. The prepared registry-only r4 brief was never dispatched.
+
+Bead `vrm-0e8.7.9` is BLOCKED and remains unaccepted: npm installation needs human
+publishing authentication, and the actual-host tool-call/restart check retains
+its isolation failure. A read-only CLI check confirms the supported child-only
+`--disable apps` flag changes the effective feature to false. Its app-server effect remains untested;
+that is the smallest next diagnostic before a newly bounded smoke run. Do not
+change the user's persistent Apps setting or silently restart the failed cohort.
+After npm publication, test the native npm marketplace route using the same
+immutable qualified assets and back up local edits before changing its source.
+The programme and .10.1/.10.2/.10.3 gates remain open. The human nine-case audit
+is pending and unwaived; held-out sources remain unread. No other ready leaf was
+returned after recording the blocker. Skip completed transcription/PDF/Word/mail work.
+
+Private evidence base:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/codex-distribution/herdr-2026-10-02`.
+Read `github-artifacts-qualified.json`, `pypi-registry-readback.json`,
+`npm-after-auth-expiry.json`, `codex-host-install-r4.md`, and the install, smoke,
+runtime-byte-readback and failure receipts under `host-install-r4/`.
+Config backups are private mode 0600; never copy them into Git or print values.
+Root's final readback and handoff-commit receipts supplement these worker records.
+Beads owns remaining work and readiness. This RC is not programme completion or
+comparative superiority evidence.
+
+### Historical Codex distribution planning checkpoint
 
 Latest functional source remains `55291a8d45bcc0abb0f40a98492c0a88eca88e69`;
 prior handoff-only HEAD is `b6db55fb4f56ad50e92c638a7df06940bdd98c28`. Both were
