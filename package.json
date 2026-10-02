@@ -49,7 +49,12 @@
     "docs/integrations/AV_EVENTS.md",
     "integrations/qwen/av-events.json",
     "integrations/qwen/education.json",
-    "docs/integrations/qwen-education.md"
+    "docs/integrations/qwen-education.md",
+    "integrations/qwen/core.json",
+    "docs/integrations/qwen-core.md",
+    "scripts/core_session.py",
+    "scripts/core_inputs.py",
+    "scripts/core_dispatch.py"
   ],
   "engines": {
     "node": ">=22"

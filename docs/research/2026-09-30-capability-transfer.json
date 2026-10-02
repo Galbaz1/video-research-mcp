@@ -194,11 +194,17 @@
           "reuse_mode": "integration-only",
           "rationale": "[CONFIRMED source; proposed transfer] Integrate pinned external core because broad format/system-renderer support is useful but should not add heavy GIS/CAD/NIfTI/Office dependencies to basic video research.",
           "target_paths": [
+            "scripts/core_session.py",
+            "scripts/core_inputs.py",
+            "scripts/core_dispatch.py",
+            "tests/test_core_session.py",
+            "tests/test_core_inputs.py",
+            "tests/test_core_dispatch.py",
             "integrations/qwen/core.json",
             "docs/integrations/qwen-core.md",
-            "skills/inspect-multimodal-source/SKILL.md"
+            "tests/test_core_review.py"
           ],
-          "target_status": "Proposed paths; root must reconcile with its complete published/unpublished branch audit before claiming a missing implementation.",
+          "target_status": "Owned optional original-source preview session with pre-import source/runtime/input admission, bounded per-call workers and source/derived receipts. Portable profile remains blocked. Original distribution installation and full eleven-family rendering acceptance remain unaccepted; no wrapper-only completion.",
           "dependencies": [
             "qwen_reuse_manifest"
           ],

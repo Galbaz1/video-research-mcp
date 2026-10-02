@@ -544,7 +544,7 @@
       "implementations": [
         {
           "target_path": "integrations/qwen/manifest.json",
-          "target_sha256": "bbfb74be136d3372bbcde4c88e7b40046b3db14dbe2a3b2d346259f8f1ef98a5",
+          "target_sha256": "81919a78befd04009ca72fde38f3a685454e14060e6ba73cf14012d2ecf9b1df",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -687,10 +687,56 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "scripts/core_session.py",
+          "target_sha256": "36df5518ae22ee118b959e6e1e3c09aa4b678410d775b234842855807b95ad1c",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "scripts/core_inputs.py",
+          "target_sha256": "784880425197422a69b8515699a8a5b4c3eaa403fd3f8ecadca6a52efdd5fec1",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "scripts/core_dispatch.py",
+          "target_sha256": "e6ffd5bf0c0a9a68a72a926adde623ff1ee7151d54936448578b5ea6b938860f",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "tests/test_core_session.py",
+          "target_sha256": "d6f9f49a8f0264d5e68f8dd619a4c5c4dddc5ceb9c2dce2c0ceaa63959520ee6",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "tests/test_core_inputs.py",
+          "target_sha256": "bc464859d7a678ed02e25677384e41944c666b681576ffb5dc255ab823c870b5",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "tests/test_core_dispatch.py",
+          "target_sha256": "71b2bcc95aa1fba8a7820fc18e319a20f9c40b758e601e06374feeb0e0f54788",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "integrations/qwen/core.json",
+          "target_sha256": "ffc0ef5ca6a3a5ae07b4dc37dd690a55fcc9c95b31eb7c010d2c6b4aa318c259",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "docs/integrations/qwen-core.md",
+          "target_sha256": "42176ea20bdc5292c4eff3016b54920b93592c11477f6eb3fec68c7374b6ee6a",
+          "provenance": "Independently authored optional adapter to unchanged external original source. No foreign code/fonts/native/assets/models bundled. Source-only default blocked; actual discovery, original installation and full eleven-format acceptance remain separate and unaccepted."
+        },
+        {
+          "target_path": "tests/test_core_review.py",
+          "target_sha256": "a61f2902d46a03fcb3aa62a7aa87aa235f466a909be25f8948e87fad3c13e24a",
+          "provenance": "Independently authored original-review regressions: pre-handler extreme/EXIF/crop preview allocation refusal and Unicode physical-line coverage; no foreign source or runtime execution."
+        }
+      ]
     },
     {
       "unit_key": "qwen_media_assets",
@@ -997,7 +1043,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1161,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1140,7 +1186,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
+          "target_sha256": "e908ecebec5cb77510e76b29f5ae19e5663d1f880ce609d32cb986be497c6687",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1314,7 +1360,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
@@ -2008,7 +2054,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         }
       ]
@@ -3367,7 +3413,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3421,7 +3467,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "e60eeeaddb8526da4c3ea3ca1a3b732f8fdc824a94624b5520d5102142389f31",
+          "target_sha256": "671b4324ef2c1dfa4f14525d2916009e24a45d6e474bed2cde194e49a299e668",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -3548,7 +3594,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -4572,7 +4618,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
+          "target_sha256": "ce733d599aa77b1795aa5f204e43b1a33881b04dc61ea17d76f3ecac73c01668",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -4811,7 +4857,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
+          "target_sha256": "e908ecebec5cb77510e76b29f5ae19e5663d1f880ce609d32cb986be497c6687",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -5127,7 +5173,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
+          "target_sha256": "e908ecebec5cb77510e76b29f5ae19e5663d1f880ce609d32cb986be497c6687",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {

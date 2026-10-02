@@ -356,3 +356,24 @@ semantic accuracy, human audit, comparative advantage or release acceptance.
 The owned educational CLI independently implements requirements from QwenLM/Qwen-MM-Plugins at 07736672525443c7f8a3f6405eed37d2236f023f. Twenty-two exact source/skill/reference/grant bodies,684766 bytes11702 lines, including the complete Apache-2.0 grant, were read. Original20 static findings and39 direct execution gaps are retained. Source texts are reference-only, unchanged, and neither imported nor distributed; own Python, JavaScript and primitive glyph cells remain MIT.
 
 Pinned source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/edu-agent/skill>. Full source grant digest cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30. Source/grant identities and boundaries are in integrations/qwen/education.json. No upstream validators, HyperFrames, KaTeX, GSAP, fonts, textures, media or voices are bundled. Installed FFmpeg/ffprobe and optional existing Pillow are separate runtime qualifications. Exact decoded WAV/frames, finite triangle/curve/circuit checks and caption layout do not verify spoken alignment, arbitrary mathematics/physics, all12 templates, multilingual semantics, human audit, comparison or release acceptance.
+
+
+## Optional original core preview adapter
+
+The independently authored core session, admission and dispatch code provides an
+optional integration with unchanged QwenLM/Qwen-MM-Plugins source at
+07736672525443c7f8a3f6405eed37d2236f023f. The complete selected source packet has
+42 bodies, 214227 bytes and 5710 lines, including the full Apache-2.0 grant.
+Original code and its grant remain external; neither is bundled or copied here.
+An operator supplying that source must retain the complete applicable source
+grant and attribution. The owned adapter remains under this repository's MIT grant.
+
+Pinned original source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/core>.
+Source grant SHA256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.
+The portable source-only profile and exact source schemas/registry are in
+integrations/qwen/core.json. Runtime packages, native executables, fonts, models,
+assets and provider grants require separate qualification. No such payload is
+bundled by this adapter. The unread shared.api_openai caption branch is forbidden.
+Source admission and optional code/subtitle/image execution do not establish
+original distribution installation, all eleven format families, GIS or clinical
+geometry, human review, comparative performance or release acceptance.

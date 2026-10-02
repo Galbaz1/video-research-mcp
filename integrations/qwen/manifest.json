@@ -148,7 +148,16 @@
       "copied_paths": [],
       "imported_packages": [],
       "target_files": [
-        "integrations/qwen/manifest.json"
+        "integrations/qwen/manifest.json",
+        "scripts/core_session.py",
+        "scripts/core_inputs.py",
+        "scripts/core_dispatch.py",
+        "tests/test_core_session.py",
+        "tests/test_core_inputs.py",
+        "tests/test_core_dispatch.py",
+        "integrations/qwen/core.json",
+        "docs/integrations/qwen-core.md",
+        "tests/test_core_review.py"
       ],
       "applicable_notice_receipts": [
         {
@@ -163,7 +172,14 @@
         "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
-      "blocked_assets": []
+      "blocked_assets": [],
+      "owned_core": {
+        "descriptor": "integrations/qwen/core.json",
+        "entrypoint": "scripts/core_session.py",
+        "state": "optional adapter; packaged source-only profile blocked",
+        "claim_boundary": "Seven original tool schemas and full registry remain source contracts until actual discovery. Only independently qualified code/subtitle/PNG profiles can execute. Native, fonts, providers and remaining formats are unqualified."
+      },
+      "verification_boundary": "Actual selected-source stdio startup and per-call output checks are separate receipts. The eleven-format denominator and original distribution installation remain required; partial text/image admission does not close the capability."
     },
     {
       "id": "edu-agent",
