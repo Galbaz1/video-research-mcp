@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T14:34+02:00
+date: 2026-10-02T14:45+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -80,12 +80,13 @@ Private evidence base:
 Read `codex-npm-native-install-r6.md`, `registry-native-r6/terminal-readback.json`,
 `npm-native-root-readback-r6.json` and `npm-registry-readback.json`. Root independently
 verified cache/runtime/artifact bytes, inventory/catalog delta, protected hashes
-and process exits, then joined the exact required lanes. The completed handoff
-is committed locally. Automatic approval review rejected its normal branch push
-because explicit user push authorization is required. Remote branch remains
-`7f48a2ecfa659cfed7a20b9b482f17cc70203d7a`; the published release tag remains
-unchanged. Obtain explicit approval before retrying the push; preserve this
-rejection. Receipt: `handoff-npm-complete-push-readback.json` in that evidence base.
+and process exits, then joined the exact required lanes. Automatic approval review
+initially rejected the normal handoff branch push; the user then explicitly
+answered "authorized". This authorizes the normal push of the completed handoff
+commits to `origin/codex/multimodal-capability-programme`. Preserve the rejection
+receipt `handoff-npm-push-rejection.json`; final remote commit/content/tag checks
+belong in `handoff-npm-complete-push-readback.json` in that evidence base. The
+published release tag remains unchanged.
 
 The broader `vrm-0e8` programme and gates `.10.1`, `.10.2`, `.10.3` remain OPEN.
 The fixed human audit is pending/unwaived; held-out evidence remains sealed.
