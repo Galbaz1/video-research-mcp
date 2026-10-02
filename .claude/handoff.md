@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T12:42+02:00
+date: 2026-10-02T14:32+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,7 +18,84 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
-### Native release published and plugin installed; final acceptance remains open
+### Current continuation: npm release and native Codex installation accepted
+
+The user's last two distribution steps are complete. `vrm-0e8.7.9` is CLOSED.
+The actual npm registry publishes `video-research-mcp@0.8.0-rc.1`, with
+`next=0.8.0-rc.1` and stable `latest=0.7.1`. Human security-key authentication
+completed; publisher exited 0. Fresh registry download, SHA256 and SRI equal the
+qualified GitHub asset. Earlier failed authentication and anonymous reads remain
+in the private receipts; their cause is not inferred. Publication is complete;
+expired challenges and the historical fallback instructions below are obsolete.
+
+Public artifacts share immutable release source
+`97f53fea6143008f5a1acf3921f8ded223d33521`, tag `v0.8.0-rc.1`:
+
+- npm: https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.1
+- GitHub: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.1
+- PyPI: https://pypi.org/project/video-research-mcp/0.8.0rc1/
+
+Plugin/npm/source spelling is `0.8.0-rc.1`; Python filenames normalize to
+`0.8.0rc1`. npm tar SHA256 is
+`fea642dca13d9534ffdd3238d092964eb4e8bbbafcc116617b8b17f480935553`;
+published wheel SHA256 is
+`e71f45296011c0ab497d7b7ec27d4ab35aee154a746c53fd101d5f186f03b692`.
+Later handoff commits leave this release identity unchanged.
+
+Main Codex has installed/enabled `video-research@video-research`, pinned to
+npm source `video-research-mcp@0.8.0-rc.1`. Its neutral marketplace registration
+remains `/Users/fausto_home/.local/share/video-research-mcp`; only the owned source
+object in `.agents/plugins/marketplace.json` changed from local to npm. One
+supported native `plugin add` performed the migration; no removal was needed.
+All 113 managed cache files match the actual registry tar. Main config, account2
+config, shared credentials, npm userconfig and all 55 other plugin records are
+unchanged. The pre-overwrite cache contained no edited/unowned files; private
+config/catalog/inventory backups and the former local payload are preserved.
+
+Herdr `VRM-NPM-NATIVE-INSTALL` revision 6 is PASS and joined: `fausto-max`,
+`vrm-codex-review`, `w1:pA`, native session
+`01a0fb3a-8b89-7340-a12c-b6a1b7e5ff61`, done/completion 83. Existing account2
+credits were authorized; Standard settings, zero children. Claude implementation
+lane `vrm-claude-package`, `w1:p9`, native
+`b1be2ec6-ce3d-4d63-bd89-a81fde33fee6` is also joined, done/completion 61.
+No required worker or test process remains active.
+
+All four actual Codex 0.160.0 sessions passed: clean isolated npm install
+first/restart and migrated main-profile first/restart. Each discovered 22 skills
+and 90 connected tools; all 274 actual runtime module bodies plus entire METADATA
+match the published wheel. Empty-argument config read, structured missing-PNG
+error and authored 2x2 crop/native image bytes/source lineage passed. Child-only
+`--disable apps` and unrelated plugin/MCP overrides bounded the local checks.
+No model/provider inference turn ran. All 51 observed owned PIDs exited, readers
+joined and EOF shutdown returned 0. The temporary isolated HOME was removed;
+the main plugin stays installed. The clean install needed no npm credentials.
+
+Native RPC request cancellation remains UNTESTED: generated typed schemas expose
+no MCP-tool-specific cancellation method. EOF shutdown/restart passed; this is
+not positive cancellation evidence. Current-chat hot reload remains unverified;
+start a fresh Codex chat to load the installed plugin workflows/tools.
+
+Private evidence base:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/codex-distribution/herdr-2026-10-02`.
+Read `codex-npm-native-install-r6.md`, `registry-native-r6/terminal-readback.json`,
+`npm-native-root-readback-r6.json` and `npm-registry-readback.json`. Root independently
+verified cache/runtime/artifact bytes, inventory/catalog delta, protected hashes
+and process exits, then joined the exact required lanes. Final handoff push
+receipt: `handoff-npm-complete-push-readback.json` in that evidence base.
+
+The broader `vrm-0e8` programme and gates `.10.1`, `.10.2`, `.10.3` remain OPEN.
+The fixed human audit is pending/unwaived; held-out evidence remains sealed.
+Live provider/optional runtime/resource qualifications remain outstanding. Fresh
+`bd ready --parent vrm-0e8 --exclude-type epic --limit 0 --json` returns `[]`;
+follow the remaining gate dependencies rather than repeating completed suites.
+Measured published README drift (old counts/source links/publication wording) is
+recorded in existing `.10.3` for a NEW final release. Do not overwrite this RC or
+claim programme/superiority acceptance. Skip completed transcript/PDF/Word/mail
+work. The original checkout and both unrelated dirty docs remain protected.
+
+### Historical local-fallback checkpoint
+
+#### Native release published and plugin installed; prior acceptance boundary
 
 The release source is `97f53fea6143008f5a1acf3921f8ded223d33521`, tagged
 `v0.8.0-rc.1`, on `codex/multimodal-capability-programme` in
