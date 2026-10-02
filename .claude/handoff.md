@@ -18,7 +18,7 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
-### README entry update: remote branch and PR prepared; default merge pending
+### README entry update: approved PR merged and default entry verified
 
 The advanced-reader README revision uses Writing Mastery and a single independent
 editorial completion review. Both justified setup findings are repaired: Claude
@@ -26,7 +26,7 @@ scope now uses explicit `--global`/local credentials, and optional Python extras
 retain the candidate pin. Final source/link/example checks passed. GitHub render
 of the exact committed introduction, workflow table and native setup was inspected.
 
-- Bead: `vrm-0e8.10.3.1`, IN_PROGRESS pending default-entry delivery.
+- Bead: `vrm-0e8.10.3.1`, CLOSED after approved default-entry delivery.
 - Programme README commit: `7967bddbbd514bc9cb9ae4b32cf10faa4ff3858e`, pushed.
 - Isolated main-based README commit: `b1646ca1053413c5be5a0975a142df8581d7d38f`, pushed.
 - README-only PR: https://github.com/Galbaz1/video-research-mcp/pull/74
@@ -38,9 +38,12 @@ of the exact committed introduction, workflow table and native setup was inspect
   which also failed before findings. No manual retry or workflow change was made.
   Preserve these incomplete reviews; do not describe them as clean verdicts.
 
-Default main was `a3d75f6ab87bd893c7d167394fb5bace717f23ec`; its README remains old
-until this one-file PR is merged. The PR policy requires explicit user merge
-execution approval. Do not merge the programme history into main to deliver docs.
+The user explicitly approved merging PR74. Normal GitHub REST squash merge
+accepted its exact head after gh CLI preflight refused; no admin/bypass was used.
+Main is `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb`, verified signed by GitHub.
+The merge changes only README.md. Main README bytes equal the hash above, and
+the actual default repository landing page renders the revised guide.
+Do not merge the programme history into main to deliver docs.
 The immutable release tag/packages stay at `97f53fea6143008f5a1acf3921f8ded223d33521`;
 packaged README corrections belong in a NEW release after the remaining gates.
 
@@ -48,9 +51,9 @@ Private writing/source/review/delivery receipts:
 `/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/readme-2026-10-02`.
 The publication checkout is
 `/Users/fausto_home/Coding/worktrees/video-research-mcp/readme-public-2026-10-02`,
-owned by root/`vrm-0e8.10.3.1`. Keep it while merge is pending. Retire only after
-owner completion, no live process, and preservation of unique commits/files and
-ignored data; retain the branch independently.
+owned by root/`vrm-0e8.10.3.1`. Publication is complete; retire only after
+no live process and preservation of unique commits/files and ignored data;
+retain the branch independently.
 
 ### Current continuation: npm release and native Codex installation accepted
 
