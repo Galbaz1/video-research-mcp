@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T16:22+02:00
+date: 2026-10-02T19:08+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,52 +18,49 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
-### Main integration requested: backup verified; simplifier pass accepted
+### Main integration complete; retained-branch reconciliation active
 
-The user explicitly requests backing up main and merging the programme changes.
-Bead `vrm-0e8.10.3.2` owns source integration; child `vrm-0e8.10.3.2.1` owns the
-requested pre-merge code-simplifier pass. Existing merge authority persists. The
-explicit PR-size exception remains pending; main stays unchanged until that
-specific policy requirement and the normal protected merge are satisfied.
+Main integration Bead `vrm-0e8.10.3.2` is CLOSED. User-approved signed PR #76
+merged normally at `cc63813004dfcaa76aeee2e92db985708733388b`; its tree is
+`6f149c235f3287845a3dee20ff84f6dfd2fa3f37`, identical to the qualified programme
+source. Both signed-head CI runs and main CI `37031949273` passed all ten jobs.
+GitHub verifies the signed delivery and merge commits. PR75 is closed as
+superseded; the original programme history remains preserved.
 
-Pre-merge main `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb` is preserved by verified
-remote tag `backup/main-before-multimodal-2026-10-02` and a complete private Git
-bundle (SHA256 `f8ca66f862cf1ff0da6e947aea5804349dfe2e11e0fe261a6026b22df48e6289`).
-A fresh bare restore reproduces the exact backup commit and passes full fsck.
-The approved README remains byte-identical to main.
+Pre-main `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb` remains at remote backup tag
+`backup/main-before-multimodal-2026-10-02`. The self-contained bundle verifies,
+retains its original checksum and passed a fresh restore/fsck. README bytes are
+unchanged; published/installed `0.8.0-rc.1` source stays `97f53fea`.
 
-Prior repaired source `5ee858f3a3ac1ff3a31e69880ff9d7902553ac75` passed all ten CI
-jobs in run `37015986812`. Its only RC delta was README, handoff and two README
-reuse receipts. Preserve the original failed runs and their diagnosed receipt drift.
+The user then requested reconciliation of every retained branch. Active Bead:
+`vrm-0e8.10.3.3`. The designated implementation worktree is reused on
+`codex/branch-reconciliation`, based on actual main. See
+`docs/audits/2026-10-02-branch-reconciliation.md` and live Beads notes.
+Window/upload behavior is already adopted under closed Bead3.1; the Interactions
+experiment has an explicit protected-contract rejection, not a pending wholesale
+merge. Older model defaults and equivalent documentation patches are superseded.
+The independent Herdr review accounts for all 23 production-changing security
+commits. The corrective source repairs discovery fencing, bounded regular-file
+reads, aggregate compare bytes, actual traversal visits and fenced URL staging.
+Final `max_files` behavior and published text schemas stay compatible; the
+optional historical narrowing/fail-fast proposals are explicitly rejected.
+The final same-reviewer delta pass accepts the source with no blockers, 26 new
+checks and ten probes PASS, terminal with zero children. Root owns protected
+signed delivery and its exact-head CI; do not count local review as main delivery.
 
-Herdr `VRM-SIMPLIFY` r1 invoked the actual installed official 1.0.0
-`code-simplifier:code-simplifier` agent on Claude Max with Opus. One child completed;
-the parent inspected every hunk and is idle with no active children. Its five-file
-patch passed 405 focused root tests, 106 explainer tests and nine programme tests.
-Root declined the one-line job-store cleanup and restored its exact preimage:
-its small gain did not justify additional TwelveLabs/explainer revision changes.
-Four accepted changes clarify audio loudness comparison, cache source matching,
-owned-media path reuse and shared research launch payload construction.
+All original branch history and the exact two dirty-document snapshots are
+preserved in a verified private bundle/snapshots. The frozen original checkout
+and baseline stay unchanged. No branch deletion, default rollback, provider
+inference, protection bypass or immutable release overwrite is implied.
 
-Refresh exactly five implementation hashes for those four source files; source,
-license, dependency and evaluation contracts stay fixed. Root verified 77 affected
-job-store/reuse tests, full declared Ruff, 85-unit/three-lock reuse clearance,
-85-unit/75-work-package population and protected public baseline. New research/DSP
-jobs use the changed source revisions; explicit old job bindings remain protected
-and must not be bypassed. The installed and published RC stays immutable. Run one
-final CI on the new committed source before opening the integration PR.
+The previous full integration review remains PARTIAL; the bounded official
+simplifier pass is complete. Failed automatic reviews are retained, not clean
+approvals. Broader product acceptance, pending human audits and held-out
+comparisons remain open after source reconciliation.
 
-Prior `VRM-MAIN-INTEGRATION` r1 review remains PARTIAL: it inspected concrete
-backup/parity/protection evidence but was interrupted during compaction before a
-final verdict. The simplifier pass is bounded to eight priority runtime modules,
-not a comprehensive independent review of the full integration.
-
-Private backup, scope, repair, simplifier and CI receipts:
-`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/main-integration-2026-10-02`.
-The self-contained backup bundle is `main-before-multimodal.bundle` there.
-Do not overwrite the immutable RC tag or npm/PyPI bytes; preserve unrelated dirty
-docs and the Gemini model/Interactions worktrees. Human/live/comparative acceptance
-and the broader programme epic stay open; source integration does not waive them.
+Private receipts:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/main-integration-2026-10-02`
+and sibling `branch-reconciliation-2026-10-02`.
 
 ### README entry update: approved PR merged and default entry verified
 
@@ -87,7 +84,8 @@ of the exact committed introduction, workflow table and native setup was inspect
 
 The user explicitly approved merging PR74. Normal GitHub REST squash merge
 accepted its exact head after gh CLI preflight refused; no admin/bypass was used.
-Main is `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb`, verified signed by GitHub.
+At that README-only delivery, main was
+`c10aa1c2e35043dfbe8c66c9ad37d07c586459cb`, verified signed by GitHub.
 The merge changes only README.md. Main README bytes equal the hash above, and
 the actual default repository landing page renders the revised guide.
 Do not merge the programme history into main to deliver docs.

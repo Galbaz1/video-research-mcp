@@ -15,6 +15,8 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..client import GeminiClient
+from ..config import get_config
+from ..content_file_data import read_content_bytes
 from ..tracing import trace
 from ..errors import make_tool_error
 from ..models.content import ContentResult
@@ -46,7 +48,7 @@ def _build_content_parts(
         if not p.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
         mime = "application/pdf" if p.suffix.lower() == ".pdf" else "text/plain"
-        data = p.read_bytes()
+        data = read_content_bytes(p, get_config().doc_max_download_bytes)
         parts.append(types.Part.from_bytes(data=data, mime_type=mime))
         description = f"Document: {p.name}"
     elif url:

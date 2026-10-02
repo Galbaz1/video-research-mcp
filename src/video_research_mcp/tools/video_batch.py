@@ -7,6 +7,7 @@ from typing import Annotated
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
+from ..batch_discovery import discover_files
 from ..errors import make_tool_error
 from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..media_identity import identify_source
@@ -54,7 +55,8 @@ async def video_batch_analyze(
 
     Scans the directory for supported video files (mp4, webm, mov, avi, mkv,
     mpeg, wmv, 3gpp), then analyzes each with the given instruction using
-    bounded concurrency (3 parallel Gemini calls).
+    bounded concurrency (3 parallel Gemini calls). Discovery rejects more than
+    5,000 entry visits; narrow the directory or pattern to stay within that bound.
 
     Args:
         directory: Path to a directory containing video files.
@@ -75,11 +77,7 @@ async def video_batch_analyze(
         dir_path = enforce_local_access_root(resolve_path(directory))
         if not dir_path.is_dir():
             return make_tool_error(ValueError(f"Not a directory: {directory}"))
-        video_files = sorted(
-            f
-            for f in dir_path.glob(glob_pattern)
-            if f.is_file() and f.suffix.lower() in SUPPORTED_VIDEO_EXTENSIONS
-        )[:max_files]
+        video_files = discover_files(dir_path, glob_pattern, SUPPORTED_VIDEO_EXTENSIONS, max_files)
         items = []
         for path in video_files:
             source = identify_source(str(path), persist=False)

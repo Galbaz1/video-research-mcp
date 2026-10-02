@@ -98,9 +98,10 @@ class TestDownloadDocument:
 class TestPrepareAllDocumentsWithIssues:
     """Tests for issue-aware document preparation helper."""
 
-    async def test_collects_download_failures_and_keeps_successes(self, tmp_path):
+    async def test_collects_download_failures_and_keeps_successes(self, tmp_path, monkeypatch, clean_config):
         """GIVEN one download failure WHEN preparing THEN output includes issue metadata."""
         ok_path = tmp_path / "ok.pdf"
+        monkeypatch.setenv("GEMINI_CACHE_DIR", str(tmp_path / "cache"))
 
         with (
             patch(
@@ -138,8 +139,8 @@ class TestPrepareAllDocumentsWithIssues:
 
         with (
             patch(
-                "video_research_mcp.tools.research_document_file.tempfile.mkdtemp",
-                return_value=str(tmp_dir),
+                "video_research_mcp.tools.research_document_file.view_directory",
+                return_value=tmp_dir,
             ),
             patch(
                 "video_research_mcp.tools.research_document_file._download_document",

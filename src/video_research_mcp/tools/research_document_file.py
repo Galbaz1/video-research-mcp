@@ -6,12 +6,12 @@ import asyncio
 import logging
 import re
 import shutil
-import tempfile
 from pathlib import Path
 from typing import Awaitable, TypeVar
 
 from ..config import get_config
 from ..local_path_policy import enforce_local_access_root, resolve_path
+from ..media_snapshot import view_directory
 from ..url_policy import download_checked
 
 from .video_file import _file_content_hash, _upload_large_file
@@ -134,7 +134,7 @@ async def _prepare_all_documents_with_issues(
     tmp_dir: Path | None = None
     try:
         if urls:
-            tmp_dir = Path(tempfile.mkdtemp(prefix="research_doc_"))
+            tmp_dir = view_directory()
             download_tasks = [_download_document(u, tmp_dir) for u in urls]
             results = await _gather_bounded(download_tasks, phase_concurrency)
             for url, result in zip(urls, results):
