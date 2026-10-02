@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T00:17+02:00
+date: 2026-10-02T02:44+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -17,6 +17,50 @@ contract, and hands implementation to a fresh chat. Do not mistake preparation
 closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
+
+### Education component verified; spoken/multilingual acceptance blocked; previews next
+
+Fresh source HEAD `6499009dacf0789ab64b4bdd916d10a3351b17c4`, normal source push
+and exact remote HEAD/all22 Git blobs verified. Education source-final SHA
+02381938f227af5f30ef9a4964cb193071183ad9eec3d41a0fb98da027c61634; push-readback
+SHA7428e83011410f4fac8849b2e5ba9f99e72f064ece2dfb67e1bf3b2ee4c09666.
+`vrm-0e8.8.7` is BLOCKED, not closed: actual spoken lesson and multilingual/
+broader-template acceptance remain unqualified. Independently authored triangle,
+reflected-square and circuit page/video component is integrated. Final3471root
+and80affected tests,10required gates PASS;313prior runtime bodies,89full prior
+tool objects and3locks exact. Sole original review P2 promoted receipt drift
+reproduced2RED/repaired2GREEN. First fixedactual17:1PASS1FAIL15UNRUN provenance
+metadata glyph restriction; ONE minimal correction, same second17PASS0FAIL0UNRUN.
+56public calls,115native commands+3CLI parents;118owned PIDs joined/dead,
+3442loaded-binding rows and2169retained files root rehashed. Six actual decoded
+first/last frames root viewed; full72RGB frames and288000PCM samples exact.
+Browser3scenes/seek/reset/all6reflection-shift states pass, consoleerrors[].
+Synthetic6s tones are not speech. Browser MP4 codec playback remains unverified.
+Seven new archives671direct bytecomparisons;79companion-sdist member payloads
+byte-identical to prior actual isolated build, which is carried forward. Two
+invalid `uv build-repaired` helper failures retained; stopped repeat isolated
+build path, no second isolated-build PASS. One root join stat/atime check failed
+and was corrected to dev/inode/size/mtime; no actual cohort repeated.
+Evidence: private capability-programme/2026-09-30/education/source-final.json,
+acceptance-attempt-02/root-joined.json and build-results-repaired/archive-readback.json.
+Ordinary host privileges/no OS sandbox; whole native grant/build certificate partial.
+All education primary/original-review/source/advisor lanes terminal; no native jobs.
+
+Next eligible `vrm-0e8.9.1` previews OPEN. Source42full214227B5710lines/fullApache,
+68artifact rows root joined; receipt049a67d05e17a48e363ca08b2ec8bcb7f575d50a417f92adc872dad6654b96b0.
+Source registry75spellings/74lowercanonical/62dispatch/13families/seven tools.
+Actual core discovery and11representative formats UNRUN; heavy/native/font profiles
+unqualified, one api_openai caption-provider branch unread and forbidden.
+Advisor20existing files+4artifacts root joined;214038B retrieval exceeds200KB cap
+by14038, explicit retained exception. Smallest route optional owned core session,
+no normal root heavy imports, exact source/runtime/input/output/result/cap gates.
+No preview product writer dispatched yet. Next freeze fixtures/controls, claim9.1,
+then one primary and one original review; root owns shared metadata/Git/Beads/actuals.
+`vrm-0e8.4.1` optional-ASR product implementation is also ready; completed
+transcription/PDF/Word/mail delivery remains outside this implementation programme.
+User steering "review pending, but continue anyway" persists. Human9pending not
+waived at10.2; heldout unread, live proposal unauthorized; product/comparison/release
+open. Continue through the graph, not final-answer at component boundaries.
 
 ### AV component verified and blocked on LIVE criterion; education claimed
 
