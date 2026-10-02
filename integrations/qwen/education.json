@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.8.7",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "route": "independent-implementation",
+  "state": "owned finite lesson component; required spoken/multilingual/broader-template acceptance unqualified",
+  "source_reference_gate": {
+    "full_text_bodies": 22,
+    "bytes": 684766,
+    "lines": 11702,
+    "full_grants": 1,
+    "artifact_bindings": 47,
+    "original_static_findings": 20,
+    "source_receipt_sha256": "aca7dd9576ec99c58c4d2fbcb02b865dcc1956f5df2baad6ab9e861efab7ed3e",
+    "full_apache_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "cap_history": "Original300000B cap gap retained; exact22/685000B extension admitted before full read; no recursive admission",
+    "foreign_execution_closure": "INCOMPLETE:39 direct validators/helpers and192 other source blobs unread; no foreign execution admission",
+    "foreign_execution_sources": []
+  },
+  "entrypoint": {
+    "module": "video_research_mcp.education",
+    "script": "skills/educational-explainer/scripts/lesson.py",
+    "workflows": [
+      "validate",
+      "build",
+      "check"
+    ],
+    "public_MCP_tools_added": 0
+  },
+  "scope": [
+    "Strict source/problem/analysis/script/storyboard ledger for right triangle, reflected-square curve and series circuit",
+    "Measured exact supplied48k mono PCM16 WAV and explicit caption intervals",
+    "Self-contained authored interactive page and local lossless-RGB video/audio compositor",
+    "Separate source-domain, full-decode finished-output and externally digest-bound restart checks"
+  ],
+  "mapped_workflow_boundary": {
+    "qwen-mm-plugins-edu-agent": "Own bounded source-to-output CLI/skill;12 upstream component templates not represented as complete",
+    "edu-agent:precheck.py": "Own finite domain/scene/equation/glyph/caption admission; upstream33 validators/auto-fix not imported",
+    "edu-agent:postcheck.py": "Own actual decoded video/frame/audio evidence; original postcheck and DOM-only checks not imported",
+    "edu-agent:interactive-page and educational-video pipelines": "Own finite page/video implementation; actual speech, broader lessons/templates/multilingual semantics require separate qualification"
+  },
+  "grants": {
+    "source": "Full Apache-2.0 applies to reference-only pinned requirements; original texts unchanged, not imported or distributed. Own code, primitive glyphs and JS remain repository MIT.",
+    "native": "Prior installed FFmpeg/ffprobe bytes observed, whole native source-build/transitive grant certificate partial; no binaries bundled.",
+    "audio": "Caller must supply authorized exact WAV. No voice synthesis, model or provider execution inferred.",
+    "third_party_templates_assets": "No KaTeX/GSAP/HyperFrames/font/media/texture files imported or bundled."
+  },
+  "qualification": {
+    "fixed_offline_component": "Per-candidate receipts and actual page/video checks remain separate from packaged declarations.",
+    "actual_spoken_lesson": "UNRUN_NO_VERIFIED_SPEECH_INPUT_OR_PROVIDER_AUTHORITY",
+    "speech_verified": false,
+    "broader_templates_multilingual": "unqualified; unsupported glyphs/domains refuse explicitly",
+    "physics_mathematics_general_proof": false,
+    "human_programme_audit": "pending not waived",
+    "comparison_release_acceptance": false
+  },
+  "copied_paths": [],
+  "imports": [],
+  "bundled_fonts": [],
+  "bundled_media": [],
+  "bundled_weights": []
+}

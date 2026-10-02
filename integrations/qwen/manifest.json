@@ -179,7 +179,22 @@
       "copied_paths": [],
       "imported_packages": [],
       "target_files": [
-        "integrations/qwen/manifest.json"
+        "integrations/qwen/manifest.json",
+        "integrations/qwen/education.json",
+        "src/video_research_mcp/models/education.py",
+        "src/video_research_mcp/education.py",
+        "src/video_research_mcp/education_domain.py",
+        "src/video_research_mcp/education_glyphs.py",
+        "src/video_research_mcp/education_page.py",
+        "src/video_research_mcp/education_frames.py",
+        "src/video_research_mcp/education_native.py",
+        "src/video_research_mcp/education_review.py",
+        "tests/test_education_domain.py",
+        "tests/test_education_workflow.py",
+        "tests/test_education_review.py",
+        "skills/educational-explainer/SKILL.md",
+        "skills/educational-explainer/scripts/lesson.py",
+        "docs/integrations/qwen-education.md"
       ],
       "applicable_notice_receipts": [
         {
@@ -194,7 +209,23 @@
         "Separately selected external process/environment; exact dependency lock, executable hash/version/platform and runtime/service/asset grants required before activation."
       ],
       "payload_boundary": "Local host observations and cloud model/service payloads must be declared independently at activation.",
-      "blocked_assets": []
+      "blocked_assets": [],
+      "owned_educational": {
+        "descriptor": "integrations/qwen/education.json",
+        "entrypoint": {
+          "module": "video_research_mcp.education",
+          "script": "skills/educational-explainer/scripts/lesson.py",
+          "workflows": [
+            "validate",
+            "build",
+            "check"
+          ],
+          "public_MCP_tools_added": 0
+        },
+        "state": "owned finite lesson component; required spoken/multilingual/broader-template acceptance unqualified",
+        "claim_boundary": "Exact local supplied audio and rendered domain contracts; no general proof, provider speech, broader template or multilingual acceptance inferred."
+      },
+      "verification_boundary": "Bounded owned local workflow has separate source/artifact/browser receipts. Foreign renderer/assets/runtime remains disabled and incomplete; no wrappers substitute for decoded video."
     },
     {
       "id": "freecad",

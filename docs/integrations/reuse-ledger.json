@@ -544,7 +544,7 @@
       "implementations": [
         {
           "target_path": "integrations/qwen/manifest.json",
-          "target_sha256": "5ada21caf5109d3056f0e75230c0c11917373d24a61fb8f72ef2dd68914dc7ca",
+          "target_sha256": "bbfb74be136d3372bbcde4c88e7b40046b3db14dbe2a3b2d346259f8f1ef98a5",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -997,7 +997,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -1115,7 +1115,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1140,7 +1140,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "2294cfac83ca94242ec935cf9de82845db6fe2c8cb5c64c4c9bab80f24f3ddf2",
+          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1314,7 +1314,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
@@ -2008,7 +2008,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         }
       ]
@@ -2089,10 +2089,86 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "integrations/qwen/education.json",
+          "target_sha256": "953e6d79e58e0aa30b3b150105d00918012af162abb732d211e49803166bedab",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/education.py",
+          "target_sha256": "942e67c1cf2c78f8467765303177f3df2440248df27156179da7597083770f50",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education.py",
+          "target_sha256": "7c3357a526810e22159f4d9597300c6c3ae7a182aecdb3ec2a30557d9d519ca3",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_domain.py",
+          "target_sha256": "7e1c573a6464e7e3bad713f85b542b0b64968aaf6275d306cfac2f46cdd54f01",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_glyphs.py",
+          "target_sha256": "f74e7dd7223a22d15385f3c7def6cffe437e4515e9c25fa800f042d0b7394949",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_page.py",
+          "target_sha256": "90c69d543ec0ef2c7ff226a637ed5f29e68a5358579070dd102d4f0a38d77485",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_frames.py",
+          "target_sha256": "602972dd97872eacf720736ad6f93c47a9c1d59eb9aa8283a2d229c1893b7477",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_native.py",
+          "target_sha256": "5f9d1478721f9bbc61bcc2c4d2e124dd4dd8130887ef7656c7a3093a421ec5f5",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_review.py",
+          "target_sha256": "53c77ee9e711bbe037abe13d469561b620f3e5143c09b7d83cb013aa9308e511",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "tests/test_education_domain.py",
+          "target_sha256": "c03e96f905dc234a65cd25bb16df201d8487ec6250e0a480d526435c748f4bc2",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "tests/test_education_workflow.py",
+          "target_sha256": "e3b51afeeab7b406a88757123a42247a67aead81796216b1a047ffe851e104e8",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "tests/test_education_review.py",
+          "target_sha256": "6991093b0b06499895a22c9cc64a8d174c025487826a6369556621da85a346aa",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "skills/educational-explainer/SKILL.md",
+          "target_sha256": "ad25101e0cd2417cf83ff915705375848e8996518dd15a9f200ce97211e23316",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "skills/educational-explainer/scripts/lesson.py",
+          "target_sha256": "71a604c8231c30714c211075f4138661c2c11c83092e549c6be9ef53abad9f7e",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "docs/integrations/qwen-education.md",
+          "target_sha256": "be6373e9061e561ff43a6c199ac91933ecec5dcb175f000a6f4ac90cfb05ab51",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        }
+      ]
     },
     {
       "unit_key": "qwen_spatial",
@@ -3291,7 +3367,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
         },
         {
@@ -3345,7 +3421,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "276c16ede9cb4784fbbe0609d7af7c61eba4daae9b6b36d26e894262f60a3505",
+          "target_sha256": "e60eeeaddb8526da4c3ea3ca1a3b732f8fdc824a94624b5520d5102142389f31",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -3472,7 +3548,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         }
       ]
@@ -4496,7 +4572,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "b8b3310ba788cdca51febdac7d5f00ddaa838310a832b5bf7e1ebdb3f31087cd",
+          "target_sha256": "54d1c34fd3d9ab952d28037f4dd80efd80bf61a3c5535ac06f7a6652af1ee765",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
         },
         {
@@ -4735,7 +4811,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "2294cfac83ca94242ec935cf9de82845db6fe2c8cb5c64c4c9bab80f24f3ddf2",
+          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -5051,7 +5127,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "2294cfac83ca94242ec935cf9de82845db6fe2c8cb5c64c4c9bab80f24f3ddf2",
+          "target_sha256": "a166529ca7dda78bf440c4ea15a8aa6fea00d246955d7151c484389b2b4951b3",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {

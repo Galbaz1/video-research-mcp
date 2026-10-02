@@ -349,3 +349,10 @@ remain separate provider/native qualifications. Exact submitted frame and PCM
 clocks support a returned claim's source reference; model event boundaries,
 music labels and scores remain inference. Mocked contracts do not establish
 semantic accuracy, human audit, comparative advantage or release acceptance.
+
+
+## Finite educational page and video workflow
+
+The owned educational CLI independently implements requirements from QwenLM/Qwen-MM-Plugins at 07736672525443c7f8a3f6405eed37d2236f023f. Twenty-two exact source/skill/reference/grant bodies,684766 bytes11702 lines, including the complete Apache-2.0 grant, were read. Original20 static findings and39 direct execution gaps are retained. Source texts are reference-only, unchanged, and neither imported nor distributed; own Python, JavaScript and primitive glyph cells remain MIT.
+
+Pinned source: <https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/edu-agent/skill>. Full source grant digest cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30. Source/grant identities and boundaries are in integrations/qwen/education.json. No upstream validators, HyperFrames, KaTeX, GSAP, fonts, textures, media or voices are bundled. Installed FFmpeg/ffprobe and optional existing Pillow are separate runtime qualifications. Exact decoded WAV/frames, finite triangle/curve/circuit checks and caption layout do not verify spoken alignment, arbitrary mathematics/physics, all12 templates, multilingual semantics, human audit, comparison or release acceptance.

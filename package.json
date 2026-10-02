@@ -47,7 +47,9 @@
     "docs/integrations/FOOTAGE_EDIT.md",
     "integrations/qwen/footage-edit.json",
     "docs/integrations/AV_EVENTS.md",
-    "integrations/qwen/av-events.json"
+    "integrations/qwen/av-events.json",
+    "integrations/qwen/education.json",
+    "docs/integrations/qwen-education.md"
   ],
   "engines": {
     "node": ">=22"

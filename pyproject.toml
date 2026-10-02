@@ -70,6 +70,9 @@ build-backend = "hatchling.build"
 packages = ["src/video_research_mcp"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"integrations/qwen/education.json" = "education/integrations/qwen/education.json"
+"docs/integrations/qwen-education.md" = "education/docs/integrations/qwen-education.md"
+"skills/educational-explainer" = "education/skills/educational-explainer"
 "integrations/qwen/av-events.json" = "av-events/integrations/qwen/av-events.json"
 "docs/integrations/AV_EVENTS.md" = "av-events/docs/integrations/AV_EVENTS.md"
 "skills/av-events/SKILL.md" = "av-events/skills/av-events/SKILL.md"
