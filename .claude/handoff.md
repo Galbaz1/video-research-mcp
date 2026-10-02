@@ -18,6 +18,41 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
+### Main integration requested: backup verified; candidate checks in progress
+
+The user explicitly requests backing up main and merging the programme changes.
+Bead `vrm-0e8.10.3.2` owns this source-integration task. This supplies merge authority,
+but does not waive human/live/comparative acceptance or publish another package.
+
+Pre-merge main `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb` is preserved by verified
+remote tag `backup/main-before-multimodal-2026-10-02` and a complete private Git
+bundle (SHA256 `f8ca66f862cf1ff0da6e947aea5804349dfe2e11e0fe261a6026b22df48e6289`).
+A fresh bare restore reproduces the exact backup commit and passes full fsck.
+
+The clean merge candidate preserves the approved README and the RC runtime.
+The full direct integration changes 561 files; the PR policy requires an explicit
+one-off size exception before opening the complete integration PR. Prepare the
+candidate/checks first, then request that specific exception, not merge approval
+again. Default main stays unchanged until the normal protected PR merge.
+
+Exact-source CI found two stale README implementation hashes in the reuse ledger.
+Only those two target hashes (`qwen_vision_api`, `direct.image_vision`) are refreshed;
+source contracts, licensing routes, lockfiles and validators are unchanged.
+The inventory and protected baseline checks pass. Run focused reuse-gate tests,
+then one final CI on the repaired source; retain the original failed runs.
+
+Herdr `VRM-MAIN-INTEGRATION` r1 inspected backup, runtime/README parity, main rules,
+protected worktrees and the same CI failure. Its report phase was interrupted during
+compaction; retain this as PARTIAL, not a clean independent-review verdict.
+The native CLI/pane exited; zero children were allocated and no review lane remains
+active. Prior qualified RC and installed-client evidence remains separate.
+
+Private backup, scope, diagnosis, repair and partial-review receipts:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/main-integration-2026-10-02`.
+The self-contained backup bundle is `main-before-multimodal.bundle` in that directory.
+Do not overwrite the immutable RC tag or npm/PyPI bytes; keep unrelated dirty docs
+and the Gemini model/Interactions worktrees intact. Broader programme gates stay open.
+
 ### README entry update: approved PR merged and default entry verified
 
 The advanced-reader README revision uses Writing Mastery and a single independent
