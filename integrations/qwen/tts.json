@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.8.2",
+  "source_units": [
+    "qwen_tts",
+    "adj_tts_audio"
+  ],
+  "route": "independently owned companion PCM/REST narration; no foreign renderer or application import",
+  "state": "offline-synthetic-mocked-contracts-verified",
+  "source_contract_receipt_sha256": "b890d0ea37346ac07b26967fcedb0c9523bff6c689812db576918e1ab996e7c0",
+  "source_root_join_sha256": "a2ee1f3b9415ab11bb7a4c93ab9e18789618ad35a6809e5fb03de78495398d9f",
+  "copied_paths": [],
+  "foreign_execution_sources": [],
+  "bundled_audio_models_fonts": [],
+  "source_reference_bodies": [
+    {
+      "project": "qwen",
+      "path": "src/capabilities/video-edit/qwen_mm_plugins_video_edit/tools/qwen_tts.py",
+      "sha256": "5576890185f32a6a99b5d5ec8dbdf68b61030cf90d918359a1dd13b5d21c3422",
+      "bytes": 3639,
+      "grant_path": "source/qwen/LICENSE",
+      "grant_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "project": "qwen",
+      "path": "src/capabilities/video-edit/qwen_mm_plugins_video_edit/tools/minimax_tts.py",
+      "sha256": "19eabc1ba3b5b83a7cff65b9a60729cfe55cd83e096258b6e74ace752164a407",
+      "bytes": 9399,
+      "grant_path": "source/qwen/LICENSE",
+      "grant_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "project": "qwen",
+      "path": "src/capabilities/edu-agent/skill/scripts/generate_voice.py",
+      "sha256": "4d5fc5e90d8c6a07c2f8bbf2672c5f80fdd297d3a28dfbd787dc9de8c74839b8",
+      "bytes": 7100,
+      "grant_path": "source/qwen/LICENSE",
+      "grant_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "project": "moneyprinter",
+      "path": "app/services/voice.py",
+      "sha256": "954a22c0ca4950bdb95d549a59eb0f90191c6bb490b3978f47f4168877290faa",
+      "bytes": 143476,
+      "grant_path": "source/moneyprinter/LICENSE",
+      "grant_sha256": "87dd19b6a0779e14a91c1b06423ef251df37e89666160c031130a26bae68c229"
+    },
+    {
+      "project": "moneyprinter",
+      "path": "app/services/task.py",
+      "sha256": "5079ee18e9840ee09ffaa14cfe16ea3001b1165721116b84dab17dbe4e2a6f65",
+      "bytes": 71161,
+      "grant_path": "source/moneyprinter/LICENSE",
+      "grant_sha256": "87dd19b6a0779e14a91c1b06423ef251df37e89666160c031130a26bae68c229"
+    },
+    {
+      "project": "moneyprinter",
+      "path": "app/models/schema.py",
+      "sha256": "f818727b86e4142db06c25a5f2aa72a875e5fd4856b62a563883849c31d2f88b",
+      "bytes": 17189,
+      "grant_path": "source/moneyprinter/LICENSE",
+      "grant_sha256": "87dd19b6a0779e14a91c1b06423ef251df37e89666160c031130a26bae68c229"
+    }
+  ],
+  "entrypoint": "video-explainer-mcp:explainer_narration",
+  "legacy_provider_interfaces": [
+    "mock",
+    "elevenlabs",
+    "edge"
+  ],
+  "owned_provider_routes": [
+    "mock",
+    "qwen",
+    "minimax"
+  ],
+  "optional_dependency": "video-explainer-mcp[narration]:httpx>=0.28.1,<0.29",
+  "pcm_boundary": "nonempty decoded mono PCM16 WAV; measured sample counts; incompatible/corrupt/truncated/clipped/silent inputs refuse",
+  "timing_boundary": "sample-derived sentence/pause offsets; exact synthetic events or provider-declared word offsets; no text-proportional inference or semantic speech verification",
+  "operator_environment": {
+    "qwen": [
+      "EXPLAINER_NARRATION_QWEN_ENABLED",
+      "EXPLAINER_NARRATION_QWEN_VOICES",
+      "EXPLAINER_NARRATION_QWEN_DOWNLOAD_HOSTS",
+      "DASHSCOPE_API_KEY"
+    ],
+    "minimax": [
+      "EXPLAINER_NARRATION_MINIMAX_ENABLED",
+      "EXPLAINER_NARRATION_MINIMAX_VOICES",
+      "EXPLAINER_NARRATION_MINIMAX_DOWNLOAD_HOSTS",
+      "MINIMAX_API_KEY"
+    ]
+  },
+  "qwen_contract": "explicit selected model/voice/language/region; WAV URL; numeric rate unavailable and word alignment absent",
+  "minimax_contract": "explicit model/voice/region/rate; nonstream hex WAV; word subtitles fetched as separate bounded HTTPS JSON; strict integer terminal statuses",
+  "network_boundary": "operator enables provider and allowlists exact download hosts/voices; bounded HTTP with no redirects/auth propagation/provider POST retry; credentials env-only; no runtime sandbox claim",
+  "failure_boundary": "required sentence failures/unrun retained; dispatching/timeout/cancel ambiguous state prevents same-key regeneration",
+  "acceptance_plan_sha256": "01a4063860df58d294435efc0e07176b48358b08c9199209a76a2bf1c83c1e6e",
+  "live_provider_calls": 0,
+  "live_voice_semantics": "unverified",
+  "external_renderer_consumption": "unverified/current CLI delegate intact",
+  "human_comparison_release": "pending independent gates",
+  "verification": {
+    "fixed_controls": {
+      "pass": 16,
+      "failed": 0,
+      "unrun": 0
+    },
+    "actual_packed_journey_receipt_sha256": "44ae0468d5bff08f9888580e772ac8fcc48dd7d5b064b6dbf9b5e702ccc4f0e4",
+    "root_join_sha256": "29852c5f1b8b65448f428b1851a624e9684e2ab326271a08b166638b7b414442",
+    "public_calls": 33,
+    "mock_http_requests": 36,
+    "real_provider_calls": 0,
+    "network_attempts": 0,
+    "root_tests": 3111,
+    "companion_tests": 388,
+    "focused_tests_after_review_repairs": 79,
+    "original_review_findings_repaired": 2,
+    "root_tool_objects_exact": 83,
+    "prior_companion_tool_objects_exact": 18,
+    "new_companion_tool_objects": 1,
+    "isolated_sdist_wheel_build": "passed with exact notices/descriptor/doc and source bytes",
+    "renderer_consumption": "unverified",
+    "speech_semantics": "unverified",
+    "human_audit": "pending, not waived"
+  }
+}

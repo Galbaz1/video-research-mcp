@@ -1,0 +1,1 @@
+Second video visual track: a blue marker appears from 500 to 1500 ms. Both videos contain a blue marker.

@@ -1,8 +1,7 @@
 """Auto-load environment variables from a shared config file.
 
-Provides cross-workspace reliability by loading vars from
-``~/.config/video-research-mcp/.env`` when they aren't already
-set in the process environment. No external dependencies.
+Loads the installer-selected file, or the default user configuration, when
+values are unset in the process environment. No external dependencies.
 """
 
 from __future__ import annotations
@@ -77,14 +76,15 @@ def load_dotenv(path: Path | None = None) -> dict[str, str]:
     configured in the user's shell.
 
     Args:
-        path: Path to the ``.env`` file. Defaults to :data:`DEFAULT_ENV_PATH`
-              (``~/.config/video-research-mcp/.env``).
+        path: Explicit configuration file. Otherwise uses ``VIDEO_RESEARCH_ENV_FILE``
+            when selected, or :data:`DEFAULT_ENV_PATH` for user configuration.
 
     Returns:
         Dict of vars that were actually injected.
     """
     if path is None:
-        path = DEFAULT_ENV_PATH
+        selected = os.environ.get("VIDEO_RESEARCH_ENV_FILE")
+        path = Path(selected) if selected else DEFAULT_ENV_PATH
     parsed = parse_dotenv(path)
     injected: dict[str, str] = {}
     for key, value in parsed.items():

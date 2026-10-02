@@ -20,6 +20,7 @@ class BatchVideoItem(BaseModel):
     file_path: str
     result: dict = Field(default_factory=dict)
     error: str = ""
+    status: str = "completed"
 
 
 class BatchVideoResult(BaseModel):
@@ -33,4 +34,6 @@ class BatchVideoResult(BaseModel):
     total_files: int
     successful: int
     failed: int
+    canceled: int = 0
+    partial: int = 0
     items: list[BatchVideoItem] = Field(default_factory=list)

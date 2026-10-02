@@ -1,15 +1,65 @@
 {
   "name": "video-research-mcp",
-  "version": "0.7.1",
-  "description": "Claude Code workflows and installer for video analysis, document extraction and cited research",
+  "version": "0.8.0-rc.1",
+  "description": "Native Codex plugin plus Claude Code workflows and installer for video analysis, document extraction and cited research",
   "bin": {
     "video-research-mcp": "bin/install.js"
   },
   "files": [
+    "plugin.json",
+    "mcp.json",
     "bin",
     "commands",
     "skills",
-    "agents"
+    "agents",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/integrations/reuse-ledger.json",
+    "docs/integrations/ONBOARDING.md",
+    "docs/integrations/QWEN_REUSE.md",
+    "integrations/qwen/manifest.json",
+    "docs/integrations/qwen-hardware.md",
+    "integrations/qwen/mhs.json",
+    "docs/integrations/video-derived-skills.md",
+    "scripts/video_skill_contract.py",
+    "scripts/validate_video_skill.py",
+    "scripts/package_video_skill.py",
+    "licenses/fpdf2",
+    "docs/integrations/video-tutorial-notes.md",
+    "docs/integrations/qwen-blender.md",
+    "integrations/qwen/blender.json",
+    "scripts/blender_session.py",
+    "scripts/blender_startup.py",
+    "scripts/blender_stdio.py",
+    "scripts/freecad_session.py",
+    "scripts/freecad_startup.py",
+    "scripts/freecad_jobs.py",
+    "integrations/qwen/freecad.json",
+    "docs/integrations/qwen-freecad.md",
+    "scripts/spatial_session.py",
+    "scripts/spatial_inputs.py",
+    "scripts/spatial_dispatch.py",
+    "scripts/spatial_motion.py",
+    "integrations/qwen/video-spatio.json",
+    "docs/integrations/qwen-spatial.md",
+    "skills/spatial-video-analysis/SKILL.md",
+    "integrations/qwen/tts.json",
+    "docs/integrations/measured-narration.md",
+    "integrations/qwen/segmentation.json",
+    "docs/integrations/qwen-segmentation.md",
+    "docs/integrations/FOOTAGE_EDIT.md",
+    "integrations/qwen/footage-edit.json",
+    "docs/integrations/AV_EVENTS.md",
+    "integrations/qwen/av-events.json",
+    "integrations/qwen/education.json",
+    "docs/integrations/qwen-education.md",
+    "integrations/qwen/core.json",
+    "docs/integrations/qwen-core.md",
+    "scripts/core_session.py",
+    "scripts/core_inputs.py",
+    "scripts/core_dispatch.py",
+    "integrations/qwen/asr.json",
+    "docs/integrations/audio-transcription.md",
+    "docs/integrations/qwen-search.md"
   ],
   "engines": {
     "node": ">=22"
@@ -28,6 +78,6 @@
     "url": "https://github.com/Galbaz1/video-research-mcp"
   },
   "scripts": {
-    "test": "node --test tests/installer.test.js"
+    "test": "node --test tests/installer.test.js tests/codex-plugin.test.js"
   }
 }

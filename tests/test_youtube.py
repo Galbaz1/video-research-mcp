@@ -573,3 +573,22 @@ class TestYouTubeApiKeyFallback:
                     "youtube", "v3", developerKey="gemini-key", cache_discovery=False,
                 )
         YouTubeClient.reset()
+
+
+def test_data_api_permission_error_redacts_keys_and_credentials():
+    """New channel tools reuse the existing 403 boundary without exposing SDK URLs."""
+    from googleapiclient.errors import HttpError
+    from httplib2 import Response
+    from video_research_mcp.tools.youtube import _youtube_api_error
+
+    exc = HttpError(
+        Response({'status': '403'}),
+        b'{"error":{"message":"API key denied; token=owned-sensitive-fixture"}}',
+        uri='https://youtube.googleapis.com/youtube/v3/channels?key=owned-query-key',
+    )
+    result = _youtube_api_error(exc)
+    assert result['category'] == 'API_PERMISSION_DENIED'
+    assert result['retryable'] is False
+    assert 'owned-query-key' not in result['error']
+    assert 'owned-sensitive-fixture' not in result['error']
+    assert 'youtube.googleapis.com/youtube/v3/channels' in result['error']

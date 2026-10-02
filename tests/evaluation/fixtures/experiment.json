@@ -1,0 +1,19 @@
+{
+  "id": "development-contract-v1",
+  "candidate_revision": "335e8babbeebd783255f67cda2da62b22abb2612",
+  "baseline_revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec",
+  "systems": {
+    "fixture": {
+      "provider_settings": {
+        "provider": "none"
+      },
+      "revision": "335e8babbeebd783255f67cda2da62b22abb2612"
+    },
+    "specialist-fixture": {
+      "provider_settings": {
+        "provider": "another-offline-fixture"
+      },
+      "revision": "a3d75f6ab87bd893c7d167394fb5bace717f23ec"
+    }
+  }
+}

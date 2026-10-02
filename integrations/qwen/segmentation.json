@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.9.2",
+  "source_units": [
+    "qwen_segmentation"
+  ],
+  "route": "independently owned optional external HTTP raster adapter; no original launcher/model import",
+  "state": "offline-original-grid-mocked-contracts-verified; live-model-unqualified",
+  "entrypoint": "video-research-mcp:image_segment",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "source_contract_receipt_sha256": "d8c70b3f37292a585585949eeee501a7751be0f695e3e8f868214db9afe9fc0c",
+  "source_root_join_sha256": "a6d812c979c3d78d7310a8f054f5e0aa31db0dae95adc579510196ebdbae2acb",
+  "source_reference_bodies": [
+    {
+      "path": "src/capabilities/api/qwen_mm_plugins_api/others/segmentation.py",
+      "sha256": "9e46516cbd8d14882a3d50c30b1fce2bd7ede9c6d581af11d907a17d5c03c5ee",
+      "bytes": 2534,
+      "grant_path": "source/LICENSE",
+      "grant_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "src/capabilities/api/skill/references/launch_sam3_server.py",
+      "sha256": "12bf2a6d8a6dff6220a9c8442428cb241f68a544650406059078241c256ecfb9",
+      "bytes": 15103,
+      "grant_path": "source/LICENSE",
+      "grant_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ],
+  "copied_paths": [],
+  "foreign_execution_sources": [],
+  "bundled_models_checkpoints_fonts_media": [],
+  "optional_dependency": "video-research-mcp[images]; existing core HTTPX transport",
+  "operator_config": "SEGMENTATION_SERVICES_JSON; empty by default; explicit service ID, origin, URL and optional env credential/model/checkpoint declarations",
+  "submission": "exact source SHA256 and explicit workflow grant; dry plans make zero HTTP requests",
+  "coordinate_boundary": "unscaled original stored image grid; non1EXIF refused; continuous pixel xyxy; binary original-size mask PNG and actual overlay PNG",
+  "request_contract": {
+    "method": "POST",
+    "path": "/segment",
+    "keys": [
+      "image_b64",
+      "prompt",
+      "return_img"
+    ]
+  },
+  "network_boundary": "bounded existing HTTPX/HTTPCore/H11 peer-verified exchange; no proxies/redirects/retries; no service launch/GPU/checkpoint download",
+  "limits": {
+    "source_bytes": 16777216,
+    "source_pixels": 1000000,
+    "masks": 16,
+    "aggregate_mask_pixels": 4000000,
+    "http_response_bytes": 262144,
+    "artifact_bytes": 8388608
+  },
+  "wrapper_license": "Qwen original Apache-2.0; complete source grant retained privately",
+  "sam_reference_revision": "2345a4ad109ac29c569da749c91d84f10dc08c40",
+  "sam_license": "separate full custom SAM License; package MIT classifier does not replace it",
+  "sam_license_url": "https://github.com/facebookresearch/sam3/blob/2345a4ad109ac29c569da749c91d84f10dc08c40/LICENSE",
+  "checkpoint_model_card": "manual gated; unauthenticated card GET401 retained; grant binding/access/runtime unresolved and not admitted",
+  "service_terms": "operator responsibility; profile declaration is not service/model rights or loaded-model attestation",
+  "live_model_calls": 0,
+  "mask_semantics": "unverified",
+  "comparison_release_human_audit": "pending independent gates",
+  "acceptance_plan_sha256": "20ef5a0b4f076b35115b7f2b6e4d359cde53271b7525e80ce10395392e48d4ab",
+  "verification": {
+    "fixed_controls": {
+      "pass": 20,
+      "failed": 0,
+      "unrun": 0
+    },
+    "attempt": 1,
+    "actual_packed_journey_receipt_sha256": "cab08fdeb3ee98bc98bf5bd8401a52b5de41981b9a410a594d5ce80a49bb472a",
+    "root_join_sha256": "5f146fdfd36b54fd158c2dc9a517a500e6910c4ef6af63ec0178504e3ba4441b",
+    "public_calls": 64,
+    "mcp_client_calls": 63,
+    "direct_public_cancel_calls": 1,
+    "mock_http_connections": 47,
+    "mock_http_requests_written": 46,
+    "real_socket_attempts": 0,
+    "root_tests": 3210,
+    "original_review_findings_repaired": 1,
+    "prior_root_tool_objects_exact": 83,
+    "new_root_tool_objects": 1,
+    "preserved_runtime_bodies": 297,
+    "locks_preserved": 3,
+    "mask_semantics": "unverified",
+    "human_audit": "pending, not waived"
+  }
+}

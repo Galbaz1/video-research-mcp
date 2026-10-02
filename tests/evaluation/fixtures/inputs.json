@@ -1,0 +1,336 @@
+[
+  {
+    "id": "dev-research-current",
+    "family": "Research",
+    "workflow": "research",
+    "modalities": [
+      "text"
+    ],
+    "question": "How many units did the current trial use?",
+    "sources": [
+      {
+        "id": "current",
+        "path": "sources/current.txt",
+        "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35",
+        "modality": "text",
+        "content_type": "text/plain"
+      },
+      {
+        "id": "stale",
+        "path": "sources/stale.txt",
+        "sha256": "b20e101e886b86b409c23a7a3c834bb63a91d91b53699096dd898802198c6669",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-research-absent",
+    "family": "Research",
+    "workflow": "research",
+    "modalities": [
+      "text"
+    ],
+    "question": "What is the shipment date?",
+    "sources": [
+      {
+        "id": "current",
+        "path": "sources/current.txt",
+        "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-visual-time",
+    "family": "Media",
+    "workflow": "media-read",
+    "modalities": [
+      "video",
+      "image"
+    ],
+    "question": "Describe and locate the visual marker.",
+    "sources": [
+      {
+        "id": "video",
+        "path": "sources/video.txt",
+        "sha256": "8e8d872cd58f357b218b84c628178f29bb30a4409d21e036e21ce22f843d6cf7",
+        "modality": "video",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": [
+        "marker"
+      ]
+    }
+  },
+  {
+    "id": "dev-audio-time",
+    "family": "Audio",
+    "workflow": "events",
+    "modalities": [
+      "audio"
+    ],
+    "question": "Locate the sound event.",
+    "sources": [
+      {
+        "id": "video",
+        "path": "sources/video.txt",
+        "sha256": "8e8d872cd58f357b218b84c628178f29bb30a4409d21e036e21ce22f843d6cf7",
+        "modality": "audio",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": [
+        "bell"
+      ]
+    }
+  },
+  {
+    "id": "dev-order",
+    "family": "Media",
+    "workflow": "perception",
+    "modalities": [
+      "video",
+      "audio"
+    ],
+    "question": "Which occurs first?",
+    "sources": [
+      {
+        "id": "video",
+        "path": "sources/video.txt",
+        "sha256": "8e8d872cd58f357b218b84c628178f29bb30a4409d21e036e21ce22f843d6cf7",
+        "modality": "video",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-cross-video",
+    "family": "Memory",
+    "workflow": "corpus",
+    "modalities": [
+      "video"
+    ],
+    "question": "What is shared by both recordings?",
+    "sources": [
+      {
+        "id": "video",
+        "path": "sources/video.txt",
+        "sha256": "8e8d872cd58f357b218b84c628178f29bb30a4409d21e036e21ce22f843d6cf7",
+        "modality": "video",
+        "content_type": "text/plain"
+      },
+      {
+        "id": "other",
+        "path": "sources/other.txt",
+        "sha256": "37ac37ac68ad4ecb0b121c6bcaa2d4966b9caf66e195a0683554ee067446e5d2",
+        "modality": "video",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-restart",
+    "family": "Foundation",
+    "workflow": "jobs",
+    "modalities": [
+      "text"
+    ],
+    "question": "What should a restarted job do?",
+    "sources": [
+      {
+        "id": "artifact",
+        "path": "sources/artifact.txt",
+        "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-note",
+    "family": "Knowledge",
+    "workflow": "reports",
+    "modalities": [
+      "text"
+    ],
+    "question": "What report is requested?",
+    "sources": [
+      {
+        "id": "artifact",
+        "path": "sources/artifact.txt",
+        "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-plan",
+    "family": "Production",
+    "workflow": "planning",
+    "modalities": [
+      "text"
+    ],
+    "question": "What plan artifact is specified?",
+    "sources": [
+      {
+        "id": "artifact",
+        "path": "sources/artifact.txt",
+        "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-spatial-absent",
+    "family": "Optional",
+    "workflow": "spatial",
+    "modalities": [
+      "geometry",
+      "tabular"
+    ],
+    "question": "What are the unmeasured dimensions?",
+    "sources": [
+      {
+        "id": "current",
+        "path": "sources/current.txt",
+        "sha256": "700e2a9674e5c40c6b2cf873ff6e3d87f75229b103ae7f72c4d40b27d74e2a35",
+        "modality": "geometry",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-release",
+    "family": "Acceptance",
+    "workflow": "release",
+    "modalities": [
+      "text"
+    ],
+    "question": "How is publication protected during restart?",
+    "sources": [
+      {
+        "id": "artifact",
+        "path": "sources/artifact.txt",
+        "sha256": "45e0dd95dad31ea345d31efffb97116da83b4667abfe3d06518976ac4908b0d4",
+        "modality": "text",
+        "content_type": "text/plain"
+      }
+    ],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-unavailable",
+    "family": "Foundation",
+    "workflow": "verification",
+    "modalities": [
+      "text"
+    ],
+    "question": "Exercise explicit terminal failure.",
+    "sources": [],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-error",
+    "family": "Foundation",
+    "workflow": "verification",
+    "modalities": [
+      "text"
+    ],
+    "question": "Exercise explicit terminal failure.",
+    "sources": [],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-timeout",
+    "family": "Foundation",
+    "workflow": "verification",
+    "modalities": [
+      "text"
+    ],
+    "question": "Exercise explicit terminal failure.",
+    "sources": [],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  },
+  {
+    "id": "dev-refused",
+    "family": "Foundation",
+    "workflow": "verification",
+    "modalities": [
+      "text"
+    ],
+    "question": "Exercise explicit terminal failure.",
+    "sources": [],
+    "sampling": {
+      "mode": "frozen_observation_snapshot",
+      "coverage": "labeled observation, not a real media inference",
+      "temporal_targets": []
+    }
+  }
+]

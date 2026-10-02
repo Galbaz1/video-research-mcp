@@ -78,6 +78,30 @@ class TestParseDotenv:
 class TestLoadDotenv:
     """Unit tests for env injection."""
 
+    def test_selected_project_file_does_not_read_home_credentials(self, tmp_path, monkeypatch):
+        """A local registration selects its own file without user-file fallback."""
+        home = tmp_path / "home.env"
+        home.write_text("_TEST_SCOPE=home\n")
+        project = tmp_path / "project.env"
+        project.write_text("_TEST_SCOPE=project\n")
+        monkeypatch.setattr("video_research_mcp.dotenv.DEFAULT_ENV_PATH", home)
+        monkeypatch.setenv("VIDEO_RESEARCH_ENV_FILE", str(project))
+        monkeypatch.delenv("_TEST_SCOPE", raising=False)
+        assert load_dotenv() == {"_TEST_SCOPE": "project"}
+        monkeypatch.delenv("_TEST_SCOPE")
+        project.unlink()
+        assert load_dotenv() == {}
+
+    def test_explicit_file_precedes_installer_selection(self, tmp_path, monkeypatch):
+        """The existing explicit-path API remains authoritative."""
+        selected = tmp_path / "selected.env"
+        selected.write_text("_TEST_SCOPE=selected\n")
+        explicit = tmp_path / "explicit.env"
+        explicit.write_text("_TEST_SCOPE=explicit\n")
+        monkeypatch.setenv("VIDEO_RESEARCH_ENV_FILE", str(selected))
+        monkeypatch.delenv("_TEST_SCOPE", raising=False)
+        assert load_dotenv(explicit) == {"_TEST_SCOPE": "explicit"}
+
     def test_injects_into_environ(self, tmp_path, monkeypatch):
         """GIVEN a .env file WHEN load_dotenv THEN vars appear in os.environ."""
         monkeypatch.delenv("_TEST_DOTENV_VAR", raising=False)

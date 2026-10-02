@@ -1,4 +1,4 @@
-"""Audio tools — sound effects and background music."""
+"""Sound, music and measured project-bound narration tools."""
 
 from __future__ import annotations
 
@@ -10,6 +10,10 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..errors import make_tool_error
+from ..models.narration import NarrationRequest
+from ..plan_artifacts import require_binding
+from ..planning import require_approved, save_plan
+from ..planning_production import production_transaction
 from ..runner import run_cli
 from ..types import ProjectId, SoundAction
 
@@ -65,5 +69,41 @@ async def explainer_music(
             "duration_seconds": result.duration_seconds,
             "stdout": result.stdout.strip(),
         }
+    except Exception as exc:
+        return make_tool_error(exc)
+
+
+@audio_server.tool(annotations=ToolAnnotations(readOnlyHint=False, openWorldHint=True))
+async def explainer_narration(
+    project_id: ProjectId,
+    request: Annotated[NarrationRequest, Field(description="Measure approved narration, preview a voice, or admit contained custom WAV")],
+) -> dict:
+    """Produce measured WAV and timing receipts from the current approved script.
+
+    Args:
+        project_id: Existing configured project with an approved bound script.
+        request: Explicit audio action, provider, voice and performance settings.
+
+    Returns:
+        Measured audio and alignment receipts, or retained sentence failures.
+        Synthetic/provider timing does not verify spoken-content correctness.
+    """
+    try:
+        from ..narration_run import produce_narration
+
+        with production_transaction(project_id) as (project, connection, state):
+            if state is None:
+                raise ValueError("Create and approve a managed plan and bind its script before narration")
+            script = require_binding(project, state, "script")
+            result = await produce_narration(project, state, script, request)
+            if result["success"]:
+                require_approved(project, state)
+                require_binding(project, state, "script")
+                if request.action in {"generate", "custom"}:
+                    state["bindings"]["narration"] = result["binding"]
+                    require_binding(project, state, "narration")
+                save_plan(connection, state)
+            return {"project_id": project_id, **result, "factual_success": False,
+                    "visual_audio_semantics": "not_verified"}
     except Exception as exc:
         return make_tool_error(exc)

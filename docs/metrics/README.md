@@ -8,6 +8,8 @@ that a provider request, installation or user journey passed.
 | --- | --- | --- |
 | [tool-contract-manifest.json](tool-contract-manifest.json) | Mounted root tool names, descriptions, parameter/output schemas and annotations | Static discovery from the imported server; no tool execution |
 | [installer-state-matrix.json](installer-state-matrix.json) | Scenario descriptions and expected outcomes, plus source-file and destination integrity checks for `FILE_MAP` | Scenarios are inventory, not executed tests; integrity checks cover existence and duplicate destinations |
+| [multimodal-evaluation-protocol.json](multimodal-evaluation-protocol.json) | Frozen families, workflow map, source revisions, metrics, materiality and resource limits | A protocol is not a measured advantage; [replay contract](MULTIMODAL_EVALUATION.md) describes its evidence gates |
+| [multimodal-heldout-manifest.json](multimodal-heldout-manifest.json) | Independent case/source/label commitments and deterministic oracle receipts | Initial 27-case contract corpus; no candidate runs, human audit or live superiority claim |
 
 Each artifact includes `generated_at`. The September 29, 2026 snapshots contain
 34 root tools and 22 installer scenarios with 44 mapped files. These counts

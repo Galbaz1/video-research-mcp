@@ -1,204 +1,119 @@
-"""Local video file helpers — MIME detection, hashing, content building, File API upload."""
+"""Fenced exact-byte local video Parts and retained File API upload preparation."""
 
 from __future__ import annotations
 
 import asyncio
-import hashlib
-import json
-import logging
-from datetime import datetime, timezone
+import stat
+import threading
 from pathlib import Path
 
 from google.genai import types
 
-from ..client import GeminiClient
 from ..config import get_config
-from ..local_path_policy import enforce_local_access_root, resolve_path
-
-logger = logging.getLogger(__name__)
+from ..media_acquisition import _wait_worker
+from ..media_local_io import _copy_hash, _open_regular
+from ..media_snapshot import checked_path, snapshot
+from .video_upload import upload_receipt, upload_snapshot
+from .video_upload import wait_for_active as _wait_for_active
 
 SUPPORTED_VIDEO_EXTENSIONS: dict[str, str] = {
-    ".mp4": "video/mp4",
-    ".webm": "video/webm",
-    ".mov": "video/quicktime",
-    ".avi": "video/x-msvideo",
-    ".mkv": "video/x-matroska",
-    ".mpeg": "video/mpeg",
-    ".wmv": "video/x-ms-wmv",
-    ".3gpp": "video/3gpp",
+    ".mp4": "video/mp4", ".webm": "video/webm", ".mov": "video/quicktime",
+    ".avi": "video/x-msvideo", ".mkv": "video/x-matroska", ".mpeg": "video/mpeg",
+    ".wmv": "video/x-ms-wmv", ".3gpp": "video/3gpp",
 }
-
-LARGE_FILE_THRESHOLD = 20 * 1024 * 1024  # 20 MB
-_UPLOAD_LOCKS: dict[str, asyncio.Lock] = {}
-_UPLOAD_LOCKS_GUARD = asyncio.Lock()
+LARGE_FILE_THRESHOLD = 20 * 1024 * 1024
 
 
 def _video_mime_type(path: Path) -> str:
-    """Return MIME type for a video file, or raise ValueError if unsupported."""
-    ext = path.suffix.lower()
-    mime = SUPPORTED_VIDEO_EXTENSIONS.get(ext)
+    """Return the supported local video MIME type."""
+    mime = SUPPORTED_VIDEO_EXTENSIONS.get(path.suffix.lower())
     if not mime:
         allowed = ", ".join(sorted(SUPPORTED_VIDEO_EXTENSIONS))
-        raise ValueError(f"Unsupported video extension '{ext}'. Supported: {allowed}")
+        raise ValueError(f"Unsupported video extension '{path.suffix}'. Supported: {allowed}")
     return mime
 
 
 def _file_content_hash(path: Path) -> str:
-    """SHA-256 of file contents, truncated to 16 hex chars."""
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(8192), b""):
-            h.update(chunk)
-    return h.hexdigest()[:16]
+    """Commit all regular source bytes under the configured fence and input ceiling."""
+    return _copy_hash(checked_path(str(path)))[0]
 
 
 def _validate_video_path(file_path: str) -> tuple[Path, str]:
-    """Validate path exists and has supported extension. Returns (path, mime)."""
-    p = enforce_local_access_root(resolve_path(file_path))
-    if not p.exists():
-        raise FileNotFoundError(f"Video file not found: {file_path}")
-    if not p.is_file():
+    """Validate a regular, bounded local video before copying or provider preparation."""
+    path = checked_path(file_path)
+    try:
+        info = path.lstat()
+    except FileNotFoundError as error:
+        raise FileNotFoundError(f"Video file not found: {file_path}") from error
+    if not stat.S_ISREG(info.st_mode):
         raise ValueError(f"Not a file: {file_path}")
-    mime = _video_mime_type(p)
-    return p, mime
-
-
-async def _wait_for_active(
-    client, file_name: str, *, timeout: float = 120, interval: float = 2.0
-) -> None:
-    """Poll Gemini Files API until file state is ACTIVE.
-
-    Args:
-        client: google.genai client instance.
-        file_name: The file resource name (e.g. "files/abc123").
-        timeout: Max seconds to wait before raising TimeoutError.
-        interval: Seconds between polling attempts.
-
-    Raises:
-        RuntimeError: If the file enters FAILED state.
-        TimeoutError: If the file doesn't become ACTIVE within timeout.
-    """
-    loop = asyncio.get_event_loop()
-    start = loop.time()
-    deadline = start + timeout
-    while True:
-        file_info = await client.aio.files.get(name=file_name)
-        if file_info.state == "ACTIVE":
-            elapsed = loop.time() - start
-            if elapsed > interval:  # Only log if we actually waited
-                logger.info("File %s active after %.1fs", file_name, elapsed)
-            return
-        if file_info.state == "FAILED":
-            raise RuntimeError(f"File processing failed: {file_name}")
-        if loop.time() > deadline:
-            raise TimeoutError(
-                f"File {file_name} not active after {timeout}s (state: {file_info.state})"
-            )
-        await asyncio.sleep(interval)
+    if info.st_size > get_config().media_max_input_bytes:
+        raise ValueError("Video exceeds MEDIA_MAX_INPUT_BYTES; use a bounded window")
+    return path, _video_mime_type(path)
 
 
 def _upload_cache_dir() -> Path:
-    """Return the upload cache directory, creating it if needed."""
-    cfg = get_config()
-    d = Path(cfg.cache_dir) / "uploads"
-    d.mkdir(parents=True, exist_ok=True)
-    return d
+    """Locate the private, fenced upload index directory."""
+    directory = checked_path(str(Path(get_config().cache_dir) / "uploads"))
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    return directory
 
 
-def _load_upload_cache(content_hash: str) -> dict | None:
-    """Load a cached upload entry by content hash, or None if missing."""
-    cache_file = _upload_cache_dir() / f"{content_hash}.json"
-    if not cache_file.exists():
-        return None
-    try:
-        return json.loads(cache_file.read_text())
-    except (json.JSONDecodeError, OSError):
-        return None
-
-
-def _save_upload_cache(content_hash: str, file_uri: str, file_name: str) -> None:
-    """Persist an upload cache entry keyed by content hash."""
-    cache_file = _upload_cache_dir() / f"{content_hash}.json"
-    cache_file.write_text(json.dumps({
-        "file_uri": file_uri,
-        "file_name": file_name,
-        "uploaded_at": datetime.now(timezone.utc).isoformat(),
-    }))
+def _load_upload_cache(content_hash: str, mime_type: str = "video/mp4") -> dict | None:
+    """Read account-scoped, attested preparation facts without any provider request."""
+    return upload_receipt(content_hash, mime_type, _upload_cache_dir())
 
 
 async def _upload_large_file(path: Path, mime_type: str, content_hash: str = "") -> str:
-    """Upload via Gemini File API, wait for ACTIVE state, return the file URI.
+    """Snapshot generic local media and reuse only the same source/account resource."""
+    async with snapshot(str(path), content_hash or None) as owned:
+        uri = await upload_snapshot(owned.path, mime_type, owned.sha256, owned.size,
+                                    _upload_cache_dir(), timeout=owned.remaining(),
+                                    waiter=_wait_for_active)
+    return uri
 
-    When ``content_hash`` is provided, checks an on-disk cache first. If the
-    cached file is still ACTIVE on the server, the upload is skipped entirely.
-    This prevents re-upload loops when MCP clients retry after a timeout.
+
+def _inline_bytes(path: Path, size: int) -> bytes:
+    with _open_regular(path) as reader:
+        data = reader.read(size + 1)
+    if len(data) != size:
+        raise ValueError("Owned source size changed before inline preparation")
+    return data
+
+
+async def _video_file_content(
+    file_path: str, prompt: str, *, video_metadata: types.VideoMetadata | None = None,
+) -> tuple[types.Content, str, str]:
+    """Build inline/uploaded Content bound to the complete original source SHA.
+
+    Typed metadata applies static clipping/sampling to either media Part. The
+    original source commitment remains independent of requested clip settings.
     """
-    client = GeminiClient.get()
-
-    if not content_hash:
-        uploaded = await client.aio.files.upload(
-            file=path,
-            config=types.UploadFileConfig(mime_type=mime_type),
-        )
-        logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
-        return uploaded.uri
-
-    async with _UPLOAD_LOCKS_GUARD:
-        lock = _UPLOAD_LOCKS.setdefault(content_hash, asyncio.Lock())
-
-    async with lock:
-        cached = _load_upload_cache(content_hash)
-        if cached:
-            try:
-                await _wait_for_active(client, cached["file_name"], timeout=10)
-                logger.info("Upload cache hit for %s → %s", path.name, cached["file_uri"])
-                return cached["file_uri"]
-            except (RuntimeError, TimeoutError, KeyError):
-                logger.debug("Stale upload cache for %s, re-uploading", path.name)
-
-        uploaded = await client.aio.files.upload(
-            file=path,
-            config=types.UploadFileConfig(mime_type=mime_type),
-        )
-        logger.info("Uploaded %s → %s (state=%s)", path.name, uploaded.uri, uploaded.state)
-        await _wait_for_active(client, uploaded.name)
-        _save_upload_cache(content_hash, uploaded.uri, uploaded.name)
-        return uploaded.uri
-
-
-async def _video_file_content(file_path: str, prompt: str) -> tuple[types.Content, str, str]:
-    """Build Content for a local video file.
-
-    Small files (<20 MB) use inline Part.from_bytes.
-    Large files are uploaded via the File API.
-
-    Returns:
-        (content, content_id, file_uri) where content_id is the SHA-256 hash
-        prefix and file_uri is the File API URI (empty for small inline files).
-    """
-    p, mime = _validate_video_path(file_path)
-    content_id = _file_content_hash(p)
-    size = p.stat().st_size
-
-    if size >= LARGE_FILE_THRESHOLD:
-        file_uri = await _upload_large_file(p, mime, content_hash=content_id)
-        parts = [types.Part(file_data=types.FileData(file_uri=file_uri))]
-    else:
-        file_uri = ""
-        data = await asyncio.to_thread(p.read_bytes)
-        parts = [types.Part.from_bytes(data=data, mime_type=mime)]
-
-    parts.append(types.Part(text=prompt))
-    return types.Content(parts=parts), content_id, file_uri
+    path, mime = _validate_video_path(file_path)
+    async with snapshot(str(path)) as owned:
+        if owned.size >= LARGE_FILE_THRESHOLD:
+            uri = await upload_snapshot(owned.path, mime, owned.sha256, owned.size,
+                                        _upload_cache_dir(), timeout=owned.remaining(),
+                                        waiter=_wait_for_active)
+            media = types.Part(file_data=types.FileData(file_uri=uri, mime_type=mime))
+        else:
+            uri = ""
+            task = asyncio.create_task(asyncio.to_thread(_inline_bytes, owned.path, owned.size))
+            data = await _wait_worker(task, threading.Event())
+            media = types.Part.from_bytes(data=data, mime_type=mime)
+        if video_metadata is not None:
+            media.video_metadata = video_metadata
+            media.media_processing = types.MediaProcessing.STATIC
+        content, digest = types.Content(parts=[media, types.Part(text=prompt)]), owned.sha256
+    return content, digest, uri
 
 
 async def _video_file_uri(file_path: str) -> tuple[str, str]:
-    """Upload a local video and return (file_uri, content_id) for sessions.
-
-    Sessions always upload (even small files) to get a stable URI for multi-turn replay.
-    """
-    p, mime = _validate_video_path(file_path)
-    content_id = _file_content_hash(p)
-    uri = await _upload_large_file(p, mime, content_hash=content_id)
-    return uri, content_id
+    """Prepare a retained upload even for small local session videos."""
+    path, mime = _validate_video_path(file_path)
+    async with snapshot(str(path)) as owned:
+        uri = await upload_snapshot(owned.path, mime, owned.sha256, owned.size,
+                                    _upload_cache_dir(), timeout=owned.remaining(),
+                                    waiter=_wait_for_active)
+        digest = owned.sha256
+    return uri, digest

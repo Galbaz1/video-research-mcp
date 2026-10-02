@@ -13,6 +13,7 @@ from video_research_mcp.url_policy import (
     UrlPolicyError,
     _verify_peer_ip,
     download_checked,
+    checked_response,
     validate_url,
 )
 
@@ -31,7 +32,7 @@ class _FakeNetworkStream:
         self._peer = (peer_ip, port)
 
     def get_extra_info(self, info: str, default=None):
-        if info == "peername":
+        if info == "server_addr":
             return self._peer
         return default
 
@@ -59,7 +60,7 @@ class _FakeResponse:
         self,
         chunks: list[bytes],
         *,
-        peer_ip: str | None = None,
+        peer_ip: str | None = "93.184.216.34",
         status_code: int = 200,
         headers: dict[str, str] | None = None,
     ):
@@ -114,6 +115,15 @@ class _FakeClient:
 
 
 class TestValidateUrl:
+    @patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=[])
+    async def test_empty_dns_result_is_not_a_public_address(self, _mock_dns):
+        with pytest.raises(UrlPolicyError, match="no addresses"):
+            await validate_url("https://example.org/file")
+
+    async def test_file_uri_cannot_enter_network_adapter(self):
+        with pytest.raises(UrlPolicyError, match="Only HTTPS"):
+            await validate_url("file:///etc/passwd")
+
     """Tests for validate_url()."""
 
     async def test_rejects_http(self):
@@ -177,6 +187,24 @@ class TestValidateUrl:
             await validate_url("https://nonexistent.example.invalid/doc.pdf")
 
 
+async def test_research_allowlist_blocks_initial_host_before_dns():
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock) as dns:
+        with pytest.raises(UrlPolicyError, match="allowlist"):
+            async with checked_response("https://blocked.example/file", allowed_hosts={"allowed.example"}):
+                pytest.fail("Unpermitted host opened")
+        dns.assert_not_called()
+
+
+async def test_research_allowlist_blocks_redirect_before_dns_and_http():
+    response = _FakeResponse([], status_code=302, headers={"location": "https://blocked.example/file"})
+    client = _FakeClient(response)
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=_mock_getaddrinfo("93.184.216.34")) as dns, patch("httpx.AsyncClient", return_value=client):
+        with pytest.raises(UrlPolicyError, match="allowlist"):
+            async with checked_response("https://allowed.example/file", allowed_hosts={"allowed.example"}):
+                pytest.fail("Unpermitted redirect opened")
+    assert client.called_urls == ["https://allowed.example/file"] and dns.call_count == 1
+
+
 class TestVerifyPeerIp:
     """Tests for _verify_peer_ip() DNS rebinding guard."""
 
@@ -210,19 +238,37 @@ class TestVerifyPeerIp:
         resp.extensions = {"network_stream": _FakeNetworkStream("93.184.216.34")}
         _verify_peer_ip(resp)  # Should not raise
 
-    def test_passes_without_network_stream(self):
-        """Missing network_stream extension is tolerated (graceful degradation)."""
+    def test_rejects_without_network_stream(self):
+        """An adapter cannot bypass peer verification by omitting transport metadata."""
         resp = MagicMock()
         resp.extensions = {}
-        _verify_peer_ip(resp)  # Should not raise
+        with pytest.raises(UrlPolicyError, match="Cannot verify connected peer"):
+            _verify_peer_ip(resp)
 
-    def test_passes_without_peername(self):
-        """Network stream without peername is tolerated."""
+    def test_rejects_without_server_address(self):
+        """An unknown actual peer cannot establish a public connection."""
         stream = MagicMock()
         stream.get_extra_info.return_value = None
         resp = MagicMock()
         resp.extensions = {"network_stream": stream}
-        _verify_peer_ip(resp)  # Should not raise
+        with pytest.raises(UrlPolicyError, match="Cannot verify connected peer"):
+            _verify_peer_ip(resp)
+
+    def test_installed_httpcore_stream_blocks_private_peer(self):
+        """Use the installed backend's actual metadata contract without network I/O."""
+        from httpcore._backends.anyio import AnyIOStream
+        import anyio
+
+        socket_stream = MagicMock()
+        def extra(attribute, default=None):
+            if attribute == anyio.abc.SocketAttribute.remote_address:
+                return ("127.0.0.1", 443)
+            return default
+        socket_stream.extra.side_effect = extra
+        resp = MagicMock()
+        resp.extensions = {"network_stream": AnyIOStream(socket_stream)}
+        with pytest.raises(UrlPolicyError, match="DNS rebinding detected"):
+            _verify_peer_ip(resp)
 
 
 class TestDownloadChecked:
@@ -256,7 +302,7 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False)
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
@@ -375,3 +421,32 @@ class TestDownloadChecked:
 
         # Verify no document file was written
         assert not (tmp_path / "doc.pdf").exists()
+
+
+@pytest.mark.parametrize('ip', ['100.64.0.1', '0.0.0.0', '::', '192.0.0.8'])
+async def test_non_global_addresses_never_establish_a_public_fetch(ip):
+    with patch(_DNS_MOCK_TARGET, new_callable=AsyncMock, return_value=_mock_getaddrinfo(ip)):
+        with pytest.raises(UrlPolicyError, match='blocked IP range'):
+            await validate_url('https://nonpublic.example/video')
+    with pytest.raises(UrlPolicyError, match='blocked range'):
+        _verify_peer_ip(_FakeResponse([], peer_ip=ip))
+
+
+async def test_rejected_download_does_not_delete_existing_sibling(tmp_path):
+    sentinel = tmp_path / 'original.pdf'
+    sentinel.write_bytes(b'keep original')
+    with pytest.raises(UrlPolicyError):
+        await download_checked('http://example.org/original.pdf', tmp_path, max_bytes=10)
+    assert sentinel.read_bytes() == b'keep original'
+
+
+async def test_checked_download_never_overwrites_existing_file(tmp_path):
+    sentinel = tmp_path / 'original.pdf'
+    sentinel.write_bytes(b'keep original')
+    with (
+        patch('video_research_mcp.url_policy.validate_url', new_callable=AsyncMock),
+        patch('video_research_mcp.url_policy.httpx.AsyncClient', return_value=_FakeClient(_FakeResponse([b'new']))),
+    ):
+        with pytest.raises(FileExistsError):
+            await download_checked('https://example.org/original.pdf', tmp_path, max_bytes=10)
+    assert sentinel.read_bytes() == b'keep original'

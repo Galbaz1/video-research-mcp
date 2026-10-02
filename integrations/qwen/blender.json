@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.9.4",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "state": "external-disabled",
+  "runtime_route": "explicit owned disposable local session; separately selected compatible external Python, original addon and 22 tools",
+  "console_entry": "qwen-mm-plugins-blender",
+  "copied_paths": [],
+  "imported_packages": [],
+  "bundled_assets": [],
+  "selected_python": "3.12.13",
+  "selected_direct_packages": {
+    "mcp": "1.30.0",
+    "pillow": "11.3.0",
+    "openai": "1.109.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "docstring-parser": "0.18.0"
+  },
+  "execution_sources": [
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/__init__.py",
+      "sha256": "aebb039ae3dfa98b569e735e6b13c2bbc492d73eba7bfb3c8c23483a582a4f35",
+      "bytes": 3017
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/__main__.py",
+      "sha256": "74c288116ebbf0da993ef56ba947231e463a4d39fd62b975adf3f9eb00992cba",
+      "bytes": 535
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/loader.py",
+      "sha256": "d33fb555a0c85ffc06b0d1f2544e31762ee8d6686ef63719a8a20b542101dd50",
+      "bytes": 8054
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/__init__.py",
+      "sha256": "8765c3967be0339ef33e60eb8e1dda0fcb84d8d0d121c41260831cdf1aff1a45",
+      "bytes": 102
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/download_polyhaven_asset.py",
+      "sha256": "3c8da052bf4e10d09a156f1ac3c2707434adf91cae680b2d969c6d43595c9573",
+      "bytes": 2714
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/download_sketchfab_model.py",
+      "sha256": "b263d53dcbc60b15fdf83524a12d2b50cdba0eee33e2c0703c48db75bb04490c",
+      "bytes": 3098
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/execute_blender_code.py",
+      "sha256": "6b75e285bf6846616d7f4be9e2df0714029a74bc6cb9afcb6c65bc3c5e4ebdd1",
+      "bytes": 1151
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/generate_hunyuan3d_model.py",
+      "sha256": "ab510ca848e8a44b4ef8e70689469af60331b044869d5473e11c1f484208670b",
+      "bytes": 2181
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/generate_hyper3d_model_via_images.py",
+      "sha256": "efadc0c6b8b038190cf1daf08ac2c25592f716fafc4472aa9250cc992b3597b4",
+      "bytes": 4401
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/generate_hyper3d_model_via_text.py",
+      "sha256": "cab60b3279f37e7c422cac6f87c5e58c9a9ee08263c17e34b64465f96988f145",
+      "bytes": 2524
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_hunyuan3d_status.py",
+      "sha256": "7c105e848448343386facca8ca7e1b39b5e9f36d78b978f5fbc0a32c961176f2",
+      "bytes": 849
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_hyper3d_status.py",
+      "sha256": "42137fbb2a0c63eacddcab4af5a08399261e898c8b916bfc1eb3c3101e326450",
+      "bytes": 841
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_object_info.py",
+      "sha256": "56da09fed6aa468e5cf047e1ffb9124a1cb98079d1fde8349439359d3c1e8c59",
+      "bytes": 952
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_polyhaven_categories.py",
+      "sha256": "c0d09d52ff9fc21cca9c825e1d31f63320365ca2b7c378449f1c7af30774c7a2",
+      "bytes": 1788
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_polyhaven_status.py",
+      "sha256": "c1bb8b33c763d0c90bfd868d9a18d3247e14f9f2e774215f2109e61f407dc411",
+      "bytes": 1033
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_scene_info.py",
+      "sha256": "5f464a84efc4703b7039cc503cde6dcd5e755a9f136ffe4d95839080365e375e",
+      "bytes": 771
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_sketchfab_model_preview.py",
+      "sha256": "ed455aeb862c6cf5a673e3f56b6d7dc94a0b68f3249c584e0b078e36b83b5061",
+      "bytes": 1333
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_sketchfab_status.py",
+      "sha256": "a917bbbbb13b4e360bf4637d94b4fdf5889491760e39b8d6ed22149d4db52a73",
+      "bytes": 1039
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/get_viewport_screenshot.py",
+      "sha256": "09d1618b79569b60d2ae0edd783b099f796aac5fc33a0bf931eff7e4dd2e509c",
+      "bytes": 1566
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/import_generated_asset.py",
+      "sha256": "caa8363b343a1626fd511cdbc6f91077863384c4163fa9fb971235db75555974",
+      "bytes": 1614
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/import_generated_asset_hunyuan.py",
+      "sha256": "b9045a264f0e346ef6d979048fc1982b64088cf3cbf8fdc3a75967870ac7ad73",
+      "bytes": 1392
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/poll_hunyuan_job_status.py",
+      "sha256": "967e35f31c784e72b472e910fbbde5e8f38fa24930508962d068fc477472ef4f",
+      "bytes": 1427
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/poll_rodin_job_status.py",
+      "sha256": "14c065260a9f10c6033e37fd3ad1330fcc0c9ec1e045261c39866b3ccc545dad",
+      "bytes": 1744
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/search_polyhaven_assets.py",
+      "sha256": "c7d3cd7d4ecb841bb693130a6d87e5e37698d10996af8c5871eba008785d67b7",
+      "bytes": 2361
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/search_sketchfab_models.py",
+      "sha256": "c33f2ca544c0482fe5cc2f146bff8d6f6b112af9abab5d8fc042808f903ecdd2",
+      "bytes": 3281
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/tools/set_texture.py",
+      "sha256": "f2d345ca2e1fe3144feb050ebf3d775f0e35cdf0c917de47cfb9988d844e5c5e",
+      "bytes": 2698
+    },
+    {
+      "path": "src/mcp_framework.py",
+      "sha256": "099cf71f563ae2966e4e47bdf0f13b28d8ab10bfd9ce1abedeb99c4a4fb8c760",
+      "bytes": 22956
+    },
+    {
+      "path": "src/shared/__init__.py",
+      "sha256": "5f4191e20f833c967b42ab99d25ec360a687bebcc7147a5aa90cc1d2fd181783",
+      "bytes": 1770
+    },
+    {
+      "path": "src/shared/applaunch.py",
+      "sha256": "f9adcdc9193fdb5b4d185b79fd9d43ac4409ebddbb9bbd76a15a4c4741bbf32a",
+      "bytes": 12675
+    },
+    {
+      "path": "src/shared/content.py",
+      "sha256": "924450a441959213862b5d817644534712d247d56e353347eb7c6db1eac3bed4",
+      "bytes": 2304
+    },
+    {
+      "path": "src/shared/env.py",
+      "sha256": "75f1f6fb8f784e336c3d12d909ec7641a19b750cdfd17a667eca0d79e328de83",
+      "bytes": 15026
+    },
+    {
+      "path": "src/shared/native_mode.py",
+      "sha256": "c59f61dd46214464cba036d89dd3d057b53725655379590fe2333b9e955b729c",
+      "bytes": 4536
+    },
+    {
+      "path": "src/shared/syscmd.py",
+      "sha256": "6748c9406c0324c0a83a0f19baa61fac5ca1e36618dbac9b09d2f181e31df2d4",
+      "bytes": 2920
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/vendor/addon.py",
+      "sha256": "f8d22dc2c29aed35730c787a321b9d7b79bd6d5ebdd431420585a8a525b463ec",
+      "bytes": 118939
+    }
+  ],
+  "license_sources": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/capabilities/blender/NOTICE.md",
+      "sha256": "3566ca7041195b843c60444d8e981f09fc7615f019bbb7aa385d8d337a81b667",
+      "bytes": 1711
+    },
+    {
+      "path": "src/capabilities/blender/qwen_mm_plugins_blender/vendor/LICENSE",
+      "sha256": "049501fd54d27852507853a5b88094ca1c6ff97404418a5032f3310eecc9cde6",
+      "bytes": 1071
+    }
+  ],
+  "expected_tools": [
+    "download_polyhaven_asset",
+    "download_sketchfab_model",
+    "execute_blender_code",
+    "generate_hunyuan3d_model",
+    "generate_hyper3d_model_via_images",
+    "generate_hyper3d_model_via_text",
+    "get_hunyuan3d_status",
+    "get_hyper3d_status",
+    "get_object_info",
+    "get_polyhaven_categories",
+    "get_polyhaven_status",
+    "get_scene_info",
+    "get_sketchfab_model_preview",
+    "get_sketchfab_status",
+    "get_viewport_screenshot",
+    "import_generated_asset",
+    "import_generated_asset_hunyuan",
+    "poll_hunyuan_job_status",
+    "poll_rodin_job_status",
+    "search_polyhaven_assets",
+    "search_sketchfab_models",
+    "set_texture"
+  ],
+  "source_contract_receipt_sha256": "7aa4f08a976a217d6b28a43c9529755b982ed36ec883474a58dfd119c7c4d124",
+  "selected_blender": {
+    "version": "5.2.1 LTS",
+    "build": "9e2066aef7ef",
+    "platform": "macOS-arm64",
+    "sha256": "ea651e507c6b197df0e234bfa04e5ed43e7f4d498267a7df93fcb38f21928a5c",
+    "redistributed": false
+  },
+  "optional_services": {
+    "polyhaven": "disabled",
+    "sketchfab": "disabled",
+    "hyper3d": "disabled",
+    "hunyuan": "disabled"
+  },
+  "external_asset_policy": "No external asset imports admitted in the local-only session. A future selected service route requires an operator source/license receipt and separate operation authority before import.",
+  "host_privileges": "Trusted arbitrary Python runs in an owned factory Blender process; process/profile isolation is not a security sandbox.",
+  "verification_boundary": "Actual selected local addon/discovery/scene/render/viewport accepted against16fixedcontrols after one isolated-helper path correction. Service routes schema/socket-mock tested and disabled. Human, comparison, providers and registry release remain unqualified.",
+  "actual_local_native_receipt_sha256": "3df3b17fca9b91b8ef75b52f3a80f3345e51b76e501d4c61c355307a3a28fd54",
+  "actual_tools_discovered": 22,
+  "actual_controls_passed": 16,
+  "native_attempt_denominator": {
+    "initial_preinitialize_failure": 1,
+    "controlled_correction_accepted": 1
+  }
+}

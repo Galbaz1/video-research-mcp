@@ -1,0 +1,242 @@
+{
+  "dev-research-current": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "The Atlas trial used 12 units.",
+        "evidence": [
+          {
+            "source_id": "current",
+            "quote": "the Atlas trial used 12 units.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-research-absent": {
+    "facts": [],
+    "expected_abstention": true,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "abstained"
+  },
+  "dev-visual-time": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "A blue marker appears.",
+        "evidence": [
+          {
+            "source_id": "video",
+            "quote": "a blue marker appears from 1000 to 2000 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [
+      {
+        "id": "marker",
+        "start_ms": 1000,
+        "end_ms": 2000
+      }
+    ],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-audio-time": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "A bell sounds.",
+        "evidence": [
+          {
+            "source_id": "video",
+            "quote": "a bell sounds from 3000 to 3500 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [
+      {
+        "id": "bell",
+        "start_ms": 3000,
+        "end_ms": 3500
+      }
+    ],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-order": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "The blue marker precedes the bell.",
+        "evidence": [
+          {
+            "source_id": "video",
+            "quote": "The blue marker precedes the bell.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-cross-video": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "Both videos contain a blue marker.",
+        "evidence": [
+          {
+            "source_id": "video",
+            "quote": "a blue marker appears from 1000 to 2000 ms.",
+            "start_ms": null,
+            "end_ms": null
+          },
+          {
+            "source_id": "other",
+            "quote": "a blue marker appears from 500 to 1500 ms.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-restart": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "Restart resumes the same job without duplicate publication.",
+        "evidence": [
+          {
+            "source_id": "artifact",
+            "quote": "Restart resumes the same job without duplicate publication.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-note": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "Export an offline source-linked report.",
+        "evidence": [
+          {
+            "source_id": "artifact",
+            "quote": "export an offline source-linked report.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-plan": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "Export an offline source-linked report.",
+        "evidence": [
+          {
+            "source_id": "artifact",
+            "quote": "export an offline source-linked report.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-spatial-absent": {
+    "facts": [],
+    "expected_abstention": true,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "abstained"
+  },
+  "dev-release": {
+    "facts": [
+      {
+        "id": "f0",
+        "text": "Restart resumes the same job without duplicate publication.",
+        "evidence": [
+          {
+            "source_id": "artifact",
+            "quote": "Restart resumes the same job without duplicate publication.",
+            "start_ms": null,
+            "end_ms": null
+          }
+        ]
+      }
+    ],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "ok"
+  },
+  "dev-unavailable": {
+    "facts": [],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "unavailable"
+  },
+  "dev-error": {
+    "facts": [],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "error"
+  },
+  "dev-timeout": {
+    "facts": [],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "timeout"
+  },
+  "dev-refused": {
+    "facts": [],
+    "expected_abstention": false,
+    "temporal": [],
+    "required_artifacts": [],
+    "expected_status": "refused"
+  }
+}

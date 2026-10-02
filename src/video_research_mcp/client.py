@@ -46,7 +46,18 @@ class GeminiClient:
         if not key:
             raise ValueError("No Gemini API key — set GEMINI_API_KEY or pass api_key explicitly")
         if key not in cls._clients:
-            cls._clients[key] = genai.Client(api_key=key)
+            from google.genai import types
+
+            client = genai.Client(
+                api_key=key,
+                http_options=types.HttpOptions(
+                    retry_options=types.HttpRetryOptions(attempts=1),
+                ),
+            )
+            # Interactions interprets attempts=1 as one retry; launches have no idempotency key.
+            client.aio.interactions.sdk_configuration.retry_config = None
+            client.interactions.sdk_configuration.retry_config = None
+            cls._clients[key] = client
             logger.info("Created Gemini client")
         return cls._clients[key]
 
@@ -59,6 +70,7 @@ class GeminiClient:
         thinking_level: str | None = None,
         response_schema: dict | None = None,
         temperature: float | None = None,
+        api_key: str | None = None,
         system_instruction: str | None = None,
         tools: list[types.Tool] | None = None,
         **kwargs: Any,
@@ -75,6 +87,7 @@ class GeminiClient:
             thinking_level: Override thinking level (defaults to config's default).
             response_schema: JSON schema dict to constrain output format.
             temperature: Sampling override for compatible models; rejected by 3.6+ Flash.
+            api_key: Explicit account credential for a frozen, bounded workflow.
             system_instruction: System-level instruction prepended to the prompt.
             tools: Gemini tool wiring (e.g. GoogleSearch, UrlContext).
             **kwargs: Forwarded to the underlying generate_content call.
@@ -104,15 +117,35 @@ class GeminiClient:
         if tools:
             config.tools = tools
 
-        client = cls.get()
-        response = await with_retry(
-            lambda: client.aio.models.generate_content(
-                model=resolved_model,
-                contents=contents,
-                config=config,
-                **kwargs,
-            )
-        )
+        from .execution_budget import current_budget
+
+        budget = current_budget()
+        client = cls.get(api_key=api_key) if api_key is not None else cls.get()
+        if budget:
+            if system_instruction or tools or kwargs:
+                raise ValueError(
+                    "Bounded execution cannot count external tools, system context or SDK overrides"
+                )
+            response = await budget.generate(client, resolved_model, contents, config)
+        else:
+            from .job_execution import single_submission
+
+            if single_submission.get():
+                response = await client.aio.models.generate_content(
+                    model=resolved_model,
+                    contents=contents,
+                    config=config,
+                    **kwargs,
+                )
+            else:
+                response = await with_retry(
+                    lambda: client.aio.models.generate_content(
+                        model=resolved_model,
+                        contents=contents,
+                        config=config,
+                        **kwargs,
+                    )
+                )
 
         # Strip thinking parts — only return user-visible text
         content = response.candidates[0].content if response.candidates else None
@@ -229,12 +262,11 @@ class GeminiClient:
         # Dict (JSON Schema) path: validate in-place, return parsed
         try:
             import jsonschema
+
             jsonschema.validate(parsed, schema)
         except ImportError:
             if strict:
-                raise ValueError(
-                    "jsonschema package required for strict dict schema validation"
-                )
+                raise ValueError("jsonschema package required for strict dict schema validation")
             logger.debug("jsonschema not installed, skipping dict schema validation")
         except Exception as exc:
             if strict:

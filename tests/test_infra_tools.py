@@ -22,6 +22,15 @@ def _clean_config(monkeypatch):
 
 
 class TestInfraTools:
+    async def test_config_endpoint_credentials_are_redacted(self, monkeypatch):
+        monkeypatch.setenv("WEAVIATE_URL", "https://alice:private-password@example.org/db?sig=private-signature")
+        monkeypatch.setenv("MLFLOW_TRACKING_URI", "https://private-token@example.org/mlflow?key=private-key")
+        cfg_mod._config = None
+        result = await infra_configure()
+        assert "private-" not in str(result)
+        assert result["current_config"]["weaviate_url"] == "https://example.org/db?[redacted]"
+        assert result["current_config"]["mlflow_tracking_uri"] == "https://example.org/mlflow?[redacted]"
+
     @pytest.mark.asyncio
     async def test_infra_configure_updates_runtime_config(self):
         out = await infra_configure(model="gemini-test", thinking_level="low", temperature=0.7)

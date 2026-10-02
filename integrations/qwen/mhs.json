@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "first-party-simulator-example",
+  "mode": "simulator",
+  "environment": {
+    "MHS_MODE": "simulator",
+    "MHS_AUTHORITY_FILE": "/absolute/operator-owned/approved-hardware-commands.json"
+  },
+  "registered_devices": ["simulator/lamp", "simulator/camera"],
+  "physical_adapters": [],
+  "runtime_reads_this_example": false,
+  "boundary": "Configure the environment explicitly. This example supplies no human approval, external adapter registration or physical evidence."
+}

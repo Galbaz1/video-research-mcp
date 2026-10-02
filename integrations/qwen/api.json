@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.3.4",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "state": "external-disabled",
+  "console_entry": "qwen-mm-plugins-api",
+  "module_entry": "qwen_mm_plugins_api.__main__:main",
+  "runtime_route": "separately selected private compatible environment; no core import or automatic installation",
+  "source_paths": [
+    "src/capabilities/api",
+    "src/shared"
+  ],
+  "selected_python": "3.12.13",
+  "selected_direct_packages": {
+    "mcp": "1.30.0",
+    "pillow": "11.3.0",
+    "openai": "1.109.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "docstring-parser": "0.18.0"
+  },
+  "selected_package_count": 36,
+  "declared_but_unneeded_extras": [
+    "api: DashScope SDK and HTTP/SOCKS extras not needed for VL-only discovery/calls",
+    "oss: oss2 not needed; OSS/upload paths forbidden"
+  ],
+  "copied_paths": [],
+  "imported_packages": [],
+  "bundled_assets": [],
+  "source_contract_receipt_sha256": "78936f352431d9ddff09549cdc7d649bcd93887743ec027722efcdd1d40ccdf1",
+  "manual_selection_recipe_sha256": "dbb5af0cda87bd5404f0b82f2c4c8c49cb92ac7271fc7e934728ecbb04697558",
+  "entrypoint_verification": "actual unmodified pinned source process initialized/listed13tools;4publiccalls/3OpenAI SDK MockTransport completions; not live provider acceptance",
+  "activation_requires": [
+    "exact source/runtime/lock/grant and executable readback",
+    "external operation guard for bounded credentials, payloads, retries and upload origins",
+    "explicit provider account/source-upload/output/spend authority"
+  ],
+  "live_provider_verified": false,
+  "model_weight_license_verified": false,
+  "temporary_retention_verified": false,
+  "external_runtime_receipt_sha256": "18d303f8ccccc15685c47f1e88d364f71e017b337ae03ddf68608c051ce3a3e0",
+  "actual_tools_discovered": 13,
+  "actual_loaded_source_modules": 33,
+  "installed_record_files_verified": 2157,
+  "installed_native_files_verified": 31,
+  "attempt_denominator": {
+    "failed_preinitialize_harness": 1,
+    "accepted_after_one_controlled_harness_correction": 1
+  },
+  "guard_limits": {
+    "python_dns": 0,
+    "python_inet": 0,
+    "uploads": 0,
+    "blocked_ancillary_subprocess_attempts": 1,
+    "executed_ancillary_subprocesses": 0,
+    "os_wide_egress_verified": false
+  }
+}

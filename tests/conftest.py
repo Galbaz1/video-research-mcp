@@ -168,3 +168,9 @@ def mock_weaviate_disabled(monkeypatch, clean_config):
     """Ensure Weaviate is disabled — empty WEAVIATE_URL."""
     monkeypatch.delenv("WEAVIATE_URL", raising=False)
     monkeypatch.delenv("WEAVIATE_API_KEY", raising=False)
+
+
+@pytest.fixture(autouse=True)
+def _isolate_durable_jobs(tmp_path, monkeypatch):
+    """Prevent job adapters from reading or writing the user's actual state."""
+    monkeypatch.setenv("VRM_JOB_DB", str(tmp_path / "jobs.sqlite3"))

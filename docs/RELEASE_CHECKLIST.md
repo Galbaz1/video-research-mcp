@@ -15,6 +15,7 @@ a different directory is specified.
 - [ ] In each companion directory, run `uv sync --locked --extra dev`,
   `uv run --locked pytest tests/ -q`, and `uv run --locked ruff check src/ tests/`.
 - [ ] Installer journeys pass: `node --test tests/installer.test.js`.
+- [ ] Native Codex package checks pass: `node --test tests/codex-plugin.test.js`.
 - [ ] Security smoke passes: `./scripts/run_security_smoke.sh`.
 - [ ] Offline tool security checks pass:
   `PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py`.
@@ -22,14 +23,19 @@ a different directory is specified.
   `uv run --locked python scripts/export_tool_contract_manifest.py --output /tmp/video-research-tools.json`
   and compare with the documented surface.
 - [ ] Core versions match in `pyproject.toml`, `package.json`, and
-  `.claude-plugin/plugin.json`; `CHANGELOG.md` has the matching release section.
+  `.claude-plugin/plugin.json`, and `plugin.json`; `mcp.json` pins that exact runtime
+  version and `CHANGELOG.md` has the matching release section.
 - [ ] Companion versions match the releases being prepared.
 - [ ] Release contract passes: `uv run --locked python scripts/check_release.py`.
 - [ ] `npm pack --dry-run` includes mapped workflows and their referenced resources.
 - [ ] Build approved packages into a fresh directory using
   [Publishing](PUBLISHING.md#pre-publish-checklist). Python metadata checks pass.
 - [ ] The exact core wheel passes `scripts/smoke_built_mcp.py`: tool discovery and
-  read-only configuration work over stdio without provider requests.
+  complete source tool contracts, read-only configuration and local image cropping
+  work over stdio without provider requests.
+- [ ] The exact npm archive installs from an isolated local Codex marketplace;
+  installed bytes match and a fresh session loads skills and the exact candidate
+  MCP runtime. Preserve unrelated configuration and verify removal.
 - [ ] Archive hashes are recorded and no stale archive enters the release.
 
 Hosted CI covers the root on Python 3.11–3.14 and both companions on 3.11 and 3.14.
@@ -54,6 +60,8 @@ check; a green local suite does not establish that it ran.
 - [ ] Each published companion resolves and exposes its expected tools.
 - [ ] The registry npm installer executes `--check`; isolated journeys cover
   install, upgrade, preservation, and uninstall behavior.
+- [ ] Native Codex installation from the exact npm registry version passes fresh
+  session skill/MCP discovery and a read-only configuration call.
 - [ ] The client is restarted; active registration/version is inspected and
   `infra_configure()` is read without arguments.
 - [ ] Authorized live provider smoke is recorded, or live inference remains

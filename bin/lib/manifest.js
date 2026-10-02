@@ -6,13 +6,14 @@ const crypto = require('crypto');
 
 const MANIFEST_FILE = 'gr-file-manifest.json';
 
-/** Return SHA-256 hex digest of a file, or null if unreadable. */
+/** Return SHA-256 of readable bytes; only an absent file has a null identity. */
 function hashFile(filePath) {
   try {
     const content = fs.readFileSync(filePath);
     return crypto.createHash('sha256').update(content).digest('hex');
-  } catch {
-    return null;
+  } catch (err) {
+    if (err.code === 'ENOENT') return null;
+    throw new Error('Installer file identity is unreadable');
   }
 }
 

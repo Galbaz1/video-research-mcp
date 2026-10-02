@@ -210,6 +210,26 @@ def lookup(content_id: str, model: str) -> str | None:
     return _registry.get((content_id, model))
 
 
+def invalidate_content(content_id: str) -> int:
+    """Discard one source's local registry/tasks; never call provider deletion."""
+    _load_registry()
+    keys = {
+        key for key in (*_registry, *_pending, *_suppressed, *_last_failure)
+        if key[0] == content_id
+    }
+    removed = 0
+    for key in keys:
+        task = _pending.pop(key, None)
+        if task is not None and not task.done():
+            task.cancel()
+        removed += int(_registry.pop(key, None) is not None)
+        _suppressed.discard(key)
+        _last_failure.pop(key, None)
+    if keys:
+        _save_registry()
+    return removed
+
+
 def start_prewarm(
     content_id: str,
     video_parts: list[types.Part],

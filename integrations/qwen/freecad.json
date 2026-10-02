@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "bead_id": "vrm-0e8.9.5",
+  "source_repo": "QwenLM/Qwen-MM-Plugins",
+  "source_revision": "07736672525443c7f8a3f6405eed37d2236f023f",
+  "state": "external-disabled",
+  "runtime_route": "explicit owned disposable GUI/session; separately selected compatible Python and unmodified external14tool client/addon",
+  "copied_paths": [],
+  "imported_packages": [],
+  "bundled_assets": [],
+  "selected_python": "3.12.13",
+  "selected_direct_packages": {
+    "mcp": "1.30.0",
+    "pillow": "11.3.0",
+    "openai": "1.109.1",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "docstring-parser": "0.18.0"
+  },
+  "execution_sources": [
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/__init__.py",
+      "sha256": "38e5685ef465289be15a5b03ca276ea56360605173ad9a4c9e3149507e3f8e3a",
+      "bytes": 3379
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/__main__.py",
+      "sha256": "74c288116ebbf0da993ef56ba947231e463a4d39fd62b975adf3f9eb00992cba",
+      "bytes": 535
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/_responses.py",
+      "sha256": "30aad3183c1bd3cb6f39cfc69913238480c4468f149816a3a136afcd89219720",
+      "bytes": 921
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/loader.py",
+      "sha256": "f2e924e1e7aab218fff7a7ab214d17ad914a3302fe1b5dbea9e4ef122d330fdb",
+      "bytes": 6293
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/__init__.py",
+      "sha256": "2c3168638240f62bbe984824974ff73edbeb66350c8eb61051beb11d47aca73b",
+      "bytes": 102
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/create_document.py",
+      "sha256": "fd67d11a599df23a6579de9ddd353f66ca66c69e35609d292d3831a00ea8cbca",
+      "bytes": 1061
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/create_object.py",
+      "sha256": "a02281d2abbdc4f44714ed75984bfe1ef2598ad2abba99bfd7bc7b2c9eee39cc",
+      "bytes": 5492
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/delete_object.py",
+      "sha256": "0004a9102dfc9b24464798f3cd1b435dbcc911558a75a539ee90cf2c61144022",
+      "bytes": 1402
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/edit_object.py",
+      "sha256": "76b5f00def4aad9cc817413276308cce3020077df96d9297f0120d63c777dbe7",
+      "bytes": 1637
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/execute_code.py",
+      "sha256": "59b5519dcd98bed9d49109707f24ca33eb8b8ed730093b77d2c805725c53095a",
+      "bytes": 1573
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/execute_code_async.py",
+      "sha256": "daf956fe48c495e774104f30d73c1ecb385dc43cf4121783e1578a350fdd2dab",
+      "bytes": 2733
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/get_object.py",
+      "sha256": "07e337a773af3d1a89374a139fbc8a313552c6ab66f67c9e8d61850bf53355ff",
+      "bytes": 1390
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/get_objects.py",
+      "sha256": "1bd87b0bbc1ed48b7dcc993794e176a542a24e525c32c463df439c6541790d91",
+      "bytes": 1296
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/get_parts_list.py",
+      "sha256": "f55b394f31b72240bee9b773f06c367d04c8c1c01f73bd20d0fa4ba00eaca3b2",
+      "bytes": 875
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/get_view.py",
+      "sha256": "1074a9054b86cdcb53a098ac44c8be589c208a973db5cae124437615bacaa0a8",
+      "bytes": 1509
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/insert_part_from_library.py",
+      "sha256": "7c5095ca01a543bfe8c404bd5256388a69557f24dd5b81bbf54b4ae179e5dc78",
+      "bytes": 1452
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/list_documents.py",
+      "sha256": "73732e8f8e3dfbad480050a228cdaf9cd426b01886a44b0d17836912716616e0",
+      "bytes": 744
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/reload_document.py",
+      "sha256": "656bd4675c59f634915768edb2b469593a8ca5af4c427085cc57247ca120476c",
+      "bytes": 1495
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/tools/run_fem_analysis.py",
+      "sha256": "afc717a80888e89424261bcdc946abc5228b4ecdc55347b6a640d406e1896cc7",
+      "bytes": 3273
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/__init__.py",
+      "sha256": "5336ab80c213f20d89608d95039cdf4fd2ec056d7818ae0b4acc09570def27c6",
+      "bytes": 25
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/commands.py",
+      "sha256": "e92dfc4ca4668c0e3a10d185a5b006b76621606dd246fe62c78b2365ea5dfd45",
+      "bytes": 6232
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/fem_executor.py",
+      "sha256": "39ae9d57e6863259c9a9fc03372d8bc9f8bd23bca4e5ed27983bb1904fe90a50",
+      "bytes": 3323
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/gui_dispatch.py",
+      "sha256": "dcfb6511c4c7ac6c40ff007c9119ea778f20cd18eb36ef7c953f0b0fbb0d69bd",
+      "bytes": 7887
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/ip_filter.py",
+      "sha256": "025dca9a951c78d00c7728fdf9156f95bf60cf17b78cf04ec0062f5256c8c363",
+      "bytes": 2612
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/object_factory.py",
+      "sha256": "a3bdde19043de8f99f0cf12702658bdff937579609c1d285f238107a6fb1b680",
+      "bytes": 4010
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/parts_library.py",
+      "sha256": "c37032e59097c7f43630d98c3e39bd1251a36a2cfb64ec266c2316da684e54ea",
+      "bytes": 945
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/property_mapper.py",
+      "sha256": "720b3a7ca6892e0bbabc338899c1e27b0fc49c24ace0c8e70fb94ec2f7d415be",
+      "bytes": 3568
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/rpc_server.py",
+      "sha256": "d6fc9d8bce5a130d41a3ad1da99b50d457a2afa00844521e183649943552154b",
+      "bytes": 14974
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/serialize.py",
+      "sha256": "a99174083dab17b54df86a3604d94a1014307b31f9da026d18a94f8a029918dd",
+      "bytes": 2969
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/settings.py",
+      "sha256": "cf031487a29b8863c9a31caff3a12e4e4e60c8cecfed5e8fe67ba9cb05dcd472",
+      "bytes": 1128
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/rpc_server/view_manager.py",
+      "sha256": "3ca3b08e28b29d6881e37cfffbdf3df921e4e36e269302083a77e330168d0b2d",
+      "bytes": 3654
+    },
+    {
+      "path": "src/mcp_framework.py",
+      "sha256": "099cf71f563ae2966e4e47bdf0f13b28d8ab10bfd9ce1abedeb99c4a4fb8c760",
+      "bytes": 22956
+    },
+    {
+      "path": "src/shared/__init__.py",
+      "sha256": "5f4191e20f833c967b42ab99d25ec360a687bebcc7147a5aa90cc1d2fd181783",
+      "bytes": 1770
+    },
+    {
+      "path": "src/shared/applaunch.py",
+      "sha256": "f9adcdc9193fdb5b4d185b79fd9d43ac4409ebddbb9bbd76a15a4c4741bbf32a",
+      "bytes": 12675
+    },
+    {
+      "path": "src/shared/cache.py",
+      "sha256": "a6c53ef0d90b594821ec31b91bbd863ac820fb1a4bf8c2ad5399ef13b617add2",
+      "bytes": 2016
+    },
+    {
+      "path": "src/shared/content.py",
+      "sha256": "924450a441959213862b5d817644534712d247d56e353347eb7c6db1eac3bed4",
+      "bytes": 2304
+    },
+    {
+      "path": "src/shared/env.py",
+      "sha256": "75f1f6fb8f784e336c3d12d909ec7641a19b750cdfd17a667eca0d79e328de83",
+      "bytes": 15026
+    },
+    {
+      "path": "src/shared/native_mode.py",
+      "sha256": "c59f61dd46214464cba036d89dd3d057b53725655379590fe2333b9e955b729c",
+      "bytes": 4536
+    },
+    {
+      "path": "src/shared/syscmd.py",
+      "sha256": "6748c9406c0324c0a83a0f19baa61fac5ca1e36618dbac9b09d2f181e31df2d4",
+      "bytes": 2920
+    }
+  ],
+  "license_sources": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/capabilities/freecad/qwen_mm_plugins_freecad/vendor/FreeCADMCP/LICENSE",
+      "sha256": "396a409dd7ea20bb4f0bf2e2478daae4b8e28648d3c2d5b56f53b5b8715959c1",
+      "bytes": 1077
+    },
+    {
+      "path": "src/capabilities/freecad/NOTICE.md",
+      "sha256": "7f8b75f95c6f2cbfaf81d749287093a8a469cd9af46566dad464d56ede9e0715",
+      "bytes": 1215
+    }
+  ],
+  "expected_tools": [
+    "create_document",
+    "create_object",
+    "delete_object",
+    "edit_object",
+    "execute_code",
+    "execute_code_async",
+    "get_object",
+    "get_objects",
+    "get_parts_list",
+    "get_view",
+    "insert_part_from_library",
+    "list_documents",
+    "reload_document",
+    "run_fem_analysis"
+  ],
+  "source_contract_receipt_sha256": "923f1af24d785d50e9f780a87609811048385663aaf550a799a0475900201b95",
+  "selected_freecad": {
+    "version": "1.1.3",
+    "platform": "macOS-arm64",
+    "path": "/Applications/FreeCAD.app/Contents/Resources/bin/freecad",
+    "sha256": "3b893155a67309c3ad6e539efddd4644fa14c4dadb91242614413f5f4632ad6d",
+    "redistributed": false
+  },
+  "selected_solvers": {
+    "ccx": {
+      "path": "/Applications/FreeCAD.app/Contents/Resources/bin/ccx",
+      "version": "2.23",
+      "bytes": 5926688,
+      "sha256": "6d55fd0d9793406f7d624bf9096894663d2c811a0aaacfec73569c9c6481ad52",
+      "redistributed": false
+    },
+    "gmsh": {
+      "path": "/Applications/FreeCAD.app/Contents/Resources/bin/gmsh",
+      "version": "4.15.0",
+      "bytes": 68576,
+      "sha256": "f7042042b2e219642364fec11e3e180b8193cd4706b4599ee7af183de550d421",
+      "redistributed": false
+    }
+  },
+  "host_privileges": "Trusted arbitrary Python has ordinary host privileges; owned process/profile/document policy is not a security sandbox. Unauthenticated local XML-RPC, no remote service admission.",
+  "verification_boundary": "Source adapter/full selected MIT-Apache grants and68focused/2998root checks complete. Actual local15tool discovery/disposable create-read-edit passed;20controlnative acceptance BLOCKED afteronecontroller correction andsecondliteral volume precisionfailure. Save/export/reload/parts/async/FEM unrun; no manufacturing/whole-native-dependency certificate. No third journey.",
+  "native_terminal_receipt_sha256": "f367c16c34df70d70cb86b6958a5e75046479e647eff85c13e4930c2c0b57ce8"
+}

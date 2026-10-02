@@ -1,0 +1,19 @@
+{
+  "transport": "stdio",
+  "command": "${VRM_PYTHON}",
+  "args": ["-m", "video_research_mcp.server"],
+  "cwd": "${VRM_WORKDIR}",
+  "env": {
+    "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+    "LOCAL_FILE_ACCESS_ROOT": "${VRM_SOURCE_ROOT}",
+    "GEMINI_CACHE_DIR": "${VRM_CACHE_DIR}",
+    "GEMINI_TRACING_ENABLED": "false",
+    "WEAVIATE_URL": "",
+    "WEAVIATE_API_KEY": ""
+  },
+  "init_timeout_seconds": 10.0,
+  "request_timeout_seconds": 30.0,
+  "collection_timeout_seconds": 45.0,
+  "dependencies": {"fastmcp": "4.0.10", "mcp": "2.2.0"},
+  "capabilities": ["video_frame", "structuredContent", "text_mirror", "source_sha256", "decoded_point_provenance"]
+}

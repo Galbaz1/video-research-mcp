@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "bead": "vrm-0e8.4.1",
+  "route": "independently-authored caption, timing, export and bounded optional provider contracts; original sources reference-only",
+  "source_contract_receipt_sha256": "7afc1f5fb4146f8eb6d13fcea99e6f9e5168e2d24f67c3b2697c767fe7c27122",
+  "source_root_join_sha256": "d976720c904afd0d101a5636436f56c6bc668af9e9117f2cb136deacb63551dd",
+  "source_pins": {
+    "QwenLM/Qwen-MM-Plugins": "07736672525443c7f8a3f6405eed37d2236f023f",
+    "guimatheus92/mcp-video-analyzer": "9e476c02f8426f5c277ed5e7f5729c1aee75b31a"
+  },
+  "source_reference_bodies": [
+    {
+      "path": "src/processors/audio-transcriber.ts",
+      "repo_key": "direct",
+      "sha256": "d498b6e51693e777ee6f2f5440756405366dc943239e9d5089b99b54846c63f2",
+      "bytes": 17057
+    },
+    {
+      "path": "src/tools/analyze-core.ts",
+      "repo_key": "direct",
+      "sha256": "e03caaf9f63d956b468336b4e1d659b2b46251e50ad1be269e49aa325ab9cd94",
+      "bytes": 25385
+    },
+    {
+      "path": "src/capabilities/api/qwen_mm_plugins_api/omni/omni_asr.py",
+      "repo_key": "qwen",
+      "sha256": "fd4d5abe113b15cbddd2dbd6376fccf922e55fcbd8b3b2a5bbb0ee540eed1836",
+      "bytes": 2500
+    },
+    {
+      "path": "src/capabilities/api/qwen_mm_plugins_api/omni/omni_asr_timestamped.py",
+      "repo_key": "qwen",
+      "sha256": "7f36d9fa606da7d76e61d9b9795950aade445f139f69bfae89b337b4468da2d1",
+      "bytes": 3136
+    },
+    {
+      "path": "src/capabilities/api/qwen_mm_plugins_api/omni/omni_multi_speaker_asr.py",
+      "repo_key": "qwen",
+      "sha256": "01e126eeadd06f9755627b32b68682d7e6eeb03f57998be68b8e32a65d212892",
+      "bytes": 3462
+    },
+    {
+      "path": "src/capabilities/api/qwen_mm_plugins_api/others/asr.py",
+      "repo_key": "qwen",
+      "sha256": "b087bdb2422e4a746a855950487b8b67df7c19b36bacec38860e09dd942e748e",
+      "bytes": 10419
+    }
+  ],
+  "source_grants": [
+    {
+      "path": "LICENSE",
+      "repo_key": "qwen",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "LICENSE",
+      "repo_key": "direct",
+      "sha256": "faea5f46da00239c192bac1df43c2a811caabfc71afb1df056d7527d31a50476",
+      "bytes": 1066,
+      "license": "MIT"
+    }
+  ],
+  "copied_paths": [],
+  "imported_foreign_packages": [],
+  "bundled_models_weights_fonts_media": [],
+  "public_tool": "audio_transcribe",
+  "operator_config": "ASR_SERVICE_JSON; disabled by default; explicitly selected Qwen /asr service profile; declaration is not service/model/license/accuracy attestation",
+  "caption_priority": [
+    "uploaded",
+    "embedded",
+    "native",
+    "sidecar"
+  ],
+  "caption_boundaries": "explicit source-associated caption assertions; supplied words retained, cue-only sources do not establish word alignment; native captions supplied by caller, no implicit acquisition",
+  "provider_boundaries": "existing configured Gemini or explicit Qwen service, exact source and submission authority; no implicit provider choice; local-only forbids cloud; every explicit fallback retained",
+  "timing_boundaries": "measured decoded window origin, strict finite source bounds, no proportional fabricated word or chunk timings",
+  "output_formats": [
+    "text",
+    "json",
+    "srt",
+    "vtt",
+    "tsv"
+  ],
+  "speaker_boundaries": "unknown, source assertion or model inference only; no verified identity or calibrated diarization claim",
+  "source_closure": "48 full source/grant bodies319925B8375lines; nine next direct imports85229B unread beyondcap, original runtime/discovery unqualified",
+  "acceptance_plan_sha256": "12678d570332809395fffbf748ecfcd52b2e48a4193bfa2706badc75ea393030",
+  "qualification": "Independently authored offline source component; actual service/model/word-alignment/speaker qualification remains unrun. Component test/build/user-journey evidence and evolving acceptance status belong to Beads, not this static descriptor.",
+  "comparison_release_human_audit": "pending independent gates"
+}

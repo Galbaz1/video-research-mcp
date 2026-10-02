@@ -11,6 +11,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..errors import make_tool_error
+from ..redaction import redact_text
 from ..types import PlaylistUrl, YouTubeUrl
 from ..youtube import YouTubeClient
 from ..tracing import trace
@@ -37,7 +38,7 @@ def _youtube_api_error(exc: Exception) -> dict:
 
     if isinstance(exc, HttpError) and exc.resp.status == 403:
         return {
-            "error": str(exc),
+            "error": redact_text(str(exc)),
             "category": "API_PERMISSION_DENIED",
             "hint": _YT_403_HINT,
             "retryable": False,

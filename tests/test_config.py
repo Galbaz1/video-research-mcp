@@ -132,3 +132,14 @@ class TestDeepResearchAgentValidator:
         monkeypatch.setenv("DEEP_RESEARCH_AGENT", "custom-agent-v3")
         cfg = ServerConfig.from_env()
         assert cfg.deep_research_agent == "custom-agent-v3"
+
+
+def test_media_acquisition_env_and_bounds(monkeypatch):
+    monkeypatch.setenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "24")
+    monkeypatch.setenv("MEDIA_COOKIES_FILE", "/private/explicit.cookies")
+    cfg = ServerConfig.from_env()
+    assert cfg.media_acquire_timeout_seconds == 24
+    assert cfg.media_cookies_file == "/private/explicit.cookies"
+    monkeypatch.setenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "0")
+    with pytest.raises(ValueError, match="media_acquire_timeout_seconds"):
+        ServerConfig.from_env()
