@@ -24,6 +24,7 @@ from .models.scene_assets import AudioExportRequest
 MAX_AUDIO_SECONDS = 240
 MAX_AUDIO_BYTES = 8 * 1024 * 1024
 CLOCK_TOLERANCE = 1 / 16000
+MAX_PADDING_SCAN_PACKETS = 12000
 
 
 def audio_command(owned, stream_index: int) -> list[str]:
@@ -48,6 +49,40 @@ def measured_audio(stderr: bytes, origin: float, start: float, end: float) -> di
     if abs(clock["end_seconds"] - clock["first_seconds"] - duration) > 1e-6:
         raise ValueError("Decoded audio contains clock gaps; continuous PCM export is unsupported")
     return {**clock, "sample_count": samples, "duration_seconds": duration}
+
+
+async def _packets(owned, command: list[str]) -> list[dict]:
+    """Read timed packets of one stream; any untimed packet makes the scan unusable."""
+    stdout, _ = await run_media_process(command + ["-i", str(owned.path)], owned.remaining())
+    packets = json.loads(stdout).get("packets", [])
+    timed = all(isinstance(p.get(k), int) for p in packets for k in ("pts", "duration"))
+    return packets if timed else []
+
+
+def _side(packet: dict, key: str) -> int:
+    """Sum one field of FFmpeg skip-samples side data attached to a packet."""
+    return sum(int(data.get(key, 0)) for data in packet.get("side_data_list", []))
+
+
+async def signalled_padding(owned, stream: dict) -> tuple[int, int, int] | None:
+    """Return first PTS and FFmpeg skip/discard samples when the duration counts whole packets.
+
+    FFmpeg 6.1 reports MP3 duration_ts as every packet, including the encoder delay
+    and padding it discards while decoding; FFmpeg 8.0 subtracts them. Only the exact
+    packet span qualifies, so a header that claims missing packets stays incomplete.
+    """
+    command = [binary("ffprobe"), "-v", "error", "-threads", "1", "-protocol_whitelist", "file",
+               "-format_whitelist", FORMATS, "-select_streams", str(stream["index"]),
+               "-show_entries", "packet=pts,duration:packet_side_data", "-of", "json=c=1"]
+    first = await _packets(owned, command + ["-read_intervals", "%+#1"])
+    ticks = stream.get("duration_ts")
+    if (not first or _side(first[0], "skip_samples") <= 0 or ticks is None or first[0]["duration"] <= 0
+            or int(ticks) // first[0]["duration"] > MAX_PADDING_SCAN_PACKETS):
+        return None
+    packets = await _packets(owned, command)
+    if not packets or packets[-1]["pts"] + packets[-1]["duration"] - packets[0]["pts"] != int(ticks):
+        return None
+    return packets[0]["pts"], _side(packets[0], "skip_samples"), _side(packets[-1], "discard_padding")
 
 
 async def audio_source(owned) -> dict:
@@ -75,9 +110,19 @@ async def audio_source(owned) -> dict:
     end = start - origin + duration if start is not None and duration is not None else None
     if start is None and duration is not None:
         end = first["first_seconds"] - origin + duration
+    padding = (
+        await signalled_padding(owned, stream)
+        if end is not None and stream.get("codec_name") == "mp3" else None
+    )
+    end_basis = None if end is None else "stream_start_plus_duration"
+    if padding is not None:
+        end = float((padding[0] + int(stream["duration_ts"])) * clock) - padding[2] / rate - origin
+        end_basis = "whole_packet_duration_minus_signalled_end_padding"
     return {**source, "audio_stream_index": index, "audio_sample_rate": rate,
             "audio_channels": channels, "audio_time_base": str(clock), "audio_start_seconds": start,
-            "audio_duration_seconds": duration, "audio_end_seconds": end,
+            "audio_duration_seconds": duration, "audio_end_seconds": end, "audio_end_basis": end_basis,
+            "audio_signalled_padding_samples": None if padding is None else
+            {"start": padding[1], "end": padding[2]},
             "audio_clock_origin_seconds": origin, "audio_clock_origin_basis": basis,
             "first_audio_seconds": first["first_seconds"] - origin,
             "first_audio_pts": first["first_pts"], "first_audio_pts_time_base": "1/16000",

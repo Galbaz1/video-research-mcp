@@ -1,6 +1,8 @@
 """Source-bound audio export with actual owned WAV and native-process readback."""
 
+from fractions import Fraction
 import hashlib
+import json
 import math
 from pathlib import Path
 import struct
@@ -306,19 +308,80 @@ async def test_overall_deadline_not_restarted_for_each_native_call(audio_source,
     assert not list((tmp_path / "cache" / "media" / "views").iterdir())
 
 
-async def test_whole_mp3_has_measured_full_sample_readback(audio_source):
-    from video_research_mcp.audio_assets import export_audio
+async def encoded_mp3(path):
     from video_research_mcp.media_probe import binary
     from video_research_mcp.media_process import run_media_process
 
-    path, _ = audio_source
     compressed = path.with_suffix(".mp3")
     await run_media_process([binary("ffmpeg"), "-v", "error", "-nostdin", "-i", str(path),
                              "-c:a", "libmp3lame", "-n", str(compressed)], 5)
+    return compressed
+
+
+async def whole_packet_ticks(path):
+    """Return the packet span that FFmpeg 6.1 reports as the MP3 stream duration_ts."""
+    from video_research_mcp.media_probe import binary
+    from video_research_mcp.media_process import run_media_process
+
+    stdout, _ = await run_media_process([binary("ffprobe"), "-v", "error", "-select_streams", "0",
+                                         "-show_entries", "packet=pts,duration", "-of", "json", str(path)], 5)
+    packets = json.loads(stdout)["packets"]
+    return packets[-1]["pts"] + packets[-1]["duration"] - packets[0]["pts"]
+
+
+def claim_whole_packets(monkeypatch, engine, ticks):
+    """Replace only the audio duration claim with FFmpeg 6.1's undiscarded packet span."""
+    real = engine.probe_snapshot
+
+    async def probe(owned):
+        source = await real(owned)
+        stream = next(s for s in source["streams"] if s.get("codec_type") == "audio")
+        stream["duration_ts"] = ticks
+        stream["duration"] = f"{float(ticks * Fraction(stream['time_base'])):.6f}"
+        return source
+    monkeypatch.setattr(engine, "probe_snapshot", probe)
+
+
+async def test_whole_mp3_has_measured_full_sample_readback(audio_source):
+    from video_research_mcp.audio_assets import export_audio
+
+    compressed = await encoded_mp3(audio_source[0])
     digest = hashlib.sha256(compressed.read_bytes()).hexdigest()
     result = await export_audio(AudioExportRequest(file_path=str(compressed), expected_source_sha256=digest))
-    assert result["source"]["audio_duration_seconds"] == 4
+    assert result["source"]["audio_end_seconds"] == pytest.approx(4, abs=1 / 16000)
     assert result["output"]["duration_seconds"] == 4
     assert result["output"]["sample_count"] == 64000
     assert result["selected_window"]["end_seconds"] == pytest.approx(4)
     assert digest == hashlib.sha256(compressed.read_bytes()).hexdigest()
+
+
+async def test_whole_packet_mp3_duration_excludes_signalled_gapless_padding(audio_source, monkeypatch):
+    """GIVEN FFmpeg 6.1's MP3 duration including encoder delay and padding
+    WHEN the whole track is exported THEN only FFmpeg's signalled padding is excluded."""
+    import video_research_mcp.audio_assets as engine
+
+    compressed = await encoded_mp3(audio_source[0])
+    claim_whole_packets(monkeypatch, engine, await whole_packet_ticks(compressed))
+    digest = hashlib.sha256(compressed.read_bytes()).hexdigest()
+    result = await engine.export_audio(AudioExportRequest(file_path=str(compressed), expected_source_sha256=digest))
+    assert result["source"]["audio_duration_seconds"] > 4.05
+    assert result["source"]["audio_end_basis"] == "whole_packet_duration_minus_signalled_end_padding"
+    assert result["source"]["audio_end_seconds"] == pytest.approx(4, abs=1 / 16000)
+    assert result["output"]["sample_count"] == 64000
+    assert result["selected_window"]["end_seconds"] == pytest.approx(4)
+
+
+@pytest.mark.parametrize("claim", ["reported", "whole_packets"])
+async def test_truncated_mp3_remains_incomplete(audio_source, monkeypatch, claim):
+    """GIVEN an MP3 missing its final 108-byte frame (17 decoded samples) that its header still claims
+    WHEN the whole track is exported under either FFmpeg duration convention THEN it is incomplete."""
+    import video_research_mcp.audio_assets as engine
+
+    compressed = await encoded_mp3(audio_source[0])
+    ticks = await whole_packet_ticks(compressed)
+    compressed.write_bytes(compressed.read_bytes()[:-108])
+    if claim == "whole_packets":
+        claim_whole_packets(monkeypatch, engine, ticks)
+    digest = hashlib.sha256(compressed.read_bytes()).hexdigest()
+    with pytest.raises(ValueError, match="incomplete"):
+        await engine.export_audio(AudioExportRequest(file_path=str(compressed), expected_source_sha256=digest))
