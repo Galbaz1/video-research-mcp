@@ -11,9 +11,16 @@ claimed here.
 Three independent source-family audits were completed and joined, then reconciled
 with current public source and unpublished repository work. The inventory covers
 **22 external repositories**, all **14 Qwen capability families**, and **85 transfer
-units**. Overlapping units share implementation work: **74 leaf work packages** sit
-under nine capability/acceptance epics. The graph has **149 blocking links**, using
-transitive reduction while retaining each declared prerequisite.
+units**. At preparation, overlapping units shared **74 leaf work packages** under
+nine capability/acceptance epics, with **149 blocking links** retaining each declared
+prerequisite through transitive reduction.
+
+On October 2, the user added installed native Codex distribution as an acceptance
+requirement. Work package `codex-install` (`vrm-0e8.7.9`) adds a 75th package without
+changing the 85 audited transfer units or their frozen source contracts. It depends
+on the closed preparation item and blocks integrated acceptance (`vrm-0e8.10.1`).
+It covers an installed packed candidate and a subsequent exact npm release install;
+the existing Claude installer's printed Codex TOML does not establish that journey.
 
 The [machine-readable inventory](2026-09-30-capability-transfer.json) retains exact
 revisions, source paths/URLs, license evidence, reuse decisions, target responsibility,

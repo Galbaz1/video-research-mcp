@@ -12733,6 +12733,45 @@
       "bead_id": "vrm-0e8.2.11"
     },
     {
+      "key": "codex-install",
+      "family": "Knowledge",
+      "title": "Install and verify the packaged programme as a native Codex plugin",
+      "kind": "feature",
+      "unit_keys": [],
+      "depends_on": [],
+      "description": "User prefers a real Codex plugin installed from npm, with an installed local packed-candidate test before release. Current npm0.7.1 installs Claude assets; --client-config codex prints TOML only. Configured video-research MCP is disabled; no matching native plugin or active video tool is available. This newly identified distribution requirement is independent of blocked speech/media benchmarks and does not alter frozen source/comparison criteria.\n\nAuthority: source b6db55fb4f56ad50e92c638a7df06940bdd98c28; installer/onboarding/tests and https://developers.openai.com/plugins/build/plugins. Implement the smallest supported Codex manifest, packaged skills/resources and MCP declaration while preserving Claude behavior. Final distribution should use Codex marketplace npm sources; Codex downloads these without lifecycle scripts, so the legacy Claude installer is not native plugin installation.\n\nTest packed npm bytes plus the exact candidate Python wheel/runtime through an installed Codex-managed copy and fresh Codex session. Do not pair branch workflows with an old registry Python package. Then verify an exact synchronized unique registry release under its concrete publication authority. Prefer managed upgrade; remove only an identified stale/conflicting owned installation, preserving user edits and credentials.",
+      "acceptance_extra": [
+        "Supported native manifest, all intended Codex workflows/resources and MCP declaration exist in the packed npm payload.",
+        "Installed packed-candidate test binds exact npm archive, installed plugin/cache/version/source and built Python candidate; no accidental registry0.7.1 runtime.",
+        "A fresh actual Codex session discovers intended workflows/MCP tools and completes bounded offline read-only journeys, retaining initialization/errors/cancellation/restart; mocks do not establish live provider quality.",
+        "Final native npm marketplace install is tested again after an authorized unique version release with plugin/npm/Python identities synchronized.",
+        "Clean install and managed upgrade preserve edited/unowned resources, secrets and unrelated config; disable/remove only an identified duplicate when necessary.",
+        "Prior Claude installer and complete MCP tool contracts remain compatible; focused installer/packaging checks and proportionate required gates pass.",
+        "Actual host installs, release publication and provider work have concrete stage authority; no host mutations during this planning pass.",
+        "Integrated acceptance vrm-0e8.10.1 depends on this installed Codex journey."
+      ],
+      "target_paths": [
+        "plugin.json",
+        "mcp.json",
+        "package.json",
+        "skills/",
+        "tests/installer.test.js",
+        "docs/PLUGIN_DISTRIBUTION.md"
+      ],
+      "declared_dependencies": [],
+      "acceptance": [
+        "Supported native manifest, all intended Codex workflows/resources and MCP declaration exist in the packed npm payload.",
+        "Installed packed-candidate test binds exact npm archive, installed plugin/cache/version/source and built Python candidate; no accidental registry0.7.1 runtime.",
+        "A fresh actual Codex session discovers intended workflows/MCP tools and completes bounded offline read-only journeys, retaining initialization/errors/cancellation/restart; mocks do not establish live provider quality.",
+        "Final native npm marketplace install is tested again after an authorized unique version release with plugin/npm/Python identities synchronized.",
+        "Clean install and managed upgrade preserve edited/unowned resources, secrets and unrelated config; disable/remove only an identified duplicate when necessary.",
+        "Prior Claude installer and complete MCP tool contracts remain compatible; focused installer/packaging checks and proportionate required gates pass.",
+        "Actual host installs, release publication and provider work have concrete stage authority; no host mutations during this planning pass.",
+        "Integrated acceptance vrm-0e8.10.1 depends on this installed Codex journey."
+      ],
+      "bead_id": "vrm-0e8.7.9"
+    },
+    {
       "key": "integration",
       "family": "Acceptance",
       "title": "Verify the complete integrated product and every adopted user journey",
@@ -12742,6 +12781,7 @@
         "audience",
         "audio-qa",
         "blender",
+        "codex-install",
         "commentary",
         "compaction",
         "corrections",
@@ -12795,6 +12835,7 @@
         "blender",
         "budgets",
         "cache",
+        "codex-install",
         "collections",
         "commentary",
         "compaction",
@@ -12992,7 +13033,7 @@
   "surface_counts": {
     "external_projects": 22,
     "transfer_units": 85,
-    "work_packages": 74,
+    "work_packages": 75,
     "tool_references": 400,
     "workflow_references": 191,
     "direct_source_registered_tools": 186,

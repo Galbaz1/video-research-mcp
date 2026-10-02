@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T06:30+02:00
+date: 2026-10-02T06:59+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,7 +18,62 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-### ASR source verified; dependency frontier blocked; preview diagnosis prepared
+### Codex distribution requirement added; native installation work is ready
+
+Latest functional source remains `55291a8d45bcc0abb0f40a98492c0a88eca88e69`;
+prior handoff-only HEAD is `b6db55fb4f56ad50e92c638a7df06940bdd98c28`. Both were
+normally pushed and their exact remote blobs verified. The user prefers npm
+installation as a native Codex plugin, including acceptance through the installed
+product. This checkpoint records that route; no host install, uninstall or config
+activation ran in the audit.
+
+Current npm version/latest is `0.7.1`. Its installer targets Claude assets/config;
+`--client-config codex` only prints TOML, and its test asserts no Codex writes. No
+native Codex manifest is packaged. Codex CLI `0.159.3` lists 55 installed plugins
+with no video-research/video-explainer match. The configured video-research MCP is
+explicitly disabled; this session has no video MCP tools. Standalone skills do not
+establish server/tool availability.
+
+New Bead `vrm-0e8.7.9` is OPEN/READY, priority 1, under family 7. Canonical work
+package `codex-install` has no upstream transfer units: it adds the user's native
+Codex installation requirement while retaining all 85 frozen transfer units.
+It depends on closed preparation `vrm-0e8.1`; integrated gate `vrm-0e8.10.1` depends
+on it. The inventory now has 75 work packages. Programme: 86 issues / 76 leaves,
+31 closed, 10 blocked, 35 open. All 10 blocked leaves, including ASR, remain
+unaccepted. Readiness is `[vrm-0e8.7.9]`.
+
+Preferred final route is a native Codex marketplace with an npm source. The fetched
+[official guide](https://developers.openai.com/plugins/build/plugins) confirms
+Codex downloads npm plugins without lifecycle scripts. Implement the supported
+native manifest, packaged skills/resources and MCP declaration while preserving
+Claude behavior. First pack the npm candidate, install those immutable bytes via
+a local Codex marketplace into its managed copy/cache, and use the exact built
+Python candidate. A new npm archive invoking old registry Python `0.7.1` does not
+verify current source. After an authorized unique release, repeat the npm registry
+installation and runtime/workflow/tool readback in a fresh Codex session. Prefer
+managed upgrade and preserve user edits, secrets and unrelated config. There is
+no old native Codex video plugin currently requiring removal.
+
+The sole read-only explorer `/root/codex_install_route` is terminal: 11 files,
+107853 bytes, no edits or Git/Beads/config/install/provider activity. Root verified
+host configuration, the corrected installed-list projection, CLI support and live
+npm version/tag. Private evidence: `codex-distribution/installation-route-receipt.json`,
+SHA256 `4ed8612cf8fd4dbbdf850177d7d86f105ee9c4cb9aa66f1049a8f7fdadd5738b`.
+The first Bead create command refused the `--id` / `--parent` combination before
+creation; corrected parent allocation produced `.7.9`. Adding the integration
+edge initially exposed a canonical dependency mismatch; that RED receipt is
+retained, and the inventory now explicitly maps the added requirement. Verification
+results and final source identity are in `codex-distribution/checkpoint-final.json`.
+Exact live graph/source-audit and reuse-ledger gates PASS; 40 focused programme/
+reuse regression tests PASS with one inherited SDK warning. No runtime code changed.
+
+Next eligible implementation is `vrm-0e8.7.9`. Human audit of nine development cases
+remains pending and unwaived at `.10.2`; held-out sources remain unread. Product,
+comparison and release acceptance remain open. No worker/native/provider job runs.
+Skip completed transcription/PDF/Word/mail delivery. Historical ASR/source receipts
+below remain valid; their earlier empty frontier precedes this added requirement.
+
+### Historical ASR checkpoint before the Codex installation requirement
 
 Latest functional source commit `55291a8d45bcc0abb0f40a98492c0a88eca88e69` is
 normal-pushed to origin/codex/multimodal-capability-programme. Exact remote commit
