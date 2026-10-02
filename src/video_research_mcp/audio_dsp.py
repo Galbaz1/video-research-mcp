@@ -140,15 +140,14 @@ def comparison(rows):
         "status": "measured" if score is not None else "undefined",
         "factual_identity_verified": False,
     }
-    result["loudness_differences"] = {
-        key: right_value - left_value
-        if left_value is not None and right_value is not None
-        else None
-        for key in ("integrated_lufs", "loudness_range_lu", "true_peak_dbfs")
-        for left_value, right_value in [
-            (rows[0]["measurements"]["loudness"][key], rows[1]["measurements"]["loudness"][key])
-        ]
-    }
+    left_loudness, right_loudness = (row["measurements"]["loudness"] for row in rows)
+    differences = {}
+    for key in ("integrated_lufs", "loudness_range_lu", "true_peak_dbfs"):
+        left_value, right_value = left_loudness[key], right_loudness[key]
+        differences[key] = (
+            right_value - left_value if left_value is not None and right_value is not None else None
+        )
+    result["loudness_differences"] = differences
     return result
 
 

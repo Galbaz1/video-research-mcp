@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T14:45+02:00
+date: 2026-10-02T16:22+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,40 +18,52 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
-### Main integration requested: backup verified; candidate checks in progress
+### Main integration requested: backup verified; simplifier pass accepted
 
 The user explicitly requests backing up main and merging the programme changes.
-Bead `vrm-0e8.10.3.2` owns this source-integration task. This supplies merge authority,
-but does not waive human/live/comparative acceptance or publish another package.
+Bead `vrm-0e8.10.3.2` owns source integration; child `vrm-0e8.10.3.2.1` owns the
+requested pre-merge code-simplifier pass. Existing merge authority persists. The
+explicit PR-size exception remains pending; main stays unchanged until that
+specific policy requirement and the normal protected merge are satisfied.
 
 Pre-merge main `c10aa1c2e35043dfbe8c66c9ad37d07c586459cb` is preserved by verified
 remote tag `backup/main-before-multimodal-2026-10-02` and a complete private Git
 bundle (SHA256 `f8ca66f862cf1ff0da6e947aea5804349dfe2e11e0fe261a6026b22df48e6289`).
 A fresh bare restore reproduces the exact backup commit and passes full fsck.
+The approved README remains byte-identical to main.
 
-The clean merge candidate preserves the approved README and the RC runtime.
-The full direct integration changes 561 files; the PR policy requires an explicit
-one-off size exception before opening the complete integration PR. Prepare the
-candidate/checks first, then request that specific exception, not merge approval
-again. Default main stays unchanged until the normal protected PR merge.
+Prior repaired source `5ee858f3a3ac1ff3a31e69880ff9d7902553ac75` passed all ten CI
+jobs in run `37015986812`. Its only RC delta was README, handoff and two README
+reuse receipts. Preserve the original failed runs and their diagnosed receipt drift.
 
-Exact-source CI found two stale README implementation hashes in the reuse ledger.
-Only those two target hashes (`qwen_vision_api`, `direct.image_vision`) are refreshed;
-source contracts, licensing routes, lockfiles and validators are unchanged.
-The inventory and protected baseline checks pass. Run focused reuse-gate tests,
-then one final CI on the repaired source; retain the original failed runs.
+Herdr `VRM-SIMPLIFY` r1 invoked the actual installed official 1.0.0
+`code-simplifier:code-simplifier` agent on Claude Max with Opus. One child completed;
+the parent inspected every hunk and is idle with no active children. Its five-file
+patch passed 405 focused root tests, 106 explainer tests and nine programme tests.
+Root declined the one-line job-store cleanup and restored its exact preimage:
+its small gain did not justify additional TwelveLabs/explainer revision changes.
+Four accepted changes clarify audio loudness comparison, cache source matching,
+owned-media path reuse and shared research launch payload construction.
 
-Herdr `VRM-MAIN-INTEGRATION` r1 inspected backup, runtime/README parity, main rules,
-protected worktrees and the same CI failure. Its report phase was interrupted during
-compaction; retain this as PARTIAL, not a clean independent-review verdict.
-The native CLI/pane exited; zero children were allocated and no review lane remains
-active. Prior qualified RC and installed-client evidence remains separate.
+Refresh exactly five implementation hashes for those four source files; source,
+license, dependency and evaluation contracts stay fixed. Root verified 77 affected
+job-store/reuse tests, full declared Ruff, 85-unit/three-lock reuse clearance,
+85-unit/75-work-package population and protected public baseline. New research/DSP
+jobs use the changed source revisions; explicit old job bindings remain protected
+and must not be bypassed. The installed and published RC stays immutable. Run one
+final CI on the new committed source before opening the integration PR.
 
-Private backup, scope, diagnosis, repair and partial-review receipts:
+Prior `VRM-MAIN-INTEGRATION` r1 review remains PARTIAL: it inspected concrete
+backup/parity/protection evidence but was interrupted during compaction before a
+final verdict. The simplifier pass is bounded to eight priority runtime modules,
+not a comprehensive independent review of the full integration.
+
+Private backup, scope, repair, simplifier and CI receipts:
 `/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/main-integration-2026-10-02`.
-The self-contained backup bundle is `main-before-multimodal.bundle` in that directory.
-Do not overwrite the immutable RC tag or npm/PyPI bytes; keep unrelated dirty docs
-and the Gemini model/Interactions worktrees intact. Broader programme gates stay open.
+The self-contained backup bundle is `main-before-multimodal.bundle` there.
+Do not overwrite the immutable RC tag or npm/PyPI bytes; preserve unrelated dirty
+docs and the Gemini model/Interactions worktrees. Human/live/comparative acceptance
+and the broader programme epic stay open; source integration does not waive them.
 
 ### README entry update: approved PR merged and default entry verified
 

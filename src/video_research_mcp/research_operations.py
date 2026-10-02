@@ -46,32 +46,21 @@ async def launch(topic: str, output_format: str, job_id: str | None) -> dict:
 
         cfg = get_config()
 
+        payload = {
+            "input": prompt,
+            "agent": cfg.deep_research_agent,
+            "background": True,
+            "store": True,
+        }
         job, owner = prepare_launch(
             "research_web",
-            {
-                "topic": topic,
-                "output_format": output_format,
-                "agent": cfg.deep_research_agent,
-                "input": prompt,
-                "background": True,
-                "store": True,
-            },
+            {"topic": topic, "output_format": output_format, **payload},
             job_id,
         )
         if not owner:
             return retained_result(job)
         store = JobStore()
-        interaction = await _submit(
-            store,
-            job,
-            owner,
-            {
-                "input": prompt,
-                "agent": cfg.deep_research_agent,
-                "background": True,
-                "store": True,
-            },
-        )
+        interaction = await _submit(store, job, owner, payload)
         if interaction.status == "completed":
             result = _report(interaction.id, interaction, job)
         else:

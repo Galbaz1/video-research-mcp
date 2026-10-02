@@ -347,9 +347,10 @@ class AssetCatalog:
             row = _select_row(db, asset_id)
             if not row:
                 raise FileNotFoundError("Media asset not found in the owned catalog")
-            before = self._path(row).lstat()
+            path = self._path(row)
+            before = path.lstat()
             record = self._record(row)
-            after = self._path(row).lstat()
+            after = path.lstat()
             if (
                 after.st_dev,
                 after.st_ino,
@@ -364,7 +365,7 @@ class AssetCatalog:
                 before.st_ctime_ns,
             ):
                 raise ValueError("Owned media changed before removal; retain the current file")
-            self._path(row).unlink()
+            path.unlink()
             db.execute("DELETE FROM assets WHERE digest=?", (asset_id,))
             invalidated = invalidate_source(asset_id)
             return {

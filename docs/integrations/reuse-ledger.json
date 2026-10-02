@@ -2610,7 +2610,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_assets.py",
-          "target_sha256": "f4b0f3aac7e2d952beff8a6c6152d966c1ce96121275aea5c29e8830d9977745",
+          "target_sha256": "7e82f4470efe9fbf0952d905b2697058bb4eff734f75efeda7c07f8645ff3818",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -3666,7 +3666,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/audio_dsp.py",
-          "target_sha256": "6d6ad8c1a242e890a0ac764f94db671c1cf0f586d3c869fed09d878d0ed9a92f",
+          "target_sha256": "3e66e8350f5b4d84c0ef8089415e8c89cd183e597e54c59793cae0a2d6aa1567",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3856,7 +3856,7 @@
         },
         {
           "target_path": "src/video_research_mcp/cache.py",
-          "target_sha256": "62b1a87ae31ade8e8b1418a9e9f2cea2e36649e549a509580181aba1f709f027",
+          "target_sha256": "8f78bec5d23f1e71f93330ca15b91b2135450fdaf77524e4bf354bb45aed7f60",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -4830,7 +4830,7 @@
         },
         {
           "target_path": "src/video_research_mcp/research_operations.py",
-          "target_sha256": "ec2ab7fb271dbb9cf88c64c419dcd85bec6440a6fc3965fe2a5c27e4b1786cb1",
+          "target_sha256": "b9f0c33d745ee641edd32ec60e9e3c346ea39e0690b19587a2fb388a88f3d636",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         },
         {
@@ -5839,7 +5839,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/cache.py",
-          "target_sha256": "62b1a87ae31ade8e8b1418a9e9f2cea2e36649e549a509580181aba1f709f027"
+          "target_sha256": "8f78bec5d23f1e71f93330ca15b91b2135450fdaf77524e4bf354bb45aed7f60"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_core.py",

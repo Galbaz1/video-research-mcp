@@ -198,12 +198,9 @@ def clear(content_id: str | None = None) -> int:
                 envelope = json.loads(path.read_text())
                 if not isinstance(envelope, dict):
                     continue
-                matches = envelope.get("content_id") == content_id
                 contract = envelope.get("contract", {})
-                matches = (
-                    matches
-                    or isinstance(contract, dict)
-                    and contract.get("source_digest") == content_id
+                matches = envelope.get("content_id") == content_id or (
+                    isinstance(contract, dict) and contract.get("source_digest") == content_id
                 )
                 if not matches:
                     continue
