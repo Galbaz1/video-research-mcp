@@ -1028,8 +1028,9 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
-          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred.",
+          "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
@@ -3199,8 +3200,9 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video_batch.py",
-          "target_sha256": "1d0e4abb94fb8aa6108842aaf3aee4b2a2565e5daa3e9c8483bb1f2c0cdcb320",
-          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+          "target_sha256": "d38b805ccd3c416cc24378621802e80ea83dd54f43eaba5e95158069fd568f76",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
+          "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
         {
           "target_path": "src/video_research_mcp/job_execution.py",
@@ -3570,8 +3572,9 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
-          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
+          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
+          "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred.",
+          "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
@@ -5918,9 +5921,9 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "cd9aa4c3690846c579702971b47569dc44a0e879dd89c2795e095c2a75a1a98e",
+          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",

@@ -459,7 +459,7 @@ General URLs use `url_policy.validate_url()`: HTTPS, a hostname without embedded
 credentials, and DNS addresses outside blocked private, loopback, link-local,
 multicast, and reserved ranges. Server-side document downloads use
 `download_checked()`, which revalidates redirects, bounds response bytes, and
-checks peer IP when the HTTP transport exposes it. That download policy is
+rejects connections without a peer IP and validates the exposed peer IP. That download policy is
 separate from provider-side URL Context retrieval.
 
 Local file workflows resolve paths and apply `LOCAL_FILE_ACCESS_ROOT` when set.

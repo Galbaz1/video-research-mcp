@@ -11,6 +11,9 @@ from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
+from ..batch_discovery import discover_files
+from ..config import get_config
+from ..content_file_data import read_content_bytes
 from ..errors import make_tool_error
 from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..models.content_batch import BatchContentItem, BatchContentResult
@@ -62,11 +65,7 @@ def _resolve_files(
         dir_path = enforce_local_access_root(resolve_path(directory))
         if not dir_path.is_dir():
             raise FileNotFoundError(f"Not a directory: {directory}")
-        files = sorted(
-            f for f in dir_path.glob(glob_pattern)
-            if f.is_file() and f.suffix.lower() in SUPPORTED_CONTENT_EXTENSIONS
-        )
-        return files[:max_files]
+        return discover_files(dir_path, glob_pattern, SUPPORTED_CONTENT_EXTENSIONS, max_files)
 
     resolved: list[Path] = []
     for fp in file_paths:  # type: ignore[union-attr]
@@ -78,11 +77,12 @@ def _resolve_files(
     return resolved[:max_files]
 
 
-def _build_file_parts(path: Path) -> list[types.Part]:
+def _build_file_parts(path: Path, max_bytes: int) -> list[types.Part]:
     """Build Gemini parts for a single content file.
 
     Args:
         path: Path to the content file.
+        max_bytes: Remaining comparison payload budget.
 
     Returns:
         List of Gemini Part objects (label + file data).
@@ -90,7 +90,7 @@ def _build_file_parts(path: Path) -> list[types.Part]:
     mime = SUPPORTED_CONTENT_EXTENSIONS.get(path.suffix.lower(), "text/plain")
     return [
         types.Part(text=f"--- File: {path.name} ---"),
-        types.Part.from_bytes(data=path.read_bytes(), mime_type=mime),
+        types.Part.from_bytes(data=read_content_bytes(path, max_bytes), mime_type=mime),
     ]
 
 
@@ -113,9 +113,14 @@ async def _compare_files(
     """
     from ..models.content import ContentResult
 
+    remaining = get_config().doc_max_download_bytes
+    if sum(f.stat().st_size for f in files) > remaining:
+        raise ValueError("Combined compare payload exceeds DOC_MAX_DOWNLOAD_BYTES")
     all_parts: list[types.Part] = []
     for f in files:
-        all_parts.extend(_build_file_parts(f))
+        parts = _build_file_parts(f, remaining)
+        remaining -= len(parts[1].inline_data.data)
+        all_parts.extend(parts)
 
     schema = output_schema or ContentResult.model_json_schema()
     return await _analyze_parts(all_parts, instruction, schema, output_schema, thinking_level)
@@ -189,7 +194,8 @@ async def content_batch_analyze(
 ) -> dict:
     """Analyze multiple content files from a directory or explicit file list.
 
-    Supports two modes: 'compare' sends all files to Gemini in a single call
+    Rejects discovery over 5,000 entry visits and compare payloads over
+    DOC_MAX_DOWNLOAD_BYTES. Supports two modes: 'compare' sends files in a single call
     for cross-document analysis, 'individual' analyzes each file separately
     with bounded concurrency (3 parallel calls).
 
