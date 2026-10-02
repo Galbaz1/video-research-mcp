@@ -1,5 +1,5 @@
 ---
-date: 2026-10-02T02:44+02:00
+date: 2026-10-02T04:30+02:00
 thread: multimodal-capability-programme
 session_id: 01a0f1d1-d642-7773-95b8-9011a16b248d
 session_id_source: CODEX_THREAD_ID
@@ -18,49 +18,58 @@ closure for completion of the product or a proved superiority claim.
 
 ## Fresh resume checkpoint
 
-### Education component verified; spoken/multilingual acceptance blocked; previews next
+### Preview source checkpoint verified; actual acceptance blocked; ASR claimed
 
-Fresh source HEAD `6499009dacf0789ab64b4bdd916d10a3351b17c4`, normal source push
-and exact remote HEAD/all22 Git blobs verified. Education source-final SHA
-02381938f227af5f30ef9a4964cb193071183ad9eec3d41a0fb98da027c61634; push-readback
-SHA7428e83011410f4fac8849b2e5ba9f99e72f064ece2dfb67e1bf3b2ee4c09666.
-`vrm-0e8.8.7` is BLOCKED, not closed: actual spoken lesson and multilingual/
-broader-template acceptance remain unqualified. Independently authored triangle,
-reflected-square and circuit page/video component is integrated. Final3471root
-and80affected tests,10required gates PASS;313prior runtime bodies,89full prior
-tool objects and3locks exact. Sole original review P2 promoted receipt drift
-reproduced2RED/repaired2GREEN. First fixedactual17:1PASS1FAIL15UNRUN provenance
-metadata glyph restriction; ONE minimal correction, same second17PASS0FAIL0UNRUN.
-56public calls,115native commands+3CLI parents;118owned PIDs joined/dead,
-3442loaded-binding rows and2169retained files root rehashed. Six actual decoded
-first/last frames root viewed; full72RGB frames and288000PCM samples exact.
-Browser3scenes/seek/reset/all6reflection-shift states pass, consoleerrors[].
-Synthetic6s tones are not speech. Browser MP4 codec playback remains unverified.
-Seven new archives671direct bytecomparisons;79companion-sdist member payloads
-byte-identical to prior actual isolated build, which is carried forward. Two
-invalid `uv build-repaired` helper failures retained; stopped repeat isolated
-build path, no second isolated-build PASS. One root join stat/atime check failed
-and was corrected to dev/inode/size/mtime; no actual cohort repeated.
-Evidence: private capability-programme/2026-09-30/education/source-final.json,
-acceptance-attempt-02/root-joined.json and build-results-repaired/archive-readback.json.
-Ordinary host privileges/no OS sandbox; whole native grant/build certificate partial.
-All education primary/original-review/source/advisor lanes terminal; no native jobs.
+Current source HEAD `6b311572f4c51df06d74be67399cd914aa3ccf8d` is normal-pushed;
+remote commit and all sixteen committed file blobs match. Preview source-final
+SHA c79415d68c8a2e60e9c827d15b6ac7685b3740a115ebc8cd8fb41bdcea72a886;
+push-readback SHA b8b5feb3ab2e3937c39d227c8ab21077703be353e053512f3c193a103f0ab612.
+`vrm-0e8.9.1` is BLOCKED. Its optional owned core adapter source component is
+verified: 3588 root tests, all ten required gates, 37 installer tests, seven
+archives with 719 direct byte comparisons and an actual isolated companion
+sdist-to-wheel build pass. All 321 prior production Python bodies, 89 full tool
+contracts and three locks remain exact. Sole original review found two P2 issues:
+planned extreme-aspect image allocation and Unicode physical-line counting.
+Sixteen RED cases were retained and the smallest fixes passed; no second review.
 
-Next eligible `vrm-0e8.9.1` previews OPEN. Source42full214227B5710lines/fullApache,
-68artifact rows root joined; receipt049a67d05e17a48e363ca08b2ec8bcb7f575d50a417f92adc872dad6654b96b0.
-Source registry75spellings/74lowercanonical/62dispatch/13families/seven tools.
-Actual core discovery and11representative formats UNRUN; heavy/native/font profiles
-unqualified, one api_openai caption-provider branch unread and forbidden.
-Advisor20existing files+4artifacts root joined;214038B retrieval exceeds200KB cap
-by14038, explicit retained exception. Smallest route optional owned core session,
-no normal root heavy imports, exact source/runtime/input/output/result/cap gates.
-No preview product writer dispatched yet. Next freeze fixtures/controls, claim9.1,
-then one primary and one original review; root owns shared metadata/Git/Beads/actuals.
-`vrm-0e8.4.1` optional-ASR product implementation is also ready; completed
-transcription/PDF/Word/mail delivery remains outside this implementation programme.
-User steering "review pending, but continue anyway" persists. Human9pending not
-waived at10.2; heldout unread, live proposal unauthorized; product/comparison/release
-open. Continue through the graph, not final-answer at component boundaries.
+Frozen actual preview attempt one retained 1 PASS, 1 FAIL, 18 UNRUN: stdio startup
+refused ten original schema-description newlines flattened by the descriptor.
+One exact-description correction was made. Attempt two retained 1 FAIL, 19 UNRUN:
+root's archive-controller output path was wrong, before startup. No third cohort.
+Root corrected archive metadata once without rebuilding; the original seven
+archive bodies remain, but the first original build receipt/logs were overwritten
+and are unavailable. Actual seven-tool MCP discovery and eleven format families
+remain UNRUN. Two explicitly recorded native PIDs are dead; no active native jobs.
+Original core distribution remains uninstalled; font/native/heavy/provider profiles
+are unqualified. Future diagnosis requires a separately frozen startup/controller
+proof. Do not relabel diagnostic discovery or archive checks as actual acceptance.
+Evidence: private capability-programme/2026-09-30/previews/source-final.json,
+acceptance-attempt-01/terminal.json, acceptance-attempt-02/terminal.json and
+build-results-repaired/archive-readback.json. Ordinary host privileges, no OS sandbox.
+
+`vrm-0e8.4.1` is CLAIMED/in_progress. Sole primary /root/freecad_adapter owns ten
+focused transcript model/caption/timing/provider/workflow/test/doc paths. Root owns
+public tool, registration/config, shared metadata, actual fixtures/controller,
+Git/Beads and handoff. ASR source and existing-helper advisor lanes are terminal
+and root joined: 48 full pinned bodies, 319925 bytes, 8375 lines, two full grants;
+receipt SHA 7afc1f5fb4146f8eb6d13fcea99e6f9e5168e2d24f67c3b2697c767fe7c27122.
+Advisor twenty files (nineteen full, one targeted), 175106 bytes, 52 named tests;
+receipt SHA 6b356052a57440d4908b0774009c8e1e3911435436a7c7dcd001c3a08f4dbac9.
+Do not repeat research or foreign execution. Frozen twenty controls SHA
+12678d570332809395fffbf748ecfcd52b2e48a4193bfa2706badc75ea393030 and eight first-party
+masters SHA 73893d9f236b5b970ca71f206b6bc36b990e669e8329a09f9748cf2effa0ec9d
+precede implementation. WAVs are silence and declared synthetic tone, not speech;
+caption word times are supplied source assertions, not measured speech alignment.
+No ASR actual cohort or final gates started. Local service/provider calls, model
+weights and actual speaker/word accuracy remain unqualified and unauthorized.
+
+Next: join sole primary, integrate focused audio_transcribe/config/metadata, freeze
+candidate, one original review, minimal proven fixes, then required gates and the
+fixed actual twenty controls. Preserve all refusals/failures/UNRUN and continue the
+actual eligible graph. Human nine-case review remains pending at vrm-0e8.10.2,
+not waived; held-out material stays unread. Product/comparison/release are open.
+Skip completed transcription/PDF/Word/mail delivery. Do not final-answer at a
+component boundary or create scheduled/background continuation.
 
 ### AV component verified and blocked on LIVE criterion; education claimed
 
