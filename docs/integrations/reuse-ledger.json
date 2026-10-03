@@ -2126,7 +2126,7 @@
         },
         {
           "target_path": "tests/test_footage_edit.py",
-          "target_sha256": "5225df2b6dcf396648f55a06cb43dcb67bc4ed52a112887bc8245035721c149d",
+          "target_sha256": "2a1f714a1363dba228c4f8182fd7b1b6f42730faff5164d9d1fd5b554e61cd7b",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         },
         {
@@ -2368,7 +2368,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-spatial.md",
-          "target_sha256": "55d4f824faed09849cad02fd7105dbf793f80027875435ba3e280b8ca70746d0",
+          "target_sha256": "781e62264b0f459f6d2cdc29070c650674bcfbf118df9bc4d96eed9d5b4d8aa7",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only."
         },
         {
@@ -2395,6 +2395,16 @@
           "target_path": "tests/test_spatial_motion.py",
           "target_sha256": "d3625657784ec7e7237360e9d6867a8ad1488635d257a8f59ff5dc2c7b2d9eb7",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only."
+        },
+        {
+          "target_path": "scripts/spatial_png_payload.py",
+          "target_sha256": "077a4544c429180711827e46236d8c9971753cdfba78f3d27308a9bdffd45d58",
+          "provenance": "First-party stdlib builder for exact Matplotlib3.10.9 pinned external wheel; separate AFM-free PNG payload with unchanged retained files/TTF/mathtext/notices and rebuilt RECORD/change attribution. No external wheel/font/source bytes shipped here. Original profiles and28geometry controls retained; static build does not admit whole runtime/native/source-build/pixel eligibility or parent acceptance. Follow-up vrm-0e8.9.12."
+        },
+        {
+          "target_path": "tests/test_spatial_png_payload.py",
+          "target_sha256": "5eb7f4d4fc607c65215d8631f2e08b4e27038bf492d3c27848f1c6a573265e77",
+          "provenance": "First-party stdlib refusal, retained-byte/RECORD and metadata-normalization tests for the exact static PNG payload builder. Synthetic archives are not admitted by the pinned public entry. Real pinned source build/readback remains separate; no runtime/font/native or28geometry acceptance."
         }
       ]
     },

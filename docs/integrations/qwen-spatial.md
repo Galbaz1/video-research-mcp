@@ -160,3 +160,28 @@ declared metric scale that downstream experts do not consistently apply. Unit
 tests use original-expert/provider stubs; first-party motion units may use the
 already qualified root NumPy/Pillow dependencies. That root unit environment
 does not qualify or replace the blocked selected spatial profile.
+
+## Prepare a separate PNG payload
+
+`vrm-0e8.9.12` provides a stdlib-only builder for the exact pinned Matplotlib
+3.10.9 macOS ARM64 CPython 3.12 wheel. It removes its 60 AFM metric files, retains
+all 38 TTF fonts and every other payload byte, and rebuilds RECORD with change
+attribution. The current spatial callers select Agg/PNG, whose text and mathtext
+paths use TTF/FreeType. PDF/PostScript AFM modes are outside this selected PNG route.
+
+```sh
+python3 -I -B scripts/spatial_png_payload.py \
+  /absolute/qualified/matplotlib-3.10.9-cp312-cp312-macosx_11_0_arm64.whl \
+  /absolute/existing-parent/absent-png-payload
+```
+
+The input archive must match its pinned SHA256. The absent output directory
+receives a derivative wheel with the original basename and `receipt.json`; use
+its derivative hash to distinguish it from upstream. The receipt binds retained,
+removed, added and rebuilt members. Existing output, symlink paths and untrusted
+input are refused. No original archive or installed package is edited.
+
+This builds an alternate payload; it does not install or import Matplotlib,
+activate fonts, select a third runtime or qualify pixels/geometry. Original
+rejected profiles and all 28 UNRUN controls remain retained. Whole-runtime grant,
+bootstrap, actual load and geometry evidence are still required before serving.
