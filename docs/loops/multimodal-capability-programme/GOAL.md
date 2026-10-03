@@ -448,3 +448,15 @@ reuse records, source delivery and any later runtime/evaluator admission. The
 bounded outcome is an executable static build and exact per-member receipt; it
 does not accept `.9.3`, activate a runtime or replace any native/control evidence.
 Use live Beads for status.
+
+## Footage cancellation CI follow-up (2026-10-03)
+
+`vrm-0e8.8.21` adds the 111th programme ID and validates closed `.8.3`.
+It addresses the observed Python-3.11 PR84 CI failure: fixed 20 ms sleeps
+asserted process entry before the request had reached it. Root owns the single
+test, its reuse receipt and this entry. Observe actual mocked process entry and
+the second request's acquisition attempt while retaining the real lock; cancel
+and join both requests, forbid further calls and preserve every prepared file.
+Keep the failed CI and controlled delayed-entry result, then verify affected
+tests, gates and exact-head CI. This source repair does not replay or alter any
+native, human or comparative evaluation. Use live Beads for status.

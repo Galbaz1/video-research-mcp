@@ -226,24 +226,46 @@ async def test_source_exit_verification_failure_cleans_already_written_stage(bou
     assert list(base.iterdir()) == []
 
 
-async def test_cancel_cleanup_and_serialization_preserve_prior_stage(boundary):
+async def test_cancel_cleanup_and_serialization_preserve_prior_stage(boundary, monkeypatch):
     """Canceled new native work joins before cleanup and cannot remove prepared artifacts."""
     transport, plan, _, _ = boundary
     prepared = await engine.execute(plan)
     base = Path(prepared["manifest"]["path"]).parent.parent
     names = {p.name for p in base.iterdir()}
+    files = {p: sha(p) for p in base.rglob("*") if p.is_file()}
     transport.block = asyncio.Event()
+    entered, queued = asyncio.Event(), asyncio.Event()
+    wait, acquire = transport.block.wait, engine._SERIAL.acquire
+
+    async def observe_process_entry():
+        entered.set()
+        return await wait()
+
+    async def observe_lock_attempt():
+        queued.set()
+        return await acquire()
+
+    monkeypatch.setattr(transport.block, "wait", observe_process_entry)
     before = len(transport.calls)
     task = asyncio.create_task(engine.execute(approve(prepared)))
-    await asyncio.sleep(.02)
-    second = asyncio.create_task(engine.execute(approve(prepared)))
-    await asyncio.sleep(.02)
+    tasks = [task]
+    try:
+        await asyncio.wait_for(entered.wait(), 5)
+        monkeypatch.setattr(engine._SERIAL, "acquire", observe_lock_attempt)
+        second = asyncio.create_task(engine.execute(approve(prepared)))
+        tasks.append(second)
+        await asyncio.wait_for(queued.wait(), 5)
+        assert not task.done() and not second.done()
+        assert len(transport.calls) == before + 1
+    finally:
+        for pending in tasks:
+            pending.cancel()
+        outcomes = await asyncio.gather(*tasks, return_exceptions=True)
+    assert all(isinstance(result, asyncio.CancelledError) for result in outcomes)
     assert len(transport.calls) == before + 1
-    task.cancel()
-    second.cancel()
-    await asyncio.gather(task, second, return_exceptions=True)
     assert {p.name for p in base.iterdir()} == names
     assert Path(prepared["manifest"]["path"]).exists()
+    assert {p: sha(p) for p in base.rglob("*") if p.is_file()} == files
 
 
 async def test_approval_replay_after_brief_revision_refuses_even_when_scene_sha_equal(boundary):

@@ -2126,7 +2126,7 @@
         },
         {
           "target_path": "tests/test_footage_edit.py",
-          "target_sha256": "5225df2b6dcf396648f55a06cb43dcb67bc4ed52a112887bc8245035721c149d",
+          "target_sha256": "2a1f714a1363dba228c4f8182fd7b1b6f42730faff5164d9d1fd5b554e61cd7b",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         },
         {
