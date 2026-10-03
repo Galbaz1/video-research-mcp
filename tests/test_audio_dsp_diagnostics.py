@@ -86,7 +86,7 @@ async def test_interrupted_helper_joins_native_and_stderr_drain(
     tmp_path, cancel, mode, record_property
 ):
     """GIVEN noisy blocked native work WHEN interrupted THEN preserve an honest joined snapshot."""
-    directory, command = fake_driver(tmp_path, "juzzy", mode)
+    directory, command = fake_driver(tmp_path, "juzzy", mode, delay_stderr=cancel)
     task = asyncio.create_task(run_media_process(command, 2))
     for _ in range(200):
         if (directory / "pid").exists():
@@ -99,6 +99,14 @@ async def test_interrupted_helper_joins_native_and_stderr_drain(
                 break
             await asyncio.sleep(0.005)
         assert (directory / "child-pid").exists()
+    if cancel:
+        assert not (directory / "stderr-ready").exists()
+        (directory / "stderr-release").write_text("release complete payload")
+    for _ in range(200):
+        if (directory / "stderr-ready").exists():
+            break
+        await asyncio.sleep(0.005)
+    assert (directory / "stderr-ready").read_text() == "160000"
     if cancel:
         task.cancel()
         await asyncio.sleep(0)
@@ -113,6 +121,7 @@ async def test_interrupted_helper_joins_native_and_stderr_drain(
     assert value["observation"] == "interrupted"
     assert value["terminal"] and value["stderr_drain_joined"] and value["native_process_joined"]
     assert len((directory / "native-stderr.bin").read_bytes()) == 65536
+    assert value["stderr"]["observed_bytes"] == 160000 and value["stderr"]["eof"]
     assert value["stderr"]["truncated"]
     with pytest.raises(ProcessLookupError):
         os.kill(int((directory / "pid").read_text()), 0)
@@ -121,6 +130,32 @@ async def test_interrupted_helper_joins_native_and_stderr_drain(
     if mode == "block_tree":
         with pytest.raises(ProcessLookupError):
             os.kill(int((directory / "child-pid").read_text()), 0)
+    assert not any(not t.done() for t in asyncio.all_tasks() if t is not asyncio.current_task())
+
+
+async def test_pid_markers_precede_delayed_stderr_completion(tmp_path, record_property):
+    """GIVEN a writer held after PID publication WHEN cancelled early THEN retain only observed bytes."""
+    directory, command = fake_driver(tmp_path, "juzzy", "block_tree", delay_stderr=True)
+    task = asyncio.create_task(run_media_process(command, 5))
+    async with asyncio.timeout(2):
+        while not (directory / "child-pid").exists():
+            await asyncio.sleep(.005)
+    assert (directory / "pid").exists() and not (directory / "stderr-ready").exists()
+    task.cancel()
+    await asyncio.sleep(0)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    value = json.loads((directory / "native-diagnostic.json").read_bytes())
+    record_property("diagnostic", json.dumps(value, sort_keys=True))
+    assert value["stderr"]["observed_bytes"] == value["stderr"]["retained_bytes"] == 0
+    assert value["stderr"]["truncated"] is False and value["stderr"]["eof"]
+    assert value["native_process_joined"] and value["stderr_drain_joined"]
+    pids = [int(p.read_text()) for p in directory.glob("*pid")]
+    record_property("owned_pids", json.dumps(pids))
+    for pid in pids:
+        with pytest.raises(ProcessLookupError):
+            os.kill(pid, 0)
     assert not any(not t.done() for t in asyncio.all_tasks() if t is not asyncio.current_task())
 
 

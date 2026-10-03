@@ -18,6 +18,36 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
+### Measured lesson timing and cancellation repair: resume from exact receipts
+
+Use implementation checkout
+`/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`,
+branch `codex/education-measured-timing`, draft PR81 stacked on draft PR80:
+https://github.com/Galbaz1/video-research-mcp/pull/81.
+Baseline source is `5140fd10483325d68a5571a00a01fec876ee1812`; this branch also
+contains the causal `vrm-0e8.4.8` collector/readiness repair. Read actual Git HEAD,
+status and live Beads before dispatch; dated checkpoint text is not current proof.
+
+Private evidence root:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/education-measured-timing-2026-10-03`.
+Its `ci-cancellation-repair/final-delivery.json` records the exact committed/remote
+source, joined primary and independent review, final source/build/install gates,
+retained failures, exact-head CI and owned-session cleanup. If missing or partial,
+complete the required work before accepting this repair. `opleverrapport.md` is
+user-requested concise reporting (`vrm-0e8.12`); its final review receipt records
+actual editorial completion. These reporting/diagnostic tasks do not accept parents.
+
+Measured supplied-WAV lessons retain integer audio/sample lineage, up to30s/
+360frames. Prior real timing8/native39process and page-repair13process/browser8
+results remain distinct from original17education controls and spoken/multilingual/
+template/delivery-codec acceptance. `.8.7`/`.8.20` and whole-product/comparison/
+release remain governed by their unchanged Beads criteria; development human9audit
+is accepted. Preserve stopped native32DSP failures and untouched held-out material.
+No new main merge, registry publication or user plugin overwrite is implied.
+Gemini30s NL/EN STT proposal up toUSD3 remains pending; zero new provider calls.
+All local model inference stays on Mac Studio. Goal document covers106IDs; refresh
+live Beads. Protected original checkout/docs and local-only main backup remain.
+
 ### Main integration complete; retained-branch reconciliation active
 
 Main integration Bead `vrm-0e8.10.3.2` is CLOSED. User-approved signed PR #76

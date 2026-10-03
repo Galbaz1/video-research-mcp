@@ -1,6 +1,8 @@
 """Actual owned subprocess limits; no provider or network calls."""
 
 import asyncio
+import gc
+import json
 import os
 import sys
 
@@ -111,3 +113,51 @@ async def test_repeated_cancellation_during_actual_spawn_reaps_child(monkeypatch
                 process.kill()
             await process.wait()
         await asyncio.gather(task, return_exceptions=True)
+
+
+async def test_repeated_cancel_retrieves_actual_collector_future(tmp_path, monkeypatch, record_property):
+    """GIVEN cancellation inside wait_for's join WHEN cancelled again THEN consume its original gather."""
+    from video_research_mcp import media_process
+    loop, errors = asyncio.get_running_loop(), []
+    handler = loop.get_exception_handler()
+    loop.set_exception_handler(lambda _, context: errors.append(context))
+    cancelled, release = asyncio.Event(), asyncio.Event()
+    original = media_process._read_bounded
+    async def delayed_cancel(stream):
+        try:
+            return await original(stream)
+        except asyncio.CancelledError:
+            cancelled.set()
+            await release.wait()
+            raise
+    monkeypatch.setattr(media_process, "_read_bounded", delayed_cancel)
+    ready = tmp_path / "collector-pid"
+    script = "import os,time; from pathlib import Path; Path(" + repr(str(ready)) + ").write_text(str(os.getpid())); time.sleep(30)"
+    task = asyncio.create_task(run_media_process([sys.executable, "-I", "-c", script], 5))
+    try:
+        async with asyncio.timeout(2):
+            while not ready.exists():
+                await asyncio.sleep(.005)
+        task.cancel()
+        await asyncio.wait_for(cancelled.wait(), 2)
+        task.cancel()
+        await asyncio.sleep(0)
+        release.set()
+        with pytest.raises(asyncio.CancelledError):
+            await asyncio.wait_for(task, 2)
+        gc.collect()
+        await asyncio.sleep(0)
+        pid = int(ready.read_text())
+        record_property("owned_pids", json.dumps([pid]))
+        record_property("loop_errors", json.dumps([e["message"] for e in errors]))
+        with pytest.raises(ProcessLookupError):
+            os.kill(pid, 0)
+        assert not any(not t.done() for t in asyncio.all_tasks() if t is not asyncio.current_task())
+        assert errors == []
+    finally:
+        release.set()
+        if not task.done():
+            task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
+        gc.collect()
+        loop.set_exception_handler(handler)

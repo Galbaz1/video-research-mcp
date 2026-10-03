@@ -95,14 +95,14 @@ def test_mono_derivation_retains_pcm_identity_and_explicit_conversion(tmp_path):
         assert reader.getnchannels() == 1 and reader.readframes(2) == struct.pack("<hh", 0, 1000)
 
 
-def fake_driver(tmp_path, backend, mode):
+def fake_driver(tmp_path, backend, mode, *, delay_stderr=False):
     directory = tmp_path / (backend + "-" + mode)
     directory.mkdir()
     executable = directory / "server"
     script = f"""#!{sys.executable}
 import sys,json,os,time,subprocess
 from pathlib import Path
-mode={mode!r}; backend={backend!r}; tools={sorted(audio_dsp_stdio.TOOLS[backend])!r}
+mode={mode!r}; backend={backend!r}; tools={sorted(audio_dsp_stdio.TOOLS[backend])!r}; delay_stderr={delay_stderr!r}
 Path("pid").write_text(str(os.getpid()))
 Path("helper-pid").write_text(str(os.getppid()))
 if mode=="noisy_success": os.write(2,b"private-native-token"*8000)
@@ -110,7 +110,11 @@ if mode in ("block", "block_tree", "killed_helper"):
  if mode=="block_tree":
   child=subprocess.Popen([sys.executable,"-I","-c","import time; time.sleep(4)"])
   Path("child-pid").write_text(str(child.pid))
- os.write(2,b"private-native-token"*8000)
+ if delay_stderr:
+  while not Path("stderr-release").exists(): time.sleep(.005)
+ payload=b"private-native-token"*8000; written=0
+ while written<len(payload): written+=os.write(2,payload[written:])
+ Path("stderr-ready").write_text(str(written))
  if mode=="killed_helper":
   time.sleep(.1)
   os.kill(os.getppid(),9)

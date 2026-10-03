@@ -2651,7 +2651,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_process.py",
-          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -3754,7 +3754,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_contract.py",
-          "target_sha256": "30632c092236e18680b38c5cacea39ceec124e6c61bbfaadb5e436208e0ccb55",
+          "target_sha256": "910f452d7fcebf09ab6af7dad6f6462c0096ed00ab27ff230708f2768f5a81de",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3799,7 +3799,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_diagnostics.py",
-          "target_sha256": "c5ff283de4e7a8a905ff8b6ac2df0ddc11db41a37a33c45ba3adeba74f20d8d9",
+          "target_sha256": "62e9bf53ac06e4bd010e4230b981b9657a4bebe34a9fe94c5a4eee72516dd7bd",
           "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
         }
       ]
@@ -5283,7 +5283,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
-          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
         },
         {
