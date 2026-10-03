@@ -16,6 +16,7 @@ from .image_preprocessing import check_worker, image_worker
 from .media_local_io import _copy_hash, _open_regular
 from .media_process import run_media_process
 from .audio_dsp_pcm import RATE
+from .audio_dsp_diagnostics import read_diagnostic, request_binding
 
 SOURCES = {
     "juzzy": {
@@ -163,7 +164,24 @@ def attributed_record(record, configured, selections):
     }
 
 
-async def native_call(owned, request, configured, selections):
+def failure_diagnostic(directory, binding, configured, state):
+    """Copy only admitted metadata into the concrete caller before it removes failed staging."""
+    try:
+        diagnostic = read_diagnostic(directory, binding)
+        if diagnostic is None:
+            return
+        diagnostic.update(
+            source=configured["source"],
+            phase_binding=binding["phases"],
+            job_request_sha256=state["job"]["request_sha256"],
+            component_revision=state["job"]["source_revision"],
+        )
+        state["diagnostics"] = diagnostic
+    except ValueError:
+        state["diagnostic_rejected"] = True
+
+
+async def native_call(owned, request, configured, selections, state):
     """Run the fixed collector inside the existing joined process group and private temp/cache cwd."""
     if any(row.get("frames", 8192) < 8192 for row in selections):
         raise ValueError(
@@ -172,41 +190,37 @@ async def native_call(owned, request, configured, selections):
     directory = owned.directory / "native"
     directory.mkdir(mode=0o700)
     executable = directory / "dsp-server"
-    await image_worker(
-        binary_identity,
-        configured["executable"],
-        executable,
-        configured["sha256"],
-        deadline=owned.deadline,
-    )
+    binary_path, digest = configured["executable"], configured["sha256"]
+    await image_worker(binary_identity, binary_path, executable, digest, deadline=owned.deadline)
     tool, arguments = parameters(request, selections)
     payload = {
         "backend": configured["backend"],
         "tool": tool,
         "arguments": arguments,
         "executable": str(executable),
-        "executable_sha256": configured["sha256"],
+        "executable_sha256": digest,
     }
     path = directory / "request.json"
     with path.open("xb") as writer:
         os.fchmod(writer.fileno(), 0o600)
         writer.write(canonical(payload))
+    helper = Path(__file__).with_name("audio_dsp_stdio.py")
+    helper_sha256 = state["job"]["request"]["diagnostic_contract"]["helper_sha256"]
+    diagnostic_binding = request_binding(canonical(payload), helper_sha256)
     try:
-        command = [
-            sys.executable,
-            "-I",
-            str(Path(__file__).with_name("audio_dsp_stdio.py")),
-            str(path),
-        ]
-        stdout, _ = await run_media_process(command, owned.remaining())
+        try:
+            stdout, _ = await run_media_process(
+                [sys.executable, "-I", str(helper), str(path)], owned.remaining()
+            )
+        except BaseException as error:
+            failure_diagnostic(directory, diagnostic_binding, configured, state)
+            if not isinstance(error, Exception) or isinstance(error, TimeoutError):
+                raise
+            raise RuntimeError(
+                "Native DSP collection failed; inspect safe job diagnostics"
+            ) from None
         record = await image_worker(response_record, stdout, directory, deadline=owned.deadline)
-        await image_worker(
-            binary_identity,
-            configured["executable"],
-            None,
-            configured["sha256"],
-            deadline=owned.deadline,
-        )
+        await image_worker(binary_identity, binary_path, None, digest, deadline=owned.deadline)
         return attributed_record(record, configured, selections)
     finally:
         for item in directory.iterdir():

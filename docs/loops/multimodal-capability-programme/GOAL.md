@@ -376,3 +376,17 @@ Task-level instruction selection was adapted from
 These rules are expressed in this goal contract; no unrelated AGENTS rewrite was
 needed. Applicable Beads, Prompt Mastery and Herdr-orchestrator skill instructions
 remain subject to current user authority and the programme LOOP.
+
+## Implementation follow-up introduced after the entry snapshot
+
+`vrm-0e8.4.7` adds one ID to the 103-ID entry inventory above. Refresh Beads for
+its current state. This implementation leaf follows the accepted failure-path
+diagnostic; it does not change an original acceptance clause or blocking edge.
+
+| Bead | Dependency and parallel execution | Definition of done and evaluation |
+|---|---|---|
+| `vrm-0e8.4.7` | Requires `.4.6`; validates `.4.4`. Its DSP source/test files can run beside other eligible leaves with disjoint ownership. Keep one independent review after implementation. | Retain bounded source/request/executable-bound wire observations and private stderr; join owned processes/drains; preserve safe failed/cancelled job readback. Verify real first-party success/failure/interruption fixtures, unchanged schemas/limits, final source gates and exact built/isolated installed MCP readback, then commit. |
+
+The seven task clauses remain authoritative in Beads. This leaf does not authorize
+a native Juzzy/Ferrous replay or accept the blocked DSP parent, original32 cohort,
+comparative study or final release. Preserve both historical native failures.

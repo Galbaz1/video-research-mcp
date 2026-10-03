@@ -4,6 +4,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .image_manifest import json_digest
+from .audio_dsp_diagnostics import validate_job_diagnostic
 from .image_preprocessing import check_worker
 from .job_store import JobStore, _artifact_readback
 from .research_jobs import receipt
@@ -13,6 +14,7 @@ REVISION_FILES = (
     "audio_dsp_jobs.py",
     "audio_dsp_backend.py",
     "audio_dsp_stdio.py",
+    "audio_dsp_diagnostics.py",
     "audio_dsp_measure.py",
     "audio_dsp_native.py",
     "audio_dsp_pcm.py",
@@ -71,12 +73,15 @@ def retained(job):
         }
     if not job["attestation"]["verified"]:
         raise ValueError("Retained DSP artifact or result failed readback")
+    if "diagnostics" in job["result"]:
+        validate_job_diagnostic(job["result"]["diagnostics"], job)
     return {"metadata": job["result"], "job_receipt": receipt(job)}
 
 
 def finish(state, result, status, artifacts, cancelled, deadline):
     """Checkpoint only after owned workers/processes and source readbacks have joined."""
     store, job, owner = (state[key] for key in ("store", "job", "owner"))
+
     def guard():
         check_worker(cancelled, deadline)
 
@@ -86,6 +91,8 @@ def finish(state, result, status, artifacts, cancelled, deadline):
     if integrity not in {"verified", "absent"}:
         raise ValueError("DSP completion artifact failed readback")
     guard()
+    if "diagnostics" in result:
+        validate_job_diagnostic(result["diagnostics"], job)
     if not store.checkpoint(
         job["job_id"], owner, status=status, result=result, artifact_hashes=hashes, release=True
     ):
