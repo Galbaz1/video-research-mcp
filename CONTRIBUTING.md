@@ -35,6 +35,8 @@ From the repository root:
 uv run --locked pytest tests/ -q
 uv run --locked ruff check src/ tests/
 node --test tests/installer.test.js
+node --test tests/codex-plugin.test.js
+node --test tests/installer-packaged-skills.test.js
 ```
 
 For a focused change, run the affected file while developing, for example:

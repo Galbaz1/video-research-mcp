@@ -57,9 +57,12 @@ Local install, update, doctor and recovery use only the selected project templat
 Legacy local checkpoints that contain a home `.env` snapshot cannot be restored
 automatically; compare their before/after hashes and restore that home file separately.
 
-The copy map contains 50 files: 17 commands, 26 skill files across 16 skills,
-and 7 agents. They are prompts, workflow resources and local authoring scripts. The installer does not
-install the upstream video renderer or start an MCP server.
+The copy map contains 83 files: 17 commands, 33 skill files across 22 skills,
+7 agents and 26 shared support files. Contracts, descriptors, adjacent Python
+helpers and license texts live under `skills/video-research-resources/`; this
+support directory is not another skill. All files use the existing ownership,
+hash and checkpoint recovery rules. Installing them does not install optional
+Python/native runtimes, activate external sources/providers or start an MCP server.
 
 Restart Claude Code after installation and use `/gr:getting-started` for setup.
 `--check` reports installed manifests and modified tracked files; it does not
@@ -278,7 +281,7 @@ The npm package root is a portable Agent Plugins package as described in the
 | --- | --- |
 | [`plugin.json`](../plugin.json) | Agent Plugins 1.0.0 manifest. `video-research` is the stable plugin identifier; `extensions.com.openai.interface` supplies presentation. |
 | [`mcp.json`](../mcp.json) | One stdio server, `video-research`, launched as `uvx video-research-mcp==X.Y.Z`: the same name and command as the Claude registration. Keep `command` a bare executable name (or a contained `./` path): Codex silently ignores a stdio server with an absolute command. |
-| `skills/` | Discovered without a manifest field. Codex sees every shipped skill, including optional integration skills such as `av-events` and `footage-edit` that the Claude installer does not copy. |
+| `skills/` | Discovered without a manifest field. Codex sees all 22 shipped skills directly. The Claude installer copies the same skills plus their managed support resources. |
 | `commands/`, `agents/`, `bin/` | Claude assets; Codex does not load them. |
 
 The package has no lifecycle hooks, `.app.json`, `.codex-plugin/` overlay or npm

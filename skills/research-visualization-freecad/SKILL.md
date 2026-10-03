@@ -5,6 +5,14 @@ description: Build evidence-grounded FreeCAD research illustrations in an explic
 
 # FreeCAD research visualization
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-freecad.md`.
+The `../video-research-resources/integrations/qwen/freecad.json` records the selected component and requirements.
+Run `../video-research-resources/scripts/freecad_session.py` with the explicitly selected interpreter; its adjacent helpers are installed together.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Turn supplied research into inspectable CAD geometry or a bounded FEM
 illustration. Link factual claims, dimensions, material values and loads to the
 supplied evidence; state illustrative assumptions in the output. Choose the

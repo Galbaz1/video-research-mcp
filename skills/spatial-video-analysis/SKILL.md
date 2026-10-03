@@ -5,6 +5,14 @@ description: Admit explicitly authorized PNG frames and finite spatial scene est
 
 # Spatial video analysis source component
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-spatial.md`.
+The `../video-research-resources/integrations/qwen/video-spatio.json` records the selected component and requirements.
+Run `../video-research-resources/scripts/spatial_session.py` with the explicitly selected interpreter; its adjacent helpers are installed together.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 The component is currently **runtime blocked**. The selected descriptor has
 `runtime_clearance: blocked-missing-font-grant`, a null selected executable and
 no bootstrap selection. The narrow scientific profile has 41 Matplotlib legacy

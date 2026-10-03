@@ -3,6 +3,15 @@ name: footage-edit
 description: Prepare and assemble short edits from exact local source footage using measured frame lineage, scene revision approvals, contact previews and final technical gates.
 ---
 
+# Local footage editing
+
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/FOOTAGE_EDIT.md`.
+The `../video-research-resources/integrations/qwen/footage-edit.json` records the selected component and requirements.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Use `media_edit_footage` for a bounded local linear edit. Keep the existing external companion renderer separate. Read [FOOTAGE_EDIT.md](../../docs/integrations/FOOTAGE_EDIT.md) for the public fields, limits and evidence boundaries.
 
 Prepare a chosen brief and one to eight unique scenes from at most two regular local sources. Bind each complete source SHA256, half-open source interval, declared FPS and explicit contiguous timeline start. Select only the required bounded crop, neutral-default grade and source-audio preservation/attenuation or explicit mute. This route supports hard cuts and compatible source grids/audio formats; do not claim unsupported compositing, music, transitions, fonts, SFX or external render engines.

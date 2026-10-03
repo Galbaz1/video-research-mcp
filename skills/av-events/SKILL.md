@@ -5,6 +5,13 @@ description: Caption, count or ground supported occurrences in exact local audio
 
 # AV event and music evidence
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/AV_EVENTS.md`.
+The `../video-research-resources/integrations/qwen/av-events.json` descriptor records the selected component and requirements.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Use the root tools `media_caption_events`, `media_count_events`,
 `media_ground_events` and `media_analyze_music`. Read the
 [integration contract](../../docs/integrations/AV_EVENTS.md) when choosing budgets,

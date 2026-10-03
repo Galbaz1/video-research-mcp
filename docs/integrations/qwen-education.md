@@ -1,5 +1,15 @@
 # A bounded educational lesson component
 
+For an installed Claude workflow, select an explicit Python interpreter with the
+accepted core wheel installed and run `<skill directory>/scripts/lesson.py` with
+`-I -B`. Read `importlib.metadata.version("video-research-mcp")` in that interpreter
+and compare its normalized version with the installer manifest: `0.8.0rc1`
+corresponds to npm `0.8.0-rc.1`. Bind the accepted candidate wheel receipt too;
+a matching version alone does not identify same-version development bytes.
+Even `--help` imports the core package. The `uv run --no-sync --locked` examples
+below require the source checkout; unpacked npm supplies workflow/helper files,
+not a Python environment.
+
 The first-party `education` component produces one concrete lesson, **Verifying a
 diagram against its rule**: a right 3-4-5 triangle, an input-reflected square and a
 closed battery/resistor series loop. It validates a strict source/analysis/script/
@@ -70,7 +80,7 @@ staging after workers/processes join. They do not retry or replace prior results
 
 ## The admitted ledger
 
-[LessonSpec](../../src/video_research_mcp/models/education.py) rejects extra fields,
+`LessonSpec` in the installed Python module `video_research_mcp.models.education` rejects extra fields,
 nonfinite numbers, boolean numeric coordinates, unsupported domains and incomplete
 populations. Protocol versions are exact integers. The retained **schema1**
 required sections are:

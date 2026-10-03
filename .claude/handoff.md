@@ -1,3 +1,14 @@
+## Active continuation checkpoint — complete Claude packaged workflows (2026-10-03)
+
+- Implementation worktree remains `/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`, branch `codex/claude-packaged-skills`, entry HEAD `1c23f6b7169876845887f27790788a58cf00d441`. Verify live Git and final receipts.
+- `.3.9` and `.4.9` are CLOSED with exact-head push/PR CI10/10 each, independently reviewed source,3896 tests/41 installer checks and seven447-comparison private artifacts. Read `av-frame-rate-2026-10-03/audio-deadline-repair/final-delivery.json` for the actual bounded source acceptance.
+- `.12` report/interactive atlas remains in_progress. Atlas inventory111 MCP tools (90/19/2),22 skills,17 commands,7 agents and12 public function entrypoints is source-linked;18 journeys/169 cards and browser controls have bounded proof. Its MD-only Writing Mastery review completed with two findings repaired; the expanded artifact review is not yet registered. Private source/evidence: `education-measured-timing-2026-10-03/plugin-atlas/`.
+- The atlas found22 packaged skills but16 copied by the Claude installer at1c23f6b. New claimed `.7.12` owns the complete six-skill/resource distribution repair and validates `.7.9`, without changing original blocking edges. Goal now indexes109 IDs.
+- Herdr primary assignment `VRM-CLAUDE-PACKAGED-SKILLS/r1`, Codex2 Sol/xhigh/default/0children, pane `w1:p27`; independent Claude Max Opus/xhigh/0children pane `w1:p28` reserved after source freeze. Root owns shared metadata/Git/Beads/builds/atlas/report. Discover actual live handles and require assignment-correlated artifacts, not badges. Evidence `/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/claude-packaged-skills-2026-10-03/`.
+- All original32DSP/17education/held-out cohorts stay untouched; nine development human cases are accepted. Local inference only Studio; Gemini two30s/maxUSD3 proposal remains pending. No new main merge, registry publication or actual user-plugin overwrite authority.
+
+---
+
 ## Active continuation checkpoint — inherited audio-export CI oracle (2026-10-03)
 
 - Worktree: `/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`; branch `codex/av-full-frame-rate`, baseline `c3cf930e434a444a47698a25598af68ced71fbc1`. Verify live Git; the receipt below binds the final result.
