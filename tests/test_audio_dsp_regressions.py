@@ -101,9 +101,9 @@ async def entered(event):
             await asyncio.sleep(0.002)
 
 
-async def heartbeat(done, ticks):
+async def heartbeat(done, ticks, active):
     while not done.is_set():
-        ticks.append(time.monotonic())
+        ticks.append(bool(active))
         await asyncio.sleep(0.002)
 
 
@@ -118,21 +118,35 @@ async def repeated_cancel(task):
 async def test_deadline_stream_readback_keeps_loop_live_and_never_commits_complete(
     tmp_path, monkeypatch
 ):
-    """GIVEN a slow real artifact WHEN the deadline expires THEN work joins before failure."""
-    request, artifact, _ = controller(tmp_path, monkeypatch, timeout=0.08)
+    """GIVEN live artifact readback WHEN its deadline expires THEN work joins before failure."""
+    request, artifact, _ = controller(tmp_path, monkeypatch)
     started, active = slow_artifact(monkeypatch, artifact)
+    contexts, timeout = [], asyncio.timeout
+
+    def captured(delay):
+        context = timeout(delay)
+        contexts.append(context)
+        return context
+
+    monkeypatch.setattr(audio_dsp.asyncio, "timeout", captured)
     done, ticks = asyncio.Event(), []
-    pulse = asyncio.create_task(heartbeat(done, ticks))
-    began = time.monotonic()
+    pulse = asyncio.create_task(heartbeat(done, ticks, active))
+    task = asyncio.create_task(audio_dsp.execute(request))
     try:
-        result = await audio_dsp.execute(request)
+        while sum(ticks) < 3 and not task.done():
+            await asyncio.sleep(0.002)
+        assert started.is_set() and active and len(contexts) == 1
+        contexts[0].reschedule(asyncio.get_running_loop().time())
+        result = await task
     finally:
+        if not task.done():
+            task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
         done.set()
         await pulse
-    assert started.is_set() and len(ticks) >= 3 and time.monotonic() - began < 0.6
     assert not active and result["metadata"]["status"] == "failed"
     assert result["metadata"]["category"] == "ARTIFACT_GENERATION_FAILED"
-    assert "0.08-second deadline" in result["metadata"]["error"]
+    assert "2-second deadline" in result["metadata"]["error"]
     assert result["metadata"]["retryable"] is False
     assert result["metadata"]["retry_after_seconds"] is None
     durable = JobStore().get(request.job_id)
