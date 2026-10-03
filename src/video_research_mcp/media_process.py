@@ -92,8 +92,9 @@ async def run_media_process(
         raise
     tasks = [asyncio.create_task(_read_bounded(stream)) for stream in (process.stdout, process.stderr)]
     tasks.append(asyncio.create_task(process.wait()))
+    collector = asyncio.gather(*tasks)
     try:
-        stdout, stderr, code = await asyncio.wait_for(asyncio.gather(*tasks), timeout)
+        stdout, stderr, code = await asyncio.wait_for(collector, timeout)
         if code:
             detail = redact_text(stderr.decode(errors="replace")[-4000:]).strip()
             raise RuntimeError(f"Media process exited with status {code}: {detail}")
@@ -101,8 +102,14 @@ async def run_media_process(
     except BaseException:
         for task in tasks:
             task.cancel()
+        joined = asyncio.gather(collector, *tasks, return_exceptions=True)
         try:
-            await asyncio.gather(*tasks, return_exceptions=True)
+            while not joined.done():
+                try:
+                    await asyncio.shield(joined)
+                except asyncio.CancelledError:
+                    continue
+            joined.result()
         finally:
             await _reap_uninterruptibly(process)
         raise

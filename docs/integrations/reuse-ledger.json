@@ -2101,7 +2101,7 @@
         },
         {
           "target_path": "src/video_research_mcp/footage_edit_qa.py",
-          "target_sha256": "28688c3df59e6cd348ca214a29724b616f1ea780b317133b21bcb1b4940dee7b",
+          "target_sha256": "29f21493963f4d03335b0d23f9bb64fb3e7445dc609e9923353f85cda5ced21d",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         },
         {
@@ -2136,7 +2136,7 @@
         },
         {
           "target_path": "tests/test_footage_edit_qa.py",
-          "target_sha256": "1ed91947f778ae899ea24c4ae2e524330d549721354ab0f5fa4e0923546f36db",
+          "target_sha256": "792670cc9e921bda213d767fc5cf334fc7783632f11c8c1051c499e37df17b03",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
         },
         {
@@ -2233,17 +2233,17 @@
         },
         {
           "target_path": "src/video_research_mcp/models/education.py",
-          "target_sha256": "942e67c1cf2c78f8467765303177f3df2440248df27156179da7597083770f50",
+          "target_sha256": "77976d5ff5533352596a889276fb0bf478a67f328bb24c351f80c4edc976484a",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "src/video_research_mcp/education.py",
-          "target_sha256": "7c3357a526810e22159f4d9597300c6c3ae7a182aecdb3ec2a30557d9d519ca3",
+          "target_sha256": "8e693e822c3e364cf2d307544d831fb9929d8afc87db811f4691dbffca3decd1",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "src/video_research_mcp/education_domain.py",
-          "target_sha256": "7e1c573a6464e7e3bad713f85b542b0b64968aaf6275d306cfac2f46cdd54f01",
+          "target_sha256": "8e2a5af8b12d794f9d83bf2e7fbed71a0f9083e35845c10b5517e82f553f003c",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -2253,22 +2253,22 @@
         },
         {
           "target_path": "src/video_research_mcp/education_page.py",
-          "target_sha256": "90c69d543ec0ef2c7ff226a637ed5f29e68a5358579070dd102d4f0a38d77485",
+          "target_sha256": "d7a3ec6209cf793bb4a0f94bcddb291d700586a75cbb1f5b9e5054b903a7325b",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "src/video_research_mcp/education_frames.py",
-          "target_sha256": "602972dd97872eacf720736ad6f93c47a9c1d59eb9aa8283a2d229c1893b7477",
+          "target_sha256": "662eee342d737abfe670bb15441ce72e88fd55ccb9f6fb7ae1621d12bc478aa3",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "src/video_research_mcp/education_native.py",
-          "target_sha256": "5f9d1478721f9bbc61bcc2c4d2e124dd4dd8130887ef7656c7a3093a421ec5f5",
+          "target_sha256": "382bdc400dd2c1e342710b8b00a24960c2ea1badfa38029f9937be0f3be60d6f",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "src/video_research_mcp/education_review.py",
-          "target_sha256": "53c77ee9e711bbe037abe13d469561b620f3e5143c09b7d83cb013aa9308e511",
+          "target_sha256": "9c33f857de9669fb3e74d0276d977faa2f815c75b3f253337ae67877408592b1",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -2278,28 +2278,48 @@
         },
         {
           "target_path": "tests/test_education_workflow.py",
-          "target_sha256": "e3b51afeeab7b406a88757123a42247a67aead81796216b1a047ffe851e104e8",
+          "target_sha256": "25c289ba9d34ffe4701221f26038e9a0b01bc3defd8cbc43c36eb11dc60d1d4c",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "tests/test_education_review.py",
-          "target_sha256": "6991093b0b06499895a22c9cc64a8d174c025487826a6369556621da85a346aa",
+          "target_sha256": "0034ca4e3297abbb6a025b00ddb40dcd9057a7d5a406626243b6cf5d5a523252",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "skills/educational-explainer/SKILL.md",
-          "target_sha256": "ad25101e0cd2417cf83ff915705375848e8996518dd15a9f200ce97211e23316",
+          "target_sha256": "7f803702df43623190c881514506d1197edddc1f297d9b9ec27c830e69eafc08",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "skills/educational-explainer/scripts/lesson.py",
-          "target_sha256": "71a604c8231c30714c211075f4138661c2c11c83092e549c6be9ef53abad9f7e",
+          "target_sha256": "a523ec65bf3fd01ffcf44a20fe7e22ebcfce4ffcedaac1d6ad57dca9663fa49b",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
           "target_path": "docs/integrations/qwen-education.md",
-          "target_sha256": "be6373e9061e561ff43a6c199ac91933ecec5dcb175f000a6f4ac90cfb05ab51",
+          "target_sha256": "ba9f168a61f43911714e975973e87478bf2f28a2e79d6432ce1c32a9b558dd80",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_audio.py",
+          "target_sha256": "33ed62690924950d036ea03546e54c630c591fd0244cbc1d982ff86fe02ae4e9",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate. Measured schema2 binds three supplied segment WAVs to exact integer sample clocks, preserves ordered PCM and original files, and caps30s/360frames; retained schema1 callers remain separate. No foreign code/assets/dependency added."
+        },
+        {
+          "target_path": "src/video_research_mcp/education_timing.py",
+          "target_sha256": "43f8cdc30a7e3177d9ea2d8c81e8b1be2ea57ae9ba0dfb0eab6606f1a7c24c58",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate. Measured schema2 binds three supplied segment WAVs to exact integer sample clocks, preserves ordered PCM and original files, and caps30s/360frames; retained schema1 callers remain separate. No foreign code/assets/dependency added."
+        },
+        {
+          "target_path": "tests/test_education_timing.py",
+          "target_sha256": "f99909b3144df4d3fe29dfa5f33fe11c7ec9e6f91a5442f97a57d0f43f895fe8",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate. Measured schema2 binds three supplied segment WAVs to exact integer sample clocks, preserves ordered PCM and original files, and caps30s/360frames; retained schema1 callers remain separate. No foreign code/assets/dependency added."
+        },
+        {
+          "target_path": "tests/test_education_measured_review.py",
+          "target_sha256": "e9b4072fb344105bc7cfd7603c7d9e01e3a2d2528084d1d2d69ae5a6a5e39cae",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate. Measured schema2 binds three supplied segment WAVs to exact integer sample clocks, preserves ordered PCM and original files, and caps30s/360frames; retained schema1 callers remain separate. No foreign code/assets/dependency added."
         }
       ]
     },
@@ -2631,7 +2651,7 @@
         },
         {
           "target_path": "src/video_research_mcp/media_process.py",
-          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -3734,7 +3754,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_contract.py",
-          "target_sha256": "30632c092236e18680b38c5cacea39ceec124e6c61bbfaadb5e436208e0ccb55",
+          "target_sha256": "910f452d7fcebf09ab6af7dad6f6462c0096ed00ab27ff230708f2768f5a81de",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3759,7 +3779,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_regressions.py",
-          "target_sha256": "d92835e2900668b674a78ece0219ece7fb4a17dfeaff067c788bcdc435aa8db7",
+          "target_sha256": "3ac1e3460c50a451a0b1f28ebe417230b332bb4108b394c4bd8e592e81033202",
           "provenance": "Owned independent DSP repair: cooperative joined job readback, all comparison input commitments, and original-review regression controls. No foreign source or assets copied."
         },
         {
@@ -3779,7 +3799,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_diagnostics.py",
-          "target_sha256": "c5ff283de4e7a8a905ff8b6ac2df0ddc11db41a37a33c45ba3adeba74f20d8d9",
+          "target_sha256": "62e9bf53ac06e4bd010e4230b981b9657a4bebe34a9fe94c5a4eee72516dd7bd",
           "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
         }
       ]
@@ -5263,7 +5283,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
-          "target_sha256": "9c9a3f364ba6f6be8c5fa94b6c3f2bf4cf3285e0d883a0666fd0759c9f11ad04",
+          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
         },
         {

@@ -4,6 +4,7 @@ import math
 import textwrap
 
 from .education_glyphs import display_text
+from .education_timing import timeline_from_counts
 
 BACKGROUND = (24, 32, 48)
 FOREGROUND = (238, 244, 250)
@@ -88,20 +89,26 @@ def source_gate(spec, audio):
     scenes, captions = spec.storyboard.scenes, spec.script.captions
     if [s.id for s in scenes] != IDS or [c.scene_id for c in captions] != IDS:
         raise ValueError("Lesson requires all three scenes/captions in exact storyboard order")
-    if audio["frames"] != 288000 or audio["duration_seconds"] != 6:
+    if spec.schema_version == 1 and (audio["frames"] != 288000 or audio["duration_seconds"] != 6):
         raise ValueError("Lesson requires exactly288000 measured48kHz mono PCM16 samples")
     if spec.script.transcript != " ".join(c.text for c in captions):
         raise ValueError("Preserved transcript must equal the exact caption texts joined by one space")
     display_text(spec.title)
     gates = {"geometry": geometry_gate(scenes[0]), "curve": curve_gate(scenes[1]), "circuit": circuit_gate(scenes[2])}
     for i, (scene, caption) in enumerate(zip(scenes, captions)):
-        if (scene.start_seconds, scene.end_seconds) != (i * 2, (i + 1) * 2):
+        if spec.schema_version == 1 and (scene.start_seconds, scene.end_seconds) != (i * 2, (i + 1) * 2):
             raise ValueError("Every scene must cover its exact two-second storyboard interval")
-        if (caption.start_seconds, caption.end_seconds) != (scene.start_seconds, scene.end_seconds):
+        if spec.schema_version == 1 and (caption.start_seconds, caption.end_seconds) != (scene.start_seconds, scene.end_seconds):
             raise ValueError("Caption is overlapping, outside audio or does not cover its exact scene")
         caption_lines(caption.text)
     gates["captions"] = {"status": "passed", "box": CAPTION_BOX, "diagram_box": DIAGRAM_BOX,
                           "spatial_overlap": False, "timing_basis": "caller_declared_within_measured_audio", "speech_alignment_verified": False}
+    if spec.schema_version == 2:
+        segments = audio["segments"]
+        timeline = timeline_from_counts([s["frames"] for s in segments])
+        if [s["scene_id"] for s in segments] != IDS or audio["timeline"] != timeline or audio["frames"] != timeline["total_samples"]:
+            raise ValueError("Lesson measured audio/scene/caption timeline is inconsistent")
+        gates["captions"].update(timing_basis="measured_whole_scene_segments", timeline=timeline)
     return {"status": "passed", "gates": gates, "source_authority": "caller_assertion_unverified",
             "display_transform": "ASCII lowercase to authored uppercase cells; original transcript preserved"}
 

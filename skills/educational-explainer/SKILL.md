@@ -13,22 +13,37 @@ foreign renderer, provider generation, font package or automatic installer.
 The admitted lesson has three scenes: right 3-4-5 triangle, input-reflected square
 and one battery/resistor series cycle. Bind exact source JSON and supplied regular
 48kHz mono PCM16 WAV with independent full SHA-256 values. Preserve the exact
-transcript and caller-declared caption intervals. No default voice or synthetic
+transcript. Schema1 retains caller-declared two-second intervals and its exact
+six-second WAV. Schema2 requires three ordered hash-bound `narration_segments`
+(`triangle`, `curve`, `circuit`) and omits declared scene/caption times. Its
+measured sample counts set all whole-scene caption and page boundaries; combined
+duration is at most30 seconds. No default voice or synthetic
 audio is generated. Supplied tones can check the component's sample contracts;
 they do not satisfy actual spoken lesson acceptance.
 
-Run `lesson.py validate` with `--spec`, `--spec-sha256`, `--audio` and
-`--audio-sha256`. It checks every required scene, numeric rule, supported glyph,
+Run `lesson.py validate` with `--spec` and `--spec-sha256`. Schema1 also requires
+`--audio` and `--audio-sha256`; omit both for schema2. Relative segment paths are
+resolved beside the source JSON. It checks every required scene, numeric rule, supported glyph,
 caption timing/layout and complete audio sample population without native execution.
 Failed, missing or skipped applicable gates are refusals, never a source PASS.
 
 Run `lesson.py build` with the same exact inputs and an absent `--output`
 directory. The explicit workflow uses optional Pillow and operator-installed
 FFmpeg/ffprobe; a missing dependency is reported rather than installed. It writes
-the self-contained page, 72 authored frames, lossless local MP4, complete decoded
+the self-contained page, the complete admitted12fps frame population (72 for
+schema1, at most360 for schema2), lossless local MP4, complete decoded
 RGB/PCM evidence and a committed receipt. One deadline covers the operation.
 Cancellation joins owned work and preserves inputs/prior artifacts. Retained
 failed-attempt receipts do not authorize regeneration or overwrite.
+
+Schema2 preserves all original WAV bytes and concatenates only their exact PCM.
+Page scene/seek/reset controls use the measured sample boundaries. Video chooses
+the scene at each frame's start sample; transitions and the video end may round
+up by less than one frame. Inspect the recorded `visual_delay_samples` and
+`video_tail_samples`; audio stays at its exact sample count. A scene with no
+scheduled frame is refused. No word timing is estimated and supplied text/speech
+alignment remains unverified. Version2 receipts are bounded to512KiB and full
+decoded RGB to256MiB; schema1 receipts and caller artifacts remain supported.
 
 Retain the returned receipt hash outside the mutable output directory. Inspect
 the actual page's scene, seek/reset and reflection/shift controls, visible numeric
@@ -48,3 +63,5 @@ correctness, human lesson acceptance and multilingual assets unverified. All 12
 upstream templates, HyperFrames/GSAP/KaTeX/fonts, foreign validators, provider
 narration and broader scientific animations remain unexecuted/unqualified. A
 three-domain component receipt does not close those workflows or the broader leaf.
+Native MP4 is a lossless master; browser codec delivery still requires a separate
+qualified runtime journey.

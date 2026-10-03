@@ -14,12 +14,16 @@ def _label(text):
     return f'<svg role="img" aria-label="{text}" viewBox="0 0 {len(text) * 6} 9">{marks}</svg>'
 
 
-def page_bytes(spec, audio):
+def page_bytes(spec, audio, *, timeline=None):
     """Embed admitted source data, WAV and graphics; no URL, package, font or CDN dependencies."""
     data = {"spec": spec.model_dump(mode="json"), "glyphs": PATTERNS, "titles": TITLES,
             "primitives": [primitives(s) for s in spec.storyboard.scenes],
             "captions": [caption_lines(c.text) for c in spec.script.captions],
             "diagram_box": DIAGRAM_BOX, "caption_box": CAPTION_BOX}
+    if spec.schema_version == 2:
+        if timeline is None:
+            raise ValueError("Measured lesson page requires its admitted sample timeline")
+        data["timeline"] = timeline
     payload = json.dumps(data, separators=(",", ":")).replace("<", "\\u003c")
     controls = "".join(f'<button id="scene-{s.id}" data-scene="{i}" aria-label="Scene {s.id}">{_label(s.id.upper())}</button>'
                        for i, s in enumerate(spec.storyboard.scenes))
@@ -41,7 +45,12 @@ def page_bytes(spec, audio):
             f'<div>{_label("VIEWPORT X=-2..2 Y=0..4 MAY CLIP")}</div>'
             f'<audio id="narration" preload="metadata" src="data:audio/wav;base64,{base64.b64encode(audio).decode()}"></audio>'
             f'<script id="lesson-data" type="application/json">{payload}</script><script>')
-    return (html + SCRIPT + '</script></main></html>').encode()
+    script = SCRIPT
+    if spec.schema_version == 2:
+        html = html.replace('max="6" step="0.0833333333333333"', f'max="{timeline["total_samples"]}" step="1"')
+        html = html.replace(_label("SEEK SECONDS"), _label("SEEK SAMPLES"))
+        script = MEASURED_SCRIPT
+    return (html + script + '</script></main></html>').encode()
 
 
 SCRIPT = r"""
@@ -86,3 +95,14 @@ audio.addEventListener('loadedmetadata',()=>{audio.currentTime=state.seconds;});
 audio.addEventListener('timeupdate',()=>{state.seconds=audio.currentTime;draw();});
 draw();
 """
+
+# Retain schema1 page bytes so accepted hash-bound artifacts still restart-check.
+MEASURED_SCRIPT = (SCRIPT
+    .replace("const state={seconds:0,reflection:true,shift:0};", "const clock=data.timeline;\nconst state={sample:0,seconds:0,reflection:true,shift:0};")
+    .replace(" const index=Math.min(2,Math.floor(state.seconds/2)),", " const found=clock.scenes.findIndex(s=>state.sample<s.end_sample);\n const index=found<0?2:found,")
+    .replace("svg.dataset.seconds=String(state.seconds);", "svg.dataset.seconds=String(state.seconds);svg.dataset.sample=String(state.sample);")
+    .replace("node('seek').value=String(state.seconds)", "node('seek').value=String(state.sample)")
+    .replace("function seek(seconds){state.seconds=Math.max(0,Math.min(6,Number(seconds)));if(audio.readyState>=1)audio.currentTime=state.seconds;draw();}",
+             "function setSample(sample){state.sample=Math.max(0,Math.min(clock.total_samples,Math.round(Number(sample))));state.seconds=state.sample/clock.sample_rate;}\nfunction seek(sample){setSample(sample);if(audio.readyState>=1)audio.currentTime=state.seconds;draw();}")
+    .replace("seek(Number(b.dataset.scene)*2)", "seek(clock.scenes[Number(b.dataset.scene)].start_sample)")
+    .replace("state.seconds=audio.currentTime;draw()", "setSample(audio.currentTime*clock.sample_rate);draw()"))

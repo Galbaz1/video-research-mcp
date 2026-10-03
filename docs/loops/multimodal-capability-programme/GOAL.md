@@ -390,3 +390,13 @@ diagnostic; it does not change an original acceptance clause or blocking edge.
 The seven task clauses remain authoritative in Beads. This leaf does not authorize
 a native Juzzy/Ferrous replay or accept the blocked DSP parent, original32 cohort,
 comparative study or final release. Preserve both historical native failures.
+
+## CI repair and requested delivery report
+
+These two follow-ups bring the entry inventory to 106 IDs. Use live Beads for
+status; neither changes the original blocking graph or feature acceptance.
+
+| Bead | Dependency and parallel execution | Definition of done and evaluation |
+|---|---|---|
+| `vrm-0e8.4.8` | Validates `.4.7` after an exact-head Python3.11 CI failure. Own only the media-process collector and DSP/process tests; root owns ledger, packaging and Git. A report may be drafted in parallel, but must use the final verified result. | Retain the failed CI; reproduce delayed stderr and repeated cancellation; wait for actual payload completion and retrieve the original collector future. Prove bounded bytes, joined tasks and no surviving owned PIDs or unretrieved futures; independent review, proportional tests and exact-head Python3.11–3.14 CI, then commit. |
+| `vrm-0e8.12` | User-requested reporting; no implementation blocker. Draft beside independent source work and finalize after its required results join. | Deliver one concise Dutch Markdown report of accepted outcomes, actual evidence and remaining tasks; preserve failures and acceptance limits, complete the Writing Mastery independent review, and open/link the result. Reporting does not accept the product or release. |
