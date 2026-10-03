@@ -1132,7 +1132,7 @@
         },
         {
           "target_path": "tests/test_audio_assets.py",
-          "target_sha256": "6b7ece840ed6528e59aea1a9358ee1723a44b336297a27459677dd28d47fc2a3",
+          "target_sha256": "a1f0b586f0134a061ed91968b90624c056f26ac1240ada70f98ef514137d4ff2",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
