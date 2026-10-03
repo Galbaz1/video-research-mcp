@@ -3669,17 +3669,17 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/audio_dsp.py",
-          "target_sha256": "3e66e8350f5b4d84c0ef8089415e8c89cd183e597e54c59793cae0a2d6aa1567",
+          "target_sha256": "45f3b9720bd3ef519cda88aa0b0a4e04aa7869d9edb2372a500cc146a55c52ba",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_backend.py",
-          "target_sha256": "bf1cbec3a3c9a84f641f823b5a26fb63c93c24c41610e46744fb53a1f0553e27",
+          "target_sha256": "b024e8e1f138892029585c0a7fb13b6d0806cdaf6ca33b77a4dcf13e8f4a9e95",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_jobs.py",
-          "target_sha256": "fe1520daf7646b3f9af8199cb05588cc2e391d6d739e4466c814afae99a6de74",
+          "target_sha256": "116688f2812e70369b289e0485fb1a97c551be407e09ca8821d08e02315be09c",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3699,7 +3699,7 @@
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_stdio.py",
-          "target_sha256": "4ff8f3e8b101af0ea4832e5fa6474040859526d3f55fa208bb3116259d8dbd3e",
+          "target_sha256": "288c24c56e405999626f34e3aceae2693adbf9d363849701cec34a78877082ea",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3734,7 +3734,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_contract.py",
-          "target_sha256": "6c4bfb991c0796fd77404a29bfe1970c6e57a4f3504cf2915f2ad714686697cb",
+          "target_sha256": "30632c092236e18680b38c5cacea39ceec124e6c61bbfaadb5e436208e0ccb55",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3759,7 +3759,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_regressions.py",
-          "target_sha256": "51de9413e6548be173ab199e8277e4ad7ae15822aca37c750e93772666cc7573",
+          "target_sha256": "d92835e2900668b674a78ece0219ece7fb4a17dfeaff067c788bcdc435aa8db7",
           "provenance": "Owned independent DSP repair: cooperative joined job readback, all comparison input commitments, and original-review regression controls. No foreign source or assets copied."
         },
         {
@@ -3771,6 +3771,16 @@
           "target_path": "tests/test_reuse_ledger.py",
           "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
+        },
+        {
+          "target_path": "src/video_research_mcp/audio_dsp_diagnostics.py",
+          "target_sha256": "5d03148d1522aa84fff32769d779bd45d99078f88ce137136a90192911b31938",
+          "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
+        },
+        {
+          "target_path": "tests/test_audio_dsp_diagnostics.py",
+          "target_sha256": "c5ff283de4e7a8a905ff8b6ac2df0ddc11db41a37a33c45ba3adeba74f20d8d9",
+          "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
         }
       ]
     },

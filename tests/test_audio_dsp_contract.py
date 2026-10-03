@@ -8,10 +8,11 @@ from pathlib import Path
 import sys
 import threading
 import time
+from types import SimpleNamespace
 
 import pytest
 
-from video_research_mcp import audio_dsp, audio_dsp_stdio, config
+from video_research_mcp import audio_dsp, audio_dsp_backend, audio_dsp_stdio, config
 from video_research_mcp.audio_dsp_backend import mono_file, parameters, profile
 from video_research_mcp.audio_dsp_jobs import finish, prepare, retained
 from video_research_mcp.audio_dsp_visuals import export_native_views
@@ -99,15 +100,37 @@ def fake_driver(tmp_path, backend, mode):
     directory.mkdir()
     executable = directory / "server"
     script = f"""#!{sys.executable}
-import sys,json,os,time
+import sys,json,os,time,subprocess
 from pathlib import Path
 mode={mode!r}; backend={backend!r}; tools={sorted(audio_dsp_stdio.TOOLS[backend])!r}
 Path("pid").write_text(str(os.getpid()))
-if mode=="block":
- time.sleep(60)
+Path("helper-pid").write_text(str(os.getppid()))
+if mode=="noisy_success": os.write(2,b"private-native-token"*8000)
+if mode in ("block", "block_tree", "killed_helper"):
+ if mode=="block_tree":
+  child=subprocess.Popen([sys.executable,"-I","-c","import time; time.sleep(4)"])
+  Path("child-pid").write_text(str(child.pid))
+ os.write(2,b"private-native-token"*8000)
+ if mode=="killed_helper":
+  time.sleep(.1)
+  os.kill(os.getppid(),9)
+ time.sleep(4)
 for line in sys.stdin:
  r=json.loads(line)
  if "id" not in r: continue
+ if mode=="phase4_empty" and r["id"]==4: sys.exit(0)
+ if mode in ("empty", "partial", "nonzero", "noisy") or (mode=="empty_call" and r["id"]==3):
+  if mode=="partial": os.write(1,b"private-native-token partial")
+  if mode=="noisy": os.write(2,b"private-native-token"*8000)
+  if mode=="nonzero": os.write(2,b"private-native-token");sys.exit(17)
+  sys.exit(0)
+ if mode=="invalid_json": print("private-native-token",flush=True);sys.exit(0)
+ if mode in ("aggregate", "notifications", "allowed_notifications"):
+  notice=json.dumps({{"jsonrpc":"2.0","method":"fixture","params":{{"padding":""}}}},separators=(",",":"))
+  size=1024*1024 if mode=="aggregate" else 128
+  notice=notice.replace('"padding":""','"padding":"'+"x"*(size-len(notice)-1)+'"')
+  for _ in range(5 if mode=="aggregate" else 15 if mode=="allowed_notifications" else 16): print(notice,flush=True)
+  if mode!="allowed_notifications": continue
  if mode=="oversize": print("x"*(1024*1024+1),flush=True);continue
  if mode=="client_request": print(json.dumps({{"jsonrpc":"2.0","id":71,"method":"sampling/createMessage"}}),flush=True);continue
  if r["method"]=="initialize": value={{"protocolVersion":"2025-06-18","capabilities":{{}},"serverInfo":{{"name":"fixture","version":"1"}}}}
@@ -134,19 +157,55 @@ for line in sys.stdin:
 
 
 @pytest.mark.parametrize("backend", ["juzzy", "ferrous"])
-async def test_actual_bounded_stdio_discovers_all_tools_and_joins_native_job(tmp_path, backend):
-    directory, command = fake_driver(tmp_path, backend, "success")
+@pytest.mark.parametrize("mode", ["success", "noisy_success", "allowed_notifications"])
+async def test_actual_bounded_stdio_discovers_all_tools_and_joins_native_job(
+    tmp_path, backend, mode, record_property
+):
+    directory, command = fake_driver(tmp_path, backend, mode)
     stdout, _ = await run_media_process(command, 5)
     receipt = json.loads(stdout)
+    record_property("successful_receipt", json.dumps(receipt, sort_keys=True))
     body = Path(receipt["path"]).read_bytes()
     assert hashlib.sha256(body).hexdigest() == receipt["sha256"] and len(body) == receipt["bytes"]
     result = json.loads(body)
+    assert set(receipt) == {
+        "path",
+        "sha256",
+        "bytes",
+        "mime",
+        "role",
+        "pid",
+        "trace",
+        "tool",
+        "backend",
+        "process_joined",
+    }
+    assert set(result) == {
+        "initialized",
+        "discovery",
+        "result",
+        "native_job_observation",
+        "native_job_observation_is_result_attestation",
+        "trace",
+        "protocol_response_bytes",
+    }
     assert receipt["process_joined"] and not (directory / "server").exists()
     assert len(result["discovery"]["tools"]) == len(audio_dsp_stdio.TOOLS[backend])
     assert result["native_job_observation_is_result_attestation"] is False
     assert len(result["trace"]) == (4 if backend == "ferrous" else 3)
+    assert [row["method"] for row in result["trace"]] == [
+        "initialize",
+        "tools/list",
+        "tools/call",
+    ] + (["tools/call"] if backend == "ferrous" else [])
+    assert all(
+        set(row) == {"method", "request_sha256", "response_sha256", "response_bytes"}
+        for row in result["trace"]
+    )
     with pytest.raises(ProcessLookupError):
         os.kill(receipt["pid"], 0)
+    with pytest.raises(ProcessLookupError):
+        os.kill(int((directory / "helper-pid").read_text()), 0)
 
 
 @pytest.mark.parametrize("mode", ["oversize", "client_request", "duplicate", "text_error"])
@@ -162,7 +221,7 @@ async def test_invalid_native_protocol_never_promotes_response(tmp_path, mode):
 @pytest.mark.parametrize("cancel", [False, True])
 async def test_timeout_and_repeated_cancellation_join_native_process(tmp_path, cancel):
     directory, command = fake_driver(tmp_path, "juzzy", "block")
-    task = asyncio.create_task(run_media_process(command, 2 if not cancel else 10))
+    task = asyncio.create_task(run_media_process(command, 2 if not cancel else 5))
     for _ in range(200):
         if (directory / "pid").exists():
             break
@@ -334,3 +393,132 @@ def test_ferrous_visual_export_verifies_pixels_geometry_and_source(tmp_path, bad
             )
             assert row["native_axis_numerical_correctness_verified"] is False
             assert hashlib.sha256(Path(row["path"]).read_bytes()).hexdigest() == row["sha256"]
+
+
+def native_fixture(tmp_path):
+    """Prepare the actual immutable job state and private first-party executable for native_call."""
+    directory, _ = fake_driver(tmp_path, "juzzy", "success")
+    configured = {
+        "backend": "juzzy",
+        "source": audio_dsp_backend.SOURCES["juzzy"],
+        "executable": str(directory / "server"),
+        "sha256": hashlib.sha256((directory / "server").read_bytes()).hexdigest(),
+    }
+    deadline = time.monotonic() + 5
+    value = request(operation="audio_info")
+    state = {}
+    prepare(
+        value,
+        {
+            "runtime": {"optional": {**configured, "sha256": configured["sha256"]}},
+            "diagnostic_contract": {
+                "helper_sha256": hashlib.sha256(
+                    Path(audio_dsp_stdio.__file__).read_bytes()
+                ).hexdigest()
+            },
+        },
+        5,
+        state,
+        threading.Event(),
+        deadline,
+    )
+    owned = SimpleNamespace(
+        directory=directory,
+        deadline=deadline,
+        remaining=lambda: max(0.01, deadline - time.monotonic()),
+    )
+    selection = {
+        "path": "/owned/selected.wav",
+        "frames": 8192,
+        "source_clock": {"first_seconds": 0},
+        "source_reference": "urn:fixture",
+    }
+    return owned, value, configured, [selection], state
+
+
+@pytest.mark.parametrize(
+    "exception",
+    [asyncio.CancelledError, SystemExit, KeyboardInterrupt, GeneratorExit, TimeoutError],
+)
+async def test_helper_control_exception_propagates_unchanged(tmp_path, monkeypatch, exception):
+    """GIVEN a helper-run control exception WHEN native_call unwinds THEN preserve its object and cleanup."""
+    args = native_fixture(tmp_path)
+    error = exception("private-native-token")
+
+    async def fail(*args):
+        raise error
+
+    monkeypatch.setattr(audio_dsp_backend, "run_media_process", fail)
+    with pytest.raises(exception) as caught:
+        await audio_dsp_backend.native_call(*args)
+    assert caught.value is error
+    assert "diagnostics" not in args[-1] and "diagnostic_rejected" not in args[-1]
+    assert list((args[0].directory / "native").iterdir()) == []
+
+
+@pytest.mark.parametrize("change", ["response", "binary"])
+async def test_post_collection_integrity_error_preserved(
+    tmp_path, monkeypatch, change, record_property
+):
+    """GIVEN joined successful collection WHEN first-party integrity fails THEN keep its specific error."""
+    args = native_fixture(tmp_path)
+    original = audio_dsp_backend.run_media_process
+    pids = []
+
+    async def collect(command, timeout):
+        assert timeout <= 5
+        stdout, stderr = await original(command, timeout)
+        directory = Path(command[-1]).parent
+        pids.extend(int((directory / name).read_text()) for name in ("pid", "helper-pid"))
+        if change == "response":
+            receipt = json.loads(stdout)
+            receipt["sha256"] = "b" * 64
+            stdout = canonical(receipt)
+        else:
+            executable = Path(args[2]["executable"])
+            executable.chmod(0o700)
+            executable.write_bytes(b"changed first-party fixture executable")
+        return stdout, stderr
+
+    monkeypatch.setattr(audio_dsp_backend, "run_media_process", collect)
+    message = "failed exact bounded readback" if change == "response" else "operator-pinned SHA256"
+    with pytest.raises(ValueError, match=message) as caught:
+        await audio_dsp_backend.native_call(*args)
+    record_property("specific_error", str(caught.value))
+    record_property("owned_pids", json.dumps(pids))
+    assert "diagnostics" not in args[-1] and "diagnostic_rejected" not in args[-1]
+    assert {p.name for p in (args[0].directory / "native").iterdir()} == {"native-response.json"}
+    for pid in pids:
+        with pytest.raises(ProcessLookupError):
+            os.kill(pid, 0)
+
+
+@pytest.mark.parametrize("interrupt", [False, True])
+def test_atomic_diagnostic_save_ignores_stale_name_and_cleans_temp(
+    tmp_path, monkeypatch, interrupt
+):
+    """GIVEN a stale fixed name WHEN saving or interrupted THEN retain0600 output and clean owned temps."""
+    baseline_paths = {p.name for p in tmp_path.iterdir()}
+    path = tmp_path / "native-diagnostic.json"
+    stale = path.with_suffix(".tmp")
+    if not interrupt:
+        stale.write_bytes(b"preserved stale fixture")
+    path.write_bytes(b"previous observation")
+    if interrupt:
+
+        def stopped(value):
+            raise InterruptedError("fixture interrupted during encoding")
+
+        monkeypatch.setattr(audio_dsp_stdio, "encode", stopped)
+        with pytest.raises(InterruptedError):
+            audio_dsp_stdio.save_diagnostic({"step": 1}, path)
+        assert path.read_bytes() == b"previous observation"
+    else:
+        audio_dsp_stdio.save_diagnostic({"step": 1}, path)
+        audio_dsp_stdio.save_diagnostic({"step": 2}, path)
+        assert json.loads(path.read_bytes()) == {"step": 2}
+        assert path.stat().st_mode & 0o777 == 0o600
+    if not interrupt:
+        assert stale.read_bytes() == b"preserved stale fixture"
+    expected_paths = {path.name} if interrupt else {path.name, stale.name}
+    assert {p.name for p in tmp_path.iterdir()} == baseline_paths | expected_paths

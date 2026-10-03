@@ -271,7 +271,7 @@ async def test_delayed_audio_counts_decoded_duration_instead_of_initial_gap(
             "file_path": str(reference), "expected_source_sha256": record(reference)["sha256"]
         })
     result = await audio_dsp.evaluate(
-        AudioDspRequest(**values), None, {"runtime": {"version": "controlled"}}, time.monotonic() + 2
+        AudioDspRequest(**values), None, {"runtime": {"version": "controlled"}}, time.monotonic() + 2, {}
     )
     assert durations == ([1, 15] if compare else [1])
     assert sum(row["selected_seconds"] for row in result["analyses"]) <= 30
