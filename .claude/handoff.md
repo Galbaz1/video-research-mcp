@@ -18,6 +18,30 @@ requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
 
+### User-requested AV maximum frame rate and final delivery report
+
+Current implementation checkout:
+`/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`,
+branch `codex/av-full-frame-rate`, baseline
+`28659ea273a57f9bbd171e309e498d760c431e04`. The user requests removing the4fps
+AV ceiling to expose the local extractor's supported30fps. `vrm-0e8.3.9` records
+this explicit expansion and validates accepted `.3.6`; root owns shared
+ledger/GOAL/handoff/Git/packaging, Herdr primary owns the narrow request/test/docs
+change. Original blocking graph and frozen native/model evaluation remain.
+
+Private proof:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/av-frame-rate-2026-10-03/final-delivery.json`.
+Read this exact receipt and live Beads/Git for source, review, actual30fps
+preparation, built/installed schemas, retained failures, exact-head CI and session
+closure. If absent/partial, continue the recorded work before accepting it.
+The report lives at sibling `education-measured-timing-2026-10-03/opleverrapport.md`;
+`vrm-0e8.12` and its final editorial receipt govern actual reporting completion.
+Goal document covers107programme IDs. Explicit frame/byte/window accounting still
+reports actual coverage; a requested rate is not model-quality or watched-interval
+proof. No new provider execution, main merge, registry release or plugin overwrite
+is implied. Remaining product/comparison/release and spoken lesson gates use
+unchanged Beads criteria; local model inference remains Studio-only.
+
 ### Measured lesson timing and cancellation repair: resume from exact receipts
 
 Use implementation checkout

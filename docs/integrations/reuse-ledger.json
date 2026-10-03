@@ -1222,7 +1222,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/models/media_perception.py",
-          "target_sha256": "51226780a16ea47fd2aaff1c05eb10097488859273f30d4648b79ac0a0d75bb5",
+          "target_sha256": "9c8399d227a1ef05c0ebc2782a2874ee09294a98ad98477be1ca5810b388a7a2",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1252,7 +1252,7 @@
         },
         {
           "target_path": "tests/test_media_perception_prepare.py",
-          "target_sha256": "4dca0dc78d3351a82d96bd1d6327132ffa0c4e2b0e045a7770e08a8641ed7b10",
+          "target_sha256": "c28667d8fd03ae3e8fb09cec5d62525d18b30fb4783f1e728322cbca1a50b069",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1267,7 +1267,7 @@
         },
         {
           "target_path": "docs/integrations/JOINT_AV_PERCEPTION.md",
-          "target_sha256": "b1b1109ff3a7d3c34037d5dc8cfb761c8a8b1ba72dc8dd8f943ec6d82204a05b",
+          "target_sha256": "c256ccae0471df886f82f32c689895347eeeccb812f25f8ec81bba25d6a59071",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1432,7 +1432,7 @@
         },
         {
           "target_path": "tests/test_av_events.py",
-          "target_sha256": "2c6a01eb361c2c548718bd0357f8d0a014f8e01501e98d38f69af97f76c1f7d0",
+          "target_sha256": "fafea285c4d49f3094c3bd517a4965fe831d98c61e3d7f84e3eca66c0d86f1d2",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
@@ -1452,12 +1452,12 @@
         },
         {
           "target_path": "docs/integrations/AV_EVENTS.md",
-          "target_sha256": "6973cac32c667a8db8b1e77e20bc731bf31d688e71a7673c2a320d3fa819a63f",
+          "target_sha256": "6d634d6748746a84460671eb3f147a50668e39553ea9e84f0d1211c929484a89",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
           "target_path": "skills/av-events/SKILL.md",
-          "target_sha256": "e32c8e286cc666806f59415e93d5007dab43c3b5e78f6f995be3d762edcfd51d",
+          "target_sha256": "b89d061fb4bb3a869f8e478e6f79acab419aa2d2cd26b654ad1f3e730e8e0ad3",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         }
       ]

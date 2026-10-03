@@ -16,6 +16,14 @@ bounded interval, and prepare with `dry_run=true`. Inspect the exact source,
 actual frame PTS/indices, decoded audio interval, gaps and planned windows. A dry
 plan can perform local native preparation, but makes zero provider calls.
 
+Choose finite `fps` in 0.1..30 inclusive; the default is 1. The extractor samples
+available source frames without interpolation. Set explicit frame budgets when
+requesting higher rates: `max_frames_per_window` defaults to 32 and caps at 48,
+with at most 128 aggregate frames. A reached frame budget reports partial visual
+sampling and `coverage.stop_reason=frame_budget`; inspect actual PTS, sampled
+points and gaps. A higher rate does not enlarge byte, deadline or provider budgets,
+and sampled points do not establish continuous watched coverage.
+
 Submit with `dry_run=false` and `authorize_submission=true` only when the workflow
 has authority for that source upload and spend. Use the configured Gemini account;
 never add endpoints, credentials, uploads or alternate services to a request.
