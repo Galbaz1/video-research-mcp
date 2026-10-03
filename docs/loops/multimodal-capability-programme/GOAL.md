@@ -460,3 +460,25 @@ and join both requests, forbid further calls and preserve every prepared file.
 Keep the failed CI and controlled delayed-entry result, then verify affected
 tests, gates and exact-head CI. This source repair does not replay or alter any
 native, human or comparative evaluation. Use live Beads for status.
+
+## Exact spatial runtime qualification (2026-10-03)
+
+`vrm-0e8.9.13` adds the 112th programme ID and validates blocked `.9.3`,
+with closed `.9.12` as its prerequisite. It qualifies one concrete static packet:
+the original narrow ten versions and qualified 36-package base, substituting only
+the accepted AFM-free Matplotlib derivative. Original rejected profiles, all 19
+tools, the mandatory 16 and the frozen 28-control evaluation remain unchanged.
+
+Codex owns the private qualification packet; one independent Claude reviewer
+re-derives its byte, grant, font, native, dependency and bootstrap evidence.
+Root owns review corrections, tracker, source delivery and any later activation.
+The definition of done is a complete concrete selection packet or a verified
+blocker, with precise reading depth and immutable original evidence. Static
+eligibility requires explicit archive hashes, a method to preserve and rehash the
+2,157 base files, the exact Python 3.12.13 interpreter and fresh later bootstrap
+admission. It does not run native code, load fonts or accept parent `.9.3`.
+
+After the static packet is joined, continue `.9.3` with the actual isolated
+installation, exact installed-byte admission, discovery and original 28 controls.
+Known synthetic geometry evaluation uses no model or provider calls. Keep live
+Beads as the status authority and retain failures or UNRUN cases in the denominator.

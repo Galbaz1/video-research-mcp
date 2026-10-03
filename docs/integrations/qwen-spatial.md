@@ -3,15 +3,17 @@
 This component admits the unmodified Qwen-MM-Plugins spatial source at revision
 `07736672525443c7f8a3f6405eed37d2236f023f` and provides an owned boundary around its
 19 original tool specifications. Its current state is **source component only,
-runtime blocked**. It is disabled in the core server and has no core dependency
+runtime not activated**. It is disabled in the core server and has no core dependency
 or tool-registry changes.
 
-The selected scientific runtime cannot activate. The original twelve-package
+The original twelve-package
 profile retained its OpenCV/FFmpeg license contradiction. The narrower
 ten-package profile retained 41 Matplotlib legacy AFM fonts without a mapped
 grant. The descriptor records `blocked-missing-font-grant`, a null selected
 Python executable and no runtime bootstrap selection. Neither profile has been
-installed or imported for this component. The fixed 28-control geometry plan and
+installed or imported for this component. A separate AFM-free candidate has passed
+static qualification with the corrections below; installing, admitting and
+loading that candidate remain separate steps. The fixed 28-control geometry plan and
 eight authorized PNGs are **UNRUN**. Source hashes and owned unit checks do not
 constitute component, geometry, model, physical, hardware or release acceptance.
 
@@ -185,3 +187,38 @@ This builds an alternate payload; it does not install or import Matplotlib,
 activate fonts, select a third runtime or qualify pixels/geometry. Original
 rejected profiles and all 28 UNRUN controls remain retained. Whole-runtime grant,
 bootstrap, actual load and geometry evidence are still required before serving.
+
+## Static qualification of the PNG runtime
+
+`vrm-0e8.9.13` qualifies one exact candidate for a later isolated installation:
+the same ten wheel versions and unchanged 36-package base, substituting only
+the derivative Matplotlib wheel with SHA256
+`4c8dcf94bd4e5065322673b6ec5e6a500520653e4f852ce10276119cdfbe30a6`.
+Independent checks cover 1,921 selected wheel members, 2,157 preserved base
+files, 38 TTF fonts, 67 native files, and 66 active dependency edges. This is
+publisher-byte and component-family evidence. It does not certify a reproducible
+binary build, exact compiled dependency revisions or actual loading.
+
+The independent review re-derived the static packet and required five metadata
+corrections. The corrected packet records that reproducibility evidence rather
+than claiming its original checker generates every grant map. ContourPy's
+native extension now carries its pybind11 family binding. Static markers imply
+pybind11 3.0 or later; the exact compiled revision remains unknown. The retained
+[v3.0.1 license](https://github.com/pybind/pybind11/blob/v3.0.1/LICENSE) is byte-identical
+to the earlier v2.13.2 family text. Non-font Matplotlib files no longer inherit
+unrelated font notices. The Adobe notice is retained with zero shipped AFM
+subjects; sample-data and image assets have top-level license evidence only,
+with per-asset provenance explicitly unknown.
+
+Admission must use explicit archive paths and enforced hashes, with no dependency
+resolution or filename-based wheel substitution. Create a separate environment
+from the exact realpath Python 3.12.13 executable, rehash its executable and
+libpython, and admit its new prefix link and bootstrap. Copy the 2,157 qualified
+base files to corresponding paths and verify every destination byte before
+installing the ten disjoint wheels. Retain the full grant directory, notices and
+corrected maps. Before activation, verify the complete installed file inventory,
+the preserved base and fresh bootstrap again.
+
+The checked-in descriptor remains disabled. Neither historical rejection is
+reclassified, and all 28 frozen geometry controls remain UNRUN until the actual
+candidate installation and serving journey are evaluated.
