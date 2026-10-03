@@ -20,7 +20,11 @@ Private receipts are stored under
 | `vrm-0e8.9.10` (`.9.3`) | COMPLETE_WITH_RETAINED_BLOCKERS | `3f40176b1c706d6b86acf33f32cc6784260929d9ec40bbabe0be7c70d73acdd2` |
 
 These are the lane's original return labels. The coordinator does not treat them
-as acceptance: `.8.20` still lacks the required rights-cleared speech references.
+as acceptance: `.8.20` still lacks measured, checked narration for the fixed lesson.
+The subsequent [education reference inspection](education-references.md) records
+actual Dutch/English caption exports and bounded source-player observations under
+the user's public research-reference scope. It does not establish a third-party
+license, word timing, generated-video playback or parent acceptance.
 The original `.9.10` packet lacked a complete permitted replacement or exact grants.
 The subsequent [spatial replacement design](spatial-replacement.md) supplies a
 caller map and an exact, granted source-default DejaVu Sans asset. It establishes
@@ -105,6 +109,12 @@ the missing upstream grant; key presence does not qualify narration. Both attemp
   blocked until a per-file font grant exists.
 - **S-EDU-3:** an H.264 High yuv420p + AAC-LC delivery derivative of the lossless master, with
   actual browser `<video>` playback.
+
+Public YouTube reference selection is permitted for this research-material task
+under the later user scope recorded in Beads. The original proposal above retains
+its historical rights-cleared input assumption; it does not add a new approval gate
+to reference selection. The [source inspection](education-references.md) states
+which evidence is now available and which production checks remain unperformed.
 
 ## Spatial (`vrm-0e8.9.10`)
 
