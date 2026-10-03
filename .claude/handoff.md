@@ -1,3 +1,13 @@
+## Active continuation checkpoint — inherited audio-export CI oracle (2026-10-03)
+
+- Worktree: `/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`; branch `codex/av-full-frame-rate`, baseline `c3cf930e434a444a47698a25598af68ced71fbc1`. Verify live Git; the receipt below binds the final result.
+- New Bead `vrm-0e8.4.9` is claimed. Exact push CI37142164671 passed10/10, PR CI37142185124 failed inherited `test_overall_deadline_not_restarted_for_each_native_call` with observed=[]/IndexError before probe entry. Retain failed log; do not retry unchanged CI or weaken the50ms test's intended shared-deadline contract.
+- FPS source c3cf930 is independently reviewed;3896 root/41 installer/offline gates, seven archives447byte comparisons and installed five30fps MCP schemas/real30+7frame dry-runs PASS. `vrm-0e8.3.9` remains in_progress until repaired exact-head CI passes.
+- Codex2 ordinaryPro,0children owns `tests/test_audio_assets.py` in task VRM-AUDIO-DEADLINE/r1, pane w1:p1V. ClaudeMax Opus,0children pane w1:p1W is reserved for its independent frozen-source review. Root owns all shared metadata/Git/Beads/builds/report. Old FPS task tabs w1:t1R/t1S are closed at clean c3cf930, exact receipt in the AV evidence folder.
+- Canonical evidence folder: `/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/av-frame-rate-2026-10-03/audio-deadline-repair`. Final repair receipt `final-delivery.json` is absent until accepted. The containing AV `final-delivery.json` then binds3.9 as well.
+- Report Bead `.12` remains in_progress; Dutch MD draft exists, Writing Mastery completion review not started. Finalize only after final CI/source evidence.
+- Original32 DSP/17education/held-out cohorts remain untouched, human9 development audit accepted. Local inference only MacStudio; Gemini two30s/maxUSD3 proposal remains pending, no new provider calls. No main merge/registry publication/user plugin overwrite authority at this checkpoint.
+
 ---
 date: 2026-10-02T19:08+02:00
 thread: multimodal-capability-programme
@@ -17,6 +27,30 @@ source, artifact and installed journeys; complete product/comparative acceptance
 requires the remaining Beads evidence.
 
 ## Fresh resume checkpoint
+
+### User-requested AV maximum frame rate and final delivery report
+
+Current implementation checkout:
+`/Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09`,
+branch `codex/av-full-frame-rate`, baseline
+`28659ea273a57f9bbd171e309e498d760c431e04`. The user requests removing the4fps
+AV ceiling to expose the local extractor's supported30fps. `vrm-0e8.3.9` records
+this explicit expansion and validates accepted `.3.6`; root owns shared
+ledger/GOAL/handoff/Git/packaging, Herdr primary owns the narrow request/test/docs
+change. Original blocking graph and frozen native/model evaluation remain.
+
+Private proof:
+`/Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/av-frame-rate-2026-10-03/final-delivery.json`.
+Read this exact receipt and live Beads/Git for source, review, actual30fps
+preparation, built/installed schemas, retained failures, exact-head CI and session
+closure. If absent/partial, continue the recorded work before accepting it.
+The report lives at sibling `education-measured-timing-2026-10-03/opleverrapport.md`;
+`vrm-0e8.12` and its final editorial receipt govern actual reporting completion.
+Goal document covers107programme IDs. Explicit frame/byte/window accounting still
+reports actual coverage; a requested rate is not model-quality or watched-interval
+proof. No new provider execution, main merge, registry release or plugin overwrite
+is implied. Remaining product/comparison/release and spoken lesson gates use
+unchanged Beads criteria; local model inference remains Studio-only.
 
 ### Measured lesson timing and cancellation repair: resume from exact receipts
 

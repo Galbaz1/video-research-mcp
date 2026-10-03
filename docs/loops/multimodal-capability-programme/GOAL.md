@@ -400,3 +400,23 @@ status; neither changes the original blocking graph or feature acceptance.
 |---|---|---|
 | `vrm-0e8.4.8` | Validates `.4.7` after an exact-head Python3.11 CI failure. Own only the media-process collector and DSP/process tests; root owns ledger, packaging and Git. A report may be drafted in parallel, but must use the final verified result. | Retain the failed CI; reproduce delayed stderr and repeated cancellation; wait for actual payload completion and retrieve the original collector future. Prove bounded bytes, joined tasks and no surviving owned PIDs or unretrieved futures; independent review, proportional tests and exact-head Python3.11–3.14 CI, then commit. |
 | `vrm-0e8.12` | User-requested reporting; no implementation blocker. Draft beside independent source work and finalize after its required results join. | Deliver one concise Dutch Markdown report of accepted outcomes, actual evidence and remaining tasks; preserve failures and acceptance limits, complete the Writing Mastery independent review, and open/link the result. Reporting does not accept the product or release. |
+
+## User-requested AV frame-rate expansion
+
+`vrm-0e8.3.9` adds the107th programme ID. It validates accepted `.3.6` and
+follows the user's October3 request to expose the extractor's full30fps capability.
+
+| Bead | Dependency and parallel execution | Definition of done and evaluation |
+|---|---|---|
+| `vrm-0e8.3.9` | Validates `.3.6`; bounded ownership of the shared AV request model, AV tests, two integration docs and the AV-events skill. May run alongside exact-head CI of the separate `.4.8` repair. Root owns shared ledger, Git, packaging and reporting. | Accept finite requested rates through30fps across inherited AV requests/public schemas; keep existing callers and explicit resource accounting. Reject unsupported/nonfinite/invalid rates before I/O. Prove real high-rate source PTS, frame/audio byte lineage, observed coverage and cleanup in a first-party dry-run with0provider calls. Join independent review, tests, exact built/installed schemas and CI; commit and record source delivery. No frozen cohort, main merge or registry overwrite is implied. |
+
+## Observed audio-export CI follow-up (2026-10-03)
+
+`vrm-0e8.4.9` brings the programme inventory to108 IDs. The exact c3cf930
+push CI passed10/10; PR CI failed Python3.14 because a pre-existing audio
+export deadline test assumes its probe starts within50ms. This follow-up
+validates `.3.5`; it does not alter original blocking edges or acceptance clauses.
+
+| Bead | Ownership and parallel timing | Definition of done and evaluation |
+| --- | --- | --- |
+| `vrm-0e8.4.9` | Codex owns only `tests/test_audio_assets.py`; independent Claude reviews the frozen test change. Root owns ledger/GOAL/handoff/Git/builds. Report composition may continue in parallel; final delivery waits for exact-head CI. | Preserve original failed CI. Replace startup-sensitive timing with controlled single-deadline evidence across native phases, exact source identity and cleanup; meaningful causal RED/GREEN without skipping or weakening production budgets. Join both Herdr reports, affected/final gates and exact-head CI, commit and verify source delivery. No original32/17 cohort, provider/model execution or broader feature/release acceptance. |

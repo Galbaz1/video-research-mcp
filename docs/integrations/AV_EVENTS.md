@@ -20,6 +20,16 @@ default to `dry_run=true` and `authorize_submission=false`. A dry run prepares
 actual source evidence and reports planned windows with zero provider calls. It
 can use the installed local media tools; it is not a no-execution file inventory.
 
+All four requests inherit finite `fps` in 0.1..30 inclusive, default 1. Video
+sampling uses actual available source frames at the requested minimum spacing,
+without interpolation; a slower source may supply fewer points. The per-window
+frame budget defaults to 32 and caps at 48; the aggregate budget caps at 128.
+Reaching the frame budget yields partial visual sampling with
+`coverage.stop_reason=frame_budget`, preserving every returned frame and its PTS.
+Inspect sampled points and gaps rather than assuming continuous coverage or a
+guaranteed frame count. Increasing `fps` does not increase byte, timeout or
+provider allowances. Music retains the same request field but selects audio only.
+
 Inspect the source revision, decoded frame points or PCM selection, gaps and
 planned population before authorizing submission. When the workflow already has
 upload/spend authority, use the same request with `dry_run=false` and

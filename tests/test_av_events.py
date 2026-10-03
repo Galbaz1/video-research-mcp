@@ -8,6 +8,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 from google.genai import types
 from google.genai.errors import APIError
+from pydantic import ValidationError
 import pytest
 
 from tests.test_av_event_support import occurrence, window_fixture
@@ -16,6 +17,7 @@ from video_research_mcp.client import GeminiClient
 from video_research_mcp.config import update_config
 from video_research_mcp.models.av_events import (AnalyzeMusicRequest, AVEventsFailure, AVEventsResponse,
     CaptionEventsRequest, CountEventsRequest, GroundEventsRequest)
+from video_research_mcp.models.media_perception import AVPerceptionRequest
 
 
 def request(kind=CountEventsRequest, **values):
@@ -27,6 +29,30 @@ def request(kind=CountEventsRequest, **values):
     if kind is GroundEventsRequest:
         data["query"] = "cue"
     return kind(**(data | values))
+
+
+@pytest.mark.parametrize("kind", [CaptionEventsRequest, CountEventsRequest, GroundEventsRequest, AnalyzeMusicRequest])
+@pytest.mark.parametrize("fps", [0.1, 4.5, 30])
+def test_inherited_frame_rate_contract_and_public_schema(kind, fps):
+    selected = request(kind, fps=fps)
+    assert selected.fps == fps
+    field = kind.model_json_schema()["properties"]["fps"]
+    assert (field["minimum"], field["maximum"], field["default"]) == (0.1, 30, 1)
+    assert request(kind).fps == 1
+    base = AVPerceptionRequest.model_validate(request(CaptionEventsRequest, fps=fps).model_dump())
+    assert base.fps == fps and AVPerceptionRequest.model_json_schema()["properties"]["fps"] == field
+
+
+@pytest.mark.parametrize("run,kind", [(caption_events, CaptionEventsRequest), (count_events, CountEventsRequest),
+    (ground_events, GroundEventsRequest), (analyze_music, AnalyzeMusicRequest)])
+@pytest.mark.parametrize("fps", [30.01, 0.09, float("nan"), float("inf"), -float("inf"), True, "30"])
+async def test_invalid_rate_rejected_before_source_or_provider(run, kind, fps, sdk, preparation):
+    values = request(kind).model_dump() | {"fps": fps}
+    with pytest.raises(ValidationError):
+        await run(values)
+    assert preparation["requests"] == []
+    sdk.aio.models.count_tokens.assert_not_awaited()
+    sdk.aio.models.generate_content.assert_not_awaited()
 
 
 def value(field="occurrences", **values):
