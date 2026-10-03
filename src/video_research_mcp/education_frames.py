@@ -5,6 +5,7 @@ import io
 
 from .education_domain import BACKGROUND, CAPTION_BOX, DIAGRAM, FOREGROUND, caption_lines, primitives
 from .education_glyphs import cells
+from .education_timing import frame_schedule, legacy_timeline
 from .image_preprocessing import check_worker, save_artifact
 
 TITLES = ["RIGHT TRIANGLE", "INPUT REFLECTION SQUARE", "CLOSED SERIES CIRCUIT"]
@@ -32,19 +33,25 @@ def raster(spec, index):
     return image
 
 
-def authored_frames(spec, directory, cancelled, deadline):
+def authored_frames(spec, directory, cancelled, deadline, *, timeline=None):
     """Write every scheduled PNG and its full encoded/pixel identities exclusively."""
-    frames = []
+    timeline = legacy_timeline() if timeline is None else timeline
+    frames, remaining = [], 8388608
     for index in range(3):
         check_worker(cancelled, deadline)
         with raster(spec, index) as image:
             digest = hashlib.sha256(image.tobytes()).hexdigest()
-            for number in range(index * 24, (index + 1) * 24):
+            for number, scene_index in frame_schedule(timeline):
+                if scene_index != index:
+                    continue
                 path = directory / f"frame-{number:03}.png"
-                artifact = save_artifact(image, path, "png", BACKGROUND, 100, 8388608, cancelled, deadline)
+                artifact = save_artifact(image, path, "png", BACKGROUND, 100, remaining, cancelled, deadline)
+                remaining -= artifact["bytes"]
                 frames.append({**artifact, "path": path.name, "frame_index": number,
                                "scene_id": spec.storyboard.scenes[index].id, "timeline_seconds": number / 12,
                                "pixel_sha256": digest, "pixel_format": "rgb24"})
+                if spec.schema_version == 2:
+                    frames[-1]["timeline_sample"] = number * 4000
     return frames
 
 
