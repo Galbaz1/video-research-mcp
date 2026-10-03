@@ -28,6 +28,7 @@ const RESOURCE_PATHS = [
   'scripts/blender_session.py', 'scripts/blender_startup.py', 'scripts/blender_stdio.py',
   'scripts/freecad_session.py', 'scripts/freecad_startup.py', 'scripts/freecad_jobs.py',
   'scripts/spatial_session.py', 'scripts/spatial_inputs.py',
+  'scripts/spatial_launch.py', 'scripts/spatial_runtime.py', 'scripts/spatial_fonts.py',
   'scripts/spatial_dispatch.py', 'scripts/spatial_motion.py',
 ];
 const EXPECTED_ADDITIONS = Object.fromEntries([

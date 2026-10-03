@@ -20,6 +20,8 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from spatial_inputs import Inputs, admit_file, digest  # noqa: E402
 from spatial_dispatch import ProviderBarrier, configure_specs  # noqa: E402
+from spatial_runtime import CLEARANCE, DIRECT_PACKAGES, admit_runtime, read_descriptor  # noqa: E402
+import spatial_fonts  # noqa: E402
 
 REVISION = "07736672525443c7f8a3f6405eed37d2236f023f"
 PACKAGE = "src/capabilities/video-spatio/qwen_mm_plugins_video_spatio"
@@ -41,17 +43,12 @@ SOURCES = frozenset(
         "__init__", "api_openai", "content", "dashscope_upload", "env", "image", "native_mode", "oss", "retry", "syscmd", "video")]
 )
 GRANTS = frozenset({"LICENSE"})
-DIRECT_PACKAGES = {"mcp": "1.30.0", "pillow": "11.3.0", "openai": "1.109.1", "anyio": "4.15.1",
-                   "pydantic": "2.13.5", "docstring-parser": "0.18.0",
-                   "numpy": "2.4.4", "matplotlib": "3.10.9"}
-CLEARANCE = "verified-selected-runtime-grants"
+MANDATORY_TOOLS = TOOLS - {"assess_coverage", "assess_reachable", "plan_exploration"}
 
 
 def admit_sources(root: Path, manifest: Path, sha256: str) -> dict:
     """Readmit the exact 54-source upper bound and Apache grant before foreign import."""
-    if digest(manifest) != sha256:
-        raise ValueError("Descriptor differs from the independently trusted SHA256")
-    data = json.loads(manifest.read_text())
+    data = read_descriptor(manifest.absolute(), sha256)
     if data["schema_version"] != 1 or data["source_revision"] != REVISION:
         raise ValueError("Descriptor source revision/schema is outside this selected route")
     for key, expected in (("execution_sources", SOURCES), ("license_sources", GRANTS)):
@@ -69,6 +66,8 @@ def admit_sources(root: Path, manifest: Path, sha256: str) -> dict:
             raise ValueError("Unadmitted entries present in a foreign discovery directory")
     if len(data["expected_tools"]) != 19 or set(data["expected_tools"]) != TOOLS:
         raise ValueError("Descriptor must preserve all 19 original spatial tool specifications")
+    if len(data["mandatory_source_tools"]) != 16 or set(data["mandatory_source_tools"]) != MANDATORY_TOOLS:
+        raise ValueError("Descriptor must preserve the mandatory 16 original tools")
     return data
 
 
@@ -78,26 +77,26 @@ def runtime_report(data: dict) -> dict:
         return {"ready": False, "state": "source-only-runtime-blocked",
                 "runtime_clearance": data.get("runtime_clearance"), "foreign_imports": 0,
                 "hint": "Do not serve until the selected complete runtime grants are verified"}
-    if data["selected_python"] != "3.12.13" or data["selected_direct_packages"] != DIRECT_PACKAGES:
-        raise ValueError("Runtime differs from the explicitly selected external profile")
-    selected = data["runtime_fields"]["python_executable"]
-    if not selected or str(Path(sys.executable).absolute()) != selected:
+    runtime = admit_runtime(data)
+    if str(Path(sys.executable).absolute()) != runtime["executable"]:
         raise ValueError("Actual interpreter is not the selected venv-prefix executable")
-    bootstrap = data["runtime_fields"]["bootstrap_sources"]
-    if not bootstrap:
-        raise ValueError("Selected runtime bootstrap bytes must be explicitly admitted")
-    for row in bootstrap:
-        admit_file(row)
+    if (not sys.flags.isolated or not sys.flags.no_site or not sys.dont_write_bytecode
+            or platform.python_version() != "3.12.13"
+            or Path(sys.base_prefix).resolve() != Path(runtime["realpath"]).parent.parent):
+        raise ValueError("Selected child requires the exact CPython with -I -S -B")
+    sys.prefix = sys.exec_prefix = runtime["prefix"]
+    if runtime["site_packages"] not in sys.path:
+        sys.path.append(runtime["site_packages"])
     versions = {}
     for name in DIRECT_PACKAGES:
         try:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:
             versions[name] = None
-    ready = bool(sys.flags.isolated) and platform.python_version() == "3.12.13" and versions == DIRECT_PACKAGES
+    ready = versions == DIRECT_PACKAGES
     return {"ready": ready, "state": "runtime-prerequisites" if ready else "runtime-prerequisites-unmet",
             "python": platform.python_version(), "executable": sys.executable,
-            "isolated": bool(sys.flags.isolated), "packages": versions}
+            "isolated": bool(sys.flags.isolated), "packages": versions, **runtime}
 
 
 def prepare_session(output: Path) -> dict:
@@ -139,6 +138,8 @@ def loaded_footprint(data: dict, root: Path) -> dict:
         admit_file(row)
         rows.setdefault(row["path"], {**row, "modules": [], "kind": "venv_bootstrap"})
     return {"python_executable": sys.executable, "python_prefix": sys.prefix,
+            "selected_interpreter": {key: data["runtime_fields"].get(key) for key in (
+                "python_realpath", "python_sha256", "python_bytes", "libpython")},
             "selected_static_upper_bound": 54, "actual_loaded_files": list(rows.values())}
 
 
@@ -157,8 +158,11 @@ def serve(args, data: dict, inputs: Inputs) -> None:
     tempfile.tempdir = None
     root = args.source_root.absolute()
     def read_sources():
-        return admit_sources(root, args.manifest, args.manifest_sha256)
+        current = admit_sources(root, args.manifest, args.manifest_sha256)
+        admit_runtime(current)
+        return current
     read_sources()
+    fonts = spatial_fonts.initialize(data, output / "mpl")
     sys.path[:0] = [str(root / "src"), str(root / "src/capabilities/video-spatio")]
     package = importlib.import_module("qwen_mm_plugins_video_spatio")
     framework = importlib.import_module("mcp_framework")
@@ -167,10 +171,13 @@ def serve(args, data: dict, inputs: Inputs) -> None:
     barrier = ProviderBarrier()
     barrier.install(importlib.import_module("qwen_mm_plugins_video_spatio.tools._vlm").VLMShim)
     read_sources()
-    (output / "loaded-startup.json").write_text(json.dumps(loaded_footprint(data, root), indent=2))
+    startup = {**loaded_footprint(data, root), "fonts": fonts.readback()}
+    (output / "loaded-startup.json").write_text(json.dumps(startup, indent=2))
 
     def evidence(name, result):
-        value = {"tool": name, "response": result, "loaded": loaded_footprint(data, root)}
+        read_sources()
+        value = {"tool": name, "response": result, "loaded": loaded_footprint(data, root),
+                 "fonts": fonts.readback()}
         with (output / "calls.jsonl").open("a") as stream:
             stream.write(json.dumps(value, allow_nan=False) + "\n")
 
@@ -178,15 +185,20 @@ def serve(args, data: dict, inputs: Inputs) -> None:
     framework.serve("qwen-mm-plugins-video-spatio", package.__version__, package.SPECS)
 
 
-def main(argv=None) -> int:
-    """Perform read-only source/input checks or explicitly serve a qualified optional session."""
+def arguments(argv=None):
+    """Parse the existing concrete source, input and session selection arguments."""
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("source-root", "manifest", "inputs", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     for name in ("manifest-sha256", "inputs-sha256"):
         parser.add_argument(f"--{name}", required=True)
     parser.add_argument("--check", action="store_true")
-    args = parser.parse_args(argv)
+    return parser.parse_args(argv)
+
+
+def main(argv=None) -> int:
+    """Perform read-only source/input checks or explicitly serve a qualified optional session."""
+    args = arguments(argv)
     try:
         if not sys.flags.isolated:
             raise ValueError("Select the explicit external interpreter with -I -B")

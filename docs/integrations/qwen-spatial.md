@@ -12,8 +12,8 @@ ten-package profile retained 41 Matplotlib legacy AFM fonts without a mapped
 grant. The descriptor records `blocked-missing-font-grant`, a null selected
 Python executable and no runtime bootstrap selection. Neither profile has been
 installed or imported for this component. A separate AFM-free candidate has passed
-static qualification with the corrections below; installing, admitting and
-loading that candidate remain separate steps. The fixed 28-control geometry plan and
+static qualification with the corrections below and has been installed privately
+with byte readback. Admission and native loading remain separate steps. The fixed 28-control geometry plan and
 eight authorized PNGs are **UNRUN**. Source hashes and owned unit checks do not
 constitute component, geometry, model, physical, hardware or release acceptance.
 
@@ -58,6 +58,39 @@ for MCP 1.30.0, Pillow 11.3.0, OpenAI 1.109.1, AnyIO 4.15.1, Pydantic 2.13.5,
 docstring-parser 0.18.0, NumPy 2.4.4 and Matplotlib 3.10.9. The adapter does not
 create, install or substitute that runtime. It preserves the venv-prefix
 executable path rather than resolving it into the base interpreter.
+
+## Admit an installed runtime before launch
+
+For an eligible private descriptor, start `scripts/spatial_launch.py` with a
+trusted interpreter and `-I -S -B`, using the same source, manifest, input,
+output and digest arguments above. The launcher checks the descriptor digest,
+exact CPython executable and libpython bytes, direct venv-prefix symlink,
+`pyvenv.cfg`, selected bootstrap files and complete installed site-packages
+inventory before starting the selected interpreter. Missing, changed, extra,
+linked or nonregular package files are refused. The concrete runtime uses
+Python's standard `venv --without-pip`; every `.pth`, `sitecustomize` and
+`usercustomize` entry is refused.
+
+The child also runs with `-I -S -B` and repeats admission before adding the
+selected site-packages directory. It verifies installed versions and reads
+back source, input and runtime bytes around each handler. Admission assumes
+trusted owned scripts and an independently trusted descriptor digest; the
+process retains host privileges.
+
+The selected Agg/PNG route seeds an empty cache for the pinned Matplotlib font
+manager before import, then initializes only the 38 admitted bundled TTFs.
+Font discovery and font requests are confined to those paths; receipts record
+initialized fonts and successful font requests separately from imported
+modules. A request receipt alone does not verify glyph selection or pixels.
+
+The private installation retained all 2,157 base files: 2,147 site-packages
+files and ten console wrappers. The wrappers retain their original bytes and
+old-prefix references; they are unused artifacts. This route invokes only the
+explicit selected `bin/python3.12`. Its ten additional wheels use exact local
+archive URLs, enforced hashes, no dependency installation and copied payloads.
+Installer-generated metadata and RECORD updates are recorded separately from
+unchanged wheel payload bytes. No private machine paths or active selection are
+written into the shipped descriptor.
 
 ## Authorized inputs and output boundaries
 

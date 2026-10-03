@@ -11,6 +11,9 @@ For a Claude installer layout, use the adjacent managed support directory
 `../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-spatial.md`.
 The `../video-research-resources/integrations/qwen/video-spatio.json` records the selected component and requirements.
 Run `../video-research-resources/scripts/spatial_session.py` with the explicitly selected interpreter; its adjacent helpers are installed together.
+For a qualified private runtime, use `../video-research-resources/scripts/spatial_launch.py`
+with a trusted interpreter and `-I -S -B` so installed bytes are admitted before
+the selected interpreter starts.
 The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
 
 The component is currently **runtime blocked**. The selected descriptor has
@@ -69,7 +72,10 @@ Carry source clock/revision provenance and depth, camera, assumed FOV60 optics,
 identity and metric-scale caveats beside every output. Future eligible sessions
 must use exactly selected runtime metadata/bootstrap bytes, owned cwd/config/
 cache/MPL/temp directories, credential whitelist and actual loaded-file hash
-receipts. This process has host privileges and is not a sandbox. Keep source,
+receipts. The concrete launcher requires a standard-library venv with zero
+startup hooks and a complete installed byte inventory. Its Agg font boundary
+admits only 38 bundled TTFs and records font requests separately from module
+imports. This process has host privileges and is not a sandbox. Keep source,
 owned unit checks, runtime grants and physical/model acceptance as separate
 claims. Scoped first-party motion units using previously qualified root
 NumPy/Pillow remain unit evidence, with no selected-runtime qualification.
