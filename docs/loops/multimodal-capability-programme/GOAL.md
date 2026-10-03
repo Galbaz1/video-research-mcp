@@ -1,5 +1,10 @@
 # Goal command: finish the multimodal capability programme
 
+> **October 4 continuation:** Start with [NEXT-SESSION-GOAL.md](NEXT-SESSION-GOAL.md)
+> and the canonical handoff. The current source is the spatial admission checkpoint,
+> and the user explicitly permits models on this machine. This overrides the older
+> Studio-only route for this task. Live Beads replaces dated status tables below.
+
 Prepared for Fausto on **2026-10-03, Europe/Amsterdam**. Programme: **`vrm-0e8`**.
 This is a ready-to-use goal instruction and a dated dependency reference. Beads
 remains the only task/state authority; refresh it before dispatch. Preparing this
@@ -43,10 +48,10 @@ Discover live server/account/session identities and usage before reusing a lane.
 Inherit current models/configuration; do not pin models or use Haiku. Preserve
 existing applicable account-2-credit authority without treating it as unlimited
 provider, purchase, Fast or unrelated-run authority. Never copy auth stores.
-Run ALL local ASR, vision, embedding and generation inference on the Mac Studio
-through its verified private route. A client loopback forward is transport only.
-Refresh server resources and exact runtime/model/grants before qualification;
-the existing Gemini cloud route keeps its separate authority and evaluations.
+The user explicitly permitted local models on this machine on October 4. This
+supersedes the older Studio-only route for this task. Refresh actual host capacity,
+runtime/model identity and task qualification; Studio remains an optional route
+when reachable. Gemini cloud keeps its separate authority and evaluations.
 
 Keep each worker's edits disjoint. The coordinator exclusively owns shared server,
 registry/config, dependency locks/manifests, release metadata, Beads and handoff.
@@ -482,3 +487,14 @@ After the static packet is joined, continue `.9.3` with the actual isolated
 installation, exact installed-byte admission, discovery and original 28 controls.
 Known synthetic geometry evaluation uses no model or provider calls. Keep live
 Beads as the status authority and retain failures or UNRUN cases in the denominator.
+
+## Local model and MP3 input continuation (2026-10-04)
+
+`vrm-0e8.9.14` adds the 113th programme ID. It validates `.3.4` and `.4.1`
+without changing the original blocking graph or any frozen feature acceptance.
+The user permits this machine for local inference and asks for vision/video,
+timed ASR and music generation from MP3. Verify actual installed models, functional
+outputs and plugin integration as distinct states. Use the saved MP3 research for
+a bounded ACE-Step cover qualification; no user MP3 has been supplied. Current
+source, failures, artifacts, all 47 remaining leaves and the exact next sequence
+are in [NEXT-SESSION-GOAL.md](NEXT-SESSION-GOAL.md) and the canonical handoff.
