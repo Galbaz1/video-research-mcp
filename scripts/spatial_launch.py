@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 
 sys.dont_write_bytecode = True
@@ -19,7 +18,7 @@ from spatial_runtime import CLEARANCE, admit_runtime  # noqa: E402
 
 
 def main(argv=None) -> int:
-    """Refuse before process creation, or inherit stdio for the single admitted session."""
+    """Refuse before execution, or replace this launcher with the admitted session."""
     args = session.arguments(argv)
     try:
         if not sys.flags.isolated or not sys.flags.no_site:
@@ -45,7 +44,8 @@ def main(argv=None) -> int:
         allowed = ("HOME", "CODEX_HOME", "USER", "LOGNAME", "LANG", "LC_ALL", "LC_CTYPE")
         env = {key: os.environ[key] for key in allowed if key in os.environ}
         env["PATH"] = "/usr/bin:/bin"
-        return subprocess.run(command, env=env, cwd="/", check=False).returncode
+        os.chdir("/")
+        os.execve(runtime["executable"], command, env)
     except (OSError, ValueError, KeyError, TypeError, RuntimeError) as error:
         print(f"Spatial launch refused: {error}", file=sys.stderr)
         return 2

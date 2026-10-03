@@ -265,6 +265,38 @@ def test_environment_keeps_home_and_drops_credentials(tmp_path, monkeypatch):
         ss.prepare_session(tmp_path / "owned")
 
 
+def test_private_source_tree_excludes_shadow_modules_and_existing_bytecode(selection, tmp_path):
+    """GIVEN ambient SDK/cache candidates WHEN copying THEN only selected bodies resolve."""
+    shadow = selection.root / "src/mcp.py"
+    shadow.write_text("raise AssertionError('ambient source must not execute')")
+    cache = selection.root / "src/shared/__pycache__/image.cpython-312.pyc"
+    cache.parent.mkdir()
+    cache.write_bytes(b"unadmitted bytecode")
+    destination = tmp_path / "private"
+    rows = ss.prepare_sources(selection.root, destination, selection.data)
+    assert len(rows) == 55
+    assert {p.relative_to(destination).as_posix() for p in destination.rglob("*") if p.is_file()} == ss.SOURCES | ss.GRANTS
+    assert ss.importlib.machinery.PathFinder.find_spec("mcp", [str(destination / "src")]) is None
+    for receipt in rows:
+        relative = Path(receipt["path"]).relative_to(destination)
+        assert Path(receipt["path"]).read_bytes() == (selection.root / relative).read_bytes()
+    assert shadow.exists() and cache.exists()
+
+
+@pytest.mark.parametrize("change", ["extra", "cached", "altered"])
+def test_private_source_inventory_rejects_mutation_before_reuse(selection, tmp_path, change):
+    destination = tmp_path / "private"
+    rows = ss.prepare_sources(selection.root, destination, selection.data)
+    if change == "altered":
+        Path(rows[0]["path"]).write_bytes(b"altered")
+    else:
+        path = destination / ("src/mcp.py" if change == "extra" else "src/shared/__pycache__/image.pyc")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"unadmitted")
+    with pytest.raises(ValueError):
+        ss.installed_inventory(destination, rows)
+
+
 def test_actual_footprint_retains_stdlib_bootstrap_and_rejects_extra_source(selection, monkeypatch):
     module_path = selection.root / sorted(ss.SOURCES)[0]
     bootstrap = selection.root.parent / "bootstrap.pth"

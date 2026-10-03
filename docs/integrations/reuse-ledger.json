@@ -1187,7 +1187,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
+          "target_sha256": "e68a01acbcd7e849fca67f0561a5dc9f1d730cd58bb5ec847f8980436ab736b0",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1713,7 +1713,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "target_sha256": "0c358eaa141633cb1168dbc4611a9c39fea736ed0cc1ba44a9edab46b8b65cbe",
           "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ],
@@ -2343,7 +2343,7 @@
       "implementations": [
         {
           "target_path": "scripts/spatial_session.py",
-          "target_sha256": "2a006d822a344739b50682da7d5bb150f7ce2d17f88372a9c77e77bb54d90b22",
+          "target_sha256": "ae985f40b94c571eb76c07dcbf1ecc3b60737bb94e5d2440347f76663e6d96cf",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only."
         },
         {
@@ -2368,17 +2368,17 @@
         },
         {
           "target_path": "docs/integrations/qwen-spatial.md",
-          "target_sha256": "dec2aa88d613b4d2d348eedb2247e8019ea819eb1bef00dd86807f1ba739c948",
+          "target_sha256": "12582783d0c49f4a015a6683bac59f02c2617c5e6514213c63de5253ff3d0c6b",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only. Static follow-up vrm-0e8.9.13 qualifies the exact AFM-free candidate for isolated installation after independent review and five recorded metadata corrections; no installed/native/font/pixel/28-control or parent acceptance. Original rejected profiles retained; sample/image per-asset provenance remains unknown."
         },
         {
           "target_path": "skills/spatial-video-analysis/SKILL.md",
-          "target_sha256": "d20b7234c388b4fd8aa7f0364ee759bc7f4914fbe9b3b01c3ed023e0faf2205a",
+          "target_sha256": "297db718338227645112db3960b24169d19ed182b099206aee51cdc8380e68ae",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "tests/test_spatial_session.py",
-          "target_sha256": "052846439dc90e2a40e59dc8689c14c2403ea5309ab2107bef2f96ae117e4308",
+          "target_sha256": "a9800f0f8335ed886dda9280f77534feb87160c9ce57c6198f7ec8fc682a63bb",
           "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only."
         },
         {
@@ -2405,6 +2405,36 @@
           "target_path": "tests/test_spatial_png_payload.py",
           "target_sha256": "5eb7f4d4fc607c65215d8631f2e08b4e27038bf492d3c27848f1c6a573265e77",
           "provenance": "First-party stdlib refusal, retained-byte/RECORD and metadata-normalization tests for the exact static PNG payload builder. Synthetic archives are not admitted by the pinned public entry. Real pinned source build/readback remains separate; no runtime/font/native or28geometry acceptance."
+        },
+        {
+          "target_path": "scripts/spatial_runtime.py",
+          "target_sha256": "27903c7f0e162c2bef59e96ce01553244548e0b21f99f0206797157671b01a08",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
+        },
+        {
+          "target_path": "scripts/spatial_launch.py",
+          "target_sha256": "24862c2ee451881ee17b47462fde72f2411104214baf6b95d5d66aa47f95516f",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
+        },
+        {
+          "target_path": "scripts/spatial_fonts.py",
+          "target_sha256": "072efbfba5a60ddc345671b3a51555d6226713d13f04da208555b6cea6908eea",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
+        },
+        {
+          "target_path": "tests/test_spatial_runtime.py",
+          "target_sha256": "a5766d80b152ec38328956a71d1f7e3716a559a49ab41c765283228c9551bd72",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
+        },
+        {
+          "target_path": "tests/test_spatial_launch.py",
+          "target_sha256": "a52db2bf0e35f3ac6845330f89197f78c78559bbba632446f218059800401f53",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
+        },
+        {
+          "target_path": "tests/test_spatial_fonts.py",
+          "target_sha256": "53d56c41bc410c9e5ba94792c11f0d2fb7f35737b35602386661d5b02081d0fb",
+          "provenance": "Independently authored trusted-stdlib outer admission, selected runtime/bootstrap inventory and 38-TTF Agg font boundary with stub tests. No foreign package, font or model bytes bundled; exact optional private runtime selection remains separately qualified. Admission is not an OS sandbox and runtime/native geometry acceptance remains required."
         }
       ]
     },
@@ -2603,7 +2633,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "target_sha256": "0c358eaa141633cb1168dbc4611a9c39fea736ed0cc1ba44a9edab46b8b65cbe",
           "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ]
@@ -3672,17 +3702,17 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "f127fcb3726d00fb1af753e40688da9ee5caec98fd1eacddb4e42ea1624013a5",
+          "target_sha256": "b22bcc4b97d3f032622a79068ab70c0fbb359562023387ab5818597d5c75c978",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "target_sha256": "0c358eaa141633cb1168dbc4611a9c39fea736ed0cc1ba44a9edab46b8b65cbe",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "beebf8ee2a1054ecefdc60c1e3e1c9f21229fbecaacd06bcbf23e48b7055920c",
+          "target_sha256": "a8e8bba55b32647cc58f877df4799c94b68b4ce0fa5059a3e04376864e5d61e4",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         }
       ]
@@ -5082,7 +5112,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
+          "target_sha256": "e68a01acbcd7e849fca67f0561a5dc9f1d730cd58bb5ec847f8980436ab736b0",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Native PDF invokes separately installed GPL Poppler by ordinary CLI; no foreign framework, parser service, code, binary, assets, model or data copied/imported/bundled. Descriptor-only PDF leaves cell/pixel/OCR requirements unqualified; no ASR/indexing/provider operation."
         },
         {
@@ -5398,7 +5428,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "ef918c208e58207e5b5cd7d363d3f73abb674ff288505aa860dd89f29f870c1e",
+          "target_sha256": "e68a01acbcd7e849fca67f0561a5dc9f1d730cd58bb5ec847f8980436ab736b0",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
         },
         {

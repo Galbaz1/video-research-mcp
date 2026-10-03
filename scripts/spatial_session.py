@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import shutil
 import sys
 import tempfile
 
@@ -20,7 +21,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from spatial_inputs import Inputs, admit_file, digest  # noqa: E402
 from spatial_dispatch import ProviderBarrier, configure_specs  # noqa: E402
-from spatial_runtime import CLEARANCE, DIRECT_PACKAGES, admit_runtime, read_descriptor  # noqa: E402
+from spatial_runtime import CLEARANCE, DIRECT_PACKAGES, admit_runtime, installed_inventory, read_descriptor  # noqa: E402
 import spatial_fonts  # noqa: E402
 
 REVISION = "07736672525443c7f8a3f6405eed37d2236f023f"
@@ -99,6 +100,20 @@ def runtime_report(data: dict) -> dict:
             "isolated": bool(sys.flags.isolated), "packages": versions, **runtime}
 
 
+def prepare_sources(root: Path, destination: Path, data: dict) -> list[dict]:
+    """Copy only admitted source/grant bytes into an exclusive import tree."""
+    destination.mkdir(mode=0o700)
+    selected = []
+    for row in data["execution_sources"] + data["license_sources"]:
+        original = admit_file({**row, "path": str(root / row["path"])})
+        copied = destination / row["path"]
+        copied.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        shutil.copyfile(original, copied)
+        selected.append({**row, "path": str(copied)})
+    installed_inventory(destination, selected)
+    return selected
+
+
 def prepare_session(output: Path) -> dict:
     """Create an exclusive cwd/config/cache/MPL/temp profile without changing home."""
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
@@ -156,9 +171,12 @@ def serve(args, data: dict, inputs: Inputs) -> None:
     os.environ.update(env)
     os.chdir(output / "cwd")
     tempfile.tempdir = None
-    root = args.source_root.absolute()
+    original_root = args.source_root.absolute()
+    root = output / "source"
+    selected = prepare_sources(original_root, root, data)
     def read_sources():
-        current = admit_sources(root, args.manifest, args.manifest_sha256)
+        current = admit_sources(original_root, args.manifest, args.manifest_sha256)
+        installed_inventory(root, selected)
         admit_runtime(current)
         return current
     read_sources()

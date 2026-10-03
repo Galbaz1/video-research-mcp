@@ -71,11 +71,16 @@ linked or nonregular package files are refused. The concrete runtime uses
 Python's standard `venv --without-pip`; every `.pth`, `sitecustomize` and
 `usercustomize` entry is refused.
 
-The child also runs with `-I -S -B` and repeats admission before adding the
+After admission the launcher replaces itself with the selected interpreter,
+preserving one supervised PID for cancellation. The selected process runs with
+`-I -S -B` and repeats admission before adding the
 selected site-packages directory. It verifies installed versions and reads
 back source, input and runtime bytes around each handler. Admission assumes
 trusted owned scripts and an independently trusted descriptor digest; the
-process retains host privileges.
+process retains host privileges. It copies exactly the 54 admitted source bodies
+and their grant into a fresh private import tree. Ambient upstream modules and
+bytecode are excluded. The complete copied inventory and original selected bytes
+are rehashed before imports and around each handler.
 
 The selected Agg/PNG route seeds an empty cache for the pinned Matplotlib font
 manager before import, then initializes only the 38 admitted bundled TTFs.
