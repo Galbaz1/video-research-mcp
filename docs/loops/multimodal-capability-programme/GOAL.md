@@ -5,6 +5,12 @@ This is a ready-to-use goal instruction and a dated dependency reference. Beads
 remains the only task/state authority; refresh it before dispatch. Preparing this
 file does not launch the goal or authorize a runtime/provider/publication action.
 
+The resumed execution specifications are in [EVALUATIONS.md](EVALUATIONS.md):
+all 55 unfinished delivery Beads at entry, with 204 unchanged acceptance clauses,
+concrete evaluation procedures and focused candidate checks. Runtime/provider
+requests and source-bound diagnostics live in [qualification/](qualification/).
+Those documents distinguish preparation from actual feature acceptance.
+
 ## Copyable goal command
 
 ```text
@@ -14,6 +20,7 @@ product acceptance, frozen comparative evidence and a verified final release.
 Use /Users/fausto_home/Coding/worktrees/video-research-mcp/modernization-2026-09.
 Read the canonical /Users/fausto_home/Coding/video-research-mcp/.claude/handoff.md,
 current root/nested AGENTS.md, docs/loops/multimodal-capability-programme/LOOP.md,
+docs/loops/multimodal-capability-programme/EVALUATIONS.md,
 docs/research/2026-09-30-capability-transfer.json and this GOAL.md before acting.
 Verify the actual branch/HEAD/dirty state, Beads database and live destination.
 The inspected main baseline is 8ec16a52d00e94aca9a2e911e08147c761787c7c;
@@ -36,6 +43,10 @@ Discover live server/account/session identities and usage before reusing a lane.
 Inherit current models/configuration; do not pin models or use Haiku. Preserve
 existing applicable account-2-credit authority without treating it as unlimited
 provider, purchase, Fast or unrelated-run authority. Never copy auth stores.
+Run ALL local ASR, vision, embedding and generation inference on the Mac Studio
+through its verified private route. A client loopback forward is transport only.
+Refresh server resources and exact runtime/model/grants before qualification;
+the existing Gemini cloud route keeps its separate authority and evaluations.
 
 Keep each worker's edits disjoint. The coordinator exclusively owns shared server,
 registry/config, dependency locks/manifests, release metadata, Beads and handoff.
@@ -74,8 +85,10 @@ Complete the original final gates in order:
 vrm-0e8.10.1 integrated product and all adopted user journeys;
 vrm-0e8.10.2 frozen held-out comparisons and actual required human audits;
 vrm-0e8.10.3 final release, publication read-back and installed upgrade journey.
-The fixed development human audit is pending, not waived. An agent cannot supply
-its human result. Keep held-out sources sealed until the independent evaluation
+Fausto accepted the fixed nine-case development source/citation audit on
+2026-10-03; vrm-0e8.10.4 is closed with the unchanged packet and human response
+retained. The independent held-out human source/media audit remains required.
+Keep held-out sources sealed until the independent evaluation
 owner admits a frozen candidate; never use acceptance data for tuning.
 
 For release, prefer the authorized npm-distribution/native-Codex route. Test a new
