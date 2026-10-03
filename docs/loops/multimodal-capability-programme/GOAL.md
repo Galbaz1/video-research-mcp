@@ -432,3 +432,19 @@ blocking edges and frozen feature/product/comparison/release criteria.
 | Bead | Ownership and parallel timing | Definition of done and evaluation |
 | --- | --- | --- |
 | `vrm-0e8.7.12` | Codex owns the explicit installer map and new resource tests; independent Claude reviews the frozen source. Root owns manifests, reuse ledger, GOAL/handoff/Git/packaging and atlas/report. Report composition may proceed in parallel; its current availability claims must match the accepted source snapshot. | Private fresh local/global installs from a newly packed artifact deliver all22 exact skills and the concrete already-packaged helper/contract resources for the six added workflows. Exercise actual old16-layout upgrade, unchanged check/reinstall, rollback/restore/uninstall and user-edited/unmanaged preservation. Resolve required installed references/helper imports without the source checkout; retain optional-runtime refusals. Join independent review, affected/final gates, tarball/installed byte readback, meaningful CLI/help or source-only validation, exact-source CI and normal commit/push. Installation does not authorize or accept native models, providers, original cohorts, main merge, registry release or user-plugin overwrite. |
+
+## Spatial PNG payload follow-up (2026-10-03)
+
+`vrm-0e8.9.12` adds the 110th programme ID and validates `.9.3`, with
+closed `.9.10` as its prerequisite. It implements the concrete alternative of
+removing AFM metric files from a separately identified pinned Matplotlib wheel
+while retaining all existing PNG/Agg callers, TTF fonts, mathtext assets and
+notices. It preserves both rejected profiles, all 19 spatial tool identities,
+the mandatory 16 and the original 28-control evaluation.
+
+Codex owns the builder and refusal tests. One independent Claude reviewer checks
+the frozen source and caller/grant evidence. Root owns integration documentation,
+reuse records, source delivery and any later runtime/evaluator admission. The
+bounded outcome is an executable static build and exact per-member receipt; it
+does not accept `.9.3`, activate a runtime or replace any native/control evidence.
+Use live Beads for status.
