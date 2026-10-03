@@ -420,3 +420,15 @@ validates `.3.5`; it does not alter original blocking edges or acceptance clause
 | Bead | Ownership and parallel timing | Definition of done and evaluation |
 | --- | --- | --- |
 | `vrm-0e8.4.9` | Codex owns only `tests/test_audio_assets.py`; independent Claude reviews the frozen test change. Root owns ledger/GOAL/handoff/Git/builds. Report composition may continue in parallel; final delivery waits for exact-head CI. | Preserve original failed CI. Replace startup-sensitive timing with controlled single-deadline evidence across native phases, exact source identity and cleanup; meaningful causal RED/GREEN without skipping or weakening production budgets. Join both Herdr reports, affected/final gates and exact-head CI, commit and verify source delivery. No original32/17 cohort, provider/model execution or broader feature/release acceptance. |
+
+## Distribution gap found by the complete function atlas
+
+`vrm-0e8.7.12` adds the109th programme ID. The source1c23f6b npm payload
+contains22 skills, while its Claude FILE_MAP copies16. The six absent entrypoints
+are AV events, educational lessons, footage editing, Blender, FreeCAD and spatial
+video. This follow-up validates accepted `.7.9` and preserves all original
+blocking edges and frozen feature/product/comparison/release criteria.
+
+| Bead | Ownership and parallel timing | Definition of done and evaluation |
+| --- | --- | --- |
+| `vrm-0e8.7.12` | Codex owns the explicit installer map and new resource tests; independent Claude reviews the frozen source. Root owns manifests, reuse ledger, GOAL/handoff/Git/packaging and atlas/report. Report composition may proceed in parallel; its current availability claims must match the accepted source snapshot. | Private fresh local/global installs from a newly packed artifact deliver all22 exact skills and the concrete already-packaged helper/contract resources for the six added workflows. Exercise actual old16-layout upgrade, unchanged check/reinstall, rollback/restore/uninstall and user-edited/unmanaged preservation. Resolve required installed references/helper imports without the source checkout; retain optional-runtime refusals. Join independent review, affected/final gates, tarball/installed byte readback, meaningful CLI/help or source-only validation, exact-source CI and normal commit/push. Installation does not authorize or accept native models, providers, original cohorts, main merge, registry release or user-plugin overwrite. |

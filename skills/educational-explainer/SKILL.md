@@ -5,6 +5,14 @@ description: Produce and restart-check the bounded first-party Verifying a diagr
 
 # Verify a diagram against its rule
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-education.md`.
+The `../video-research-resources/integrations/qwen/education.json` records the selected component and requirements.
+The local `scripts/lesson.py` requires the separately installed `video_research_mcp.education` Python package from the accepted candidate. Check its normalized metadata version and wheel receipt as described in the component contract. Installing this skill does not install that runtime or its optional native dependencies.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Read the [component contract](../../docs/integrations/qwen-education.md) before
 authoring the required source/analysis/script/storyboard ledger. This skill uses
 the installed first-party [lesson CLI](scripts/lesson.py), with no public MCP tool,

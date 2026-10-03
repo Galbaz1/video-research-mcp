@@ -1457,8 +1457,8 @@
         },
         {
           "target_path": "skills/av-events/SKILL.md",
-          "target_sha256": "b89d061fb4bb3a869f8e478e6f79acab419aa2d2cd26b654ad1f3e730e8e0ad3",
-          "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
+          "target_sha256": "4f422671f81dd63fcf1a940e9f6f4424bd04896bf3073214a1a0c102a96fc809",
+          "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ]
     },
@@ -1713,8 +1713,8 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "7ee8f7c0c3137775fb463e78881460beb14125bd73c14c77e29bf2cb8173dd36",
-          "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred."
+          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ],
       "implementation_evidence": {
@@ -2086,8 +2086,8 @@
         },
         {
           "target_path": "skills/footage-edit/SKILL.md",
-          "target_sha256": "8903ffa001ba7145b252780770979cdee19af2d743e1c4470eaf03f55d163af1",
-          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
+          "target_sha256": "1f3c565248ae90d1d9a37b2f49dded2ff1654686b6a714f493368e86141a0c6e",
+          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "src/video_research_mcp/footage_edit.py",
@@ -2288,8 +2288,8 @@
         },
         {
           "target_path": "skills/educational-explainer/SKILL.md",
-          "target_sha256": "7f803702df43623190c881514506d1197edddc1f297d9b9ec27c830e69eafc08",
-          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
+          "target_sha256": "dc3e568682937e485d10a9198cb707370606de4a7b690519af33401bda8e2c68",
+          "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "skills/educational-explainer/scripts/lesson.py",
@@ -2298,7 +2298,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-education.md",
-          "target_sha256": "ba9f168a61f43911714e975973e87478bf2f28a2e79d6432ce1c32a9b558dd80",
+          "target_sha256": "cb474837d551fad43dad35074a6b2acfd746f5beb221e1a3423c6f0f8dcd29ec",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -2373,8 +2373,8 @@
         },
         {
           "target_path": "skills/spatial-video-analysis/SKILL.md",
-          "target_sha256": "d357ed6cb0a608c442038cd33c08c5e1bb3233f1bc6197c88862d7a1ab5dbc86",
-          "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only."
+          "target_sha256": "d20b7234c388b4fd8aa7f0364ee759bc7f4914fbe9b3b01c3ed023e0faf2205a",
+          "provenance": "Owned source/frame/provenance/provider admission and declared deterministic spatial behavior around unmodified external pinned19tools (mandatory16 retained). Source Apache grant verified. Both scientific runtime profiles blocked; no imported packages, source/runtime/fonts/assets bundled or actual geometry journey accepted. Stub/source-only checks prove owned boundaries only. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "tests/test_spatial_session.py",
@@ -2439,8 +2439,8 @@
         },
         {
           "target_path": "skills/research-visualization-blender/SKILL.md",
-          "target_sha256": "ff7d32a15a06de3d47c0495a33544257f07e1d4f24d15d145c7988109eec22d3",
-          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
+          "target_sha256": "3b479d0ad7d621b3f3db234ef7dd0d64a3a6a28e2667347ca86c16a7ed62f360",
+          "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "scripts/blender_stdio.py",
@@ -2496,8 +2496,8 @@
         },
         {
           "target_path": "skills/research-visualization-freecad/SKILL.md",
-          "target_sha256": "722ebec068862697caa3565c8a6e43d7cfe63e634d7253c7633a8b16ff0ca16d",
-          "provenance": "Owned local source/binary admission, disposable process/document, completion and FEM result policy around unmodified external pinned14tools/addon. Full selected MIT/Apache grants joined; no foreign runtime/code/assets/native binary transferred into archives. Actual native acceptance remains separately receipted."
+          "target_sha256": "aa38ca02b46b41d84dfe886a179684d0124408194c05405af39adb85f393a956",
+          "provenance": "Owned local source/binary admission, disposable process/document, completion and FEM result policy around unmodified external pinned14tools/addon. Full selected MIT/Apache grants joined; no foreign runtime/code/assets/native binary transferred into archives. Actual native acceptance remains separately receipted. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
           "target_path": "tests/test_freecad_session.py",
@@ -2593,8 +2593,8 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "7ee8f7c0c3137775fb463e78881460beb14125bd73c14c77e29bf2cb8173dd36",
-          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ]
     },
@@ -3662,8 +3662,18 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "08579091ea81b9d213b239a943995a76b68d42ab920a83bb169a1cedc3e6da1b",
-          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
+          "target_sha256": "f127fcb3726d00fb1af753e40688da9ee5caec98fd1eacddb4e42ea1624013a5",
+          "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
+        },
+        {
+          "target_path": "bin/lib/copy.js",
+          "target_sha256": "5840407e350723680025b3efd34344e1508c6d75f58a39f9161a2ca6f6b796c7",
+          "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
+        },
+        {
+          "target_path": "tests/installer-packaged-skills.test.js",
+          "target_sha256": "beebf8ee2a1054ecefdc60c1e3e1c9f21229fbecaacd06bcbf23e48b7055920c",
+          "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         }
       ]
     },

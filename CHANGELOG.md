@@ -9,6 +9,13 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Install all 22 packaged Claude skills, including six previously omitted workflows,
+  with their contracts, descriptors, helper scripts and license texts. Preserve
+  edited and unmanaged resources through upgrades and recovery, and check complete
+  packed-skill coverage in CI.
+
 ## [0.8.0-rc.1] - 2026-10-02
 
 ### Added
