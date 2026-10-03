@@ -67,7 +67,30 @@ intervals; they were not watched continuously or word-aligned. Freeze the exact
 source bytes, interval, labels and bounds before executing any new qualification.
 Keep the original 17 controls and both prior attempts unchanged.
 
+## Gemini transcription route
+
+YouTube captions are optional reference material, not a prerequisite for speech
+transcription. The connected plugin exposes `audio_transcribe` with an explicit
+`gemini` backend for hash-bound local audio/video, language hints, bounded windows
+and structured segments. Its read-only configuration inspection on this date
+reported `gemini-3.8-flash`. This is an available configured route; no generation
+request was made during this inspection.
+
+Google's current [audio guide](https://ai.google.dev/gemini-api/docs/audio)
+also documents transcription from a public YouTube video URI through the SDK.
+The [video guide](https://ai.google.dev/gemini-api/docs/video-understanding)
+documents explicit static clipping with `start_offset` and `end_offset`.
+That SDK route is distinct from `audio_transcribe`, whose public request requires
+a local file and its digest. A prompt asking for an interval is not a substitute
+for the API's actual clipping fields.
+
+Gemini can therefore produce a source transcript even when a caption export is
+absent or inaccurate. Its transcript, timing and speaker labels remain model
+outputs until checked. Preserve the original captions as a separate source;
+agreement with them alone cannot establish independent word accuracy.
+
 The existing [supplemental proposal](render-education-spatial.md#education-vrm-0e8820)
 still requires measured speech segments, language adaptation and generated-output
-playback. Qualified ASR must execute on Mac Studio; human listening findings require
-an actual human review. The presence of captions supplies neither qualification.
+playback. Local ASR inference must execute on Mac Studio; Gemini uses Google's
+cloud route. Human listening findings require an actual human review. Neither
+caption availability nor a configured model establishes those evaluation results.
