@@ -648,8 +648,9 @@
         },
         {
           "target_path": "tests/test_media_frames.py",
-          "target_sha256": "9bfcd81fda8bf4f0049feb8499092e080c52d93f695bf8404bd499ca80e0bd7e",
-          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+          "target_sha256": "1ff8281292e7dacb54b87c702f95ccb22ed5cd88ccb633fb918df20f5725ebcc",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
+          "receipt_refresh": "Test-only integer fake-clock repair991b10f; shared total30s deadline and exact10s residual preserved. CI fractional-clockRED retained;39affectedPASS onPython3.14.8; production bytes unchanged."
         },
         {
           "target_path": "tests/test_media_image_read.py",
@@ -3060,8 +3061,9 @@
         },
         {
           "target_path": "tests/test_media_frames.py",
-          "target_sha256": "9bfcd81fda8bf4f0049feb8499092e080c52d93f695bf8404bd499ca80e0bd7e",
-          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
+          "target_sha256": "1ff8281292e7dacb54b87c702f95ccb22ed5cd88ccb633fb918df20f5725ebcc",
+          "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
+          "receipt_refresh": "Test-only integer fake-clock repair991b10f; shared total30s deadline and exact10s residual preserved. CI fractional-clockRED retained;39affectedPASS onPython3.14.8; production bytes unchanged."
         },
         {
           "target_path": "tests/test_media_image_read.py",
