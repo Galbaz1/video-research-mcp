@@ -327,12 +327,15 @@ async def test_render_cancellation_preserves_original_and_existing_view(native_e
 
 async def test_one_deadline_covers_probe_and_render(native_env, monkeypatch):
     import asyncio
+    import math
     from types import SimpleNamespace
     from video_research_mcp import media_frames, media_snapshot
     from video_research_mcp.config import get_config
 
     loop = asyncio.get_running_loop()
-    clock = [loop.time()]
+    # Integer-valued start keeps (start + 30) - (start + 20) exactly 10; a fractional
+    # host loop.time() can cancel to 9.999999999999972 (CI 3.14, runner uptime ~232 s).
+    clock = [float(math.floor(loop.time()))]
     monkeypatch.setattr(loop, "time", lambda: clock[0])
     monkeypatch.setattr(media_snapshot, "time", SimpleNamespace(monotonic=lambda: clock[0]))
     get_config().media_acquire_timeout_seconds = 30
