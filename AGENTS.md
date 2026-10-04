@@ -1,5 +1,11 @@
 # AGENTS.md
 
+<!-- fausto-project-instructions/v1
+modules: delegation@1
+source: /Users/fausto_home/.codex/instruction-modules.md
+selection: adapted for Herdr execution in this project
+-->
+
 ## Scope
 
 Codex project instructions equivalent to this repo's Claude setup.
@@ -9,6 +15,17 @@ Codex project instructions equivalent to this repo's Claude setup.
 - Test-specific guidance lives in `tests/AGENTS.md`.
 
 This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-based AGENTS discovery.
+
+## Herdr parallel execution
+
+For substantial implementation and acceptance work, actively use both Codex
+accounts and the Claude account through Herdr. Keep useful independent lanes
+running instead of serializing work in the coordinator. Check each account's live
+capacity before allocating a wave; capacity is large but not assumed unlimited.
+Give each lane an exact checkout, exclusive files, explicit child allowance,
+bounded resources, acceptance checks and a stop condition. Workers preserve
+others' edits. Collect and verify their results before integration, then close
+finished sessions. Current task authority and configuration select model and effort.
 
 ## What This Is
 
