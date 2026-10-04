@@ -90,8 +90,10 @@ results are text and TSV, including possible `Error:` text. Ferrous supports
 counts; full exposes its selected spectral/temporal arrays with a 128-point limit.
 Neither exports all internal raw fingerprint, quality-event or classification
 segment records. Native pagination and complete array coverage are not promised.
-The visual workflow requires all three actual 1920×600 PNGs, exports them with
-exact hashes, and leaves native axis correctness unverified.
+The visual workflow requires the waveform and spectrogram fields returned by
+`visual_only`, decodes both 1920×600 PNGs, exports them with exact hashes, and
+leaves native axis correctness unverified. The pinned server renders an internal
+power curve but does not include it in this response.
 
 The fixed programme journey qualified the core measurements and five Juzzy modes,
 plus Ferrous summary, full, compare and silence-summary results with actual

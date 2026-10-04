@@ -12,7 +12,7 @@ from .media_local_io import _open_regular
 
 
 def export_native_views(record, selection, directory, cancelled, deadline):
-    """Require all three source-defined visuals, with actual PNG decode and exact1920x600 grids."""
+    """Decode the two visual_only response fields on exact1920x600 grids."""
     check_worker(cancelled, deadline)
     with _open_regular(Path(record["path"])) as reader:
         body = reader.read(4 * 1024 * 1024 + 1)
@@ -24,7 +24,7 @@ def export_native_views(record, selection, directory, cancelled, deadline):
         raise ValueError("Ferrous visual workflow requires one native JSON text block")
     visuals = json.loads(texts[0]["text"])["visuals"]
     artifacts = []
-    for name in ("waveform", "spectrogram", "power_curve"):
+    for name in ("waveform", "spectrogram"):
         encoded = visuals.get(name)
         if not isinstance(encoded, str) or len(encoded) > 1024 * 1024:
             raise ValueError("Native visual workflow has a missing or oversized PNG")

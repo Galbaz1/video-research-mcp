@@ -3884,7 +3884,7 @@
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_visuals.py",
-          "target_sha256": "24f6a7ed59034f7c6ddd96ac500a4e18d5d529ede1e475fd930f8bebc2d45bc9",
+          "target_sha256": "4d1d6ea9468e0934ac8392f3affadc29ecac812ca2ca206a832efe55a2892218",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3909,12 +3909,12 @@
         },
         {
           "target_path": "docs/integrations/AUDIO_DSP.md",
-          "target_sha256": "a25421a5a0091df5dca96458e6032ae41fd9458800d2ee515d62941a23885a8c",
+          "target_sha256": "535025e233cfe5730a4b0185cb172477e05c027eb48b8f9c153f919f707f48ab",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
           "target_path": "tests/test_audio_dsp_contract.py",
-          "target_sha256": "910f452d7fcebf09ab6af7dad6f6462c0096ed00ab27ff230708f2768f5a81de",
+          "target_sha256": "874f3e44406a48328578fa995acb05efce29c1849d4b5b14aa03458e94601b9a",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {

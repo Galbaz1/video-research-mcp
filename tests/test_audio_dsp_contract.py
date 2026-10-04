@@ -366,7 +366,7 @@ def test_ferrous_visual_export_verifies_pixels_geometry_and_source(tmp_path, bad
     with Image.new("RGB", (32, 32) if bad == "geometry" else (1920, 600), "navy") as image:
         image.save(stream, format="PNG")
     encoded = base64.b64encode(stream.getvalue()).decode()
-    visuals = {key: encoded for key in ("waveform", "spectrogram", "power_curve")}
+    visuals = {key: encoded for key in ("waveform", "spectrogram")}
     if bad == "missing":
         visuals["waveform"] = None
     body = canonical(
@@ -390,7 +390,7 @@ def test_ferrous_visual_export_verifies_pixels_geometry_and_source(tmp_path, bad
             export_native_views(*args)
     else:
         result = export_native_views(*args)
-        assert len(result) == 3 and all((r["width"], r["height"]) == (1920, 600) for r in result)
+        assert len(result) == 2 and all((r["width"], r["height"]) == (1920, 600) for r in result)
         for row in result:
             assert (
                 row["source_reference"] == selection["source_reference"] and row["pixels_verified"]
