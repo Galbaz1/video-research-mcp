@@ -126,11 +126,35 @@ deployment's `/v1/capabilities` route:
 
 The route must be enabled with version information. Before uploading any body,
 the adapter reads and retains its capabilities bytes, checks the configured hash
-and requires Docling Serve **1.36.0**, Docling **2.129.0**, core **2.79.0**, inbody
-JSON, embedded images and no API key. These exact versions and routes come from
+and requires Docling Serve **1.36.0**, Docling **2.129.0**, core **2.96.0**, inbody
+JSON, embedded images and no API key. Version reporting and routes follow
 the primary [Serve capabilities implementation](https://github.com/docling-project/docling-serve/blob/07b1d3d3b515afd9196148e0353d54ea38de2a37/docling_serve/capabilities.py)
 and [Serve application](https://github.com/docling-project/docling-serve/blob/07b1d3d3b515afd9196148e0353d54ea38de2a37/docling_serve/app.py).
 The retained response must contain `DoclingDocument` schema **1.10.0**.
+Core 2.96 is the minimum required by Docling Slim 2.129. Its
+[schema constant](https://github.com/docling-project/docling-core/blob/0b55aca55b22f7109502d44db36f8246e238121c/docling_core/types/doc/common/constants.py)
+remains 1.10.0. The pinned split models preserve the text/formula, table-cell,
+provenance, page, reference and image fields consumed here; the exact version,
+schema and boundary checks remain required. This source compatibility check
+does not qualify a deployment or attest extraction fidelity.
+
+The retained wheel-only resolver attempts failed first on core 2.79's dependency
+conflict, then on usable Docling Parse wheels for the requested generic
+`aarch64-apple-darwin` target. [PyPI's 7.20.0 release metadata](https://pypi.org/pypi/docling-parse/7.20.0/json)
+lists ARM64 wheels for CPython 3.10–3.14, including 3.12, with a macOS 14 minimum.
+Root can select an exact compatible interpreter and deployment target for a
+published wheel before considering a source build; no successful resolution,
+wheel load or service qualification is established here. A Python minor change
+alone does not remove the published wheels' macOS minimum.
+
+The published source archive is a separate build candidate, not an admitted
+fallback. The pinned [build metadata](https://github.com/docling-project/docling-parse/blob/b1f33601d72b5e40f6d7505c0d1aab2d80dc7fe6/pyproject.toml)
+requires setuptools, pybind11, wheel, cibuildwheel, delocate and CMake; the
+[native build](https://github.com/docling-project/docling-parse/blob/b1f33601d72b5e40f6d7505c0d1aab2d80dc7fe6/CMakeLists.txt)
+requires C/C++20 tooling and native dependencies. Their availability, exact
+transitive source/grant eligibility, resulting binary compatibility and runtime
+behavior remain unverified. No dependency stripping or source build is performed.
+
 Capabilities must admit `file` sources and explicitly include `max_file_size`
 and `max_num_pages` as null or positive integers. Missing or malformed relevant
 limits refuse submission. A finite file-size limit is checked against the exact

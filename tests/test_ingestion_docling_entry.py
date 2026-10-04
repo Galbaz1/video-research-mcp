@@ -38,7 +38,7 @@ def request(tmp_path, **overrides):
 
 def capabilities():
     return {
-        "versions": {"docling-serve": "1.36.0", "docling": "2.129.0", "docling-core": "2.79.0"},
+        "versions": {"docling-serve": "1.36.0", "docling": "2.129.0", "docling-core": "2.96.0"},
         "targets": {"allowed": ["inbody"], "default": "inbody"},
         "output_formats": ["json"],
         "image_export_modes": ["embedded"],
@@ -63,6 +63,34 @@ def configure(contract, **overrides):
         "runtime_qualified": True,
     }
     update_config(docling_service=fields | overrides)
+
+
+@pytest.mark.parametrize("core_version", ["2.79.0", "2.95.0", "2.96.0", "2.97.0"])
+async def test_exact_core_version_admission_before_upload(tmp_path, monkeypatch, core_version):
+    """Only the selected compatible core version admits the retained original."""
+    data = capabilities()
+    data["versions"]["docling-core"] = core_version
+    contract, body = json.dumps(data).encode(), json.dumps(response()).encode()
+    configure(contract)
+    calls = []
+
+    async def exchange(url, **kwargs):
+        calls.append(kwargs["method"])
+        return 200, contract if kwargs["method"] == "GET" else body
+
+    monkeypatch.setattr(ingestion_docling, "exchange", exchange)
+    result = await ingestion.ingest_source(request(tmp_path))
+    assert result["status"] == ("completed" if core_version == "2.96.0" else "failed")
+    assert calls == (["GET", "POST"] if core_version == "2.96.0" else ["GET"])
+    derived = Path(result["original"]["path"]).parent / "derived"
+    assert (derived / "docling-contract.json").read_bytes() == contract
+    if core_version != "2.96.0":
+        assert not result["docling_lifecycle"]["upload_attempted"]
+        assert not (derived / "docling-submission.json").exists()
+    else:
+        profile = json.loads((derived / "docling-profile.json").read_bytes())
+        assert profile["versions"]["docling-core"] == "2.96.0"
+        assert (derived / "docling-response.json").read_bytes() == body
 
 
 async def test_timeout_retains_remote_ambiguity_in_durable_failure(tmp_path, monkeypatch):

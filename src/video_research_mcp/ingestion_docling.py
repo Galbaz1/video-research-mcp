@@ -31,7 +31,7 @@ def service_profile():
     return {"service": service.model_dump(mode="json"), "options": dict(OPTIONS),
             "request_max_bytes": MAX_UPLOAD_BYTES, "response_max_bytes": MAX_RESPONSE_BYTES,
             "runtime_identity": "operator_assertion_unattested", "service_cancellation": "unverified",
-            "versions": {"docling-serve": "1.36.0", "docling": "2.129.0", "docling-core": "2.79.0"}}
+            "versions": {"docling-serve": "1.36.0", "docling": "2.129.0", "docling-core": "2.96.0"}}
 
 
 def multipart(source, directory, cancelled, deadline):
