@@ -110,20 +110,23 @@ def admit_interpreter(runtime):
     if Path(library["path"]) != base / f"lib/libpython{version}.dylib":
         raise ValueError("libpython selection changed")
     source_bytes(library)
-    stdlib = base / f"lib/python{version}"
-    paths = [str(base / f"lib/python{version.replace('.', '')}.zip"), str(stdlib), str(stdlib / "lib-dynload")]
-    if runtime["stdlib_paths"] != paths or runtime["site_packages"] != str(Path(runtime["directory"]) / f"lib/python{version}/site-packages"):
-        raise ValueError("Bootstrap import path changed")
-    absent = [paths[0], str(base / "pyvenv.cfg"), str(base / "bin/pyvenv.cfg"), str(selected.parent / "pyvenv.cfg")]
-    if runtime["absent_paths"] != absent or any(os.path.lexists(path) for path in absent):
-        raise ValueError("Cold bootstrap population changed")
     cfg = Path(runtime["directory"]) / "pyvenv.cfg"
     if Path(runtime["pyvenv"]["path"]) != cfg:
         raise ValueError("pyvenv selection changed")
     settings = dict(line.split("=", 1) for line in source_bytes(runtime["pyvenv"]).decode().splitlines() if "=" in line)
     settings = {key.strip(): value.strip() for key, value in settings.items()}
-    if Path(settings["home"]).resolve() != base / "bin" or settings["include-system-site-packages"] != "false":
+    home = Path(settings["home"])
+    if home.resolve() != base / "bin" or settings["include-system-site-packages"] != "false":
         raise ValueError("Unsupported pyvenv bootstrap")
+    if any(row not in runtime["lineage"]["links"] for row in link_lineage(home)["links"]):
+        raise ValueError("Unadmitted pyvenv home link")
+    stdlib = base / f"lib/python{version}"
+    paths = [str(base / f"lib/python{version.replace('.', '')}.zip"), str(stdlib), str(home.parent / f"lib/python{version}/lib-dynload")]
+    if runtime["stdlib_paths"] != paths or runtime["site_packages"] != str(Path(runtime["directory"]) / f"lib/python{version}/site-packages"):
+        raise ValueError("Bootstrap import path changed")
+    absent = [paths[0], str(base / "pyvenv.cfg"), str(base / "bin/pyvenv.cfg"), str(selected.parent / "pyvenv.cfg")]
+    if runtime["absent_paths"] != absent or any(os.path.lexists(path) for path in absent):
+        raise ValueError("Cold bootstrap population changed")
 
 
 def admit(descriptor_path, expected_digest):

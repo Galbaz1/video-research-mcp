@@ -14,6 +14,7 @@ import hashlib
 import io
 import json
 import math
+from numbers import Real
 import os
 import resource
 import sys
@@ -111,6 +112,13 @@ def validate_answer(answer, duration):
         raise ValueError("Answer population mismatch")
 
 
+def wire_time(value):
+    """Preserve real model scalars as JSON numbers while refusing boolean timestamps."""
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError("Invalid model timestamp type")
+    return float(value)
+
+
 def infer(request, pcm, duration, descriptor, descriptor_digest):
     """Return actual local word inference; glossary is a hotwords hint only."""
     import numpy as np
@@ -128,9 +136,9 @@ def infer(request, pcm, duration, descriptor, descriptor_digest):
     for segment in segments:
         if len(cues) == 128:
             raise ValueError("Too many segments")
-        cues.append({"start_seconds": segment.start, "end_seconds": segment.end, "text": segment.text.strip(),
-                     "speaker_id": None, "words": [{"text": w.word.strip(), "start_seconds": w.start,
-                     "end_seconds": w.end} for w in (segment.words or [])]})
+        cues.append({"start_seconds": wire_time(segment.start), "end_seconds": wire_time(segment.end), "text": segment.text.strip(),
+                     "speaker_id": None, "words": [{"text": w.word.strip(), "start_seconds": wire_time(w.start),
+                     "end_seconds": wire_time(w.end)} for w in (segment.words or [])]})
     answer = {"outcome": "transcript" if cues else "empty", "segments": cues, "abstentions": []}
     validate_answer(answer, duration)
     return {"protocol": PROTOCOL, "answer": answer, "receipt": {

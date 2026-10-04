@@ -153,6 +153,26 @@ def test_actual_model_contract_and_asr_answer(pinned, model_mock, language, sele
     assert answer.segments[0].speaker_id is None and output["receipt"]["word_alignment_verified"] is False
 
 
+def test_model_numpy_timestamps_preserve_values_as_wire_numbers(pinned, model_mock):
+    """Native NumPy scalar timestamps retain their values at the JSON boundary."""
+    import numpy as np
+
+    _, descriptor = pinned
+    _, _, segment = model_mock
+    segment.start, segment.end = np.float64(segment.start), np.float64(segment.end)
+    for word in segment.words:
+        word.start, word.end = np.float64(word.start), np.float64(word.end)
+    request, pcm, duration = worker.decode_request(request_bytes())
+    output = worker.infer(request, pcm, duration, descriptor, "d" * 64)
+    cue = output["answer"]["segments"][0]
+    assert cue["start_seconds"] == segment.start and cue["end_seconds"] == segment.end
+    assert type(cue["start_seconds"]) is float and type(cue["end_seconds"]) is float
+    for actual, original in zip(cue["words"], segment.words, strict=True):
+        assert actual["start_seconds"] == original.start and actual["end_seconds"] == original.end
+        assert type(actual["start_seconds"]) is float and type(actual["end_seconds"]) is float
+    assert worker.parse_json(worker.json_bytes(output))["answer"] == output["answer"]
+
+
 @pytest.mark.parametrize("change", ["nan", "boolean", "zero", "extent", "word_extent", "missing_words", "text"])
 def test_unsafe_model_output_is_never_promoted(pinned, model_mock, change):
     _, descriptor = pinned

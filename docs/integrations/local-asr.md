@@ -6,6 +6,14 @@ request in an already installed optional environment. Neither installs packages,
 downloads models, starts automatically, calls a provider, nor changes core
 dependencies. The worker exits after each request and releases its model.
 
+Qualification includes real service/worker startup, Dutch and English word output,
+exact PCM preservation, five exports and durable readback. Initial HTTP timeouts
+and interval-type refusals are retained. The worker converts real NumPy timestamp
+scalars to Python floats without changing their values; boolean, nonfinite and
+out-of-range timestamps still refuse. Acoustic, word-alignment and speaker
+accuracy remain unverified. Each optional installation requires its own exact
+descriptor and runtime qualification; this source component is not a new release.
+
 The service accepts only literal `127.0.0.1` or `::1`. Each inference has a 60-second
 worker deadline, including worker admission. HTTP body reads have a 10-second
 socket timeout. A client disconnect, request deadline, SIGINT or parent-only
@@ -47,6 +55,8 @@ The descriptor binds these concrete identities:
 - `runtime.stdlib_paths`, `site_packages`, `absent_paths`: the exact cold stdlib
   import path, one verified optional package path, and absent bootstrap/zip paths.
   The initial import path must match before the optional package path is appended.
+  CPython 3.12 uses the pinned pyvenv `home` spelling for `lib-dynload`; its uv
+  alias is accepted only through the already pinned executable link lineage.
 - `runtime.versions`: Python, faster-whisper, CTranslate2 and NumPy identities.
   Metadata is read without importing model libraries.
 - `models.en` and `models.multilingual`: absolute directories, source repositories,

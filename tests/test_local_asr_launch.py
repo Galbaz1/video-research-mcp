@@ -164,6 +164,30 @@ def test_dependency_bytecode_is_explicitly_inventoried(pinned):
         launch.admit(path, expected)
 
 
+def test_pinned_home_alias_and_lib_dynload_path(pinned):
+    """Admit the actual uv home-alias shape, and refuse a later link change."""
+    path, data = pinned
+    r = data["runtime"]
+    alias = path.parent / "base-alias"
+    alias.symlink_to(r["base_directory"], target_is_directory=True)
+    executable = Path(r["directory"]) / "bin/python"
+    executable.unlink()
+    executable.symlink_to(alias / "bin/python3.12")
+    r["lineage"] = launch.link_lineage(r["python"])
+    cfg = Path(r["pyvenv"]["path"])
+    cfg.write_text(f"home = {alias / 'bin'}\ninclude-system-site-packages = false\n")
+    r["pyvenv"] = row(cfg)
+    r["stdlib_paths"][2] = str(alias / "lib/python3.12/lib-dynload")
+    r["inventory"], r["inventory_sha256"] = inventory(Path(r["directory"]), path.parent / "runtime.json", [r["directory"], r["base_directory"]])
+    expected = save(path, data)
+    assert launch.admit(path, expected) == data
+    alias.unlink()
+    # Preserve identical resolution while changing the literal pinned link target.
+    alias.symlink_to(str(r["base_directory"]) + "/.", target_is_directory=True)
+    with pytest.raises(ValueError, match="interpreter"):
+        launch.admit(path, expected)
+
+
 @pytest.mark.parametrize("change", ["path", "prefix", "base_prefix", "executable", "cache", "python_version", "package_version"])
 def test_effective_bootstrap_refuses_before_entry_source(monkeypatch, change):
     """Bound effective optional settings independently of the pre-exec inventory."""
@@ -285,7 +309,7 @@ def test_exact_source_excludes_shadows_pyc_and_pth(tmp_path, entry):
             "'base_directory':sys.base_prefix,'versions':{'python':sys.version.split()[0],'faster-whisper':'fixture','ctranslate2':'fixture','numpy':'fixture'},'bytecode_policy':'complete-inventory'}; "
             f"m.admit=lambda *a: {{'runtime':r,'sources':{sources!r}}}; "
             f"m.selected_bootstrap(['--descriptor','/inert','--expected-descriptor-sha256','inert','--entry',{entry!r},'--check'],sys.executable)")
-    result = subprocess.run([sys.executable, "-I", "-S", "-B", "-c", code], cwd=tmp_path,
+    result = subprocess.run([str(Path(sys.executable).resolve()), "-I", "-S", "-B", "-c", code], cwd=tmp_path,
                             env={"PATH": "/usr/bin:/bin", "PYTHONPATH": str(tmp_path)}, capture_output=True, timeout=5)
     assert result.returncode == 0, result.stderr.decode()
     receipt = json.loads(result.stdout)
