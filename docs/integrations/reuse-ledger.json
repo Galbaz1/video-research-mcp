@@ -918,12 +918,12 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/vision_analysis.py",
-          "target_sha256": "dba2d21fa84ad129dadaa77387747d91439ded1169ed236bf6077b64d3268ea6",
+          "target_sha256": "46c1f77351f4256ca0ddf6534089c2342e5e5d2c16f724616280839e21a3a615",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
-          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
+          "target_sha256": "67f3e6feb26751d797c5aaee9168d7450d97af3861c3da5fe5a0f5cbdf15844e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -933,7 +933,7 @@
         },
         {
           "target_path": "src/video_research_mcp/vision_provider.py",
-          "target_sha256": "34e120efc9c0e41b9aa52ec5207c3fc972c5746ad311c6695bd1e427c033567c",
+          "target_sha256": "99fcc545cb31fbcb3de4ea1733501763e4ed6a95aa15503a74760a2ea4ba1f5d",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -948,7 +948,7 @@
         },
         {
           "target_path": "src/video_research_mcp/models/vision.py",
-          "target_sha256": "9ac9d4e6d9d7756bda79808e151ea69141ec474d36444c0878576a7812b8ef55",
+          "target_sha256": "5328ef351b5cb4a07a11137a9cada404212f9b63ca295ab8d639f3c261102482",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -993,7 +993,7 @@
         },
         {
           "target_path": "docs/integrations/IMAGE_VISION.md",
-          "target_sha256": "55de209c56dffa2ad0d2a9c04a729c06ea73a075ae6ff098e949bbbb2d45ca88",
+          "target_sha256": "f0e37fd76c592715ab98bfe0c3b3a23fddd178c7fddd7f761b240c739dd09542",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -1051,6 +1051,21 @@
           "target_path": "tests/evaluation/test_replay.py",
           "target_sha256": "2a4867a82d21291d551fcd45b89728b83a8424f2d2986071b4f301bcbf020486",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_ollama.py",
+          "target_sha256": "102e643d51f876b8aa13d9a1521e8868e74eced978c5e67d5495888a194dda15",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
+        },
+        {
+          "target_path": "tests/test_vision_ollama.py",
+          "target_sha256": "10df08c48c615ad156cb5ea0d1c7be0cb55aa50315fbcb1b2f85d9d7f62cc0d7",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
+        },
+        {
+          "target_path": "tests/test_vision_ollama_transport.py",
+          "target_sha256": "a8bdb99a6209075c0c2402d97ff291249cd157216b52089fc3d7ff888e917451",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
         }
       ]
     },
@@ -3612,12 +3627,12 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/vision_analysis.py",
-          "target_sha256": "dba2d21fa84ad129dadaa77387747d91439ded1169ed236bf6077b64d3268ea6",
+          "target_sha256": "46c1f77351f4256ca0ddf6534089c2342e5e5d2c16f724616280839e21a3a615",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
-          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
+          "target_sha256": "67f3e6feb26751d797c5aaee9168d7450d97af3861c3da5fe5a0f5cbdf15844e",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -3627,7 +3642,7 @@
         },
         {
           "target_path": "src/video_research_mcp/vision_provider.py",
-          "target_sha256": "34e120efc9c0e41b9aa52ec5207c3fc972c5746ad311c6695bd1e427c033567c",
+          "target_sha256": "99fcc545cb31fbcb3de4ea1733501763e4ed6a95aa15503a74760a2ea4ba1f5d",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -3642,7 +3657,7 @@
         },
         {
           "target_path": "src/video_research_mcp/models/vision.py",
-          "target_sha256": "9ac9d4e6d9d7756bda79808e151ea69141ec474d36444c0878576a7812b8ef55",
+          "target_sha256": "5328ef351b5cb4a07a11137a9cada404212f9b63ca295ab8d639f3c261102482",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -3687,7 +3702,7 @@
         },
         {
           "target_path": "docs/integrations/IMAGE_VISION.md",
-          "target_sha256": "55de209c56dffa2ad0d2a9c04a729c06ea73a075ae6ff098e949bbbb2d45ca88",
+          "target_sha256": "f0e37fd76c592715ab98bfe0c3b3a23fddd178c7fddd7f761b240c739dd09542",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -3735,6 +3750,21 @@
           "target_path": "tests/evaluation/test_replay.py",
           "target_sha256": "2a4867a82d21291d551fcd45b89728b83a8424f2d2986071b4f301bcbf020486",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+        },
+        {
+          "target_path": "src/video_research_mcp/vision_ollama.py",
+          "target_sha256": "102e643d51f876b8aa13d9a1521e8868e74eced978c5e67d5495888a194dda15",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
+        },
+        {
+          "target_path": "tests/test_vision_ollama.py",
+          "target_sha256": "10df08c48c615ad156cb5ea0d1c7be0cb55aa50315fbcb1b2f85d9d7f62cc0d7",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
+        },
+        {
+          "target_path": "tests/test_vision_ollama_transport.py",
+          "target_sha256": "a8bdb99a6209075c0c2402d97ff291249cd157216b52089fc3d7ff888e917451",
+          "provenance": "Independently authored explicit local native Ollama original-PNG/literal-instruction adapter and controlled transport/custody regressions. No third-party source, model weights or executable bundled; configured external runtime remains optional and separately qualified."
         }
       ]
     },
@@ -4107,7 +4137,7 @@
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
-          "target_sha256": "50709ba79c0e04504b90812a7e44dd0aed09f4ccfed2b076f64444560ed321fe",
+          "target_sha256": "67f3e6feb26751d797c5aaee9168d7450d97af3861c3da5fe5a0f5cbdf15844e",
           "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
         },
         {

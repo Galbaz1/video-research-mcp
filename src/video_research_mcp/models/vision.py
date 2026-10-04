@@ -13,6 +13,7 @@ from ..errors import ToolError
 class VisionBackend(StrictModel):
     """One operator-selected compatible endpoint; requests cannot replace credentials."""
 
+    protocol: Literal["compatible_chat", "ollama_plain"] = "compatible_chat"
     base_url: Annotated[str, Field(min_length=1, max_length=2048)]
     model: Annotated[str, Field(min_length=1, max_length=256)]
     api_key_env: Annotated[str | None, Field(pattern=r"^[A-Z][A-Z0-9_]*API_KEY$")] = None
@@ -29,6 +30,11 @@ class VisionBackend(StrictModel):
         p = urlsplit(self.base_url)
         if not p.hostname or p.username or p.password or p.query or p.fragment or any(ord(c) < 33 for c in self.base_url):
             raise ValueError("Vision base URL must have an origin and no credentials/query/fragment")
+        if self.protocol == "ollama_plain":
+            if (not self.local or self.api_key_env or p.path not in ("", "/")
+                    or self.video_delivery != "sampled_frames" or self.upload_policy_url is not None
+                    or self.capabilities != ["images"]):
+                raise ValueError("Native Ollama requires credential-free local image-only origin without uploads")
         if self.local:
             if p.scheme not in {"http", "https"} or p.hostname not in {"127.0.0.1", "::1"}:
                 raise ValueError("Local vision requires an explicitly configured literal loopback origin")

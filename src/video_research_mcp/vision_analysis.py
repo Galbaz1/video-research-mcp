@@ -22,7 +22,8 @@ def _payload_receipt(parts, profile, calls):
     return [{"source_index": p["source_index"], "sha256": p["sha256"], "bytes": p["bytes"],
              "kind": p["kind"], "mime": p["mime"], "actual_seconds": p.get("actual_seconds"),
              "original_pts": p.get("original_pts"), "time_base": p.get("time_base"),
-             "delivery": "dashscope_temporary" if p["kind"] == "video" else "inline_prepared_pixels",
+             "delivery": "exact_original_png" if profile is not None and profile.protocol == "ollama_plain"
+             else "dashscope_temporary" if p["kind"] == "video" else "inline_prepared_pixels",
              "inference_origin": "https://generativelanguage.googleapis.com" if profile is None else profile.base_url,
              "upload_policy_origin": profile.upload_policy_url if p["kind"] == "video" else None,
              "retention_verified": False, "upload_attempted": any(
@@ -39,7 +40,7 @@ def _execution(request, profile, budget, calls, planned):
                   "input_token_limit_verified": False, "output_limit_requested": request.limits.max_output_tokens,
                   "cost_usd": None, "charge_bound_verified": False, "wire_retries": 0,
                   "prepared_images": budget.frames, "model_inference_attempts":
-                  sum(c["kind"] == "chat_completions" for c in calls)}
+                  sum(c["kind"] in {"chat_completions", "ollama_chat"} for c in calls)}
     return {**report, "planned_calls": planned, "max_inline_images": MAX_INLINE_IMAGES,
             "max_inline_raw_bytes": MAX_INLINE_BYTES, "max_encoded_item_bytes": 10_000_000,
             "max_temporary_video_bytes": MAX_TEMP_VIDEO_BYTES, "submission_authorized": request.authorize_submission,
@@ -75,6 +76,9 @@ async def _infer(request, profile, model, credential, temperature, schema, promp
         if budget.violation or not reasons or any(reason != "STOP" for reason in reasons):
             raise ValueError("Vision generation termination or token reservation is unverified")
         return answer, []
+    if profile.protocol == "ollama_plain":
+        from .vision_ollama import inference
+        return await inference(request, profile, parts, calls), []
     uploads = []
     if any(p["kind"] == "video" for p in parts):
         parts, uploads = await upload_videos(profile, credential, parts, calls, request.authorize_submission)
@@ -86,11 +90,16 @@ async def _workflow(request, operation, profile, model, credential, temperature,
     """Join snapshots and invocation-owned preparation before any successful return."""
     selected = profile, model, credential, temperature
     async with native_operation() as generated, AsyncExitStack() as stack:
-        prepared, parts = await prepare_sources(request, profile, stack, generated)
+        native = profile is not None and profile.protocol == "ollama_plain"
+        if native:
+            from .vision_ollama import prepare_png
+            prepared, parts = await prepare_png(request, stack)
+        else:
+            prepared, parts = await prepare_sources(request, profile, stack, generated)
         state["parts"] = parts
         state["payload_receipt"] = _payload_receipt(parts, profile, state["calls"])
         budget.frames = sum(p["kind"] == "image" for p in parts)
-        _, digest = backend_binding(request, profile, model, credential, temperature, schema, prompt, prepared, parts)
+        binding, digest = backend_binding(request, profile, model, credential, temperature, schema, prompt, prepared, parts)
         state["request_sha256"] = digest
         planned = 2 if profile is None else 1 + 2 * sum(p["kind"] == "video" for p in parts)
         state["planned_calls"] = planned
@@ -105,7 +114,7 @@ async def _workflow(request, operation, profile, model, credential, temperature,
             json.dumps(answer, allow_nan=False)
             await verify_prepared(prepared, parts)
             _backend_unchanged(request, selected)
-            if request.output_schema is None:
+            if request.output_schema is None and not native:
                 regions = await regions_and_crops(answer, request, prepared, generated)
             await verify_prepared(prepared, parts)
             state["payload_receipt"] = _payload_receipt(parts, profile, state["calls"])
@@ -113,6 +122,10 @@ async def _workflow(request, operation, profile, model, credential, temperature,
                    "https://generativelanguage.googleapis.com" if profile is None else profile.base_url,
                    "runtime": "existing_gemini" if profile is None else "configured_compatible_endpoint", "temperature": temperature,
                    "capability_quality_verified": False, "model_weight_license_verified": False}
+        if native:
+            backend.update(protocol="ollama_plain", runtime="configured_native_ollama",
+                           endpoint=binding["endpoint"], effective_controls=binding["effective_controls"],
+                           wire_request_body_sha256=binding["wire_request_body_sha256"])
         result = {"status": "planned" if request.dry_run else "complete", "operation": operation,
                   "backend": backend, "request_sha256": digest, "preparations": prepared,
                   "payload_receipt": state["payload_receipt"], "model_output": answer, "regions": regions,
@@ -134,7 +147,12 @@ async def analyze_vision(request: VisionRequest, operation: str) -> dict:
     try:
         profile, model, credential, temperature = selected_backend(request)
         _validate_operation(request, operation)
-        schema, prompt = schema_and_prompt(request, operation)
+        if profile is not None and profile.protocol == "ollama_plain":
+            from .vision_ollama import validate_request
+            validate_request(request, operation)
+            schema, prompt = None, request.instruction
+        else:
+            schema, prompt = schema_and_prompt(request, operation)
         budget.generation_check = lambda: _backend_unchanged(request, (profile, model, credential, temperature))
         async with asyncio.timeout(min(get_config().media_acquire_timeout_seconds, 120)):
             return await _workflow(request, operation, profile, model, credential, temperature, schema, prompt, budget, state)
