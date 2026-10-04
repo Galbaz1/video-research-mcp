@@ -42,3 +42,8 @@ jobs:
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 
+      - name: Report bounded review failure metadata
+        if: ${{ always() && steps.claude-review.outcome == 'failure' }}
+        env:
+          CLAUDE_EXECUTION_FILE: ${{ steps.claude-review.outputs.execution_file }}
+        run: python3 -I -B scripts/claude_review_diagnostic.py
