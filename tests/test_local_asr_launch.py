@@ -248,11 +248,18 @@ def test_exec_flags_and_sanitized_environment(pinned, isolated, monkeypatch):
     assert not {"PYTHONPATH", "DYLD_LIBRARY_PATH", "OPENAI_API_KEY"} & env.keys()
 
 
-def test_replacement_preserves_pid_and_joins(pinned, tmp_path):
+@pytest.mark.parametrize("blocked_signals", [False, True])
+def test_replacement_preserves_pid_and_joins(pinned, tmp_path, blocked_signals):
     """Execute only a shell/sleep sentinel through real admission and exec replacement."""
     path, _ = pinned
-    process = subprocess.Popen([sys.executable, "-I", "-S", "-B", launch.__file__, "--descriptor", str(path),
-                                "--expected-descriptor-sha256", launch.file_digest(path)], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    previous = signal.pthread_sigmask(signal.SIG_BLOCK, (signal.SIGTERM, signal.SIGINT)) if blocked_signals else None
+    try:
+        process = subprocess.Popen([sys.executable, "-I", "-S", "-B", launch.__file__, "--descriptor", str(path),
+                                    "--expected-descriptor-sha256", launch.file_digest(path)], stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.PIPE, start_new_session=True)
+    finally:
+        if previous is not None:
+            signal.pthread_sigmask(signal.SIG_SETMASK, previous)
     try:
         marker = tmp_path / "started"
         deadline = time.monotonic() + 5
@@ -267,6 +274,40 @@ def test_replacement_preserves_pid_and_joins(pinned, tmp_path):
         if process.poll() is None:
             process.kill()
         process.communicate(timeout=5)
+
+
+@pytest.mark.parametrize("first_key", ["home", "Home"])
+def test_duplicate_pyvenv_home_refuses_before_optional_startup(pinned, isolated, monkeypatch, first_key):
+    """Refuse a pinned configuration whose first home selects an unadmitted prefix."""
+    path, data = pinned
+    runtime = data["runtime"]
+    directory = Path(runtime["directory"])
+    base = Path(runtime["base_directory"])
+    cfg = directory / "pyvenv.cfg"
+    cfg.write_text(f"{first_key} = /unadmitted\n" + cfg.read_text())
+    runtime["pyvenv"] = row(cfg)
+    runtime["inventory"], runtime["inventory_sha256"] = inventory(directory, path.parent / "runtime.json", [directory, base])
+    pin = save(path, data)
+    monkeypatch.setattr(launch.os, "execve", lambda *args: pytest.fail("Ambiguous home started optional Python"))
+    assert launch.main(["--descriptor", str(path), "--expected-descriptor-sha256", pin]) == 2
+    assert not (path.parent / "started").exists()
+
+
+@pytest.mark.parametrize("separator", ["\r", "\v", "\u2028"])
+def test_pyvenv_internal_line_controls_refuse_before_optional_startup(pinned, isolated, monkeypatch, separator):
+    """A separator inside the home value must not hide unadmitted bytes from startup."""
+    path, data = pinned
+    runtime = data["runtime"]
+    directory = Path(runtime["directory"])
+    base = Path(runtime["base_directory"])
+    cfg = directory / "pyvenv.cfg"
+    cfg.write_bytes(f"home = {base / 'bin'}{separator}unadmitted\ninclude-system-site-packages = false\n".encode())
+    runtime["pyvenv"] = row(cfg)
+    runtime["inventory"], runtime["inventory_sha256"] = inventory(directory, path.parent / "runtime.json", [directory, base])
+    pin = save(path, data)
+    monkeypatch.setattr(launch.os, "execve", lambda *args: pytest.fail("Ambiguous line split started optional Python"))
+    assert launch.main(["--descriptor", str(path), "--expected-descriptor-sha256", pin]) == 2
+    assert not (path.parent / "started").exists()
 
 
 def test_source_drift_refused_before_module_execution(tmp_path):

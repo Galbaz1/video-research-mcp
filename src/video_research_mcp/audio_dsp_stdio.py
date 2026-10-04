@@ -218,20 +218,19 @@ def executable_digest(path):
 def drain_stderr(process, path, observation):
     """Continuously drain native stderr; retain and hash only its private64KiB prefix."""
     digest = hashlib.sha256()
+    observation.update(retained_sha256=digest.hexdigest(), truncated=False)
     with path.open("xb") as writer:
         os.fchmod(writer.fileno(), 0o600)
-        for chunk in iter(lambda: process.stderr.read(65536), b""):
+        for chunk in iter(lambda: process.stderr.read1(4096), b""):
             observation["observed_bytes"] += len(chunk)
             prefix = chunk[: max(0, 65536 - observation["retained_bytes"])]
             writer.write(prefix)
             writer.flush()
             digest.update(prefix)
             observation["retained_bytes"] += len(prefix)
-        observation.update(
-            retained_sha256=digest.hexdigest(),
-            eof=True,
-            truncated=observation["observed_bytes"] > observation["retained_bytes"],
-        )
+            observation["retained_sha256"] = digest.hexdigest()
+            observation["truncated"] = observation["observed_bytes"] > observation["retained_bytes"]
+        observation["eof"] = True
 
 
 def joined_diagnostic(process, drain, diagnostic, path):

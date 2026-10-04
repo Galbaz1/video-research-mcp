@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import signal
 import stat
 import sys
 import types
@@ -113,8 +114,14 @@ def admit_interpreter(runtime):
     cfg = Path(runtime["directory"]) / "pyvenv.cfg"
     if Path(runtime["pyvenv"]["path"]) != cfg:
         raise ValueError("pyvenv selection changed")
-    settings = dict(line.split("=", 1) for line in source_bytes(runtime["pyvenv"]).decode().splitlines() if "=" in line)
-    settings = {key.strip(): value.strip() for key, value in settings.items()}
+    settings = {}
+    for line in source_bytes(runtime["pyvenv"]).decode().split("\n"):
+        key, separator, value = line.partition("=")
+        if separator:
+            key = key.strip().lower()
+            if key in settings:
+                raise ValueError("Ambiguous pyvenv bootstrap")
+            settings[key] = value.strip()
     home = Path(settings["home"])
     if home.resolve() != base / "bin" or settings["include-system-site-packages"] != "false":
         raise ValueError("Unsupported pyvenv bootstrap")
@@ -238,6 +245,7 @@ def main(argv=None):
         env = {"PATH": "/usr/bin:/bin", "LANG": "en_US.UTF-8", "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
                "HF_HUB_DISABLE_TELEMETRY": "1", "TOKENIZERS_PARALLELISM": "false"}
         os.chdir("/")
+        signal.pthread_sigmask(signal.SIG_SETMASK, ())
         os.execve(command[0], command, env)
     except (OSError, ValueError, KeyError, TypeError, RuntimeError) as error:
         print(f"ASR launch refused: {error}", file=sys.stderr)

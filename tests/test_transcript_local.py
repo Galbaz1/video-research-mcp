@@ -113,10 +113,14 @@ async def test_qwen_backend_cannot_use_timed_protocol(local, monkeypatch):
 
 
 @pytest.mark.parametrize("error", [ValueError("source changed"), asyncio.CancelledError()])
-async def test_predispatch_source_failure_has_terminal_attempt(local, monkeypatch, error):
+@pytest.mark.parametrize("backend", ["faster_whisper", "qwen"])
+async def test_predispatch_source_failure_has_terminal_attempt(local, monkeypatch, error, backend):
     """Retain failed source checks/cancellation without claiming an HTTP dispatch."""
-    local[2].asr_service = service()
-    typed = request(local, backend="faster_whisper", local_only=True, dry_run=False, authorize_submission=True)
+    local[2].asr_service = service() if backend == "faster_whisper" else ASRService(
+        base_url="http://127.0.0.1:9999", local=True, runtime_qualified=True)
+    typed = request(local, backend=backend, local_only=True, dry_run=False, authorize_submission=True,
+                    require_timestamps=backend == "faster_whisper", require_word_alignment=backend == "faster_whisper",
+                    export_formats=["json", "text"])
     plan, attempts = provider.provider_plan(typed), []
     window = {"index": 0, "parts": [{"data": local[0].read_bytes()}]}
 
@@ -125,7 +129,7 @@ async def test_predispatch_source_failure_has_terminal_attempt(local, monkeypatc
 
     monkeypatch.setattr(provider, "exchange", lambda *a, **k: pytest.fail("source check dispatched HTTP"))
     with pytest.raises(type(error)):
-        await provider._faster_whisper(typed, window, plan, attempts, verify)
+        await getattr(provider, "_" + backend)(typed, window, plan, attempts, verify)
     assert attempts[0]["status"] == "failed_or_unknown"
     assert "http_status" not in attempts[0]
     assert plan["service_calls"] == attempts and plan["service_bytes"] == attempts[0]["serialized_bytes"]

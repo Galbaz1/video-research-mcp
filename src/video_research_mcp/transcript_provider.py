@@ -134,8 +134,8 @@ async def _qwen(request, window, plan, attempts, verify):
     headers = {"Content-Type": "application/json"}
     if credential:
         headers["Authorization"] = "Bearer " + credential
-    await verify()
     try:
+        await verify()
         status, data = await exchange(service.base_url.rstrip("/") + "/asr", headers=headers,
                                      content=content, method="POST", local=service.local)
         attempt["http_status"] = status

@@ -1312,7 +1312,7 @@
         },
         {
           "target_path": "src/video_research_mcp/transcript_provider.py",
-          "target_sha256": "6c5b89181ae1705ff4c49dc5b081b3e0ed85b28c06b39c5fbb14f48c7e35c3c1",
+          "target_sha256": "759aab28413aff11dc36acfcca551d75df69fd63a141240bc6f16110bfc41bd7",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         },
         {
@@ -1387,12 +1387,12 @@
         },
         {
           "target_path": "tests/test_transcript_local.py",
-          "target_sha256": "c6b23549ad16067104b29b7f81e456aad9670bff10de188868bb6c2fb0566655",
+          "target_sha256": "595bfd2bc4ac1e67372a16339dfd34e321376b7f022cd2faccb5d4017d80525f",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
           "target_path": "scripts/local_asr_launch.py",
-          "target_sha256": "4d2134955e3c9eb5b089a2f4b3046387460d21be5fdf143bb30545e33d1a4ecb",
+          "target_sha256": "b88cd1ed3a7fef5630993b92563dfcf9a25ba6f64bdf65423a61591be9780c5a",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
@@ -1407,7 +1407,7 @@
         },
         {
           "target_path": "tests/test_local_asr_launch.py",
-          "target_sha256": "f4f3572b273e53f3a816778a378ed8bb3a776d024cca665e49ea2eb5f6010bcd",
+          "target_sha256": "032d63d00bf951f04bcd24adfd6636ac9457fcd0418bf8bfeaf41ca5e5b027fa",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
@@ -2830,7 +2830,7 @@
         },
         {
           "target_path": "src/video_research_mcp/transcript_provider.py",
-          "target_sha256": "6c5b89181ae1705ff4c49dc5b081b3e0ed85b28c06b39c5fbb14f48c7e35c3c1",
+          "target_sha256": "759aab28413aff11dc36acfcca551d75df69fd63a141240bc6f16110bfc41bd7",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         },
         {
@@ -2905,12 +2905,12 @@
         },
         {
           "target_path": "tests/test_transcript_local.py",
-          "target_sha256": "c6b23549ad16067104b29b7f81e456aad9670bff10de188868bb6c2fb0566655",
+          "target_sha256": "595bfd2bc4ac1e67372a16339dfd34e321376b7f022cd2faccb5d4017d80525f",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
           "target_path": "scripts/local_asr_launch.py",
-          "target_sha256": "4d2134955e3c9eb5b089a2f4b3046387460d21be5fdf143bb30545e33d1a4ecb",
+          "target_sha256": "b88cd1ed3a7fef5630993b92563dfcf9a25ba6f64bdf65423a61591be9780c5a",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
@@ -2925,7 +2925,7 @@
         },
         {
           "target_path": "tests/test_local_asr_launch.py",
-          "target_sha256": "f4f3572b273e53f3a816778a378ed8bb3a776d024cca665e49ea2eb5f6010bcd",
+          "target_sha256": "032d63d00bf951f04bcd24adfd6636ac9457fcd0418bf8bfeaf41ca5e5b027fa",
           "provenance": "Independently authored optional timed loopback wire, exact runtime launcher, serial service and worker, with mocked boundary tests. No third-party runtime, weights, speech or source bodies bundled. Actual corrected NL/EN MCP trials returned HTTP502 without transcripts; startup/import/model-constructor qualification is partial and is not native speech, acoustic alignment, diarization, product or release acceptance."
         },
         {
@@ -3849,7 +3849,7 @@
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_stdio.py",
-          "target_sha256": "288c24c56e405999626f34e3aceae2693adbf9d363849701cec34a78877082ea",
+          "target_sha256": "c01c26063051757a823839159a5ac876435f3470eb1a2fd814d0ad1afe402ca8",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -3931,6 +3931,11 @@
           "target_path": "tests/test_audio_dsp_diagnostics.py",
           "target_sha256": "62e9bf53ac06e4bd010e4230b981b9657a4bebe34a9fe94c5a4eee72516dd7bd",
           "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
+        },
+        {
+          "target_path": "tests/test_audio_dsp_stderr.py",
+          "target_sha256": "32c02416efeb144d2262fd81645cc20213161e29afb43f16535a8df657ae09d2",
+          "provenance": "Independently authored real-pipe regression tests for early bounded stderr visibility, exact64KiB privateprefix hashing/overflow accounting and reader joins. No third-party code, runtime, model or asset is bundled."
         }
       ]
     },
