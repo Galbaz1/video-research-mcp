@@ -9,6 +9,8 @@ import time
 import uuid
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from .config import get_config
 from .image_manifest import canonical, json_digest, write_manifest
 from .image_preprocessing import check_worker, image_worker
@@ -24,7 +26,7 @@ from .redaction import redact_text
 MAX_DERIVED_BYTES = 8 * 1024 * 1024
 
 
-def parser_profile(source_format: str) -> dict:
+def parser_profile(source_format: str, parser: str = "builtin") -> dict:
     """Bind the actual firstparty parsers and optional installed PDF commands."""
     package = Path(__file__).parent
     names = ["ingestion.py", "ingestion_sources.py", "ingestion_pdf.py", "ingestion_audio.py",
@@ -34,7 +36,14 @@ def parser_profile(source_format: str) -> dict:
     profile = {"format": source_format, "implementation": {
         name: hashlib.sha256((package / name).read_bytes()).hexdigest() for name in names
     }, "derived_max_bytes": MAX_DERIVED_BYTES, "indexing": "not_requested"}
-    if source_format == "pdf":
+    if parser == "docling":
+        from .ingestion_docling import service_profile
+
+        profile["selected_parser"] = "docling"
+        profile["service"] = service_profile()
+        for name in ("ingestion_docling.py", "ingestion_docling_document.py", "models/ingestion_service.py"):
+            profile["implementation"][name] = hashlib.sha256((package / name).read_bytes()).hexdigest()
+    elif source_format == "pdf":
         from .ingestion_pdf import pdf_profile
 
         profile["native"] = pdf_profile()
@@ -79,7 +88,11 @@ async def _extract(request, source, directory, profile, deadline) -> dict:
     """Produce located artifacts and publish only after original/parser readbacks."""
     derived = directory / "derived"
     derived.mkdir(mode=0o700)
-    if request.source_format == "pdf":
+    if request.parser == "docling":
+        from .ingestion_docling import parse_docling_source
+
+        parsed = await parse_docling_source(source, derived, profile["service"], deadline)
+    elif request.source_format == "pdf":
         from .ingestion_pdf import parse_pdf_source
 
         parsed = await parse_pdf_source(Path(source["path"]), derived, profile["native"],
@@ -101,13 +114,13 @@ async def _extract(request, source, directory, profile, deadline) -> dict:
         if segment.artifact is not None and segment.artifact not in {a["path"] for a in artifacts}:
             raise ValueError("Extracted element references an uncommitted artifact")
     await verify_origin(source, deadline)
-    if parser_profile(request.source_format) != profile:
+    if parser_profile(request.source_format, request.parser) != profile:
         raise ValueError("Parser implementation/settings changed during extraction")
     payload = {"source": source, "artifacts": artifacts, "segments_artifact": str(segments),
                "parser": profile, "extraction_sha256": json_digest(profile),
                "source_id": source["id"], "source_revision": source["revision"]}
     manifest = await write_manifest(payload, directory)
-    if parser_profile(request.source_format) != profile:
+    if parser_profile(request.source_format, request.parser) != profile:
         raise ValueError("Parser implementation/settings changed before publication")
     return {"manifest": manifest, "artifact_hashes": {
         r["path"]: r["sha256"] for r in [source, *artifacts, manifest]
@@ -116,7 +129,9 @@ async def _extract(request, source, directory, profile, deadline) -> dict:
 
 async def ingest_source(request: SourceIngestRequest) -> dict:
     """Deduplicate exact original/parser requests; never retry unknown extraction work."""
-    profile = parser_profile(request.source_format)
+    if request.parser == "docling" and not request.authorize_submission:
+        raise ValueError("Docling requires authorize_submission=true before retaining or uploading the source")
+    profile = parser_profile(request.source_format, request.parser)
     directory = view_directory()
     source, state, owner = None, {}, "ingestion:" + uuid.uuid4().hex
     timeout = get_config().media_acquire_timeout_seconds
@@ -137,31 +152,47 @@ async def ingest_source(request: SourceIngestRequest) -> dict:
             await image_worker(publish, job_id, owner, artifacts, deadline=deadline)
             return {**await read_ingestion(job_id), "deduplicated": False}
     except asyncio.CancelledError:
-        row = state.get("row")
-        if row is not None:
-            JobStore().cancel(row["job_id"])
-            JobStore().checkpoint(row["job_id"], owner, status="cancelled", release=True,
-                                  error="Owned extraction cancellation joined")
-        else:
-            shutil.rmtree(directory)
+        _failed(request, source, state, owner, directory, "Owned extraction cancellation joined", True)
         raise
     except Exception as error:
-        row = state.get("row")
-        if row is None:
+        if state.get("row") is None:
             shutil.rmtree(directory)
             raise
         message = str(error) or f"{type(error).__name__} during source extraction"
+        if request.parser == "docling" and isinstance(error, ValidationError):
+            message = "Docling normalized document validation failed"
         if isinstance(error, TimeoutError):
             message = f"Source ingestion exceeded its {timeout:g}-second deadline; owned work joined"
-        result = {"status": "failed", "error": redact_text(message), "indexed": False}
-        if source is not None:
-            result["original"] = source
-        current = JobStore().get(row["job_id"])
-        cancelled = current["status"] == "cancel_requested"
-        if cancelled:
-            result["error"] = "Owned extraction cancellation joined"
-        JobStore().checkpoint(row["job_id"], owner,
-                              status="cancelled" if cancelled else "failed", release=True,
-                              result=result, error=result["error"],
-                              artifact_hashes={source["path"]: source["sha256"]})
-        return {**await read_ingestion(row["job_id"]), "deduplicated": False}
+        _failed(request, source, state, owner, directory, message)
+        return {**await read_ingestion(state["row"]["job_id"]), "deduplicated": False}
+
+
+def _failed(request, source, state, owner, directory, message, cancelled=False):
+    """Retain failed original and optional service evidence without retrying conversion."""
+    row = state.get("row")
+    if row is None:
+        shutil.rmtree(directory)
+        return
+    store = JobStore()
+    if cancelled:
+        store.cancel(row["job_id"])
+    cancelled = cancelled or store.get(row["job_id"])["status"] == "cancel_requested"
+    result = {"status": "cancelled" if cancelled else "failed", "error": redact_text(message),
+              "original": source, "indexed": False}
+    hashes = {source["path"]: source["sha256"]}
+    if cancelled:
+        result["error"] = "Owned extraction cancellation joined"
+    if request.parser == "docling":
+        from .ingestion_docling import failure_evidence
+
+        try:
+            evidence, retained_hashes = failure_evidence(source)
+            result.update(evidence)
+            hashes.update(retained_hashes)
+        except Exception:
+            result.update(docling_evidence_error="Docling failure evidence unavailable", docling_evidence={},
+                          docling_lifecycle={"upload_attempted": "unknown", "remote_conversion": "may_continue"})
+        if result["docling_lifecycle"]["upload_attempted"]:
+            result["error"] += "; remote Docling conversion may continue; no automatic retry"
+    store.checkpoint(row["job_id"], owner, status=result["status"], release=True,
+                     result=result, error=result["error"], artifact_hashes=hashes)

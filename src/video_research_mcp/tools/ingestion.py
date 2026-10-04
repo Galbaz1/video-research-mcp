@@ -40,11 +40,12 @@ async def source_ingest(
 ) -> dict:
     """Retain original bytes and extract bounded elements with explicit source positions.
 
-    PDF requires separately installed Poppler; DOCX, Markdown, HTML, plain text
-    and PCM16 WAV use local parsers. Unsupported OCR, PDF table reconstruction,
-    image pixels and speech are reported explicitly. Empty/error extraction
-    fails. Identical source/revision/parser work reuses its durable job. Extraction
-    does not index, call a model, upload to a parser service or prove factual claims.
+    The default builtin parser preserves local extraction behavior. Explicit
+    parser=docling requires an operator-qualified pinned loopback deployment and
+    authorize_submission=true before source retention or upload. That route sends
+    the exact retained original once, with OCR and enrichment disabled. Empty/error
+    extraction fails; identical source/revision/parser work reuses its durable job.
+    Deployment identity and semantic fidelity remain unverified. No indexing occurs.
 
     Args:
         request: One selected original and its preserved identity.
@@ -104,7 +105,11 @@ async def source_ingest_cancel(
         timeout = get_config().media_acquire_timeout_seconds
         async with asyncio.timeout(timeout):
             row = await image_worker(_cancel_job, job_id, deadline=time.monotonic() + timeout)
-        return {"job_id": job_id, "status": row["status"],
-                "termination_verified": row["status"] == "cancelled", "indexed": False}
+        result = {"job_id": job_id, "status": row["status"],
+                  "termination_verified": row["status"] == "cancelled", "indexed": False}
+        if row["request"].get("parser", {}).get("selected_parser") == "docling":
+            result.update(termination_verified=False, remote_conversion="may_continue",
+                          local_owner_acknowledged=row["status"] == "cancelled")
+        return result
     except Exception as error:
         return make_tool_error(error)

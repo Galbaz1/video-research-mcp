@@ -88,10 +88,11 @@ tabular originals retain their stricter original/snapshot equality rule.
 Successful byte validation establishes extraction provenance. It does not prove
 that a claim is true or supply editorial approval. Speech abstentions stay empty.
 
-Indexing is a separate explicit `knowledge_ingest` operation. Extraction does
-not insert into Weaviate, invoke a model, upload to a parsing service or transform
-an extracted note into original evidence. Optional Docling/MinerU/content-core
-service, OCR/model and speech workflows remain unqualified by this local route.
+Indexing is a separate explicit `knowledge_ingest` operation. The default
+`parser: "builtin"` preserves the local extraction route above. It does not
+insert into Weaviate, invoke a model, upload to a parsing service or transform
+an extracted note into original evidence. MinerU/content-core, OCR/model and
+speech workflows remain unqualified by this route.
 
 The LightRAG parser/sidecar requirements were inspected at
 `453dce83d6d0354a06e46c8d4029a0895c4e054b`; this implementation is independently
@@ -99,3 +100,93 @@ authored and imports no LightRAG framework or parser service. Poppler is an
 external GPL runtime: the package neither links nor redistributes its binaries,
 dependencies or encoding data. Deployment owners retain their runtime license
 and distribution obligations.
+
+## Explicit optional Docling HTTP entry
+
+For PDF, DOCX, Markdown or HTML, a request may select `parser: "docling"` and
+`authorize_submission: true`. Both configured operator qualification and request
+authorization are required before source retention. This entry does not install
+or import Docling, launch a service or admit its runtime. The operator must qualify
+the selected deployment separately; `runtime_qualified: true` records that
+operator assertion and does not independently attest the deployment.
+
+Configure `DOCLING_SERVICE_JSON` with a literal loopback origin, an operator
+deployment revision and the SHA-256 of the **actual bytes** returned by that
+deployment's `/v1/capabilities` route:
+
+```json
+{
+  "base_url": "http://127.0.0.1:7777",
+  "contract_route": "/v1/capabilities",
+  "expected_contract_sha256": "<64 lowercase hexadecimal digits from qualified contract bytes>",
+  "deployment_revision": "<operator-selected immutable deployment identity>",
+  "runtime_qualified": true
+}
+```
+
+The route must be enabled with version information. Before uploading any body,
+the adapter reads and retains its capabilities bytes, checks the configured hash
+and requires Docling Serve **1.36.0**, Docling **2.129.0**, core **2.79.0**, inbody
+JSON, embedded images and no API key. These exact versions and routes come from
+the primary [Serve capabilities implementation](https://github.com/docling-project/docling-serve/blob/07b1d3d3b515afd9196148e0353d54ea38de2a37/docling_serve/capabilities.py)
+and [Serve application](https://github.com/docling-project/docling-serve/blob/07b1d3d3b515afd9196148e0353d54ea38de2a37/docling_serve/app.py).
+The retained response must contain `DoclingDocument` schema **1.10.0**.
+Capabilities must admit `file` sources and explicitly include `max_file_size`
+and `max_num_pages` as null or positive integers. Missing or malformed relevant
+limits refuse submission. A finite file-size limit is checked against the exact
+retained byte count before multipart construction. Source page count is unknown
+before upload; no additional PDF parser or probe runs. The receipt states that
+limit, and only the returned page population can be checked against it locally.
+
+Exactly one synchronous multipart POST goes to `/v1/convert/file`. Its `files`
+part contains the exact retained original, rechecked by path, byte count and hash;
+the returned `document.filename` must match. OCR, picture description, picture
+classification, code enrichment and formula enrichment are explicitly disabled.
+Table structure and embedded images are requested. No external image URI is
+followed. Existing bounded local HTTP transport enforces loopback peers, no
+redirects and no automatic retries. Input is limited to 30 MiB and the response
+transport uses a 240 KiB framing/body bound; headers consume part of that bound.
+
+Private immutable `docling-profile.json`, `docling-contract.json`,
+`docling-submission.json`, `docling-response.json` and `docling-lifecycle.json`
+retain the selection, exact returned contract/body bytes, upload commitment and
+lifecycle observations, when each is available. Returned bodies are retained
+before JSON/schema interpretation, including HTTP failures and malformed JSON.
+A transport failure can leave response bytes unavailable; its receipt says so.
+Failed and cancelled durable jobs bind the retained evidence hashes and original.
+PNG derivatives left by a later failed element are also bound without deleting
+historical files. Failure evidence uses bounded regular-file reads and refuses
+symlinks. If collecting that evidence fails, the durable failed/cancelled receipt
+still records the original with a constant evidence-unavailable marker; upload
+state is unknown and remote conversion may continue. Evidence-collection exception
+details are not copied into that receipt. A lifecycle claims local exchange cleanup
+only when an exchange was actually entered.
+Identical failed/cancelled requests remain deduplicated and are never retried.
+
+Timeout and cancellation await cleanup of the locally owned HTTP exchange. Once
+submission is attempted, **remote conversion may continue**: the selected Serve
+504 path still has an abort TODO, and remote termination is unproven. A local
+owner acknowledgement is not remote termination. A fresh process can read the
+same durable failure, original fields and ambiguity without calling the service.
+
+Normalized text and formula segments retain element references; formulas have
+kind `equation`, and the method retains the service label. Whitespace-only text
+items are skipped with a count in limitations; references are not renumbered and
+raw items remain retained. Only a single provenance span covering the whole text establishes
+its box. Partial/multiple provenance remains in the raw response with geometry
+unknown in the normalized element. Table cells retain table/row/column; a whole
+table box is never assigned to a cell. A cell box requires an actual cell box and
+one page provenance record. Strict indices, spans, grids, refs and finite numeric
+geometry reject coercion and oversized populations before output allocation.
+Finite zero-area or out-of-page element boxes retain the page with unknown bounds;
+raw provenance remains available. Valid BOTTOMLEFT boxes preserve their origin.
+Normalized-schema validation failures use a constant durable error, without
+Pydantic's raw input values.
+Embedded PNGs require matching media, strict base64, at most 256 KiB and 8 million
+pixels, with at most **56 images**; Pillow is loaded only for such an image. Extracted PNGs are parser
+derivatives, distinct from source pixels or a rendered page composite.
+
+The adapter's mocked tests establish request/refusal, lineage and bounded mapping
+behavior. Actual deployment identity, runtime/license admission, model behavior,
+semantic fidelity, OCR and remote cancellation remain unverified. Service success
+reports extraction; it supplies neither editorial approval nor parent acceptance.

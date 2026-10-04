@@ -14,6 +14,8 @@ class IngestionLocation(BaseModel):
 
     page: int | None = Field(default=None, ge=1)
     paragraph: int | None = Field(default=None, ge=0)
+    element: str | None = Field(default=None, pattern=r"^#/(texts|tables|pictures)/[0-9]+$",
+                               exclude_if=lambda value: value is None)
     start_char: int | None = Field(default=None, ge=0)
     end_char: int | None = Field(default=None, ge=1)
     bbox: list[float] | None = Field(default=None, min_length=4, max_length=4)
@@ -40,7 +42,7 @@ class IngestionLocation(BaseModel):
         )):
             raise ValueError("Page geometry requires an observed bounding box")
         if not any(value is not None for value in (
-            self.page, self.paragraph, self.start_char, self.table, self.image, self.start_ms,
+            self.page, self.paragraph, self.element, self.start_char, self.table, self.image, self.start_ms,
         )):
             raise ValueError("Location requires an observed source position or interval")
         if self.bbox is not None:
@@ -57,4 +59,3 @@ class IngestionLocation(BaseModel):
             if self.table is None or self.row is None or self.column is None:
                 raise ValueError("Table cell requires table, row and column")
         return self
-
