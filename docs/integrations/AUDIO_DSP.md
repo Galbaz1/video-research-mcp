@@ -98,7 +98,7 @@ power curve but does not include it in this response.
 The fixed programme journey qualified the core measurements and five Juzzy modes,
 plus Ferrous summary, full, compare and silence-summary results with actual
 process-local job readback. Juzzy `full_analysis` twice reached the 120-second
-deadline on the selected two-second stereo fixture. Ferrous `visual_only` failed
+deadline on the selected two-second tone fixture. Ferrous `visual_only` failed
 the protocol collector's line/closure check before any native image was exported.
 These two workflows remain unqualified; their terminal errors and replay stay in
 the acceptance denominator. The successful core plots do not qualify native plots.
