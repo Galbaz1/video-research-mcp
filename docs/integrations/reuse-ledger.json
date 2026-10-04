@@ -648,7 +648,7 @@
         },
         {
           "target_path": "tests/test_media_frames.py",
-          "target_sha256": "9e5ddba8b5463c60d985857ea157b57fcacdf5b7fc36aeb1576a09154a1a3307",
+          "target_sha256": "9bfcd81fda8bf4f0049feb8499092e080c52d93f695bf8404bd499ca80e0bd7e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
@@ -3060,7 +3060,7 @@
         },
         {
           "target_path": "tests/test_media_frames.py",
-          "target_sha256": "9e5ddba8b5463c60d985857ea157b57fcacdf5b7fc36aeb1576a09154a1a3307",
+          "target_sha256": "9bfcd81fda8bf4f0049feb8499092e080c52d93f695bf8404bd499ca80e0bd7e",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed."
         },
         {
