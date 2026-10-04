@@ -30,6 +30,8 @@ const RESOURCE_PATHS = [
   'scripts/spatial_session.py', 'scripts/spatial_inputs.py',
   'scripts/spatial_launch.py', 'scripts/spatial_runtime.py', 'scripts/spatial_fonts.py',
   'scripts/spatial_dispatch.py', 'scripts/spatial_motion.py',
+  'scripts/local_asr_service.py', 'scripts/local_asr_launch.py', 'scripts/local_asr_worker.py',
+  'docs/integrations/local-asr.md',
 ];
 const EXPECTED_ADDITIONS = Object.fromEntries([
   ...ADDED_SKILLS.map(name => [`skills/${name}/SKILL.md`, `skills/${name}/SKILL.md`]),
