@@ -519,6 +519,52 @@ async def test_authored_oversize_refuses_before_codec_work(monkeypatch):
     qualifier.assert_not_awaited()
 
 
+async def test_authored_qualification_reports_fixed_quality_without_claims(monkeypatch):
+    """Report the selected entry while retaining the requested fast setting and limits."""
+    artifact = {"size_bytes": 100, "sha256": "a" * 64}
+    request = {"renderer": {"entry": "/owned/entry"}, "resolution": "720p", "fast": True}
+    generic = {"renderer_identity": "configured CLI; implementation not attested",
+               "real_renderer_verified": False, "visual_audio_semantics": "not_verified"}
+    fixture = {"frames": 30, "playback_verified": False, "receipt": {"sha256": "b" * 64}}
+    media = AsyncMock(return_value=generic)
+    exact = AsyncMock(return_value=fixture)
+    monkeypatch.setattr(worker, "qualify_render", media)
+    monkeypatch.setattr(worker, "qualify_authored", exact)
+
+    result = await worker._qualify_output(artifact, request)
+
+    assert result["renderer_identity"] == "authored fixed-fixture entry"
+    assert result["authored_fixture"] == {
+        "frames": 30, "playback_verified": False, "receipt": {"sha256": "b" * 64},
+        "quality": "fixed", "fast_applied": False,
+    }
+    assert result["real_renderer_verified"] is False
+    assert result["visual_audio_semantics"] == "not_verified"
+    assert request == {"renderer": {"entry": "/owned/entry"}, "resolution": "720p", "fast": True}
+    media.assert_awaited_once_with(artifact, "720p")
+    exact.assert_awaited_once_with(artifact, generic, request)
+
+
+async def test_foreign_qualification_reporting_is_unchanged(monkeypatch):
+    """Foreign qualification retains its identity and receives no authored quality fields."""
+    artifact = {"size_bytes": 100, "sha256": "a" * 64}
+    request = {"resolution": "1080p", "fast": True}
+    expected = {"renderer_identity": "configured CLI; implementation not attested",
+                "real_renderer_verified": False, "visual_audio_semantics": "not_verified",
+                "media": {"width": 1920, "height": 1080}}
+    media = AsyncMock(return_value=dict(expected))
+    exact = AsyncMock()
+    monkeypatch.setattr(worker, "qualify_render", media)
+    monkeypatch.setattr(worker, "qualify_authored", exact)
+
+    result = await worker._qualify_output(artifact, request)
+
+    assert result == expected
+    assert request == {"resolution": "1080p", "fast": True}
+    media.assert_awaited_once_with(artifact, "1080p")
+    exact.assert_not_awaited()
+
+
 def test_browser_capture_synchronizes_esm_bindings():
     """Capture namespace launches and restore both bindings through failures."""
     node = shutil.which("node")

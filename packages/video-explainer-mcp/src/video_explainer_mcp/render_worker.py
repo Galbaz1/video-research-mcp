@@ -189,7 +189,9 @@ async def _qualify_output(artifact: dict, request: dict) -> dict:
         raise ValueError("Authored output exceeds 16 MiB")
     qualification = await qualify_render(artifact, request["resolution"])
     if request.get("renderer"):
+        qualification["renderer_identity"] = "authored fixed-fixture entry"
         qualification["authored_fixture"] = await qualify_authored(artifact, qualification, request)
+        qualification["authored_fixture"].update(quality="fixed", fast_applied=False)
     return qualification
 
 

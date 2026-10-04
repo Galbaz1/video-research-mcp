@@ -5057,7 +5057,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "787eafcd1899599abbe9b635b5fa06bdca99aaefc204d136293262e14e5c59f1",
+          "target_sha256": "fa1dfd25aef87ded2e1db04190906088bac33bbdb53c86dccb2e1f9324a97593",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
           "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         },
@@ -5514,7 +5514,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "787eafcd1899599abbe9b635b5fa06bdca99aaefc204d136293262e14e5c59f1",
+          "target_sha256": "fa1dfd25aef87ded2e1db04190906088bac33bbdb53c86dccb2e1f9324a97593",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         },
@@ -5606,7 +5606,7 @@
         },
         {
           "target_path": "docs/integrations/authored-renderer.md",
-          "target_sha256": "20cf26d9da20137ad218db26b11b86afa4bc2e08faf04dea4829999ba57c99c6",
+          "target_sha256": "02190303a39fd26fb1129e0429bfbefd5cbc6e7924766cfa17f3d82553f33b1b",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
         },
         {
@@ -5658,7 +5658,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_authored.py",
-          "target_sha256": "4c16ff553db598cc49c8b6e177a89a2d3e1ea126ad0e4c90baffee3bcf11e768",
+          "target_sha256": "76c8405ee74becf64c1b299da9409d2f39e65c35c0d29f213cd49a46db520a7c",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         },

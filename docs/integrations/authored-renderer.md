@@ -58,3 +58,8 @@ absent after cleanup. Earlier failed attempts are retained in the programme
 receipts. This qualifies the fixed fixture; production storyboards and general
 visual/audio fidelity still require their own evidence. The job's conservative
 `real_renderer_verified` field does not incorporate that separate UI observation.
+
+For this fixture, `fast` remains a recorded request setting and does not alter
+encoding quality. Qualification labels the selected route as
+`authored fixed-fixture entry` and records `quality: fixed`, `fast_applied: false`.
+The separately configured CLI continues to receive its supported `--fast` flag.
