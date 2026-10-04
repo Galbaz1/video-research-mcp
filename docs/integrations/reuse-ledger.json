@@ -3909,7 +3909,7 @@
         },
         {
           "target_path": "docs/integrations/AUDIO_DSP.md",
-          "target_sha256": "3fd73184487282524d1306119e130db1a51b7f19ab3aad655b38064bef134fe7",
+          "target_sha256": "2da66f6b3b4d6ef33272b8ccb28bf9ccf0da4c7947df71639a9b9263c5111b75",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
