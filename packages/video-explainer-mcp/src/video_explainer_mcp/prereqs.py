@@ -15,6 +15,7 @@ from .media_process import run_media_process
 from .render_contract import project_contract, source_contract
 from .planning_sources import read_object
 from .render_validation import codec_executables
+from .render_authored import authored_binding, authored_project, bind_fixture
 
 
 class PrereqStatus(BaseModel):
@@ -113,21 +114,16 @@ def check_prereqs(project_id: str | None = None) -> PrereqReport:
                 message="" if found else f"{name} is not available in PATH",
             )
         )
-    checks.extend(_renderer_checks(directory))
-    source = (
-        source_contract(directory)
-        if directory
-        else {"mapped_source_verified": False, "errors": ["EXPLAINER_PATH is not configured"]}
-    )
-    project = {}
-    if project_id is not None:
-        target = (cfg.resolved_projects_path / project_id).resolve()
-        try:
-            if not target.is_relative_to(cfg.resolved_projects_path):
-                raise ValueError("Project resolves outside configured root")
-            project = {"supported": True, **project_contract(target, "720p")}
-        except (OSError, ValueError) as exc:
-            project = {"supported": False, "error": str(exc)}
+    if cfg.renderer_entry:
+        source = _authored_checks(cfg, checks)
+    else:
+        checks.extend(_renderer_checks(directory))
+        source = (
+            source_contract(directory)
+            if directory
+            else {"mapped_source_verified": False, "errors": ["EXPLAINER_PATH is not configured"]}
+        )
+    project = _project_check(project_id, cfg, source)
     required = [c for c in checks if c.name != "claude"]
     ready = (
         all(c.available for c in required)
@@ -155,6 +151,43 @@ def check_prereqs(project_id: str | None = None) -> PrereqReport:
     )
 
 
+def _project_check(project_id: str | None, cfg, source: dict) -> dict:
+    """Check the selected route and frozen fixture inside the configured root."""
+    if project_id is None:
+        return {}
+    target = (cfg.resolved_projects_path / project_id).resolve()
+    try:
+        if not target.is_relative_to(cfg.resolved_projects_path):
+            raise ValueError("Project resolves outside configured root")
+        contract = authored_project(target, "720p") if cfg.renderer_entry else project_contract(target, "720p")
+        if cfg.renderer_entry and source["mapped_source_verified"]:
+            bind_fixture(target, source["binding"])
+        return {"supported": True, **contract}
+    except (OSError, ValueError) as exc:
+        return {"supported": False, "error": str(exc)}
+
+
+def _authored_checks(cfg, checks: list[PrereqStatus]) -> dict:
+    """Inspect the root freeze without loading installed renderer modules or browser."""
+    try:
+        binding = authored_binding(cfg)
+        node = checks[0]
+        checks[0] = PrereqStatus(name="node", available=True, path=binding["node"]["path"],
+                                version=node.version if node.path == binding["node"]["path"] else "not checked")
+        checks.append(PrereqStatus(name="authored_entry", available=True, path=binding["entry"]))
+        checks.append(PrereqStatus(name="browser", available=True, path=binding["browser"]["path"],
+                                   message="Frozen existing browser; doctor never downloads or launches it"))
+        return {"mapped_source_verified": True, "route": "authored_fixture", "errors": [],
+                "binding": binding, "foreign_runtime_executed": False,
+                "capability": "bounded solid-card fixture only; production storyboards unsupported",
+                "commercial_eligibility": "unresolved; evaluation only"}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        checks.append(PrereqStatus(name="authored_entry", available=False, message=str(exc)))
+        return {"mapped_source_verified": False, "route": "authored_fixture", "errors": [str(exc)],
+                "capability": "bounded solid-card fixture only; production storyboards unsupported",
+                "foreign_runtime_executed": False}
+
+
 async def doctor(project_id: str | None = None) -> PrereqReport:
     """Read native versions with bounded owned subprocesses; make no provider call."""
     report = check_prereqs(project_id)
@@ -176,7 +209,11 @@ async def doctor(project_id: str | None = None) -> PrereqReport:
             check.available = False
             check.message = str(exc)
     cfg = get_config()
-    if cfg.explainer_path:
+    if cfg.renderer_entry:
+        fresh_checks = [c for c in report.checks if c.name not in ("authored_entry", "browser")]
+        report.source = _authored_checks(cfg, fresh_checks)
+        report.checks = fresh_checks
+    elif cfg.explainer_path:
         report.source = source_contract(Path(cfg.explainer_path).expanduser().resolve())
     report.all_ok = (
         report.all_ok

@@ -22,6 +22,9 @@ class ServerConfig(BaseModel):
     timeout: int = Field(default=600)
     render_timeout: int = Field(default=1800)
     explainer_python: str = Field(default="python3")
+    renderer_entry: str = Field(default="")
+    renderer_spec: str = Field(default="")
+    renderer_spec_sha256: str = Field(default="")
     elevenlabs_api_key: str = Field(default="")
     openai_api_key: str = Field(default="")
 
@@ -79,6 +82,9 @@ class ServerConfig(BaseModel):
             timeout=_int("EXPLAINER_TIMEOUT", 600),
             render_timeout=_int("EXPLAINER_RENDER_TIMEOUT", 1800),
             explainer_python=os.getenv("EXPLAINER_PYTHON", "python3"),
+            renderer_entry=os.getenv("EXPLAINER_RENDERER_ENTRY", ""),
+            renderer_spec=os.getenv("EXPLAINER_RENDERER_SPEC", ""),
+            renderer_spec_sha256=os.getenv("EXPLAINER_RENDERER_SPEC_SHA256", ""),
             elevenlabs_api_key=os.getenv("ELEVENLABS_API_KEY", ""),
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         )

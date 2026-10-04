@@ -2747,8 +2747,9 @@
         },
         {
           "target_path": "src/video_research_mcp/media_process.py",
-          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
-          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
+          "target_sha256": "4073b806115a44a8c347ed6d424f2349f9cb678e37ee4bb7210e81ab85961a5d",
+          "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "src/video_research_mcp/media_sources.py",
@@ -5050,13 +5051,15 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
-          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "3cf58e24c3428e2e0f5a40c8844891a469183b2e78f95093e38c1ff4bc44bc94",
-          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
+          "target_sha256": "787eafcd1899599abbe9b635b5fa06bdca99aaefc204d136293262e14e5c59f1",
+          "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
@@ -5224,8 +5227,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "3751b8eb22406d6b242c2fa8f9b3141d5be4a79b8c8e8ecab750eff1aa28ee4e",
-          "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
+          "target_sha256": "1c91970129e6b126c4bdc542b4ec1eb647ea9a7d4c3f7ad39dcc8865f794f591",
+          "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "pyproject.toml",
@@ -5394,8 +5398,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
-          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
+          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
@@ -5475,13 +5480,15 @@
       "implementations": [
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
-          "target_sha256": "79dd3e2a53eac6751ff91d9a2989ba91b9981633b04dcbf2b7c06662a8800c4c",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "2723b06a63c25950f3fafc51648f9a44c4fb783287b532d243df75eb76328c52",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
-          "target_sha256": "300ea19154575a250cc75739a43afbc2116d8cc1e89525b7dfeadccd75b858f3",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "5f3dae8cee036618ed6d41dafaa830b5e78947e39552e8242ecf2dded11856ce",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
@@ -5490,13 +5497,15 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
-          "target_sha256": "ac6d7f6b3398c549963245f1b3a5bbeefcfb2bb0217a43fd1ce463551b18cf75",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "4073b806115a44a8c347ed6d424f2349f9cb678e37ee4bb7210e81ab85961a5d",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Reviewed shared-helper PermissionError cleanup repair; receipt follows the symlink target source. Native renderer remains unqualified."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "5bb3f0163b7b47238c952151b31d013942edcff4032aa30e7c70b96bcfb9bf60",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
@@ -5505,8 +5514,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "3cf58e24c3428e2e0f5a40c8844891a469183b2e78f95093e38c1ff4bc44bc94",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "787eafcd1899599abbe9b635b5fa06bdca99aaefc204d136293262e14e5c59f1",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
@@ -5530,8 +5540,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "3751b8eb22406d6b242c2fa8f9b3141d5be4a79b8c8e8ecab750eff1aa28ee4e",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "target_sha256": "1c91970129e6b126c4bdc542b4ec1eb647ea9a7d4c3f7ad39dcc8865f794f591",
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
@@ -5592,6 +5603,76 @@
           "target_path": "scripts/inspect_provider_readiness.py",
           "target_sha256": "e425c1de1688250914f8a11eafa5dbf7f60a6e274ff45800ec8badb855fc4ad4",
           "provenance": "Own offline inspector exact source allowlist extended by the four declared firstparty renderer-readiness contracts; source guards and authority/provider rules unchanged."
+        },
+        {
+          "target_path": "docs/integrations/authored-renderer.md",
+          "target_sha256": "20cf26d9da20137ad218db26b11b86afa4bc2e08faf04dea4829999ba57c99c6",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/package-lock.json",
+          "target_sha256": "eb03eb7f3ddf48285936d4999222fd057cdf7d0dbee7ec74e95523ecc5709b59",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/package.json",
+          "target_sha256": "1bf147768e1f272d834e268a92bd285a507eb93798745b104a6c634dedd398d3",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/render_entry.mjs",
+          "target_sha256": "87ec6d9653b41fcc6abfd12afbe671cfd51834cee0a528305757be253336bd24",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/Fixture.tsx",
+          "target_sha256": "be0cc5b3e6bcc60d5a7790b4142e720f0c32f3256fd3ce3b88054ec4415aecc9",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/Root.tsx",
+          "target_sha256": "53b66ebfe4449c50e7e98ed2fd199203c746f8f7021c1781dd9819f67483b7a4",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/index.ts",
+          "target_sha256": "a58f804bf74bab68b4549aa5c715eb4a89ec5835206d198fc79b462b4fc71ef9",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
+          "target_sha256": "e57a0b689a94e14df1320b6912484773f9c4da8c8a04fcb21d414e0aa8a29512",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_authored.py",
+          "target_sha256": "111526fb596376f372ab6257d8c88bc0c7996354909c8cc3ef5b5613ec4a1c72",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/runner.py",
+          "target_sha256": "1dbe0bdc2d7c5d3c3ef132e7bd57126a0f0e7cb2510744d289f92ca63c98bb39",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_authored.py",
+          "target_sha256": "4c16ff553db598cc49c8b6e177a89a2d3e1ea126ad0e4c90baffee3bcf11e768",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_runner.py",
+          "target_sha256": "d48b9c0388118f90d40f4925819374cd7401eb14fc87206f692a46b8f991eac0",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/fixtures/browser_capture.mjs",
+          "target_sha256": "385cb167bebdc10c992c3dbf3e3d2dc01ef1c92b270a29341f58bb286cca0061",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
         }
       ]
     },

@@ -35,7 +35,7 @@ def _signal_owned(process: asyncio.subprocess.Process, sig: signal.Signals) -> N
             os.killpg(process.pid, sig)
         elif process.returncode is None:
             process.send_signal(sig)
-    except ProcessLookupError:
+    except (ProcessLookupError, PermissionError):
         pass
 
 

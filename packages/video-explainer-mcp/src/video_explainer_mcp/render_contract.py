@@ -17,6 +17,8 @@ MAPPED_SOURCE_SHA256 = {
     "remotion/scripts/render.mjs": "c7a2e51b00575da0d1ddf95257bab6f3fabcf988a86d207a2b16e25812845df7",
 }
 RENDER_FLAGS = ["render PROJECT", "-r RESOLUTION", "--fast"]
+AUTHORED_FILES = ("package.json", "src/index.ts", "src/Root.tsx", "src/Fixture.tsx",
+                  "render_entry.mjs", "package-lock.json")
 
 
 def source_contract(directory: Path) -> dict:

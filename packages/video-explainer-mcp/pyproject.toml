@@ -48,6 +48,12 @@ packages = ["src/video_explainer_mcp"]
 "src/video_explainer_mcp/models/ingestion_location.py" = "video_explainer_mcp/models/ingestion_location.py"
 "src/video_explainer_mcp/job_store.py" = "video_explainer_mcp/job_store.py"
 "src/video_explainer_mcp/media_process.py" = "video_explainer_mcp/media_process.py"
+"renderer-entry/package.json" = "video_explainer_mcp/renderer-entry/package.json"
+"renderer-entry/package-lock.json" = "video_explainer_mcp/renderer-entry/package-lock.json"
+"renderer-entry/render_entry.mjs" = "video_explainer_mcp/renderer-entry/render_entry.mjs"
+"renderer-entry/src/index.ts" = "video_explainer_mcp/renderer-entry/src/index.ts"
+"renderer-entry/src/Root.tsx" = "video_explainer_mcp/renderer-entry/src/Root.tsx"
+"renderer-entry/src/Fixture.tsx" = "video_explainer_mcp/renderer-entry/src/Fixture.tsx"
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "hatch_resources.py"
@@ -59,6 +65,12 @@ path = "hatch_resources.py"
 "../../src/video_research_mcp/models/ingestion_location.py" = "src/video_explainer_mcp/models/ingestion_location.py"
 "../../src/video_research_mcp/job_store.py" = "src/video_explainer_mcp/job_store.py"
 "../../src/video_research_mcp/media_process.py" = "src/video_explainer_mcp/media_process.py"
+"renderer-entry/package.json" = "renderer-entry/package.json"
+"renderer-entry/package-lock.json" = "renderer-entry/package-lock.json"
+"renderer-entry/render_entry.mjs" = "renderer-entry/render_entry.mjs"
+"renderer-entry/src/index.ts" = "renderer-entry/src/index.ts"
+"renderer-entry/src/Root.tsx" = "renderer-entry/src/Root.tsx"
+"renderer-entry/src/Fixture.tsx" = "renderer-entry/src/Fixture.tsx"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
