@@ -33,16 +33,50 @@ source exists return an actionable tool error.
 
 | Format | Preserved observations | Explicit limits |
 | --- | --- | --- |
-| PDF | Word text, page number, top-left XY bounds and measured page dimensions; embedded-image page/object/dimension descriptors; raw parser layout | Separately installed `pdftotext` and `pdfimages` required. No OCR, table-cell reconstruction or image pixel export |
+| PDF | Word text, page number, top-left XY bounds, raw layout and embedded-image descriptors; inferred rectangular cells; optional encoded image streams and source RGB pixels | Separately installed Poppler required; pixels also require installed PDFium. No OCR, semantic table guarantee, masks/compositing or nested image extraction |
 | DOCX | XML paragraph positions, table/cell positions, embedded image bytes and relationship descriptors, equation descriptors | Rendered pages and bounds are unknown. External references are retained as data and never fetched |
 | Markdown | Literal paragraphs and character intervals; simple pipe-table cells; image/link reference descriptors | General Markdown rendering and referenced image pixels are unavailable |
 | HTML | Text/element and table-cell positions; literal reference/alt descriptors | No browser execution, CSS layout, network references or image pixel retrieval |
 | Plain text | Literal paragraphs and character intervals | UTF-8 only |
 | Audio | Full PCM16 WAV frame read, sample/rate/channel descriptor and source interval | No compressed formats, transcript, speaker identity or semantic speech claim |
 
+PDF cells use aligned word geometry and report content bounds; ruling-line bounds
+and semantic accuracy remain unknown. Their shared `pdf-tables.json` artifact
+contains a `tables` array. Source-word ordinals are per page, include blank XML
+nodes and are distinct from the returned `word-N` segment IDs.
+Pixel extraction admits unrotated pages
+with an explicit full-page MediaBox and matching measured effective bounds.
+Poppler object descriptors and PDFium pixel occurrences have separate identities;
+counting both representations does not establish a physical image count.
+The descriptor's `pixel_bytes_exported: false` describes that descriptor artifact;
+the separate pixel occurrence identifies its RGB artifact. Orientation, clipping,
+Decode, color-key masking, masks and compositing remain unknown or unapplied.
+
+The optional PDFium worker checks its selected interpreter, own source and complete
+inventory of `pypdfium2`, `pypdfium2_raw`, `pypdfium2_cfg` and distribution metadata
+before import and after extraction; `pypdfium2_cli` is excluded. It runs
+in a separate isolated Python process within the shared extraction deadline.
+The package includes this first-party worker, while the PDFium runtime is installed
+separately. These checks do not establish an OS sandbox or a complete host/native
+dependency boundary. An absent runtime retains descriptors and reports that pixel
+extraction is unavailable.
+Trusted worker and package installation roots are canonicalized; selected files
+and untrusted input/output paths retain strict symlink refusal. An inherited
+`DYLD_*` or `LD_*` name makes the parent abstain from pixel export and retain
+descriptors. The isolated worker also refuses those overrides. Native exceptions,
+custody drift and native-object exhaustion remain terminal. Native enumeration
+has its own 4096-object ceiling; only exported image segments consume the remaining
+4096-element output budget. Each parser process receives at most 30 seconds within
+the caller's shared deadline. Custody-hashing latency has not been measured.
+The worker uses `-B`; any external bytecode addition or mutation changes the
+selected inventory, parser identity and job identity rather than silently reusing
+an earlier job.
+
 The acquisition ceiling is 50 MiB. Text parsing is bounded to 1 MiB, DOCX has
 bounded ZIP expansion, and WAV is limited to 600 seconds. Extraction admits at
-most 4096 elements and 8 MiB of derived artifacts. Empty extraction, malformed
+most 4096 elements, 8 MiB of derived artifacts and 64 artifact files. Optional
+table cells or pixels may abstain before consuming capacity needed by retained
+words and descriptors. Empty extraction, malformed
 input, unsupported structure, exceeded limits and parser failure are terminal
 failures with `indexed: false`. The original and its revision remain separate
 from derived elements and notes.

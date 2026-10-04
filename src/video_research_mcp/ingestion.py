@@ -29,6 +29,7 @@ def parser_profile(source_format: str) -> dict:
     package = Path(__file__).parent
     names = ["ingestion.py", "ingestion_sources.py", "ingestion_pdf.py", "ingestion_audio.py",
              "ingestion_text.py", "ingestion_docx.py", "ingestion_read.py", "ingestion_jobs.py",
+             "ingestion_pdf_tables.py", "ingestion_pdf_pixels.py",
              "models/ingestion.py", "models/ingestion_location.py"]
     profile = {"format": source_format, "implementation": {
         name: hashlib.sha256((package / name).read_bytes()).hexdigest() for name in names
