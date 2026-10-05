@@ -84,6 +84,7 @@ def local_rank(db, rows, request) -> tuple[list, dict]:
 async def query(request) -> dict:
     """Return bounded source context and explicit no-evidence without generating an answer."""
     with index.connect(request.index_path) as db:
+        db.execute("BEGIN")
         current = index.revision(db, request.collection)
         rows = index.current_rows(db, request)
         if request.graph is None:
@@ -92,10 +93,10 @@ async def query(request) -> dict:
             entities = [{"name": name, "observation_ids": [chunk["observation_id"]],
                          "source_ids": [chunk["source_id"]], "basis": "supplied_observation"}
                         for chunk in chunks for name in chunk["entities"]]
-        else:
-            from .corpus_lightrag import graph_context
+    if request.graph is not None:
+        from .corpus_lightrag import graph_context
 
-            chunks, entities, retrieval = await graph_context(request, rows)
+        chunks, entities, retrieval = await graph_context(request, rows)
     context = context_selection(chunks, entities, request.token_budget, request.top_k)
     return CorpusResponse(status="found" if context["chunks"] else "no_evidence",
                           collection=request.collection, index_revision=current, context=context,

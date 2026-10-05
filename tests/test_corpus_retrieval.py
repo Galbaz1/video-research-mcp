@@ -1,5 +1,6 @@
 """Controlled source boundaries for corpus retrieval; no service or model execution."""
 
+from contextlib import closing
 import json
 import sqlite3
 
@@ -65,6 +66,34 @@ async def test_fixed_cross_video_exact_sources_and_explicit_absence(corpus):
     assert result["evidence_verification"] == "supplied_artifact_identities_not_independently_verified"
     absent = await corpus_retrieve(request(query="unicorn", mode="fts"))
     assert absent["status"] == "no_evidence" and ids(absent) == []
+
+
+async def test_query_retains_one_snapshot_during_concurrent_index_commit(corpus, monkeypatch):
+    """GIVEN a concurrent committed source revision THEN metadata and evidence share one snapshot."""
+    from video_research_mcp import corpus_index
+    from video_research_mcp.models.corpus import IndexRequest
+
+    obs, _, request = corpus
+    await seed(corpus, [obs("one")])
+    with closing(sqlite3.connect(request()["index_path"])) as connection:
+        assert connection.execute("PRAGMA journal_mode=WAL").fetchone()[0] == "wal"
+    original = corpus_index.revision
+    committed = []
+    def interleave(db, collection):
+        current = original(db, collection)
+        if not committed:
+            committed.append(True)
+            result = corpus_index.mutate(IndexRequest.model_validate(request(
+                "index", expected_revision=1,
+                observations=[obs("one", text="silver circuit", revision="r2")])))
+            assert result["index_revision"] == 2
+        return current
+    monkeypatch.setattr(corpus_index, "revision", interleave)
+    result = await corpus_retrieve(request(mode="fts"))
+    assert result["index_revision"] == 1 and ids(result) == ["one"]
+    assert result["context"]["chunks"][0]["source_revision"] == "r1"
+    later = await corpus_retrieve(request(query="silver", mode="fts", source_revisions={"video-a": "r2"}))
+    assert later["index_revision"] == 2 and ids(later) == ["one"]
 
 
 @pytest.mark.parametrize("mode,vector,model,active,expected", [

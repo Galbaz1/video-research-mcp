@@ -86,6 +86,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "adj_evidence_packet",
         "qwen_reuse_manifest",
         "direct.providers",
+        "direct.retrieval",
+        "adj_corpus_retrieval",
         "own.analysis-cache-contract",
         "direct.identity",
         "direct.budgets",

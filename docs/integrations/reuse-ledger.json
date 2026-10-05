@@ -1056,7 +1056,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -1191,7 +1191,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -1411,7 +1411,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -1522,7 +1522,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -2276,7 +2276,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         }
@@ -2407,7 +2407,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
         }
       ]
@@ -3065,7 +3065,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -3457,42 +3457,42 @@
         {
           "target_path": "src/video_research_mcp/corpus_index.py",
           "target_sha256": "5b6fda8189accb061f93c233e497396bc6bbb90bf33058bbdb494a4a102a8438",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "src/video_research_mcp/corpus_retrieval.py",
-          "target_sha256": "e8f62f108f5a4f2b22bbe1626f00fe558c1cbba08af740bc08da0ceb932896fc",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "target_sha256": "7aaa58d9b349aaf6ef44417eb5756fab0bca28d085dbc0ad4c6480b6d99ed3cf",
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN. R160 consistent-read finding retained; R167 explicit read snapshot and graph await after connection close, real two-connection WAL regression failed before fix then45corpus tests pass/Ruffpass. Narrow independent source repair review no material findings; installed/native/heldout acceptance remains OPEN."
         },
         {
           "target_path": "src/video_research_mcp/models/corpus.py",
           "target_sha256": "c6952db1cd29464aa3ac7b085447bbf55475ed834d7d916a3f146f35d3fb2aa3",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "src/video_research_mcp/tools/corpus.py",
           "target_sha256": "642e9f394eb460fbac691091a8cddb6ef8f6cfe1046309d31fbe25ea208c6b75",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "tests/test_corpus_retrieval.py",
-          "target_sha256": "bf9a1335b7a3c66169f3ef82c5d5e17de1788233885758fd5125bb29476bbeb4",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "target_sha256": "56686a1a4ee65e5a3d06afd0cef1b2bbbc89d7f12462a502a678e907ae88dace",
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN. R160 consistent-read finding retained; R167 explicit read snapshot and graph await after connection close, real two-connection WAL regression failed before fix then45corpus tests pass/Ruffpass. Narrow independent source repair review no material findings; installed/native/heldout acceptance remains OPEN."
         },
         {
           "target_path": "docs/integrations/LIGHTRAG.md",
           "target_sha256": "c2660a655103d8c4afe9fdf7e0e725951fbe371043694e8a39995230fe3fc10e",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
           "target_sha256": "0ff4474723946d6e0ab1b79ba440dad34a1bfaaa2b3c3f98e7252db2a5304236",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
           "target_sha256": "04769b6061fdace8abc9c2917248e7fba71ab6585789bfaf431c4df6ff399132",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         }
       ]
     },
@@ -4043,7 +4043,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -4113,7 +4113,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "6bb1698d3f461c4b0b68d9af7ae0e3e52640d6409e69a53fb02e9505dec5bdc5",
+          "target_sha256": "456d6f9f4085027f99428b9dc5b6ac33d51cd950f8eed3969452663c2849772c",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -4250,7 +4250,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -5294,7 +5294,7 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported.",
           "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
@@ -5399,22 +5399,22 @@
         {
           "target_path": "src/video_research_mcp/corpus_lightrag.py",
           "target_sha256": "5fd048f4653f6855d2b8263e60148df9987fa9545c718d4bbc921953e02429ae",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "src/video_research_mcp/models/corpus.py",
           "target_sha256": "c6952db1cd29464aa3ac7b085447bbf55475ed834d7d916a3f146f35d3fb2aa3",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
           "target_path": "tests/test_corpus_retrieval.py",
-          "target_sha256": "bf9a1335b7a3c66169f3ef82c5d5e17de1788233885758fd5125bb29476bbeb4",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "target_sha256": "56686a1a4ee65e5a3d06afd0cef1b2bbbc89d7f12462a502a678e907ae88dace",
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN. R160 consistent-read finding retained; R167 explicit read snapshot and graph await after connection close, real two-connection WAL regression failed before fix then45corpus tests pass/Ruffpass. Narrow independent source repair review no material findings; installed/native/heldout acceptance remains OPEN."
         },
         {
           "target_path": "docs/integrations/LIGHTRAG.md",
           "target_sha256": "c2660a655103d8c4afe9fdf7e0e725951fbe371043694e8a39995230fe3fc10e",
-          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused37tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
+          "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         }
       ]
     },
