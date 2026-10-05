@@ -1,5 +1,11 @@
 # Original-source ingestion
 
+For document questions, prefer Newton's existing original-PDF path: retain the
+original bytes, bind the source hash and refer to the exact page. Use structured
+extraction when you need reusable located text, cells or image artifacts. It is
+an optional, narrower workflow; no comparative quality advantage over Newton
+has been established, and Docling is not a required dependency.
+
 `source_ingest` retains an original before extracting located elements. Supply
 one local `file_path` or public HTTPS `url`, `source_format`, `source_id` and
 `revision`. An optional `expected_source_sha256` binds the input to known bytes.
@@ -33,24 +39,54 @@ source exists return an actionable tool error.
 
 | Format | Preserved observations | Explicit limits |
 | --- | --- | --- |
-| PDF | Word text, page number, top-left XY bounds, raw layout and embedded-image descriptors; inferred rectangular cells; optional encoded image streams and source RGB pixels | Separately installed Poppler required; pixels also require installed PDFium. No OCR, semantic table guarantee, masks/compositing or nested image extraction |
+| PDF | Word text, page number, top-left XY bounds, raw layout and image descriptors; inferred cells; optional measured page geometry/rotation, complete-grid regions, encoded streams and source RGB pixels | Separately installed Poppler required; optional native observations require installed PDFium. Narrow grid and original-image binding support; no OCR, semantic table guarantee, masks/compositing or nested image extraction |
 | DOCX | XML paragraph positions, table/cell positions, embedded image bytes and relationship descriptors, equation descriptors | Rendered pages and bounds are unknown. External references are retained as data and never fetched |
 | Markdown | Literal paragraphs and character intervals; simple pipe-table cells; image/link reference descriptors | General Markdown rendering and referenced image pixels are unavailable |
 | HTML | Text/element and table-cell positions; literal reference/alt descriptors | No browser execution, CSS layout, network references or image pixel retrieval |
 | Plain text | Literal paragraphs and character intervals | UTF-8 only |
 | Audio | Full PCM16 WAV frame read, sample/rate/channel descriptor and source interval | No compressed formats, transcript, speaker identity or semantic speech claim |
 
-PDF cells use aligned word geometry and report content bounds; ruling-line bounds
-and semantic accuracy remain unknown. Their shared `pdf-tables.json` artifact
-contains a `tables` array. Source-word ordinals are per page, include blank XML
-nodes and are distinct from the returned `word-N` segment IDs.
-Pixel extraction admits unrotated pages
-with an explicit full-page MediaBox and matching measured effective bounds.
-Poppler object descriptors and PDFium pixel occurrences have separate identities;
-counting both representations does not establish a physical image count.
-The descriptor's `pixel_bytes_exported: false` describes that descriptor artifact;
-the separate pixel occurrence identifies its RGB artifact. Orientation, clipping,
-Decode, color-key masking, masks and compositing remain unknown or unapplied.
+PDF cells use aligned word geometry and disclose rectangular inference; semantic
+accuracy remains unknown. Their shared `pdf-tables.json` artifact contains a
+`tables` array. Cell bounds locate their text. A table's `content_bbox` retains
+text content bounds; `bbox_role` distinguishes those from an optional measured
+ruling centerline region. That region requires a complete, unambiguous,
+axis-aligned native grid with every border and separator and matching indexed
+cells (at least three rows and two to eight columns). It does not measure painted
+border extent or establish stroke visibility. Incomplete/ambiguous grids,
+rejected same-page paths/forms or multiple tables on a page abstain from the
+measured region. Source-word ordinals are per page, include blank XML nodes and
+are distinct from returned `word-N` segment IDs.
+
+With the optional PDFium runtime, `pdfium-result.json` records measured dimensions
+and clockwise rotation for every page, including pages without images, bound to
+the original hash and measurement method. These are manifest-committed artifact
+fields. Pixel export and ruling measurement admit only unrotated pages with an
+explicit full-page MediaBox and matching effective bounds. A Poppler/PDFium page
+count or dimension disagreement reports a limitation and skips only the optional
+measured table refinement, preserving existing text, cells, pixels and table
+bytes. Invalid source bindings and native worker failures remain errors.
+
+Poppler image object numbers/generations and PDFium page/object ordinals have
+separate identities; counting both representations does not establish a physical
+image count. The descriptor's `pixel_bytes_exported: false` describes that
+descriptor artifact; the pixel occurrence separately identifies its RGB artifact.
+When correspondence is unique and verified, `pdf-original-image-bindings.json`
+adds the original stream byte offset/length, object number/generation and source
+DeviceRGB identity. Support is limited to a canonical classic xref with a live
+root and exact object framing, direct `/Length`, and a flat RGB8/Flate image.
+Source stream bytes and independently decoded RGB have distinct hash commitments.
+The Poppler-to-PDFium occurrence correspondence is disclosed as inference.
+Unsupported or ambiguous cases retain validated pixels/descriptors with unresolved
+binding limitations. Raw pixel orientation, clipping, Decode, color-key masking,
+masks and compositing remain unknown or unapplied.
+
+One changed trial on the fixed original PDF met C1–C5 (original/page text,
+geometry/rotation, measured grid and cells, source-byte/RGB binding, and disclosed
+limitations) through manifest-committed artifacts. This is qualification for that
+one original only. The historical 18-case cohort and two prior attempts, including
+the earlier PDF partial result and URL failure, remain unchanged. It establishes
+neither universal PDF acceptance nor a quality benchmark.
 
 The optional PDFium worker checks its selected interpreter, own source and complete
 inventory of `pypdfium2`, `pypdfium2_raw`, `pypdfium2_cfg` and distribution metadata
@@ -103,6 +139,9 @@ and distribution obligations.
 
 ## Explicit optional Docling HTTP entry
 
+Docling is an optional, separately qualified service for structured extraction.
+It is not needed for the original-PDF/hash/exact-page workflow or the builtin
+extraction route, and no comparative quality superiority is established.
 For PDF, DOCX, Markdown or HTML, a request may select `parser: "docling"` and
 `authorize_submission: true`. Both configured operator qualification and request
 authorization are required before source retention. This entry does not install
@@ -137,23 +176,6 @@ remains 1.10.0. The pinned split models preserve the text/formula, table-cell,
 provenance, page, reference and image fields consumed here; the exact version,
 schema and boundary checks remain required. This source compatibility check
 does not qualify a deployment or attest extraction fidelity.
-
-The retained wheel-only resolver attempts failed first on core 2.79's dependency
-conflict, then on usable Docling Parse wheels for the requested generic
-`aarch64-apple-darwin` target. [PyPI's 7.20.0 release metadata](https://pypi.org/pypi/docling-parse/7.20.0/json)
-lists ARM64 wheels for CPython 3.10–3.14, including 3.12, with a macOS 14 minimum.
-Root can select an exact compatible interpreter and deployment target for a
-published wheel before considering a source build; no successful resolution,
-wheel load or service qualification is established here. A Python minor change
-alone does not remove the published wheels' macOS minimum.
-
-The published source archive is a separate build candidate, not an admitted
-fallback. The pinned [build metadata](https://github.com/docling-project/docling-parse/blob/b1f33601d72b5e40f6d7505c0d1aab2d80dc7fe6/pyproject.toml)
-requires setuptools, pybind11, wheel, cibuildwheel, delocate and CMake; the
-[native build](https://github.com/docling-project/docling-parse/blob/b1f33601d72b5e40f6d7505c0d1aab2d80dc7fe6/CMakeLists.txt)
-requires C/C++20 tooling and native dependencies. Their availability, exact
-transitive source/grant eligibility, resulting binary compatibility and runtime
-behavior remain unverified. No dependency stripping or source build is performed.
 
 Capabilities must admit `file` sources and explicitly include `max_file_size`
 and `max_num_pages` as null or positive integers. Missing or malformed relevant
