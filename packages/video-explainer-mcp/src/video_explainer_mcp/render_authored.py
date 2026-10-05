@@ -26,21 +26,27 @@ FIXTURE_FILES = ("config.json", "storyboard/storyboard.json", "assets/fixture.wa
 
 
 def tree_revision(directory: Path) -> str:
-    """Hash all installed regular bytes and confined symlink targets without import."""
+    """Hash regular bytes and confined symlinks, refusing unreadable directories."""
     if directory.is_symlink() or not directory.is_dir():
         raise ValueError("Renderer runtime directory must be a regular directory")
     files = {}
-    for path in sorted(directory.rglob("*")):
-        if len(files) >= 50000:
-            raise ValueError("Renderer runtime exceeds 50000 files")
-        name = path.relative_to(directory).as_posix()
-        if path.is_symlink():
-            path.resolve(strict=True).relative_to(directory.resolve())
-            files[name] = {"symlink": os.readlink(path)}
-        elif path.is_file():
-            files[name] = file_revision(path, 512 * 1024 * 1024)
-        elif not path.is_dir():
-            raise ValueError("Renderer runtime contains a nonregular entry")
+    directories = [directory]
+    while directories:
+        with os.scandir(directories.pop()) as entries:
+            for entry in entries:
+                if len(files) >= 50000:
+                    raise ValueError("Renderer runtime exceeds 50000 files")
+                path = Path(entry.path)
+                name = path.relative_to(directory).as_posix()
+                if path.is_symlink():
+                    path.resolve(strict=True).relative_to(directory.resolve())
+                    files[name] = {"symlink": os.readlink(path)}
+                elif path.is_file():
+                    files[name] = file_revision(path, 512 * 1024 * 1024)
+                elif path.is_dir():
+                    directories.append(path)
+                else:
+                    raise ValueError("Renderer runtime contains a nonregular entry")
     return hashlib.sha256(canonical(files).encode()).hexdigest()
 
 

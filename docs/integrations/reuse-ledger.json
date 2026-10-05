@@ -5662,7 +5662,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_authored.py",
-          "target_sha256": "111526fb596376f372ab6257d8c88bc0c7996354909c8cc3ef5b5613ec4a1c72",
+          "target_sha256": "343fc24d6799e5056c85f552374cf73ef31b095e24775e37c4aa12ed3f71da4a",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
         },
         {
