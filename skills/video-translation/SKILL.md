@@ -5,6 +5,12 @@ description: Translate existing video speech and produce an optional speaker-gui
 
 # Video translation
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-dubbing.md`.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Inspect one durable project with get_video_translation_state. Follow the first
 applicable route: validate/listen to a current delivery, resume a validated plan,
 translate accepted evidence, or prepare/analyze a new source.

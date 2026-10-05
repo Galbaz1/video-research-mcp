@@ -10,7 +10,8 @@ const { hashFile, readManifest } = require('../bin/lib/manifest');
 
 const SOURCE = path.resolve(__dirname, '..');
 const ADDED_SKILLS = ['av-events', 'educational-explainer', 'footage-edit',
-  'research-visualization-blender', 'research-visualization-freecad', 'spatial-video-analysis'];
+  'research-visualization-blender', 'research-visualization-freecad', 'spatial-video-analysis',
+  'video-translation'];
 const LEGACY_SKILLS = ['ffmpeg-production', 'gemini-visualize', 'gr-advisor',
   'hardware-evidence-capture', 'image-generation', 'mlflow-traces', 'plugin-maintenance',
   'research-brief-builder', 'reverse-search-video-frame', 'tts-production',
@@ -31,7 +32,7 @@ const RESOURCE_PATHS = [
   'scripts/spatial_launch.py', 'scripts/spatial_runtime.py', 'scripts/spatial_fonts.py',
   'scripts/spatial_dispatch.py', 'scripts/spatial_motion.py',
   'scripts/local_asr_service.py', 'scripts/local_asr_launch.py', 'scripts/local_asr_worker.py',
-  'docs/integrations/local-asr.md',
+  'docs/integrations/local-asr.md', 'docs/integrations/qwen-dubbing.md',
 ];
 const EXPECTED_ADDITIONS = Object.fromEntries([
   ...ADDED_SKILLS.map(name => [`skills/${name}/SKILL.md`, `skills/${name}/SKILL.md`]),
@@ -88,7 +89,7 @@ function installedSkills(target) {
 }
 
 for (const scope of ['local', 'global']) {
-  test(`fresh packed ${scope} install delivers exactly 22 skills and the required resources`, (t) => {
+  test(`fresh packed ${scope} install delivers exactly 23 skills and the required resources`, (t) => {
     const context = fixture(t);
     const target = scope === 'global' ? path.join(context.home, '.claude') : context.target;
     installAt(packedRoot, context, scope);
@@ -151,11 +152,11 @@ test('required resources are installed even independently of the skill-count ass
   for (const name of ADDED_SKILLS) assert.equal(fs.existsSync(path.join(context.target, 'skills', name)), false);
 });
 
-test('six workflows name contracts, descriptors and helpers that resolve in their selected layout', (t) => {
+test('added workflows name contracts, descriptors and helpers that resolve in their selected layout', (t) => {
   const context = fixture(t);
   installAt(packedRoot, context, 'local');
   const contracts = ['AV_EVENTS.md', 'qwen-education.md', 'FOOTAGE_EDIT.md',
-    'qwen-blender.md', 'qwen-freecad.md', 'qwen-spatial.md'];
+    'qwen-blender.md', 'qwen-freecad.md', 'qwen-spatial.md', 'qwen-dubbing.md'];
   const descriptors = ['av-events.json', 'education.json', 'footage-edit.json',
     'blender.json', 'freecad.json', 'video-spatio.json'];
   for (const root of [packedRoot, context.target]) {
@@ -165,6 +166,8 @@ test('six workflows name contracts, descriptors and helpers that resolve in thei
       const references = [...text.matchAll(/(?:\]\(|`)((?:\.\.\/)*(?:video-research-resources\/)?(?:docs|integrations|scripts)\/[^)`\s]+)[)`]/g)]
         .map(match => path.resolve(match[1].startsWith('../') ? directory : root, match[1]));
       assert.ok(references.some(file => path.basename(file) === contracts[index] && fs.existsSync(file)), `${root}: ${name} contract`);
+      // video-translation names a contract but has no Qwen descriptor or adjacent helper.
+      if (index >= descriptors.length) continue;
       const supportRoot = root === packedRoot ? root : path.join(root, SUPPORT);
       assert.equal(hashFile(path.join(supportRoot, 'integrations/qwen', descriptors[index])),
         hashFile(path.join(packedRoot, 'integrations/qwen', descriptors[index])));

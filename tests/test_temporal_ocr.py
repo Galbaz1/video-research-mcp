@@ -395,19 +395,30 @@ async def test_cleanup_failure_preserves_primary_clock_refusal(scene_fixture, mo
 async def test_cleanup_failure_does_not_swallow_deadline_cancel(scene_fixture, monkeypatch):
     """A cleanup refusal cannot let another point run after the single deadline."""
     import asyncio
+    from types import SimpleNamespace
 
     from video_research_mcp import temporal_ocr
 
-    async def delayed_artifact_check(records):
+    deadlines, expired_at_check = [], []
+
+    def timeline_deadline(delay):
+        deadlines.append(asyncio.timeout(delay))
+        return deadlines[-1]
+
+    async def deadline_during_artifact_check(records):
+        # Expire the one timeline deadline exactly here, not after load-dependent wall time.
+        expired_at_check.append(deadlines[0].expired())
+        deadlines[0].reschedule(asyncio.get_running_loop().time())
         await asyncio.sleep(1)
 
     def refuse_cleanup(*args):
         raise PermissionError("cleanup parent replaced")
 
-    monkeypatch.setattr(temporal_ocr, "DEADLINE_SECONDS", 0.15)
-    monkeypatch.setattr(temporal_ocr, "_verify_artifacts", delayed_artifact_check)
+    monkeypatch.setattr(temporal_ocr, "asyncio", SimpleNamespace(timeout=timeline_deadline))
+    monkeypatch.setattr(temporal_ocr, "_verify_artifacts", deadline_during_artifact_check)
     monkeypatch.setattr(temporal_ocr, "_discard_views", refuse_cleanup)
     result = await build_ocr_timeline(request(scene_fixture, times_seconds=[0.1, 0.6]))
+    assert len(deadlines) == 1 and expired_at_check == [False]
     assert scene_fixture["ocr_calls"] == [0]
     assert [point["status"] for point in result["points"]] == ["failed", "not_run"]
     assert result["points"][1]["reason"] == "deadline"

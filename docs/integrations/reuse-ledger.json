@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "16058f006a0c8086255ceb081e532c95f0bce2b4e7bc51598b7fb93e7ba70cc4",
+          "target_sha256": "727a9cdec085a1bf254a94e4ff349868f5944c7354cfb5e920d5a5b06bf07138",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -1791,7 +1791,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "f787649265cf902630c6021674930f4ac33af33ff90313fc1f8e541520d97018",
+          "target_sha256": "1eea1df317481f1af342c954129b1b73acda0aa754c822a0593af11764330a34",
           "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ],
@@ -2392,7 +2392,7 @@
         },
         {
           "target_path": "skills/video-translation/SKILL.md",
-          "target_sha256": "8aa96e242cfbd66704f2b981a193a27d361d9bbbd65b452541767e29d8b28619",
+          "target_sha256": "4fd7e4d109721dc660bdafaf2236c9ce2bc15a40451373d6d5eed567a4e9f888",
           "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
         },
         {
@@ -2409,6 +2409,16 @@
           "target_path": "tests/test_reuse_ledger.py",
           "target_sha256": "b2ec8afd94fcebbeea8de02ba26133f5bfc0b3bef5e7e6d751ae1da907935a08",
           "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "bin/lib/copy.js",
+          "target_sha256": "1eea1df317481f1af342c954129b1b73acda0aa754c822a0593af11764330a34",
+          "provenance": "Independently authored exact video-translation skill and qwen-dubbing resource distribution using existing ownership/upgrade/uninstall rules; both native npm and Claude layouts checked with temporary offline archives. No foreign code, runtime, model or user plugin installed."
+        },
+        {
+          "target_path": "tests/installer-packaged-skills.test.js",
+          "target_sha256": "374aead1793ce4b05c95374d0688c52c30fea89cb36554654fd662f7e1d8867e",
+          "provenance": "Independently authored exact video-translation skill and qwen-dubbing resource distribution using existing ownership/upgrade/uninstall rules; both native npm and Claude layouts checked with temporary offline archives. No foreign code, runtime, model or user plugin installed."
         }
       ]
     },
@@ -2841,7 +2851,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "f787649265cf902630c6021674930f4ac33af33ff90313fc1f8e541520d97018",
+          "target_sha256": "1eea1df317481f1af342c954129b1b73acda0aa754c822a0593af11764330a34",
           "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ]
@@ -4022,7 +4032,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "16058f006a0c8086255ceb081e532c95f0bce2b4e7bc51598b7fb93e7ba70cc4",
+          "target_sha256": "727a9cdec085a1bf254a94e4ff349868f5944c7354cfb5e920d5a5b06bf07138",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4118,12 +4128,12 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "f787649265cf902630c6021674930f4ac33af33ff90313fc1f8e541520d97018",
+          "target_sha256": "1eea1df317481f1af342c954129b1b73acda0aa754c822a0593af11764330a34",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "c329d0d42ddcbb8f08911b73e5b19e1653a0e98efed09ba518c3e1d6556936f1",
+          "target_sha256": "374aead1793ce4b05c95374d0688c52c30fea89cb36554654fd662f7e1d8867e",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         }
       ]
