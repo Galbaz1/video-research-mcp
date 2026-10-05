@@ -103,39 +103,73 @@ def _map(matrix, point):
             (matrix[1][0] * x + matrix[1][1] * y + matrix[1][2]) / denominator]
 
 
+def _cross(a: list, b: list, c: list) -> float:
+    """Return the orientation of three backend points without changing their order."""
+    return (b[0]-a[0]) * (c[1]-a[1]) - (b[1]-a[1]) * (c[0]-a[0])
+
+
+def _geometry_boundary(value: dict, width: int, height: int, native: bool) -> dict:
+    """Retain subpixel native overshoot under a fixed policy without clipping raw geometry."""
+    box, raw_points = value["raw_box"], value["raw_points"]
+    epsilon = 2**-24 if native else 0.0
+    limit_x, limit_y = (1, 1) if native else (width, height)
+    if len(box) != 4 or any(type(v) not in {int, float} or not math.isfinite(v) for v in box):
+        raise ValueError("OCR boxes require four finite backend coordinates")
+    if min(box[2:]) <= 0:
+        raise ValueError("OCR boxes require positive extents")
+    if box[0] < -epsilon or box[1] < -epsilon or (
+        box[0] + box[2] > limit_x + epsilon or box[1] + box[3] > limit_y + epsilon
+    ):
+        raise ValueError("OCR box is outside the prepared image")
+    if len(raw_points) != 4 or any(len(point) != 2 for point in raw_points):
+        raise ValueError("OCR quadrilaterals must contain four two-dimensional points")
+    if any(type(v) not in {int, float} or not math.isfinite(v) for point in raw_points for v in point):
+        raise ValueError("OCR points require finite backend coordinates")
+    if any(not -epsilon <= x <= limit_x + epsilon or not -epsilon <= y <= limit_y + epsilon
+           for x, y in raw_points):
+        raise ValueError("OCR geometry is outside the prepared image")
+    area = sum(x * raw_points[(i+1) % 4][1] - raw_points[(i+1) % 4][0] * y
+               for i, (x, y) in enumerate(raw_points))
+    if len({tuple(point) for point in raw_points}) != 4 or area == 0:
+        raise ValueError("OCR quadrilaterals must not collapse to zero area")
+    for a, b, c, d in ((raw_points[0], raw_points[1], raw_points[2], raw_points[3]),
+                       (raw_points[1], raw_points[2], raw_points[3], raw_points[0])):
+        if (max(min(a[0], b[0]), min(c[0], d[0])) <= min(max(a[0], b[0]), max(c[0], d[0]))
+                and max(min(a[1], b[1]), min(c[1], d[1])) <= min(max(a[1], b[1]), max(c[1], d[1]))
+                and _cross(a, b, c) * _cross(a, b, d) <= 0
+                and _cross(c, d, a) * _cross(c, d, b) <= 0):
+            raise ValueError("OCR quadrilateral opposite edges must not intersect")
+    if native:
+        points = [[x * width, (1-y) * height] for x, y in raw_points]
+        left, top = box[0] * width, (1-box[1]-box[3]) * height
+        right, bottom = (box[0]+box[2]) * width, (1-box[1]) * height
+    else:
+        points = raw_points
+        left, top = box[:2]
+        right, bottom = box[0]+box[2], box[1]+box[3]
+    return {"policy": "native_normalized_precision" if native else "exact",
+            "normalized_epsilon": epsilon,
+            "left_pixels": max(0.0, -left, -min(x for x, _ in points)),
+            "top_pixels": max(0.0, -top, -min(y for _, y in points)),
+            "right_pixels": max(0.0, right-width, max(x for x, _ in points)-width),
+            "bottom_pixels": max(0.0, bottom-height, max(y for _, y in points)-height)}
+
+
 def map_observation(value: dict, preparation: dict, *, native: bool) -> dict:
     """Keep backend geometry and map pixel corners into oriented and stored original grids."""
     from .image_preprocessing import inverse
 
     artifact, transforms = preparation["artifact"], preparation["transforms"]
     width, height = artifact["width"], artifact["height"]
-    box = value["raw_box"]
-    if len(box) != 4 or any(type(v) not in {int, float} or not math.isfinite(v) for v in box):
-        raise ValueError("OCR boxes require four finite backend coordinates")
-    if min(box[:2]) < 0 or min(box[2:]) <= 0 or (
-        box[0] + box[2] > (1 if native else width)
-        or box[1] + box[3] > (1 if native else height)
-    ):
-        raise ValueError("OCR box is outside the prepared image")
-    raw_points = value["raw_points"]
-    if len(raw_points) != 4 or any(len(point) != 2 for point in raw_points):
-        raise ValueError("OCR quadrilaterals must contain four two-dimensional points")
-    if any(type(v) not in {int, float} or not math.isfinite(v) for point in raw_points for v in point):
-        raise ValueError("OCR points require finite backend coordinates")
+    boundary = _geometry_boundary(value, width, height, native)
     if value.get("kind") in {"line", "word"} and not isinstance(value.get("text"), str):
         raise ValueError("Text observations require exact backend text")
-    if native:
-        if any(not 0 <= coordinate <= 1 for point in raw_points for coordinate in point):
-            raise ValueError("Vision normalized geometry is outside the prepared image")
-        points = [[x * width, (1 - y) * height] for x, y in raw_points]
-    else:
-        points = raw_points
-    if any(not 0 <= x <= width or not 0 <= y <= height for x, y in points):
-        raise ValueError("OCR geometry is outside the prepared image")
+    points = [[x * width, (1-y) * height] for x, y in value["raw_points"]] if native else value["raw_points"]
     mapped = {**value, "coordinate_space": "normalized_bottom_left" if native else "prepared_top_left_pixels",
               "prepared_points": points,
               "oriented_points": [_map(inverse(transforms["oriented_to_output"]), p) for p in points],
-              "stored_points": [_map(transforms["output_to_source"], p) for p in points]}
+              "stored_points": [_map(transforms["output_to_source"], p) for p in points],
+              "geometry_boundary": boundary}
     return OCRObservation.model_validate(mapped).model_dump(mode="json")
 
 

@@ -585,15 +585,15 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/media_probe.py",
@@ -767,9 +767,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/image.py",
@@ -788,9 +788,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/native_media_results.py",
@@ -839,8 +839,9 @@
         },
         {
           "target_path": "src/video_research_mcp/image_ocr.py",
-          "target_sha256": "d2929b7328655008aef1db08d1a999e22107cb65910bc53de7a5646692375b56",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "ee99ab8478d465de32c1eb11fb246cfa97498c6de12b10e5e15befb37447946f",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/models/image_edit.py",
@@ -849,8 +850,9 @@
         },
         {
           "target_path": "src/video_research_mcp/models/image_ocr.py",
-          "target_sha256": "6593d3f81ff12e1abc0ec41c2fc585b4fbb6bcf2f98624e3c2cec7fc39184373",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "cfb629242445f65b423081754e394cbbadba0113f7869565db18de857bc34fb3",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_image_edit.py",
@@ -896,6 +898,11 @@
           "target_path": "tests/test_image_edit_guards.py",
           "target_sha256": "2a6225966db5a6e016d76bf511ceab97df99accfbb176908708e695fbb48efc6",
           "provenance": "Independently authored original-grid video/cancellation/allocation/source-lineage controls; no foreign source or assets copied."
+        },
+        {
+          "target_path": "tests/test_image_ocr_boundary.py",
+          "target_sha256": "5cb958d5ef12a28dda3de77f0c6154bacae2454e1e1f6b149d52c7c7d90a5804",
+          "provenance": "Independent regression checks retain raw geometry/overshoot and transformed corners, reject degenerate/crossing polygons, parse historical records. Fixed epsilon adapter policy is not a native accuracy oracle."
         }
       ]
     },
@@ -971,9 +978,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_vision_http.py",
@@ -1002,9 +1009,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "integrations/qwen/api.json",
@@ -1049,9 +1056,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
@@ -1148,9 +1155,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_audio_assets.py",
@@ -1184,9 +1191,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "docs/integrations/SCENE_ASSETS.md",
@@ -1205,9 +1212,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "pyproject.toml",
@@ -1271,9 +1278,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_media_perception_prepare.py",
@@ -1297,9 +1304,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         }
       ]
     },
@@ -1388,9 +1395,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "integrations/qwen/asr.json",
@@ -1404,9 +1411,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "src/video_research_mcp/transcript_local.py",
@@ -1515,9 +1522,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "docs/integrations/AV_EVENTS.md",
@@ -1579,9 +1586,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independent optional raster/service orchestration using existing own snapshot, image manifest/native delivery and bounded HTTP helpers. Exact pinned Qwen/SAM references only; no foreign code/model/runtime/assets copied/imported. Mock-contract acceptance does not establish inference/model rights/readiness or semantic truth.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_segmentation.py",
@@ -1679,9 +1686,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         }
       ],
       "source_file_receipts": [
@@ -1840,10 +1847,66 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/video_memory_av.py",
+          "target_sha256": "f8da4dde2882f343e3e264c7f85955bb2e98626ef99903756a779c4507ebe4bd",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_memory/__init__.py",
+          "target_sha256": "5f303f314931d60d345bfbbecc3199c2f7212630a5b7902209a147aaada59fc5",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_memory/av_store.py",
+          "target_sha256": "94c1cd7f575791c942bd6112f5508440f10616728246c4b9de792994a5a0fae5",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_memory/av_build.py",
+          "target_sha256": "9c15627c1d6cdf2ceeaed50dddda3c070e5a3fd6f4c85143b8688c4a431db7ec",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_memory/text_rank.py",
+          "target_sha256": "5121ad3651bed3d7f9d6b5c691e86997bd38328b62e76b936b438dd51e63ce5a",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_memory/retrieval.py",
+          "target_sha256": "04aa4cd6ca60e18d6d6279665302456bdca764fd04b950ccb5c034981e3992d9",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_memory_av.py",
+          "target_sha256": "a1e838d7234efefed5fcac8273a8907b23cbf67ebd6b3899fc4af79157306222",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "tests/test_video_memory_av.py",
+          "target_sha256": "5415f3e88bf2b1cb8e9b6db6785725f7491ff1004e74899b67f92948545a74bb",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "docs/integrations/video-memory-av.md",
+          "target_sha256": "e83a3ac3f27ab5fdade9b6601863c25e037a03ab13e596989ac4ba23eecabeb4",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
+          "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
+        }
+      ]
     },
     {
       "unit_key": "qwen_memory_lifecycle",
@@ -2187,9 +2250,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/footage_edit.py",
@@ -2213,9 +2276,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         }
       ]
     },
@@ -2273,10 +2336,81 @@
       "component": "QwenLM/Qwen-MM-Plugins@07736672525443c7f8a3f6405eed37d2236f023f",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/video_dubbing.py",
+          "target_sha256": "34565d40846770af6433aca5e9734ba393cff6c363145366cd30cab614a58672",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/dubbing_client.py",
+          "target_sha256": "fbab52d9e07682dbfa5c27e14aa27de7a34c80b64e29c3752ae796322a6c0621",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/dubbing_contracts.py",
+          "target_sha256": "a014b33e0234395af6fb6567aa0cc6907fbbbb16c96cc9d0c34ad4aa27301665",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/dubbing_render.py",
+          "target_sha256": "f57ca518c681806098a78f99c12a6421fd7f89ba1433deabf4dedaf6036ce5af",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/video_dubbing.py",
+          "target_sha256": "8983126b39563920b5fae6ab3b3221965e55443dab84d9399fa9759d63c4e6ab",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_dubbing.py",
+          "target_sha256": "a1549c66a8bb33ad1342c1968a766a70919921d26dfdc5ad41e1a4f2e8eb010b",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "tests/test_video_dubbing.py",
+          "target_sha256": "269e6f020923b66ec3222cc80b54bdd038cfec40a9f97fd95de7c8fb958ae929",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "tests/test_dubbing_client.py",
+          "target_sha256": "e4615be9942aad717cdc957bb1a10237b96d5ea45732a0b834dfc7c390501b03",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "docs/integrations/qwen-dubbing.md",
+          "target_sha256": "7e875f3ef81b4c4a3d692270a8879ccb6834bbde7201de0bb8a00afbeb531368",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "integrations/qwen/omni-chatcut.json",
+          "target_sha256": "c48ec92920d2ee098cce47438cd97a38d3f3df4e1e440094af7bc5f33bf81138",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "skills/video-translation/SKILL.md",
+          "target_sha256": "8aa96e242cfbd66704f2b981a193a27d361d9bbbd65b452541767e29d8b28619",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        },
+        {
+          "target_path": "tests/test_reuse_ledger.py",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
+          "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
+        }
+      ]
     },
     {
       "unit_key": "qwen_educational",
@@ -2671,9 +2805,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/infra.py",
@@ -2776,9 +2910,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/media_assets.py",
@@ -2915,9 +3049,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "integrations/qwen/asr.json",
@@ -2931,9 +3065,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "src/video_research_mcp/transcript_local.py",
@@ -2990,10 +3124,76 @@
       "component": "sblattj/whosaid@f7e100d1f04b108b322378b6c43534e27a19eab2",
       "audited_reuse_mode": "integration-only",
       "permitted_route": "independent-adapter",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/models/speakers.py",
+          "target_sha256": "97ecb1df6fa2d84858acdc3cc460863a7e7a1b845b3b4bcbdaeca399a0bc6514",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/speaker_records.py",
+          "target_sha256": "ba55d52ff9add500d2b3712ef7919719158881bfbd0470b70f7f1e4c3bc6009e",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/speaker_registry.py",
+          "target_sha256": "2ddc1dd89f717c955068117e3b9c04294ba28725b6dbe9e4e7bd6c6690c751f5",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/speaker_worker.py",
+          "target_sha256": "9a5aa8a23b163331f3ce51ae4094054fae46a9273a83db5fd215aaa21a8a5f06",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/speakers.py",
+          "target_sha256": "357de4265ebbd5f6615f4ba4fe91e12d701ee36ebba1c0c216e7f245fd7dd9b5",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/audio_speakers.py",
+          "target_sha256": "7b7b341fd901385f098d0f2a77a86ba9588e2c1480e7b20c6135e22d9c296691",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "tests/test_audio_speakers.py",
+          "target_sha256": "a7e550a569706c6a456732d984b6323a857b054937d7b967bc1f28f77f429d05",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "tests/test_speaker_records.py",
+          "target_sha256": "5e4f2843fb9384a5334e02937e950364501deb46fad61b71a4faccda1d27ee44",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "tests/test_speaker_registry.py",
+          "target_sha256": "4cab0aa4265adfec71b5f42ab955e68c7ad4b219e03b0fb4b36615b751a3409e",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "tests/test_speaker_worker.py",
+          "target_sha256": "70f18d3c1b127412bfe1c74c6a9530b5b8b696ab6f75bc4052c643b17d4b97a3",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "docs/integrations/local-speakers.md",
+          "target_sha256": "b9a5cdbe8a80cf7018e191d5f75b8399d55b21d987ea46eff8461e40110d9b2d",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        },
+        {
+          "target_path": "docs/metrics/tool-contract-manifest.json",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
+          "provenance": "Independently authored SHA-bound anonymous diarization, explicit relabel/sample/registry/enrollment adapter. No foreign source bodies or model/runtime artifacts bundled. R113 source review and195mock tests; native public speaker acceptance remains OPEN."
+        }
+      ]
     },
     {
       "unit_key": "direct.frames",
@@ -3019,15 +3219,15 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/media_probe.py",
@@ -3145,9 +3345,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored sparse temporal OCR over existing original-clock/crop/raw/manifest seams. Keeps caption/speech receipt readback distinct from numeric-decrease inference. No upstream code or assets copied/imported.",
-          "receipt_refresh": "R87 original59owned/161affected source checks retained. RootR96 cleanup/deadline finding reproduced2FAIL then minimal repair2PASS; current full source/package gates and nativeC1-C4 pending. Final original66-entryindex rejoined after completedworker followup; initial sequencing drift retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         }
       ]
     },
@@ -3201,9 +3401,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
@@ -3529,9 +3729,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/image.py",
@@ -3550,9 +3750,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/native_media_results.py",
@@ -3601,8 +3801,9 @@
         },
         {
           "target_path": "src/video_research_mcp/image_ocr.py",
-          "target_sha256": "d2929b7328655008aef1db08d1a999e22107cb65910bc53de7a5646692375b56",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "ee99ab8478d465de32c1eb11fb246cfa97498c6de12b10e5e15befb37447946f",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/models/image_edit.py",
@@ -3611,8 +3812,9 @@
         },
         {
           "target_path": "src/video_research_mcp/models/image_ocr.py",
-          "target_sha256": "6593d3f81ff12e1abc0ec41c2fc585b4fbb6bcf2f98624e3c2cec7fc39184373",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "cfb629242445f65b423081754e394cbbadba0113f7869565db18de857bc34fb3",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_image_edit.py",
@@ -3653,6 +3855,11 @@
           "target_path": "tests/test_image_edit_guards.py",
           "target_sha256": "2a6225966db5a6e016d76bf511ceab97df99accfbb176908708e695fbb48efc6",
           "provenance": "Independently authored original-grid video/cancellation/allocation/source-lineage controls; no foreign source or assets copied."
+        },
+        {
+          "target_path": "tests/test_image_ocr_boundary.py",
+          "target_sha256": "5cb958d5ef12a28dda3de77f0c6154bacae2454e1e1f6b149d52c7c7d90a5804",
+          "provenance": "Independent regression checks retain raw geometry/overshoot and transformed corners, reject degenerate/crossing polygons, parse historical records. Fixed epsilon adapter policy is not a native accuracy oracle."
         }
       ]
     },
@@ -3727,9 +3934,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_vision_http.py",
@@ -3758,9 +3965,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/client.py",
@@ -3795,9 +4002,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
@@ -4002,9 +4209,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_diagnostics.py",
@@ -4186,9 +4393,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
@@ -4485,9 +4692,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/research.py",
@@ -4713,9 +4920,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/text_provider.py",
@@ -4970,9 +5177,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/session_compaction.py",
@@ -5046,9 +5253,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "target_sha256": "f79ab37d3297d35346a3849e62aee6e14aa3aa1a7a68bb8da36068e9f1b47275",
           "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported.",
-          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
+          "receipt_refresh": "R126 causal test-receipt refresh: only add newly implemented direct.speakers to exact source-adoption expectation. Original29metadata failures retained; no native acceptance change."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
@@ -5233,9 +5440,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "tests/test_ingestion_provenance.py",
@@ -6410,9 +6617,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/AGENTS.md",
@@ -6427,9 +6634,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "target_sha256": "2a3ffd3d52da1c336ecab44eff477b92669701426092538aa553a3bee41d883d",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "scripts/smoke_built_mcp.py",
@@ -6519,9 +6726,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "target_sha256": "a08718d0cef6da0dbbf6b430151aa6981927c5d0d739f68fda95540dcbfd51f9",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported.",
-          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
+          "receipt_refresh": "R126 Root source integration: bind current mounted93-tool manifest/speaker registration/OCR geometry precision+simple-quadrilateral repair. Historical native failures and unit acceptance unchanged."
         },
         {
           "target_path": "src/video_research_mcp/tools/research.py",

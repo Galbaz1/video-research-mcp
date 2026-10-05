@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-05T12:53:46.081890+00:00",
-  "tool_count": 91,
+  "generated_at": "2026-10-05T16:24:21.640675+00:00",
+  "tool_count": 103,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -1063,6 +1063,739 @@
       }
     },
     {
+      "name": "audio_speaker_enroll",
+      "description": "Persist one model-keyed voiceprint for an explicitly supplied speaker name.\n\nNames are never inferred. The entry is keyed by (name, embedding-model\nSHA-256); replacing an existing entry requires ``replace_existing``. No\naudio is stored in the registry.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Explicit speaker_name, caller consent statement, registry path, runtime descriptor and source",
+            "properties": {
+              "speaker_name": {
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "consent_confirmed": {
+                "type": "boolean"
+              },
+              "registry_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "runtime_descriptor_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "expected_runtime_descriptor_sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "source": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Exact-source window recorded as the voiceprint provenance.",
+                    "properties": {
+                      "kind": {
+                        "const": "file_window",
+                        "type": "string"
+                      },
+                      "file_path": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "expected_source_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "start_seconds": {
+                        "default": 0,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      "end_seconds": {
+                        "exclusiveMinimum": 0,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "file_path",
+                      "expected_source_sha256",
+                      "end_seconds"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "One anonymous cluster of a SHA-bound diarization record.",
+                    "properties": {
+                      "diarization_record_path": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "expected_record_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "kind": {
+                        "const": "diarized_cluster",
+                        "type": "string"
+                      },
+                      "cluster": {
+                        "pattern": "^SPEAKER_[0-9]{2}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "diarization_record_path",
+                      "expected_record_sha256",
+                      "kind",
+                      "cluster"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "replace_existing": {
+                "default": false,
+                "type": "boolean"
+              },
+              "dry_run": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "speaker_name",
+              "consent_confirmed",
+              "registry_path",
+              "runtime_descriptor_path",
+              "expected_runtime_descriptor_sha256",
+              "source"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Planned or completed local speaker operation; identities are never verified.",
+            "properties": {
+              "action": {
+                "enum": [
+                  "diarize",
+                  "relabel",
+                  "samples",
+                  "registry",
+                  "enroll"
+                ],
+                "title": "Action",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "output_directory": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Output Directory"
+              },
+              "artifacts": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One retained output file relative to its output directory.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "minimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "role": {
+                      "title": "Role",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "role"
+                  ],
+                  "title": "SpeakerArtifact",
+                  "type": "object"
+                },
+                "title": "Artifacts",
+                "type": "array"
+              },
+              "record": {
+                "additionalProperties": true,
+                "title": "Record",
+                "type": "object"
+              },
+              "speaker_identity_verified": {
+                "const": false,
+                "default": false,
+                "title": "Speaker Identity Verified",
+                "type": "boolean"
+              },
+              "voiceprints_persisted": {
+                "default": 0,
+                "maximum": 1,
+                "minimum": 0,
+                "title": "Voiceprints Persisted",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "action",
+              "status",
+              "record"
+            ],
+            "title": "SpeakersResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "audio_speakers",
+      "description": "Diarize, relabel, export samples or list the registry without persisting voiceprints.\n\nDiarize returns anonymous SPEAKER_NN turns on the source clock with a\ncluster-similarity scalar that is not an identity or probability. Relabel\nwrites a new record from explicit assignments; registry matches are ranked\nsuggestions only. Execution requires an explicit runtime descriptor and\n``dry_run=false``; the optional worker runs in its own interpreter.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "action diarize|relabel|samples|registry with SHA-bound inputs; writes only a new output directory",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Anonymous turns for one bounded exact-source selection through the optional runtime.",
+                "properties": {
+                  "action": {
+                    "const": "diarize",
+                    "type": "string"
+                  },
+                  "file_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "output_directory": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "start_seconds": {
+                    "default": 0,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "end_seconds": {
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  "runtime_descriptor_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_runtime_descriptor_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "num_speakers": {
+                    "anyOf": [
+                      {
+                        "maximum": 16,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "export_rttm": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "dry_run": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "action",
+                  "file_path",
+                  "expected_source_sha256",
+                  "output_directory",
+                  "end_seconds",
+                  "runtime_descriptor_path",
+                  "expected_runtime_descriptor_sha256"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Explicit recording-scoped labels written as a new record; the parent stays unchanged.",
+                "properties": {
+                  "diarization_record_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_record_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "relabel",
+                    "type": "string"
+                  },
+                  "output_directory": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "assignments": {
+                    "default": {},
+                    "maxProperties": 64,
+                    "patternProperties": {
+                      "^SPEAKER_[0-9]{2}$": {
+                        "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "roles": {
+                    "default": {},
+                    "maxProperties": 64,
+                    "patternProperties": {
+                      "^[A-Za-z0-9_-]{1,64}$": {
+                        "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "note": {
+                    "anyOf": [
+                      {
+                        "maxLength": 2048,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "match_registry": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "expected_speakers": {
+                    "default": [],
+                    "items": {
+                      "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                      "type": "string"
+                    },
+                    "maxItems": 16,
+                    "type": "array"
+                  },
+                  "registry_path": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "runtime_descriptor_path": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "expected_runtime_descriptor_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "export_rttm": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "dry_run": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "diarization_record_path",
+                  "expected_record_sha256",
+                  "action",
+                  "output_directory"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Bounded per-cluster WAV clips cut at exact sample offsets of the retained input.",
+                "properties": {
+                  "diarization_record_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_record_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "samples",
+                    "type": "string"
+                  },
+                  "output_directory": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "clusters": {
+                    "default": [],
+                    "items": {
+                      "pattern": "^SPEAKER_[0-9]{2}$",
+                      "type": "string"
+                    },
+                    "maxItems": 64,
+                    "type": "array"
+                  },
+                  "per_cluster": {
+                    "default": 1,
+                    "maximum": 3,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_seconds": {
+                    "default": 8,
+                    "maximum": 15,
+                    "minimum": 1,
+                    "type": "number"
+                  },
+                  "dry_run": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "diarization_record_path",
+                  "expected_record_sha256",
+                  "action",
+                  "output_directory"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Read-only registry listing grouped by embedding model, never returning voiceprints.",
+                "properties": {
+                  "action": {
+                    "const": "registry",
+                    "type": "string"
+                  },
+                  "registry_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "action",
+                  "registry_path"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Planned or completed local speaker operation; identities are never verified.",
+            "properties": {
+              "action": {
+                "enum": [
+                  "diarize",
+                  "relabel",
+                  "samples",
+                  "registry",
+                  "enroll"
+                ],
+                "title": "Action",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "planned",
+                  "complete"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "output_directory": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Output Directory"
+              },
+              "artifacts": {
+                "default": [],
+                "items": {
+                  "additionalProperties": false,
+                  "description": "One retained output file relative to its output directory.",
+                  "properties": {
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "title": "Sha256",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "minimum": 0,
+                      "title": "Bytes",
+                      "type": "integer"
+                    },
+                    "role": {
+                      "title": "Role",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "bytes",
+                    "role"
+                  ],
+                  "title": "SpeakerArtifact",
+                  "type": "object"
+                },
+                "title": "Artifacts",
+                "type": "array"
+              },
+              "record": {
+                "additionalProperties": true,
+                "title": "Record",
+                "type": "object"
+              },
+              "speaker_identity_verified": {
+                "const": false,
+                "default": false,
+                "title": "Speaker Identity Verified",
+                "type": "boolean"
+              },
+              "voiceprints_persisted": {
+                "default": 0,
+                "maximum": 1,
+                "minimum": 0,
+                "title": "Voiceprints Persisted",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "action",
+              "status",
+              "record"
+            ],
+            "title": "SpeakersResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
       "name": "audio_transcribe",
       "description": "Extract exact caption intervals or infer speech through an explicit backend.\n\nSupplied cue and word times remain source assertions. Model-derived words\nand speaker labels remain inference. Caption selection precedes ASR;\nlocal-only selection forbids cloud requests. Readback requires the retained\nreceipt digest and exact source identity. No local model is installed.",
       "annotations": {
@@ -2000,6 +2733,26 @@
       }
     },
     {
+      "name": "check_dubbing_service",
+      "description": "Check the operator's service; missing or unready is terminal readiness evidence.\n\nReturns:\n    Readiness with separate, unqualified service acceptance.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {},
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "content_analyze",
       "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.",
       "annotations": {
@@ -2210,6 +2963,117 @@
         "required": [
           "content",
           "schema"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "detect_dubbing_speech",
+      "description": "Detect speech presence with the pinned TEN-VAD request contract.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "input_path": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "output_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "settings": {
+            "additionalProperties": false,
+            "description": "Pinned TEN-VAD thresholds, hop, minimum runs and padding",
+            "properties": {
+              "threshold": {
+                "default": 0.5,
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "hop_size": {
+                "default": 256,
+                "maximum": 1024,
+                "minimum": 80,
+                "type": "integer"
+              },
+              "min_speech": {
+                "default": 0.2,
+                "maximum": 10,
+                "minimum": 0,
+                "type": "number"
+              },
+              "min_silence": {
+                "default": 0.3,
+                "maximum": 10,
+                "minimum": 0,
+                "type": "number"
+              },
+              "pad": {
+                "default": 0.1,
+                "maximum": 2,
+                "minimum": 0,
+                "type": "number"
+              }
+            },
+            "type": "object",
+            "default": {
+              "threshold": 0.5,
+              "hop_size": 256,
+              "min_speech": 0.2,
+              "min_silence": 0.3,
+              "pad": 0.1
+            }
+          }
+        },
+        "required": [
+          "input_path",
+          "output_dir"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_video_translation_state",
+      "description": "Derive a project's analysis, translation, rendering or review workflow.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "project_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_dir"
         ],
         "type": "object"
       },
@@ -4121,6 +4985,64 @@
                       ],
                       "default": null,
                       "title": "Line Id"
+                    },
+                    "geometry_boundary": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "description": "Declared adapter precision policy and actual unclipped prepared-pixel overshoot.",
+                          "properties": {
+                            "policy": {
+                              "enum": [
+                                "exact",
+                                "native_normalized_precision"
+                              ],
+                              "title": "Policy",
+                              "type": "string"
+                            },
+                            "normalized_epsilon": {
+                              "maximum": 5.960464477539063e-08,
+                              "minimum": 0,
+                              "title": "Normalized Epsilon",
+                              "type": "number"
+                            },
+                            "left_pixels": {
+                              "minimum": 0,
+                              "title": "Left Pixels",
+                              "type": "number"
+                            },
+                            "top_pixels": {
+                              "minimum": 0,
+                              "title": "Top Pixels",
+                              "type": "number"
+                            },
+                            "right_pixels": {
+                              "minimum": 0,
+                              "title": "Right Pixels",
+                              "type": "number"
+                            },
+                            "bottom_pixels": {
+                              "minimum": 0,
+                              "title": "Bottom Pixels",
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "policy",
+                            "normalized_epsilon",
+                            "left_pixels",
+                            "top_pixels",
+                            "right_pixels",
+                            "bottom_pixels"
+                          ],
+                          "title": "OCRBoundary",
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "default": null
                     }
                   },
                   "required": [
@@ -13452,6 +14374,80 @@
       }
     },
     {
+      "name": "prepare_video_translation_project",
+      "description": "Prepare full source PCM, local separated stems and source-bound VAD.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "source_movie": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "project_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "target_language": {
+            "description": "Requested spoken target language",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "description": "Exact approved source bytes",
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "source_language": {
+            "default": "auto",
+            "description": "Source language or auto for agent detection",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "target": {
+            "default": "full",
+            "description": "Requested workflow stopping point",
+            "enum": [
+              "analysis_only",
+              "translation_only",
+              "full",
+              "resume"
+            ],
+            "type": "string"
+          },
+          "style_brief": {
+            "default": "",
+            "description": "User-approved spoken translation and delivery style",
+            "maxLength": 10000,
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_movie",
+          "project_dir",
+          "target_language",
+          "expected_source_sha256"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "provider_capabilities",
       "description": "Inspect configured operation support and reject unsupported selections.\n\nProfiles declare support; inspection performs no connectivity or model test.",
       "annotations": {
@@ -13498,6 +14494,61 @@
             "type": "array"
           }
         },
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "render_video_translation",
+      "description": "Render locally held validated evidence with bounded TTS and executable QA.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "project_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "plan_path": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "background_mode": {
+            "default": "include",
+            "description": "Whole-stem review decision; choose include when uncertain",
+            "enum": [
+              "include",
+              "omit"
+            ],
+            "type": "string"
+          },
+          "regenerate_segment_ids": {
+            "default": [],
+            "description": "Explicitly re-synthesize these known plan groups after review; unknown effects remain occupied",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_dir",
+          "plan_path"
+        ],
         "type": "object"
       },
       "output_schema": {
@@ -16361,6 +17412,50 @@
       }
     },
     {
+      "name": "separate_dubbing_audio",
+      "description": "Upload local PCM and retain only validated locally downloaded stem bytes.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "input_path": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "output_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "model": {
+            "default": "htdemucs",
+            "description": "Operator-licensed Demucs model name",
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "input_path",
+          "output_dir"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "session_memory",
       "description": "Inspect original history or read/edit/delete one explicitly scoped derived profile.\n\nHistory remains recoverable after active-session expiry when SQLite persistence\nis configured. Large inline-media pages export exact bounded private JSON.\nMemory edits require the current revision; deletion clears only derived text.\nCaller-selected scope is isolation, not an authenticated multi-user identity.\nNo provider, inference, upload or global-memory search occurs.",
       "annotations": {
@@ -16804,6 +17899,50 @@
         },
         "required": [
           "job_id"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "synthesize_dubbing_speech",
+      "description": "Synthesize one approved utterance using an actual local reference.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "description": "Exact approved translated utterance",
+            "maxLength": 10000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "reference_audio": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "output_path": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "reference_audio",
+          "output_path"
         ],
         "type": "object"
       },
@@ -17813,6 +18952,73 @@
             "type": "object"
           }
         ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "validate_video_translation_delivery",
+      "description": "Recheck output hashes, all streams, full decode, stem mix and listening.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "project_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_dir"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "validate_video_translation_plan",
+      "description": "Require exact evidence joins, speaker references, dub groups and slots.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "project_dir": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "plan_path": {
+            "description": "Exact local filesystem path within LOCAL_FILE_ACCESS_ROOT",
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_dir",
+          "plan_path"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
         "type": "object"
       }
     },
@@ -22915,6 +24121,965 @@
       }
     },
     {
+      "name": "video_memory_av",
+      "description": "Build and query a persistent AV memory that returns evidence, never answers.\n\nStart with ``status``; ``build`` folds exact-SHA transcript and AV-event results (and,\nwhen authorized, per-window ``media_caption_events`` calls) into canonical 30 s records,\nanonymous people and retained artifacts. Read ``overview`` before one explicit ``plan``,\nor use ``people``, ``person_dialogue``, ``timeline``, ``moment`` and ``search`` directly.\nNames stay unknown until ``align`` cites stored evidence; suggestions never bind.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "One action: build, add_facts, align, index, status, overview, people, person_dialogue, timeline, moment, search or plan; provider calls require explicit authorization",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Fold admitted artifacts and optional route responses into revision 1.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "build",
+                    "type": "string"
+                  },
+                  "file_path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "artifacts": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "A caller-retained tool result bound by exact bytes.",
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "transcript",
+                            "av_events"
+                          ],
+                          "type": "string"
+                        },
+                        "path": {
+                          "maxLength": 4096,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "sha256": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "role": {
+                          "default": "occurrences",
+                          "enum": [
+                            "occurrences",
+                            "environment"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "path",
+                        "sha256"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 16,
+                    "type": "array"
+                  },
+                  "av_route": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Optional per-window media_caption_events calls; planning is the default.",
+                        "properties": {
+                          "roles": {
+                            "default": [
+                              "occurrences"
+                            ],
+                            "items": {
+                              "enum": [
+                                "occurrences",
+                                "environment"
+                              ],
+                              "type": "string"
+                            },
+                            "maxItems": 2,
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "authorize_submission": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "max_calls": {
+                            "default": 8,
+                            "maximum": 64,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "thinking_level": {
+                            "default": "low",
+                            "enum": [
+                              "low",
+                              "medium",
+                              "high"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "file_path"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Add supplied facts or induce inferred facts and nonbinding name suggestions.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "action": {
+                    "const": "add_facts",
+                    "type": "string"
+                  },
+                  "mode": {
+                    "enum": [
+                      "supplied",
+                      "induce"
+                    ],
+                    "type": "string"
+                  },
+                  "facts": {
+                    "default": [],
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "One caller-supplied fact; every evidence ID must already be stored.",
+                      "properties": {
+                        "subject_id": {
+                          "pattern": "^(?:P\\d{3}|(?:event|topic|place|object):[A-Za-z0-9_.-]{1,64})$",
+                          "type": "string"
+                        },
+                        "key": {
+                          "pattern": "^[A-Za-z0-9_.-]{1,64}$",
+                          "type": "string"
+                        },
+                        "value": {
+                          "maxLength": 2048,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "confidence": {
+                          "enum": [
+                            "high",
+                            "medium",
+                            "low"
+                          ],
+                          "type": "string"
+                        },
+                        "evidence_ids": {
+                          "items": {
+                            "pattern": "^[a-z]+:[0-9a-f]{12}:\\d{4}:\\d{3}$",
+                            "type": "string"
+                          },
+                          "maxItems": 32,
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "subject_id",
+                        "key",
+                        "value",
+                        "confidence",
+                        "evidence_ids"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 256,
+                    "type": "array"
+                  },
+                  "induce": {
+                    "additionalProperties": false,
+                    "description": "Optional fact/name-suggestion induction through GeminiClient.generate_structured.",
+                    "properties": {
+                      "authorize_provider_calls": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "model": {
+                        "anyOf": [
+                          {
+                            "pattern": "^[A-Za-z0-9._/-]{1,128}$",
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      },
+                      "thinking_level": {
+                        "default": "low",
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ],
+                        "type": "string"
+                      },
+                      "max_batches": {
+                        "default": 1,
+                        "maximum": 4,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "max_prompt_chars": {
+                        "default": 60000,
+                        "maximum": 200000,
+                        "minimum": 1000,
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "authorize_provider_calls": false,
+                      "model": null,
+                      "thinking_level": "low",
+                      "max_batches": 1,
+                      "max_prompt_chars": 60000
+                    }
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "expected_revision",
+                  "action",
+                  "mode"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Append an identity revision; ``name=None`` returns the person to unknown.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "action": {
+                    "const": "align",
+                    "type": "string"
+                  },
+                  "person_id": {
+                    "pattern": "^P\\d{3}$",
+                    "type": "string"
+                  },
+                  "name": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^\\S(?:.*\\S)?$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "basis": {
+                    "enum": [
+                      "evidence_aligned",
+                      "user_asserted"
+                    ],
+                    "type": "string"
+                  },
+                  "evidence_ids": {
+                    "items": {
+                      "maxLength": 96,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 32,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "note": {
+                    "anyOf": [
+                      {
+                        "maxLength": 2048,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "expected_revision",
+                  "action",
+                  "person_id",
+                  "name",
+                  "basis",
+                  "evidence_ids"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Embed stored records and active facts that still lack vectors.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "action": {
+                    "const": "index",
+                    "type": "string"
+                  },
+                  "embedding": {
+                    "additionalProperties": false,
+                    "description": "Explicit text-embedding endpoint use; without authorization calls are only planned.",
+                    "properties": {
+                      "model": {
+                        "pattern": "^[A-Za-z0-9._/-]{1,128}$",
+                        "type": "string"
+                      },
+                      "output_dimensionality": {
+                        "anyOf": [
+                          {
+                            "maximum": 4096,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      },
+                      "authorize_provider_calls": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "max_calls": {
+                        "default": 4,
+                        "maximum": 64,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "model"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "expected_revision",
+                  "action",
+                  "embedding"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Existence, revision and per-window evidence coverage.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "status",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "People, fact-key directory and retrieval capability used for planning.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "overview",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "One or all person dossiers with identity history and suggestions.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "people",
+                    "type": "string"
+                  },
+                  "person_id": {
+                    "anyOf": [
+                      {
+                        "pattern": "^P\\d{3}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Every stored utterance of one person, or of everyone, in time order.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "person_dialogue",
+                    "type": "string"
+                  },
+                  "person_id": {
+                    "anyOf": [
+                      {
+                        "pattern": "^P\\d{3}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "start_seconds": {
+                    "default": 0,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "end_seconds": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "limit": {
+                    "default": 100,
+                    "maximum": 500,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Records overlapping one source interval, chronologically.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "timeline",
+                    "type": "string"
+                  },
+                  "start_seconds": {
+                    "default": 0,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "end_seconds": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "kinds": {
+                    "default": [],
+                    "items": {
+                      "enum": [
+                        "utterance",
+                        "visual",
+                        "acoustic",
+                        "audiovisual",
+                        "environment"
+                      ],
+                      "type": "string"
+                    },
+                    "maxItems": 5,
+                    "type": "array"
+                  },
+                  "limit": {
+                    "default": 100,
+                    "maximum": 500,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "All records of selected windows, optionally with an exact-source clip.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "moment",
+                    "type": "string"
+                  },
+                  "windows": {
+                    "items": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "maxItems": 8,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "export_clip": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "file_path": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "windows"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Hybrid keyword/dense search over memory records, utterances or facts.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "search",
+                    "type": "string"
+                  },
+                  "scope": {
+                    "default": "memory",
+                    "enum": [
+                      "memory",
+                      "dialogue",
+                      "facts"
+                    ],
+                    "type": "string"
+                  },
+                  "query": {
+                    "anyOf": [
+                      {
+                        "maxLength": 1024,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "key_prefix": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "subject_id": {
+                    "anyOf": [
+                      {
+                        "pattern": "^(?:P\\d{3}|(?:event|topic|place|object):[A-Za-z0-9_.-]{1,64})$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "include_superseded": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "top_k": {
+                    "default": 5,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "embedding": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Explicit text-embedding endpoint use; without authorization calls are only planned.",
+                        "properties": {
+                          "model": {
+                            "pattern": "^[A-Za-z0-9._/-]{1,128}$",
+                            "type": "string"
+                          },
+                          "output_dimensionality": {
+                            "anyOf": [
+                              {
+                                "maximum": 4096,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          },
+                          "authorize_provider_calls": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "max_calls": {
+                            "default": 4,
+                            "maximum": 64,
+                            "minimum": 1,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "model"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "One caller-planned retrieval; the question is echoed, never answered.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "plan",
+                    "type": "string"
+                  },
+                  "question": {
+                    "default": "",
+                    "maxLength": 2048,
+                    "type": "string"
+                  },
+                  "people": {
+                    "default": [],
+                    "items": {
+                      "pattern": "^P\\d{3}$",
+                      "type": "string"
+                    },
+                    "maxItems": 16,
+                    "type": "array"
+                  },
+                  "fact_keys": {
+                    "default": [],
+                    "items": {
+                      "maxLength": 160,
+                      "minLength": 3,
+                      "type": "string"
+                    },
+                    "maxItems": 32,
+                    "type": "array"
+                  },
+                  "queries": {
+                    "default": [],
+                    "items": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 8,
+                    "type": "array"
+                  },
+                  "time_ranges": {
+                    "default": [],
+                    "items": {
+                      "maxItems": 2,
+                      "minItems": 2,
+                      "prefixItems": [
+                        {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        {
+                          "minimum": 0,
+                          "type": "number"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "maxItems": 8,
+                    "type": "array"
+                  },
+                  "include_environment": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "top_k": {
+                    "default": 5,
+                    "maximum": 20,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "embedding": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Explicit text-embedding endpoint use; without authorization calls are only planned.",
+                        "properties": {
+                          "model": {
+                            "pattern": "^[A-Za-z0-9._/-]{1,128}$",
+                            "type": "string"
+                          },
+                          "output_dimensionality": {
+                            "anyOf": [
+                              {
+                                "maximum": 4096,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          },
+                          "authorize_provider_calls": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "max_calls": {
+                            "default": 4,
+                            "maximum": 64,
+                            "minimum": 1,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "model"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
       "name": "video_metadata",
       "description": "Fetch YouTube video metadata without Gemini analysis.\n\nReturns title, description, view/like/comment counts, duration,\ntags, channel info, category, and language. Costs 1 YouTube API\nunit, 0 Gemini units.",
       "annotations": {
@@ -25607,6 +27772,64 @@
                                     ],
                                     "default": null,
                                     "title": "Line Id"
+                                  },
+                                  "geometry_boundary": {
+                                    "anyOf": [
+                                      {
+                                        "additionalProperties": false,
+                                        "description": "Declared adapter precision policy and actual unclipped prepared-pixel overshoot.",
+                                        "properties": {
+                                          "policy": {
+                                            "enum": [
+                                              "exact",
+                                              "native_normalized_precision"
+                                            ],
+                                            "title": "Policy",
+                                            "type": "string"
+                                          },
+                                          "normalized_epsilon": {
+                                            "maximum": 5.960464477539063e-08,
+                                            "minimum": 0,
+                                            "title": "Normalized Epsilon",
+                                            "type": "number"
+                                          },
+                                          "left_pixels": {
+                                            "minimum": 0,
+                                            "title": "Left Pixels",
+                                            "type": "number"
+                                          },
+                                          "top_pixels": {
+                                            "minimum": 0,
+                                            "title": "Top Pixels",
+                                            "type": "number"
+                                          },
+                                          "right_pixels": {
+                                            "minimum": 0,
+                                            "title": "Right Pixels",
+                                            "type": "number"
+                                          },
+                                          "bottom_pixels": {
+                                            "minimum": 0,
+                                            "title": "Bottom Pixels",
+                                            "type": "number"
+                                          }
+                                        },
+                                        "required": [
+                                          "policy",
+                                          "normalized_epsilon",
+                                          "left_pixels",
+                                          "top_pixels",
+                                          "right_pixels",
+                                          "bottom_pixels"
+                                        ],
+                                        "title": "OCRBoundary",
+                                        "type": "object"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ],
+                                    "default": null
                                   }
                                 },
                                 "required": [
