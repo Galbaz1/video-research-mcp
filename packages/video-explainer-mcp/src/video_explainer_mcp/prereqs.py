@@ -16,6 +16,7 @@ from .render_contract import project_contract, source_contract
 from .planning_sources import read_object
 from .render_validation import codec_executables
 from .render_authored import authored_binding, authored_project, bind_fixture
+from .runner import _resolve_cli
 
 
 class PrereqStatus(BaseModel):
@@ -235,3 +236,31 @@ async def require_render_ready(project_id: str | None) -> None:
             [report.project["error"]] if report.project.get("error") else []
         )
         raise RuntimeError("Renderer prerequisites unavailable: " + "; ".join(missing + errors))
+
+
+def require_generation_ready(steps: tuple[str, ...], *, mock_llm: bool = False) -> None:
+    """Check selected CLI, Claude and known credential presence without provider calls.
+
+    Legacy generate's mock flag bypasses plan/script/narration providers, but
+    scenes still uses its generator. Presence never establishes provider access.
+    """
+    if not any(step != "render" for step in steps):
+        return
+    cfg = get_config()
+    _resolve_cli(cfg)
+    needs_claude = "scenes" in steps or (
+        not mock_llm and any(step in {"plan", "script", "narration"} for step in steps)
+    )
+    if needs_claude and not shutil.which("claude"):
+        raise RuntimeError(
+            "Generation prerequisites unavailable: claude is not available in PATH; "
+            "provider access not checked"
+        )
+    if "voiceover" in steps:
+        if cfg.tts_provider not in {"mock", "elevenlabs", "edge"}:
+            raise RuntimeError("Unsupported TTS provider for generation")
+        if cfg.tts_provider == "elevenlabs" and not cfg.elevenlabs_api_key:
+            raise RuntimeError(
+                "Generation prerequisites unavailable: ELEVENLABS_API_KEY is absent; "
+                "provider access not checked"
+            )

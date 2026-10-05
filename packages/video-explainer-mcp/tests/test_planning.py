@@ -29,6 +29,8 @@ def planning_project(tmp_path, monkeypatch):
     monkeypatch.setenv("EXPLAINER_PATH", str(tmp_path))
     monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(project.parent))
     monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", "mock")
+    monkeypatch.setattr("video_explainer_mcp.prereqs._resolve_cli", lambda cfg: "/mock/console")
+    monkeypatch.setattr("video_explainer_mcp.prereqs.shutil.which", lambda name: "/mock/" + name)
     _write(project / "config.json", {"paths": {"storyboard": "storyboard/storyboard.json"}})
     packet = {"schema_version": 1, "packet_id": "owned-two-source", "sources": [],
               "claims": [], "lineage": []}
@@ -405,7 +407,8 @@ async def test_legacy_generate_step_and_refine_commands_keep_existing_contract(p
         assert (await explainer_generate(project.name, from_step="script", to_step="storyboard"))["success"] is True
     assert [call.args for call in pipeline_cli.await_args_list] == [
         ("script", project.name),
-        ("generate", project.name, "--from", "script", "--to", "storyboard", "--mock"),
+        ("generate", project.name, "--from", "script", "--to", "voiceover", "--mock"),
+        ("storyboard", project.name),
     ]
     with patch("video_explainer_mcp.tools.quality.run_cli", return_value=result) as quality_cli:
         assert (await explainer_refine(project.name, "script"))["success"] is True
