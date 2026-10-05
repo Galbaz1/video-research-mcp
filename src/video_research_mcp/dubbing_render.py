@@ -125,7 +125,9 @@ async def fit_voice(raw: Path, output: Path, group, slot: dict, result: dict,
         raise client.DubbingError("timing_failed_shorten_translation")
     spoken = duration / speed
     padding = max(0.0, (slot["duration_sec"] - spoken) / 2)
-    filters = (f"atempo={speed},afade=t=in:st=0:d=0.015,"
+    # Buffered identity tempo can invalidate the leading delay timestamps.
+    tempo = f"atempo={speed}," if speed > 1.0 else ""
+    filters = (f"{tempo}afade=t=in:st=0:d=0.015,"
                f"afade=t=out:st={max(0, spoken - 0.015)}:d=0.015,"
                f"adelay={round(padding * 1000)}:all=1,apad=whole_dur={slot['duration_sec']},"
                f"atrim=duration={slot['duration_sec']}")

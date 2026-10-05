@@ -58,7 +58,7 @@ def test_production_entry_node_source_checks():
     fixture = Path(__file__).parent / "fixtures" / "production_entry_source.test.mjs"
     with tempfile.TemporaryDirectory(prefix="vrm-production-node-") as scratch:
         env.update(TMPDIR=scratch, TMP=scratch, TEMP=scratch)
-        returncode, output = _run_node([node, str(fixture)], env)
+        returncode, output = _run_node([node, "--test-reporter=tap", str(fixture)], env)
     print(output, end="")
     assert returncode == 0, output
     for expected in ("# tests 30", "# pass 30", "# fail 0", "# skipped 0"):

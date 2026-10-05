@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-05T17:34:12.357890+00:00",
-  "tool_count": 104,
+  "generated_at": "2026-10-05T19:49:04.120835+00:00",
+  "tool_count": 114,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -2753,6 +2753,661 @@
       }
     },
     {
+      "name": "collections_manage",
+      "description": "Manage persistent local collections and recall existing evidence without inference.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "Explicit canonical index and workspace; configure/create/select/list/recall/health/attach/admit/pin/delete/prune",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Enroll an empty private owned root and a finite media quota once.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "configure",
+                    "type": "string"
+                  },
+                  "owned_root": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "quota_bytes": {
+                    "maximum": 1073741824,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "owned_root",
+                  "quota_bytes"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Name or enroll an existing canonical collection without copying evidence.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "create",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "kind": {
+                    "enum": [
+                      "transcript",
+                      "comments",
+                      "media",
+                      "mixed"
+                    ],
+                    "type": "string"
+                  },
+                  "label": {
+                    "maxLength": 256,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "collection",
+                  "expected_revision",
+                  "kind",
+                  "label"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Persist a workspace's focus, or clear it without deleting data.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "select",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "collection"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "List metadata or recall existing evidence with finite pagination.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "enum": [
+                      "list",
+                      "recall",
+                      "health"
+                    ],
+                    "type": "string"
+                  },
+                  "collection": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "offset": {
+                    "default": 0,
+                    "maximum": 100000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "default": 20,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "output_bytes": {
+                    "default": 32768,
+                    "maximum": 65536,
+                    "minimum": 1024,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Attach an existing artifact or admit one exclusive exact-byte media copy.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "enum": [
+                      "attach",
+                      "admit"
+                    ],
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "evidence": {
+                    "additionalProperties": false,
+                    "description": "Existing artifact provenance; attached bytes remain externally owned.",
+                    "properties": {
+                      "asset_id": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      "video_id": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      "source_revision": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      "media_digest": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "kind": {
+                        "enum": [
+                          "analysis",
+                          "transcript",
+                          "comments",
+                          "video",
+                          "audio",
+                          "thumbnail",
+                          "keyframe"
+                        ],
+                        "type": "string"
+                      },
+                      "path": {
+                        "maxLength": 2048,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "size_bytes": {
+                        "maximum": 67108864,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "asset_id",
+                      "video_id",
+                      "source_revision",
+                      "media_digest",
+                      "kind",
+                      "path",
+                      "sha256",
+                      "size_bytes"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "collection",
+                  "expected_revision",
+                  "evidence"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Protect a collection or one artifact from removal and LRU pruning.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "pin",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "asset_id": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "pinned": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "collection",
+                  "expected_revision",
+                  "pinned"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Remove inactive unpinned collection evidence or one unreferenced owned asset.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "delete",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "asset_id": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "collection",
+                  "expected_revision"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Reclaim at most a finite number of unreferenced owned assets in LRU order.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "prune",
+                    "type": "string"
+                  },
+                  "target_bytes": {
+                    "maximum": 1073741824,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "max_assets": {
+                    "default": 20,
+                    "maximum": 100,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "action",
+                  "target_bytes"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local receipts distinguish partial cleanup from successful reclamation.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "configured",
+                  "created",
+                  "selected",
+                  "cleared",
+                  "listed",
+                  "recalled",
+                  "health",
+                  "attached",
+                  "admitted",
+                  "pinned",
+                  "deleted",
+                  "pruned",
+                  "partial"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "workspace": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                "title": "Workspace",
+                "type": "string"
+              },
+              "active_collection": {
+                "anyOf": [
+                  {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Active Collection"
+              },
+              "collection": {
+                "anyOf": [
+                  {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Collection"
+              },
+              "index_revision": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Index Revision"
+              },
+              "records": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Records",
+                "type": "array"
+              },
+              "next_offset": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Next Offset"
+              },
+              "reclaimed_bytes": {
+                "default": 0,
+                "title": "Reclaimed Bytes",
+                "type": "integer"
+              },
+              "removed_observations": {
+                "default": 0,
+                "title": "Removed Observations",
+                "type": "integer"
+              },
+              "cleanup_liabilities": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Cleanup Liabilities",
+                "type": "array"
+              },
+              "storage": {
+                "additionalProperties": true,
+                "title": "Storage",
+                "type": "object"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "status",
+              "workspace"
+            ],
+            "title": "Response",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
       "name": "content_analyze",
       "description": "Analyze content (file, URL, or text) with any instruction.\n\nProvide exactly one of file_path, url, or text. Uses Gemini's structured\noutput for reliable JSON responses. Pass a custom output_schema to control\nthe response shape, or use the default ContentResult schema.",
       "annotations": {
@@ -3659,6 +4314,785 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "grounded_answer",
+      "description": "Validate caller claims against exactly retrieved evidence or abstain explicitly.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Corpus query, caller claims with citations, repair policy and optional bounded frame escalation",
+            "properties": {
+              "retrieval": {
+                "additionalProperties": false,
+                "description": "Require explicit current video revisions; return evidence context only.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "query",
+                    "type": "string"
+                  },
+                  "query": {
+                    "maxLength": 2000,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "source_revisions": {
+                    "maxProperties": 100,
+                    "minProperties": 1,
+                    "patternProperties": {
+                      "^[A-Za-z0-9_.:@-]+$": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      }
+                    },
+                    "propertyNames": {
+                      "maxLength": 128,
+                      "minLength": 1
+                    },
+                    "type": "object"
+                  },
+                  "mode": {
+                    "default": "hybrid",
+                    "enum": [
+                      "fts",
+                      "dense",
+                      "hybrid"
+                    ],
+                    "type": "string"
+                  },
+                  "query_vector": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "maximum": 1000000.0,
+                          "minimum": -1000000.0,
+                          "type": "number"
+                        },
+                        "maxItems": 1024,
+                        "minItems": 1,
+                        "type": "array"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "vector_model": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "top_k": {
+                    "default": 10,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "token_budget": {
+                    "default": 2048,
+                    "maximum": 32768,
+                    "minimum": 32,
+                    "type": "integer"
+                  },
+                  "graph": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Explicit separately operated context route; both keyword sets avoid extraction.",
+                        "properties": {
+                          "endpoint": {
+                            "maxLength": 256,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "mode": {
+                            "default": "mix",
+                            "enum": [
+                              "local",
+                              "global",
+                              "hybrid",
+                              "mix"
+                            ],
+                            "type": "string"
+                          },
+                          "hl_keywords": {
+                            "items": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "maxItems": 16,
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "ll_keywords": {
+                            "items": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "maxItems": 16,
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "endpoint",
+                          "hl_keywords",
+                          "ll_keywords"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "collection",
+                  "action",
+                  "query",
+                  "source_revisions"
+                ],
+                "type": "object"
+              },
+              "claims": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "A caller-asserted statement; the tool never authors or rewrites its text.",
+                  "properties": {
+                    "claim_id": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "type": "string"
+                    },
+                    "text": {
+                      "maxLength": 2000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "citations": {
+                      "items": {
+                        "additionalProperties": false,
+                        "description": "One caller-proposed citation into a retrieved observation interval.",
+                        "properties": {
+                          "observation_id": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "pattern": "^[A-Za-z0-9_.:@-]+$",
+                            "type": "string"
+                          },
+                          "source_revision": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "pattern": "^[A-Za-z0-9_.:@-]+$",
+                            "type": "string"
+                          },
+                          "start_seconds": {
+                            "minimum": 0,
+                            "type": "number"
+                          },
+                          "end_seconds": {
+                            "minimum": 0,
+                            "type": "number"
+                          },
+                          "quote": {
+                            "anyOf": [
+                              {
+                                "maxLength": 2000,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          }
+                        },
+                        "required": [
+                          "observation_id",
+                          "source_revision",
+                          "start_seconds",
+                          "end_seconds"
+                        ],
+                        "type": "object"
+                      },
+                      "maxItems": 8,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "claim_id",
+                    "text"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 16,
+                "type": "array"
+              },
+              "repair_citations": {
+                "default": true,
+                "type": "boolean"
+              },
+              "verify_byte_budget": {
+                "default": 33554432,
+                "maximum": 268435456,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "escalation": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Exact local source revision and display-coordinate crop for nearby decoded frames.",
+                    "properties": {
+                      "file_path": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "expected_source_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "crop_box": {
+                        "anyOf": [
+                          {
+                            "maxItems": 4,
+                            "minItems": 4,
+                            "prefixItems": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ],
+                            "type": "array"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      },
+                      "max_pixels": {
+                        "default": 250000,
+                        "maximum": 1000000,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "budget": {
+                        "additionalProperties": false,
+                        "description": "Finite attempt, byte and wall-time limits for additional frame observations.",
+                        "properties": {
+                          "max_attempts": {
+                            "default": 3,
+                            "maximum": 8,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "max_bytes": {
+                            "default": 4194304,
+                            "maximum": 8388608,
+                            "minimum": 65536,
+                            "type": "integer"
+                          },
+                          "deadline_seconds": {
+                            "default": 30,
+                            "exclusiveMinimum": 0,
+                            "maximum": 120,
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "file_path",
+                      "expected_source_sha256"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              }
+            },
+            "required": [
+              "retrieval"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Grounding outcome; deliberately no generated answer text.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "grounded",
+                  "partially_grounded",
+                  "abstained",
+                  "evidence_only"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "query": {
+                "title": "Query",
+                "type": "string"
+              },
+              "retrieval_status": {
+                "enum": [
+                  "found",
+                  "no_evidence"
+                ],
+                "title": "Retrieval Status",
+                "type": "string"
+              },
+              "collection": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                "title": "Collection",
+                "type": "string"
+              },
+              "index_revision": {
+                "title": "Index Revision",
+                "type": "integer"
+              },
+              "claims": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Claim support from verbatim retrieved text, citation availability, or none.",
+                  "properties": {
+                    "claim_id": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "title": "Claim Id",
+                      "type": "string"
+                    },
+                    "text": {
+                      "title": "Text",
+                      "type": "string"
+                    },
+                    "claim_basis": {
+                      "const": "caller_asserted",
+                      "default": "caller_asserted",
+                      "title": "Claim Basis",
+                      "type": "string"
+                    },
+                    "support": {
+                      "enum": [
+                        "verbatim_quote",
+                        "citation_available_semantics_unverified",
+                        "unsupported"
+                      ],
+                      "title": "Support",
+                      "type": "string"
+                    },
+                    "citations": {
+                      "items": {
+                        "additionalProperties": true,
+                        "type": "object"
+                      },
+                      "title": "Citations",
+                      "type": "array"
+                    },
+                    "rejected": {
+                      "items": {
+                        "additionalProperties": true,
+                        "type": "object"
+                      },
+                      "title": "Rejected",
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "claim_id",
+                    "text",
+                    "support"
+                  ],
+                  "title": "ClaimResult",
+                  "type": "object"
+                },
+                "title": "Claims",
+                "type": "array"
+              },
+              "missing_evidence": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Missing Evidence",
+                "type": "array"
+              },
+              "evidence": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Evidence",
+                "type": "array"
+              },
+              "trace": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Trace",
+                "type": "array"
+              },
+              "escalation": {
+                "additionalProperties": false,
+                "description": "Every attempt and the limit that stopped further observations.",
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "not_requested",
+                      "not_needed",
+                      "refused",
+                      "complete",
+                      "stopped"
+                    ],
+                    "title": "Status",
+                    "type": "string"
+                  },
+                  "stop_reason": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Stop Reason"
+                  },
+                  "attempts": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "One decoded frame attempt with requested and PTS-derived actual times kept apart.",
+                      "properties": {
+                        "attempt": {
+                          "title": "Attempt",
+                          "type": "integer"
+                        },
+                        "claim_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "title": "Claim Id",
+                          "type": "string"
+                        },
+                        "observation_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "title": "Observation Id",
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "observed",
+                            "failed",
+                            "discarded_byte_budget"
+                          ],
+                          "title": "Status",
+                          "type": "string"
+                        },
+                        "requested_seconds": {
+                          "title": "Requested Seconds",
+                          "type": "number"
+                        },
+                        "actual_seconds": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Actual Seconds"
+                        },
+                        "original_pts": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Original Pts"
+                        },
+                        "time_base": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Time Base"
+                        },
+                        "within_cited_span": {
+                          "anyOf": [
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Within Cited Span"
+                        },
+                        "crop_box": {
+                          "anyOf": [
+                            {
+                              "items": {
+                                "type": "integer"
+                              },
+                              "type": "array"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Crop Box"
+                        },
+                        "source": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": true,
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Source"
+                        },
+                        "artifact": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": true,
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Artifact"
+                        },
+                        "error": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": true,
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Error"
+                        },
+                        "cleanup_error": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": true,
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "default": null,
+                          "title": "Cleanup Error"
+                        },
+                        "interpretation": {
+                          "const": "not_performed",
+                          "default": "not_performed",
+                          "title": "Interpretation",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "attempt",
+                        "claim_id",
+                        "observation_id",
+                        "status",
+                        "requested_seconds"
+                      ],
+                      "title": "EscalationAttempt",
+                      "type": "object"
+                    },
+                    "title": "Attempts",
+                    "type": "array"
+                  },
+                  "refusals": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "title": "Refusals",
+                    "type": "array"
+                  },
+                  "bytes_used": {
+                    "default": 0,
+                    "title": "Bytes Used",
+                    "type": "integer"
+                  },
+                  "limits": {
+                    "additionalProperties": true,
+                    "title": "Limits",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "title": "EscalationReport",
+                "type": "object"
+              },
+              "synthesis": {
+                "additionalProperties": true,
+                "title": "Synthesis",
+                "type": "object"
+              },
+              "limits": {
+                "additionalProperties": true,
+                "title": "Limits",
+                "type": "object"
+              },
+              "citation_availability": {
+                "default": "current_artifact_bytes_verified_not_factual_truth",
+                "title": "Citation Availability",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "query",
+              "retrieval_status",
+              "collection",
+              "index_revision",
+              "escalation"
+            ],
+            "title": "GroundingResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -8284,6 +9718,1604 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_capability_probe",
+      "description": "Observe availability and unknown recording permissions without starting recording.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Optional pinned companion checkout and explicit device nodes; filesystem/executable inspection only",
+            "properties": {
+              "companion_root": {
+                "anyOf": [
+                  {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "device_paths": {
+                "items": {
+                  "maxLength": 4096,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "maxItems": 8,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_capture_prepare",
+      "description": "Prepare an isolated source-defined capture handoff or report unsupported before work.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Explicit screen/window recording operation/target/duration/retention scope for a separate operator process",
+            "properties": {
+              "companion_root": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "output_dir": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "authority": {
+                "additionalProperties": false,
+                "description": "Caller-declared operation scope; this record does not authenticate a principal.",
+                "properties": {
+                  "operation_id": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "screen",
+                      "window"
+                    ],
+                    "type": "string"
+                  },
+                  "window_title": {
+                    "anyOf": [
+                      {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "duration_seconds": {
+                    "exclusiveMinimum": 0,
+                    "maximum": 30,
+                    "type": "number"
+                  },
+                  "retention": {
+                    "maxLength": 512,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "target",
+                  "duration_seconds",
+                  "retention"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "companion_root",
+              "output_dir",
+              "authority"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_finalize",
+      "description": "Stop and index original-clock evidence in the existing library without reprocessing.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Pinned evidence and ordinary corpus SQLite collection/revision; unresolved intent never resubmits",
+            "properties": {
+              "pin": {
+                "additionalProperties": false,
+                "description": "All subsequent reads bind the exact immutable archive bytes and revision.",
+                "properties": {
+                  "session_id": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "revision": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "session_id",
+                  "revision",
+                  "path",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "index_path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "collection": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "expected_revision": {
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "pin",
+              "index_path",
+              "collection",
+              "expected_revision"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_monitor",
+      "description": "Evaluate a bounded replay condition and retain an explicit unmet result.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Literal kind/text/count condition with finite checks and monotonic deadline; no corrective execution",
+            "properties": {
+              "pin": {
+                "additionalProperties": false,
+                "description": "All subsequent reads bind the exact immutable archive bytes and revision.",
+                "properties": {
+                  "session_id": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "revision": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "session_id",
+                  "revision",
+                  "path",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "cursor": {
+                "anyOf": [
+                  {
+                    "maxLength": 256,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "limit": {
+                "default": 20,
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "kind": {
+                "enum": [
+                  "speech",
+                  "OCR",
+                  "frame",
+                  "browser"
+                ],
+                "type": "string"
+              },
+              "contains": {
+                "default": "",
+                "maxLength": 256,
+                "type": "string"
+              },
+              "min_matches": {
+                "default": 1,
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_checks": {
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "deadline_seconds": {
+                "exclusiveMinimum": 0,
+                "maximum": 30,
+                "type": "number"
+              }
+            },
+            "required": [
+              "pin",
+              "kind",
+              "max_checks",
+              "deadline_seconds"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_read",
+      "description": "Read an immutable bounded page with explicit remaining, queue and dropped state.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Pinned replay bytes and a snapshot/page-size-bound cursor",
+            "properties": {
+              "pin": {
+                "additionalProperties": false,
+                "description": "All subsequent reads bind the exact immutable archive bytes and revision.",
+                "properties": {
+                  "session_id": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "revision": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.-]+$",
+                    "type": "string"
+                  },
+                  "path": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "session_id",
+                  "revision",
+                  "path",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "cursor": {
+                "anyOf": [
+                  {
+                    "maxLength": 256,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "limit": {
+                "default": 20,
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "pin"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_replay",
+      "description": "Retain and freeze a bounded replay without capture, parsing or inference.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Exact local originals, four typed event kinds, declared common clock/tolerance and producer telemetry",
+            "properties": {
+              "store_dir": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "session_id": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "revision": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "clock_id": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "tolerance_us": {
+                "maximum": 1000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Original bytes and a declared mapping from source ticks to the common clock.",
+                  "properties": {
+                    "source_id": {
+                      "maxLength": 64,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "type": "string"
+                    },
+                    "revision": {
+                      "maxLength": 64,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "type": "string"
+                    },
+                    "path": {
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    "time_base": {
+                      "pattern": "^[1-9][0-9]{0,8}/[1-9][0-9]{0,8}$",
+                      "type": "string"
+                    },
+                    "offset_us": {
+                      "maximum": 86400000000,
+                      "minimum": -86400000000,
+                      "type": "integer"
+                    },
+                    "clock_basis": {
+                      "enum": [
+                        "observed",
+                        "inferred"
+                      ],
+                      "type": "string"
+                    },
+                    "clock_description": {
+                      "maxLength": 512,
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "source_id",
+                    "revision",
+                    "path",
+                    "sha256",
+                    "time_base",
+                    "offset_us",
+                    "clock_basis",
+                    "clock_description"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 8,
+                "minItems": 1,
+                "type": "array"
+              },
+              "events": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "additionalProperties": false,
+                      "description": "Speech recognition is inference; supplied captions are source assertions.",
+                      "properties": {
+                        "event_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "source_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "timestamp_ticks": {
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "duration_ticks": {
+                          "default": 0,
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reference_us": {
+                          "maximum": 86400000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "maxLength": 4000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "kind": {
+                          "const": "speech",
+                          "type": "string"
+                        },
+                        "basis": {
+                          "enum": [
+                            "inferred",
+                            "source_assertion"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "event_id",
+                        "source_id",
+                        "timestamp_ticks",
+                        "reference_us",
+                        "text",
+                        "kind",
+                        "basis"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "description": "OCR recognition remains inference rather than verified text truth.",
+                      "properties": {
+                        "event_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "source_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "timestamp_ticks": {
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "duration_ticks": {
+                          "default": 0,
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reference_us": {
+                          "maximum": 86400000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "maxLength": 4000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "kind": {
+                          "const": "OCR",
+                          "type": "string"
+                        },
+                        "basis": {
+                          "const": "inferred",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "event_id",
+                        "source_id",
+                        "timestamp_ticks",
+                        "reference_us",
+                        "text",
+                        "kind",
+                        "basis"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "description": "A supplied frame observation does not authenticate its acquisition.",
+                      "properties": {
+                        "event_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "source_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "timestamp_ticks": {
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "duration_ticks": {
+                          "default": 0,
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reference_us": {
+                          "maximum": 86400000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "maxLength": 4000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "kind": {
+                          "const": "frame",
+                          "type": "string"
+                        },
+                        "basis": {
+                          "const": "observed",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "event_id",
+                        "source_id",
+                        "timestamp_ticks",
+                        "reference_us",
+                        "text",
+                        "kind",
+                        "basis"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "description": "Browser telemetry is retained data, never a navigation or script instruction.",
+                      "properties": {
+                        "event_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "source_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "timestamp_ticks": {
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "duration_ticks": {
+                          "default": 0,
+                          "maximum": 1000000000000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reference_us": {
+                          "maximum": 86400000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "maxLength": 4000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "kind": {
+                          "const": "browser",
+                          "type": "string"
+                        },
+                        "basis": {
+                          "const": "observed",
+                          "type": "string"
+                        },
+                        "category": {
+                          "enum": [
+                            "navigation",
+                            "console",
+                            "network",
+                            "DOM"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "event_id",
+                        "source_id",
+                        "timestamp_ticks",
+                        "reference_us",
+                        "text",
+                        "kind",
+                        "basis",
+                        "category"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "maxItems": 100,
+                "minItems": 1,
+                "type": "array"
+              },
+              "queue": {
+                "additionalProperties": false,
+                "description": "Missing producer telemetry is unknown; replay has no background queue.",
+                "properties": {
+                  "depth": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "dropped_frames": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "dropped_events": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "basis": {
+                    "default": "unknown",
+                    "enum": [
+                      "source_reported",
+                      "unknown"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "store_dir",
+              "session_id",
+              "revision",
+              "clock_id",
+              "tolerance_us",
+              "sources",
+              "events"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "live_stop",
+      "description": "Persist a stop record without changing or processing prior events.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "pin": {
+            "additionalProperties": false,
+            "description": "Exact immutable replay session/revision to seal",
+            "properties": {
+              "session_id": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "revision": {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "type": "string"
+              },
+              "path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id",
+              "revision",
+              "path",
+              "sha256"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "pin"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local typed metadata; supplied replay observations remain unauthenticated.",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "replay",
+                  "read",
+                  "monitor",
+                  "stop",
+                  "finalize",
+                  "probe",
+                  "capture"
+                ],
+                "title": "Operation",
+                "type": "string"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "data": {
+                "additionalProperties": true,
+                "title": "Data",
+                "type": "object"
+              },
+              "recording_started": {
+                "const": false,
+                "default": false,
+                "title": "Recording Started",
+                "type": "boolean"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_basis": {
+                "const": "supplied_replay_not_native_qualification",
+                "default": "supplied_replay_not_native_qualification",
+                "title": "Evidence Basis",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation",
+              "status",
+              "data"
+            ],
+            "title": "LiveResult",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -25643,6 +28675,1398 @@
                   "memory_dir",
                   "expected_source_sha256",
                   "action"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "video_memory_lifecycle",
+      "description": "Build/resume/append canonical AV evidence with durable extracted/planned coverage.\n\nStatus checks freshness. Watch/replay return AV observations and stored evidence;\nthey require an explicitly authorized existing native route and never infer speaker\nidentities or generate an answer. No invocation starts a background job or retries.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "One bounded build, append, resume, status, watch or replay invocation; source/config/revision commitments and explicit AV submission authorization required",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Freeze all source windows, then ingest at most one finite invocation.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "action": {
+                    "const": "build",
+                    "type": "string"
+                  },
+                  "segments": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "One chronological source, with explicit observations and optional identity links.",
+                      "properties": {
+                        "segment_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "file_path": {
+                          "maxLength": 4096,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "expected_source_sha256": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "expected_source_bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "duration_seconds": {
+                          "exclusiveMinimum": 0,
+                          "maximum": 15360,
+                          "type": "number"
+                        },
+                        "clock_basis": {
+                          "const": "caller_asserted",
+                          "default": "caller_asserted",
+                          "type": "string"
+                        },
+                        "artifacts": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "A caller-retained tool result bound by exact bytes.",
+                            "properties": {
+                              "kind": {
+                                "enum": [
+                                  "transcript",
+                                  "av_events"
+                                ],
+                                "type": "string"
+                              },
+                              "path": {
+                                "maxLength": 4096,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[a-f0-9]{64}$",
+                                "type": "string"
+                              },
+                              "role": {
+                                "default": "occurrences",
+                                "enum": [
+                                  "occurrences",
+                                  "environment"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "path",
+                              "sha256"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 16,
+                          "type": "array"
+                        },
+                        "clips": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "Caller-selected clip bytes; parent-clock correspondence is caller asserted.",
+                            "properties": {
+                              "window": {
+                                "maximum": 511,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "path": {
+                                "maxLength": 4096,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[a-f0-9]{64}$",
+                                "type": "string"
+                              },
+                              "bytes": {
+                                "maximum": 33554432,
+                                "minimum": 1,
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "window",
+                              "path",
+                              "sha256",
+                              "bytes"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 512,
+                          "type": "array"
+                        },
+                        "identity_bindings": {
+                          "additionalProperties": {
+                            "pattern": "^P\\d{3}$",
+                            "type": "string"
+                          },
+                          "default": {},
+                          "propertyNames": {
+                            "maxLength": 128,
+                            "minLength": 1
+                          },
+                          "type": "object"
+                        },
+                        "identity_basis": {
+                          "const": "user_asserted",
+                          "default": "user_asserted",
+                          "type": "string"
+                        },
+                        "facts": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "One caller-supplied fact; every evidence ID must already be stored.",
+                            "properties": {
+                              "subject_id": {
+                                "pattern": "^(?:P\\d{3}|(?:event|topic|place|object):[A-Za-z0-9_.-]{1,64})$",
+                                "type": "string"
+                              },
+                              "key": {
+                                "pattern": "^[A-Za-z0-9_.-]{1,64}$",
+                                "type": "string"
+                              },
+                              "value": {
+                                "maxLength": 2048,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "confidence": {
+                                "enum": [
+                                  "high",
+                                  "medium",
+                                  "low"
+                                ],
+                                "type": "string"
+                              },
+                              "evidence_ids": {
+                                "items": {
+                                  "pattern": "^[a-z]+:[0-9a-f]{12}:\\d{4}:\\d{3}$",
+                                  "type": "string"
+                                },
+                                "maxItems": 32,
+                                "minItems": 1,
+                                "type": "array"
+                              }
+                            },
+                            "required": [
+                              "subject_id",
+                              "key",
+                              "value",
+                              "confidence",
+                              "evidence_ids"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 256,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "segment_id",
+                        "file_path",
+                        "expected_source_sha256",
+                        "expected_source_bytes",
+                        "duration_seconds"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 16,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "limits": {
+                    "additionalProperties": false,
+                    "description": "Finite work per invocation; these limits never change the planned denominator.",
+                    "properties": {
+                      "max_windows": {
+                        "default": 16,
+                        "maximum": 64,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "timeout_seconds": {
+                        "default": 30.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 60,
+                        "type": "number"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "max_windows": 16,
+                      "timeout_seconds": 30.0
+                    }
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "segments"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Extend only a completed memory; retain all earlier canonical results.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "action": {
+                    "const": "append",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "segments": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "One chronological source, with explicit observations and optional identity links.",
+                      "properties": {
+                        "segment_id": {
+                          "maxLength": 64,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "type": "string"
+                        },
+                        "file_path": {
+                          "maxLength": 4096,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "expected_source_sha256": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "expected_source_bytes": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "duration_seconds": {
+                          "exclusiveMinimum": 0,
+                          "maximum": 15360,
+                          "type": "number"
+                        },
+                        "clock_basis": {
+                          "const": "caller_asserted",
+                          "default": "caller_asserted",
+                          "type": "string"
+                        },
+                        "artifacts": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "A caller-retained tool result bound by exact bytes.",
+                            "properties": {
+                              "kind": {
+                                "enum": [
+                                  "transcript",
+                                  "av_events"
+                                ],
+                                "type": "string"
+                              },
+                              "path": {
+                                "maxLength": 4096,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[a-f0-9]{64}$",
+                                "type": "string"
+                              },
+                              "role": {
+                                "default": "occurrences",
+                                "enum": [
+                                  "occurrences",
+                                  "environment"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "path",
+                              "sha256"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 16,
+                          "type": "array"
+                        },
+                        "clips": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "Caller-selected clip bytes; parent-clock correspondence is caller asserted.",
+                            "properties": {
+                              "window": {
+                                "maximum": 511,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "path": {
+                                "maxLength": 4096,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[a-f0-9]{64}$",
+                                "type": "string"
+                              },
+                              "bytes": {
+                                "maximum": 33554432,
+                                "minimum": 1,
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "window",
+                              "path",
+                              "sha256",
+                              "bytes"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 512,
+                          "type": "array"
+                        },
+                        "identity_bindings": {
+                          "additionalProperties": {
+                            "pattern": "^P\\d{3}$",
+                            "type": "string"
+                          },
+                          "default": {},
+                          "propertyNames": {
+                            "maxLength": 128,
+                            "minLength": 1
+                          },
+                          "type": "object"
+                        },
+                        "identity_basis": {
+                          "const": "user_asserted",
+                          "default": "user_asserted",
+                          "type": "string"
+                        },
+                        "facts": {
+                          "default": [],
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "One caller-supplied fact; every evidence ID must already be stored.",
+                            "properties": {
+                              "subject_id": {
+                                "pattern": "^(?:P\\d{3}|(?:event|topic|place|object):[A-Za-z0-9_.-]{1,64})$",
+                                "type": "string"
+                              },
+                              "key": {
+                                "pattern": "^[A-Za-z0-9_.-]{1,64}$",
+                                "type": "string"
+                              },
+                              "value": {
+                                "maxLength": 2048,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "confidence": {
+                                "enum": [
+                                  "high",
+                                  "medium",
+                                  "low"
+                                ],
+                                "type": "string"
+                              },
+                              "evidence_ids": {
+                                "items": {
+                                  "pattern": "^[a-z]+:[0-9a-f]{12}:\\d{4}:\\d{3}$",
+                                  "type": "string"
+                                },
+                                "maxItems": 32,
+                                "minItems": 1,
+                                "type": "array"
+                              }
+                            },
+                            "required": [
+                              "subject_id",
+                              "key",
+                              "value",
+                              "confidence",
+                              "evidence_ids"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 256,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "segment_id",
+                        "file_path",
+                        "expected_source_sha256",
+                        "expected_source_bytes",
+                        "duration_seconds"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 16,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "limits": {
+                    "additionalProperties": false,
+                    "description": "Finite work per invocation; these limits never change the planned denominator.",
+                    "properties": {
+                      "max_windows": {
+                        "default": 16,
+                        "maximum": 64,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "timeout_seconds": {
+                        "default": 30.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 60,
+                        "type": "number"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "max_windows": 16,
+                      "timeout_seconds": 30.0
+                    }
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "expected_revision",
+                  "segments"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Resume the frozen plan once, without reprocessing its completed prefix.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "action": {
+                    "const": "resume",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "limits": {
+                    "additionalProperties": false,
+                    "description": "Finite work per invocation; these limits never change the planned denominator.",
+                    "properties": {
+                      "max_windows": {
+                        "default": 16,
+                        "maximum": 64,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "timeout_seconds": {
+                        "default": 30.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 60,
+                        "type": "number"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "max_windows": 16,
+                      "timeout_seconds": 30.0
+                    }
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "expected_revision"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Verify source/config freshness and return exact extracted/planned coverage.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "action": {
+                    "const": "status",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Inspect selected retained clips through an explicitly authorized AV route.",
+                "properties": {
+                  "memory_dir": {
+                    "maxLength": 4096,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_source_sha256": {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "action": {
+                    "const": "replay",
+                    "type": "string"
+                  },
+                  "av_route": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Optional per-window media_caption_events calls; planning is the default.",
+                        "properties": {
+                          "roles": {
+                            "default": [
+                              "occurrences"
+                            ],
+                            "items": {
+                              "enum": [
+                                "occurrences",
+                                "environment"
+                              ],
+                              "type": "string"
+                            },
+                            "maxItems": 2,
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "authorize_submission": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "max_calls": {
+                            "default": 8,
+                            "maximum": 64,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "thinking_level": {
+                            "default": "low",
+                            "enum": [
+                              "low",
+                              "medium",
+                              "high"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "clips": {
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    },
+                    "maxItems": 512,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "limits": {
+                    "additionalProperties": false,
+                    "description": "Explicit clip, payload, media-duration and invocation-time ceilings.",
+                    "properties": {
+                      "max_clips": {
+                        "default": 3,
+                        "maximum": 8,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "max_payload_bytes": {
+                        "default": 8388608,
+                        "maximum": 33554432,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "max_duration_seconds": {
+                        "default": 120.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 1800,
+                        "type": "number"
+                      },
+                      "timeout_seconds": {
+                        "default": 30.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 60,
+                        "type": "number"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "max_clips": 3,
+                      "max_payload_bytes": 8388608,
+                      "max_duration_seconds": 120.0,
+                      "timeout_seconds": 30.0
+                    }
+                  }
+                },
+                "required": [
+                  "memory_dir",
+                  "expected_source_sha256",
+                  "action",
+                  "clips"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Watch one caller-described source without building a memory or background job.",
+                "properties": {
+                  "action": {
+                    "const": "watch",
+                    "type": "string"
+                  },
+                  "source": {
+                    "additionalProperties": false,
+                    "description": "One chronological source, with explicit observations and optional identity links.",
+                    "properties": {
+                      "segment_id": {
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "file_path": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "expected_source_sha256": {
+                        "pattern": "^[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "expected_source_bytes": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "duration_seconds": {
+                        "exclusiveMinimum": 0,
+                        "maximum": 15360,
+                        "type": "number"
+                      },
+                      "clock_basis": {
+                        "const": "caller_asserted",
+                        "default": "caller_asserted",
+                        "type": "string"
+                      },
+                      "artifacts": {
+                        "default": [],
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "A caller-retained tool result bound by exact bytes.",
+                          "properties": {
+                            "kind": {
+                              "enum": [
+                                "transcript",
+                                "av_events"
+                              ],
+                              "type": "string"
+                            },
+                            "path": {
+                              "maxLength": 4096,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "sha256": {
+                              "pattern": "^[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "role": {
+                              "default": "occurrences",
+                              "enum": [
+                                "occurrences",
+                                "environment"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "path",
+                            "sha256"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 16,
+                        "type": "array"
+                      },
+                      "clips": {
+                        "default": [],
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "Caller-selected clip bytes; parent-clock correspondence is caller asserted.",
+                          "properties": {
+                            "window": {
+                              "maximum": 511,
+                              "minimum": 0,
+                              "type": "integer"
+                            },
+                            "path": {
+                              "maxLength": 4096,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "sha256": {
+                              "pattern": "^[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "bytes": {
+                              "maximum": 33554432,
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "window",
+                            "path",
+                            "sha256",
+                            "bytes"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 512,
+                        "type": "array"
+                      },
+                      "identity_bindings": {
+                        "additionalProperties": {
+                          "pattern": "^P\\d{3}$",
+                          "type": "string"
+                        },
+                        "default": {},
+                        "propertyNames": {
+                          "maxLength": 128,
+                          "minLength": 1
+                        },
+                        "type": "object"
+                      },
+                      "identity_basis": {
+                        "const": "user_asserted",
+                        "default": "user_asserted",
+                        "type": "string"
+                      },
+                      "facts": {
+                        "default": [],
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "One caller-supplied fact; every evidence ID must already be stored.",
+                          "properties": {
+                            "subject_id": {
+                              "pattern": "^(?:P\\d{3}|(?:event|topic|place|object):[A-Za-z0-9_.-]{1,64})$",
+                              "type": "string"
+                            },
+                            "key": {
+                              "pattern": "^[A-Za-z0-9_.-]{1,64}$",
+                              "type": "string"
+                            },
+                            "value": {
+                              "maxLength": 2048,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "confidence": {
+                              "enum": [
+                                "high",
+                                "medium",
+                                "low"
+                              ],
+                              "type": "string"
+                            },
+                            "evidence_ids": {
+                              "items": {
+                                "pattern": "^[a-z]+:[0-9a-f]{12}:\\d{4}:\\d{3}$",
+                                "type": "string"
+                              },
+                              "maxItems": 32,
+                              "minItems": 1,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "subject_id",
+                            "key",
+                            "value",
+                            "confidence",
+                            "evidence_ids"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 256,
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "segment_id",
+                      "file_path",
+                      "expected_source_sha256",
+                      "expected_source_bytes",
+                      "duration_seconds"
+                    ],
+                    "type": "object"
+                  },
+                  "config": {
+                    "additionalProperties": false,
+                    "description": "Semantic configuration; any change forbids reuse of a prior checkpoint.",
+                    "properties": {
+                      "protocol": {
+                        "const": "av-lifecycle/1",
+                        "default": "av-lifecycle/1",
+                        "type": "string"
+                      },
+                      "profile": {
+                        "default": "supplied-artifacts-v1",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "type": "string"
+                      },
+                      "av_route": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "description": "Optional per-window media_caption_events calls; planning is the default.",
+                            "properties": {
+                              "roles": {
+                                "default": [
+                                  "occurrences"
+                                ],
+                                "items": {
+                                  "enum": [
+                                    "occurrences",
+                                    "environment"
+                                  ],
+                                  "type": "string"
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "authorize_submission": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "max_calls": {
+                                "default": 8,
+                                "maximum": 64,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "thinking_level": {
+                                "default": "low",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "protocol": "av-lifecycle/1",
+                      "profile": "supplied-artifacts-v1",
+                      "av_route": null
+                    }
+                  },
+                  "limits": {
+                    "additionalProperties": false,
+                    "description": "Explicit clip, payload, media-duration and invocation-time ceilings.",
+                    "properties": {
+                      "max_clips": {
+                        "default": 3,
+                        "maximum": 8,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "max_payload_bytes": {
+                        "default": 8388608,
+                        "maximum": 33554432,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "max_duration_seconds": {
+                        "default": 120.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 1800,
+                        "type": "number"
+                      },
+                      "timeout_seconds": {
+                        "default": 30.0,
+                        "exclusiveMinimum": 0,
+                        "maximum": 60,
+                        "type": "number"
+                      }
+                    },
+                    "type": "object",
+                    "default": {
+                      "max_clips": 3,
+                      "max_payload_bytes": 8388608,
+                      "max_duration_seconds": 120.0,
+                      "timeout_seconds": 30.0
+                    }
+                  }
+                },
+                "required": [
+                  "action",
+                  "source"
                 ],
                 "type": "object"
               }

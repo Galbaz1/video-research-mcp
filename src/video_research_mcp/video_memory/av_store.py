@@ -97,8 +97,22 @@ def commit(root: Path, state: MemoryState, retained: dict[str, bytes]) -> dict:
     (root / "artifacts").mkdir(mode=0o700, exist_ok=True)
     for digest, payload in sorted(retained.items()):
         target = root / "artifacts" / f"{digest}.json"
-        if not publish(target, payload) and hashlib.sha256(target.read_bytes()).hexdigest() != digest:
-            raise ValueError("Retained artifact address holds different bytes")
+        if not publish(target, payload):
+            with _open_regular(target) as reader:
+                before = os.fstat(reader.fileno())
+                if before.st_size != len(payload):
+                    raise ValueError("Retained artifact address holds different bytes")
+                existing = reader.read(len(payload) + 1)
+                after = os.fstat(reader.fileno())
+                current = target.lstat()
+            for observed in (after, current):
+                if (before.st_dev, before.st_ino, before.st_size,
+                        before.st_mtime_ns, before.st_ctime_ns) != (
+                        observed.st_dev, observed.st_ino, observed.st_size,
+                        observed.st_mtime_ns, observed.st_ctime_ns):
+                    raise ValueError("Retained artifact address holds different bytes")
+            if len(existing) != len(payload) or hashlib.sha256(existing).hexdigest() != digest:
+                raise ValueError("Retained artifact address holds different bytes")
     name = f"rev-{state.revision:06d}.json"
     if not publish(root / name, data):
         raise ValueError("Memory revision conflict: another writer committed this revision")
