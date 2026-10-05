@@ -209,7 +209,7 @@ def raw_api(image, raw_length=None, decoded_length=None):
         image.events.append(("length", decoded))
         value = decoded_length if decoded else raw_length
         return value if value is not None else len(image.rgb if decoded else image.stream)
-    return SimpleNamespace(FPDF_PAGEOBJ_IMAGE=3, FPDF_PAGEOBJ_FORM=5, FPDF_COLORSPACE_DEVICERGB=2,
+    return SimpleNamespace(FPDF_PAGEOBJ_PATH=2, FPDF_PAGEOBJ_IMAGE=3, FPDF_PAGEOBJ_FORM=5, FPDF_COLORSPACE_DEVICERGB=2,
         FPDFPage_CountObjects=lambda page: page.object_count,
         FPDFImageObj_GetImageDataRaw=lambda *_: query(False),
         FPDFImageObj_GetImageDataDecoded=lambda *_: query(True))
@@ -308,7 +308,7 @@ def test_worker_exports_distinct_encoded_stream_and_exact_rgb(admitted, monkeypa
     assert "mask presence unknown" in record["limitations"]
     assert image.events[:2] == [("length", False), ("length", True)]
     assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in directory.iterdir())
-    segments, _ = pdf._pixel_result(directory, {path.name}, descriptor["input"], descriptor["runtime"])
+    segments, _ = pdf._pixel_result(directory, {path.name}, descriptor["input"], descriptor["runtime"], descriptor["reserve_bytes"])
     assert segments[0].location.bbox == record["bbox"]
 
 
@@ -384,14 +384,23 @@ def test_parent_rejects_invalid_outputs(admitted, monkeypatch, mutation):
         (directory / record["stream"]).symlink_to(source)
     result_path.write_bytes(pixels.encoded(result))
     with pytest.raises(ValueError):
-        pdf._pixel_result(directory, {path.name}, descriptor["input"], descriptor["runtime"])
+        pdf._pixel_result(directory, {path.name}, descriptor["input"], descriptor["runtime"], descriptor["reserve_bytes"])
 
 
 async def test_three_commands_share_deadline_and_exact_isolated_argv(admitted, monkeypatch):
     """GIVEN one deadline WHEN commands consume time THEN later budgets shrink."""
     source, directory, descriptor, old_path = admitted
     old_path.unlink()
-    install_fake_api(monkeypatch, descriptor["runtime"], FakeImage())
+    page = install_fake_api(monkeypatch, descriptor["runtime"], FakeImage())
+    page2 = SimpleNamespace(**vars(page))
+    page2.get_objects = lambda **_: iter(())
+    page2.object_count = 0
+    class Document:
+        def __len__(self):
+            return 2
+        def __getitem__(self, number):
+            return (page, page2)[number]
+    sys.modules["pypdfium2"].PdfDocument = lambda _: nullcontext(Document())
     profile = {"executables": {n: {"path": n} for n in ("pdftotext", "pdfimages")},
                "pixels": descriptor["runtime"]}
     monkeypatch.setattr(pdf, "pdf_profile", lambda: profile)
@@ -466,7 +475,7 @@ def test_plain_page_closes_and_drift_never_publishes_result(admitted, monkeypatc
     source, directory, descriptor, path = admitted
     image = FakeImage()
     page = install_fake_api(monkeypatch, descriptor["runtime"], image,
-                            objects=[SimpleNamespace(type=2)]*4097 if failure == "objects" else None)
+                            objects=[SimpleNamespace(type=1)]*4097 if failure == "objects" else None)
     if failure == "native":
         image.get_bounds = lambda: (_ for _ in ()).throw(KeyError("native mapping failure"))
     elif failure == "drift":

@@ -17,6 +17,8 @@ from .ingestion_pdf_pixels import (
     encoded, file_record, pixel_profile, refuse_loader_overrides, usage, write_output,
 )
 from .ingestion_pdf_tables import rectangular_tables
+from .ingestion_pdf_provenance import _page_geometry, image_bindings, validate_layout_pages
+from .ingestion_pdf_rulings import attach_rulings, validate_rulings
 
 MAX_ELEMENTS = 4096
 
@@ -138,10 +140,10 @@ def _pixel_record(record, directory, source):
     fields = {"page", "object_ordinal", "page_width", "page_height", "source_pdf_sha256",
               "native_bbox", "bbox", "coordinate_origin", "native_coordinate_origin", "width", "height", "filters",
               "raw_stream_sha256", "pixel_sha256", "stream", "ppm", "metadata",
-              "stream_bytes", "ppm_bytes", "limitations"}
+              "stream_bytes", "ppm_bytes", "limitations", "colorspace"}
     if not isinstance(record, dict) or set(record) != fields:
         raise ValueError("Unknown PDFium image metadata fields")
-    if (record["limitations"] != IMAGE_LIMITATIONS or not isinstance(record["filters"], list)
+    if (record["limitations"] != IMAGE_LIMITATIONS or record["colorspace"] != 2 or not isinstance(record["filters"], list)
             or any(not isinstance(f, str) or f not in SIMPLE_FILTERS for f in record["filters"])
             or any(type(record[k]) is not int or record[k] <= 0 for k in ("stream_bytes", "ppm_bytes"))):
         raise ValueError("Invalid PDFium pixel metadata contract")
@@ -177,20 +179,8 @@ def _pixel_record(record, directory, source):
                             artifact=str(directory / record["ppm"]), method="pdfium-source-rgb-v1")
 
 
-def _pixel_result(directory, previous, source, profile):
-    """Reject unknown outputs/origins and map the worker result through strict models."""
-    size, count = usage(directory)
-    if size > MAX_BYTES or count >= MAX_FILES:
-        raise ValueError("PDFium result exceeds byte/artifact limits")
-    file_record(directory / "pdfium-result.json")
-    result = json.loads((directory / "pdfium-result.json").read_bytes())
-    if set(result) != {"images", "limitations", "module_origins", "runtime"}:
-        raise ValueError("Unknown PDFium result fields")
-    if not isinstance(result["images"], list) or len(result["images"]) > 20:
-        raise ValueError("PDFium image result count exceeds bounds")
-    if not isinstance(result["limitations"], list) or len(result["limitations"]) > 24 or any(
-            not isinstance(s, str) or len(s) > 4096 for s in result["limitations"]):
-        raise ValueError("Invalid PDFium capability limitations")
+def _runtime_result(result, profile):
+    """Check the selected worker and every reported foreign module origin."""
     expected_runtime = {"worker": profile["worker"], "python": profile["python"],
                         "selected_native_paths": [r["path"] for r in profile["inventory"]
                                          if Path(r["path"]).suffix in {".so", ".dylib", ".dll"}],
@@ -202,16 +192,50 @@ def _pixel_result(directory, previous, source, profile):
             n.split(".")[0] not in PACKAGES or p not in selected
             for n, p in result["module_origins"].items()):
         raise ValueError("PDFium module origin outside selected inventory")
+
+
+def _pixel_result(directory, previous, source, profile, reserve):
+    """Validate bounded native observations before adding optional source correspondence."""
+    size, count = usage(directory)
+    body = file_record(directory / "pdfium-result.json")
+    if size > MAX_BYTES or count >= MAX_FILES or body["bytes"] > RESULT_BYTES:
+        raise ValueError("PDFium result exceeds byte/artifact limits")
+    result = json.loads((directory / "pdfium-result.json").read_bytes())
+    if not isinstance(result, dict) or set(result) != {"images", "pages", "rulings", "limitations", "module_origins", "runtime"}:
+        raise ValueError("Unknown PDFium result fields")
+    if not isinstance(result["images"], list) or len(result["images"]) > 20:
+        raise ValueError("PDFium image result count exceeds bounds")
+    if not isinstance(result["limitations"], list) or len(result["limitations"]) > 24 or any(
+            not isinstance(s, str) or len(s) > 4096 for s in result["limitations"]):
+        raise ValueError("Invalid PDFium capability limitations")
+    _runtime_result(result, profile)
+    pages = _page_geometry(result["pages"], source)
+    occurrences = validate_rulings(result["rulings"], source["sha256"], pages)
     segments, names = [], set()
     for record in result["images"]:
+        if not isinstance(record, dict):
+            raise ValueError("Invalid PDFium image record")
         segment = _pixel_record(record, directory, source)
-        if segment.id in {s.id for s in segments}:
+        page = pages.get(record["page"])
+        if page is None or page["rotation_degrees"] != 0 or any(
+                record[k] != page[k] for k in ("page_width", "page_height")):
+            raise ValueError("PDFium image/page geometry mismatch")
+        occurrence = (record["page"], record["object_ordinal"])
+        if occurrence in occurrences:
             raise ValueError("Duplicate PDFium image occurrence")
+        occurrences.add(occurrence)
         segments.append(segment)
         names.update(record[k] for k in ("stream", "ppm", "metadata"))
     if {p.name for p in directory.iterdir()} != previous | names | {"pdfium-result.json"}:
         raise ValueError("PDFium emitted unknown artifacts")
-    return segments, result["limitations"]
+    links, limits = image_bindings(result["images"], directory, source)
+    if links:
+        data = encoded({"images": links})
+        if count + 2 <= MAX_FILES and size + len(data) + reserve <= MAX_BYTES:
+            write_output(directory, "pdf-original-image-bindings.json", data, reserve)
+        else:
+            limits.append("Original image correspondence artifact abstained: remaining byte/file budget")
+    return segments, result["limitations"] + limits
 
 
 async def _pixels(path, directory, source, profile, segments, deadline):
@@ -234,7 +258,28 @@ async def _pixels(path, directory, source, profile, segments, deadline):
     await run_media_process([profile["python"]["selected_path"], "-I", "-S", "-B",
                              profile["worker"]["path"], str(descriptor_path), str(path), str(directory)],
                             _remaining(deadline))
-    return _pixel_result(directory, previous, source, profile)
+    return _pixel_result(directory, previous, source, profile, reserve)
+
+
+def _refine_tables(output, source, directory, segments):
+    """Refine already reserved content tables only within the remaining byte budget."""
+    native, artifact = directory / "pdfium-result.json", directory / "pdf-tables.json"
+    if not artifact.exists() or not native.exists():
+        return []
+    result = json.loads(native.read_bytes())
+    pages = _page_geometry(result["pages"], source)
+    try:
+        validate_layout_pages(output, pages)
+    except ValueError:
+        return ["Measured table region abstained: Poppler/PDFium page geometry disagreement"]
+    tables = json.loads(artifact.read_bytes())["tables"]
+    data = encoded({"tables": attach_rulings(tables, result["rulings"], source["sha256"], pages)})
+    size, _ = usage(directory)
+    reserve = len(encoded(ParsedSource(segments=segments).model_dump(mode="json"))) + 4096
+    if size - artifact.stat().st_size + len(data) + reserve > MAX_BYTES:
+        return ["Measured table region abstained: reserved content tables leave insufficient byte budget"]
+    artifact.write_bytes(data)
+    return []
 
 
 async def parse_pdf_source(path: Path, directory: Path, profile: dict, timeout: float) -> ParsedSource:
@@ -263,12 +308,15 @@ async def parse_pdf_source(path: Path, directory: Path, profile: dict, timeout: 
     segments.extend(cells)
     _same_profile(profile)
     pixels, limitations = await _pixels(path, directory, source, profile["pixels"], segments, deadline)
-    parsed = ParsedSource(segments=segments + pixels, limitations=[
-        "OCR unavailable; table content bounds are positioned-text inference, not ruling-line bounds; semantic accuracy unknown",
+    segments.extend(pixels)
+    table_limits.extend(_refine_tables(output, source, directory, segments))
+    parsed = ParsedSource(segments=segments, limitations=[
+        "OCR unavailable; cells are positioned-text inference; measured ruling regions require a complete unambiguous native line grid; semantic accuracy unknown",
         "PDF text positions use native top-left XY bounds in measured page units",
         "Poppler descriptors and PDFium pixel occurrences use separate identities; no duplicate verified image count",
         IMAGE_LIMITATIONS,
-        *table_limits, *limitations,
+        *table_limits, *limitations[:26],
+        *(["Additional provenance limitations truncated; unresolved pixels retained"] if len(limitations) > 26 else []),
     ])
     size, count = usage(directory)
     if size + len(encoded(parsed.model_dump(mode="json"))) > MAX_BYTES or count + 1 > MAX_FILES:

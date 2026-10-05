@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+from ctypes import c_float, c_int
 import importlib
 import json
 import math
@@ -19,7 +20,7 @@ MAX_FILES = 64
 RESULT_BYTES = 128 * 1024
 PACKAGES = ("pypdfium2", "pypdfium2_raw", "pypdfium2_cfg")
 BOUNDARY = "Selected interpreter, worker, complete three-package/metadata inventory (including bytecode); pypdfium2_cli excluded; host/interpreter initialization/libc/stdlib/native dependency closure and atomic mutation defence unknown; no OS sandbox"
-IMAGE_LIMITATIONS = "Masks/compositing, clipping, Decode and color-key masking not applied; mask presence unknown; raw-source-pixel-to-page orientation unknown; source-file byte offset unknown; PDFium ordinal is not Poppler object number"
+IMAGE_LIMITATIONS = "Masks/compositing, clipping, Decode and color-key masking not applied; mask presence unknown; raw-source-pixel-to-page orientation unknown; source-file byte offset unresolved unless a separate original-image binding is committed; PDFium ordinal is not itself a Poppler object number"
 SIMPLE_FILTERS = {"ASCIIHexDecode", "ASCII85Decode", "FlateDecode", "RunLengthDecode", "LZWDecode"}
 
 
@@ -192,7 +193,7 @@ def _image_data(image, raw, remaining):
     rgb = bytes(image.get_data(decode_simple=True))
     if len(stream) != raw_size or len(rgb) != rgb_size:
         raise ValueError("PDFium image lengths changed during allocation")
-    return stream, rgb, header, width, height, filters
+    return stream, rgb, header, width, height, filters, meta.colorspace
 
 
 def _export_image(image, raw, directory, identity, reserve):
@@ -205,12 +206,12 @@ def _export_image(image, raw, directory, identity, reserve):
     size, count = usage(directory)
     if count + 4 >= MAX_FILES:
         raise ValueError("PDFium artifact count exceeds remaining budget")
-    stream, rgb, header, w, h, filters = _image_data(image, raw, MAX_BYTES - size - reserve)
+    stream, rgb, header, w, h, filters, colorspace = _image_data(image, raw, MAX_BYTES - size - reserve)
     name = f"pdfium-{identity['page']}-{identity['object_ordinal']}"
     record = {**identity, "native_bbox": [left, bottom, right, top],
               "bbox": [left, height-top, right, height-bottom], "coordinate_origin": "top_left",
               "native_coordinate_origin": "bottom_left",
-              "width": w, "height": h, "filters": filters,
+              "width": w, "height": h, "filters": filters, "colorspace": colorspace,
               "raw_stream_sha256": hashlib.sha256(stream).hexdigest(),
               "pixel_sha256": hashlib.sha256(rgb).hexdigest(),
               "stream": name + ".stream", "ppm": name + ".ppm", "metadata": name + ".json",
@@ -225,9 +226,64 @@ def _export_image(image, raw, directory, identity, reserve):
     return record
 
 
+def _ruling(obj, raw, identity, ordinal):
+    """Measure identity two-point strokes and retain the native clip sentinel explicitly."""
+    fill, stroke = c_int(), c_int()
+    clip = raw.FPDFPageObj_GetClipPath(obj)
+    count = raw.FPDFClipPath_CountPaths(clip) if clip else None
+    if (obj.get_matrix().get() != (1, 0, 0, 1, 0, 0) or raw.FPDFPageObj_HasTransparency(obj)
+            or type(count) is not int or count not in (-1, 0) or raw.FPDFPath_CountSegments(obj) != 2
+            or not raw.FPDFPath_GetDrawMode(obj, fill, stroke) or fill.value != raw.FPDF_FILLMODE_NONE or not stroke.value):
+        raise ValueError("Unsupported ruling path state")
+    points = []
+    for index, kind in enumerate((raw.FPDF_SEGMENT_MOVETO, raw.FPDF_SEGMENT_LINETO)):
+        segment = raw.FPDFPath_GetPathSegment(obj, index)
+        x, y = c_float(), c_float()
+        if (not segment or raw.FPDFPathSegment_GetType(segment) != kind or raw.FPDFPathSegment_GetClose(segment)
+                or not raw.FPDFPathSegment_GetPoint(segment, x, y)):
+            raise ValueError("Unsupported ruling path segment")
+        points.extend((x.value, y.value))
+    return {"page": identity["page"], "object_ordinal": ordinal, "points": points,
+            "source_pdf_sha256": identity["source_pdf_sha256"], "clip_path_count": count,
+            "method": "pdfium-identity-stroked-line-v1"}
+
+
+def _objects(page, raw, descriptor, directory, result, identity, emitted):
+    """Collect top-level ruling measurements and preserve separate pixel occurrences."""
+    first_ruling, rejected = len(result["rulings"]), False
+    for ordinal, image in enumerate(page.get_objects(max_depth=1)):
+        if rejected and image.type in (raw.FPDF_PAGEOBJ_PATH, raw.FPDF_PAGEOBJ_FORM):
+            continue
+        try:
+            if image.type == raw.FPDF_PAGEOBJ_PATH:
+                ruling = _ruling(image, raw, identity, ordinal)
+                if len(encoded(result)) + len(encoded(ruling)) + 32768 > RESULT_BYTES:
+                    raise ValueError("Ruling observations exceed reserved 128 KiB result budget")
+                result["rulings"].append(ruling)
+                continue
+            if image.type == raw.FPDF_PAGEOBJ_FORM:
+                raise ValueError("Form/nested route unsupported")
+            if image.type != raw.FPDF_PAGEOBJ_IMAGE:
+                continue
+            if emitted >= 4096 or len(result["images"]) >= 20:
+                raise ValueError("PDFium image export exceeds element/image result budget")
+            record = _export_image(image, raw, directory, {**identity, "object_ordinal": ordinal},
+                                   descriptor["reserve_bytes"] + RESULT_BYTES)
+        except ValueError as error:
+            rejected = rejected or image.type in (raw.FPDF_PAGEOBJ_PATH, raw.FPDF_PAGEOBJ_FORM)
+            result["limitations"].append(f"Page {identity['page']} object {ordinal}: {error}")
+        else:
+            result["images"].append(record)
+            emitted += 1
+    if rejected:
+        del result["rulings"][first_ruling:]
+        result["limitations"].append(f"Page {identity['page']}: all rulings abstained after rejected path/form or result budget")
+    return emitted
+
+
 def extract_images(pdf, raw, descriptor, directory):
     """Enumerate top-level objects with explicit MediaBox and measured full-page bounds."""
-    result = {"images": [], "limitations": [], "module_origins": {}}
+    result = {"images": [], "pages": [], "rulings": [], "limitations": [], "module_origins": {}}
     emitted, native_objects = descriptor["elements"], 0
     with pdf.PdfDocument(descriptor["input"]["path"]) as document:
         for number in range(len(document)):
@@ -236,8 +292,12 @@ def extract_images(pdf, raw, descriptor, directory):
             page = document[number]
             try:
                 width, height = page.get_size()
+                rotation = page.get_rotation()
+                result["pages"].append({"page": number+1, "page_width": width, "page_height": height,
+                    "rotation_degrees": rotation, "rotation_direction": "clockwise", "units": "PDF_canvas_units",
+                    "source_pdf_sha256": descriptor["input"]["sha256"], "method": "pdfium-page-geometry-v1"})
                 box = (0, 0, width, height)
-                if (page.get_rotation() != 0 or page.get_mediabox(fallback_ok=False) != box
+                if (rotation != 0 or page.get_mediabox(fallback_ok=False) != box
                         or page.get_cropbox(fallback_ok=False) not in (None, box)
                         or page.get_bbox() != box):
                     result["limitations"].append(f"Page {number+1}: unsupported rotation/page bounds")
@@ -245,23 +305,9 @@ def extract_images(pdf, raw, descriptor, directory):
                 native_objects += raw.FPDFPage_CountObjects(page)
                 if native_objects > 4096:
                     raise ValueError("PDFium native object work exceeds 4096")
-                for ordinal, image in enumerate(page.get_objects(max_depth=1)):
-                    if image.type == raw.FPDF_PAGEOBJ_FORM:
-                        result["limitations"].append(f"Page {number+1}: Form/nested image route unsupported")
-                    if image.type != raw.FPDF_PAGEOBJ_IMAGE:
-                        continue
-                    identity = {"page": number+1, "object_ordinal": ordinal, "page_width": width,
-                                "page_height": height, "source_pdf_sha256": descriptor["input"]["sha256"]}
-                    try:
-                        if emitted >= 4096:
-                            raise ValueError("PDFium image export exceeds emitted-element budget 4096")
-                        record = _export_image(image, raw, directory, identity,
-                                               descriptor["reserve_bytes"] + RESULT_BYTES)
-                    except ValueError as error:
-                        result["limitations"].append(f"Page {number+1} object {ordinal}: {error}")
-                    else:
-                        result["images"].append(record)
-                        emitted += 1
+                identity = {"page": number+1, "page_width": width, "page_height": height,
+                            "source_pdf_sha256": descriptor["input"]["sha256"]}
+                emitted = _objects(page, raw, descriptor, directory, result, identity, emitted)
             finally:
                 page.close()
     limitations = list(dict.fromkeys(result["limitations"]))
