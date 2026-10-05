@@ -55,6 +55,13 @@ packages = ["src/video_explainer_mcp"]
 "renderer-entry/src/Root.tsx" = "video_explainer_mcp/renderer-entry/src/Root.tsx"
 "renderer-entry/src/Fixture.tsx" = "video_explainer_mcp/renderer-entry/src/Fixture.tsx"
 
+"renderer-entry/production_entry.mjs" = "video_explainer_mcp/renderer-entry/production_entry.mjs"
+"renderer-entry/production_project.mjs" = "video_explainer_mcp/renderer-entry/production_project.mjs"
+"renderer-entry/src/production-index.ts" = "video_explainer_mcp/renderer-entry/src/production-index.ts"
+"renderer-entry/src/ProductionRoot.tsx" = "video_explainer_mcp/renderer-entry/src/ProductionRoot.tsx"
+"renderer-entry/src/Production.tsx" = "video_explainer_mcp/renderer-entry/src/Production.tsx"
+"renderer-entry/src/production-types.ts" = "video_explainer_mcp/renderer-entry/src/production-types.ts"
+
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "hatch_resources.py"
 
@@ -71,6 +78,13 @@ path = "hatch_resources.py"
 "renderer-entry/src/index.ts" = "renderer-entry/src/index.ts"
 "renderer-entry/src/Root.tsx" = "renderer-entry/src/Root.tsx"
 "renderer-entry/src/Fixture.tsx" = "renderer-entry/src/Fixture.tsx"
+
+"renderer-entry/production_entry.mjs" = "renderer-entry/production_entry.mjs"
+"renderer-entry/production_project.mjs" = "renderer-entry/production_project.mjs"
+"renderer-entry/src/production-index.ts" = "renderer-entry/src/production-index.ts"
+"renderer-entry/src/ProductionRoot.tsx" = "renderer-entry/src/ProductionRoot.tsx"
+"renderer-entry/src/Production.tsx" = "renderer-entry/src/Production.tsx"
+"renderer-entry/src/production-types.ts" = "renderer-entry/src/production-types.ts"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

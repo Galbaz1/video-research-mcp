@@ -5051,15 +5051,15 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "target_sha256": "1e0db4f1313ef65fc2e3b3000f3e52cc20866816abb48b31b778cd14430ff0cb",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "fa1dfd25aef87ded2e1db04190906088bac33bbdb53c86dccb2e1f9324a97593",
+          "target_sha256": "20cb68317a76cc01ec1e08b1dd1a8bd986ddf04a783fe96dd63d4301623548d1",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
@@ -5227,9 +5227,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "1c91970129e6b126c4bdc542b4ec1eb647ea9a7d4c3f7ad39dcc8865f794f591",
+          "target_sha256": "8b5d1613913cb8e0b1717e40baf217b38eee414fc809746c3402a9da0c17a6c9",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "pyproject.toml",
@@ -5413,9 +5413,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "target_sha256": "1e0db4f1313ef65fc2e3b3000f3e52cc20866816abb48b31b778cd14430ff0cb",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
@@ -5495,9 +5495,9 @@
       "implementations": [
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
-          "target_sha256": "1b9a69ee03d9d630c1983cc7ce413c957aea7e0c7ecd879751591ea1e452002a",
+          "target_sha256": "01eefdd62cdcc52a3991ef2e125a8be315cb41203f48773947f706a0320c4858",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
@@ -5518,9 +5518,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
-          "target_sha256": "3ef3ae1f8b210198b38460524c20923e5a9edd243c217a0c0ea0b85c408679ef",
+          "target_sha256": "1e0db4f1313ef65fc2e3b3000f3e52cc20866816abb48b31b778cd14430ff0cb",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
@@ -5529,9 +5529,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
-          "target_sha256": "fa1dfd25aef87ded2e1db04190906088bac33bbdb53c86dccb2e1f9324a97593",
+          "target_sha256": "20cb68317a76cc01ec1e08b1dd1a8bd986ddf04a783fe96dd63d4301623548d1",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
@@ -5555,9 +5555,9 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "1c91970129e6b126c4bdc542b4ec1eb647ea9a7d4c3f7ad39dcc8865f794f591",
+          "target_sha256": "8b5d1613913cb8e0b1717e40baf217b38eee414fc809746c3402a9da0c17a6c9",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
@@ -5621,8 +5621,9 @@
         },
         {
           "target_path": "docs/integrations/authored-renderer.md",
-          "target_sha256": "02190303a39fd26fb1129e0429bfbefd5cbc6e7924766cfa17f3d82553f33b1b",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "target_sha256": "e6990e90a13c835b4a195bc2adfb11d1d2de2e6df24ab25454743a90375abbe0",
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/package-lock.json",
@@ -5688,6 +5689,76 @@
           "target_sha256": "385cb167bebdc10c992c3dbf3e3d2dc01ef1c92b270a29341f58bb286cca0061",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/production_entry.mjs",
+          "target_sha256": "72baabe3f647f1994f67590147485a2ec32a54a23668cf8461b0b91409063df3",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/production_project.mjs",
+          "target_sha256": "75d7172b66d85756cf3e4e070b352928bb27baec6c0765a663e96e3f42e12e2f",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/Production.tsx",
+          "target_sha256": "af182990ff841c863a55db1d7470ecf9dbcb3cc1dce9573a6b6c8b2c5d126c64",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/ProductionRoot.tsx",
+          "target_sha256": "3d666ffa447a1a0c4c81b6906605884c876da27957bddb6f4102af92e363bf0e",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/production-index.ts",
+          "target_sha256": "0f7eadb23291d7f87a7c01d3990d98f09d743c318df5ee15835a0b23767370ba",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/renderer-entry/src/production-types.ts",
+          "target_sha256": "1a49460b76584be634f951bf9de98479fb5ec4b41fb2d3fcdda88598788154fa",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard.py",
+          "target_sha256": "9be224b50ef415056b91b07a9b28ca6c648bf1031bc4d96ceeb51d83d4d15baf",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_binding.py",
+          "target_sha256": "3617fadefb6f2b3617e4c2c4a255c1cbe4deca435ca09133297289ddab26323a",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_output.py",
+          "target_sha256": "99db946ec4b67cdb865bea71ef37cd6e8537d757241d4e9d26f2dc20f8e28ae5",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_sources.py",
+          "target_sha256": "de90d0817e53c1361b2fc8267d69384a94547d3936246b8d9aa295e4638b16c4",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/fixtures/production_entry_source.test.mjs",
+          "target_sha256": "d39e2726e162c661bd9282cd2979f8f9702753103767612f3cb657528bc8ad29",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard.py",
+          "target_sha256": "a108374a9215448aa5b32facc78c72eba20ae67ddec5f858e70dfd66ad256fc9",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard_integration.py",
+          "target_sha256": "b5c73c220f0e583f4872ea6d94014d780ce880dafffdc8e27faa5722e7450c01",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard_node.py",
+          "target_sha256": "5782cbe84753c06f552f2213f07d3ae0d019a91d401a95e2bc8d71314479e1ec",
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
         }
       ]
     },

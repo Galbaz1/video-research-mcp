@@ -16,6 +16,8 @@ from .render_contract import project_contract, source_contract
 from .planning_sources import read_object
 from .render_validation import codec_executables
 from .render_authored import authored_binding, authored_project, bind_fixture
+from .render_storyboard import production_project
+from .render_storyboard_binding import production_binding
 from .runner import _resolve_cli
 
 
@@ -100,7 +102,7 @@ def _renderer_checks(directory: Path | None) -> list[PrereqStatus]:
     return checks
 
 
-def check_prereqs(project_id: str | None = None) -> PrereqReport:
+def check_prereqs(project_id: str | None = None, *, resolution: str = "720p") -> PrereqReport:
     """Inspect local prerequisites and exact mapped source before any render work."""
     cfg = get_config()
     directory = Path(cfg.explainer_path).expanduser().resolve() if cfg.explainer_path else None
@@ -124,7 +126,7 @@ def check_prereqs(project_id: str | None = None) -> PrereqReport:
             if directory
             else {"mapped_source_verified": False, "errors": ["EXPLAINER_PATH is not configured"]}
         )
-    project = _project_check(project_id, cfg, source)
+    project = _project_check(project_id, cfg, source, resolution)
     required = [c for c in checks if c.name != "claude"]
     ready = (
         all(c.available for c in required)
@@ -152,7 +154,7 @@ def check_prereqs(project_id: str | None = None) -> PrereqReport:
     )
 
 
-def _project_check(project_id: str | None, cfg, source: dict) -> dict:
+def _project_check(project_id: str | None, cfg, source: dict, resolution: str = "720p") -> dict:
     """Check the selected route and frozen fixture inside the configured root."""
     if project_id is None:
         return {}
@@ -160,9 +162,14 @@ def _project_check(project_id: str | None, cfg, source: dict) -> dict:
     try:
         if not target.is_relative_to(cfg.resolved_projects_path):
             raise ValueError("Project resolves outside configured root")
-        contract = authored_project(target, "720p") if cfg.renderer_entry else project_contract(target, "720p")
-        if cfg.renderer_entry and source["mapped_source_verified"]:
-            bind_fixture(target, source["binding"])
+        if source.get("route") == "authored_storyboard":
+            if not source["mapped_source_verified"]:
+                raise ValueError("Production renderer source is not admitted")
+            contract = production_project(target, resolution, source["binding"]["project_sha256"])
+        else:
+            contract = authored_project(target, resolution) if cfg.renderer_entry else project_contract(target, resolution)
+            if cfg.renderer_entry and source["mapped_source_verified"]:
+                bind_fixture(target, source["binding"])
         return {"supported": True, **contract}
     except (OSError, ValueError) as exc:
         return {"supported": False, "error": str(exc)}
@@ -170,28 +177,32 @@ def _project_check(project_id: str | None, cfg, source: dict) -> dict:
 
 def _authored_checks(cfg, checks: list[PrereqStatus]) -> dict:
     """Inspect the root freeze without loading installed renderer modules or browser."""
+    production = Path(cfg.renderer_entry).name == "production_entry.mjs"
+    route = "authored_storyboard" if production else "authored_fixture"
+    capability = ("admitted project scene registry and per-scene audio" if production
+                  else "bounded solid-card fixture only; production storyboards unsupported")
     try:
-        binding = authored_binding(cfg)
+        binding = production_binding(cfg) if production else authored_binding(cfg)
         node = checks[0]
         checks[0] = PrereqStatus(name="node", available=True, path=binding["node"]["path"],
                                 version=node.version if node.path == binding["node"]["path"] else "not checked")
         checks.append(PrereqStatus(name="authored_entry", available=True, path=binding["entry"]))
         checks.append(PrereqStatus(name="browser", available=True, path=binding["browser"]["path"],
                                    message="Frozen existing browser; doctor never downloads or launches it"))
-        return {"mapped_source_verified": True, "route": "authored_fixture", "errors": [],
+        return {"mapped_source_verified": True, "route": route, "errors": [],
                 "binding": binding, "foreign_runtime_executed": False,
-                "capability": "bounded solid-card fixture only; production storyboards unsupported",
+                "capability": capability,
                 "commercial_eligibility": "unresolved; evaluation only"}
     except (OSError, ValueError, KeyError, TypeError) as exc:
         checks.append(PrereqStatus(name="authored_entry", available=False, message=str(exc)))
-        return {"mapped_source_verified": False, "route": "authored_fixture", "errors": [str(exc)],
-                "capability": "bounded solid-card fixture only; production storyboards unsupported",
+        return {"mapped_source_verified": False, "route": route, "errors": [str(exc)],
+                "capability": capability,
                 "foreign_runtime_executed": False}
 
 
-async def doctor(project_id: str | None = None) -> PrereqReport:
+async def doctor(project_id: str | None = None, *, resolution: str = "720p") -> PrereqReport:
     """Read native versions with bounded owned subprocesses; make no provider call."""
-    report = check_prereqs(project_id)
+    report = check_prereqs(project_id, resolution=resolution)
     for check in report.checks:
         if not check.available or check.name not in ("node", "ffmpeg", "ffprobe"):
             continue
@@ -227,9 +238,9 @@ async def doctor(project_id: str | None = None) -> PrereqReport:
     return report
 
 
-async def require_render_ready(project_id: str | None) -> None:
+async def require_render_ready(project_id: str | None, *, resolution: str = "720p") -> None:
     """Stop unavailable or unsupported rendering before allocating a production job."""
-    report = await doctor(project_id)
+    report = await doctor(project_id, resolution=resolution)
     if not report.all_ok:
         missing = [c.name for c in report.checks if not c.available and c.name != "claude"]
         errors = report.source["errors"] + (

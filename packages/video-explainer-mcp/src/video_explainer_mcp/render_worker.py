@@ -17,6 +17,9 @@ from .prereqs import require_render_ready
 from .render_contract import project_contract, source_contract
 from .render_validation import qualify_render
 from .render_authored import authored_binding, authored_project, qualify_authored
+from .render_storyboard import production_project
+from .render_storyboard_binding import production_binding
+from .render_storyboard_output import qualify_production
 from .errors import SubprocessError
 
 _background_tasks: set[asyncio.Task] = set()
@@ -32,7 +35,11 @@ def _check_dispatch_binding(request: dict) -> None:
     if (cfg.resolved_projects_path / request["project_id"]).resolve() != Path(request["project_dir"]):
         raise ValueError("Render project settings changed after admission")
     if request.get("renderer"):
-        if not cfg.renderer_entry or authored_binding(cfg) != request["renderer"]:
+        if not cfg.renderer_entry:
+            raise ValueError("Authored renderer changed after admission")
+        current = (production_binding(cfg) if Path(cfg.renderer_entry).name == "production_entry.mjs"
+                   else authored_binding(cfg))
+        if current != request["renderer"]:
             raise ValueError("Authored renderer changed after admission")
         return
     if cfg.renderer_entry:
@@ -94,7 +101,8 @@ async def _execute_render(row: dict, owner: str) -> tuple[SubprocessResult, str]
         async with asyncio.timeout(deadline):
             result, artifact, dispatch = await _run_request(row, owner)
         hashes = {artifact["path"]: artifact["sha256"]}
-        receipt = artifact["qualification"].get("authored_fixture", {}).get("receipt")
+        receipt = (artifact["qualification"].get("authored_storyboard", {})
+                   or artifact["qualification"].get("authored_fixture", {})).get("receipt")
         if receipt:
             hashes[receipt["path"]] = receipt["sha256"]
         stored = JobStore().checkpoint(
@@ -149,11 +157,19 @@ async def _validate_request(row: dict) -> tuple[Path, dict]:
     if source != request["source"]:
         raise ValueError("Project inputs changed after render admission")
     _check_dispatch_binding(request)
-    contract = (authored_project(project_dir, request["resolution"]) if request.get("renderer")
-                else project_contract(project_dir, request["resolution"]))
+    renderer = request.get("renderer")
+    if renderer and renderer.get("route") == "authored_storyboard":
+        contract = production_project(project_dir, request["resolution"], renderer["project_sha256"])
+    elif renderer:
+        contract = authored_project(project_dir, request["resolution"])
+    else:
+        contract = project_contract(project_dir, request["resolution"])
     if contract != request["render_contract"]:
         raise ValueError("Render input/output route changed after admission")
-    await require_render_ready(request["project_id"])
+    if renderer and renderer.get("route") == "authored_storyboard":
+        await require_render_ready(request["project_id"], resolution=request["resolution"])
+    else:
+        await require_render_ready(request["project_id"])
     return project_dir, source
 
 
@@ -171,9 +187,18 @@ async def _dispatch_render(row: dict, owner: str, dispatch: dict) -> SubprocessR
     renderer = request.get("renderer")
     if renderer:
         output = str(Path(request["render_contract"]["expected_output"]).relative_to(request["project_dir"]))
-        command = [renderer["node"]["path"], renderer["entry"], request["project_dir"],
-                   request["resolution"], renderer["spec"], renderer["spec_sha256"], output,
-                   request["execution_token"]]
+        if renderer.get("route") == "authored_storyboard":
+            command = [renderer["node"]["path"], renderer["entry"],
+                       "--project", request["project_dir"], "--resolution", request["resolution"],
+                       "--spec", renderer["spec"], "--spec-sha256", renderer["spec_sha256"],
+                       "--output-relative", output]
+            if request["fast"]:
+                command.append("--fast")
+            command.extend(["--execution-token", request["execution_token"]])
+        else:
+            command = [renderer["node"]["path"], renderer["entry"], request["project_dir"],
+                       request["resolution"], renderer["spec"], renderer["spec_sha256"], output,
+                       request["execution_token"]]
         return await run_entry(command, cwd=str(Path(renderer["entry"]).parent),
                                timeout=request["render_timeout"], process_started=process_started,
                                dispatch_updated=dispatch_updated)
@@ -185,10 +210,15 @@ async def _dispatch_render(row: dict, owner: str, dispatch: dict) -> SubprocessR
 
 async def _qualify_output(artifact: dict, request: dict) -> dict:
     """Apply the selected output bound before decoding, then join its exact proof."""
-    if request.get("renderer") and artifact["size_bytes"] > 16 * 1024 * 1024:
-        raise ValueError("Authored output exceeds 16 MiB")
+    renderer = request.get("renderer")
+    output_limit = 512 if renderer and renderer.get("route") == "authored_storyboard" else 16
+    if renderer and artifact["size_bytes"] > output_limit * 1024 * 1024:
+        raise ValueError(f"Authored output exceeds {output_limit} MiB")
     qualification = await qualify_render(artifact, request["resolution"])
-    if request.get("renderer"):
+    if (request.get("renderer") or {}).get("route") == "authored_storyboard":
+        qualification["renderer_identity"] = "authored project scene registry"
+        qualification["authored_storyboard"] = await qualify_production(artifact, qualification, request)
+    elif request.get("renderer"):
         qualification["renderer_identity"] = "authored fixed-fixture entry"
         qualification["authored_fixture"] = await qualify_authored(artifact, qualification, request)
         qualification["authored_fixture"].update(quality="fixed", fast_applied=False)
@@ -241,7 +271,10 @@ async def _run_request(row: dict, owner: str) -> tuple[SubprocessResult, dict, d
 
 async def _admit_render(project_id: str, resolution: str, fast: bool) -> tuple[dict, str]:
     """Atomically admit and acquire one project render before any subprocess starts."""
-    await require_render_ready(project_id)
+    if Path(get_config().renderer_entry).name == "production_entry.mjs":
+        await require_render_ready(project_id, resolution=resolution)
+    else:
+        await require_render_ready(project_id)
     row = await asyncio.to_thread(create_job, project_id, resolution, fast)
     if len(_job_tasks) >= MAX_CONCURRENT_RENDERS:
         JobStore().cancel(row["job_id"])
@@ -335,7 +368,10 @@ def _next_queued() -> tuple[dict | None, str]:
 
 async def start_render(project_id: str, resolution: str, fast: bool) -> dict:
     """Persist a request and launch it only when this process has worker capacity."""
-    await require_render_ready(project_id)
+    if Path(get_config().renderer_entry).name == "production_entry.mjs":
+        await require_render_ready(project_id, resolution=resolution)
+    else:
+        await require_render_ready(project_id)
     row = await asyncio.to_thread(create_job, project_id, resolution, fast)
     if len(_job_tasks) < MAX_CONCURRENT_RENDERS:
         owner = "render:" + uuid.uuid4().hex

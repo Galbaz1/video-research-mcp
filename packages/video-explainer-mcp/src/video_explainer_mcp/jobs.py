@@ -11,6 +11,8 @@ from .planning_production import freeze_render_source
 from .render_contract import project_contract
 from .render_artifacts import file_revision, render_outputs
 from .render_authored import authored_binding, authored_project, bind_fixture
+from .render_storyboard import production_project
+from .render_storyboard_binding import production_binding
 
 
 def adapter_revision() -> dict:
@@ -29,6 +31,10 @@ def adapter_revision() -> dict:
             "prereqs.py",
             "media_process.py",
             "render_authored.py",
+            "render_storyboard.py",
+            "render_storyboard_sources.py",
+            "render_storyboard_binding.py",
+            "render_storyboard_output.py",
         )
     }
 
@@ -40,12 +46,19 @@ def create_job(project_id: str, resolution: str = "720p", fast: bool = True) -> 
     if not project_dir.is_relative_to(cfg.resolved_projects_path):
         raise ValueError("Render project resolves outside configured projects directory")
     source = freeze_render_source(project_dir)
-    renderer = authored_binding(cfg) if cfg.renderer_entry else None
-    contract = authored_project(project_dir, resolution) if renderer else project_contract(project_dir, resolution)
-    if renderer:
+    renderer = None
+    if cfg.renderer_entry:
+        renderer = (production_binding(cfg) if Path(cfg.renderer_entry).name == "production_entry.mjs"
+                    else authored_binding(cfg))
+    if renderer and renderer.get("route") == "authored_storyboard":
+        contract = production_project(project_dir, resolution, renderer["project_sha256"])
+    elif renderer:
+        contract = authored_project(project_dir, resolution)
         if not fast:
             raise ValueError("Authored fixture supports only the frozen fast=True request")
         bind_fixture(project_dir, renderer)
+    else:
+        contract = project_contract(project_dir, resolution)
     cli = Path(cfg.explainer_path).expanduser().resolve() / ".venv/bin/video-explainer"
     request = {
         "project_id": project_id,
