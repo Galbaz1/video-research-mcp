@@ -585,15 +585,15 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/media_probe.py",
@@ -767,8 +767,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "src/video_research_mcp/tools/image.py",
@@ -787,8 +788,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/native_media_results.py",
@@ -969,8 +971,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_vision_http.py",
@@ -999,8 +1002,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "integrations/qwen/api.json",
@@ -1045,8 +1049,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
@@ -1143,8 +1148,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_audio_assets.py",
@@ -1178,8 +1184,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "docs/integrations/SCENE_ASSETS.md",
@@ -1198,8 +1205,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "pyproject.toml",
@@ -1263,8 +1271,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_media_perception_prepare.py",
@@ -1288,8 +1297,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         }
       ]
     },
@@ -1378,8 +1388,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "integrations/qwen/asr.json",
@@ -1393,8 +1404,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "src/video_research_mcp/transcript_local.py",
@@ -1503,8 +1515,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "docs/integrations/AV_EVENTS.md",
@@ -1566,8 +1579,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independent optional raster/service orchestration using existing own snapshot, image manifest/native delivery and bounded HTTP helpers. Exact pinned Qwen/SAM references only; no foreign code/model/runtime/assets copied/imported. Mock-contract acceptance does not establish inference/model rights/readiness or semantic truth."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independent optional raster/service orchestration using existing own snapshot, image manifest/native delivery and bounded HTTP helpers. Exact pinned Qwen/SAM references only; no foreign code/model/runtime/assets copied/imported. Mock-contract acceptance does not establish inference/model rights/readiness or semantic truth.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_segmentation.py",
@@ -1665,8 +1679,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         }
       ],
       "source_file_receipts": [
@@ -2172,8 +2187,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/tools/footage_edit.py",
@@ -2197,8 +2213,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Independently authored source-bound local footage prepare/assemble, actual frame timing, bounded grade/audio/declared-grid decisions, complete scene hash approvals and strict technical gates. Existing own snapshot/clip/process/manifest/DSP helpers reused. Pinned Qwen workflow texts reference-only; no foreign renderer/code/runtime/fonts/JS/SFX/model/assets copied/imported/bundled. Technical source adoption is separate from actual visual/human/comparison/release acceptance.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         }
       ]
     },
@@ -2654,8 +2671,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/tools/infra.py",
@@ -2758,9 +2776,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/tools/media_assets.py",
@@ -2897,8 +2915,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "integrations/qwen/asr.json",
@@ -2912,8 +2931,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "src/video_research_mcp/transcript_local.py",
@@ -2999,15 +3019,15 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
           "provenance": "Independently authored bounded local metadata/still/video extraction, original decoded PTS, source-bound supplied transcript selection and native/text transport, verified on fixed original development fixtures. No foreign code, fonts, assets, media, weights, runtime or dependencies copied/imported/installed.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/media_probe.py",
@@ -3101,10 +3121,35 @@
       "component": "guimatheus92/mcp-video-analyzer@9e476c02f8426f5c277ed5e7f5729c1aee75b31a",
       "audited_reuse_mode": "adapt",
       "permitted_route": "independent-implementation",
-      "adoption": "not-adopted",
+      "adoption": "adopted",
       "transfers": [],
       "imports": [],
-      "implementations": []
+      "implementations": [
+        {
+          "target_path": "src/video_research_mcp/temporal_ocr.py",
+          "target_sha256": "d602ba6cc0a243a73f8577df8cf5d433c010b741868b8b4c183d3ecebc26df1b",
+          "provenance": "Independently authored sparse temporal OCR over existing original-clock/crop/raw/manifest seams. Keeps caption/speech receipt readback distinct from numeric-decrease inference. No upstream code or assets copied/imported.",
+          "receipt_refresh": "R87 original59owned/161affected source checks retained. RootR96 cleanup/deadline finding reproduced2FAIL then minimal repair2PASS; current full source/package gates and nativeC1-C4 pending. Final original66-entryindex rejoined after completedworker followup; initial sequencing drift retained."
+        },
+        {
+          "target_path": "src/video_research_mcp/models/video_evidence.py",
+          "target_sha256": "8ba1d5b5468668f0ecfab0927dc607f6c2c6968604daf6342b4072b291af1625",
+          "provenance": "Independently authored sparse temporal OCR over existing original-clock/crop/raw/manifest seams. Keeps caption/speech receipt readback distinct from numeric-decrease inference. No upstream code or assets copied/imported.",
+          "receipt_refresh": "R87 original59owned/161affected source checks retained. RootR96 cleanup/deadline finding reproduced2FAIL then minimal repair2PASS; current full source/package gates and nativeC1-C4 pending. Final original66-entryindex rejoined after completedworker followup; initial sequencing drift retained."
+        },
+        {
+          "target_path": "src/video_research_mcp/tools/video_evidence.py",
+          "target_sha256": "aab89e90a6588c864fdeec5eb0f694b07fc5c56bc53df063167b890fac0639cc",
+          "provenance": "Independently authored sparse temporal OCR over existing original-clock/crop/raw/manifest seams. Keeps caption/speech receipt readback distinct from numeric-decrease inference. No upstream code or assets copied/imported.",
+          "receipt_refresh": "R87 original59owned/161affected source checks retained. RootR96 cleanup/deadline finding reproduced2FAIL then minimal repair2PASS; current full source/package gates and nativeC1-C4 pending. Final original66-entryindex rejoined after completedworker followup; initial sequencing drift retained."
+        },
+        {
+          "target_path": "src/video_research_mcp/server.py",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored sparse temporal OCR over existing original-clock/crop/raw/manifest seams. Keeps caption/speech receipt readback distinct from numeric-decrease inference. No upstream code or assets copied/imported.",
+          "receipt_refresh": "R87 original59owned/161affected source checks retained. RootR96 cleanup/deadline finding reproduced2FAIL then minimal repair2PASS; current full source/package gates and nativeC1-C4 pending. Final original66-entryindex rejoined after completedworker followup; initial sequencing drift retained."
+        }
+      ]
     },
     {
       "unit_key": "direct.long_video",
@@ -3156,9 +3201,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/execution_budget.py",
@@ -3484,8 +3529,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "src/video_research_mcp/tools/image.py",
@@ -3504,8 +3550,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/native_media_results.py",
@@ -3680,8 +3727,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_vision_http.py",
@@ -3710,8 +3758,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
-          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
+          "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations.",
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "src/video_research_mcp/client.py",
@@ -3746,8 +3795,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Own integration acceptance: declarative default-factory inspection, exact adoption population, and original Git-frozen inventory identity plus immutable current audited source projection. Protocol/source/labels/thresholds unchanged.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "tests/evaluation/test_replay.py",
@@ -3952,8 +4002,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_diagnostics.py",
@@ -4135,8 +4186,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/vision_http.py",
@@ -4433,8 +4485,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/tools/research.py",
@@ -4660,8 +4713,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/text_provider.py",
@@ -4916,8 +4970,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/session_compaction.py",
@@ -4991,8 +5046,9 @@
         },
         {
           "target_path": "tests/test_reuse_ledger.py",
-          "target_sha256": "9a7cb1d11f36cbf6f9af10e18baac93d1f0c101fce3f7ae25a90f3c6090c3e34",
-          "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported."
+          "target_sha256": "7e784125119e85755a462a602d758bd7a2f82cb728c1876bd506c5e505ec0b76",
+          "provenance": "Owned independent session original/history/memory and explicit integration regression control; no foreign source copied or imported.",
+          "receipt_refresh": "R103 follow-up causal metadata repair: expected adopted-unit population adds direct.ocr_timeline; no runtime source change or acceptance waiver. Exact test file pin refreshed."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
@@ -5177,8 +5233,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "tests/test_ingestion_provenance.py",
@@ -5497,268 +5554,307 @@
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/prereqs.py",
           "target_sha256": "01eefdd62cdcc52a3991ef2e125a8be315cb41203f48773947f706a0320c4858",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_contract.py",
           "target_sha256": "5f3dae8cee036618ed6d41dafaa830b5e78947e39552e8242ecf2dded11856ce",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Authored solid-card entry and reviewed causal source repairs; default foreign source pins preserved. Native renderer/playback and commercial eligibility remain unqualified; this binds implementation bytes only."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_validation.py",
           "target_sha256": "b7eb6717ede02cbcd805cc21d434ce3b8be39ab8dee83eb3bfbdc5245cd8911f",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/media_process.py",
           "target_sha256": "4073b806115a44a8c347ed6d424f2349f9cb678e37ee4bb7210e81ab85961a5d",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Reviewed shared-helper PermissionError cleanup repair; receipt follows the symlink target source. Native renderer remains unqualified."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/jobs.py",
           "target_sha256": "1e0db4f1313ef65fc2e3b3000f3e52cc20866816abb48b31b778cd14430ff0cb",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_artifacts.py",
           "target_sha256": "90f08fbb7d50342600ed37d6506b46ad1fe69caa61e6ea3aea8c056bce2fdf11",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_worker.py",
           "target_sha256": "20cb68317a76cc01ec1e08b1dd1a8bd986ddf04a783fe96dd63d4301623548d1",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
           "target_sha256": "96d0944ed5d54377c361afa3c6169aeadda673acd40270d90c730efc28b4768d",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
           "target_sha256": "64cc90cbb485dc62fe1d5510009c8aff528795c3e05e4fe896ca0843a99bc36e",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
           "target_sha256": "8a21188e21febda20b38b00e0051d42a6c9ee5e99b6cf6d53e77712f0ba2f213",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
           "target_sha256": "f35d40035239236960fbd42870658f10a2c2a5e3503d54298d411a3ba807fc38",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
           "target_sha256": "8b5d1613913cb8e0b1717e40baf217b38eee414fc809746c3402a9da0c17a6c9",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
-          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
           "target_sha256": "cd88b936ddbff902ba05be9ae06b53085654f78c9cdee9527e9ccc4c45541ddb",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_readiness.py",
           "target_sha256": "323e64075e0e01503eb440973bca10485d0c9f1ce390534456275203f27cda8a",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_validation.py",
           "target_sha256": "05432faada52131c3e88de5cf8bf226b5bc52f68047fda5c74592eaa9efbc38d",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_jobs.py",
           "target_sha256": "203c1f3db1f0369259156cfea12702a524a6b820e5544e513cb3ac6bcf8acd6b",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_recovery.py",
           "target_sha256": "7221cd49a8211dd39f6ca9831ebf2801446d58f874c675fbd157db53715a4dad",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_pipeline_tools.py",
           "target_sha256": "ad541f468f34c18336005bc3d09f21da80c7999075fb4dd449816863b662c77b",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_generation.py",
           "target_sha256": "7c6104e5b74734bfb3d0cbec21747e27eede158fd4e27a0a85cfe9e92487b143",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "docs/PUBLISHING.md",
           "target_sha256": "07687a2978c2998a63d854349943dbb142fc1b9bdbdce9ce2d1186e404627351",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "docs/integrations/render-readiness.md",
           "target_sha256": "24baec78380f930459cd828c10059b83305c8068a7a84d86a8535827831e0541",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_dispatch_binding.py",
           "target_sha256": "6316555663684d5bcc19740df5c7cd35ed1c5088320968a4a5de388ab15a1545",
-          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance."
+          "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "pyproject.toml",
           "target_sha256": "4105e89c6744667c7d0c36104aabdb15fc3cb0ca364b3e23d96f6c22c24423b5",
-          "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred."
+          "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "scripts/inspect_provider_readiness.py",
           "target_sha256": "e425c1de1688250914f8a11eafa5dbf7f60a6e274ff45800ec8badb855fc4ad4",
-          "provenance": "Own offline inspector exact source allowlist extended by the four declared firstparty renderer-readiness contracts; source guards and authority/provider rules unchanged."
+          "provenance": "Own offline inspector exact source allowlist extended by the four declared firstparty renderer-readiness contracts; source guards and authority/provider rules unchanged.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "docs/integrations/authored-renderer.md",
           "target_sha256": "e6990e90a13c835b4a195bc2adfb11d1d2de2e6df24ab25454743a90375abbe0",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/package-lock.json",
           "target_sha256": "eb03eb7f3ddf48285936d4999222fd057cdf7d0dbee7ec74e95523ecc5709b59",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/package.json",
           "target_sha256": "1bf147768e1f272d834e268a92bd285a507eb93798745b104a6c634dedd398d3",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/render_entry.mjs",
           "target_sha256": "87ec6d9653b41fcc6abfd12afbe671cfd51834cee0a528305757be253336bd24",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/Fixture.tsx",
           "target_sha256": "be0cc5b3e6bcc60d5a7790b4142e720f0c32f3256fd3ce3b88054ec4415aecc9",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/Root.tsx",
           "target_sha256": "53b66ebfe4449c50e7e98ed2fd199203c746f8f7021c1781dd9819f67483b7a4",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/index.ts",
           "target_sha256": "a58f804bf74bab68b4549aa5c715eb4a89ec5835206d198fc79b462b4fc71ef9",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
           "target_sha256": "e57a0b689a94e14df1320b6912484773f9c4da8c8a04fcb21d414e0aa8a29512",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_authored.py",
           "target_sha256": "343fc24d6799e5056c85f552374cf73ef31b095e24775e37c4aa12ed3f71da4a",
-          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment."
+          "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/runner.py",
           "target_sha256": "1dbe0bdc2d7c5d3c3ef132e7bd57126a0f0e7cb2510744d289f92ca63c98bb39",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_authored.py",
           "target_sha256": "76c8405ee74becf64c1b299da9409d2f39e65c35c0d29f213cd49a46db520a7c",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_runner.py",
           "target_sha256": "d48b9c0388118f90d40f4925819374cd7401eb14fc87206f692a46b8f991eac0",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/fixtures/browser_capture.mjs",
           "target_sha256": "385cb167bebdc10c992c3dbf3e3d2dc01ef1c92b270a29341f58bb286cca0061",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
-          "receipt_refresh": "Current owned authored renderer custody/callback source and meaningful source controls; independent review/native playback pending. Source byte binding only; frozen foreign grants and acceptance unchanged."
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/production_entry.mjs",
           "target_sha256": "72baabe3f647f1994f67590147485a2ec32a54a23668cf8461b0b91409063df3",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/production_project.mjs",
           "target_sha256": "75d7172b66d85756cf3e4e070b352928bb27baec6c0765a663e96e3f42e12e2f",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/Production.tsx",
           "target_sha256": "af182990ff841c863a55db1d7470ecf9dbcb3cc1dce9573a6b6c8b2c5d126c64",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/ProductionRoot.tsx",
           "target_sha256": "3d666ffa447a1a0c4c81b6906605884c876da27957bddb6f4102af92e363bf0e",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/production-index.ts",
           "target_sha256": "0f7eadb23291d7f87a7c01d3990d98f09d743c318df5ee15835a0b23767370ba",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/renderer-entry/src/production-types.ts",
           "target_sha256": "1a49460b76584be634f951bf9de98479fb5ec4b41fb2d3fcdda88598788154fa",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard.py",
           "target_sha256": "9be224b50ef415056b91b07a9b28ca6c648bf1031bc4d96ceeb51d83d4d15baf",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_binding.py",
           "target_sha256": "3617fadefb6f2b3617e4c2c4a255c1cbe4deca435ca09133297289ddab26323a",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_output.py",
           "target_sha256": "99db946ec4b67cdb865bea71ef37cd6e8537d757241d4e9d26f2dc20f8e28ae5",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/render_storyboard_sources.py",
           "target_sha256": "de90d0817e53c1361b2fc8267d69384a94547d3936246b8d9aa295e4638b16c4",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/fixtures/production_entry_source.test.mjs",
           "target_sha256": "d39e2726e162c661bd9282cd2979f8f9702753103767612f3cb657528bc8ad29",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard.py",
           "target_sha256": "a108374a9215448aa5b32facc78c72eba20ae67ddec5f858e70dfd66ad256fc9",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard_integration.py",
           "target_sha256": "b5c73c220f0e583f4872ea6d94014d780ce880dafffdc8e27faa5722e7450c01",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_storyboard_node.py",
           "target_sha256": "5782cbe84753c06f552f2213f07d3ae0d019a91d401a95e2bc8d71314479e1ec",
-          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance."
+          "provenance": "Independently authored production storyboard projection, source/runtime/output binding, actual registry composition and source regression checks. No blocked upstream code, fonts, media, modules or models transferred. Records source adoption, not native or parent acceptance.",
+          "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         }
       ]
     },
@@ -6314,9 +6410,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/AGENTS.md",
@@ -6331,9 +6427,9 @@
         },
         {
           "target_path": "docs/metrics/tool-contract-manifest.json",
-          "target_sha256": "f2e61891d9e19bf0f69b425b883e01b6f525b00414e6c32c08fb26928ef0fd4e",
+          "target_sha256": "e6a7405bd443010d29d3f2871054f8aeed666f2d1dd62949aef49adb8214f5a8",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
-          "receipt_refresh": "Current source binding refreshed by vrm-0e8.3.3 integration; prior committed feature receipts remain historical."
+          "receipt_refresh": "R103 causal integration metadata repair: bind current offline-exported mounted91-tool manifest; historical unit/native acceptance unchanged. R97 first29 reuse-test failures and archive failure retained."
         },
         {
           "target_path": "scripts/smoke_built_mcp.py",
@@ -6423,8 +6519,9 @@
         },
         {
           "target_path": "src/video_research_mcp/server.py",
-          "target_sha256": "53cec4dcf4401d32a88f0b2ab49ea52cad1a0ac91cdeac83a442e6575120467e",
-          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
+          "target_sha256": "94b4737d0cf3ab6a77d315952987d74c0e2fc2c86a6755e622e198f670149dcd",
+          "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported.",
+          "receipt_refresh": "R95 shared registration refresh: two independently authored OCR subserver import/mount lines added; R80 old292source join differs only here. This hash refresh does not accept other unit/native outcomes."
         },
         {
           "target_path": "src/video_research_mcp/tools/research.py",

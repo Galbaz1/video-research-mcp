@@ -101,6 +101,7 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "direct.image_ops",
         "qwen_vision_api",
         "direct.image_vision",
+        "direct.ocr_timeline",
         "qwen_scene_assets",
         "qwen_av_perception",
         "own.grounded-research-routing",
