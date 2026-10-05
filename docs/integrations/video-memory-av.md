@@ -56,8 +56,11 @@ Admitted bytes are retained at `memory_dir/artifacts/<sha256>.json`.
 - Self introductions and turn-taking address produce nonbinding `suggestions`; model
   name candidates from `induce` are stored the same way. Only `align` changes a name,
   appending an `IdentityRevision` that cites stored records or suggestions linked to the
-  person; `evidence_aligned` names must occur in that evidence. Records keep `person_id`;
-  names resolve at read time.
+  person. `evidence_aligned` requires that same person's utterance to begin with an
+  explicit self-introduction (`I'm`, `I am`, or `My name is`, optionally after a greeting).
+  Mentioning or addressing someone, quoted introductions, and model suggestions do
+  not establish identity. Other mappings require the explicit `user_asserted` basis.
+  Records keep `person_id`; names resolve at read time.
 - Facts are `subject/key = value` triples citing stored record IDs. Same value merges
   evidence; a different value supersedes the loser (higher confidence, then more
   evidence, then newer wins). Losers stay `superseded` with `superseded_by`.

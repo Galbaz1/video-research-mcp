@@ -44,6 +44,7 @@ from .tools.audio_dsp import audio_dsp_server
 from .tools.audio_transcribe import audio_transcribe_server
 from .tools.audio_speakers import audio_speakers_server
 from .tools.video_memory_av import video_memory_av_server
+from .tools.corpus import corpus_server
 from .tools.video_dubbing import video_dubbing_server
 from .tools.video_evidence import video_evidence_server
 from .tools.session_memory import session_memory_server
@@ -107,6 +108,7 @@ app.mount(audio_dsp_server)
 app.mount(audio_transcribe_server)
 app.mount(audio_speakers_server)
 app.mount(video_memory_av_server)
+app.mount(corpus_server)
 app.mount(video_dubbing_server)
 app.mount(video_evidence_server)
 app.mount(session_memory_server)

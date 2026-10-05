@@ -66,7 +66,8 @@
     "scripts/core_dispatch.py",
     "integrations/qwen/asr.json",
     "docs/integrations/audio-transcription.md",
-    "docs/integrations/qwen-search.md"
+    "docs/integrations/qwen-search.md",
+    "docs/integrations/qwen-dubbing.md"
   ],
   "engines": {
     "node": ">=22"

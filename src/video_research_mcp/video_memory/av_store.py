@@ -173,9 +173,18 @@ def _evidence_names_person(state: MemoryState, request: AlignRequest) -> tuple[b
     cited_suggestions = [suggestions[e] for e in request.evidence_ids if e in suggestions]
     linked = any(r.person_id == request.person_id for r in cited_records) or any(
         s.person_id == request.person_id for s in cited_suggestions)
-    name = (request.name or "").lower()
-    named = bool(name) and (any(name in r.text.lower() for r in cited_records) or any(
-        s.name.lower() == name and s.person_id == request.person_id for s in cited_suggestions))
+    name = request.name or ""
+    introduction = re.compile(
+        rf"^\s*(?:(?:hi|hello|hey)(?:\s+everyone)?[,!.]\s*)?"
+        rf"(?:i['’]?m|i am|my name is)\s+{re.escape(name)}"
+        rf"(?=\s*[,!.?]|\s+(?:and|from)\b|\s*$)", re.IGNORECASE)
+    candidates = cited_records + [records[e] for s in cited_suggestions
+                                   if s.method == "self_intro" and s.person_id == request.person_id
+                                   and s.name.casefold() == name.casefold()
+                                   for e in s.evidence_ids if e in records]
+    named = bool(name) and any(
+        r.kind == "utterance" and r.person_id == request.person_id and introduction.match(r.text)
+        for r in candidates)
     return linked, named
 
 
@@ -188,7 +197,8 @@ def align(state: MemoryState, request: AlignRequest, revision: int) -> IdentityR
     if not linked:
         raise ValueError("Alignment evidence must cite this person's records or suggestions")
     if request.basis == "evidence_aligned" and request.name is not None and not named:
-        raise ValueError("Evidence-aligned names must occur in the cited evidence")
+        raise ValueError("Evidence-aligned names require this person's explicit self-introduction"
+                         " in the cited evidence; other mappings must be user_asserted")
     count = sum(1 for r in state.identity_revisions if r.person_id == person.person_id)
     entry = IdentityRevision(
         revision_id=f"{person.person_id}@r{count + 1}", person_id=person.person_id,

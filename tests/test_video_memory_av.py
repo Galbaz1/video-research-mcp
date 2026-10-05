@@ -390,7 +390,7 @@ async def test_align_requires_existing_evidence(src):
     base = {"expected_revision": 1, "person_id": "P001", "name": "Alice", "basis": "evidence_aligned"}
     failures = {"not stored": base | {"evidence_ids": ["utterance:missing"]},
                 "this person's": base | {"evidence_ids": [other]},
-                "occur in the cited": base | {"name": "Carol", "evidence_ids": [alice]},
+                "self-introduction": base | {"name": "Carol", "evidence_ids": [alice]},
                 "revision conflict": base | {"expected_revision": 5, "evidence_ids": [alice]}}
     for message, fields in failures.items():
         assert message in (await run(src, "align", **fields))["error"]
@@ -423,6 +423,55 @@ async def test_identity_revisions_retain_provenance(src):
                       basis="user_asserted", evidence_ids=[suggestion["suggestion_id"]])
     assert reset["store"]["revision"] == 5
     assert (await run(src, "people", person_id="P001"))["people"][0]["identity_status"] == "unknown"
+
+
+@pytest.mark.parametrize("text", ["Thanks Rowan, the marker card reads blue.",
+                                 "Rowan told me the marker card reads blue.",
+                                 "She said, I'm Rowan.", "I'm Rowan's colleague."])
+async def test_evidence_alignment_refuses_mentions_and_quoted_introductions(src, text):
+    """GIVEN a speaker mentioning a name WHEN aligned THEN the identity stays unknown."""
+    transcript = _write(src["tmp"] / "mention.json", _transcript(src, [
+        ("seg-1", 1.0, 4.0, "SPEAKER_00", text)])) | {"kind": "transcript"}
+    await run(src, "build", file_path=src["path"], artifacts=[transcript])
+    before = {p.name: p.read_bytes() for p in (src["tmp"] / "memory").rglob("*.json")}
+    record = await _record(src, text)
+    result = await run(src, "align", expected_revision=1, person_id="P001", name="Rowan",
+                       basis="evidence_aligned", evidence_ids=[record])
+    assert "self-introduction" in result["error"]
+    assert before == {p.name: p.read_bytes() for p in (src["tmp"] / "memory").rglob("*.json")}
+    assert (await run(src, "people"))["people"][0]["name"] is None
+    asserted = await run(src, "align", expected_revision=1, person_id="P001", name="Rowan",
+                         basis="user_asserted", evidence_ids=[record])
+    assert asserted["identity_revision"]["basis"] == "user_asserted"
+
+
+async def test_evidence_alignment_rejects_address_suggestion_and_split_evidence(src):
+    """GIVEN a name in another person's record or a suggestion THEN it is not identity proof."""
+    await build(src)
+    address = await _record(src, "Thanks Bob")
+    alice = await _record(src, "I'm Alice")
+    bob = await _record(src, "Sure, I will")
+    suggestion = (await run(src, "people", person_id="P002"))["people"][0]["suggestions"][0]
+    for person, name, evidence in [("P001", "Bob", [address]),
+                                   ("P002", "Alice", [bob, alice]),
+                                   ("P002", "Bob", [suggestion["suggestion_id"]])]:
+        result = await run(src, "align", expected_revision=1, person_id=person, name=name,
+                           basis="evidence_aligned", evidence_ids=evidence)
+        assert "self-introduction" in result["error"]
+    assert (await run(src, "status"))["revision"] == 1
+
+
+@pytest.mark.parametrize("text", ["Hello, I'm Rowan.", "I am Rowan.", "My name is Rowan."])
+async def test_evidence_alignment_accepts_linked_self_introduction(src, text):
+    """GIVEN this person's affirmative self-introduction THEN the cited mapping is retained."""
+    transcript = _write(src["tmp"] / "intro.json", _transcript(src, [
+        ("seg-1", 1.0, 4.0, "SPEAKER_00", text)])) | {"kind": "transcript"}
+    await run(src, "build", file_path=src["path"], artifacts=[transcript])
+    record = await _record(src, text)
+    result = await run(src, "align", expected_revision=1, person_id="P001", name="Rowan",
+                       basis="evidence_aligned", evidence_ids=[record])
+    assert result["identity_revision"]["evidence_ids"] == [record]
+    assert result["identity_revision"]["basis"] == "evidence_aligned"
 
 
 async def test_build_route_plans_then_executes(src, monkeypatch):

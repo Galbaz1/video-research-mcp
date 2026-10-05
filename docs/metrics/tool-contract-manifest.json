@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-05T16:24:21.640675+00:00",
-  "tool_count": 103,
+  "generated_at": "2026-10-05T17:34:12.357890+00:00",
+  "tool_count": 104,
   "tools": [
     {
       "name": "audio_clip_export",
@@ -2968,6 +2968,586 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "corpus_retrieve",
+      "description": "Index supplied evidence or retrieve exact source context within a declared budget.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "Collection and revision scoped supplied observations, vector-only repair, or context-only FTS/dense/RRF retrieval",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Atomically index supplied observations with an optimistic collection revision.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "index",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "observations": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "One exact source interval and its supplied evidence references.",
+                      "properties": {
+                        "video_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "observation_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "source_revision": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "media_digest": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "enum": [
+                            "speech",
+                            "OCR",
+                            "description"
+                          ],
+                          "type": "string"
+                        },
+                        "start_seconds": {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        "end_seconds": {
+                          "minimum": 0,
+                          "type": "number"
+                        },
+                        "text": {
+                          "maxLength": 8000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "entities": {
+                          "items": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "pattern": "^[A-Za-z0-9_.:@-]+$",
+                            "type": "string"
+                          },
+                          "maxItems": 32,
+                          "type": "array"
+                        },
+                        "artifact_refs": {
+                          "items": {
+                            "additionalProperties": false,
+                            "description": "Caller-supplied artifact identity; bytes are not authenticated by the index.",
+                            "properties": {
+                              "artifact_id": {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                "type": "string"
+                              },
+                              "kind": {
+                                "enum": [
+                                  "frame",
+                                  "transcript",
+                                  "description"
+                                ],
+                                "type": "string"
+                              },
+                              "path": {
+                                "maxLength": 2048,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[a-f0-9]{64}$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "artifact_id",
+                              "kind",
+                              "path",
+                              "sha256"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 16,
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "video_id",
+                        "observation_id",
+                        "source_revision",
+                        "media_digest",
+                        "kind",
+                        "start_seconds",
+                        "end_seconds",
+                        "text",
+                        "artifact_refs"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 100,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "vectors": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "A vector bound to one exact observation, revision, digest and model.",
+                      "properties": {
+                        "observation_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "source_revision": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "media_digest": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "model": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "values": {
+                          "items": {
+                            "maximum": 1000000.0,
+                            "minimum": -1000000.0,
+                            "type": "number"
+                          },
+                          "maxItems": 1024,
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "observation_id",
+                        "source_revision",
+                        "media_digest",
+                        "model",
+                        "values"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 100,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "collection",
+                  "action",
+                  "expected_revision",
+                  "observations"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Replace supplied vectors without inspecting, downloading or processing media.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "repair",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "vectors": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "A vector bound to one exact observation, revision, digest and model.",
+                      "properties": {
+                        "observation_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "source_revision": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "media_digest": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "model": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "values": {
+                          "items": {
+                            "maximum": 1000000.0,
+                            "minimum": -1000000.0,
+                            "type": "number"
+                          },
+                          "maxItems": 1024,
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "observation_id",
+                        "source_revision",
+                        "media_digest",
+                        "model",
+                        "values"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 100,
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "collection",
+                  "action",
+                  "expected_revision",
+                  "vectors"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Require explicit current video revisions; return evidence context only.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "query",
+                    "type": "string"
+                  },
+                  "query": {
+                    "maxLength": 2000,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "source_revisions": {
+                    "maxProperties": 100,
+                    "minProperties": 1,
+                    "patternProperties": {
+                      "^[A-Za-z0-9_.:@-]+$": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      }
+                    },
+                    "propertyNames": {
+                      "maxLength": 128,
+                      "minLength": 1
+                    },
+                    "type": "object"
+                  },
+                  "mode": {
+                    "default": "hybrid",
+                    "enum": [
+                      "fts",
+                      "dense",
+                      "hybrid"
+                    ],
+                    "type": "string"
+                  },
+                  "query_vector": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "maximum": 1000000.0,
+                          "minimum": -1000000.0,
+                          "type": "number"
+                        },
+                        "maxItems": 1024,
+                        "minItems": 1,
+                        "type": "array"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "vector_model": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "top_k": {
+                    "default": 10,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "token_budget": {
+                    "default": 2048,
+                    "maximum": 32768,
+                    "minimum": 32,
+                    "type": "integer"
+                  },
+                  "graph": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "description": "Explicit separately operated context route; both keyword sets avoid extraction.",
+                        "properties": {
+                          "endpoint": {
+                            "maxLength": 256,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "mode": {
+                            "default": "mix",
+                            "enum": [
+                              "local",
+                              "global",
+                              "hybrid",
+                              "mix"
+                            ],
+                            "type": "string"
+                          },
+                          "hl_keywords": {
+                            "items": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "maxItems": 16,
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "ll_keywords": {
+                            "items": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "maxItems": 16,
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "endpoint",
+                          "hl_keywords",
+                          "ll_keywords"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "collection",
+                  "action",
+                  "query",
+                  "source_revisions"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Inspectable source results; there is deliberately no generated-answer field.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "indexed",
+                  "repaired",
+                  "found",
+                  "no_evidence"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "collection": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                "title": "Collection",
+                "type": "string"
+              },
+              "index_revision": {
+                "title": "Index Revision",
+                "type": "integer"
+              },
+              "context": {
+                "additionalProperties": true,
+                "title": "Context",
+                "type": "object"
+              },
+              "retrieval": {
+                "additionalProperties": true,
+                "title": "Retrieval",
+                "type": "object"
+              },
+              "total_token_budget": {
+                "default": 0,
+                "title": "Total Token Budget",
+                "type": "integer"
+              },
+              "estimated_tokens": {
+                "default": 0,
+                "title": "Estimated Tokens",
+                "type": "integer"
+              },
+              "token_estimator": {
+                "default": "utf8_bytes_div4_ceil_v1",
+                "title": "Token Estimator",
+                "type": "string"
+              },
+              "evidence_verification": {
+                "default": "supplied_artifact_identities_not_independently_verified",
+                "title": "Evidence Verification",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "collection",
+              "index_revision"
+            ],
+            "title": "CorpusResponse",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
