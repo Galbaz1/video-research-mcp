@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from unittest.mock import ANY, AsyncMock, patch
+from unittest.mock import ANY, AsyncMock, call, patch
 
 import pytest
 from fastmcp.exceptions import ValidationError
@@ -30,6 +30,9 @@ def _render_project(tmp_path, monkeypatch):
     _setup_project(projects / "test")
     (projects / "test" / "input.json").write_text('{"claim":"owned fixture"}')
     monkeypatch.setenv("EXPLAINER_PROJECTS_PATH", str(projects))
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "synthetic-test-presence")
+    monkeypatch.setattr("video_explainer_mcp.prereqs._resolve_cli", lambda cfg: "/mock/console")
+    monkeypatch.setattr("video_explainer_mcp.prereqs.shutil.which", lambda name: "/mock/" + name)
     monkeypatch.setattr("video_explainer_mcp.render_worker.require_render_ready", AsyncMock())
     monkeypatch.setattr(
         "video_explainer_mcp.render_worker.source_contract",
@@ -81,7 +84,7 @@ class TestExplainerGenerate:
     """Tests for explainer_generate tool."""
 
     async def test_full_pipeline(self, monkeypatch):
-        """Prepare through storyboard then use the shared qualified render route."""
+        """Prepare through voiceover, assemble storyboard, then use qualified render."""
         monkeypatch.setenv("EXPLAINER_PATH", "/fake")
         with (
             patch(
@@ -98,7 +101,10 @@ class TestExplainerGenerate:
             result = await explainer_generate(project_id="test")
         assert result["success"] is True
         readiness.assert_awaited_once_with(None)
-        cli.assert_awaited_once_with("generate", "test", "--to", "storyboard", "--mock")
+        assert cli.await_args_list == [
+            call("generate", "test", "--to", "voiceover", "--mock"),
+            call("storyboard", "test"),
+        ]
         render.assert_awaited_once_with("test", "720p", True)
         assert result["playability_verified"] is True
         assert result["real_renderer_verified"] is False
@@ -180,7 +186,10 @@ class TestExplainerStep:
         ) as mock_cli:
             await explainer_generate(project_id="test", to_step="storyboard")
         flags = ["--mock"] if provider == "mock" else ["--voice-provider", provider]
-        mock_cli.assert_awaited_once_with("generate", "test", "--to", "storyboard", *flags)
+        assert mock_cli.await_args_list == [
+            call("generate", "test", "--to", "voiceover", *flags),
+            call("storyboard", "test"),
+        ]
 
     async def test_tts_args_script_no_tts(self, monkeypatch):
         """Script step does not receive TTS args."""

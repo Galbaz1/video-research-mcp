@@ -115,7 +115,7 @@ def _request_headers(headers, authority, content):
     return result
 
 
-def _peer_trace(selected, port, streams):
+def _peer_trace(selected, port, streams, require_limited=False):
     """httpcore calls connect_tcp.complete before TLS or any request header/body write."""
     attested = False
 
@@ -125,6 +125,8 @@ def _peer_trace(selected, port, streams):
             stream = info.get("return_value")
             if stream is not None:
                 streams.append(stream)
+            if require_limited and not isinstance(stream, _LimitedStream):
+                raise PermissionError("Vision HTTP receive limit could not be verified")
             try:
                 peer = stream.get_extra_info("server_addr")
                 matches = isinstance(peer, tuple) and len(peer) >= 2 and (
@@ -145,16 +147,47 @@ def _peer_trace(selected, port, streams):
     return trace, lambda: attested
 
 
-async def _response_bytes(response):
+class _LimitedStream:
+    """Cap native HTTP reception, including headers, before parser allocation."""
+
+    def __init__(self, stream, limit):
+        self.stream, self.limit, self.received = stream, limit, 0
+
+    def __getattr__(self, name):
+        return getattr(self.stream, name)
+
+    async def read(self, max_bytes, timeout=None):
+        data = await self.stream.read(min(max_bytes, self.limit - self.received + 1), timeout=timeout)
+        self.received += len(data)
+        if self.received > self.limit:
+            raise ValueError("Vision HTTP response exceeds the byte limit")
+        return data
+
+    async def start_tls(self, *args, **kwargs):
+        self.stream = await self.stream.start_tls(*args, **kwargs)
+        return self
+
+
+class _LimitedBackend:
+    """Apply the native response bound to the one selected TCP connection."""
+
+    def __init__(self, backend, limit):
+        self.backend, self.limit = backend, limit
+
+    async def connect_tcp(self, *args, **kwargs):
+        return _LimitedStream(await self.backend.connect_tcp(*args, **kwargs), self.limit)
+
+
+async def _response_bytes(response, response_limit=MAX_RESPONSE_BYTES):
     """Bound raw response bytes without allocating an untrusted decompressed body."""
     length = response.headers.get("content-length")
-    if length is not None and (not length.isdecimal() or int(length) > MAX_RESPONSE_BYTES):
+    if length is not None and (not length.isdecimal() or int(length) > response_limit):
         raise ValueError("Vision HTTP response Content-Length exceeds or violates the byte limit")
     if response.headers.get("content-encoding", "identity").lower() != "identity":
         raise ValueError("Vision HTTP compressed responses are unsupported")
     data = bytearray()
     async for chunk in response.aiter_raw():
-        if len(data) + len(chunk) > MAX_RESPONSE_BYTES:
+        if len(data) + len(chunk) > response_limit:
             raise ValueError("Vision HTTP response exceeds the byte limit")
         data.extend(chunk)
     return bytes(data)
@@ -192,16 +225,22 @@ async def _joined_cleanup(client, streams, primary):
 
 async def _exchange(
     url: str, *, headers: dict[str, str], content: bytes, method: str, local: bool = False,
+    request_limit: int | None = None, response_limit: int | None = None,
 ) -> tuple[int, bytes]:
     """Validate and perform one owned exchange under the overall deadline."""
     if type(local) is not bool or method not in {"GET", "POST", "DELETE"} or not isinstance(content, bytes):
         raise ValueError("Vision HTTP requires GET/POST, byte content and a boolean local flag")
-    if len(content) > MAX_REQUEST_BYTES:
+    request_limit = MAX_REQUEST_BYTES if request_limit is None else request_limit
+    response_limit = MAX_RESPONSE_BYTES if response_limit is None else response_limit
+    if (type(request_limit) is not int or not 0 < request_limit <= MAX_REQUEST_BYTES
+            or type(response_limit) is not int or not 0 < response_limit <= MAX_RESPONSE_BYTES):
+        raise ValueError("Vision HTTP byte limits must be positive bounded integers")
+    if len(content) > request_limit:
         raise ValueError("Vision HTTP request exceeds the byte limit")
     prepared = _request_headers(headers, "", content)
     if not isinstance(url, str) or 64 + len(url.encode("utf-8")) + len(content) + sum(
         len(key) + len(value) + 4 for key, value in prepared.items()
-    ) > MAX_REQUEST_BYTES:
+    ) > request_limit:
         raise ValueError("Vision HTTP request exceeds the byte limit")
     deadline = asyncio.get_running_loop().time() + EXCHANGE_TIMEOUT_SECONDS
     client, primary, streams = None, None, []
@@ -209,15 +248,17 @@ async def _exchange(
         async with asyncio.timeout_at(deadline):
             target, hostname, authority, selected, port = await _destination(url, local)
             prepared["Host"] = authority
-            trace, attested = _peer_trace(selected, port, streams)
+            trace, attested = _peer_trace(selected, port, streams, response_limit < MAX_RESPONSE_BYTES)
             transport = httpx.AsyncHTTPTransport(retries=0, trust_env=False, http2=False)
+            if response_limit < MAX_RESPONSE_BYTES:
+                transport._pool._network_backend = _LimitedBackend(transport._pool._network_backend, response_limit)
             client = httpx.AsyncClient(transport=transport, trust_env=False, follow_redirects=False,
                                       timeout=EXCHANGE_TIMEOUT_SECONDS)
             async with client.stream(method, target, headers=prepared, content=content,
                                      extensions={"sni_hostname": hostname, "trace": trace}) as response:
                 if not attested():
                     raise PermissionError("Vision HTTP transport did not attest its connected peer")
-                return response.status_code, await _response_bytes(response)
+                return response.status_code, await _response_bytes(response, response_limit)
     except httpx.HTTPError:
         primary = RuntimeError("Vision HTTP exchange failed")
         raise primary from None
@@ -231,13 +272,16 @@ async def _exchange(
 
 async def exchange(
     url: str, *, headers: dict[str, str], content: bytes, method: str, local: bool = False,
+    request_limit: int | None = None, response_limit: int | None = None,
 ) -> tuple[int, bytes]:
     """Return one status/body without retries, redirects, proxies or upstream logging.
 
-    Request and raw response limits are 32 MiB and 256 KiB. The 120-second
+    Request and response limits default to 32 MiB and 256 KiB; smaller response
+    limits also bound received headers and framing. The 120-second
     request deadline includes DNS, connection, transmission and response. Owned
     cleanup has a separate five-second grace and is joined before returning.
     Credentials are caller-selected; this boundary never selects or logs secrets.
     """
     with _quiet_transport_logs():
-        return await _exchange(url, headers=headers, content=content, method=method, local=local)
+        return await _exchange(url, headers=headers, content=content, method=method, local=local,
+                               request_limit=request_limit, response_limit=response_limit)

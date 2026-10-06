@@ -37,6 +37,18 @@ class ImageOCRRequest(BaseModel):
         return self
 
 
+class OCRBoundary(BaseModel):
+    """Declared adapter precision policy and actual unclipped prepared-pixel overshoot."""
+
+    model_config = ConfigDict(extra="forbid")
+    policy: Literal["exact", "native_normalized_precision"]
+    normalized_epsilon: FiniteFloat = Field(ge=0, le=2**-24)
+    left_pixels: FiniteFloat = Field(ge=0)
+    top_pixels: FiniteFloat = Field(ge=0)
+    right_pixels: FiniteFloat = Field(ge=0)
+    bottom_pixels: FiniteFloat = Field(ge=0)
+
+
 class OCRObservation(BaseModel):
     """A raw local backend observation mapped through declared pixel-corner transforms."""
 
@@ -53,6 +65,7 @@ class OCRObservation(BaseModel):
     oriented_points: list[tuple[FiniteFloat, FiniteFloat]] = Field(min_length=4, max_length=4)
     stored_points: list[tuple[FiniteFloat, FiniteFloat]] = Field(min_length=4, max_length=4)
     line_id: list[StrictInt] | None = None
+    geometry_boundary: OCRBoundary | None = None
 
 
 class ImageOCRResult(BaseModel):

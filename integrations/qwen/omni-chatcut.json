@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "bead": "vrm-0e8.8.6",
+  "assignment": "R107/r1",
+  "route": "first-party executable optional service integration; upstream protocol/workflows reference-only",
+  "source_pins": {
+    "QwenLM/Qwen-MM-Plugins": "07736672525443c7f8a3f6405eed37d2236f023f"
+  },
+  "source_reference_paths": [
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/client.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/contracts.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/rendering.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/__init__.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/check_service.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/detect_speech.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/prepare_project.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/render_project.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/separate_audio.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/synthesize_speech.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/validate_delivery.py",
+    "src/capabilities/omni-chatcut/qwen_mm_plugins_omni_chatcut/video_translation/tools/validate_plan.py",
+    "src/capabilities/omni-chatcut/skill/video-translation/references/dubbing-service.md",
+    "src/capabilities/omni-chatcut/skill/video-translation/SKILL.md",
+    "src/capabilities/omni-chatcut/skill/video-translation/workflows/source-analysis/WORKFLOW.md",
+    "src/capabilities/omni-chatcut/skill/video-translation/workflows/translation-authoring/WORKFLOW.md",
+    "src/capabilities/omni-chatcut/skill/video-translation/workflows/dubbing-rendering/WORKFLOW.md"
+  ],
+  "source_grants": [
+    {
+      "path": "LICENSE",
+      "license": "Apache-2.0",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ],
+  "copied_paths": [],
+  "imported_foreign_packages": [],
+  "bundled_models_weights_fonts_media": [],
+  "entry_point": "video_research_mcp.tools.video_dubbing:video_dubbing_server",
+  "core_startup_changes": [],
+  "root_integration_required": [
+    "server mount", "optional feature/config gate", "packaging/distribution mapping",
+    "shared ledger/Beads integration", "real authorized journey"
+  ],
+  "operator_config": [
+    "QWEN_MM_DUBBING_SERVER_URL", "VRM_DUBBING_LOCAL", "VRM_DUBBING_API_KEY",
+    "existing LOCAL_FILE_ACCESS_ROOT and cache/process policies"
+  ],
+  "service_endpoints": ["GET /health", "POST /vad", "POST /separate", "POST /tts"],
+  "service_network_policy": "operator origin only; remote HTTPS/public DNS and environment auth; literal loopback locally; peer proof before headers/body; no redirects, proxies, retries or curl bypass",
+  "local_audio_contract": "bounded returned base64 complete PCM WAV decoded into project-local regular files; server-local paths ignored",
+  "source_tool_mappings": {
+    "prepare_video_translation_project": "full source/PCM/stems/VAD preparation and durable project",
+    "check_dubbing_service": "strict terminal health readiness",
+    "separate_dubbing_audio": "exact separation contract and local stems",
+    "detect_dubbing_speech": "exact VAD contract and ordered intervals",
+    "synthesize_dubbing_speech": "standalone reference-guided TTS, bounded local PCM and unresolved listening",
+    "validate_video_translation_plan": "source/VAD/transcript joins, speaker references, groups and slots",
+    "render_video_translation": "journaled TTS, references, fitting, stem mix, normalization, remux and executable QA",
+    "validate_video_translation_delivery": "current artifact/report/process and technical/listening checks"
+  },
+  "first_party_state_tool": "get_video_translation_state",
+  "workflow_mappings": {
+    "source-analysis": "exact preparation/VAD; isolated ChatCut omni_call; full request through 600 seconds, longer bounded reconciled windows; unresolved source blocks",
+    "translation-authoring": "agent-authored natural spoken text, exact ordered source coverage, same-speaker groups and independent clean references",
+    "dubbing-rendering": "full background decision, at most three known overlong candidates, <=1.18x fit, silence/fades, 48k stereo normalize=0 mix, measured two-pass normalization, supported video/subtitle streams and separate listening",
+    "state-resume-delivery": "requested target/style, derived state, occupied effects across plan/name changes, exact reuse and selective known-group regeneration, separate renders/failures, current pointer and executable validation"
+  },
+  "upstream_analysis_entry_point": "isolated ChatCut omni_call documented by pinned workflows; installation/provider/service availability UNKNOWN; no automatic fallback",
+  "limits": {
+    "audio_bytes": 268435456, "request_bytes": 367001600, "response_bytes": 734003200,
+    "health_response_bytes": 16384, "evidence_json_bytes": 4194304, "service_operation_seconds": 900
+  },
+  "qualification": "SOURCE_AND_MOCK_TESTED only; actual service/model/media/FFmpeg/native/voice/listening/product acceptance UNQUALIFIED",
+  "source_closure": "Pinned mapped client/contracts/rendering/service reference acquired; all nine exact tools files fetched and inspected using Root-tool-paths.json; skill and three workflows inspected; retained earlier 404 probes; full Root-pinned-tree.json not read",
+  "third_party_model_license_audit": "NOT_RUN",
+  "automatic_model_download_or_launch": false,
+  "automatic_provider_or_credit_fallback": false
+}

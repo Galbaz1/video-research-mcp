@@ -67,26 +67,21 @@ def test_incomplete_or_malformed_actual_output_clocks_are_terminal(change):
 
 
 async def test_actual_native_metadata_sums_decoded_audio_samples(native, monkeypatch, tmp_path):
-    import video_research_mcp.education_native as module
-    async def measured(*_):
-        return {"output": {}, "audio": {"first_seconds": 0, "end_seconds": 6}}
-    monkeypatch.setattr(module, "decoded", measured)
     work = NativeWork(time.monotonic() + 120)
     await work.admit()
+    async def run(*_):
+        return json.dumps(probe_reply()).encode(), b""
+    monkeypatch.setattr(work, "run", run)
     result = await inspect_video(tmp_path / "fake.mp4", work)
     assert result["audio"]["sample_count"] == 288000 and result["audio"]["duration_seconds"] == 6
 
 
 @pytest.mark.parametrize("field,value", [("codec_name", "aac"), ("channels", 2), ("sample_rate", "44100")])
 async def test_lossy_or_reformatted_output_audio_refuses(field, value, native, monkeypatch, tmp_path):
-    import video_research_mcp.education_native as module
     info = probe_reply()
     info["streams"][1][field] = value
     async def run(*_):
         return json.dumps(info).encode(), b""
-    async def measured(*_):
-        return {"output": {}, "audio": {"first_seconds": 0, "end_seconds": 6}}
-    monkeypatch.setattr(module, "decoded", measured)
     work = NativeWork(time.monotonic() + 120)
     work.run = run
     with pytest.raises(ValueError, match="lossless ALAC"):

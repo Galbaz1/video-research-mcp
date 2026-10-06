@@ -1,6 +1,6 @@
 {
   "name": "video-research-mcp",
-  "version": "0.8.0-rc.1",
+  "version": "0.8.0-rc.3",
   "description": "Native Codex plugin plus Claude Code workflows and installer for video analysis, document extraction and cited research",
   "bin": {
     "video-research-mcp": "bin/install.js"
@@ -36,9 +36,16 @@
     "integrations/qwen/freecad.json",
     "docs/integrations/qwen-freecad.md",
     "scripts/spatial_session.py",
+    "scripts/spatial_launch.py",
+    "scripts/spatial_runtime.py",
+    "scripts/spatial_fonts.py",
     "scripts/spatial_inputs.py",
     "scripts/spatial_dispatch.py",
     "scripts/spatial_motion.py",
+    "scripts/local_asr_service.py",
+    "scripts/local_asr_launch.py",
+    "scripts/local_asr_worker.py",
+    "docs/integrations/local-asr.md",
     "integrations/qwen/video-spatio.json",
     "docs/integrations/qwen-spatial.md",
     "skills/spatial-video-analysis/SKILL.md",
@@ -59,7 +66,9 @@
     "scripts/core_dispatch.py",
     "integrations/qwen/asr.json",
     "docs/integrations/audio-transcription.md",
-    "docs/integrations/qwen-search.md"
+    "docs/integrations/qwen-search.md",
+    "docs/integrations/qwen-dubbing.md",
+    "docs/integrations/movie-commentary.md"
   ],
   "engines": {
     "node": ">=22"
@@ -78,6 +87,6 @@
     "url": "https://github.com/Galbaz1/video-research-mcp"
   },
   "scripts": {
-    "test": "node --test tests/installer.test.js tests/codex-plugin.test.js"
+    "test": "node --test tests/installer.test.js tests/codex-plugin.test.js tests/installer-packaged-skills.test.js"
   }
 }

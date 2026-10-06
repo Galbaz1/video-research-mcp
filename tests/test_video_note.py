@@ -454,3 +454,15 @@ async def test_native_view_is_disposed_after_copy_or_fallback(note_request, nati
     else:
         assert result["status"] == "complete"
         assert len(result["frames"]) == (0 if condition == "bad-digest" else 1)
+
+
+@pytest.mark.parametrize("dry_run", [True, False])
+async def test_existing_destination_returns_explicit_refusal(note_request, monkeypatch, dry_run):
+    """An existing PDF is preserved and its required overwrite intent is explained."""
+    output = Path(note_request.output_path)
+    output.write_bytes(b"%PDF-retained existing output")
+    before = {p: p.read_bytes() for p in output.parent.iterdir()}
+    monkeypatch.setattr(pipeline, "dependencies_ready", lambda: pytest.fail("refusal loaded renderer"))
+    result = await create_note(note_request.model_copy(update={"dry_run": dry_run}))
+    assert result["error"] == "Tutorial destination exists; explicit overwrite is required"
+    assert {p: p.read_bytes() for p in output.parent.iterdir()} == before

@@ -62,6 +62,17 @@ async def admission(request, configured, deadline):
         "request": request.model_dump(mode="json"),
         "sources": sources,
         "runtime": await runtime_binding(configured, deadline),
+        **(
+            {
+                "diagnostic_contract": {
+                    "helper_sha256": hashlib.sha256(
+                        Path(__file__).with_name("audio_dsp_stdio.py").read_bytes()
+                    ).hexdigest()
+                }
+            }
+            if configured
+            else {}
+        ),
     }
 
 
@@ -192,7 +203,7 @@ async def publish(payload, primary, binding, deadline):
     return {**payload, "artifacts": artifacts, "result_artifact": artifact, "manifest": manifest}
 
 
-async def evaluate(request, configured, binding, deadline):
+async def evaluate(request, configured, binding, deadline, state):
     """Keep all original snapshots live through aggregate admission, native collection and publication."""
     async with AsyncExitStack() as stack:
         contexts = []
@@ -205,10 +216,13 @@ async def evaluate(request, configured, binding, deadline):
                 source = await audio_source(owned)
                 end, _ = audio_window(source, window.start_seconds, window.end_seconds, 30)
                 contexts.append((owned, window, source, end))
-        if sum(
-            end - max(window.start_seconds, source["first_audio_seconds"])
-            for _, window, source, end in contexts
-        ) > 30:
+        if (
+            sum(
+                end - max(window.start_seconds, source["first_audio_seconds"])
+                for _, window, source, end in contexts
+            )
+            > 30
+        ):
             raise ValueError("DSP primary and reference exceed30 seconds aggregate selected audio")
         rows, selections, artifacts = [], [], []
         for owned, window, source, _ in contexts:
@@ -224,10 +238,17 @@ async def evaluate(request, configured, binding, deadline):
             else:
                 selections.append(row["selection"])
         primary = contexts[0][0]
-        native = await native_call(primary, request, configured, selections) if configured else None
+        native = (
+            await native_call(primary, request, configured, selections, state)
+            if configured
+            else None
+        )
         if native:
             artifacts.append(native)
-            if request.operation == "ferrous_analyze" and request.native_return_format == "visual_only":
+            if (
+                request.operation == "ferrous_analyze"
+                and request.native_return_format == "visual_only"
+            ):
                 views = await image_worker(
                     export_native_views, native, selections[0], primary.directory, deadline=deadline
                 )
@@ -246,6 +267,10 @@ async def terminal_cleanup(state, result, status):
     """Shield and join a bounded terminal checkpoint even if the caller cancels repeatedly."""
     if not state.get("owner") or state.get("terminal"):
         return result
+    if "diagnostics" in state:
+        result = {**result, "diagnostics": state["diagnostics"]}
+    if state.get("diagnostic_rejected"):
+        result = {**result, "diagnostic_rejected": True}
     task = asyncio.create_task(
         image_worker(finish, state, result, status, (), deadline=time.monotonic() + 10)
     )
@@ -271,7 +296,7 @@ async def execute(request):
             )
             if not owner:
                 return retained(job)
-            result = await evaluate(request, configured, binding, deadline)
+            result = await evaluate(request, configured, binding, deadline, state)
             return await image_worker(
                 finish,
                 state,

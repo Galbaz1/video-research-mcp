@@ -31,6 +31,15 @@ has no submitted audio and cannot support a spoken event.
 Each video window supplies bounded sampled PNGs with their actual decoded source
 PTS and time base. A sound window supplies full continuous 16-kHz mono 16-bit PCM
 WAV, with measured selected source endpoints and full sample-body hashes.
+`fps` accepts finite numbers from 0.1 through 30, inclusive, and defaults to 1.
+The local extractor samples available source frames at the requested minimum
+spacing; it does not interpolate frames or guarantee the requested rate for a
+slower source. `max_frames_per_window` defaults to 32 and caps at 48, with at most
+128 frames across the request. Reaching a frame budget reports partial visual
+sampling and `coverage.stop_reason=frame_budget`; the rate is not silently lowered.
+Inspect actual PTS, sampled points and gaps. Even complete sampling does not
+establish continuous watched coverage. Higher rates do not increase byte, time
+or provider transmission allowances.
 The model receives the WAV origin offset and actual frame times on the same
 window-relative clock. Returned event offsets map back to the original source.
 `spoken` events must lie inside the submitted audio; `visible` events must cite

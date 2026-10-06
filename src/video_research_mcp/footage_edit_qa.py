@@ -9,7 +9,7 @@ from .audio_dsp_native import loudness_summary
 from .footage_edit_native import input_command
 
 
-def frame_hashes(data, expected_count):
+def frame_hashes(data, expected_count, *, max_frames=256):
     """Require complete SHA256 decoded-frame rows and one positive clock."""
     text = data.decode("ascii")
     clocks = re.findall(r"^#tb 0: (\d+/\d+)\s*$", text, re.MULTILINE)
@@ -27,7 +27,7 @@ def frame_hashes(data, expected_count):
             raise ValueError("Decoded frame hash duration or size is invalid")
         rows.append({"pts": pts, "dts": dts, "duration": duration, "bytes": size,
                      "time_base": clocks[0], "pixel_sha256": columns[5], "pixel_format": "rgb24"})
-    if len(rows) != expected_count or not 1 <= len(rows) <= 256:
+    if len(rows) != expected_count or not 1 <= len(rows) <= max_frames:
         raise ValueError("Decoded frame hashes do not cover the complete population")
     if any(b["pts"] <= a["pts"] for a, b in zip(rows, rows[1:])):
         raise ValueError("Decoded frame hash clock is unordered")
@@ -100,7 +100,7 @@ async def signal(work, command, count, filters=""):
     return signal_summary(data, count)
 
 
-async def full_review(path, work, measured, timeline, audio_required):
+async def full_review(path, work, measured, timeline, audio_required, *, max_frames=256):
     """Gate a final only after complete decode, clock, black and terminal audio observations."""
     output = measured["output"]
     expected = [row["timeline_seconds"] for row in timeline["frames"]]
@@ -128,5 +128,5 @@ async def full_review(path, work, measured, timeline, audio_required):
     stdout, _ = await work.run(input_command(path) + ["-an", "-vf", "format=rgb24", "-fps_mode", "passthrough",
                                                         "-f", "framehash", "-hash", "sha256", "-"])
     return {"status": "passed", "full_decode": True, "black": black, "audio": audio,
-            "decoded_frames": frame_hashes(stdout, len(expected)), "output": output,
+            "decoded_frames": frame_hashes(stdout, len(expected), max_frames=max_frames), "output": output,
             "semantic_visual_human_acceptance_verified": False}

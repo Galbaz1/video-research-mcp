@@ -10,9 +10,26 @@ from .evidence import atomic_write
 from .plan_artifacts import bind_script, bind_storyboard, require_binding, storyboard_path
 from .planning import plan_transaction, require_approved, save_plan
 from .planning_sources import canonical, external_plan
+from .prereqs import require_generation_ready
 from .render_artifacts import project_revision
+from .storyboard_timing import require_current_timing
 
 STEPS = ("script", "narration", "scenes", "voiceover", "storyboard")
+
+
+def generation_range(from_step: str | None, to_step: str | None, *, managed: bool) -> tuple[str, ...]:
+    """Validate the exact ordered stage range before any production transaction."""
+    stages = STEPS if managed else ("plan", *STEPS, "render")
+    first = stages[0] if from_step is None else from_step
+    last = stages[-1] if to_step is None else to_step
+    if not managed:
+        first = "render" if first.lower() == "render" else first
+        last = "render" if last.lower() == "render" else last
+    if first not in stages or last not in stages or stages.index(first) > stages.index(last):
+        if managed:
+            raise ValueError("Managed generation requires an ordered script-to-storyboard stage range")
+        raise ValueError("Generation requires an ordered plan-to-render stage range")
+    return stages[stages.index(first):stages.index(last) + 1]
 
 
 @contextmanager
@@ -66,11 +83,10 @@ async def generate_steps(project: Path, connection, state: dict, project_id: str
                          from_step: str | None, to_step: str | None, force: bool,
                          run_cli, tts_args) -> dict:
     """Run supported individual stages without the upstream plan-overwrite path."""
-    first, last = from_step or "script", to_step or "storyboard"
-    if first not in STEPS or last not in STEPS or STEPS.index(first) > STEPS.index(last):
-        raise ValueError("Managed generation requires an ordered script-to-storyboard stage range")
+    steps = generation_range(from_step, to_step, managed=True)
+    require_generation_ready(steps)
     outputs, elapsed = [], 0.0
-    for step in STEPS[STEPS.index(first):STEPS.index(last) + 1]:
+    for step in steps:
         args = [step, project_id]
         if step == "storyboard" or (force and step in {"narration", "scenes"}):
             args.append("--force")
@@ -89,4 +105,5 @@ def freeze_render_source(project: Path) -> dict:
         if state is not None:
             require_approved(project, state)
             require_binding(project, state, "storyboard")
+            require_current_timing(project, state)
         return project_revision(project)

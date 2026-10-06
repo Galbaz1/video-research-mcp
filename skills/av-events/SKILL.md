@@ -5,6 +5,13 @@ description: Caption, count or ground supported occurrences in exact local audio
 
 # AV event and music evidence
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/AV_EVENTS.md`.
+The `../video-research-resources/integrations/qwen/av-events.json` descriptor records the selected component and requirements.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Use the root tools `media_caption_events`, `media_count_events`,
 `media_ground_events` and `media_analyze_music`. Read the
 [integration contract](../../docs/integrations/AV_EVENTS.md) when choosing budgets,
@@ -15,6 +22,14 @@ Bind one regular local file with its full `expected_source_sha256`, choose a
 bounded interval, and prepare with `dry_run=true`. Inspect the exact source,
 actual frame PTS/indices, decoded audio interval, gaps and planned windows. A dry
 plan can perform local native preparation, but makes zero provider calls.
+
+Choose finite `fps` in 0.1..30 inclusive; the default is 1. The extractor samples
+available source frames without interpolation. Set explicit frame budgets when
+requesting higher rates: `max_frames_per_window` defaults to 32 and caps at 48,
+with at most 128 aggregate frames. A reached frame budget reports partial visual
+sampling and `coverage.stop_reason=frame_budget`; inspect actual PTS, sampled
+points and gaps. A higher rate does not enlarge byte, deadline or provider budgets,
+and sampled points do not establish continuous watched coverage.
 
 Submit with `dry_run=false` and `authorize_submission=true` only when the workflow
 has authority for that source upload and spend. Use the configured Gemini account;

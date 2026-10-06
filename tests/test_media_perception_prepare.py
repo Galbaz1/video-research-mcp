@@ -2,7 +2,11 @@
 
 import hashlib
 import asyncio
+from fractions import Fraction
+import io
+import json
 import math
+import os
 import struct
 import wave
 
@@ -71,6 +75,92 @@ async def av_source(source_audio):
         "-map", "1:a:0", "-c:v", "libx264", "-threads", "1", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
         "-c:a", "alac", "-output_ts_offset", "3", "-n", str(path)], 5)
     return path, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+@pytest.fixture
+async def av_source_30fps(source_audio, monkeypatch, record_property):
+    """Generate one owned 30 fps source and record every joined native process."""
+    from video_research_mcp.config import update_config
+    from video_research_mcp.media_probe import binary
+    from video_research_mcp.media_process import run_media_process
+
+    update_config(media_acquire_timeout_seconds=5)
+    processes, commands = [], []
+    spawn = asyncio.create_subprocess_exec
+
+    async def tracked(*args, **kwargs):
+        process = await spawn(*args, **kwargs)
+        processes.append(process)
+        commands.append({"pid": process.pid, "argv": list(args)})
+        return process
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", tracked)
+    audio, audio_sha = source_audio
+    path = audio.with_name("owned-av-30fps.mp4")
+    try:
+        await run_media_process([binary("ffmpeg"), "-v", "error", "-nostdin", "-threads", "1",
+            "-f", "lavfi", "-i", "color=c=red:s=16x16:r=30:d=1", "-i", str(audio),
+            "-map", "0:v:0", "-map", "1:a:0", "-t", "1", "-c:v", "libx264", "-threads", "1",
+            "-preset", "ultrafast", "-pix_fmt", "yuv420p", "-c:a", "alac", "-output_ts_offset", "3",
+            "-n", str(path)], 5)
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        record_property("fixture", json.dumps({"source_sha256": digest, "source_bytes": path.stat().st_size,
+            "input_audio_sha256": audio_sha, "rate": 30, "seconds": 1, "pixels": [16, 16], "timeout_seconds": 5}))
+        yield path, digest
+    finally:
+        for process, command in zip(processes, commands):
+            command["returncode"] = process.returncode
+            assert process.returncode is not None
+            with pytest.raises(ProcessLookupError):
+                os.kill(process.pid, 0)
+        record_property("native_processes", json.dumps(commands))
+
+
+@pytest.mark.parametrize("cap", [32, 7])
+async def test_30fps_preparation_and_caption_dry_run(av_source_30fps, tmp_path, monkeypatch, record_property, cap):
+    from video_research_mcp.av_events import caption_events
+    from video_research_mcp.client import GeminiClient
+    from video_research_mcp.media_perception_prepare import prepare_media
+    from video_research_mcp.models.av_events import CaptionEventsRequest
+
+    monkeypatch.setattr(GeminiClient, "get", lambda: pytest.fail("Dry run reached provider SDK"))
+    path, digest = av_source_30fps
+    request = CaptionEventsRequest(file_path=str(path), expected_source_sha256=digest, fps=30,
+        end_seconds=1, window_seconds=1, max_frames_per_window=cap, limits={"timeout_seconds": 5})
+    async with prepare_media(request) as (source, windows, verify):
+        window = windows[0]
+        frames, parts = window["frames"], window["parts"]
+        count = min(cap, 30)
+        assert source["sha256"] == digest and source["container_start_seconds"] == 3
+        assert len(frames) == count and [p["kind"] for p in parts] == ["image"] * count + ["audio"]
+        assert [f["actual_seconds"] for f in frames] == pytest.approx([i / 30 for i in range(count)], abs=1e-12)
+        assert [Fraction(f["original_pts"]) * Fraction(f["time_base"]) for f in frames] == [
+            Fraction(3) + Fraction(i, 30) for i in range(count)]
+        assert all((f["width"], f["height"]) == (16, 16) for f in frames)
+        assert all(hashlib.sha256(p["data"]).hexdigest() == p["sha256"] for p in parts)
+        with wave.open(io.BytesIO(parts[-1]["data"]), "rb") as decoded:
+            assert (decoded.getnchannels(), decoded.getsampwidth(), decoded.getframerate(), decoded.getnframes()) == (1, 2, 16000, 16000)
+            pcm = decoded.readframes(16000)
+        with wave.open(str(path.with_name("owned-audio.wav")), "rb") as original:
+            assert pcm == original.readframes(16000)
+        assert hashlib.sha256(pcm).hexdigest() == window["audio"]["output"]["pcm_sha256"]
+        assert source["audio_clock_origin_seconds"] == 3
+        assert window["audio"]["selected_window"] == pytest.approx(
+            {"start_seconds": 0, "end_seconds": 1}, abs=1e-12, rel=0)
+        assert window["audio_status"] == "complete_selected_audio" and window["watched_intervals"] == []
+        visual = window["visual_sampling"]
+        assert visual["status"] == ("partial" if cap < 30 else "complete")
+        assert visual["coverage"]["stop_reason"] == ("frame_budget" if cap < 30 else None)
+        assert not visual["continuous_watched_coverage"]
+        record_property("prepared", json.dumps({"source": source, "window": {k: v for k, v in window.items() if k != "parts"},
+            "parts": [{k: v for k, v in p.items() if k != "data"} for p in parts]}))
+        await verify()
+    result = await caption_events(request)
+    assert result["status"] == "planned" and result["execution"]["provider_calls"] == 0
+    assert result["source"]["sha256"] == digest and result["windows"][0]["frames"] == frames
+    record_property("dry_run", json.dumps(result))
+    assert not list((tmp_path / "cache" / "media" / "views").iterdir())
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
 
 
 async def test_joint_windows_keep_actual_offsets_frame_order_and_complete_pcm(av_source, tmp_path):

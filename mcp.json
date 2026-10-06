@@ -5,7 +5,7 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "video-research-mcp==0.8.0-rc.1"
+        "video-research-mcp==0.8.0-rc.3"
       ]
     }
   }

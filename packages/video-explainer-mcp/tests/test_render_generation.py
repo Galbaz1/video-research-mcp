@@ -1,10 +1,19 @@
 """Legacy generation cannot inherit upstream mock or retained-output completion."""
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, call, patch
+
+import pytest
 
 from video_explainer_mcp.tools.pipeline import explainer_generate
 
 from .test_pipeline_tools import _mock_cli_result, _setup_project
+
+
+@pytest.fixture(autouse=True)
+def _mock_generation_prerequisites(monkeypatch):
+    """Keep renderer controls isolated from generation availability boundaries."""
+    monkeypatch.setattr("video_explainer_mcp.prereqs._resolve_cli", lambda cfg: "/mock/console")
+    monkeypatch.setattr("video_explainer_mcp.prereqs.shutil.which", lambda name: "/mock/" + name)
 
 
 async def test_full_generation_denies_before_preparation_when_renderer_unavailable(
@@ -66,6 +75,9 @@ async def test_preparation_exit_zero_cannot_hide_render_failure(tmp_path, monkey
         ),
     ):
         result = await explainer_generate("owned", to_step="render", force=True)
-    cli.assert_awaited_once_with("generate", "owned", "--to", "storyboard", "--force", "--mock")
+    assert cli.await_args_list == [
+        call("generate", "owned", "--to", "voiceover", "--force", "--mock"),
+        call("storyboard", "owned", "--force"),
+    ]
     assert "MP4 decode failed" in result["error"]
     assert "success" not in result

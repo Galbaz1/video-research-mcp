@@ -31,7 +31,7 @@ class AVPerceptionRequest(StrictModel):
     start_seconds: Annotated[Number, Field(ge=0)] = 0
     end_seconds: Annotated[Number | None, Field(gt=0)] = None
     window_seconds: Annotated[Number, Field(ge=1, le=30)] = 30
-    fps: Annotated[Number, Field(ge=0.1, le=4)] = 1
+    fps: Annotated[Number, Field(ge=0.1, le=30)] = 1
     max_pixels: Annotated[int, Field(strict=True, ge=1, le=1_000_000)] = 250000
     max_frames_per_window: Annotated[int, Field(strict=True, ge=1, le=48)] = 32
     thinking_level: Literal["low", "medium", "high"] = "medium"

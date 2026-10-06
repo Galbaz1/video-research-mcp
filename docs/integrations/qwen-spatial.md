@@ -3,15 +3,17 @@
 This component admits the unmodified Qwen-MM-Plugins spatial source at revision
 `07736672525443c7f8a3f6405eed37d2236f023f` and provides an owned boundary around its
 19 original tool specifications. Its current state is **source component only,
-runtime blocked**. It is disabled in the core server and has no core dependency
+runtime not activated**. It is disabled in the core server and has no core dependency
 or tool-registry changes.
 
-The selected scientific runtime cannot activate. The original twelve-package
+The original twelve-package
 profile retained its OpenCV/FFmpeg license contradiction. The narrower
 ten-package profile retained 41 Matplotlib legacy AFM fonts without a mapped
 grant. The descriptor records `blocked-missing-font-grant`, a null selected
 Python executable and no runtime bootstrap selection. Neither profile has been
-installed or imported for this component. The fixed 28-control geometry plan and
+installed or imported for this component. A separate AFM-free candidate has passed
+static qualification with the corrections below and has been installed privately
+with byte readback. Admission and native loading remain separate steps. The fixed 28-control geometry plan and
 eight authorized PNGs are **UNRUN**. Source hashes and owned unit checks do not
 constitute component, geometry, model, physical, hardware or release acceptance.
 
@@ -56,6 +58,44 @@ for MCP 1.30.0, Pillow 11.3.0, OpenAI 1.109.1, AnyIO 4.15.1, Pydantic 2.13.5,
 docstring-parser 0.18.0, NumPy 2.4.4 and Matplotlib 3.10.9. The adapter does not
 create, install or substitute that runtime. It preserves the venv-prefix
 executable path rather than resolving it into the base interpreter.
+
+## Admit an installed runtime before launch
+
+For an eligible private descriptor, start `scripts/spatial_launch.py` with a
+trusted interpreter and `-I -S -B`, using the same source, manifest, input,
+output and digest arguments above. The launcher checks the descriptor digest,
+exact CPython executable and libpython bytes, direct venv-prefix symlink,
+`pyvenv.cfg`, selected bootstrap files and complete installed site-packages
+inventory before starting the selected interpreter. Missing, changed, extra,
+linked or nonregular package files are refused. The concrete runtime uses
+Python's standard `venv --without-pip`; every `.pth`, `sitecustomize` and
+`usercustomize` entry is refused.
+
+After admission the launcher replaces itself with the selected interpreter,
+preserving one supervised PID for cancellation. The selected process runs with
+`-I -S -B` and repeats admission before adding the
+selected site-packages directory. It verifies installed versions and reads
+back source, input and runtime bytes around each handler. Admission assumes
+trusted owned scripts and an independently trusted descriptor digest; the
+process retains host privileges. It copies exactly the 54 admitted source bodies
+and their grant into a fresh private import tree. Ambient upstream modules and
+bytecode are excluded. The complete copied inventory and original selected bytes
+are rehashed before imports and around each handler.
+
+The selected Agg/PNG route seeds an empty cache for the pinned Matplotlib font
+manager before import, then initializes only the 38 admitted bundled TTFs.
+Font discovery and font requests are confined to those paths; receipts record
+initialized fonts and successful font requests separately from imported
+modules. A request receipt alone does not verify glyph selection or pixels.
+
+The private installation retained all 2,157 base files: 2,147 site-packages
+files and ten console wrappers. The wrappers retain their original bytes and
+old-prefix references; they are unused artifacts. This route invokes only the
+explicit selected `bin/python3.12`. Its ten additional wheels use exact local
+archive URLs, enforced hashes, no dependency installation and copied payloads.
+Installer-generated metadata and RECORD updates are recorded separately from
+unchanged wheel payload bytes. No private machine paths or active selection are
+written into the shipped descriptor.
 
 ## Authorized inputs and output boundaries
 
@@ -160,3 +200,63 @@ declared metric scale that downstream experts do not consistently apply. Unit
 tests use original-expert/provider stubs; first-party motion units may use the
 already qualified root NumPy/Pillow dependencies. That root unit environment
 does not qualify or replace the blocked selected spatial profile.
+
+## Prepare a separate PNG payload
+
+`vrm-0e8.9.12` provides a stdlib-only builder for the exact pinned Matplotlib
+3.10.9 macOS ARM64 CPython 3.12 wheel. It removes its 60 AFM metric files, retains
+all 38 TTF fonts and every other payload byte, and rebuilds RECORD with change
+attribution. The current spatial callers select Agg/PNG, whose text and mathtext
+paths use TTF/FreeType. PDF/PostScript AFM modes are outside this selected PNG route.
+
+```sh
+python3 -I -B scripts/spatial_png_payload.py \
+  /absolute/qualified/matplotlib-3.10.9-cp312-cp312-macosx_11_0_arm64.whl \
+  /absolute/existing-parent/absent-png-payload
+```
+
+The input archive must match its pinned SHA256. The absent output directory
+receives a derivative wheel with the original basename and `receipt.json`; use
+its derivative hash to distinguish it from upstream. The receipt binds retained,
+removed, added and rebuilt members. Existing output, symlink paths and untrusted
+input are refused. No original archive or installed package is edited.
+
+This builds an alternate payload; it does not install or import Matplotlib,
+activate fonts, select a third runtime or qualify pixels/geometry. Original
+rejected profiles and all 28 UNRUN controls remain retained. Whole-runtime grant,
+bootstrap, actual load and geometry evidence are still required before serving.
+
+## Static qualification of the PNG runtime
+
+`vrm-0e8.9.13` qualifies one exact candidate for a later isolated installation:
+the same ten wheel versions and unchanged 36-package base, substituting only
+the derivative Matplotlib wheel with SHA256
+`4c8dcf94bd4e5065322673b6ec5e6a500520653e4f852ce10276119cdfbe30a6`.
+Independent checks cover 1,921 selected wheel members, 2,157 preserved base
+files, 38 TTF fonts, 67 native files, and 66 active dependency edges. This is
+publisher-byte and component-family evidence. It does not certify a reproducible
+binary build, exact compiled dependency revisions or actual loading.
+
+The independent review re-derived the static packet and required five metadata
+corrections. The corrected packet records that reproducibility evidence rather
+than claiming its original checker generates every grant map. ContourPy's
+native extension now carries its pybind11 family binding. Static markers imply
+pybind11 3.0 or later; the exact compiled revision remains unknown. The retained
+[v3.0.1 license](https://github.com/pybind/pybind11/blob/v3.0.1/LICENSE) is byte-identical
+to the earlier v2.13.2 family text. Non-font Matplotlib files no longer inherit
+unrelated font notices. The Adobe notice is retained with zero shipped AFM
+subjects; sample-data and image assets have top-level license evidence only,
+with per-asset provenance explicitly unknown.
+
+Admission must use explicit archive paths and enforced hashes, with no dependency
+resolution or filename-based wheel substitution. Create a separate environment
+from the exact realpath Python 3.12.13 executable, rehash its executable and
+libpython, and admit its new prefix link and bootstrap. Copy the 2,157 qualified
+base files to corresponding paths and verify every destination byte before
+installing the ten disjoint wheels. Retain the full grant directory, notices and
+corrected maps. Before activation, verify the complete installed file inventory,
+the preserved base and fresh bootstrap again.
+
+The checked-in descriptor remains disabled. Neither historical rejection is
+reclassified, and all 28 frozen geometry controls remain UNRUN until the actual
+candidate installation and serving journey are evaluated.

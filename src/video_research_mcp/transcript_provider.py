@@ -10,6 +10,7 @@ from .models.transcript import ASRAnswer, ASRService
 from .transcript_audio import audio_request
 from .transcript_captions import strict_json
 from .transcript_timing import digest
+from . import transcript_local
 from .vision_http import exchange
 
 
@@ -42,8 +43,15 @@ def service_selection(request, *, fallback=False):
     service = ASRService.model_validate(raw.model_dump(mode="json") if isinstance(raw, ASRService) else raw)
     if not service.runtime_qualified:
         raise ASRRefusal("Dedicated ASR service lacks the operator runtime qualification assertion")
+    expected_protocol = "faster_whisper_v1" if request.backend == "faster_whisper" else "qwen"
+    if service.protocol != expected_protocol:
+        raise ASRRefusal("Requested ASR backend differs from the explicitly configured service protocol")
     if (request.local_only or fallback) and not service.local:
         raise ASRRefusal("Local-only/fallback requires an explicitly configured literal loopback ASR service")
+    if service.protocol == "faster_whisper_v1":
+        if request.language not in (None, "en", "nl"):
+            raise ASRRefusal("Timed local ASR supports explicit en/nl or detected language only")
+        return service, ""
     if request.require_timestamps or request.require_word_alignment or request.language or request.glossary:
         raise ASRRefusal("Qwen /asr has no admitted timestamps, words, language or glossary forwarding; required options are unsupported")
     if any(kind in {"srt", "vtt", "tsv"} for kind in request.export_formats):
@@ -59,7 +67,7 @@ def provider_plan(request) -> dict:
     plan = {"gemini": None, "service": None, "budget": None, "service_calls": [], "service_bytes": 0}
     if request.backend == "none":
         raise ASRRefusal("No captions were selected and no ASR backend was explicitly requested")
-    if request.backend == "qwen" or request.fallback_backend:
+    if request.backend in {"qwen", "faster_whisper"} or request.fallback_backend:
         plan["service"] = service_selection(request, fallback=bool(request.fallback_backend))
     if request.backend == "gemini":
         selected = selected_gemini()
@@ -82,8 +90,12 @@ def _task_prompt(request) -> str:
 
 def task_contract(request) -> dict:
     """Bind the exact Gemini schema/prompt and supported service wire into the request digest."""
-    return {"gemini_schema": ASRAnswer.model_json_schema(), "gemini_prompt": _task_prompt(request),
-            "qwen_wire": {"audio": "actual selected WAV data URI", "return_time_stamps": False}}
+    value = {"gemini_schema": ASRAnswer.model_json_schema(), "gemini_prompt": _task_prompt(request),
+             "qwen_wire": {"audio": "actual selected WAV data URI", "return_time_stamps": False}}
+    if request.backend == "faster_whisper":
+        value["faster_whisper_wire"] = {"protocol": "faster_whisper_v1", "endpoint": "/v1/transcribe",
+            "audio": "actual WAV data URI plus SHA256", "language": request.language, "glossary": request.glossary}
+    return value
 
 
 async def _gemini(request, window, plan, attempts, verify):
@@ -122,8 +134,8 @@ async def _qwen(request, window, plan, attempts, verify):
     headers = {"Content-Type": "application/json"}
     if credential:
         headers["Authorization"] = "Bearer " + credential
-    await verify()
     try:
+        await verify()
         status, data = await exchange(service.base_url.rstrip("/") + "/asr", headers=headers,
                                      content=content, method="POST", local=service.local)
         attempt["http_status"] = status
@@ -151,10 +163,47 @@ async def _qwen(request, window, plan, attempts, verify):
         raise
 
 
+async def _faster_whisper(request, window, plan, attempts, verify):
+    """Retain one explicit timed-service attempt within the existing call/byte budgets."""
+    if service_selection(request) != plan["service"]:
+        raise ASRRefusal("Selected ASR service configuration changed")
+    service, _ = plan["service"]
+    submitted, content = transcript_local.payload(request, window)
+    if len(plan["service_calls"]) >= request.limits.max_calls or plan["service_bytes"] + len(content) > request.limits.max_transmitted_bytes:
+        raise ASRRefusal("ASR call/serialized transmission budget exhausted")
+    attempt = {"window_index": window["index"], "requested_backend": request.backend,
+        "actual_backend": "faster_whisper", "status": "dispatching", "serialized_bytes": len(content),
+        "model": service.declared_model, "model_status": "operator_assertion_unattested", "usage": None}
+    attempts.append(attempt)
+    plan["service_calls"].append(attempt)
+    plan["service_bytes"] += len(content)
+    try:
+        await verify()
+        status, data = await exchange(service.base_url.rstrip("/") + "/v1/transcribe",
+            headers={"Content-Type": "application/json"}, content=content, method="POST", local=True)
+        attempt["http_status"] = status
+        if status != 200:
+            raise ASRRefusal("Timed local ASR request failed with a terminal HTTP status")
+        interval = window["audio"]["selected_window"]
+        answer, receipt = transcript_local.admit_answer(data, submitted, service, interval["end_seconds"] - interval["start_seconds"])
+        await verify()
+        if service_selection(request) != plan["service"]:
+            raise ASRRefusal("Selected ASR service configuration changed")
+        attempt.update(status="complete", inference_receipt=receipt)
+        return {"answer": answer, "untimed": [], "backend": "faster_whisper", "model": service.declared_model,
+                "runtime_qualification_status": "service_reported_descriptor_bound; accuracy_unverified",
+                "profile_sha256": digest(service.model_dump(exclude={"base_url", "api_key_env"}))}
+    except BaseException:
+        attempt["status"] = "failed_or_unknown"
+        raise
+
+
 async def infer_audio(request, window, plan, attempts, verify):
     """Only an explicitly declared Gemini failure may choose the admitted local fallback."""
     if request.backend == "qwen":
         return await _qwen(request, window, plan, attempts, verify)
+    if request.backend == "faster_whisper":
+        return await _faster_whisper(request, window, plan, attempts, verify)
     try:
         return await _gemini(request, window, plan, attempts, verify)
     except Exception:

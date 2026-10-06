@@ -1,6 +1,6 @@
 [project]
 name = "video-explainer-mcp"
-version = "0.2.1"
+version = "0.2.2-rc.1"
 description = "MCP server for synthesizing explainer videos — wraps prajwal-y/video_explainer CLI"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -48,6 +48,19 @@ packages = ["src/video_explainer_mcp"]
 "src/video_explainer_mcp/models/ingestion_location.py" = "video_explainer_mcp/models/ingestion_location.py"
 "src/video_explainer_mcp/job_store.py" = "video_explainer_mcp/job_store.py"
 "src/video_explainer_mcp/media_process.py" = "video_explainer_mcp/media_process.py"
+"renderer-entry/package.json" = "video_explainer_mcp/renderer-entry/package.json"
+"renderer-entry/package-lock.json" = "video_explainer_mcp/renderer-entry/package-lock.json"
+"renderer-entry/render_entry.mjs" = "video_explainer_mcp/renderer-entry/render_entry.mjs"
+"renderer-entry/src/index.ts" = "video_explainer_mcp/renderer-entry/src/index.ts"
+"renderer-entry/src/Root.tsx" = "video_explainer_mcp/renderer-entry/src/Root.tsx"
+"renderer-entry/src/Fixture.tsx" = "video_explainer_mcp/renderer-entry/src/Fixture.tsx"
+
+"renderer-entry/production_entry.mjs" = "video_explainer_mcp/renderer-entry/production_entry.mjs"
+"renderer-entry/production_project.mjs" = "video_explainer_mcp/renderer-entry/production_project.mjs"
+"renderer-entry/src/production-index.ts" = "video_explainer_mcp/renderer-entry/src/production-index.ts"
+"renderer-entry/src/ProductionRoot.tsx" = "video_explainer_mcp/renderer-entry/src/ProductionRoot.tsx"
+"renderer-entry/src/Production.tsx" = "video_explainer_mcp/renderer-entry/src/Production.tsx"
+"renderer-entry/src/production-types.ts" = "video_explainer_mcp/renderer-entry/src/production-types.ts"
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "hatch_resources.py"
@@ -59,6 +72,19 @@ path = "hatch_resources.py"
 "../../src/video_research_mcp/models/ingestion_location.py" = "src/video_explainer_mcp/models/ingestion_location.py"
 "../../src/video_research_mcp/job_store.py" = "src/video_explainer_mcp/job_store.py"
 "../../src/video_research_mcp/media_process.py" = "src/video_explainer_mcp/media_process.py"
+"renderer-entry/package.json" = "renderer-entry/package.json"
+"renderer-entry/package-lock.json" = "renderer-entry/package-lock.json"
+"renderer-entry/render_entry.mjs" = "renderer-entry/render_entry.mjs"
+"renderer-entry/src/index.ts" = "renderer-entry/src/index.ts"
+"renderer-entry/src/Root.tsx" = "renderer-entry/src/Root.tsx"
+"renderer-entry/src/Fixture.tsx" = "renderer-entry/src/Fixture.tsx"
+
+"renderer-entry/production_entry.mjs" = "renderer-entry/production_entry.mjs"
+"renderer-entry/production_project.mjs" = "renderer-entry/production_project.mjs"
+"renderer-entry/src/production-index.ts" = "renderer-entry/src/production-index.ts"
+"renderer-entry/src/ProductionRoot.tsx" = "renderer-entry/src/ProductionRoot.tsx"
+"renderer-entry/src/Production.tsx" = "renderer-entry/src/Production.tsx"
+"renderer-entry/src/production-types.ts" = "renderer-entry/src/production-types.ts"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

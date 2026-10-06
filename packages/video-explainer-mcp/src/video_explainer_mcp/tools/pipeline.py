@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import logging
+import sqlite3
+import stat
+from contextlib import closing
 from typing import Annotated
 
 from fastmcp import FastMCP
@@ -12,8 +15,8 @@ from pydantic import Field
 from ..config import get_config
 from ..errors import make_tool_error
 from ..models.pipeline import StepResult
-from ..planning_production import generate_steps, produce, production_transaction
-from ..prereqs import require_render_ready
+from ..planning_production import generation_range, generate_steps, produce, production_transaction
+from ..prereqs import require_generation_ready, require_render_ready
 from ..runner import run_cli
 from ..types import PipelineStep, ProjectId
 
@@ -59,20 +62,26 @@ def _tts_args(subcommand: str) -> list[str]:
 async def _legacy_generate(
     project_id: str, from_step: str | None, to_step: str | None, force: bool
 ) -> dict:
-    """Keep preparation flags; bypass upstream retained-output and mock render success."""
-    render_requested = to_step is None or to_step.lower() == "render"
-    if render_requested:
-        await require_render_ready(None)
+    """Use standalone storyboard and qualified render after bulk preparation."""
+    steps = generation_range(from_step, to_step, managed=False)
+    render_requested = "render" in steps
     elapsed, outputs = 0.0, []
-    if not render_requested or not from_step or from_step.lower() != "render":
+    preparation = [step for step in steps if step not in {"storyboard", "render"}]
+    if preparation:
         args = ["generate", project_id]
         if from_step:
             args.extend(["--from", from_step])
-        if render_requested or to_step:
-            args.extend(["--to", "storyboard" if render_requested else to_step])
+        args.extend(["--to", preparation[-1]])
         if force:
             args.append("--force")
         args.extend(_tts_args("generate"))
+        result = await run_cli(*args)
+        elapsed += result.duration_seconds
+        outputs.append(result.stdout.strip())
+    if "storyboard" in steps:
+        args = ["storyboard", project_id]
+        if force:
+            args.append("--force")
         result = await run_cli(*args)
         elapsed += result.duration_seconds
         outputs.append(result.stdout.strip())
@@ -114,6 +123,25 @@ async def explainer_generate(
         Dict with project_id, success status, duration, and CLI output.
     """
     try:
+        cfg = get_config()
+        project = (cfg.resolved_projects_path / project_id).resolve()
+        project.relative_to(cfg.resolved_projects_path)
+        database = project / "planning.sqlite3"
+        for suffix in ("", "-journal", "-wal", "-shm"):
+            if (project / (database.name + suffix)).is_symlink():
+                raise ValueError("Plan database and sidecars must not be symlinks")
+        managed = False
+        if database.exists():
+            metadata = database.stat()
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > 8 * 1024 * 1024:
+                raise ValueError("Plan database must be a regular project file of at most 8 MiB")
+            with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=0)) as reader:
+                if reader.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='plan'").fetchone():
+                    managed = reader.execute("SELECT 1 FROM plan WHERE id=1").fetchone() is not None
+        steps = generation_range(from_step, to_step, managed=managed)
+        require_generation_ready(steps, mock_llm=not managed and cfg.tts_provider == "mock")
+        if "render" in steps:
+            await require_render_ready(None)
         with production_transaction(project_id) as (project, connection, state):
             if state is not None:
                 return await generate_steps(
@@ -147,6 +175,7 @@ async def explainer_step(
         StepResult with success status and output file.
     """
     try:
+        require_generation_ready((step,))
         args = [step, project_id]
         args.extend(_tts_args(step))
         with production_transaction(project_id) as (project, connection, state):

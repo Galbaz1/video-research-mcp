@@ -90,6 +90,50 @@ work to another service. No actual input-token or dollar ceiling is established
 for compatible image inputs. One chat call is bounded; numeric provider token
 usage is retained when supplied, and unknown usage remains unknown.
 
+## Original PNG with native Ollama
+
+An explicitly selected `ollama_plain` profile uses the local Ollama `/api/chat`
+endpoint. The profile requires a literal loopback origin, `local: true` and
+`capabilities: ["images"]`, with no credential or upload policy:
+
+```json
+{
+  "ollama": {
+    "protocol": "ollama_plain",
+    "base_url": "http://127.0.0.1:11434",
+    "model": "operator-selected-installed-model",
+    "local": true,
+    "capabilities": ["images"]
+  }
+}
+```
+
+This route accepts one original PNG in `vision_chat`. It holds an exact snapshot
+through inference and sends the original bytes and literal instruction without
+an image conversion or JSON/schema prompt wrapper. Frame/video sources, explicit
+crop/resize/time settings, custom schemas, crop export, OCR/grounding and explicit
+`thinking_level` are refused before preparation. The PNG header is checked for
+bounded dimensions and CRC; this establishes neither full image decoding nor
+model suitability.
+
+The native request sets `num_predict` to the request's output-token limit,
+`num_ctx: 4096`, `temperature: 0`, `think: false`, `stream: false` and
+`keep_alive: 0`. Its request ceiling is 1 MiB. The 128 KiB receive ceiling includes
+HTTP headers and framing; the connected stream must prove the guard is present
+before transmission. Controlled loopback exchanges verify these limits and
+joined cleanup. Plain text is returned as `model_output.answer` with an empty
+region list. An incomplete answer, a different model echo, observed thinking or
+an output count above the requested limit fails without retry. Only bounded
+numeric/enum/boolean response metadata is exposed.
+
+Dry plans and actual responses retain protocol, model, endpoint, effective
+controls, original PNG identity and exact serialized request/response body
+hashes. Those hashes describe JSON bodies, not TCP/TLS framing. Model installation,
+weight identity, host capacity, observed inference quality and total input/context
+usage require separate runtime evidence. This route downloads no model and does
+not establish general video, OCR or grounding acceptance. Existing compatible
+profiles keep their earlier request-digest representation.
+
 ## Grounding and object crops
 
 The model returns an answer and up to16 regions with `source_index`, `label` and

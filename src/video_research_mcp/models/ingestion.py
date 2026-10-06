@@ -46,12 +46,18 @@ class SourceIngestRequest(BaseModel):
     file_path: str | None = Field(default=None, min_length=1, max_length=4096)
     url: str | None = Field(default=None, min_length=1, max_length=4096)
     expected_source_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    parser: Literal["builtin", "docling"] = "builtin"
+    authorize_submission: bool = False
 
     @model_validator(mode="after")
     def one_original(self):
         """Keep local access and checked URL acquisition as exclusive routes."""
         if (self.file_path is None) == (self.url is None):
             raise ValueError("Provide exactly one original file_path or url")
+        if self.parser == "docling" and self.source_format not in {"pdf", "docx", "markdown", "html"}:
+            raise ValueError("The Docling route supports PDF, DOCX, Markdown and HTML only")
+        if self.parser == "builtin" and self.authorize_submission:
+            raise ValueError("Parser submission authorization requires an explicit Docling selection")
         return self
 
 

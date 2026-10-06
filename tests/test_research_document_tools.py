@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -13,6 +14,7 @@ from video_research_mcp.models.research_document import (
     DocumentFindingsContainer,
     DocumentMap,
     DocumentResearchReport,
+    DocumentSource,
 )
 from video_research_mcp.prompts.research_document import DOCUMENT_RESEARCH_SYSTEM
 from tests.adversarial_inputs import (
@@ -325,3 +327,42 @@ class TestResearchDocument:
         )
         assert "Synthesize findings" in synthesis_prompt
         assert malicious_claim in synthesis_prompt
+
+    @pytest.mark.parametrize("scope", ["quick", "deep"])
+    @patch(
+        "video_research_mcp.tools.research_document.store_research_finding",
+        new_callable=AsyncMock,
+    )
+    async def test_prepared_original_hash_overrides_provider_sources(
+        self, mock_store_fn, mock_prepare, mock_gemini_client, scope,
+    ):
+        """GIVEN forged provider provenance WHEN reporting THEN retain prepared SHA."""
+        original_sha = hashlib.sha256(b"%PDF-1.7\nOriginal complete document bytes\n%%EOF").hexdigest()
+        mock_prepare.return_value = (
+            [("gs://prepared-original", original_sha, "/path/to/original.pdf")],
+            [{"source": "/path/to/failed.pdf", "phase": "upload", "error_type": "OSError", "error": "failed"}],
+        )
+        forged = DocumentResearchReport(document_sources=[DocumentSource(
+            filename="forged.pdf", original_path="/forged/path.pdf", source_type="url",
+            file_uri="gs://forged", original_sha256="0" * 64, page_count=99,
+        )])
+        responses = [DocumentMap(title="Original")]
+        if scope != "quick":
+            responses.extend([DocumentFindingsContainer(), CrossReferenceMap()])
+        mock_gemini_client["generate_structured"].side_effect = [*responses, forged]
+        result = await research_document(
+            instruction="Analyze original", file_paths=["/path/to/original.pdf", "/path/to/failed.pdf"],
+            scope=scope,
+        )
+        assert "error" not in result
+        assert result["document_sources"] == [{
+            "filename": "original.pdf", "source_type": "file", "original_path": "/path/to/original.pdf",
+            "page_count": 0, "file_uri": "gs://prepared-original", "original_sha256": original_sha,
+        }]
+        assert len(original_sha) == 64
+        assert result["preparation_issues"][0]["source"] == "/path/to/failed.pdf"
+        mock_store_fn.assert_called_once()
+
+    def test_legacy_document_source_has_unknown_original_hash(self):
+        """GIVEN an old source model WHEN loaded THEN its original hash stays unknown."""
+        assert DocumentSource(filename="old.pdf", original_path="/old.pdf").original_sha256 == ""

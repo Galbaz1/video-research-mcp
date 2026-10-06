@@ -327,25 +327,34 @@ async def test_render_cancellation_preserves_original_and_existing_view(native_e
 
 async def test_one_deadline_covers_probe_and_render(native_env, monkeypatch):
     import asyncio
-    from video_research_mcp import media_frames
+    import math
+    from types import SimpleNamespace
+    from video_research_mcp import media_frames, media_snapshot
     from video_research_mcp.config import get_config
 
-    get_config().media_acquire_timeout_seconds = 0.06
+    loop = asyncio.get_running_loop()
+    # Integer-valued start keeps (start + 30) - (start + 20) exactly 10; a fractional
+    # host loop.time() can cancel to 9.999999999999972 (CI 3.14, runner uptime ~232 s).
+    clock = [float(math.floor(loop.time()))]
+    monkeypatch.setattr(loop, "time", lambda: clock[0])
+    monkeypatch.setattr(media_snapshot, "time", SimpleNamespace(monotonic=lambda: clock[0]))
+    get_config().media_acquire_timeout_seconds = 30
     observed = []
 
     async def probe(owned):
-        await asyncio.sleep(0.04)
+        clock[0] += 20
         return source_metadata(owned)
 
     async def render(command, timeout):
         observed.append(timeout)
-        await asyncio.sleep(0.04)
+        clock[0] += 20
+        await asyncio.Event().wait()
 
     monkeypatch.setattr(media_frames, "probe_snapshot", probe)
     monkeypatch.setattr(media_frames, "run_media_process", render)
     with pytest.raises(TimeoutError):
         await media_frames.frame_at(str(native_env), time_seconds=0)
-    assert 0 < observed[0] < 0.03
+    assert observed == [10]
     assert list((native_env.parent / "cache/media/views").iterdir()) == []
 
 

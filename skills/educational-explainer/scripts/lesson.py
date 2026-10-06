@@ -15,8 +15,8 @@ def parser():
         command = actions.add_parser(name)
         command.add_argument("--spec", required=True)
         command.add_argument("--spec-sha256", required=True)
-        command.add_argument("--audio", required=True)
-        command.add_argument("--audio-sha256", required=True)
+        command.add_argument("--audio", help="Schema1 supplied WAV; omit for schema2 narration_segments")
+        command.add_argument("--audio-sha256", help="Schema1 WAV hash; schema2 binds segment hashes in the spec")
         command.add_argument("--timeout", type=float, default=120)
         if name == "build":
             command.add_argument("--output", required=True)

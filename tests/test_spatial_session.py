@@ -9,6 +9,8 @@ from types import SimpleNamespace
 import pytest
 
 from tests.test_spatial_inputs import build_inputs
+from tests.test_spatial_runtime import row, runtime as runtime
+from tests.test_spatial_fonts import manager_stub
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 import spatial_session as ss  # noqa: E402
@@ -16,7 +18,7 @@ import spatial_session as ss  # noqa: E402
 
 def isolated_sys(isolated):
     """Replace only the owned module reference, preserving real interpreter/test flags."""
-    return SimpleNamespace(**{**vars(sys), "flags": SimpleNamespace(isolated=isolated)})
+    return SimpleNamespace(**{**vars(sys), "path": list(sys.path), "flags": SimpleNamespace(isolated=isolated, no_site=True)})
 
 
 @pytest.fixture
@@ -32,7 +34,7 @@ def selection(tmp_path):
     data = {"schema_version": 1, "source_revision": ss.REVISION,
             "execution_sources": [r for r in rows if r["path"] in ss.SOURCES],
             "license_sources": [r for r in rows if r["path"] in ss.GRANTS],
-            "expected_tools": sorted(ss.TOOLS), "selected_python": "3.12.13",
+            "expected_tools": sorted(ss.TOOLS), "mandatory_source_tools": sorted(ss.MANDATORY_TOOLS), "selected_python": "3.12.13",
             "selected_direct_packages": ss.DIRECT_PACKAGES, "runtime_clearance": "blocked-missing-font-grant",
             "runtime_fields": {"python_executable": None, "bootstrap_sources": []}}
     manifest = tmp_path / "descriptor.json"
@@ -71,7 +73,7 @@ def test_discovery_extra_entries_refuse(selection, directory, entry):
         ss.admit_sources(selection.root, selection.manifest, ss.digest(selection.manifest))
 
 
-@pytest.mark.parametrize("change", ["missing", "duplicate", "unexpected", "tool", "revision", "symlink"])
+@pytest.mark.parametrize("change", ["missing", "duplicate", "unexpected", "tool", "mandatory", "revision", "symlink"])
 def test_untrusted_closure_shape_refuses(selection, change):
     data = selection.data
     if change == "missing":
@@ -82,6 +84,8 @@ def test_untrusted_closure_shape_refuses(selection, change):
         data["execution_sources"][-1]["path"] = "foreign.py"
     elif change == "tool":
         data["expected_tools"][-1] = "invented"
+    elif change == "mandatory":
+        data["mandatory_source_tools"].pop()
     elif change == "revision":
         data["source_revision"] = "wrong"
     else:
@@ -129,24 +133,119 @@ def test_check_requires_isolation_and_absent_output(selection, monkeypatch):
     assert ss.main(selection.argv + ["--check"]) == 2
 
 
-def test_verified_runtime_requires_prefix_bootstrap_and_exact_versions(selection, tmp_path, monkeypatch):
-    data = selection.data
-    data["runtime_clearance"] = ss.CLEARANCE
-    data["runtime_fields"]["python_executable"] = sys.executable
-    bootstrap = tmp_path / "pyvenv.cfg"
-    bootstrap.write_text("version_info = 3.12.13")
-    data["runtime_fields"]["bootstrap_sources"] = [{"path": str(bootstrap), "sha256": ss.digest(bootstrap), "bytes": bootstrap.stat().st_size}]
-    monkeypatch.setattr(ss, "sys", isolated_sys(True))
+def test_verified_runtime_requires_prefix_bootstrap_and_exact_versions(runtime, monkeypatch):
+    data = runtime.data
+    child = isolated_sys(True)
+    child.executable = str(runtime.executable)
+    child.base_prefix = str(runtime.real.parent.parent)
+    monkeypatch.setattr(ss, "sys", child)
     monkeypatch.setattr(ss.platform, "python_version", lambda: "3.12.13")
     monkeypatch.setattr(ss.importlib.metadata, "version", ss.DIRECT_PACKAGES.__getitem__)
     assert ss.runtime_report(data)["ready"]
-    data["runtime_fields"]["python_executable"] = str(Path(sys.executable).resolve()) + "-other-prefix"
+    child.executable = str(runtime.executable) + "-other-prefix"
     with pytest.raises(ValueError, match="venv-prefix"):
         ss.runtime_report(data)
-    data["runtime_fields"]["python_executable"] = sys.executable
-    bootstrap.write_text("changed")
+    child.executable = str(runtime.executable)
+    runtime.cfg.write_text("changed")
     with pytest.raises(ValueError, match="differs"):
         ss.runtime_report(data)
+
+
+@pytest.mark.parametrize("change", ["inventory", "no_site", "version", "base_prefix", "direct_version"])
+def test_child_readmits_before_foreign_import_or_output(selection, runtime, monkeypatch, change):
+    data = {**selection.data, **runtime.data}
+    child = isolated_sys(True)
+    child.executable, child.base_prefix = str(runtime.executable), str(runtime.real.parent.parent)
+    monkeypatch.setattr(ss, "sys", child)
+    monkeypatch.setattr(ss.platform, "python_version", lambda: "3.12.13")
+    monkeypatch.setattr(ss.importlib.metadata, "version", ss.DIRECT_PACKAGES.__getitem__)
+    monkeypatch.setattr(ss.importlib, "import_module", lambda *a: pytest.fail("foreign import"))
+    if change == "inventory":
+        runtime.package.write_text("changed before child import")
+    elif change == "no_site":
+        child.flags.no_site = False
+    elif change == "version":
+        monkeypatch.setattr(ss.platform, "python_version", lambda: "3.12.12")
+    elif change == "base_prefix":
+        child.base_prefix = "/other-prefix"
+    else:
+        monkeypatch.setattr(ss.importlib.metadata, "version", lambda *a: "wrong")
+    with pytest.raises(ValueError):
+        ss.serve(SimpleNamespace(output=selection.output), data, selection.inputs)
+    assert not selection.output.exists()
+
+
+@pytest.fixture
+def admitted_session(selection, runtime, monkeypatch):
+    """Supply real admission files, a fake child identity and fake foreign module imports."""
+    fontdir = runtime.site / "matplotlib/mpl-data/fonts/ttf"
+    fontdir.mkdir(parents=True)
+    for index in range(38):
+        path = fontdir / f"font-{index}.ttf"
+        path.write_bytes(b"stub font")
+        runtime.fields["installed_sources"].append(row(path))
+    selection.data.update(runtime.data)
+    selection.manifest.write_text(json.dumps(selection.data))
+    child = isolated_sys(True)
+    child.executable, child.base_prefix = str(runtime.executable), str(runtime.real.parent.parent)
+    monkeypatch.setattr(ss, "sys", child)
+    monkeypatch.setattr(ss.platform, "python_version", lambda: "3.12.13")
+    monkeypatch.setattr(ss.importlib.metadata, "version", ss.DIRECT_PACKAGES.__getitem__)
+    monkeypatch.setattr(ss, "os", SimpleNamespace(environ={}, chdir=lambda *a: None))
+    monkeypatch.setattr(ss.tempfile, "tempdir", None)
+    specs = [SimpleNamespace(name=n, handle=lambda args: [{"type": "text", "text": '{"frames":[0]}'}]) for n in ss.TOOLS]
+    imports = []
+    framework = SimpleNamespace(serve=lambda *a: None)
+    package = SimpleNamespace(SPECS=specs, __version__="stub")
+
+    def import_module(name):
+        imports.append(name)
+        if name == "matplotlib.font_manager":
+            return manager_stub(selection.output / "mpl/fontlist-v390.json")[0]
+        if name == "qwen_mm_plugins_video_spatio":
+            return package
+        if name == "mcp_framework":
+            return framework
+        if name.endswith("._vlm"):
+            return SimpleNamespace(VLMShim=type("Shim", (), {}))
+        pytest.fail(f"unexpected foreign import {name}")
+
+    monkeypatch.setattr(ss.importlib, "import_module", import_module)
+    args = SimpleNamespace(output=selection.output, source_root=selection.root,
+                           manifest=selection.manifest, manifest_sha256=ss.digest(selection.manifest))
+    return selection, runtime, args, framework, specs, imports
+
+
+@pytest.mark.parametrize("boundary", ["before_handler", "after_handler"])
+def test_session_rechecks_installed_bytes_at_handler_boundaries(admitted_session, boundary):
+    selection, runtime, args, framework, specs, imports = admitted_session
+    selected = next(spec for spec in specs if spec.name == "select_keyframes")
+    handled = []
+    responses = []
+
+    def original(arguments):
+        handled.append(arguments)
+        runtime.package.write_text("changed during handler")
+        return [{"type": "text", "text": '{"frames":[0]}'}]
+
+    selected.handle = original
+
+    def serve(name, version, actual):
+        assert len(actual) == 19 and set(ss.MANDATORY_TOOLS) <= {s.name for s in actual}
+        if boundary == "before_handler":
+            runtime.package.write_text("changed before handler")
+        responses.extend(selected.handle({"strategy": "uniform", "total_frames": 3}))
+
+    framework.serve = serve
+    ss.serve(args, selection.data, selection.inputs)
+    assert bool(handled) == (boundary == "after_handler")
+    assert json.loads(responses[0]["text"])["status"] == "refused"
+    assert json.loads(responses[0]["text"])["reason"] == "evidence_receipt_unavailable"
+    assert not (selection.output / "calls.jsonl").exists()
+    startup = json.loads((selection.output / "loaded-startup.json").read_text())
+    assert len(startup["fonts"]["initialized_fonts"]) == 38
+    assert startup["fonts"]["successful_font_requests"] == []
+    assert imports[0] == "matplotlib.font_manager" and "_virtualenv" not in imports
 
 
 def test_environment_keeps_home_and_drops_credentials(tmp_path, monkeypatch):
@@ -164,6 +263,38 @@ def test_environment_keeps_home_and_drops_credentials(tmp_path, monkeypatch):
     assert Path(env["QWEN_MM_CONFIG"]).read_text() == ""
     with pytest.raises(FileExistsError):
         ss.prepare_session(tmp_path / "owned")
+
+
+def test_private_source_tree_excludes_shadow_modules_and_existing_bytecode(selection, tmp_path):
+    """GIVEN ambient SDK/cache candidates WHEN copying THEN only selected bodies resolve."""
+    shadow = selection.root / "src/mcp.py"
+    shadow.write_text("raise AssertionError('ambient source must not execute')")
+    cache = selection.root / "src/shared/__pycache__/image.cpython-312.pyc"
+    cache.parent.mkdir()
+    cache.write_bytes(b"unadmitted bytecode")
+    destination = tmp_path / "private"
+    rows = ss.prepare_sources(selection.root, destination, selection.data)
+    assert len(rows) == 55
+    assert {p.relative_to(destination).as_posix() for p in destination.rglob("*") if p.is_file()} == ss.SOURCES | ss.GRANTS
+    assert ss.importlib.machinery.PathFinder.find_spec("mcp", [str(destination / "src")]) is None
+    for receipt in rows:
+        relative = Path(receipt["path"]).relative_to(destination)
+        assert Path(receipt["path"]).read_bytes() == (selection.root / relative).read_bytes()
+    assert shadow.exists() and cache.exists()
+
+
+@pytest.mark.parametrize("change", ["extra", "cached", "altered"])
+def test_private_source_inventory_rejects_mutation_before_reuse(selection, tmp_path, change):
+    destination = tmp_path / "private"
+    rows = ss.prepare_sources(selection.root, destination, selection.data)
+    if change == "altered":
+        Path(rows[0]["path"]).write_bytes(b"altered")
+    else:
+        path = destination / ("src/mcp.py" if change == "extra" else "src/shared/__pycache__/image.pyc")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"unadmitted")
+    with pytest.raises(ValueError):
+        ss.installed_inventory(destination, rows)
 
 
 def test_actual_footprint_retains_stdlib_bootstrap_and_rejects_extra_source(selection, monkeypatch):

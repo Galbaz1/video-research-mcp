@@ -23,7 +23,14 @@ The shared runtime configuration can load the selected dotenv during cold bootst
 
 ## Actual generation and optional inference
 
-Set `dry_run: false` for generation. Install the optional `video-research-mcp[tutorial]` extra for fpdf2 major 2 and pypdfium2 major 5. The PNG route uses the existing Pillow dependency; FFmpeg/FFprobe must already be available for the admitted source-frame extractor. Imports are lazy, and missing/incompatible PDF dependencies return an actionable error. No custom font, TrueType asset, HTML renderer or raster-only PDF fallback is used.
+Set `dry_run: false` for generation. Install the optional `video-research-mcp[tutorial]` extra for fpdf2 major 2 and pypdfium2 major 5. The PNG route uses the existing Pillow dependency; FFmpeg/FFprobe must already be available for the admitted source-frame extractor. Imports are lazy, and missing/incompatible PDF dependencies return an actionable error. The writer uses core Helvetica metrics and bundles no font assets, HTML renderer or raster-only PDF fallback.
+
+PDFium can consult installed operating-system fonts during raster verification.
+Those fonts are local viewer dependencies and are not copied or bundled with the
+plugin. The controlled macOS qualification binds its current system-font files
+before and after decoding; its four positive PDF pages match the previously
+inspected pixels. Reproducing that qualification on another host requires that
+host's selected native library and font population.
 
 A single configured `MEDIA_ACQUIRE_TIMEOUT_SECONDS` deadline covers source hashing, optional inference, all frame extractions, rendering, verification and promotion. Native PDF work runs in a joined cooperative worker; it checks cancellation/deadline between bounded operations. A library call's process RSS or interruption latency is not certified. Caller cancellation joins that worker before removing owned staging, and publication cannot continue after cancellation.
 

@@ -1,5 +1,11 @@
 # AGENTS.md
 
+<!-- fausto-project-instructions/v1
+modules: delegation@1
+source: /Users/fausto_home/.codex/instruction-modules.md
+selection: adapted for Herdr execution in this project
+-->
+
 ## Scope
 
 Codex project instructions equivalent to this repo's Claude setup.
@@ -9,6 +15,20 @@ Codex project instructions equivalent to this repo's Claude setup.
 - Test-specific guidance lives in `tests/AGENTS.md`.
 
 This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-based AGENTS discovery.
+
+## Herdr account routing — current user instruction, 2026-10-06
+
+Use only **Codex account 2** for every execution and review session in Herdr,
+through codex-herdr 2 and its isolated ~/.codex-account-2 home.
+Do not dispatch Codex account 1 or Claude until account 2 usable credits are
+verified exhausted. Unknown balance, login problems, rate limits and the calendar
+alone do not end this override. Fausto reports expiry on 7 October.
+On verified exhaustion, record its end, notify Fausto and resolve previously
+authorized project routing. There is no fixed lane ceiling; useful independent
+sessions require capacity, exclusive ownership and bounded allocations.
+Verify effective identity/home. Existing credits are authorized; no purchase,
+reset, auth copy or new API billing. Preserve unrelated sessions and close finished lanes.
+The current priority is API-first delivery; stop expanding local options.
 
 ## What This Is
 

@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import os
+import stat
 from datetime import datetime, timedelta
 from pathlib import Path
 from uuid import uuid4
@@ -211,8 +213,99 @@ def clear(content_id: str | None = None) -> int:
     return removed
 
 
-def invalidate_source(digest: str) -> int:
+def _invalidation_json(directory_fd, name, limit):
+    """Read a bounded regular envelope without following the cache entry or parent path."""
+    fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory_fd)
+    with os.fdopen(fd, "rb") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode) or info.st_size > limit:
+            raise ValueError("Cache invalidation envelope exceeds regular-file/byte bound")
+        raw = stream.read(limit + 1)
+        if len(raw) > limit:
+            raise ValueError("Cache invalidation envelope grew beyond byte bound")
+    value = json.loads(raw)
+    if not isinstance(value, dict):
+        raise ValueError("Cache invalidation envelope is malformed")
+    return value, (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns), len(raw)
+
+
+def _invalidation_plan(directory_fd, digest):
+    """Preflight at most 1024 result envelopes / 8 MiB before deleting exact contract dependencies."""
+    matches, count, total = [], 0, 0
+    with os.scandir(directory_fd) as entries:
+        for entry in entries:
+            if not entry.name.endswith(".json") or entry.name in _REGISTRY_FILES:
+                continue
+            count += 1
+            if count > 1024:
+                raise ValueError("Cache invalidation exceeds 1024 envelopes")
+            envelope, identity, size = _invalidation_json(directory_fd, entry.name, min(1024**2, 8 * 1024**2 - total))
+            total += size
+            contract = envelope.get("contract")
+            if envelope.get("cache_version") == 2 and isinstance(contract, dict) and contract.get("source_digest") == digest:
+                normalized_contract(contract)
+                matches.append((entry.name, identity))
+    return matches
+
+
+def _context_snapshot(directory_fd):
+    """Bound and validate the existing local context sidecar before best-effort helper use."""
+    try:
+        value = _invalidation_json(directory_fd, "context_cache_registry.json", 1024**2)[0]
+    except FileNotFoundError:
+        return {}
+    if any(not isinstance(key, str) or not isinstance(models, dict) or
+           any(not isinstance(model, str) or not isinstance(name, str) for model, name in models.items())
+           for key, models in value.items()) or sum(len(models) for models in value.values()) > 200:
+        raise ValueError("Context registry is malformed or exceeds 200 entries")
+    return value
+
+
+def _strict_invalidate(digest):
+    """Report partial result/context effects; durable readback detects swallowed context writes."""
+    from . import context_cache
+
+    receipt = {"invalidated_entries": 0, "context_entries": 0, "error": None}
+    fd = None
+    try:
+        if not valid_digest(digest):
+            raise ValueError("Exact source digest required for cache invalidation")
+        fd = os.open(_cache_dir(), os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        before = _context_snapshot(fd)
+        matches = _invalidation_plan(fd, digest)
+        # Validated disk entries are authoritative; retain keys present only in memory.
+        for content, models in before.items():
+            for model, name in models.items():
+                context_cache._registry[(content, model)] = name
+        context_cache._loaded = True
+        if len(context_cache._registry) > 200:
+            raise ValueError("Local context registry exceeds 200 entries")
+        for name, identity in matches:
+            info = os.stat(name, dir_fd=fd, follow_symlinks=False)
+            if (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns) != identity:
+                raise ValueError("Cache entry changed before invalidation")
+            os.unlink(name, dir_fd=fd)
+            receipt["invalidated_entries"] += 1
+        local_removed = context_cache.invalidate_content(digest)
+        after = _context_snapshot(fd)
+        if after.get(digest) or any(key[0] == digest for key in context_cache._registry):
+            raise ValueError("Context invalidation was not durably published")
+        unrelated_before = {key: models for key, models in before.items() if key != digest}
+        if any(after.get(key) != models for key, models in unrelated_before.items()):
+            raise ValueError("Unrelated context dependency changed during invalidation")
+        receipt["context_entries"] = max(len(before.get(digest, {})), local_removed)
+    except (OSError, ValueError, TypeError) as error:
+        receipt["error"] = type(error).__name__ + ": " + redact_text(str(error))[:128]
+    finally:
+        if fd is not None:
+            os.close(fd)
+    return receipt
+
+
+def invalidate_source(digest: str, *, strict: bool = False) -> int | dict:
     """Invalidate result and local context dependencies without provider operations."""
+    if strict:
+        return _strict_invalidate(digest)
     removed = clear(digest)
     from .context_cache import invalidate_content
 

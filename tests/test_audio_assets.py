@@ -289,23 +289,36 @@ async def test_export_cannot_attest_a_truncated_native_output(audio_source, monk
 
 
 async def test_overall_deadline_not_restarted_for_each_native_call(audio_source, monkeypatch, tmp_path):
+    """GIVEN a completed probe consuming the source deadline
+    WHEN decoding follows THEN it cannot restart the deadline or retain staging."""
     import video_research_mcp.audio_assets as engine
 
     path, digest = audio_source
     config = engine.get_config()
-    monkeypatch.setattr(config, "media_acquire_timeout_seconds", .05)
-    observed = []
+    monkeypatch.setattr(config, "media_acquire_timeout_seconds", 5)
+    observed, later_calls = [], []
     real_probe = engine.probe_snapshot
-    async def probe_then_delay(owned):
-        observed.append(owned.remaining())
+    async def probe_then_expire(owned):
+        observed.append("probe_entered")
+        assert 0 < owned.remaining() <= 5
         result = await real_probe(owned)
-        await asyncio.sleep(.04)
+        # Consume this source's deadline after native entry, independent of startup speed.
+        owned.deadline -= owned.remaining() + 1
+        observed.append("probe_completed_deadline_expired")
         return result
-    monkeypatch.setattr(engine, "probe_snapshot", probe_then_delay)
-    with pytest.raises(TimeoutError):
+
+    async def later_native(command, timeout, **kwargs):
+        later_calls.append(command)
+        pytest.fail("A later native phase restarted the expired source deadline")
+
+    monkeypatch.setattr(engine, "probe_snapshot", probe_then_expire)
+    monkeypatch.setattr(engine, "run_media_process", later_native)
+    with pytest.raises(TimeoutError, match="Native media operation exceeded its configured timeout"):
         await engine.export_audio(AudioExportRequest(file_path=str(path), expected_source_sha256=digest))
-    assert observed[0] <= .05
+    assert observed == ["probe_entered", "probe_completed_deadline_expired"]
+    assert later_calls == []
     assert not list((tmp_path / "cache" / "media" / "views").iterdir())
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
 
 
 async def encoded_mp3(path):

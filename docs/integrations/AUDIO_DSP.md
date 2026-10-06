@@ -90,16 +90,42 @@ results are text and TSV, including possible `Error:` text. Ferrous supports
 counts; full exposes its selected spectral/temporal arrays with a 128-point limit.
 Neither exports all internal raw fingerprint, quality-event or classification
 segment records. Native pagination and complete array coverage are not promised.
-The visual workflow requires all three actual 1920×600 PNGs, exports them with
-exact hashes, and leaves native axis correctness unverified.
+The visual workflow requires the waveform and spectrogram fields returned by
+`visual_only`, decodes both 1920×600 PNGs, exports them with exact hashes, and
+leaves native axis correctness unverified. The pinned server renders an internal
+power curve but does not include it in this response.
 
-The fixed programme journey qualified the core measurements and five Juzzy modes,
-plus Ferrous summary, full, compare and silence-summary results with actual
-process-local job readback. Juzzy `full_analysis` twice reached the 120-second
-deadline on the selected two-second stereo fixture. Ferrous `visual_only` failed
-the protocol collector's line/closure check before any native image was exported.
-These two workflows remain unqualified; their terminal errors and replay stay in
-the acceptance denominator. The successful core plots do not qualify native plots.
+The original 32-case programme journey qualified the core measurements and five
+Juzzy modes, plus Ferrous summary, full, compare and silence-summary results with
+actual process-local job readback. It retained two native failures: Juzzy
+`full_analysis` reached the 120-second deadline on the two-second tone, and Ferrous
+`visual_only` failed the collector's line/closure check before exporting images.
+Those results remain in the original denominator.
+
+A separately frozen changed-source qualification now completes those two tone
+workflows, their exact durable replays and post-restart job readbacks. The private
+Juzzy binary includes the recorded section-analysis repair; Ferrous uses the
+repaired collector and exports both actual native 1920×600 PNGs. The initial calls
+completed in 0.99 and 1.32 seconds. The six-call controller completed in 6.04 seconds;
+both MCP sessions, 16 media/helper children and two nested Rust processes joined.
+Native image bytes, source/selected-PCM hashes and job results were read back.
+Nested Rust stdout EOF remains unobserved because the collector closes it after
+termination; native stderr drain and exit/join are recorded.
+
+Seven additional core calls resolve the Python 3.14.7-to-3.14.8 runtime change.
+The unchanged original evaluator passes tone, silence, clipped, stereo, quiet-tone,
+A/B comparison and absolute clipping cases. Numerical projections and core PNG
+hashes exactly match retained originals. This slice completed in 6.27 seconds with
+56 joined media children. Neither slice reruns or replaces the original 32-case
+cohort. Private receipts are `continuation-2026-10-04/dsp-public-delta-epoch-r5/`
+and `dsp-core-runtime-r1/` beneath the capability programme evidence directory.
+
+These qualifications cover the declared first-party fixtures and selected private
+binaries. Dense music/noise, general content labels, native axis accuracy and
+independent EBU/ITU conformance remain unqualified. They use pinned FFmpeg 8.0.1
+executables with a process-local fallback to retained x265 4.1 libraries; the
+current global FFmpeg installation and arbitrary operator binaries are separate
+runtime qualifications. No global library links or software were changed.
 
 Native text/JSON is retained as an attributed artifact under a 1 MiB protocol-line
 and 4 MiB total/retained-response ceiling. Content remains untrusted data. The
