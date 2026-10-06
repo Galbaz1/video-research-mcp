@@ -1,6 +1,7 @@
 """Explicit stock-source access with bounded responses and pinned media rights."""
 
 import asyncio
+from contextvars import copy_context
 from datetime import datetime, timezone
 import hashlib
 import http.client
@@ -13,10 +14,11 @@ import ssl
 import sys
 import tempfile
 import time
+from threading import Event
 from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
 
 from .materials import MAX_ASSET_BYTES, discard_published, load_manifest, pinned_object, publish, rights_receipt, save_manifest
-from .models.materials import StockCandidate, StockConfig, StockDownload, StockSearch
+from .models.materials import STOCK_CREDENTIAL_ENV, StockCandidate, StockConfig, StockDownload, StockSearch
 from .planning import plan_transaction
 from .planning_sources import digest, project_directory
 from .render_storyboard_sources import confined_path, file_pin
@@ -30,9 +32,16 @@ def public_url(url: str, hosts: list[str], *, credential_query: bool = False):
     if (parts.scheme != "https" or parts.hostname not in hosts or parts.username or parts.password
             or parts.port not in {None, 443} or parts.fragment or "\\" in url):
         raise ValueError("Stock URL must use an explicitly allowed public HTTPS host")
-    if not credential_query and any(k.lower() in {"key", "token", "signature", "api_key", "auth"}
-                                    for k in parse_qs(parts.query)):
-        raise ValueError("Credential-bearing stock URLs cannot enter receipts")
+    for key in parse_qs(parts.query, keep_blank_values=True):
+        if not key.strip():
+            raise ValueError("Credential-bearing stock URLs cannot enter receipts")
+        name = key.lower().replace("-", "").replace("_", "")
+        if (name in {"key", "apikey", "auth", "sig", "accesskey", "accesskeyid", "awsaccesskeyid", "passwd", "bearer", "authentication"}
+                or any(marker in name for marker in ("token", "signature", "credential", "secret", "password", "authorization"))):
+            if (credential_query and name == "key" and hosts == ["pixabay.com"]
+                    and parts.hostname == "pixabay.com" and parts.path == "/api/videos/"):
+                continue
+            raise ValueError("Credential-bearing stock URLs cannot enter receipts")
     return parts
 
 
@@ -133,7 +142,7 @@ def _config(project: Path, request, action: str) -> StockConfig:
 
 def _search_page(config: StockConfig, request: StockSearch, page: int, deadline: float) -> list[dict]:
     """Apply the two retained primary source response shapes without treating results as rights."""
-    key = os.environ.get(config.api_key_env, "")
+    key = os.environ.get(STOCK_CREDENTIAL_ENV[config.provider], "")
     if not key:
         raise ValueError("Configured stock credential is unavailable")
     headers = {"Authorization": key} if config.provider == "pexels" else {"Accept": "application/json"}
@@ -170,37 +179,44 @@ def _search_page(config: StockConfig, request: StockSearch, page: int, deadline:
     return results
 
 
-def _search(project: Path, request: StockSearch) -> dict:
+def _search(project: Path, request: StockSearch, cancelled: Event) -> dict:
     """Retain partial pagination failures honestly without retrying provider errors."""
+    _check_cancelled(cancelled)
     config = _config(project, request, "search")
     results = []
-    deadline = time.monotonic() + 30
+    deadline = time.monotonic() + 20
     for page in range(request.page, request.page + request.pages):
+        _check_cancelled(cancelled)
         try:
             candidates = _search_page(config, request, page, deadline)
+            _check_cancelled(cancelled)
             if len(json.dumps(results + candidates, allow_nan=False).encode()) > 1024 * 1024:
                 raise ValueError("Stock result metadata exceeds1MiB")
             results.extend(candidates)
         except (OSError, ValueError, KeyError, TypeError, http.client.HTTPException):
             return {"success": False, "results": results, "failed_page": page,
                     "error": "Stock page failed; no retry; partial results confer no rights"}
+    _check_cancelled(cancelled)
     _config(project, request, "search")
     return {"success": True, "results": results, "config_sha256": request.config.sha256,
             "retrieved_at": datetime.now(timezone.utc).isoformat(), "provider_rights_verified": False}
 
 
-def _download(project: Path, request: StockDownload) -> dict:
+def _download(project: Path, request: StockDownload, cancelled: Event) -> dict:
     """Publish only exact caller-pinned downloaded bytes, after source and clip permission checks."""
+    _check_cancelled(cancelled)
     with plan_transaction(project, create=True):
         config = _config(project, request, "download")
+        public_url(request.url, config.download_hosts)
         rights = rights_receipt(project, request.rights, request.expected_sha256, request.principal)
         if rights["source_url"] != request.url:
             raise ValueError("Download URL differs from its rights receipt")
-        public_url(request.url, config.download_hosts)
         key = digest(request.model_dump(mode="json"))
         manifest = load_manifest(project)
         if key in manifest["downloads"]:
             row = manifest["downloads"][key]
+            public_url(row["url"], config.download_hosts)
+            public_url(row["final_url"], config.download_hosts)
             pin = file_pin(confined_path(project, row["path"]), MAX_ASSET_BYTES)
             if (row["path"] != f"materials-source-{key}.mp4"
                     or pin["sha256"] != request.expected_sha256 or row["sha256"] != pin["sha256"]
@@ -210,8 +226,11 @@ def _download(project: Path, request: StockDownload) -> dict:
                 raise ValueError("Cached stock source changed")
             _config(project, request, "download")
             rights_receipt(project, request.rights, request.expected_sha256, request.principal)
+            _check_cancelled(cancelled)
             return {"success": True, "cached": True, **row}
         body, final_url = _fetch(request.url, {}, config.download_hosts, MAX_ASSET_BYTES, time.monotonic() + 20)
+        _check_cancelled(cancelled)
+        public_url(final_url, config.download_hosts)
         if not body or hashlib.sha256(body).hexdigest() != request.expected_sha256:
             raise ValueError("Stock download bytes differ from the expected source digest")
         _config(project, request, "download")
@@ -221,6 +240,7 @@ def _download(project: Path, request: StockDownload) -> dict:
         with tempfile.TemporaryDirectory(prefix="vrm-stock-") as directory:
             temporary = Path(directory) / "source.mp4"
             temporary.write_bytes(body)
+            _check_cancelled(cancelled)
             publish(project, temporary, name, request.expected_sha256)
         row = {"path": name, "sha256": request.expected_sha256, "size_bytes": len(body), "url": request.url,
                "final_url": final_url, "rights": rights, "config": request.config.model_dump(),
@@ -229,6 +249,7 @@ def _download(project: Path, request: StockDownload) -> dict:
                "media_qualified": False, "factual_success": False}
         manifest["downloads"][key] = row
         try:
+            _check_cancelled(cancelled)
             save_manifest(project, manifest)
         except BaseException as error:
             discard_published(project, name, request.expected_sha256, error)
@@ -238,9 +259,44 @@ def _download(project: Path, request: StockDownload) -> dict:
 
 async def search_materials(project_id: str, request: StockSearch) -> dict:
     """Search only the explicitly authorized configured source, with at most three pages."""
-    return await asyncio.to_thread(_search, project_directory(project_id), request)
+    return await _joined_worker(_search, project_directory(project_id), request)
 
 
 async def download_material(project_id: str, request: StockDownload) -> dict:
     """Acquire a stock rendition only after explicit source permission and separate asset rights."""
-    return await asyncio.to_thread(_download, project_directory(project_id), request)
+    return await _joined_worker(_download, project_directory(project_id), request)
+
+
+def _check_cancelled(cancelled: Event) -> None:
+    """Stop at a worker boundary before further pagination or publication."""
+    if cancelled.is_set():
+        raise asyncio.CancelledError("Stock worker cooperatively stopped")
+
+
+async def _joined_worker(operation, project: Path, request) -> dict:
+    """Defer terminal cancellation until the owned worker has finished and been observed."""
+    cancelled = Event()
+    worker = asyncio.get_running_loop().run_in_executor(
+        None, copy_context().run, operation, project, request, cancelled
+    )
+    try:
+        return await asyncio.shield(worker)
+    except asyncio.CancelledError as cancellation:
+        cancelled.set()
+        while not worker.done():
+            try:
+                await asyncio.shield(worker)
+            except asyncio.CancelledError:
+                continue
+            except BaseException:
+                break
+        try:
+            result = worker.result()
+        except BaseException as error:
+            cancellation.add_note(f"Stock worker joined with {type(error).__name__}")
+            for note in getattr(error, "__notes__", []):
+                cancellation.add_note(note)
+            cancellation.__cause__ = error
+        else:
+            cancellation.add_note(f"Stock worker joined; completion won cancellation race; success={result.get('success')}")
+        raise

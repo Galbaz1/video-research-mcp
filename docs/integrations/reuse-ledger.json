@@ -7074,7 +7074,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/materials_remote.py",
-          "target_sha256": "0435b1644cc127bd8380e0b50f322501ce3902eaf6e66cdfe4f7f0f8e06f1229",
+          "target_sha256": "73e78c62d1c331accff0af97e6cc5f62bdca4590ba4f4a716385e62af17a6401",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
@@ -7084,7 +7084,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/materials.py",
-          "target_sha256": "e8c3b5d6f98a92266a264205602f9dbe0313bc4f73ab2f60c4835c42c16e8f7c",
+          "target_sha256": "f67713624bfc8a7a9acac0b901397ebc79521bfe07fa5881d64f6eed1a4ee4ae",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
@@ -7094,18 +7094,23 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_materials.py",
-          "target_sha256": "1197ef62286661d5d92518978d5b71817a137039b19e6729f16ddb5c7360fa61",
+          "target_sha256": "719a8e48ea7188dc00acaa6e88d373e852a6e28e18d9ac3678e197b0ad599e09",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/materials.md",
-          "target_sha256": "52e9bba293ef73fd1b62019cc8ce82ea1621bdf387a6dc40a8d0458305222503",
+          "target_sha256": "15159d405f2246a71bfe00c33f5a31d90607f94e7dc5039324f5354a93f2a0f6",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
           "target_sha256": "e2c9c77a97b826ab9702d168714b6c462d06ab0002d4f767913288e1ae4f6e95",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_materials_security.py",
+          "target_sha256": "6a45007f7a551564d2aff7fa0af0f75233076acbf85c4b9493a9c4b0d358b556",
+          "provenance": "Independent first-party regression tests for stock credential URL refusal, fixed provider credential slots and joined cooperative cancellation. No foreign code/assets/runtime copied. R474/R479 source findings and harness failures retained; R487 independent F1/F2/F3 source disposition PASS and R488 full companion 984-test PASS. Full programme/security/provider qualification remains separate."
         }
       ]
     },

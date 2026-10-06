@@ -77,8 +77,9 @@ Remote tools require a separate pinned project `StockConfig` JSON record with
 `valid_until`. Both permissions default to false. Configuration or principal
 changes, absent credentials for search, stale permissions or missing clip
 rights refuse work. Download needs independent clip-use permission and an
-expected digest; a search response never supplies that permission. Credentials
-are read from the named environment variable; no environment/account setting
+expected digest; a search response never supplies that permission. The retained `api_key_env` field must be exactly `PEXELS_API_KEY` for Pexels
+or `PIXABAY_API_KEY` for Pixabay. Credentials are read only from that fixed
+provider slot; no environment/account setting
 is mutated and no credential is retained in receipts or page errors.
 
 The search adapters use the endpoint and response shapes inspected in pinned
@@ -96,17 +97,25 @@ nonstandard port, and public DNS addresses pinned to the TLS connection with
 hostname verification. Authenticated search redirects are refused. Public
 media redirects allow at most three hops, each checked against configured
 hosts, without forwarding search credentials. Credential-bearing media URLs,
+including blank `access_token`, AWS/Google signature or credential query fields,
 private addresses, malformed bodies, excessive metadata and non-200 responses
 are refused; provider errors are not retried. Search exposes retained partial
 results and the failed page when later pagination fails.
 
-The HTTP/body budget is30seconds per search and20seconds per download, with
+The HTTP/body budget is20seconds per search and20seconds per download, with
 individual socket waits at most10seconds and checked remaining deadlines.
 The platform DNS resolver is synchronous and cannot be cancelled by this
 helper; its scheduling/IO and a hard whole-call DNS deadline are unqualified.
-Thread cancellation does not certify termination of remote IO. Root's native
-admission must assess this limitation; the source-only unit result makes no
-claim of a fully bounded provider runtime.
+Cancellation signals the worker and waits for its completion before returning
+terminal `CancelledError`, including repeated cancellation while joining. A
+worker cancelled during fetch checks the signal before further pages or local
+publication; cancellation after asset publication cleans up before manifest
+publication. A completed commit can win the race and remains recorded; the
+cancellation exception identifies that disposition. Worker errors and cleanup
+notes are retained with cancellation. Joining does not kill a thread or certify
+physical termination of a remote request. DNS can still delay the join. Root's
+native admission must assess this limitation; source tests do not qualify the
+provider runtime.
 
 ## Manifest, cache and failure boundaries
 

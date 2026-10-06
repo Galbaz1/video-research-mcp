@@ -5,6 +5,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+STOCK_CREDENTIAL_ENV = {"pexels": "PEXELS_API_KEY", "pixabay": "PIXABAY_API_KEY"}
+
 Sha = str
 
 
@@ -88,6 +90,13 @@ class StockConfig(BaseModel):
     search_allowed: bool = False
     download_allowed: bool = False
     valid_until: datetime
+
+    @model_validator(mode="after")
+    def provider_credential_slot(self):
+        """Keep the public field pinned to the selected provider's server credential slot."""
+        if self.api_key_env != STOCK_CREDENTIAL_ENV[self.provider]:
+            raise ValueError("Stock credential slot must match the selected provider")
+        return self
 
 
 class StockSearch(BaseModel):

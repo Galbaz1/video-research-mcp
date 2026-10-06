@@ -216,7 +216,7 @@ async def test_missing_codec_and_missing_evidence_refuse_before_work(project, co
 
 def stock_config(project, provider="pexels", **changes):
     return write_json(project, "stock-config.json", {
-        "provider": provider, "api_key_env": "MATERIALS_FIXTURE_KEY", "download_hosts": ["cdn.example.com"],
+        "provider": provider, "api_key_env": provider.upper() + "_API_KEY", "download_hosts": ["cdn.example.com"],
         "principal": "fixture-caller", "search_allowed": True, "download_allowed": True,
         "valid_until": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(), **changes})
 
@@ -224,7 +224,7 @@ def stock_config(project, provider="pexels", **changes):
 @pytest.mark.parametrize("provider", ["pexels", "pixabay"])
 async def test_search_pagination_and_protocol_errors_are_retained(project, monkeypatch, provider):
     cfg = stock_config(project, provider)
-    monkeypatch.setenv("MATERIALS_FIXTURE_KEY", "PRIVATE-FIXTURE-KEY")
+    monkeypatch.setenv(provider.upper() + "_API_KEY", "PRIVATE-FIXTURE-KEY")
     calls = []
     variant = {"link": "https://cdn.example.com/clip.mp4", "url": "https://cdn.example.com/clip.mp4",
                "width": 1280, "height": 720}
@@ -265,7 +265,7 @@ async def test_download_rights_hash_restart_and_source_config_cache(project, mon
     assert (project / first["path"]).read_bytes() == body and first["rights"]["credit"] == "Fixture author"
     again = await explainer_materials_download("fixture", StockDownload.model_validate(req.model_dump()))
     assert again["cached"] and len(calls) == 1
-    req.config = stock_config(project, api_key_env="OTHER_FIXTURE_KEY")
+    req.config = stock_config(project, search_allowed=False)
     changed = await explainer_materials_download("fixture", req)
     assert changed["success"] and len(calls) == 2 and changed["path"] != first["path"]
     (project / req.rights.path).write_text("{}")
@@ -537,3 +537,16 @@ def test_qualified_bytes_changed_before_publication_are_not_promoted(project, tm
     with pytest.raises(ValueError, match="changed before publication"):
         materials.publish(project, source, "output.mp4", expected)
     assert not (project / "output.mp4").exists()
+
+
+def test_pixabay_key_allowed_only_for_internal_search(http_boundary):
+    responses, calls, _, response = http_boundary
+    responses.append(response(body=b"{}"))
+    body, _ = remote._fetch("https://pixabay.com/api/videos/?key=SYNTHETIC_PROVIDER_KEY",
+                            {"Accept": "application/json"}, ["pixabay.com"], 20, time.monotonic() + 20)
+    assert body == b"{}" and len(calls) == 1
+    with pytest.raises(ValueError, match="Credential-bearing"):
+        remote.public_url("https://pixabay.com/api/videos/?key=SYNTHETIC_PROVIDER_KEY", ["pixabay.com"])
+    with pytest.raises(ValueError, match="Credential-bearing"):
+        remote._fetch("https://pixabay.com/media.mp4?key=SYNTHETIC_PROVIDER_KEY",
+                      {"Accept": "application/json"}, ["pixabay.com"], 20, time.monotonic() + 20)
