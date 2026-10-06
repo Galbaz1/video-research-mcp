@@ -7,7 +7,8 @@ paths: "src/**/*.py"
 ## Client
 
 - Singleton via `GeminiClient.get()` — never construct `genai.Client()` directly
-- All generation through `GeminiClient.generate()`, `.generate_structured()`, or `.generate_json_validated()`
+- Route Gemini generation through `GeminiClient.generate()`, `.generate_structured()`, or `.generate_json_validated()`
+- Deterministic local operations validate typed inputs/results without Gemini. Optional external MCPs use their own schemas and add no runtime requirements to core startup.
 - Async API: `client.aio.models.generate_content()`
 
 ## Types
@@ -18,7 +19,7 @@ paths: "src/**/*.py"
 
 ## Thinking
 
-- All calls include `ThinkingConfig(thinking_level=...)` via config
+- GenerateContent calls include `ThinkingConfig(thinking_level=...)` via config
 - Levels for the default model: "low", "medium", "high"; reject unsupported "minimal" with a validation error
 - Preserve complete SDK contents and thought signatures in session history; exclude thinking from user-visible text: `getattr(p, "thought", False)` — this is intentional defensive code, not a compat shim
 
@@ -34,7 +35,7 @@ paths: "src/**/*.py"
 - `generate_json_validated()` — dual-path validation (Pydantic TypeAdapter / jsonschema)
 - Accepts `schema: type[BaseModel] | dict` — Pydantic model or JSON Schema dict
 - `strict=True` raises on failure; `strict=False` logs warning and returns unvalidated
-- jsonschema is a lazy import — skips validation when not installed
+- jsonschema is a lazy import — a missing package raises with `strict=True`; lenient mode skips dictionary-schema validation
 
 ## Models
 

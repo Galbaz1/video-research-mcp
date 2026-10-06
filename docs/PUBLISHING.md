@@ -36,8 +36,8 @@ Keep it identical to [`package.json`](../package.json) and
 Add a matching
 section to [CHANGELOG.md](../CHANGELOG.md).
 
-For a prerelease, use a shared source spelling such as `0.8.0-rc.1`. Python
-normalizes it to `0.8.0rc1` in archive filenames and dependency resolution;
+For a prerelease, use a shared source spelling such as `0.8.0-rc.3`. Python
+normalizes it to `0.8.0rc3` in archive filenames and dependency resolution;
 built metadata can retain the source spelling. Both spellings select the same
 exact PEP 440 version. Publish the npm archive with `--tag next` so it does not replace
 `latest`. A prerelease still needs all applicable source and installation gates.
@@ -125,11 +125,12 @@ Check package contents and authenticated ownership, then publish the verified
 archive instead of repacking the current working tree:
 
 ```sh
-npm publish "$release_dir"/video-research-mcp-*.tgz
+npm publish "$release_dir"/video-research-mcp-*.tgz --tag next
 ```
 
-Select a dist-tag explicitly if this version should not become `latest`. A GitHub
-prerelease flag does not control npm tags or PyPI version semantics.
+The example publishes a prerelease to `next`. For an approved stable release,
+select `--tag latest` explicitly. GitHub release flags do not control npm tags
+or PyPI version semantics.
 
 ## Post-publish verification
 
@@ -187,6 +188,6 @@ version and tag for changed content.
 | A published package needs correction | Release a new version; pin clients to a known working release while it is prepared. |
 
 For client rollback, restore backed-up workflows and pin the runtime registration
-to the known working package version. Installer upgrades replace managed server
-commands and arguments, so recheck runtime pins afterward. Registry yanks,
+to the known working package version. Installer upgrades update unchanged, owned
+server entries and preserve custom entries; recheck runtime pins afterward. Registry yanks,
 deprecations, and dist-tag changes require their own publication authority.

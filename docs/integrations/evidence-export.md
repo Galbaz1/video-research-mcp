@@ -7,10 +7,9 @@ through `corpus_retrieve.query`, `wiki_manage.ask` in context mode, or
 invokes no model or provider. Collection recall retains its existing LRU use
 bookkeeping; it does not delete or admit assets.
 
-Root mounts `video_research_mcp.tools.evidence_export.evidence_export_server`.
-This source implementation does not establish installed tool admission or browser
-acceptance. Root registration exposes the typed local export tool; actual installed
-and browser acceptance remain pending.
+The root [server](../../src/video_research_mcp/server.py) mounts
+`video_research_mcp.tools.evidence_export.evidence_export_server`. Registration
+exposes the local tool; it does not establish installed or browser acceptance.
 
 Example request, using an existing canonical corpus and an existing parent directory:
 

@@ -14,14 +14,19 @@ out-of-range timestamps still refuse. Acoustic, word-alignment and speaker
 accuracy remain unverified. Each optional installation requires its own exact
 descriptor and runtime qualification; this source component is not a new release.
 
-The service accepts only literal `127.0.0.1` or `::1`. Each inference has a 60-second
-worker deadline, including worker admission. HTTP body reads have a 10-second
-socket timeout. A client disconnect, request deadline, SIGINT or parent-only
-SIGTERM kills the active worker process group and joins the direct child before
-the service exits or accepts another request. SIGKILL cannot run cleanup; use
-SIGTERM for operator cancellation. A request client must keep its connection open
-while waiting, including its write side. This is an operator-controlled loopback
-service, with exact Host checks and rejection of browser Origin headers.
+The service accepts only literal `127.0.0.1` or `::1`. Its 60-second worker
+deadline includes worker admission, but starts after HTTP body intake and the
+service's admission recheck. The 10-second socket timeout bounds an idle read;
+a client sending bytes slowly can prolong intake. There is no shared deadline
+for headers, body intake, service admission and inference. Whole-request intake
+remains unqualified, and the serial service can be occupied before a worker starts.
+
+During inference, a client disconnect, worker deadline, SIGINT or parent-only
+SIGTERM kills the active worker process group and joins the direct child. SIGKILL
+cannot run cleanup; use SIGTERM for operator cancellation. Keep the client
+connection open while waiting, including its write side. Exact Host checks and
+rejection of browser Origin headers restrict the loopback service; they do not
+repair the intake deadline gap.
 
 The already bounded request is passed through an anonymous temporary file to the
 worker's stdin. This avoids an observed CPython 3.12 pipe-transfer stall when a

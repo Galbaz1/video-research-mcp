@@ -15,7 +15,7 @@ Use `Glob` on `~/.claude/projects/*/memory/gr/` to find saved results. There may
 
 ## Check Knowledge Store
 
-Call `knowledge_stats()` first. If it returns collection counts, Weaviate is available — use semantic search for keyword queries. If it returns an error, use filesystem-only mode.
+Call `knowledge_stats()` first. Use semantic search when collections are returned; use filesystem-only mode on error or an empty collection list. Zero counts alone do not prove an empty healthy store: collection failures can also be reported as zero.
 
 `knowledge_stats()` returns immediately when Weaviate is not configured (no network call). No performance impact for non-Weaviate users.
 
@@ -25,13 +25,13 @@ Call `knowledge_stats()` first. If it returns collection counts, Weaviate is ava
 
 1. Call `knowledge_stats()` (reuse availability check result)
 2. Use `Glob` with pattern `~/.claude/projects/*/memory/gr/**/analysis.md` to find all saved results
-3. For each result, read the first 5 lines to get the title and check for visualization artifacts:
+3. For each result, read its YAML frontmatter and first heading for the title, then check for visualization artifacts:
    - Check if `concept-map.html`, `evidence-net.html`, or `knowledge-graph.html` exists alongside `analysis.md`
    - Check if `screenshot.png` exists
 4. Present unified overview:
 
    **Knowledge Store** (if available)
-   X objects across 12 collections
+   X reported objects across N returned collections
    ResearchFindings: N | VideoAnalyses: N | ContentAnalyses: N | ...
 
    **Project Memory** (filesystem)
@@ -128,10 +128,10 @@ Extract the question (everything after "ask ").
    Per hit: collection, score, summary (if present from Flash processing, else first non-empty of title/topic/claim)
    If `rerank_score` is present, show alongside base score: `score: 0.85 (rerank: 0.92)`
    If `properties.local_filepath` exists and points to an existing file:
-   - Show: `Video lokaal beschikbaar: <path>`
-   - Offer: `Chat ermee: /gr:video-chat <path>`
+   - Show: `Local video available: <path>`
+   - Offer: `Chat with it: /gr:video-chat <path>`
    If `properties.screenshot_dir` exists and directory is present:
-   - Show: `Screenshots beschikbaar in <path>`
+   - Show: `Screenshots available in <path>`
    Offer: "Fetch full result?" → `knowledge_fetch`
    Offer: "Find related?" → `knowledge_related`
 
@@ -169,8 +169,8 @@ When the user picks a Weaviate result (by number or object_id):
 2. Present all properties in a readable format.
 3. If `local_filepath` is present:
    - Check existence and report either:
-     - "Video is lokaal beschikbaar. Wil je ermee chatten?"
-     - "Video was eerder gedownload maar bestand is niet meer aanwezig."
+     - "The video is available locally. Open a chat session with it?"
+     - "The video was downloaded earlier, but its file is now missing."
 4. If `screenshot_dir` is present:
    - Show available frame files and timestamps (if manifest is present).
 5. Offer: "Find related?" → `knowledge_related(object_id=..., collection=...)`

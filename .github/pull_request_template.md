@@ -10,8 +10,8 @@
 
 ## Test plan
 
-- [ ] All existing tests pass: `uv run pytest tests/ -v`
-- [ ] Lint passes: `uv run ruff check src/ tests/`
+- [ ] All existing tests pass: `uv run --locked --extra dev pytest tests/ -v`
+- [ ] Lint passes: `uv run --locked --extra dev ruff check src/ tests/`
 - [ ] New/changed functionality has tests
 - [ ] No real API calls in tests (use `mock_gemini_client`)
 

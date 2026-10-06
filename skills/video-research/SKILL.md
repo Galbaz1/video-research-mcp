@@ -5,7 +5,7 @@ description: Use video-research MCP tools for evidence-aware video/document anal
 
 # Video Research MCP — Tool Usage Guide
 
-Discover whether the `video-research-mcp` server is connected before calling it. Its 34 registered tools use the configured Gemini models, YouTube Data API, Semantic Scholar, and optional Weaviate. Inspect `infra_configure()` for live models; the default is Gemini 3.8 Flash. These tools are **instruction-driven** — you write the instruction, Gemini returns structured JSON. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
+Discover whether the `video-research-mcp` server is connected before calling it. Its tools use configured Gemini models, YouTube Data API, Semantic Scholar, optional Weaviate, and deterministic local adapters. Inspect `infra_configure()` for live models; the default is Gemini 3.8 Flash. Generative tools are **instruction-driven**: you supply an instruction and receive structured model output. Other tools use their exposed typed contracts. Three tools (`video_metadata`, `video_comments`, `video_playlist`) use the YouTube Data API directly for fast metadata retrieval without Gemini inference.
 
 ## Core Principle
 
@@ -21,7 +21,7 @@ Tools accept an `instruction` parameter instead of fixed modes. Write specific, 
 | Have a multi-turn conversation about a video | `video_create_session` + `video_continue_session` |
 | Research a topic in depth | `research_deep` |
 | Plan a research strategy | `research_plan` |
-| Verify a specific claim | `research_assess_evidence` |
+| Assess a claim against supplied source descriptions | `research_assess_evidence` |
 | Launch long-running web-grounded deep research | `research_web` |
 | Poll status of a running deep-research job | `research_web_status` |
 | Ask follow-up questions on a completed deep-research report | `research_web_followup` |
@@ -51,7 +51,7 @@ Knowledge results may include:
 
 ## Tool Reference
 
-### Video Tools (4) + YouTube Tools (3)
+### Video and YouTube Tools
 
 #### `video_metadata` — Get YouTube video metadata (no Gemini cost)
 ```
@@ -134,7 +134,7 @@ video_continue_session(session_id: str, prompt: str)
 ```
 Returns `{response, turn_count}`. Maintains conversation history across turns.
 
-### Content Tools (3)
+### Content Tools
 
 #### `content_analyze` — Analyze any content (file, URL, or text)
 ```
@@ -187,7 +187,7 @@ content_extract(content: str, schema: dict)
 ```
 Use when you have a specific JSON Schema and need schema-constrained extraction; still check error responses and validate required evidence.
 
-### Research Tools (13, including 5 academic tools)
+### Research Tools
 
 #### `research_deep` — Multi-phase deep research
 ```
@@ -197,7 +197,7 @@ research_deep(
   thinking_level: str = "high"
 )
 ```
-Runs 3 phases: Scope Definition > Evidence Collection > Synthesis.
+Runs 3 model-only phases: Scope Definition > Evidence Collection > Synthesis. It retrieves no external sources; proposed CONFIRMED/STRONG INDICATOR tiers become UNKNOWN.
 Returns `{topic, scope, executive_summary, findings[{claim, evidence_tier, supporting[], contradicting[], reasoning}], open_questions[], methodology_critique}`.
 
 Evidence tiers: CONFIRMED, STRONG INDICATOR, INFERENCE, SPECULATION, UNKNOWN.
@@ -220,7 +220,7 @@ research_document(
 ```
 
 4-phase pipeline: Document Mapping > Evidence Extraction > Cross-Reference > Synthesis.
-Every claim cited back to document + page. Documents uploaded via File API for multi-phase reuse.
+Documents are uploaded via File API for multi-phase reuse. Inspect generated document/page citations against the originals before relying on a claim.
 
 **Scope controls depth:**
 - `quick`: Map + lightweight summary (2 Gemini calls)
@@ -235,7 +235,7 @@ Every claim cited back to document + page. Documents uploaded via File API for m
 ```
 research_web(topic: str, output_format: str = "")
 ```
-Starts a long-running, web-grounded research task (typically 10-20 minutes) and returns an `interaction_id`.
+Starts a hosted web-grounded research task and returns an `interaction_id`. Runtime and internal search/token/USD ceilings are provider-managed; retain the launch identity across interruptions.
 
 #### `research_web_status` — Poll a Deep Research interaction
 ```
@@ -253,13 +253,13 @@ Returns a contextual follow-up response tied to the original deep-research inter
 ```
 research_web_cancel(interaction_id: str)
 ```
-Cancels the in-flight deep-research interaction to stop unnecessary cost/time.
+Requests cancellation of the existing interaction. Inspect the returned state; cancellation does not reverse prior spend.
 
 #### `research_assess_evidence` — Assess a claim against sources
 ```
 research_assess_evidence(claim: str, sources: list[str], context: str = "")
 ```
-Returns `{claim, tier, confidence, supporting[], contradicting[], reasoning}`.
+Returns `{claim, tier, confidence, supporting[], contradicting[], reasoning}` plus proposal metadata. Source access is unobserved and `factual_success` is false; proposed CONFIRMED/STRONG INDICATOR tiers become UNKNOWN.
 
 ### Academic Discovery
 
@@ -282,8 +282,10 @@ infra_cache(action="stats" | "list" | "clear", content_id=None)
 
 #### `infra_configure` — Runtime config changes
 ```
-infra_configure(model=None, thinking_level=None, temperature=None)
+infra_configure(preset=None, model=None, thinking_level=None, temperature=None, auth_token=None)
 ```
+
+Read-only configuration inspection needs no mutation grant. Configuration changes and cache clearing require `INFRA_MUTATIONS_ENABLED` and the configured admin token when required. Handle a policy refusal without changing operator policy.
 
 ## Workflow Patterns
 
@@ -292,14 +294,14 @@ infra_configure(model=None, thinking_level=None, temperature=None)
 2. Run independent calls in parallel within the available worker/provider budget:
    - `web_search(query)` > gather current sources (Gemini Flash)
    - `research_deep(topic, scope="deep")` > full analysis with evidence tiers (configured analysis model)
-3. `research_assess_evidence(claim, sources)` > verify specific claims — call multiple claims IN PARALLEL
+3. `research_assess_evidence(claim, sources)` > model assessment — call independent claims in parallel within the budget, then inspect decisive primary evidence
 
 ### Analyze a YouTube video with community context
 1. `video_metadata(url)` > quick metadata (title, view count, comment count)
 2. `video_analyze(url, instruction="...")` > primary analysis
 3. Background: `comment-analyst` agent fetches and analyzes YouTube comments
 4. Background: `visualizer` agent generates interactive concept map
-5. Results from all merge into `analysis.md` asynchronously
+5. Workers return owned outputs; the parent merges them into `analysis.md` after required workers join
 
 ### Analyze a YouTube playlist
 1. `video_playlist(url)` > list all videos in the playlist
@@ -315,10 +317,10 @@ infra_configure(model=None, thinking_level=None, temperature=None)
 
 ### Recall & Knowledge Retrieval
 
-`/gr:recall` is the unified entry point. It uses `knowledge_search` for semantic queries
+When registered in Claude Code, `/gr:recall` uses `knowledge_search` for semantic queries
 when Weaviate is configured, and falls back to filesystem grep otherwise.
 Knowledge states (fuzzy/unknown) and visualization browsing are always filesystem-based.
-Direct MCP tool calls remain available for programmatic use.
+In Codex, use the exposed `knowledge_search` and `knowledge_ask` tools; Claude command aliases are not loaded by the native plugin.
 
 ### Ingesting data into the knowledge store
 

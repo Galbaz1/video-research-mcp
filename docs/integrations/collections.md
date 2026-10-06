@@ -8,12 +8,12 @@ Observation text, vectors, terms and source revisions remain in the existing
 canonical tables. Additional tables contain workspace context, collection labels
 and artifact references/reservations; there is no second content or index store.
 
-This implementation is source tested. Root owns registration, independent review
-and native acceptance; passing unit tests does not close `vrm-0e8.6.6`.
+The root server registers the tool. The source checks described below cover local
+SQLite and artifact behavior; they do not establish installed or native acceptance.
 
 ## Registration
 
-Root must add the following shared mount in `server.py`, using its existing `app`:
+The root [server](../../src/video_research_mcp/server.py) includes this mount:
 
 ```python
 from .tools.collections import collections_server
@@ -21,9 +21,8 @@ from .tools.collections import collections_server
 app.mount(collections_server)
 ```
 
-No dependency or startup service is required. Quota and owned root are explicit
-arguments to `configure`, persisted once per workspace. Root also owns the shared
-capability manifest, reuse ledger, Bead evidence and release documentation.
+No additional dependency or startup service is required. Quota and owned root
+are explicit arguments to `configure`, persisted once per workspace.
 
 ## Local workflow
 
@@ -143,10 +142,10 @@ retirement can succeed while referenced owned media is preserved, which the dele
 receipt reports. External mutation by another process is not controlled by SQLite;
 the private-directory and identity checks provide the local operation's fence.
 
-Wiki revision metadata currently has a separate physical artifact-retention gap:
-it does not participate in this cleanup reference scan. Root owns that later
-integration; these fences do not claim protection of media referenced only by wiki
-history.
+Cleanup also checks [immutable wiki history](wiki.md#wiki-history-retention-seam).
+An explicit artifact path and SHA-256 in any retained wiki revision protect the
+matching owned asset, including after page retirement. A media digest without a
+path binding does not protect unrelated files; inconsistent history refuses cleanup.
 
 Bounds are 100 retained collection identities and 5,000 artifact identities per
 workspace, 64 MiB per supplied artifact, and 5,000 retained observations per cleanup
@@ -181,7 +180,8 @@ restart and clearing; existing-index enrollment; exact source intervals/provenan
 availability and provider abstention; workspace refusal; quota refusal before OS
 opens; deterministic LRU and pins; shared references; canonical projection removal;
 digest/symlink/hard-link fences; and charged partial/durability liabilities.
-Independent review, the Root mount and native acceptance remain open.
+Those checks cover source behavior. Installed and native acceptance require their
+own recorded journeys; the root mount is present in current source.
 
 R206 adds deterministic competing cleanup/admission interleavings for absent,
 same-workspace and cross-workspace replacement rows; growth and shorter-partial

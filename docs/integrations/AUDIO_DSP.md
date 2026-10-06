@@ -65,15 +65,17 @@ path without symlinks plus its complete byte hash:
 
 ```bash
 export AUDIO_DSP_JUZZY_PATH=/private/juzzy-target/release/mcp-server
-export AUDIO_DSP_JUZZY_SHA256=<exact executable SHA256>
+export AUDIO_DSP_JUZZY_SHA256=REPLACE_WITH_FULL_LOWERCASE_SHA256
 export AUDIO_DSP_FERROUS_PATH=/private/ferrous-target/release/mcp_server
-export AUDIO_DSP_FERROUS_SHA256=<exact executable SHA256>
+export AUDIO_DSP_FERROUS_SHA256=REPLACE_WITH_FULL_LOWERCASE_SHA256
 ```
 
 | Backend | Exact source | Operations |
 |---|---|---|
 | Juzzy | [audio-analyzer-rs at 0387fe1630ff0fc7f71bf656be81f3b1f400dda8](https://github.com/JuzzyDee/audio-analyzer-rs/tree/0387fe1630ff0fc7f71bf656be81f3b1f400dda8) | `audio_info`, `spectral_features`, `harmonic_analysis`, `rhythm_analysis`, `full_analysis`, `juzzy_compare` |
 | Ferrous | [ferrous-waves at d28ec11361123eb3778454deddf164f1fb6d25e4](https://github.com/willibrandon/ferrous-waves/tree/d28ec11361123eb3778454deddf164f1fb6d25e4) | `ferrous_analyze`, `ferrous_compare`; analyze also reads `get_job_status` in the same native process |
+
+Replace both digest placeholders with the complete hashes of the selected binaries.
 
 The adapter discovers all six or three exact tool names before one fixed native
 call. Only owned bounded PCM paths reach it. Juzzy receives original selected

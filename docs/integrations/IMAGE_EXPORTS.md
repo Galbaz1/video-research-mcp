@@ -1,6 +1,6 @@
 # Local image edits and source exports
 
-These implementation-branch operations require the optional `images` extra for
+These local operations require the optional `images` extra for
 Pillow. From this checkout:
 
 ```bash
@@ -10,8 +10,8 @@ uv run --extra images video-research-mcp
 Local video operations also require separately installed FFmpeg/FFprobe. OCR
 requires the explicitly selected local backend. Core discovery does not import
 Pillow, build Swift, download a model or contact an OCR service.
-The previously published registry package does not contain these programme
-features; a new registry release requires the terminal release gate.
+Verify that the selected installed server exposes the tool names below. Tool
+discovery does not establish that its optional OCR or media runtimes are ready.
 
 ## Edit and inspect an image or source frame
 

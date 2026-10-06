@@ -28,7 +28,7 @@ Present this reference. Use a compact format — no verbose descriptions.
 **Research & Analysis (`/gr:`)**
 | Command | What it does |
 |---------|-------------|
-| `/gr:research "topic"` | Deep research with evidence tiers |
+| `/gr:research "topic"` | Search plus model-only synthesis with proposed tiers |
 | `/gr:research-doc` | Research grounded in your documents (PDFs, URLs) |
 | `/gr:search "query"` | Quick web search via Gemini |
 | `/gr:analyze` | Analyze any content — URL, file, or text |
@@ -37,7 +37,7 @@ Present this reference. Use a compact format — no verbose descriptions.
 | `/gr:recall "topic"` | Search past analyses and research |
 | `/gr:ingest` | Add knowledge to the store manually |
 | `/gr:models` | View or change the Gemini model preset |
-| `/gr:doctor quick` | Health check — verify all connections |
+| `/gr:doctor quick` | Check registration and enabled integrations |
 
 **Video Explainer (`/ve:`)**
 | Command | What it does |

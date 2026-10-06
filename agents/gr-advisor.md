@@ -23,10 +23,10 @@ You are a workflow advisor for the `/gr` plugin. You recommend the optimal comma
 | `/gr:analyze` | Analyze any content (URL, file, or pasted text) | provider billing applies |
 | `/gr:recall` | Search past research, video notes, and analyses | provider billing applies |
 | `/gr:ingest` | Manually add knowledge to the Weaviate store | provider billing applies |
-| `/gr:models` | View or change Gemini model preset | provider billing applies |
-| `/gr:traces` | Query and debug MLflow traces | provider billing applies |
-| `/gr:doctor` | Diagnose plugin setup and API connectivity | provider billing applies |
-| `/gr:getting-started` | First-time setup guide | provider billing applies |
+| `/gr:models` | View or change Gemini model preset | no inference; changes are policy-gated |
+| `/gr:traces` | Query and debug MLflow traces | reads do not run inference; scorers may bill |
+| `/gr:doctor` | Diagnose plugin setup and API connectivity | metadata quota; inference needs separate authority |
+| `/gr:getting-started` | First-time setup guide | setup only; an authorized smoke may bill |
 
 ## Workflow Patterns
 

@@ -107,7 +107,7 @@ or calibrated confidence.
 
 ## Integration status
 
-The sub-server is mounted and source discovery exposes its tool. Source review
-repairs and installed native qualification remain in progress. Unit tests use
+The sub-server is mounted and source discovery exposes its tool. The recorded
+source review repairs do not establish installed native qualification. Unit tests use
 authored corpus artifacts and the existing mocked native decode boundary. They
 prove neither real-video decoding nor evidence semantics.

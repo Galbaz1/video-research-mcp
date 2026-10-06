@@ -1,11 +1,11 @@
 # Optional video translation and dubbing
 
-This first-party integration implements vrm-0e8.8.6: source preparation, external
-speech services, exact evidence joins, speaker-guided translation groups, local
-rendering, executable technical QA and a separate listening review. Root owns
-mounting, packaging, configuration gates and operational qualification. The
-entry point is video_research_mcp.tools.video_dubbing:video_dubbing_server.
-Its nine tools can be discovered without an installed service or GPU framework.
+The nine tools on `video_research_mcp.tools.video_dubbing:video_dubbing_server`
+prepare source media, join transcript evidence, validate speaker-guided translation
+groups, render locally and check delivery against a separate listening review.
+The root server mounts this integration. Tool discovery needs no installed speech
+service or GPU framework; actual dubbing requires separately configured services
+and operational qualification.
 
 Protocol/workflow attribution:
 [QwenLM/Qwen-MM-Plugins at 07736672525443c7f8a3f6405eed37d2236f023f](https://github.com/QwenLM/Qwen-MM-Plugins/tree/07736672525443c7f8a3f6405eed37d2236f023f/src/capabilities/omni-chatcut),
@@ -17,9 +17,9 @@ availability are unqualified.
 
 ## Operator configuration and exact service contract
 
-QWEN_MM_DUBBING_SERVER_URL must be a clean origin. Remote origins require HTTPS,
-public DNS/IP addresses and the environment credential VRM_DUBBING_API_KEY.
-VRM_DUBBING_LOCAL=true admits a separately operated literal 127.0.0.1 or ::1
+`QWEN_MM_DUBBING_SERVER_URL` must be a clean origin. Remote origins require HTTPS,
+public DNS/IP addresses and the environment credential `VRM_DUBBING_API_KEY`.
+`VRM_DUBBING_LOCAL=true` admits a separately operated literal 127.0.0.1 or ::1
 service and permits HTTP there. localhost, userinfo, queries, fragments and origin
 paths are rejected. Tokens appear only in Authorization headers. The existing
 HTTP fence pins DNS and proves the peer before sending headers or content.

@@ -42,8 +42,10 @@ Bearer authentication only to that fixed endpoint. There is no retry or implicit
 fallback. The unchanged `vision_http.exchange` retains HTTPX/HTTPCore/H11,
 32 MiB request and 256 KiB raw response ceilings, a 120-second exchange deadline,
 five-second joined cleanup, and refusal of proxies, redirects, unsafe DNS,
-unproved peers, and compressed responses. Public errors contain fixed local
-reasons without raw provider bodies, credentials, URL diagnostics, or transport
+unproved peers, and compressed responses. The complete preparation/submission/
+publication workflow shares `MEDIA_ACQUIRE_TIMEOUT_SECONDS`, capped at 120
+seconds; the exchange deadline does not restart that allowance. Public errors
+contain fixed local reasons without raw provider bodies, credentials, URL diagnostics, or transport
 logs. Failure and cancellation join owned work and remove only that invocation's
 staging outputs.
 

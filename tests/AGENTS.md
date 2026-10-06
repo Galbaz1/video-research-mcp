@@ -10,7 +10,7 @@ Applies to files under `tests/`.
 
 ## Fixture Expectations
 
-- `mock_gemini_client`: patches `GeminiClient.get()`, `.generate()`, `.generate_structured()`.
+- `mock_gemini_client`: patches `GeminiClient.get()`, `.generate()`, `.generate_structured()`, `.generate_json_validated()`.
 - `clean_config`: resets config singleton between tests.
 - `mock_weaviate_client`: patches Weaviate client + collection.
 - `mock_weaviate_disabled`: ensures Weaviate is disabled (depends on `clean_config`).
@@ -19,6 +19,7 @@ Applies to files under `tests/`.
 - `_disable_tracing` (autouse): sets `GEMINI_TRACING_ENABLED=false`.
 - `_isolate_dotenv`: blocks loading real `.env`.
 - `_isolate_upload_cache`: isolates upload cache to temp dir.
+- `_isolate_durable_jobs`: isolates `VRM_JOB_DB` in a temporary SQLite database.
 
 ## Test Style
 

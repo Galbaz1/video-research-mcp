@@ -5,7 +5,7 @@ description: Interactive onboarding for the Weaviate knowledge store. Guides use
 
 # Weaviate Knowledge Store Setup
 
-You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. Analysis and research tools attempt write-through storage when configured; infrastructure/query tools do not create analysis records and storage failures are non-fatal. 8 knowledge tools (`knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query`) enable semantic search and AI-powered Q&A across accumulated research.
+You are guiding a user through setting up Weaviate as the persistent knowledge store for the video-research MCP server. Analysis and research tools attempt write-through storage when configured; infrastructure/query tools do not create analysis records and storage failures are non-fatal. Use `knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, and `knowledge_schema`; optional `knowledge_ask` provides AI Q&A. `knowledge_query` remains available but is deprecated in favor of `knowledge_search`.
 
 ## Setup Flow
 
@@ -23,9 +23,9 @@ AskUserQuestion:
       multiSelect: false
       options:
         - label: "Weaviate Cloud (Recommended)"
-          description: "Managed cloud service at console.weaviate.cloud — free tier available, no infrastructure to manage"
+          description: "Managed service at console.weaviate.cloud — check current plans and embedding costs"
         - label: "Local Docker"
-          description: "Run Weaviate locally via Docker on port 8080 — full control, no network latency"
+          description: "Run Weaviate locally via Docker; the selected embedding provider may still use a network service"
         - label: "Custom/Self-hosted"
           description: "Your own Weaviate deployment at a custom URL"
 ```
@@ -33,32 +33,33 @@ AskUserQuestion:
 ### Step 2: Collect Credentials (based on choice)
 
 **If Weaviate Cloud:**
-- Tell the user to go to https://console.weaviate.cloud, create a free cluster, then copy the cluster URL and API key
-- Ask them to provide both values
+- Direct the user to https://console.weaviate.cloud to select an authorized plan and obtain the cluster URL/API key
+- Collect the URL; have the user store the key locally and confirm its presence without pasting it into chat
 
 **If Local Docker:**
-- Provide the docker-compose snippet:
+- Select the server version using the [official Docker guide](https://docs.weaviate.io/deploy/installation-guides/docker-installation). This example uses its 2026-10-06 documented image and OpenAI vectorizer; it is not a tested deployment receipt:
 ```yaml
 services:
   weaviate:
-    image: cr.weaviate.io/semitechnologies/weaviate:1.28.4
+    image: cr.weaviate.io/semitechnologies/weaviate:1.39.8
     ports:
-      - "8080:8080"
-      - "50051:50051"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:50051:50051"
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      DEFAULT_VECTORIZER_MODULE: text2vec-weaviate
-      ENABLE_MODULES: text2vec-weaviate
+      DEFAULT_VECTORIZER_MODULE: text2vec-openai
+      ENABLE_MODULES: text2vec-openai
 ```
-- Note: Our collections use the `text2vec-weaviate` vectorizer (Weaviate's built-in embedding service). No sidecar container needed.
+- [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate/embeddings) are Cloud-only. For this Docker example, configure the already supported OpenAI vectorizer and authorize its embedding costs separately. No local model or sidecar is selected.
 - The URL will be `http://localhost:8080`
-- No API key needed for local
+- Anonymous loopback access needs no Weaviate API key; the OpenAI vectorizer still needs its provider key.
+- Before retaining knowledge, add the persistent volume from the official Docker guide. `PERSISTENCE_DATA_PATH` alone does not preserve data when the container is replaced.
 
 **If Custom:**
 - Ask for the full URL (including port)
-- Ask if authentication is required (API key)
+- Ask whether authentication is required; keep any API key in local configuration
 
 ### Step 3: Configure Environment
 
@@ -71,21 +72,23 @@ Edit `~/.config/video-research-mcp/.env`:
 ```bash
 GEMINI_API_KEY=<their-gemini-key>
 WEAVIATE_URL=http://localhost:8080
-WEAVIATE_VECTORIZER=weaviate
+WEAVIATE_VECTORIZER=openai
+OPENAI_API_KEY=<locally-stored-embedding-key>
 ```
 
 **Cloud deployment:**
 ```bash
 GEMINI_API_KEY=<their-gemini-key>
 WEAVIATE_URL=<cluster-url>
-WEAVIATE_API_KEY=<key>
+WEAVIATE_API_KEY=<locally-stored-key>
+WEAVIATE_VECTORIZER=weaviate
 ```
 
 The server auto-detects `WEAVIATE_VECTORIZER` based on `OPENAI_API_KEY`: if present → `openai`, otherwise → `weaviate` (built-in embeddings). Setting it explicitly avoids surprises.
 
 Notes:
 - Use a full URL with scheme (`https://...` for cloud, `http://localhost:8080` for local).
-- Keep `.mcp.json` free of unresolved placeholders like `${WEAVIATE_URL}`.
+- Verify substitutions resolve in the server process; supported client placeholders may remain in `.mcp.json`.
 
 **Option B -- Shell environment:**
 ```bash
@@ -101,7 +104,7 @@ After the user has configured the environment, tell them to restart Claude Code 
 knowledge_search(query="test")
 ```
 
-This will attempt to connect and search. On first connection, the server auto-creates all 12 collections. If the search returns empty results with no error, the connection is working.
+This attempts connection, collection setup, and search only when `WEAVIATE_URL` is configured. An empty result also occurs when storage is disabled; confirm configuration and test a known record before claiming retrieval works.
 
 Then confirm collections exist:
 
@@ -109,12 +112,12 @@ Then confirm collections exist:
 knowledge_stats()
 ```
 
-This should return counts for all 12 collections (all 0 initially). If it returns an error, troubleshoot based on the error category:
+Inspect the returned collection list and errors. Disabled storage returns an empty list; per-collection failures can appear as zero counts. Check a known record or server diagnostics before interpreting zeros as an empty healthy store. Troubleshoot reported errors:
 
 | Error | Fix |
 |-------|-----|
 | `WEAVIATE_CONNECTION` | Check URL is reachable, Docker is running, firewall allows the port |
-| `WEAVIATE_SCHEMA` | Collections couldn't be created -- check Weaviate version (need >= 1.25) |
+| `WEAVIATE_SCHEMA` | Check the selected server/client/vectorizer compatibility; preserve existing collections and diagnose schema drift before any authorized migration |
 | `Weaviate not configured` | `WEAVIATE_URL` env var is not set or server wasn't restarted |
 
 ### Step 5: Confirm Working
@@ -141,7 +144,7 @@ AskUserQuestion:
       multiSelect: false
       options:
         - label: "Yes -- install weaviate-agents"
-          description: "Enables knowledge_ask (AI answers with sources) and knowledge_query (natural language search). Requires the weaviate-agents package."
+          description: "Enables knowledge_ask; requires weaviate-agents and a compatible authorized QueryAgent service. knowledge_query is deprecated."
         - label: "No -- skip for now"
           description: "You can install it later with: uv pip install 'video-research-mcp[agents]'"
 ```
@@ -160,26 +163,27 @@ knowledge_ask(query="What have I researched so far?")
 
 If successful, they now also have:
 - `knowledge_ask(query="...")` -- AI-generated answers grounded in stored knowledge, with source citations
-- `knowledge_query(query="...")` -- natural language object retrieval with automatic query understanding
+- `knowledge_query(query="...")` -- deprecated natural-language retrieval; prefer `knowledge_search`
 
 These tools use Weaviate's AsyncQueryAgent, which automatically translates natural-language queries into optimized Weaviate operations.
 
-## 12 Collections Created Automatically
+## Collections Created Automatically
 
 | Collection | Populated by | Knowledge tools that query it |
 |---|---|---|
-| `ResearchFindings` | `research_deep`, `research_assess_evidence`, `research_document` | All 8 knowledge tools |
-| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | All 8 knowledge tools |
-| `ContentAnalyses` | `content_analyze`, `content_batch_analyze` | All 8 knowledge tools |
-| `VideoMetadata` | `video_metadata` | All 8 knowledge tools |
-| `SessionTranscripts` | `video_continue_session` | All 8 knowledge tools |
-| `WebSearchResults` | `web_search` | All 8 knowledge tools |
-| `ResearchPlans` | `research_plan` | All 8 knowledge tools |
-| `DeepResearchReports` | `research_web_status`, `research_web_followup` | All 8 knowledge tools |
-| `CommunityReactions` | comment-analyst agent outputs | All 8 knowledge tools |
-| `ConceptKnowledge` | concept extraction/enrichment pipelines | All 8 knowledge tools |
-| `RelationshipEdges` | relationship graph extraction | All 8 knowledge tools |
-| `CallNotes` | call/meeting analysis pipelines | All 8 knowledge tools |
+| `ResearchFindings` | `research_deep`, `research_assess_evidence`, `research_document` | Supported knowledge tools |
+| `VideoAnalyses` | `video_analyze`, `video_batch_analyze` | Supported knowledge tools |
+| `ContentAnalyses` | `content_analyze`, `content_batch_analyze` | Supported knowledge tools |
+| `VideoMetadata` | `video_metadata` | Supported knowledge tools |
+| `SessionTranscripts` | `video_continue_session` | Supported knowledge tools |
+| `WebSearchResults` | `web_search` | Supported knowledge tools |
+| `ResearchPlans` | `research_plan` | Supported knowledge tools |
+| `DeepResearchReports` | `research_web_status`, `research_web_followup` | Supported knowledge tools |
+| `CommunityReactions` | Explicit ingestion of checked comment analysis | Supported knowledge tools |
+| `ConceptKnowledge` | concept extraction/enrichment pipelines | Supported knowledge tools |
+| `RelationshipEdges` | relationship graph extraction | Supported knowledge tools |
+| `CallNotes` | Explicit ingestion of call/meeting notes | Supported knowledge tools |
+| `AcademicPapers` | Semantic Scholar discovery tools | Supported knowledge tools |
 
 ## Supported Deployment URLs
 
@@ -191,4 +195,4 @@ These tools use Weaviate's AsyncQueryAgent, which automatically translates natur
 
 ## Graceful Degradation
 
-If `WEAVIATE_URL` is not set, the server works identically to before -- no errors, no changes. All store operations silently return `None`. Knowledge tools return empty results with a hint to configure Weaviate.
+Without `WEAVIATE_URL`, analysis remains available and write-through storage is skipped. Basic search/stats return empty results; optional agent tools can return dependency/configuration errors. Report persistence separately from analysis success.

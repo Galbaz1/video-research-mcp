@@ -11,14 +11,22 @@ Use it in **Codex**, **Claude Code**, or any client that supports stdio
 Gemini handles the main analysis and research routes; local tools inspect and
 transform source files. Optional providers and runtimes extend that core.
 
-[Release target](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.3) ·
-[npm target](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.3) ·
-[PyPI target](https://pypi.org/project/video-research-mcp/0.8.0rc3/) ·
-[Source target](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3)
+**[Open the interactive user guide (Dutch): from your problem to an approach](https://galbaz1.github.io/video-research-mcp/guide/).**
+Search the function map or choose a task to see its tools, prerequisites and steps.
+The [English user documentation](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/README.md)
+also covers setup problems and examples. Describe your problem in your MCP client
+in ordinary language to begin.
 
-**This guide targets the `0.8.0-rc.3` candidate (Python `0.8.0rc3`).**
-Installation examples pin this candidate; reference links use its source tag. Stable `0.7.1`
-predates the native Codex plugin and the expanded media surface.
+[Release](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.3) ·
+[npm](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.3) ·
+[PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc3/) ·
+[Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3)
+
+**Install the published `0.8.0-rc.3` prerelease (Python `0.8.0rc3`) below.**
+Examples pin that release; source references use its immutable tag. The user guide
+links to corrected main documentation and marks fixes beyond RC3. Stable
+`0.7.1` predates the native Codex plugin and expanded media surface. Later source
+fixes require a checkout or a new package release.
 
 ## From source material to a useful result
 
@@ -70,10 +78,10 @@ limit the uploaded file.
 
 ### Codex: native plugin
 
-The plugin supplies **24 skills** and the version-pinned research server. The
-native npm installation check covered **RC1 (`0.8.0-rc.1`) on Codex 0.160.0**.
-That historical check does not establish RC2 acceptance on Codex 0.160.1. You do
-not run the Claude installer for this route.
+The plugin supplies **24 skills** and the version-pinned research server. On
+2026-10-06, the selected Codex 0.160.1 RC3 installation and fresh-session restart
+loaded the research tools and packaged skills. Use the native route below;
+it does not run the Claude workflow installer.
 
 For a new installation, save this catalog as
 `~/.local/share/video-research-mcp/.agents/plugins/marketplace.json`, creating its
@@ -196,12 +204,11 @@ also provide workflows for narration, image generation, clip generation and asse
 - [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/SECURITY.md): local access, provider boundaries and reporting.
 - [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/CHANGELOG.md): changes in this candidate.
 
-For RC1 (`0.8.0-rc.1`) on Codex 0.160.0, packaged installation, native tool
-discovery, local tool journeys and fresh-session restart were verified. Historical
-RC2 archive and installer checks establish source and archive consistency only;
-native acceptance on Codex 0.160.1 requires a check of the current candidate. The
-120 tool contracts do not establish qualification of every optional runtime.
-Live-provider quality and complete end-to-end comparative acceptance remain open.
+The selected RC3 native check covered the installed baseline and restart, with
+124 cache files. Fresh npm network acquisition versus reuse of the same-version
+cache remains unknown. Earlier RC1 native and RC2 archive/installer checks remain
+historical results. Tool discovery does not qualify every optional runtime;
+live-provider quality and complete comparative acceptance remain open.
 
 ---
 

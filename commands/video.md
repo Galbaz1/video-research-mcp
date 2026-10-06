@@ -92,7 +92,7 @@ concepts: []
 <Comma-separated topics>
 ```
 
-   d. Tell the user: **Saved initial analysis to `gr/video/<slug>/`**
+   d. Retain screenshot markers in the saved analysis for Phase 2.5. Tell the user: **Saved initial analysis to `gr/video/<slug>/`**
 
    e. **YouTube URLs only**: Now spawn the `comment-analyst` agent in the background:
       ```
@@ -100,7 +100,7 @@ concepts: []
       video_title: <extracted video title>
       analysis_path: <memory-dir>/gr/video/<slug>/analysis.md
       ```
-      The comment-analyst runs alongside Phases 2.5-4. Results append to analysis.md when done. Skip for local files.
+      The comment-analyst runs alongside Phases 2.5-4 and returns `community-reaction.md`. The parent merges it after joining required workers and finishing its own edits. Skip for local files.
 
 ## Phase 2.5: Extract Video Frames
 
@@ -123,6 +123,7 @@ os.makedirs(frames_dir, exist_ok=True)
 
 analysis = open('<memory-dir>/gr/video/<slug>/analysis.md').read()
 markers = re.findall(r'\[SCREENSHOT:([\d:]+):(.*?)\]', analysis)
+extracted = 0
 
 for ts, desc in markers:
     parts = ts.split(':')
@@ -134,13 +135,17 @@ for ts, desc in markers:
         continue
     safe_ts = ts.replace(':', '')
     out = os.path.join(frames_dir, f'frame_{safe_ts}.png')
-    subprocess.run(['ffmpeg', '-y', '-ss', ffmpeg_ts, '-i', video_path, '-frames:v', '1', '-q:v', '2', out], capture_output=True)
-    print(f'  {ts} — {desc}')
-print(f'Extracted {len(markers)} frames')
+    result = subprocess.run(['ffmpeg', '-y', '-ss', ffmpeg_ts, '-i', video_path, '-frames:v', '1', '-q:v', '2', out], capture_output=True)
+    if result.returncode == 0 and os.path.isfile(out) and os.path.getsize(out) > 0:
+        extracted += 1
+        print(f'  {ts} — {desc}: {out}')
+    else:
+        print(f'  {ts} — extraction failed; retain the text marker')
+print(f'Extracted {extracted}/{len(markers)} frames')
 "
 ```
 
-4. Write `<memory-dir>/gr/media/screenshots/<content_id>/manifest.json` with timestamp, description, filename entries.
+4. Write `<memory-dir>/gr/media/screenshots/<content_id>/manifest.json` with timestamp, description, and filename entries only for successfully extracted non-empty files. Retain failed markers as text.
 5. Replace markers in `analysis.md` with embedded images:
    - `[SCREENSHOT:12:44:SAP scherm]` becomes:
    ```markdown

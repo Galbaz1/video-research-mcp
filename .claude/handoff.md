@@ -1,4 +1,13 @@
-# Current Root checkpoint — 2026-10-05T07:08:31.733948+00:00
+# Historical handoff
+
+For current work, read the [canonical handoff](/Users/fausto_home/Coding/video-research-mcp/.claude/handoff.md)
+and current [project instructions](../AGENTS.md). The October 4–5 records below
+preserve their original results, pending work and routing decisions. Their branch,
+session and model-launch instructions describe those checkpoints; use the current
+assignment and Beads for today's scope and status. See the [documentation index](../docs/README.md)
+for current user guides.
+
+## Archived Root checkpoint — 2026-10-05T07:08:31.733948+00:00
 
 Latest Root source disposition — 2026-10-05T07:12:58.254511+00:00: r32 independently reviewed r29 exact frozen two-file delta NO_P1P2 within source scope, P3/unknowns retained;3indexedreports joined0mismatch. r33 all eight gates PASS:4414root+32subtests, lint, three package builds, npm pack, release contract, seven real archive reuse checks. Actual root command116.205s/594427904Bsample/0unknown/reaped/groupabsent. Companion450PASS/3SKIP from r29 retained. New private companion wheel 138508B SHA755aa16fe46e67cb770ae811bd500a851053b9bc17c29ac821bcf515f5ae0d2a at /Users/fausto_home/.local/state/video-research-mcp/capability-programme/2026-09-30/continuation-2026-10-04/renderer-tree-readability-source-root-gates-r33/dist/video_explainer_mcp-0.2.1-py3-none-any.whl. It has not yet been installed/admitted. Source repair and sole authored receipt hash ready for scoped verified commit; inspect subsequent actual HEAD. r31 failed source writer after cutoff, no control source persisted/admission; late report preserved. Root r34 freshly prepared firstparty opaque17file/5dir A/B packet source-only; B adds21missing file-read-data literals with exact old mainbrowser grant retained. r35 B4 independent source review ACTIVE, sourcecut/report in its assignment. B5 DONE failed r31 report; B6 DONE r32. Do not close B4 until report joined; SessionEnd after clean commit only. No native retry/profile compile admitted yet. Whole goal ACTIVE/incomplete.
 

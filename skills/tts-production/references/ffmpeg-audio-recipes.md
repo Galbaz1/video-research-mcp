@@ -5,7 +5,7 @@ Patterns for mixing voice-over into video, audio ducking, and multi-element asse
 ## Speed Adjustment
 
 ```bash
-# Speed up (atempo range: 0.5–2.0, natural limit: 1.35x)
+# Speed up (1.35x is an audition limit, not a guarantee of natural speech)
 ffmpeg -y -i input.mp3 -filter:a "atempo=1.2" -codec:a libmp3lame -b:a 192k output.mp3
 ```
 
@@ -37,10 +37,10 @@ ffmpeg -y -i video.mp4 -i voice.mp3 \
 
 ## Smooth Cosine-Ease Ducking (recommended)
 
-Hard step ducking causes audible clicks. Use cosine-ease ramps instead:
+Hard step ducking can cause audible clicks. Use cosine-ease ramps and listen to the result:
 
 ```
-# Single zone (ramp_duration=0.5s, duck_level=0.55 = 55% reduction):
+# Single zone (ramp_duration=0.5s, duck depth=0.55 = 55% reduction):
 volume='1.0 - 0.55 * (
   (0.5 - 0.5*cos(3.14159265 * clip((t - ZONE_START) / 0.5, 0, 1)))
   * (0.5 - 0.5*cos(3.14159265 * clip((ZONE_END - t) / 0.5, 0, 1)))
@@ -59,7 +59,7 @@ volume='1.0 - 0.55 * (
 )':eval=frame
 ```
 
-Where `PI = 3.14159265`, `0.5` is ramp duration, `0.55` is duck depth.
+Where `PI = 3.14159265`, `0.5` is ramp duration, `0.55` is duck depth. Use non-overlapping zones or clamp the summed depth to avoid negative gain.
 
 **Tuning parameters:**
 - Ramp duration: 0.3s (quick) to 1.0s (gentle). 0.5s is default.

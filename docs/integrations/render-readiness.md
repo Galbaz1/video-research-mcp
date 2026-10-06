@@ -1,13 +1,16 @@
 # Renderer readiness and MP4 qualification
 
-The companion delegates to a separately configured external CLI. It distributes
-no renderer, Remotion modules, browser, fonts, foreign source or provider credentials.
+The companion supports a separately configured external CLI and optional
+[authored renderer entries](authored-renderer.md). This guide covers the external
+CLI route. The companion ships first-party entry source, but no installed
+Remotion modules, browser, fonts, foreign source or provider credentials.
 The selected source contract is prajwal-y/video_explainer at
 `c033e28d6eccae43c1762f4653f9c320b16b050e`. Its README/metadata state MIT but
 the selected tree has no license grant file; copying/importing remains blocked.
 Remotion has separate eligibility and distribution terms. Doctor certifies neither.
 
-`explainer_doctor(project_id=None)` is a public local diagnostic. It checks actual
+`explainer_doctor(project_id=None)` diagnoses the selected route locally. With
+`EXPLAINER_RENDERER_ENTRY` unset, it checks actual
 Node version (20 or newer), FFmpeg/ffprobe version commands, console executable,
 ordinary Node installation of Remotion/renderer/bundler 4.0.242, platform-specific
 cached headless-shell, and five exact mapped source bodies. It reports Claude
@@ -15,6 +18,10 @@ presence separately for generation and provider credentials only as presence.
 Provider access, browser launch, renderer execution and audio provenance are
 unverified. It executes no foreign CLI, provider request, download or installation.
 PnP/system-Chrome installations are unsupported by this selected route.
+
+With an authored entry selected, doctor checks its frozen source, runtime and
+project descriptor instead. Those entries pin Remotion 4.0.532 independently of
+the external CLI's 4.0.242 contract. Readiness does not establish a completed render.
 
 For an optional project, doctor rejects mismatched storyboard paths before render
 admission. The public CLI checks `paths.storyboard`, while its Node entry reads
@@ -47,8 +54,8 @@ launching codecs or replaying the renderer. `artifact_verified` measures byte
 integrity; `playability_verified` measures the retained complete decode proof.
 `real_renderer_verified` stays false, and content/visual/audio semantics are unknown.
 
-Actual configured modules/browser are missing in this development environment.
-Own deterministic FFmpeg and mocked controller controls establish local codec and
-admission behavior. They cannot close the real configured renderer journey, prove
-source claims or authorize publication. Keep that gap in the Bead and acceptance
-denominator until a permitted runtime is independently qualified.
+The recorded external-CLI evaluation lacked configured modules and a browser.
+Its deterministic FFmpeg and mocked controller controls establish local codec
+and admission behavior. They do not complete the configured renderer journey or
+verify source claims. Consult the selected runtime's qualification before using
+that route; authored-fixture results do not qualify the external CLI.

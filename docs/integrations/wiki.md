@@ -6,9 +6,10 @@ the **existing canonical corpus SQLite database**. It reuses
 identities. The wiki operation refuses an absent or foreign database. It creates
 no independent engine database, content directory, provider store or service.
 
-The registered implementation has passed source review and 89 focused checks.
-A private installed candidate exposes `wiki_manage`; its actual public journey
-and native acceptance remain open. Unit/mock results do not close `vrm-0e8.7.6`.
+The validation history below records source review and 89 focused checks.
+The recorded private installed candidate exposed `wiki_manage`; public-journey
+and native acceptance were still open at that checkpoint. Unit/mock results do
+not close `vrm-0e8.7.6`.
 
 ## Root integration
 

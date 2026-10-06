@@ -11,12 +11,12 @@ that a provider request, installation or user journey passed.
 | [multimodal-evaluation-protocol.json](multimodal-evaluation-protocol.json) | Frozen families, workflow map, source revisions, metrics, materiality and resource limits | A protocol is not a measured advantage; [replay contract](MULTIMODAL_EVALUATION.md) describes its evidence gates |
 | [multimodal-heldout-manifest.json](multimodal-heldout-manifest.json) | Independent case/source/label commitments and deterministic oracle receipts | Initial 27-case contract corpus; no candidate runs, human audit or live superiority claim |
 
-Each artifact includes `generated_at`. The September 29, 2026 snapshots contain
-34 root tools and 22 installer scenarios with 44 mapped files. These counts
-belong to those snapshots; use current generation or actual test output when
-assessing a later revision. Some scenario descriptions retain earlier installer
-assumptions, so compare them with the implementation before treating them as
-requirements.
+The tool manifest records 120 root tools at its October 6, 2026 `generated_at`.
+The installer matrix is older: its September 29 snapshot contains 22 scenarios
+and 44 mapped files. The evaluation records instead identify their frozen source
+and corpus seal. Keep these epochs separate; a new tool export does not refresh
+installer or evaluation evidence. Compare older scenario descriptions with the
+implementation before treating them as requirements.
 
 ## Regeneration
 

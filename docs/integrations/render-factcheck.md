@@ -44,10 +44,12 @@ All of this is labelled `evidence_scope: deterministic_literal_fixture_evidence`
 
 ## Rendered additions
 
-Every observation is matched independently of its declared claim IDs. The text is
-normalized (casefold, punctuation and spacing dropped) and covered greedily by literal
-claim token sequences. Uncovered runs are `additions`. Matched claims that are not
-editorially approved and supported are `unapproved_claim_ids`; matches to claims judged
+Every observation is matched independently of its declared claim IDs. Tokenization
+casefolds words and ignores spacing and unmatched punctuation, while retaining
+numeric signs, leading decimals and arithmetic/comparison operators. Literal
+claim token sequences are matched greedily. Uncovered runs are `additions`.
+Matched claims without editorial approval and support are `unapproved_claim_ids`;
+matches to claims judged
 false are `false_claim_ids`. An observation is `reconciled` only when it has no addition,
 no unapproved claim and its declared IDs equal the observed ones. ASR/OCR misreads show
 as unreconciled text; they are never treated as a pass.
@@ -61,7 +63,7 @@ as unreconciled text; they are never treated as a pass.
 |---|---|---|
 | `factual_support` | claims present, no source/lineage error, every observation reconciled | no observation supplied |
 | `narration_clarity` | never decided here | always (needs a listener or calibrated judgment) |
-| `legibility` | every frame OCR observation recovers claim text exactly (a proxy, not human legibility) | no frame OCR observation |
+| `legibility` | every frame OCR observation recovers claim tokens after normalization, with no additions (a text-recovery proxy) | no frame OCR observation |
 | `synchronization` | same-claim voiceover/visual starts within tolerance | no claim observed with intervals in both |
 | `render_completion` | receipt `completed` and current output bytes match its SHA256 | no receipt |
 
@@ -77,9 +79,7 @@ claim IDs return the package's structured tool error (`error`, `category`, `hint
 ## Wiring
 
 The companion source server mounts `render_factcheck_server`. Its installed public
-journey still requires qualification. Literal reconciliation preserves numeric signs,
-leading decimals and arithmetic/comparison operators, including standalone variable
-subtraction. Hyphens also remain distinct from ASR spaces: the literal check cannot
+journey still requires qualification. Hyphens remain distinct from ASR spaces: the literal check cannot
 determine whether a join is a word compound or subtraction. An unchanged compound
 can pass; a changed join remains unsupported and needs review. This conservative
 comparison remains a literal heuristic rather than semantic verification.

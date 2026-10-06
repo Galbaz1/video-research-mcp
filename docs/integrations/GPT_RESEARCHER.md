@@ -8,8 +8,8 @@ record as untrusted source data. Core does not implement another research engine
 
 The [collector](../../examples/external_video_source.py) uses the existing
 [native tool](NATIVE_MEDIA.md) and
-[stdio settings](external-harness.json). It connects with FastMCP4.0.10 and
-MCP2.2.0, negotiates the legacy handshake, and makes one uncached discovery page
+[stdio settings](external-harness.json). It connects with FastMCP 4.0.10 and
+MCP 2.2.0, negotiates the legacy handshake, and makes one uncached discovery page
 plus one direct `ClientSession.call_tool` submission. Input-required and claimed
 results are disabled; unexpected responses fail without another submission.
 Only `video_frame` is selected from the advertised catalog. The external engine
@@ -19,8 +19,8 @@ The settings declare transport, explicit whole-value `${ENV_NAME}` substitution,
 dependency versions and required capabilities. Missing substitutions or changed
 dependency/capability sets fail before spawning. There is no shell expansion,
 auto-install, discovery cache, tool fallback or retry. Initialization is bounded
-by10seconds, each request by30seconds, and the collection including connection
-lifecycle by45seconds. Stdio has `keep_alive=false`. `LOCAL_FILE_ACCESS_ROOT`
+by 10 seconds, each request by 30 seconds, and the collection including connection
+lifecycle by 45 seconds. Stdio has `keep_alive=false`. `LOCAL_FILE_ACCESS_ROOT`
 fences the selected original media; `GEMINI_CACHE_DIR` holds extracted views.
 FFmpeg/FFprobe must be installed independently. Native extraction invokes no
 Gemini inference or upload; the explicit Gemini key satisfies current core
@@ -55,8 +55,8 @@ extracted artifact hashes commit their distinct bytes.
 ## Isolated GPT Researcher consumer
 
 The pinned mapped source is
-[GPT Researcher at0957c301](https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/agent.py),
-package0.16.0. Its MCP dependency requires1.x, conflicting with core2.x. Keep it
+[GPT Researcher at 0957c301](https://github.com/assafelovic/gpt-researcher/blob/0957c301ed06c2a5857b834358c7227c739041d4/gpt_researcher/agent.py),
+package 0.16.0. Its MCP dependency requires 1.x, conflicting with core 2.x. Keep it
 in a separately selected and licensed environment with its own dependency lock;
 do not install it into core. This programme has not installed or qualified that
 foreign runtime. Actual root Apache-2.0 grant takes precedence over incorrect MIT
@@ -88,8 +88,8 @@ python /absolute/checkout/examples/gpt_researcher_report.py \
 ```
 
 The flag records an operator choice; it does not supply human authorization to
-an agent. The example bounds its report operation by120seconds and its report
-representation by1MiB. It retains a missing reference as `missing_reference`,
+an agent. The example bounds its report operation by 120 seconds and its report
+representation by 1 MiB. It retains a missing reference as `missing_reference`,
 including the report, and records setup/execution failures without a success
 claim. Provider submissions, retries, usage and currency remain unknown because
 the external report engine does not expose a literal aggregate meter here.

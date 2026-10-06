@@ -8,7 +8,7 @@ upstream renderer to prepare inputs, preview scenes, and render the video.
 Two tools are available: `agent_generate_scenes` and
 `agent_generate_single_scene`.
 
-Repository links point to the published source release. For the exact source
+Repository links below are pinned source references. For the exact source
 and bundled README of a registry version, use its source archive on
 [PyPI](https://pypi.org/project/video-agent-mcp/#files).
 
@@ -43,9 +43,10 @@ appropriate `mcpServers` object, replacing the absolute checkout path:
 }
 ```
 
-To use a registry release, register `uvx` with
-`video-agent-mcp==<published-version>` instead. Confirm that exact version is
-published first. The core npm installer does not register this companion.
+For the published candidate, register `uvx` with
+`video-agent-mcp==0.2.2rc1`. Use the checkout command above for later source
+fixes; an existing registry archive does not contain them. The core npm installer
+does not register this companion.
 
 Configuration comes from the process environment and
 `~/.config/video-research-mcp/.env`; nonempty process values take precedence.

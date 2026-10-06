@@ -11,12 +11,22 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- Install all 22 packaged Claude skills, including six previously omitted workflows,
+- Preserve replacement files during lesson rollback and keep the primary error
+  when cleanup or failure-receipt writing also fails.
+- Verify the selected DSP helper's hash before and after execution.
+- Add renderer browser-capture test diagnostics for the retained 10-second
+  timeout. The historical timeout's root cause remains unknown.
+
+These changes are on main after PR #93 and are not in the published RC3 packages.
+
+## [0.8.0-rc.3] - 2026-10-06
+
+### Fixed
+
+- Restore six previously omitted workflows and install all 24 packaged Claude skills,
   with their contracts, descriptors, helper scripts and license texts. Preserve
   edited and unmanaged resources through upgrades and recovery, and check complete
   packed-skill coverage in CI.
-
-## [0.8.0-rc.3] - 2026-10-06
 
 ### Security
 
@@ -33,13 +43,16 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Restrict commentary probing and assembly to local movie containers, with
   explicit MOV/MP4 shard and output decoding. Indirect playlists are refused.
 - Align the core runtime, npm archive and plugin manifests with a new immutable
-  prerelease. The published `0.8.0rc2` archives remain unchanged; the explainer
-  companion includes the stock-media repairs in its unpublished `0.2.2-rc.1`.
+  prerelease: core PyPI `0.8.0rc3`, both companion PyPI packages `0.2.2rc1`,
+  npm `0.8.0-rc.3` under `next`, and GitHub tag `v0.8.0-rc.3` were published
+  with verified archives. The explainer companion includes the stock-media
+  repairs. Published `0.8.0rc2` archives remain unchanged; npm stable `latest`
+  remains `0.7.1` as of 2026-10-06.
 - Keep the API-first candidate's provider and optional-runtime qualification
   boundaries; this release does not establish programme-wide acceptance or
   comparative superiority.
 
-## [0.8.0-rc.2] - 2026-10-06
+## 0.8.0-rc.2 - 2026-10-06
 
 ### Changed
 
@@ -54,7 +67,7 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - This candidate does not establish provider quality, comparative superiority or
   completion of the broader capability programme.
 
-## [0.8.0-rc.1] - 2026-10-02
+## 0.8.0-rc.1 - 2026-10-02
 
 ### Added
 
@@ -416,7 +429,8 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **Error handling** — `make_tool_error()` with category, hint, and retryable flag (tools never raise)
 - **Caching** — file-based analysis cache with configurable TTL
 
-[Unreleased]: https://github.com/Galbaz1/video-research-mcp/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/Galbaz1/video-research-mcp/tree/main
+[0.8.0-rc.3]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.3
 [0.7.1]: https://pypi.org/project/video-research-mcp/0.7.1/
 [0.7.0]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.7.0
 [0.6.1]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.6.1

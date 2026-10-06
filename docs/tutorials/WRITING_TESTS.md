@@ -47,6 +47,7 @@ both change as the repository evolves.
 | `_disable_tracing` | Disables tracing configuration for tests |
 | `_isolate_dotenv` | Prevents loading the user's real config file |
 | `_isolate_upload_cache` | Redirects upload cache files to a temporary directory |
+| `_isolate_durable_jobs` | Points `VRM_JOB_DB` at a temporary SQLite database |
 | `_disable_graph_extraction` | Patches graph enrichment at its source and package export |
 | `_unwrap_fastmcp_tools` | Keeps imported tool entry points directly callable for tests |
 

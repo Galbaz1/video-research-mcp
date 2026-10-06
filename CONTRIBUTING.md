@@ -106,11 +106,10 @@ refactor(client): extract retry logic
 
 ## Architecture Overview
 
-The core mounts seven FastMCP sub-servers: video, research, content, search,
-infra, YouTube, and knowledge. Tools accept instructions and return structured
-results; Gemini output is validated against the relevant schema. Optional
-Weaviate persistence, tracing, and reranking have their own configuration and
-failure boundaries.
+The core mounts FastMCP sub-servers for research, knowledge, media, and supporting
+operations. Tools accept instructions and return structured results; Gemini
+output is validated against the relevant schema. Optional Weaviate persistence,
+tracing, and reranking have their own configuration and failure boundaries.
 
 Read [Architecture](docs/ARCHITECTURE.md) for code responsibilities and
 [Distribution](docs/PLUGIN_DISTRIBUTION.md) for installer ownership/configuration.

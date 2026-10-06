@@ -41,7 +41,7 @@ The detailed source-only [provider inspector](../../scripts/inspect_provider_rea
 is reused as a manual prerequisite when available:
 
 ```bash
-uv run python scripts/inspect_provider_readiness.py
+uv run --no-sync --locked python scripts/inspect_provider_readiness.py
 ```
 
 The npm tarball does not bundle that Python CLI, its source contracts, development
@@ -67,11 +67,11 @@ manual selection; they are not automatically registered or added as core extras.
 The env template leaves model/provider settings unset so the selected Python
 runtime owns their defaults. Global scope uses `~/.config/video-research-mcp/.env`;
 local scope uses `./.config/video-research-mcp/.env`. Local registration sets
-`VIDEO_RESEARCH_ENV_FILE` to that exact project path. The candidate Python loader
-honors it without falling back to home credentials when the selected file is
-missing. That behavior requires the candidate runtime or its separately verified
-release; an older registry package may not honor the selection. Doctor does not
-establish the running Python version or its credential-file behavior.
+`VIDEO_RESEARCH_ENV_FILE` to that exact project path. The current
+[Python loader](../../src/video_research_mcp/dotenv.py) honors it without falling back
+to home credentials when the selected file is missing. Match the installed runtime to the selected package declaration; older
+versions may behave differently. Doctor does not establish the running Python
+version or its credential-file behavior.
 
 `--force` explicitly replaces modified workflow assets. It does not force a
 customized MCP entry or overwrite credential values. Every install/update creates
@@ -118,6 +118,34 @@ telemetry. Command receipts expose hashes/IDs and retained counts, not backup
 contents. Snapshot and operation sizes are bounded. Preserve this private history
 until recovery is no longer needed; removing it is an explicit user operation.
 
+## Choose the persistence route
+
+These stores have separate configuration and purposes:
+
+| Data | Prerequisite |
+| --- | --- |
+| Session originals and derived profiles | Set `GEMINI_SESSION_DB` to a private SQLite path before startup. An unset value keeps sessions in memory; derived profile `get`/`set`/`delete` require persistence and explicit workspace/notebook scope. |
+| Research, ingestion, batch and render jobs | Keep the SQLite file selected by `VRM_JOB_DB` and its retained artifacts. The default is `~/.local/state/video-research-mcp/jobs.sqlite3`. |
+| Local corpus, collections, wiki and notebooks | Supply a local `.sqlite3` `index_path`. `corpus_retrieve` initializes the corpus; wiki/notebook citations require matching observations. These tools share the corpus independently of Weaviate. |
+| Weaviate knowledge | Set `WEAVIATE_URL` for a reachable deployment and `WEAVIATE_API_KEY` where required. Configure a compatible vectorizer and its provider credentials. |
+
+For Weaviate, `knowledge_schema` describes the accepted collection properties;
+`knowledge_ingest` inserts those properties explicitly. `source_ingest` retains
+and extracts originals but does not index them. See the
+[knowledge-store guide](../tutorials/KNOWLEDGE_STORE.md) for deployment setup.
+The first Weaviate client use creates missing collections and adds missing schema
+properties. Vectorizer migration is disabled unless `WEAVIATE_AUTO_MIGRATE=true`;
+review that choice before using an existing store.
+
+`WEAVIATE_VECTORIZER` selects `openai`, `weaviate` or `ollama`. When unset, runtime
+configuration selects `openai` if `OPENAI_API_KEY` is present, otherwise `weaviate`;
+the deployment must support the selected module. The repository's Docker Compose
+service uses `text2vec-openai` and an existing external data volume, so it needs
+matching OpenAI configuration. `COHERE_API_KEY` enables Cohere reranking unless
+`RERANKER_ENABLED=false`; `FLASH_SUMMARIZE=false` disables the optional Gemini
+post-processing of knowledge-search hits. These provider operations have separate
+account and disclosure requirements.
+
 ## Optional runtimes and client media support
 
 The [Qwen integration manifest](../../integrations/qwen/manifest.json) records the
@@ -129,15 +157,13 @@ future executable selection needs its own version/platform/hash, dependency lock
 and source/license notices before a separately authorized installation.
 
 Native image support must be verified against the **current server** discovery,
-input/output schemas and actual MCP `ImageContent` transport. The candidate source
+input/output schemas and actual MCP `ImageContent` transport. The current source
 registers `image_crop` over the bounded PNG helper. It emits native PNG
 `ImageContent` up to 1 MiB and the same typed structured metadata for
-`include_image=false` text-only clients. Wider formats and media windows remain in
-`vrm-0e8.3.2`. The published core package used by current version-pinned examples
-has the earlier public baseline; candidate source/build and verified registry
-release are separate identities. For candidate testing, select its already
-installed local environment explicitly rather than resolving the registry example.
-Doctor reports transport as unprobed because it does not launch that environment.
+`include_image=false` text-only clients. Other image operations use the separate
+`image_edit` tool. Package declarations select a pinned runtime; source
+registration does not prove which package a client is running. For source-checkout testing, select its already installed environment
+explicitly. Doctor reports transport as unprobed because it does not launch it.
 The npm config examples do not establish native display, crop correctness,
 provider-media accuracy or comparative acceptance.
 

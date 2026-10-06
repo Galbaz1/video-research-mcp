@@ -62,7 +62,9 @@ check; a green local suite does not establish that it ran.
 - [ ] The registry npm installer executes `--check`; isolated journeys cover
   install, upgrade, preservation, and uninstall behavior.
 - [ ] Native Codex installation from the exact npm registry version passes fresh
-  session skill/MCP discovery and a read-only configuration call.
+  session skill/MCP discovery and a read-only configuration call. Record whether
+  npm acquired fresh network bytes or reused an existing same-version cache;
+  retain unknown acquisition when it cannot be distinguished.
 - [ ] The client is restarted; active registration/version is inspected and
   `infra_configure()` is read without arguments.
 - [ ] Authorized live provider smoke is recorded, or live inference remains

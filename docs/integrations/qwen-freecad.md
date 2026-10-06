@@ -1,5 +1,12 @@
 # Owned local Qwen FreeCAD session
 
+This optional adapter serves the original 14 Qwen FreeCAD tool specifications
+from an explicit external source checkout and a separate compatible Python
+environment. It owns one disposable GUI process, profile, data directory,
+temporary directory, working directory, job receipts and loopback port.
+`get_async_result` adds completion readback for the adapted `execute_code_async`
+handler. Ordinary installation does not launch or enable the integration.
+
 Source implementation is verified; complete native acceptance is **blocked**.
 The fixed twenty-control cohort retained its first controller parsing failure
 and one correction. The rerun reached live fifteen-tool discovery, the fourteen
@@ -10,16 +17,6 @@ binary and home hashes/modes. No third journey ran. Saved/exported/reloaded
 geometry, the requested viewport, parts routes, async receipts and actual FEM
 remain unrun in this cohort. The component's 68 focused and 2,998 root tests
 establish source/stub contracts; they do not close `vrm-0e8.9.5`.
-
-
-This adapter serves the original 14 Qwen FreeCAD tool specifications from an
-explicit external source checkout and a separate compatible Python environment.
-It owns one disposable GUI process, profile, data directory, temporary directory,
-working directory, job receipts and loopback port. It adds `get_async_result` to
-read completion evidence for the adapted `execute_code_async` handler. Ordinary
-installation does not launch or enable this integration. Actual native geometry,
-image, save/reload and FEM acceptance are separate from the unit tests and source
-admission; consult the selected descriptor's current receipt before claiming them.
 
 The [selection descriptor](../../integrations/qwen/freecad.json) binds 39 execution
 sources and three complete source grant/notice bodies from
@@ -138,8 +135,12 @@ monitor is stopped and joined. Logs and receipts survive closure.
 
 FEM configuration selects the exact descriptor paths for Gmsh and CalculiX,
 one Gmsh thread, two solver CPUs, an owned custom working directory and
-`OverwriteSolverWorkingDirectory=false`. The selected native solver adapter binds each explicit working-directory setup to the solver's `WorkingDir`, so installed FreeCAD's parameterless reset inside `run()` retains the original tool's reported directory. Foreign directories are refused before native setup. The original FEM tool runs synchronously on the GUI
-thread, with its wait capped at 60 seconds without expanding a shorter caller timeout. Native acceptance
+`OverwriteSolverWorkingDirectory=false`. The selected solver adapter binds each
+working-directory setup to the solver's `WorkingDir`. FreeCAD's parameterless
+reset inside `run()` therefore retains the original tool's reported directory.
+Foreign directories are refused before native setup. The original FEM tool runs
+synchronously on the GUI thread, with its wait capped at 60 seconds without
+expanding a shorter caller timeout. Native acceptance
 must read back actual geometry, material quantities and units, fixed and
 force/pressure face references, positive mesh node/volume counts, solver input,
 nonempty result arrays and retained output. A binary hash, readiness ping or

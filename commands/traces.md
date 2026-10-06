@@ -18,7 +18,7 @@ Then restart Claude Code to reconnect the `mlflow-mcp` MCP server.
 
 ## Default Experiment
 
-Use experiment name `video-research-mcp` unless the user specifies otherwise. Resolve the experiment ID by searching with that name first.
+Use the configured experiment name (`video-research-mcp` by default). Resolve its ID through an available experiment lookup or the operator; `search_traces` requires the ID. Do not assume experiment 0.
 
 ## Context Discipline (mandatory)
 
@@ -83,7 +83,7 @@ Present span tree with timing. **Never** request `data.spans.*.attributes` unqua
 
 ### `feedback <trace-id> <score>`
 
-Log human feedback (score 1-5):
+Log the supplied human feedback (score 1-5); do not invent a human assessment:
 
 ```javascript
 log_feedback({

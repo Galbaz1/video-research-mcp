@@ -1,24 +1,21 @@
-# Local and explicitly configured stock materials
+# Local material assembly and parked stock adapters
 
 The companion mounts only `explainer_materials_assemble` on `materials_server`.
-Delivery uses existing own/generated local images or local video with explicit
-source and rights pins. Optional Pexels/Pixabay search and download are parked:
+Assembly uses existing local images or video with explicit source and rights
+pins. Optional Pexels/Pixabay search and download are parked:
 `explainer_materials_search` and `explainer_materials_download` retain their
 implementation and source tests in `tools/materials_stock.py`, whose
 `stock_server` is unmounted. Normal companion tool imports do not import
 `materials_remote`, and public discovery omits both stock wrappers.
 
-Root owns installation, review, adoption and native admission. Source tests use
-dummy media and mocked codec/network boundaries; no native media or provider
-journey has been run. Parking stock adds no HTTP implementation, dependency,
-feature flag or provider activation.
+Source tests use dummy media and mocked codec/network boundaries. The local native
+assembly and remote provider journeys remain unqualified. Parking stock preserves
+the transport implementation and its known failures; it does not activate a provider.
 
 Assembly uses an existing project selected through the companion's configured
 projects root. Inputs are canonical relative project paths and caller-observed
-SHA256 values. The companion's existing `confined_path`, `open_regular`,
-`file_pin`, `project_object`, `plan_transaction`, `atomic_write`,
-`run_media_process`, `codec_executables`, and `qualify_render` contracts are
-reused directly. The planning transaction serializes cooperative project
+SHA256 values. Assembly reuses the companion's path, file, process and media
+qualification helpers. The planning transaction serializes cooperative project
 writers; it is not an authentication or filesystem isolation mechanism.
 
 ## Local assembly
@@ -108,8 +105,8 @@ private addresses, malformed bodies, excessive metadata and non-200 responses
 are refused; provider errors are not retried. Search exposes retained partial
 results and the failed page when later pagination fails.
 
-The retained HTTP/body code targets20seconds per search/download and individual
-socket waits of at most10seconds. Known finding R493-F1 remains unfixed: response
+The retained HTTP/body code targets 20 seconds per search/download and individual
+socket waits of at most 10 seconds. Known finding R493-F1 remains unfixed: response
 status/header reads can exceed the absolute deadline and delay cooperative
 cancellation, worker joining and release of the held project transaction. This
 parked transport remains unqualified; parking is not a deadline fix or security
@@ -130,7 +127,7 @@ provider runtime.
 ## Manifest, cache and failure boundaries
 
 `materials-manifest.json` is a versioned, atomically replaced project manifest,
-bounded to1MiB and64combined output/download entries. Existing malformed or
+bounded to 1 MiB and 64 combined output/download entries. Existing malformed or
 oversized data is refused rather than reset. A download receipt retains initial
 and final URL, exact SHA256, size, configuration pin, rights/license/credit,
 retrieval time, illustrative use and `media_qualified: false`. Assembly receipts
@@ -158,13 +155,14 @@ helpers and cooperative locking do not establish hostile filesystem isolation
 against every concurrent parent-directory substitution; independent review and
 native qualification remain open.
 
-Product bounds are16clips,300seconds total,120seconds per clip,64MiB per
-source/output,128MiB aggregate assembly input,90seconds outer assembly deadline,
-15seconds render attempt plus the existing qualifier budgets. Search has at
-most3pages,128renditions/page,1MiB per response and1MiB retained metadata;
-downloads have64MiB response ceilings. Source tests use only small fixtures,
-each command bounded to90seconds,2MiB log,1GiB sampled main-process RSS and
-16MiB aggregate test artifacts. Ambient dependency IO remains UNKNOWN.
+Product bounds are 16 clips, 300 seconds total, 120 seconds per clip, 64 MiB per
+source/output, 128 MiB aggregate assembly input and a 90-second outer assembly
+deadline. A render attempt has 15 seconds plus the existing qualifier budgets,
+within that outer deadline. Retained search is bounded to three pages,
+128 renditions/page, 1 MiB per response and 1 MiB retained metadata; downloads
+have a 64 MiB response ceiling. Recorded source tests used small fixtures with
+90-second commands, 2 MiB logs, 1 GiB sampled main-process RSS and 16 MiB aggregate
+artifacts. Ambient dependency IO remains UNKNOWN.
 
 ## Original acceptance mapping and grant boundary
 
@@ -184,10 +182,7 @@ dependency is required at startup. The project implementation follows this
 repository's MIT license. Neither MIT grant supplies stock media rights,
 provider terms, download authority, credit requirements or factual support.
 
-The companion source server mounts `materials_server` from
-`video_explainer_mcp.tools.materials` with only the local assembly contract. `tools.materials_stock.stock_server` is
-unmounted; its search/download contracts are retained, not admitted. Configured projects,
-codecs, asset rights and source permissions require qualification before native admission.
-The remote transport connects to the selected public DNS address with its actual IPv4 or
-IPv6 socket family and retains TLS hostname validation. No new dependency or provider
-activation is required. Root alone updates shared registry, inventory, ledger and native status.
+The parked remote transport selects the actual IPv4 or IPv6 socket family for
+the pinned public DNS address and retains TLS hostname validation. Configured
+projects, codecs, asset rights and source permissions still require qualification
+before native admission. The mounted assembly tool does not expose that transport.

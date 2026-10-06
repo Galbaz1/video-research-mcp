@@ -41,14 +41,14 @@ An absent grant or account prevents all provider count/generation calls.
 | --- | --- | --- |
 | `media_caption_events` | Optional `instruction` | Chronological audio, visual and fused occurrences |
 | `media_count_events` | Required nonempty `target` | Every admitted occurrence and a server-derived count |
-| `media_ground_events` | Required nonempty `query`; strict integer `top_k` in1..128, default10 | All admitted matches, score-ranked selection and explicit selection population |
+| `media_ground_events` | Required nonempty `query`; strict integer `top_k` in 1..128, default 10 | All admitted matches, score-ranked selection and explicit selection population |
 | `media_analyze_music` | Optional `instruction`; media type fixed to `audio` | Timed audio-only sections with inferred instruments, moods, tags and optional tempo/key/meter |
 
 Each task has its own provider response schema and prompt. Counting accepts
 occurrence records, not an independent model count. Grounding retains every
 admitted record in `records`; `matches` contains the ranked top-k selection.
 `grounding_population` reports available and retained records plus the exact
-truncated IDs. Scores in0..1 are explicitly uncalibrated. Their order is not a
+truncated IDs. Scores in 0..1 are explicitly uncalibrated. Their order is not a
 confidence certificate.
 
 Music uses real selected audio only, including when the file is a video
@@ -85,7 +85,7 @@ results retain metadata rather than paths or raw payload bytes.
 | --- | --- |
 | `planned` | Evidence prepared; no inference, `count=null` |
 | Complete `events` | Nonempty admitted inference records; count derives from retained records |
-| Complete `empty` | Valid empty supported population; count0 for a counting task, without claiming physical absence |
+| Complete `empty` | Valid empty supported population; count 0 for a counting task, without claiming physical absence |
 | Complete `abstained` | Explicit reasons with no records; counting total is unknown |
 | `partial` | Earlier completed windows retained after a later failure or final source rejoin failure; total is `null` |
 | `failed` / `error` | No complete window accepted; no accepted total |
@@ -98,11 +98,13 @@ preparation cleanup; it does not produce an accepted result.
 
 ## Bounded execution
 
-Limits remain the existing AV limits: selection at most120seconds, at most4
-windows,128 aggregate frames,48 frame references per window,24 count/generation
-calls,8MiB prepared payload,64MiB serialized transmission ceiling and120seconds
-for the operation. Responses are at most128KiB JSON per window. Local model-time
-validation tolerance is1e-6seconds. Requests can choose smaller allowances.
+Limits are 120 selected seconds, 4 windows, 128 aggregate frames, 48 frame
+references per window, 24 count/generation calls, 8 MiB prepared payload and
+64 MiB serialized transmission. One operation deadline covers preparation and
+inference: the smaller of `limits.timeout_seconds` and
+`MEDIA_ACQUIRE_TIMEOUT_SECONDS`, capped at 120 seconds. Responses are at most
+128 KiB JSON per window. Model-time validation tolerance is 1e-6 seconds.
+Requests can choose smaller allowances.
 
 The exact task schema is used for structured generation, serialized input byte
 accounting and the request digest. Counting and generation transmit the same

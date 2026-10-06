@@ -1,51 +1,60 @@
 # Updating the Plugin
 
-An upgrade has two parts: npm updates Claude Code workflows and registration;
-PyPI supplies the research runtime launched by that registration. Verify both
-before treating the upgrade as active.
+This guide selects core `0.8.0-rc.3` (Python `0.8.0rc3`). Pin the intended version:
+`@latest` selects the stable npm channel, not this prerelease. Plugin assets and
+the Python runtime have separate installation checks.
 
-## User upgrade
+## Codex native plugin
 
-1. Inspect the installation:
+Back up edits and unowned files outside the managed plugin cache. Update the
+marketplace's npm version, then repeat `codex plugin add` for that catalog entry.
+Codex replaces managed cache contents, including same-version local edits.
+Follow the [native plugin guide](PLUGIN_DISTRIBUTION.md#native-codex-plugin) for
+portable catalog examples and migration from a manual server entry.
+
+Start a fresh session, inspect the enabled plugin and runtime version, and call
+`infra_configure()` without arguments. Record fresh network acquisition separately
+from reuse of an existing same-version cache. Neither proves provider quality.
+
+<a id="user-upgrade"></a>
+
+## Claude Code workflows
+
+1. Inspect the scope you use:
 
    ```sh
-   npx video-research-mcp@latest --check
-   ```
-
-2. Back up custom workflows, the client configuration, and the ownership manifest.
-   Upgrade the scope you use:
-
-   ```sh
-   npx video-research-mcp@latest --global
+   npx video-research-mcp@0.8.0-rc.3 --global --check
    # Or, from the project root:
-   npx video-research-mcp@latest --local
+   npx video-research-mcp@0.8.0-rc.3 --local --check
    ```
 
-3. Read the result. Ordinary upgrades preserve modified workflows and differing
-   files without matching ownership evidence. Review skipped files before using
-   `--force`: it replaces those files and may delete modified obsolete files.
-   The shared `.env` retains existing values.
-4. Inspect registration. The installer refreshes managed server commands and
-   arguments while retaining custom environment and other fields. A malformed
-   configuration may have produced a warning even when files installed.
-5. Restart the MCP client. Confirm the active package version and call
-   `infra_configure()` without arguments to inspect models/settings.
-   `/gr:doctor quick` helps diagnose configuration and optional integrations.
+2. Back up custom workflows, client configuration, and the ownership manifest.
+   Upgrade that scope:
 
-The manifest reports workflow installation; `infra_configure()` reports runtime
-configuration. Neither proves a live inference succeeded. Use a small authorized
-analysis for that separate check and inspect its returned evidence.
+   ```sh
+   npx video-research-mcp@0.8.0-rc.3 --global
+   # Or, from the project root:
+   npx video-research-mcp@0.8.0-rc.3 --local
+   ```
 
-Keep credentials in the process environment or
-`~/.config/video-research-mcp/.env`, and omit their values from diagnostics.
-Selected content is processed by configured providers. Companion servers and
-the external renderer need separate upgrades; see the
-[explainer](../packages/video-explainer-mcp/README.md) and
-[scene-agent](../packages/video-agent-mcp/README.md) guides.
+3. Inspect skipped files. Ordinary upgrades preserve modified or unowned workflows.
+   `--force` can replace them and delete modified obsolete files. The selected
+   credential template retains existing values.
+4. Inspect registration. Only unchanged, installer-owned entries are updated;
+   customized and unmanaged entries remain. Malformed configuration stops
+   installation before writes; repair it before rerunning.
+5. Restart Claude Code, inspect the active runtime version and call
+   `infra_configure()` without arguments. `/gr:doctor quick` checks setup and
+   optional integrations.
 
-For rollback, restore backed-up custom workflows and pin the runtime registration
-to the previously verified version. Recheck registration after an installer run,
-because it replaces managed commands and arguments.
+Keep credentials in the process environment or the selected user/project `.env`,
+and omit values from diagnostics. Analysis sends content to configured providers.
+The [explainer](../packages/video-explainer-mcp/README.md),
+[scene-agent](../packages/video-agent-mcp/README.md) and external renderer require
+separate upgrades. Later source fixes do not change already published archives.
+
+For rollback, restore backed-up workflows and pin the runtime to the previously
+verified version. Recheck the registration after any installer run.
 
 ## Maintainer verification
 

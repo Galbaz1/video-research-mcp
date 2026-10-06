@@ -16,7 +16,7 @@ is read by exact whole-file SHA256 before the optional import; record/result and
 source/time references must match. No foreign engine receives a core Python
 dependency, source file path to search, Gemini account or callable MCP catalog.
 
-The selected optional API is Deep Agents0.7.18, inspected from its exact source
+The selected optional API is Deep Agents 0.7.18, inspected from its exact source
 wheel and MIT grant. The wheel SHA256 is
 `f3a9a4087609ea7dc8a49e31098eae79f7d791ac580be57fbebbca17931dc4f0`.
 The five originally mapped GPT Researcher consumer/tool/agent bodies remain at
@@ -55,8 +55,8 @@ python -m examples.deepagents_report \
 ```
 
 The model string is operator configuration rather than a durable default.
-Output is created exclusively before inference. The operation has a120second
-deadline, graph recursion limit8 and1MiB report representation ceiling. A
+Output is created exclusively before inference. The operation has a 120-second
+deadline, graph recursion limit 8 and 1 MiB report representation ceiling. A
 successful adapter outcome requires an actual specialist source-tool return and
 the exact source reference in both structured references and report text.
 Missing calls/references and failures remain recorded outcomes. Cancellation

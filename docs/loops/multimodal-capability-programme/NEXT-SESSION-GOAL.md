@@ -1,5 +1,11 @@
 # Goal for a fresh session: finish the multimodal programme
 
+> **Historical continuation — October 4, 2026.** This is the original session
+> objective and status snapshot. Before reusing its prompt, read the
+> [canonical handoff](/Users/fausto_home/Coding/video-research-mcp/.claude/handoff.md),
+> current [project instructions](../../../AGENTS.md) and the active assignment.
+> Use Beads for live status and current instructions for routing and launch scope.
+
 Prepared October 4, 2026. No previous chat context is required. Read the handoff first, then execute this goal. **Planning is complete; implementation and acceptance continue.** Beads owns current status and dependencies; this file provides the next-session objective, sequence and completion test.
 
 ## Copy this into the fresh session

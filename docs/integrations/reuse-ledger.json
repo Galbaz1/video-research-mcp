@@ -554,7 +554,7 @@
         },
         {
           "target_path": "docs/integrations/ONBOARDING.md",
-          "target_sha256": "ad49bb59d98581b07bd78cd433823faf432be2f8ebd311b63adc5ce0f7443d6f",
+          "target_sha256": "fe7f475eec3430270d1c688a85362e6fdfe35720572708b9204fae570c627456",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         }
       ]
@@ -762,7 +762,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/IMAGE_EXPORTS.md",
-          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
+          "target_sha256": "97cdc3278aa34b458682d8cf1d29f05bd48f217371050dd901e36434cee2d412",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -1004,7 +1004,7 @@
         },
         {
           "target_path": "docs/integrations/IMAGE_VISION.md",
-          "target_sha256": "f0e37fd76c592715ab98bfe0c3b3a23fddd178c7fddd7f761b240c739dd09542",
+          "target_sha256": "17cdb1a5017581edf4115f8f2a7c4f069a3fb0183a1a6bb6a7801f203489dc37",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -1035,12 +1035,12 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "05054d5a3e5804e0c5bc9a74dcf63bb7aaf2c3c348e6274f4a5f300518926c64",
+          "target_sha256": "470d88dfdf9433a6c24ca7dcbd9839300d7973a8568e7b349e1eef590934b7bc",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
+          "target_sha256": "27416ea06ce7ede57f84af2336e5f1a5f4820f9c1aa7eaca27f667131af6be05",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred.",
           "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
@@ -1207,7 +1207,7 @@
         },
         {
           "target_path": "docs/integrations/IMAGE_EXPORTS.md",
-          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
+          "target_sha256": "97cdc3278aa34b458682d8cf1d29f05bd48f217371050dd901e36434cee2d412",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1299,7 +1299,7 @@
         },
         {
           "target_path": "docs/integrations/JOINT_AV_PERCEPTION.md",
-          "target_sha256": "c256ccae0471df886f82f32c689895347eeeccb812f25f8ec81bba25d6a59071",
+          "target_sha256": "4a285c4cc93dcc493dd3fadaa739b6310907ef5eb39ed07d83460bf6d0ff87d0",
           "provenance": "Independently authored joint sampled-frame and continuous PCM evidence route using accepted Gemini client, snapshot, PTS and full-audio readback. Exact source-relative window labels, strict separate spoken/visible model claims, fixed transient-only attempts, terminal auth/quota, per-transmission token/byte reservations and credential redaction. Four pinned Qwen files are requirements only; no foreign transport/body/media/weight transferred. Integration contracts and measured clocks do not establish live perception quality."
         },
         {
@@ -1380,7 +1380,7 @@
         },
         {
           "target_path": "docs/integrations/audio-transcription.md",
-          "target_sha256": "84bf43a1c40832c17af5ce98d9f525bf19e16020f78da94a9d8758a468b7c16c",
+          "target_sha256": "7254d41a962030784371d2c3f12a5dd03a32cb1d79189f097541174c542d87e1",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         },
         {
@@ -1452,7 +1452,7 @@
         },
         {
           "target_path": "docs/integrations/local-asr.md",
-          "target_sha256": "a63a4b6e3b80fc1bd8725c7e951371d62c82a6fd4d8dc5573d8c3f75bfc32fb4",
+          "target_sha256": "f230ba90ff3ab1a1645e81972301010fd454e034a2d148118b701b237575b9d1",
           "provenance": "Independently authored optional timed loopback source, with cold runtime admission and scalar/value/boolean boundaries. Native source MCP qualification returned48 English/60 Dutch words, exact PCM, five exports and readback; all initial failures remain retained. Final installed-source verification is separate. No foreign runtime, weights, speech or source bodies bundled; independent acoustic/alignment/speaker accuracy, product/comparison/release remain unqualified."
         }
       ]
@@ -1528,7 +1528,7 @@
         },
         {
           "target_path": "docs/integrations/AV_EVENTS.md",
-          "target_sha256": "6d634d6748746a84460671eb3f147a50668e39553ea9e84f0d1211c929484a89",
+          "target_sha256": "7f507b2111e822979e1bd6f93aeefccd1892ffb48fc76540a10cdaf1b2961545",
           "provenance": "Independently authored AV caption/count/ground/music task contracts over existing measured local preparation and configured Gemini budgets. Retained supported records determine counts, music uses actual audio windows, source clocks are measured while semantics/boundaries/scores remain model inference. Pinned Qwen texts reference-only; no foreign transport, automatic upload, code/model/assets imported or bundled. Owned source adoption does not establish live semantic/human/comparison/release acceptance."
         },
         {
@@ -1612,7 +1612,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-segmentation.md",
-          "target_sha256": "cdab9fe5576d7e8687cf8b79c115a88009e72f60cee4306309dc9ccbb5c80dbf",
+          "target_sha256": "cd860bb2464aa22862f1050403024cd2fe8156def391cf4235228b654f7132dc",
           "provenance": "Independent optional raster/service orchestration using existing own snapshot, image manifest/native delivery and bounded HTTP helpers. Exact pinned Qwen/SAM references only; no foreign code/model/runtime/assets copied/imported. Mock-contract acceptance does not establish inference/model rights/readiness or semantic truth."
         },
         {
@@ -1676,7 +1676,7 @@
         },
         {
           "target_path": "docs/integrations/search-providers.md",
-          "target_sha256": "984fe505c3ac6994be2d477315d24317d67c47f00b936a878339e25f716af4f3",
+          "target_sha256": "ae03ee347175f20902322048c68a9739a90bed766b72a1d60cf4c2395ef5c777",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -1751,7 +1751,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/qwen-search.md",
-          "target_sha256": "511e9471554552ed41ebb2716f9f93fc7d3f6127876d716266f378b39161d486",
+          "target_sha256": "5c6f34d96a6841867acda591dbf01e194b3f8ced0ed3e211f8f3961ed2431b82",
           "provenance": "Own independently authored source-frame publication/readback/Lens adapter and appearance/text/context verification workflow; no Qwen or Uguu bodies, runtime, assets or weights copied/imported."
         },
         {
@@ -1893,7 +1893,7 @@
         },
         {
           "target_path": "docs/integrations/video-memory-av.md",
-          "target_sha256": "79a001ed1c1815f91eb55e974ba018b8e8e831f35b8697d26bbae1a0b435784f",
+          "target_sha256": "064f6a5631cb974be47f6e491823940719d1666689de8b3b09cb900aa7263671",
           "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN. R152 actual installed addressee alignment exposed C4 defect. R156 independently authored conservative same-person self-introduction guard and targeted regressions: first five failures retained, repaired AV family39 pass. Repair independent review/installed supplement pending; prior native epoch unchanged."
         },
         {
@@ -1930,7 +1930,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/video-memory-lifecycle.md",
-          "target_sha256": "44d4ad59e54c4026a58eee3f4a7a34b71feafd0115a05ee84f07caaff71b598c",
+          "target_sha256": "1badec93788c8512cdde546e24a16c452f6f207886011c01becb6bda5e5c33d6",
           "provenance": "Independently authored source behavior. R191 source review and R193/R196 repairs independently reviewed no material findings; Root current183 mocked source tests PASS across affected families. No foreign code/runtime copied. Installed public journey and feature acceptance OPEN; frozen development disagreements retained."
         },
         {
@@ -2220,7 +2220,7 @@
         },
         {
           "target_path": "docs/integrations/measured-narration.md",
-          "target_sha256": "3b73c543266f1d4efb6e515fb79ec932bdfe9dda0df1d484b9a4fc5be3abcc6c",
+          "target_sha256": "a0bea010fde760fa99465814669531d216cd8bf9ea50edc8904eb482dca25965",
           "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
         },
         {
@@ -2368,7 +2368,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/movie-commentary.md",
-          "target_sha256": "a20ee8931dd4ce8fe53ab8be0d9d2a31f6c2982ce0d7845fb2451d624c4b771f",
+          "target_sha256": "e6b5bb0774823f2c1dac3f783aa135346ebd572d7cfe56eae4b92c859599798a",
           "provenance": "Independent own movie-commentary implementation informed by Qwen original Apache-2.0 contracts; no foreign code/font/model/media/runtime copied or imported. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -2504,7 +2504,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-dubbing.md",
-          "target_sha256": "7e875f3ef81b4c4a3d692270a8879ccb6834bbde7201de0bb8a00afbeb531368",
+          "target_sha256": "af827e1f73ca4c4a5da723c64222c647764661f77aafc92128cf366ae5272106",
           "provenance": "Independent optional Qwen dubbing service adapter, nine public tools over all eight mapped upstream tools/four workflows; R129 issues repaired in R131, source/mock checks only; independent repair review and actual native delivery remain OPEN. No foreign model/runtime/source assets bundled."
         },
         {
@@ -2638,7 +2638,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-education.md",
-          "target_sha256": "cb474837d551fad43dad35074a6b2acfd746f5beb221e1a3423c6f0f8dcd29ec",
+          "target_sha256": "62c568aa3da5a7ab1c200c39644aad1f9ff09390c47ab84aa34deeef7ff4f2a1",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -2814,7 +2814,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-blender.md",
-          "target_sha256": "5186789b30f3862b660356b48130a20b5549f17903abb6ba3e82349a65108891",
+          "target_sha256": "3829450b0bdad427f62ced60cdfb9308e5bfc9dd79858e618c48781d5fa8c32f",
           "provenance": "Owned local startup/process/receipt policy around unmodified separately selected pinned22tools/addon. Full source/grant eligibility joined; no Qwen runtime/code/assets/binary transferred into core or product archives. Native acceptance separately receipted."
         },
         {
@@ -2871,7 +2871,7 @@
         },
         {
           "target_path": "docs/integrations/qwen-freecad.md",
-          "target_sha256": "8245c602900949e3f9509587a6d65f165f208b9f767540ba03b5d4bd7e0ba222",
+          "target_sha256": "a3c38a8ba979b76667649abc7e9eb8da053cd129941e075518840e0974132b3c",
           "provenance": "Owned local source/binary admission, disposable process/document, completion and FEM result policy around unmodified external pinned14tools/addon. Full selected MIT/Apache grants joined; no foreign runtime/code/assets/native binary transferred into archives. Actual native acceptance remains separately receipted."
         },
         {
@@ -3167,7 +3167,7 @@
         },
         {
           "target_path": "docs/integrations/audio-transcription.md",
-          "target_sha256": "84bf43a1c40832c17af5ce98d9f525bf19e16020f78da94a9d8758a468b7c16c",
+          "target_sha256": "7254d41a962030784371d2c3f12a5dd03a32cb1d79189f097541174c542d87e1",
           "provenance": "Independently authored captions-first exact-source transcript/timing/export and explicit optional provider component. No foreign bodies, runtime, checkpoints or assets imported/bundled. Source assertions and model inference remain distinct; actual speech/alignment/speaker service accuracy, human audit, product/comparison/release remain unqualified."
         },
         {
@@ -3239,7 +3239,7 @@
         },
         {
           "target_path": "docs/integrations/local-asr.md",
-          "target_sha256": "a63a4b6e3b80fc1bd8725c7e951371d62c82a6fd4d8dc5573d8c3f75bfc32fb4",
+          "target_sha256": "f230ba90ff3ab1a1645e81972301010fd454e034a2d148118b701b237575b9d1",
           "provenance": "Independently authored optional timed loopback source, with cold runtime admission and scalar/value/boolean boundaries. Native source MCP qualification returned48 English/60 Dutch words, exact PCM, five exports and readback; all initial failures remain retained. Final installed-source verification is separate. No foreign runtime, weights, speech or source bodies bundled; independent acoustic/alignment/speaker accuracy, product/comparison/release remain unqualified."
         }
       ]
@@ -3614,7 +3614,7 @@
         },
         {
           "target_path": "docs/integrations/LIGHTRAG.md",
-          "target_sha256": "c2660a655103d8c4afe9fdf7e0e725951fbe371043694e8a39995230fe3fc10e",
+          "target_sha256": "69cb5c172a42a8161ea3827571e434d743fce099c4484d1b1f6e3bc4a456e5ab",
           "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-implementation. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         },
         {
@@ -3648,7 +3648,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/collections.md",
-          "target_sha256": "2b531a1c0cbd856984f0395200856a42ccbd55c326f3b6d4dfb51c83b5b1590e",
+          "target_sha256": "01b1582bea818783a843fdcfd4cdb2de053d8f9fdbcd4aaa2570f79b0f404cb6",
           "provenance": "Independent own collections implementation; no upstream code/runtime copied or imported. MIT vidlens grant retained unchanged. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -3772,7 +3772,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/wiki.md",
-          "target_sha256": "4d099cb0986ffeb3fa87a70a3c60975d9fb90473b0a08d8ca114e7a5c092f66e",
+          "target_sha256": "542f965764124b3716a223495d3051e620d5a991942e196e860581d23c4c571a",
           "provenance": "Independent own wiki reimplementation; mcptube MIT declaration has no grant file, so no copying/importing or foreign runtime. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -3875,7 +3875,7 @@
         },
         {
           "target_path": "docs/integrations/evidence-export.md",
-          "target_sha256": "b93948488e8e63f43d4c4b0fe4a7c97368997e290840f19540002c8c749a2305",
+          "target_sha256": "9d75f38b19d033411b0e45d6eeaee92a4c934ea1c31110106283a64fdcbf16c1",
           "provenance": "Independent first-party canonical corpus/wiki/collection offline export; no foreign code/assets/runtime copied or imported. R301 ownership P2 and R312 identity-inspection P2 retained; RootR3092genuineRED then23PASS, R3141genuineRED then24PASS/Ruff. FinalR319 independent NO_MATERIAL_SOURCE_FINDINGS. Root source mount117; SOURCE_ONLY: installed/native/browser/image decoding/semantic truth/release remain UNQUALIFIED."
         }
       ]
@@ -3988,7 +3988,7 @@
         },
         {
           "target_path": "docs/integrations/audience.md",
-          "target_sha256": "cd0561f394747ffcdbd24f16d081e5e16ce228deea9d0e65446098b15f781f9a",
+          "target_sha256": "040ec01d307756dc94aa7a2299c5b8c07898f9c0460cc383c0069d8e23c3137a",
           "provenance": "Independent first-party canonical corpus comment samples and deterministic audience metrics. No foreign source copied/imported. R26618unitPASS; R284independent NO_MATERIAL_SOURCE_FINDINGS_WITH_PROTOCOL_DEVIATION (scope detector GitHub metadata read retained). Root SOURCE_ONLY mount; actual installed/native/heuristic quality/YouTube platform completeness unqualified."
         },
         {
@@ -4107,7 +4107,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/grounding.md",
-          "target_sha256": "93f15c7da52d72b5c07328fd7aca6a2923bc1242f22b0b05f0c7b0227a019c1a",
+          "target_sha256": "8560bbb2bdde7898c5f95c0157961902a553f1617b4b93a76f8ff91a570baf42",
           "provenance": "Independently authored source behavior. R191 source review and R193/R196 repairs independently reviewed no material findings; Root current183 mocked source tests PASS across affected families. No foreign code/runtime copied. Installed public journey and feature acceptance OPEN; frozen development disagreements retained."
         },
         {
@@ -4200,7 +4200,7 @@
         },
         {
           "target_path": "docs/integrations/corrections.md",
-          "target_sha256": "b03ea854b56b5a865f947866b7db7aa71e5f90a6daf88274823691741bf268b5",
+          "target_sha256": "684fc6b3d72ddc3e4de97256e648bdb94196fd5598d8c90514b2c3c07dafbe43",
           "provenance": "Independent first-party correction/replay and bounded existing result/context cache invalidation. R401 source affected checks/failures retained; R408 stale unrelated context P2, R414 minimal causal repair, R418 independent source CLEAN. No foreign source/new cache framework/provider copied. Current installed positiveC4/native replay and grounding parent still unqualified."
         },
         {
@@ -4235,7 +4235,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/IMAGE_EXPORTS.md",
-          "target_sha256": "506e7190ebee3bb6db6cc1f474c4b866913badb352613ab23370c278c12480ad",
+          "target_sha256": "97cdc3278aa34b458682d8cf1d29f05bd48f217371050dd901e36434cee2d412",
           "provenance": "Independently authored bounded source crop, annotation, exact alpha mask, image preparation/conversion, local OCR geometry and durable export commitments from pinned requirements. No foreign source bodies, media, fonts, weights or executable bundled. Pillow is separately locked and receipted; local engines remain optional."
         },
         {
@@ -4471,7 +4471,7 @@
         },
         {
           "target_path": "docs/integrations/IMAGE_VISION.md",
-          "target_sha256": "f0e37fd76c592715ab98bfe0c3b3a23fddd178c7fddd7f761b240c739dd09542",
+          "target_sha256": "17cdb1a5017581edf4115f8f2a7c4f069a3fb0183a1a6bb6a7801f203489dc37",
           "provenance": "Independently authored source-bound model vision, comparison, OCR inference and strict transformed region/crop implementation; compatible origins use bounded own HTTP exchange. No foreign source body/dependency/weight/asset transferred to core. Optional pinned Qwen process discovery is separately receipted and does not activate live provider operations."
         },
         {
@@ -4492,12 +4492,12 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "05054d5a3e5804e0c5bc9a74dcf63bb7aaf2c3c348e6274f4a5f300518926c64",
+          "target_sha256": "470d88dfdf9433a6c24ca7dcbd9839300d7973a8568e7b349e1eef590934b7bc",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
+          "target_sha256": "27416ea06ce7ede57f84af2336e5f1a5f4820f9c1aa7eaca27f667131af6be05",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred.",
           "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },
@@ -4578,7 +4578,7 @@
         },
         {
           "target_path": "docs/integrations/ONBOARDING.md",
-          "target_sha256": "ad49bb59d98581b07bd78cd433823faf432be2f8ebd311b63adc5ce0f7443d6f",
+          "target_sha256": "fe7f475eec3430270d1c688a85362e6fdfe35720572708b9204fae570c627456",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed."
         },
         {
@@ -4680,7 +4680,7 @@
         },
         {
           "target_path": "docs/integrations/AUDIO_DSP.md",
-          "target_sha256": "2da66f6b3b4d6ef33272b8ccb28bf9ccf0da4c7947df71639a9b9263c5111b75",
+          "target_sha256": "8bace2436812a0de0678796e0b9487eb3b6b178d93d5b0cffc120221077a469a",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -4761,7 +4761,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/live-evidence.md",
-          "target_sha256": "38a044479650bfe8165a57743da3e923f4222987a85561c4406f42d1b4b7635d",
+          "target_sha256": "1e9efa04916546301415eb20f995ca4eefebced8a945ad122e3ad1418a0b7de7",
           "provenance": "Independently authored source behavior. R191 source review and R193/R196 repairs independently reviewed no material findings; Root current183 mocked source tests PASS across affected families. No foreign code/runtime copied. Installed public journey and feature acceptance OPEN; frozen development disagreements retained."
         },
         {
@@ -4935,7 +4935,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/twelvelabs.md",
-          "target_sha256": "e41463221c6ab31d0292d2f3c76cdc07ced2202a97aee283a3450f048c46307a",
+          "target_sha256": "5c066a85a7a1e70d654eb6bba8cc467993d8c102b45dbdd4ce8ef5c8e0263c89",
           "provenance": "Own current hosted REST workflows with bounded BYOK transport, account-scoped durable observations and explicit media/destruction grants; no upstream code/runtime/assets/weights copied/imported."
         },
         {
@@ -5422,7 +5422,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/compatible-providers.md",
-          "target_sha256": "18d9e4800c6941811e34be8749783246af21d8d22be38e2261a81074fe4fd17f",
+          "target_sha256": "a3042432f7568f2b5785ab6fb8863c12dc94214cfe11f7d4cb5a34f325545fc0",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -5432,7 +5432,7 @@
         },
         {
           "target_path": "docs/integrations/search-providers.md",
-          "target_sha256": "984fe505c3ac6994be2d477315d24317d67c47f00b936a878339e25f716af4f3",
+          "target_sha256": "ae03ee347175f20902322048c68a9739a90bed766b72a1d60cf4c2395ef5c777",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -5614,12 +5614,12 @@
       "implementations": [
         {
           "target_path": "docs/integrations/DEEP_AGENTS.md",
-          "target_sha256": "c3ec6ec4630ed973928d109dcda744b1551ad80c0efe06d99be1ca4b21228348",
+          "target_sha256": "11d58891dc3287fbdf2168ef53ff0f14a77ac195505d72a9ce123f48b12ed86a",
           "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
         },
         {
           "target_path": "docs/integrations/GPT_RESEARCHER.md",
-          "target_sha256": "094f8b10001f0a54bd649d6152d32c60107598435eab84fa56c37ee5748c1097",
+          "target_sha256": "76de1c25d4c0c7aa82caaa4ca626597ec214ef100ec0e36a159c6321001299c1",
           "provenance": "Own independently authored bounded MCP source and isolated optional consumer entry points. No upstream bodies, dependency runtimes, assets or weights copied/imported into core."
         },
         {
@@ -5800,7 +5800,7 @@
         },
         {
           "target_path": "docs/integrations/SESSION_MEMORY.md",
-          "target_sha256": "ad9b750e4f1f6a0e7abf24b15dcd8859ff04bdf92ca3a446a6652ff0ded6c341",
+          "target_sha256": "c7d174d8a8b6db1a3494fe9ddbfd6552b9046a81bc642869baaecbfe07050882",
           "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles."
         },
         {
@@ -5929,7 +5929,7 @@
         },
         {
           "target_path": "docs/integrations/LIGHTRAG.md",
-          "target_sha256": "c2660a655103d8c4afe9fdf7e0e725951fbe371043694e8a39995230fe3fc10e",
+          "target_sha256": "69cb5c172a42a8161ea3827571e434d743fce099c4484d1b1f6e3bc4a456e5ab",
           "provenance": "R142 independently authored supplied-observation SQLiteFTS/vector/RRF/context adapter after exact pinned primary contract and MIT grant reads; route independent-adapter. No foreign code/runtime/model/asset copied or imported. Root source mounting exports104tools. Focused44tests passed; retained prior fixture/read-only repair errors. No installed/native/held-out service/quality acceptance or superiority claim. Original eight corpus criteria remain OPEN."
         }
       ]
@@ -6039,7 +6039,7 @@
         },
         {
           "target_path": "docs/integrations/source-ingestion.md",
-          "target_sha256": "0a773850011159e5911616d132a3ce538f1fdd52eb02d33b4e8ac4a7b24dcb20",
+          "target_sha256": "a11f3f4b86ed8574d8de617129a57ba703c7006fe1c71acab68623f5d4af32eb",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation. Independently authored optional Docling loopback HTTP entry and strict located-document decoder after exact docling-serve1.36.0@07b1d3d3b515afd9196148e0353d54ea38de2a37, Docling2.129.0@890dd42d017497c955a56a1d2cfc3f0af5bc2aa9 and docling-core2.79.0@be200daff92d67fdbe4b8451277bb1e10e4f0f04 primary contracts and MIT grant reads. No foreign implementation, runtime, model or asset copied or bundled. Explicit source authorization, bounded original bytes, pinned capabilities and retained raw service/provenance receipts; operator runtime assertion is unattested, OCR disabled and remote cancellation unverified. Mock/source checks do not admit a real Docling deployment. Selected deployment core2.96.0@0b55aca55b22f7109502d44db36f8246e238121c supersedes the incompatible2.79 version pin after exact MIT grant and consumed split-model/schema1.10 source reads; retained wheel SHA256c88c11452af805402df9477e35fb1ee8e289bdd9007969127dc1d43f760add96. Exact-version pre-upload refusal remains; real runtime and extraction qualification remain separate."
         },
         {
@@ -6190,7 +6190,7 @@
         },
         {
           "target_path": "docs/integrations/notebooks.md",
-          "target_sha256": "5b4bf195e0672f8010f3a004a30a2137fcdfc6dfb9dc16d367e7fdb2ed11a012",
+          "target_sha256": "9727872bc3158014b45647587fe07642b9ba2b334d97d4a5a9c41be4ed43c843",
           "provenance": "Independent first-party local notebook adapter over canonical corpus/workspace transactions and exact cited observation passages. No foreign source/runtime/dependency copied or imported. R363 source5PASS/35affected; R367 P2 retained, R372 six causal RED then59affectedPASS; R373 independent repair CLEAN. Root mount SOURCE_ONLY; ingestion parent, installed notebook and semantic support unqualified."
         },
         {
@@ -6302,7 +6302,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "4317b03f32d86b933d9bbb1488167bd01648f0391c66f467fd4a968db23958cc",
+          "target_sha256": "70acacfef675f5cd8d93fa0508cb59abe5c7fb335baac6c4a6750d8e0b422d51",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -6440,7 +6440,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "4317b03f32d86b933d9bbb1488167bd01648f0391c66f467fd4a968db23958cc",
+          "target_sha256": "70acacfef675f5cd8d93fa0508cb59abe5c7fb335baac6c4a6750d8e0b422d51",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6482,13 +6482,13 @@
         },
         {
           "target_path": "docs/PUBLISHING.md",
-          "target_sha256": "07687a2978c2998a63d854349943dbb142fc1b9bdbdce9ce2d1186e404627351",
+          "target_sha256": "ca857562c99c143a44a75841404f16bce0262f159677e32724986a970eea5361",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "docs/integrations/render-readiness.md",
-          "target_sha256": "24baec78380f930459cd828c10059b83305c8068a7a84d86a8535827831e0541",
+          "target_sha256": "f58a22649cfcc2789c002bb0c770f14c187673f9568097af3f05b167d627e8c3",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6512,7 +6512,7 @@
         },
         {
           "target_path": "docs/integrations/authored-renderer.md",
-          "target_sha256": "e6990e90a13c835b4a195bc2adfb11d1d2de2e6df24ab25454743a90375abbe0",
+          "target_sha256": "92b6c4504e0791990486a60113bab63073354c58ad92832a91897302d5f22488",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6849,7 +6849,7 @@
         },
         {
           "target_path": "docs/integrations/render-factcheck.md",
-          "target_sha256": "d36daf5bdc54ec8d665ae257be783718e556f7e3c5ce6a33c35876bc5ece1a09",
+          "target_sha256": "d2eafbb7683105f226c5c1ad670c3aa8a3cf11186124778c9bdcb44af52af238",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
@@ -6880,37 +6880,37 @@
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/variants.py",
           "target_sha256": "4c243f244d3181fc43f933f4a590963add4588ac1971347a3a2f085747f0432f",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/variants_captions.py",
           "target_sha256": "5a8db5bb1f87bae937a986e3ef1b751a032dd715c6bad982534a4e25a65cb808",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/variants_render.py",
           "target_sha256": "23f126aac804bde6d2ca56332716081272cbe0ed165f6afd20b0848fe6356d57",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/variants.py",
           "target_sha256": "9e404bd0e4f10878ffc3e9f15d801191b15018ed88b2bcdb76e682ce27980bef",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/variants.py",
           "target_sha256": "60d27bfd1a054a0c399754bf8d245372084e08eb1cf165039343515260c2e97a",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
           "target_sha256": "e2c9c77a97b826ab9702d168714b6c462d06ab0002d4f767913288e1ae4f6e95",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_variants.py",
           "target_sha256": "65cd1b03de1b0051557f4dfcd3a5f318adcb5c15a2d0955cab572e925604ee76",
-          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED\u219243GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
+          "provenance": "Independent first-party deterministic aspect variants/SRT/current timing/font and pinned approved claim/ref derivation, no foreign code/runtime/assets copied. R370original21unitPASS; R3913P2s retained; R39422RED→43GREEN/Ruff/caps with original21unchanged. Mounted SOURCE_ONLY; independent causal review, real font pixels/audio/caption/native acceptance pending, parent timing OPEN. System font private reference not redistributed/grant UNKNOWN."
         }
       ]
     },
@@ -6993,7 +6993,7 @@
         },
         {
           "target_path": "docs/integrations/measured-narration.md",
-          "target_sha256": "3b73c543266f1d4efb6e515fb79ec932bdfe9dda0df1d484b9a4fc5be3abcc6c",
+          "target_sha256": "a0bea010fde760fa99465814669531d216cd8bf9ea50edc8904eb482dca25965",
           "provenance": "Independently owned companion PCM/REST narration from permitted pinned source requirements; exact approved transcript, measured samples and explicit timing/quality/failure/cache/custom boundaries. No foreign application/renderer imported or copied. Offline synthetic/mocked contracts do not accept live voice content, provider spend, renderer consumption, human comparison or release."
         },
         {
@@ -7024,32 +7024,32 @@
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/audio_mix.py",
           "target_sha256": "0d49145619332b04d08fb0fc3d2af0a1db065629eaafe549e99343242ea92bfd",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/audio_mix.py",
           "target_sha256": "b4c1ae756b8b988de5524f42a7186c542f824203018054cef1d28c1c06bc2fba",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py",
           "target_sha256": "50da84db240dad2d625112d3a3d8417d2e305236b5891621506ab96528a1d564",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
           "target_sha256": "e2c9c77a97b826ab9702d168714b6c462d06ab0002d4f767913288e1ae4f6e95",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_audio_mix.py",
           "target_sha256": "654fa9de514450e2e5acc1f76e84cfc71bcf6a7a9c30ac3d2a32c438d3741e7d",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         },
         {
           "target_path": "docs/integrations/audio-mix.md",
           "target_sha256": "b573daf95b697166a2765351f5214ae44404f578be8da2c2f14230163acc4468",
-          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED\u219288GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
+          "provenance": "Independent first-party pinned local WAV mix/rights/QA, no foreign code/weights/runtime copied. R369/R383/R387/R390 failures retained; R397 declared+cumulative PCM size causal repair 1RED→88GREEN/Ruff, R400 independent audio delta NO_MATERIAL_FINDINGS SOURCE_ONLY. Mounted companion source. Actual FFmpeg/listening/native acceptance UNRUN."
         }
       ]
     },
@@ -7104,7 +7104,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/materials.md",
-          "target_sha256": "2be68617e645c2805357b26e6a05a22c5dcfe2cc2643125d9f8507f2205396a6",
+          "target_sha256": "df0d3f3d8cf90ef4497c7eff43e5fc166dd5cb743205349d95e208925350be2e",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
@@ -7463,7 +7463,7 @@
         },
         {
           "target_path": "docs/ARCHITECTURE.md",
-          "target_sha256": "f703785878da93549698e7cc35381d3c27055beb4870aca2748812f32aa5e638",
+          "target_sha256": "27416ea06ce7ede57f84af2336e5f1a5f4820f9c1aa7eaca27f667131af6be05",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
           "receipt_refresh": "Current own-source binding refreshed by vrm-0e8.10.3.3 branch reconciliation; original grant, route and source population remain unchanged."
         },

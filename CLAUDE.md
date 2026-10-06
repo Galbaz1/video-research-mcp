@@ -6,31 +6,34 @@ Do not import `AGENTS.md` (for example via `@AGENTS.md` or `@../AGENTS.md`) from
 
 ## What This Is
 
-A monorepo with three MCP servers (51 tools total):
+A monorepo with three separately launched MCP servers:
 
-1. **video-research-mcp** (root) — 34 tools for video analysis, deep research, academic papers, content extraction, web search, and context caching. Powered by the configured Gemini model (`google-genai` SDK) and YouTube Data API v3.
-2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos from research content. Wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI.
-3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools for bounded parallel scene generation through the Claude Agent SDK.
+1. **video-research-mcp** (root) — research, media analysis, source ingestion, knowledge retrieval, and optional provider adapters. Uses the configured Gemini model (`google-genai` SDK) and YouTube Data API v3.
+2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — explainer planning, generation, durable rendering, and assembly of existing materials. Wraps the [video_explainer](https://github.com/prajwal-y/video_explainer) CLI and supports configured renderer routes with separate prerequisites.
+3. **video-agent-mcp** (`packages/video-agent-mcp/`) — bounded parallel scene-text generation through the Claude Agent SDK.
 
-All servers share `~/.config/video-research-mcp/.env` for configuration. Built with Pydantic v2, hatchling. Python >= 3.11.
+All servers default to `~/.config/video-research-mcp/.env` for configuration;
+the root also accepts an installer-selected `VIDEO_RESEARCH_ENV_FILE`.
+Built with Pydantic v2 and hatchling. Python >= 3.11.
 
 ## Commands
 
 ```bash
 # video-research-mcp (root)
-uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"  # install
-uv run pytest tests/ -v                                              # all tests
-uv run ruff check src/ tests/                                        # lint
-GEMINI_API_KEY=... uv run video-research-mcp                         # run server
+uv sync --locked --extra dev                       # install locked dependencies
+uv run --locked pytest tests/ -v                   # all tests
+uv run --locked ruff check src/ tests/              # lint
+GEMINI_API_KEY=... uv run --locked video-research-mcp # run server
 
 # video-explainer-mcp (packages/)
 cd packages/video-explainer-mcp
-uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"  # install
-uv run pytest tests/ -v                                              # all tests
-uv run ruff check src/ tests/                                        # lint
-EXPLAINER_PATH=/path/to/video_explainer uv run video-explainer-mcp  # run server
+uv sync --locked --extra dev                       # install locked dependencies
+uv run --locked pytest tests/ -v                   # all tests
+uv run --locked ruff check src/ tests/              # lint
+EXPLAINER_PATH=/path/to/video_explainer uv run --locked video-explainer-mcp
 
-python3 ~/.claude/scripts/detect_review_scope.py --json               # auto-select review scope
+cd ../..
+python3 scripts/detect_review_scope.py --json       # from the root checkout
 ```
 
 ## Automated Review Triggers
@@ -58,53 +61,68 @@ NEVER use `/gr:research-deep` for quick questions (costs $2-5, 10-20 min) — us
 
 ## Architecture
 
-`server.py` mounts 7 sub-servers onto a root `FastMCP("video-research")`:
+`server.py` mounts domain servers onto a root `FastMCP("video-research")`.
+The core workflows include:
 
-| Sub-server | Tools | Count | Files |
-|------------|-------|-------|-------|
-| video | `video_analyze`, `video_create_session`, `video_continue_session`, `video_batch_analyze` | 4 | `tools/video.py`, `tools/video_batch.py` |
-| research | `research_deep`, `research_plan`, `research_assess_evidence`, `research_document`, `research_web`, `research_web_status`, `research_web_followup`, `research_web_cancel` | 8 | `tools/research.py`, `tools/research_document.py`, `tools/research_web.py` |
-| content | `content_analyze`, `content_extract`, `content_batch_analyze` | 3 | `tools/content.py`, `tools/content_batch.py` |
-| search | `web_search` | 1 | `tools/search.py` |
-| infra | `infra_cache`, `infra_configure` | 2 | `tools/infra.py` |
-| youtube | `video_metadata`, `video_comments`, `video_playlist` | 3 | `tools/youtube.py` |
-| knowledge | `knowledge_search`, `knowledge_related`, `knowledge_stats`, `knowledge_fetch`, `knowledge_ingest`, `knowledge_schema`, `knowledge_ask`, `knowledge_query` | 8 | `tools/knowledge/` |
+| Domain | Source |
+| --- | --- |
+| Video analysis, sessions, batches, and windows | `tools/video.py`, `tools/video_batch.py`, `tools/video_windows.py` |
+| Research, documents, web research, academic metadata, and execution | `tools/research.py` and its deferred registration modules |
+| Content analysis and extraction | `tools/content.py`, `tools/content_batch.py` |
+| Search and provider adapters | `tools/search.py`, `tools/search_provider.py`, `tools/text_provider.py` |
+| Configuration and cache | `tools/infra.py` |
+| YouTube metadata, comments, playlists, and channels | `tools/youtube.py`, `tools/youtube_channels.py` |
+| Knowledge retrieval and ingestion | `tools/knowledge/` |
+
+Additional mounts cover images/vision, media preparation/perception, audio,
+durable jobs, memory, ingestion, live workflows, and hardware. `server.py` is
+the current mount inventory; tool discovery provides the exposed schemas.
+Registration alone does not establish provider or native-runtime readiness.
 
 **Key patterns:**
 - **Instruction-driven tools** — tools accept free-text `instruction` + optional `output_schema` instead of fixed modes
-- **Structured output** — `GeminiClient.generate_structured(contents, schema=ModelClass)` returns validated Pydantic models
-- **Error handling** — tools never raise; return `make_tool_error()` dicts with `error`, `category`, `hint`, `retryable`
-- **Write-through storage** — every tool auto-stores results to Weaviate when configured; store calls are non-fatal
+- **Structured output** — Gemini generation uses validated models; deterministic operations validate typed inputs/results without Gemini
+- **Error handling** — tools catch operational errors and use `make_tool_error()` within their published dictionary or native `CallToolResult` envelope
+- **Write-through storage** — selected result-producing workflows store to Weaviate when configured; store calls are non-fatal
 - **Context caching** — `context_cache.py` pre-warms Gemini caches after `video_analyze`; `video_create_session` reuses them via `lookup_or_await()`
 - **MLflow tracing** — `@trace()` decorator on all tools; graceful degradation when mlflow not installed
 - **Reranker** — Cohere reranking in `knowledge_search` with overfetch pattern; auto-enables when `COHERE_API_KEY` is set
 
 **Key singletons:** `GeminiClient` (client.py), `get_config()` (config.py), `session_store` (sessions.py, optional SQLite via persistence.py), `cache` (cache.py), `WeaviateClient` (weaviate_client.py).
 
-**Optional dependency:** `weaviate-agents>=1.2.0` (install via `pip install video-research-mcp[agents]`) enables `knowledge_ask` and `knowledge_query` tools powered by Weaviate's QueryAgent.
+**Optional dependency:** the `agents` extra enables `knowledge_ask` and
+`knowledge_query` through Weaviate's QueryAgent. Its constraint lives in
+`pyproject.toml`; enable the extra in the environment that launches the server.
 
-> Deep dive: `docs/ARCHITECTURE.md` (13 sections) | `docs/DIAGRAMS.md` (4 Mermaid diagrams)
+> Deep dive: `docs/ARCHITECTURE.md` | `docs/DIAGRAMS.md`
 
 ### video-explainer-mcp Architecture
 
-`packages/video-explainer-mcp/src/video_explainer_mcp/server.py` mounts 4 sub-servers:
+`packages/video-explainer-mcp/src/video_explainer_mcp/server.py` mounts the
+following workflow groups:
 
 | Sub-server | Tools | File |
 |------------|-------|------|
 | project | `explainer_create`, `explainer_inject`, `explainer_status`, `explainer_list` | `tools/project.py` |
-| pipeline | `explainer_generate`, `explainer_step`, `explainer_render`, `explainer_render_start`, `explainer_render_poll`, `explainer_short` | `tools/pipeline.py` |
+| pipeline and rendering | `explainer_generate`, `explainer_step`, `explainer_short`, `explainer_render`, `explainer_render_start`, `explainer_render_poll`, `explainer_render_cancel` | `tools/pipeline.py`, `tools/render_jobs.py` |
 | quality | `explainer_refine`, `explainer_feedback`, `explainer_factcheck` | `tools/quality.py` |
-| audio | `explainer_sound`, `explainer_music` | `tools/audio.py` |
+| audio | `explainer_sound`, `explainer_music`, `explainer_narration`, `explainer_audio_mix` | `tools/audio.py`, `tools/audio_mix.py` |
+
+Other mounts provide planning, diagnostics, variants, commentary, timing,
+refinement, render fact-checking, and existing-material assembly. Stock-media
+search/download is not mounted; consult `server.py` for registration.
 
 **Key patterns:**
-- **CLI wrapping** — tools call the `video_explainer` Python module via `asyncio.create_subprocess_exec` (never shell=True)
+- **CLI wrapping** — tools invoke the upstream `.venv/bin/video-explainer` console script via `asyncio.create_subprocess_exec` (never shell=True)
 - **Filesystem scanning** — `scanner.py` inspects project directories for step completion without CLI calls
-- **Background renders** — `explainer_render_start` returns a job ID; `explainer_render_poll` checks progress
+- **Background renders** — start/poll/cancel use durable SQLite jobs, frozen requests, leases, and fresh artifact readback
 - **Shared config** — same `~/.config/video-research-mcp/.env` as the parent server
 
-**Key modules:** `runner.py` (subprocess executor), `scanner.py` (project inspector), `jobs.py` (render tracking), `prereqs.py` (system checks), `config.py` (singleton from env).
+**Key modules:** `runner.py` (subprocess executor), `scanner.py` (project inspector), `jobs.py` and `render_worker.py` (durable render lifecycle), `prereqs.py` (system checks), `config.py` (singleton from env).
 
-**Env vars:** `EXPLAINER_PATH` (required), `EXPLAINER_TTS_PROVIDER` (default: mock), `ELEVENLABS_API_KEY`, `OPENAI_API_KEY`.
+**Env vars:** `EXPLAINER_PATH` for upstream CLI workflows,
+`EXPLAINER_RENDERER_ENTRY` for a configured renderer route,
+`EXPLAINER_TTS_PROVIDER` (default: mock), `ELEVENLABS_API_KEY`, `OPENAI_API_KEY`.
 
 ### video-agent-mcp Architecture
 
@@ -121,7 +139,16 @@ tools. Results must be validated before writing scene artifacts.
 
 ### New Tools
 
-Every tool MUST have: (1) `ToolAnnotations` decorator, (2) `Annotated` params with `Field`, (3) Google-style docstring with Args/Returns, (4) structured output via `GeminiClient.generate_structured()`. Shared types live in `types.py`.
+Every tool MUST have: (1) `ToolAnnotations` decorator, (2) `Annotated` params with
+`Field`, (3) Google-style docstring with Args/Returns, and (4) an explicit result
+contract. Generative workflows use `GeminiClient.generate_structured()`;
+deterministic operations validate typed inputs/results directly without Gemini.
+Shared types live in `types.py`.
+
+Native media tools may return `mcp.types.CallToolResult` with typed
+`structuredContent`, a JSON text block, and bounded `ImageContent`. Declare
+success/error output schemas and offer the same metadata without images.
+Preserve existing return contracts; this is the exception in `src/AGENTS.md`.
 
 ```python
 @server.tool(annotations=ToolAnnotations(readOnlyHint=True, openWorldHint=True))
@@ -189,9 +216,9 @@ These `getattr` patterns protect against **SDK response shape variation**, not v
 
 When bumping a dependency:
 1. Update constraint in `pyproject.toml`
-2. Run `uv pip install -e ".[dev]"` to resolve
-3. Search for compatibility workarounds that may now be removable (`grep -r "2\.x\|v1\|compat\|shim\|workaround"`)
-4. Run full test suite: `uv run pytest tests/ -v`
+2. Run `uv lock`, then `uv sync --locked --extra dev` to resolve and install
+3. Search for compatibility workarounds that may now be removable (`rg '2\.x|v1|compat|shim|workaround' src/`)
+4. Run full test suite: `uv run --locked pytest tests/ -v`
 
 ## Agent Teams
 
@@ -204,7 +231,7 @@ Agent configuration: `.claude/rules/` contains project-specific conventions that
 
 Unit tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits the real API.
 
-**Key fixtures** (`conftest.py`): `mock_gemini_client` (mocks `.get()`, `.generate()`, `.generate_structured()`), `clean_config` (isolates config), `mock_weaviate_client`, `mock_weaviate_disabled`, `_unwrap_fastmcp_tools` (session-scoped, ensures tool callability), autouse `GEMINI_API_KEY=test-key-not-real`, `_disable_tracing`, `_isolate_dotenv`, `_isolate_upload_cache`.
+**Key fixtures** (`conftest.py`): `mock_gemini_client` (mocks `.get()`, `.generate()`, `.generate_structured()`, `.generate_json_validated()`), `clean_config` (isolates config), `mock_weaviate_client`, `mock_weaviate_disabled`, `_unwrap_fastmcp_tools` (session-scoped, ensures tool callability), autouse `GEMINI_API_KEY=test-key-not-real`, `_disable_tracing`, `_isolate_dotenv`, `_isolate_upload_cache`, `_isolate_durable_jobs`.
 
 **File naming:** `test_<domain>_tools.py` for tools, `test_<module>.py` for non-tool modules.
 
@@ -212,12 +239,14 @@ Unit tests, all unit-level with mocked Gemini. `asyncio_mode=auto`. No test hits
 
 ## Plugin Installer
 
-Two-package architecture: npm (installer) copies commands/skills/agents to `~/.claude/`, PyPI (server) runs via `uvx`. Same package name, different registries.
+Two-package architecture: npm distributes plugin assets and registers the pinned
+core server via `uvx`; PyPI supplies the Python runtime. The installer supports
+scoped Claude and Codex layouts. Same package name, different registries.
 
 ```bash
-npx video-research-mcp@latest              # install plugin (copies markdown files + .mcp.json)
-npx video-research-mcp@latest --check      # dry-run
-npx video-research-mcp@latest --uninstall  # remove
+npx video-research-mcp@0.8.0-rc.3              # install the pinned source version
+npx video-research-mcp@0.8.0-rc.3 --check      # inspect installation hashes/status
+npx video-research-mcp@0.8.0-rc.3 --uninstall  # remove unchanged owned assets
 ```
 
 To add a command/skill/agent: create file, add to `FILE_MAP` in `bin/lib/copy.js`, run `node bin/install.js --global`.
@@ -244,14 +273,17 @@ Canonical source: `config.py:ServerConfig`. Key variables:
 | `GEMINI_TRACING_ENABLED` | `""` | Enable MLflow tracing |
 | `MLFLOW_TRACKING_URI` | `""` | MLflow server URI |
 | `MLFLOW_EXPERIMENT_NAME` | `""` | MLflow experiment name |
-| `WEAVIATE_VECTORIZER` | `""` | "openai" or "weaviate"; auto-detects based on URL scheme + OPENAI_API_KEY |
+| `WEAVIATE_VECTORIZER` | `""` | `openai`, `weaviate`, or `ollama`; selects `openai` when OPENAI_API_KEY is present, otherwise `weaviate` |
 | `WEAVIATE_AUTO_MIGRATE` | `""` | Set "true" to auto-migrate collections when vector config changes |
 | `EXPLAINER_PATH` | `""` | Path to cloned video_explainer repo |
-| `EXPLAINER_TTS_PROVIDER` | `"mock"` | mock, elevenlabs, openai, gemini, edge |
+| `EXPLAINER_TTS_PROVIDER` | `"mock"` | mock, elevenlabs, edge |
 | `ELEVENLABS_API_KEY` | `""` | Required for elevenlabs TTS |
-| `OPENAI_API_KEY` | `""` | Required for openai TTS |
+| `OPENAI_API_KEY` | `""` | Required for the OpenAI vectorizer and configured OpenAI provider calls |
 
-All servers auto-load `~/.config/video-research-mcp/.env` at startup. Process env vars always take precedence over the config file. This ensures keys are available in any workspace, even without direnv.
+All servers default to `~/.config/video-research-mcp/.env`; the root uses
+`VIDEO_RESEARCH_ENV_FILE` when selected by a local installation. Nonempty process
+values take precedence. Blank values and unresolved self-placeholders are treated
+as unset and can be filled from the selected file.
 
 All other config (thinking level, temperature, cache dir/TTL, session limits, retry params, YouTube API key) has sensible defaults — see `config.py` or `docs/ARCHITECTURE.md` §10.
 
@@ -263,12 +295,12 @@ All other config (thinking level, temperature, cache dir/TTL, session limits, re
 
 | Document | Contents |
 |----------|----------|
-| `docs/ARCHITECTURE.md` | Full technical manual — 13 sections covering every pattern and module |
+| `docs/ARCHITECTURE.md` | Technical guide to workflows, shared state, provider access, and companions |
 | `docs/DIAGRAMS.md` | Server hierarchy, GeminiClient flow, session lifecycle, Weaviate data flow |
 | `docs/tutorials/GETTING_STARTED.md` | Install, configure, first tool call |
 | `docs/tutorials/ADDING_A_TOOL.md` | Step-by-step tool creation with checklist |
 | `docs/tutorials/WRITING_TESTS.md` | Fixtures, patterns, running tests |
-| `docs/tutorials/KNOWLEDGE_STORE.md` | Weaviate setup, 12 collections, 8 knowledge tools |
+| `docs/tutorials/KNOWLEDGE_STORE.md` | Weaviate setup, collection schemas, retrieval, and QueryAgent |
 | `docs/PLUGIN_DISTRIBUTION.md` | Two-package architecture, FILE_MAP, discovery, full inventory |
 | `docs/PUBLISHING.md` | Dual-registry publishing guide with version sync policy |
 | `docs/RELEASE_CHECKLIST.md` | Copy-paste checklist for each release |

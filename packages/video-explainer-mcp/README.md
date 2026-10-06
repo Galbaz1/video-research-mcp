@@ -3,14 +3,15 @@
 Create explainer projects, run pipeline steps, and render videos through MCP.
 This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
 with 32 tools for projects, editorial plans, generation, rendering, audio, commentary,
-narration timing, revision-bound feedback, licensed media, and quality checks.
+narration timing, revision-bound feedback, existing-material assembly, and quality
+checks. Stock-media search/download tools are not mounted.
 The upstream checkout owns provider integrations, model selection, Remotion
 code, and rendering dependencies. The pinned upstream licence grant remains
 unresolved: this package independently authors the plan contract and ships no
 upstream code or runtime. Installation and rights for a separate CLI remain
 operator responsibilities.
 
-Repository links point to the published source release. For the exact source
+Repository links below are pinned source references. For the exact source
 and bundled README of a registry version, use its source archive on
 [PyPI](https://pypi.org/project/video-explainer-mcp/#files).
 
@@ -48,8 +49,9 @@ configuration, replacing the absolute checkout path:
 }
 ```
 
-For a registry release, register `uvx` with
-`video-explainer-mcp==<published-version>` and confirm that version is published.
+For the published candidate, register `uvx` with
+`video-explainer-mcp==0.2.2rc1`. Use the checkout command above for later source
+fixes; an existing registry archive does not contain them.
 The core npm installer does not register this companion or install the upstream
 renderer.
 

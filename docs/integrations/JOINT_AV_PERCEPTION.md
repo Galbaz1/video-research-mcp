@@ -67,13 +67,15 @@ backoff. Ambiguous timeouts, refusal, truncation and invalid JSON do not retry.
 The SDK's own retry setting is 1. A failure preserves completed and pending window
 populations, attempted transmissions and unknown usage.
 
-Local aggregate payload limits are 8MiB and 128 frames; per-window frames cap 48.
-The default repeated-transmission allowance is 32MiB. The measured reservation
+Local aggregate payload limits are 8 MiB and 128 frames; per-window frames cap 48.
+The default repeated-transmission allowance is 32 MiB. The measured reservation
 counts SDK Content JSON plus schema UTF8 for every count/generation call,
 including base64 expansion. HTTP headers/framing remain unknown. One deadline
-includes preparation, counting, generation, retries and cleanup, with a maximum
-120 seconds. Tokens are counted/reserved through the existing budget; absent
-provider usage and actual currency charges remain unknown.
+governs preparation, counting, generation and retries. It is the smaller of
+`limits.timeout_seconds` and `MEDIA_ACQUIRE_TIMEOUT_SECONDS`, capped at 120
+seconds; owned cleanup joins before return. Tokens are counted/reserved through
+the existing budget; absent provider usage and actual currency charges remain
+unknown.
 
 The four mapped Qwen source files are pinned at
 `07736672525443c7f8a3f6405eed37d2236f023f`. This implementation independently

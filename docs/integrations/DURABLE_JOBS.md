@@ -86,10 +86,8 @@ database and all commitments.
 
 Ownership uses SQLite CAS with expiring leases. It is authority to reconcile an
 operation, not permission to repeat uncertain work. Terminal results cannot be
-retried or overwritten. The standalone store remains one canonical source file,
-materialized into each package so separately installed servers share identical
-schema behavior. Its larger module keeps that independently packaged schema,
-byte bindings and native permission controls together; functions remain bounded.
+retried or overwritten. The same canonical store implementation is packaged with
+each server so separately installed servers share the schema.
 
 Verification uses local SQLite, owned synthetic media, guarded SDK HTTP mocks
 and owned CLI/FFmpeg processes. It establishes lifecycle and byte integrity.

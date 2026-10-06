@@ -41,7 +41,7 @@ Sources: [tracing module](src/video_research_mcp/tracing.py),
 ### 5. Video Explainer MCP
 
 The independent companion wraps an external `video_explainer` checkout with
-15 tools for projects, pipeline steps, rendering, audio, and quality checks.
+tools for projects, pipeline steps, rendering, audio, and quality checks.
 Background rendering uses start/poll jobs. `/ve:*` workflows are shipped by the
 installer, but require separate companion registration and upstream setup.
 
