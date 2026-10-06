@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bead_id": "vrm-0e8.2.6",
-  "observed_at": "2026-10-06T17:54:29.243722+00:00",
+  "observed_at": "2026-10-06T18:50:47.780339+00:00",
   "source_head": "533572ea770d03da3942e0122096b813e0ba1907",
   "inventory": "docs/research/2026-09-30-capability-transfer.json",
   "scope": "Pinned source-unit routes, component rights and exact dependency/archive clearance. Accepted evaluation, security, evidence/native contract and offline onboarding requirements have exact own-source implementation receipts; no external programme code, asset, weight or optional runtime copied/imported.",
@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "e6a691514dade19f627346922b94e2e4ccc1abe5a9c43e4d7898dfc53d8290f5",
+          "target_sha256": "4dbeeb3475b9f13a09f1eee8b0b6b3d775154616f6743561a01d729a5b7c6f30",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4492,7 +4492,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "e6a691514dade19f627346922b94e2e4ccc1abe5a9c43e4d7898dfc53d8290f5",
+          "target_sha256": "4dbeeb3475b9f13a09f1eee8b0b6b3d775154616f6743561a01d729a5b7c6f30",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -6302,7 +6302,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "7baa491caec51b1d2cb4370e78e6dffedb996c6b60f3fe3e80b07e9637f8ae11",
+          "target_sha256": "740b14f8b1378cefdb7a50c982446b8370f5295336f6461d8c277222a966998d",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -6440,7 +6440,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "7baa491caec51b1d2cb4370e78e6dffedb996c6b60f3fe3e80b07e9637f8ae11",
+          "target_sha256": "740b14f8b1378cefdb7a50c982446b8370f5295336f6461d8c277222a966998d",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },

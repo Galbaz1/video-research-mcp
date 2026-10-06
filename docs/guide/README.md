@@ -3,7 +3,7 @@
 Nederlandse tekstversie van de [interactieve gids](index.html) bij de **v0.8.0-rc.4**-broninventaris.
 Release- en bronlinks gebruiken de vaste tag. Controleer de release en registry vóór installatie.
 
-De kernserver heeft 120 MCP-tools; de afzonderlijk aangesloten explainer- en agentservers hebben 32 en 2 tools. Het pakket bevat 24 skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. Bekijk [installatie en configuratie](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/tutorials/GETTING_STARTED.md) vóór gebruik.
+De kernserver heeft 120 MCP-tools; de afzonderlijk aangesloten explainer- en agentservers hebben 32 en 2 tools. Het pakket bevat 24 skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. Bekijk [installatie en configuratie](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/GETTING_STARTED.md) vóór gebruik.
 
 Provider- en runtimevoorwaarden staan per route. Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Stock zoeken/downloaden is niet aangesloten; bestaande materialen samenstellen is beschikbaar. Lokale ASR heeft nog geen gekwalificeerde deadline voor de totale intake. Brede vergelijkende kwalificatie is onvolledig. De RC4-bron bevat de broncorrecties; controleer publicatie en de geïnstalleerde versie afzonderlijk.
 

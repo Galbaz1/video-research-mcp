@@ -12,9 +12,9 @@ on:
 
 jobs:
   claude-review:
-    # This delivery branch uses independently recorded Codex account-2 review
-    # while the user's account-2-only routing override is active.
-    if: github.event.pull_request.head.repo.full_name != github.repository || (github.head_ref != 'codex/docling-ingestion-entry' && github.head_ref != 'dev')
+    # Fausto's account-2-only override pauses all automatic Claude reviews.
+    # Restore routing only after Codex account 2 is verified exhausted.
+    if: ${{ false }}
 
     runs-on: ubuntu-latest
     permissions:
