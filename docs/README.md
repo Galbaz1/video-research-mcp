@@ -11,8 +11,9 @@ server works with any stdio MCP client. Codex uses the native plugin and skills;
 
 ## Choose a task
 
-The core routes below are present in **RC4**, published as `0.8.0rc4` on PyPI.
-The npm workflow bundle uses `0.8.0-rc.4`; check its registry availability before
+The core routes below describe **RC5** source, version `0.8.0rc5` on PyPI.
+Check registry availability before installation.
+The npm workflow bundle uses `0.8.0-rc.5`; check its registry availability before
 installing. Optional backends still require their own setup.
 
 | Your task or problem | Recommended route | Next guide or example | Prerequisites and result bounds |
@@ -48,16 +49,17 @@ use your client's normal conversation to refine the request.
 | No tools appear after installation | Check the client route and launch path; restart the client. In Codex, avoid a manual entry hiding the native plugin server. | [Installation routes](tutorials/GETTING_STARTED.md#choose-an-installation-route) |
 | A key works in the terminal but the client cannot use it | Check the client process environment and the selected credential file. Local installs select the project file. | [Configuration precedence](tutorials/GETTING_STARTED.md#configuration) |
 | Analysis is denied or exceeds quota | Read the returned category and hint; check account access, selected model and quota. | [Troubleshooting](tutorials/GETTING_STARTED.md#troubleshooting) |
+| A download reports `Unsupported Content-Encoding` | Supply the original as a local file, or use a URL that honors identity encoding. | [Download troubleshooting](tutorials/GETTING_STARTED.md#troubleshooting) |
 | YouTube metadata returns 403 | Check YouTube Data API v3 enablement and key restrictions; this is separate from Gemini video analysis. | [YouTube setup checks](tutorials/GETTING_STARTED.md#troubleshooting) |
 | Frames, clips, speech or knowledge are unavailable | Check the chosen operation's runtime, extras or store configuration in its task guide above. | [Optional configuration](tutorials/GETTING_STARTED.md#add-only-the-options-you-need) |
 | My source fix does not change the installed behavior | Check whether the client launches the published package or your exact checkout. | [Source checkout registration](tutorials/GETTING_STARTED.md#a-source-checkout) |
 
 ## Which version does this guide describe?
 
-Installation examples pin core RC4 and the separately published companions
-`0.2.2rc2`. Stable `0.7.1` predates the native Codex plugin and expanded media
-routes. RC4 includes the lesson error/cleanup and audio-DSP helper-drift fixes
-that followed RC3.
+Installation examples pin core RC5 and the separate companions
+`0.2.2rc3`. Stable `0.7.1` predates the native Codex plugin and expanded media
+routes. RC5 retains the lesson cleanup and audio-DSP fixes, with additional bounds for
+AV planning, diagnostics and crop cancellation.
 
 Detailed guides follow source main. The connected server's discovered schema
 is authoritative for its tool arguments. The

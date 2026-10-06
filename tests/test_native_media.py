@@ -1,9 +1,13 @@
 """Actual MCP discovery/schema and image/text transport without provider calls."""
 
+import asyncio
 import base64
 import hashlib
 import json
+from pathlib import Path
 import shutil
+import subprocess
+import threading
 
 from fastmcp import Client
 from jsonschema import validate
@@ -97,3 +101,106 @@ async def test_mcp_rejects_noninteger_coordinates_before_any_write(coordinate, t
         )
     assert result.is_error
     assert not (tmp_path / "crop.png").exists()
+
+
+async def _wait_worker_event(event):
+    """Wait for a controlled worker boundary without blocking the event loop."""
+    async with asyncio.timeout(5):
+        while not event.is_set():
+            await asyncio.sleep(0.001)
+
+
+@pytest.mark.parametrize("decoder_fails", [False, True])
+async def test_cancel_after_decoder_start_joins_worker_without_publication(
+    tmp_path, monkeypatch, decoder_fails
+):
+    """GIVEN a running crop WHEN cancelled THEN join it and prevent promotion."""
+    from tests.test_image_ops import png
+    from video_research_mcp import image_ops
+    from video_research_mcp.tools import media
+
+    source = png(tmp_path / "source.png")
+    original = source.read_bytes()
+    target = tmp_path / "crop.png"
+    started, release, finished = (threading.Event() for _ in range(3))
+    crop = image_ops.crop_png
+
+    def decoder(command, **kwargs):
+        started.set()
+        assert release.wait(5), "controlled decoder was not released"
+        png(Path(command[-1]), 2, 2)
+        return subprocess.CompletedProcess(command, int(decoder_fails), b"", b"fixture failure")
+
+    def worker(*args, **kwargs):
+        try:
+            return crop(*args, **kwargs)
+        finally:
+            finished.set()
+
+    monkeypatch.setattr(image_ops.shutil, "which", lambda _: "ffmpeg")
+    monkeypatch.setattr(image_ops.subprocess, "run", decoder)
+    monkeypatch.setattr(media, "crop_png", worker)
+    task = asyncio.create_task(image_crop(str(source), str(target), [0, 0, 2, 2]))
+    try:
+        await _wait_worker_event(started)
+        task.cancel()
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert not task.done(), "request cancellation escaped its executing worker"
+        task.cancel()
+        await asyncio.sleep(0)
+        assert not task.done(), "repeated cancellation escaped worker cleanup"
+    finally:
+        release.set()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        await _wait_worker_event(finished)
+    assert not target.exists()
+    assert source.read_bytes() == original
+    assert not list(tmp_path.glob("vrm-crop-*"))
+
+
+async def test_cancel_after_publication_preserves_owned_output_and_joins(tmp_path, monkeypatch):
+    """GIVEN completed promotion WHEN cancelled THEN keep its output and join."""
+    from tests.test_image_ops import png
+    from video_research_mcp import image_ops
+    from video_research_mcp.tools import media
+
+    source = png(tmp_path / "source.png")
+    original = source.read_bytes()
+    target = tmp_path / "crop.png"
+    promoted, release, finished = (threading.Event() for _ in range(3))
+    crop = image_ops.crop_png
+
+    def decoder(command, **kwargs):
+        png(Path(command[-1]), 2, 2)
+        return subprocess.CompletedProcess(command, 0, b"", b"")
+
+    def worker(*args, **kwargs):
+        try:
+            metadata = crop(*args, **kwargs)
+            promoted.set()
+            assert release.wait(5), "completed worker was not released"
+            return metadata
+        finally:
+            finished.set()
+
+    monkeypatch.setattr(image_ops.shutil, "which", lambda _: "ffmpeg")
+    monkeypatch.setattr(image_ops.subprocess, "run", decoder)
+    monkeypatch.setattr(media, "crop_png", worker)
+    task = asyncio.create_task(image_crop(str(source), str(target), [0, 0, 2, 2]))
+    try:
+        await _wait_worker_event(promoted)
+        published = target.read_bytes()
+        task.cancel()
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert not task.done()
+    finally:
+        release.set()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        await _wait_worker_event(finished)
+    assert target.read_bytes() == published
+    assert source.read_bytes() == original
+    assert not list(tmp_path.glob("vrm-crop-*"))

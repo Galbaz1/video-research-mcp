@@ -1,17 +1,17 @@
 # Getting started
 
-Install the RC4 prerelease, connect your client, then check the running
+Install the RC5 prerelease, connect your client, then check the running
 configuration before sending material for analysis. Examples pin core
-`0.8.0-rc.4` (Python `0.8.0rc4`); stable `0.7.1` predates the native Codex plugin.
-The Python runtime is published. Check npm registry availability before using
-the workflow bundle; the server-only route below works without that bundle.
+`0.8.0-rc.5` (Python `0.8.0rc5`); stable `0.7.1` predates the native Codex plugin.
+Check PyPI and npm availability before installing this candidate. The server-only
+route below works without the workflow bundle once the Python runtime is published.
 The video companions are optional, separate installations.
 
 For a route matched to your task or setup problem, use the
 [user documentation](../README.md#choose-a-task). You can describe your problem
 in your MCP client; `/gr:*` commands below are specific to Claude Code.
 
-This guide follows source main. RC4 includes the lesson error/cleanup and
+This guide follows source main. RC5 includes the lesson error/cleanup and
 audio-DSP helper-drift fixes that followed RC3. Use the
 [source checkout route](#a-source-checkout) to inspect the implementation.
 
@@ -33,7 +33,7 @@ analysis interval does not necessarily limit the uploaded file.
 
 Follow the [README's pinned npm marketplace setup](../../README.md#codex-native-plugin),
 then start a fresh Codex session. It supplies skills and the research server.
-The selected RC4 local-source baseline and restart were checked on Codex
+The selected RC5 local-source baseline and restart were checked on Codex
 0.160.1 on 2026-10-06. The earlier RC3 check used an npm source. Provider quality
 and fresh npm network acquisition versus cache reuse remain unverified. See [Distribution](../PLUGIN_DISTRIBUTION.md#native-codex-plugin)
 for migration and cache preservation.
@@ -45,9 +45,9 @@ for migration and cache preservation.
 Choose the scope explicitly:
 
 ```bash
-npx video-research-mcp@0.8.0-rc.4 --global
+npx video-research-mcp@0.8.0-rc.5 --global
 # Or, from the project directory:
-npx video-research-mcp@0.8.0-rc.4 --local
+npx video-research-mcp@0.8.0-rc.5 --local
 ```
 
 Global workflows go into `~/.claude/` and core registration into `~/.claude.json`.
@@ -56,7 +56,7 @@ into `./.config/video-research-mcp/.env`. The installer registers only the core;
 Playwright, MLflow MCP and video companions require separate registration.
 
 Set the key in the selected template, restart Claude Code and inspect `/mcp`.
-`npx video-research-mcp@0.8.0-rc.4 --global --check` inspects the global installation;
+`npx video-research-mcp@0.8.0-rc.5 --global --check` inspects the global installation;
 use `--local --check` for the project. This checks files and configuration hashes,
 not a provider request.
 
@@ -133,11 +133,11 @@ The npm installer registers the server for you. To register only the published
 Python runtime, use:
 
 ```bash
-claude mcp add --transport stdio --scope user video-research -- uvx video-research-mcp==0.8.0rc4
+claude mcp add --transport stdio --scope user video-research -- uvx video-research-mcp==0.8.0rc5
 claude mcp list
 ```
 
-For tracing, use `'video-research-mcp[tracing]==0.8.0rc4'` and configure a tracking
+For tracing, use `'video-research-mcp[tracing]==0.8.0rc5'` and configure a tracking
 URI. See the [official MCP registration guide](https://code.claude.com/docs/en/mcp)
 for client scope and command syntax.
 
@@ -155,7 +155,7 @@ Use your client's supported stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp==0.8.0rc4"]
+      "args": ["video-research-mcp==0.8.0rc5"]
     }
   }
 }
@@ -300,6 +300,7 @@ for previews.
 | API key works in a terminal but not the client | Process environment precedence and the shared configuration file |
 | YouTube metadata returns 403 | YouTube Data API v3 enabled for the key's project, key restrictions, and `YOUTUBE_API_KEY` |
 | Analysis returns quota or permission errors | Actual error category, provider account access, quota, and selected model |
+| A download reports `Unsupported Content-Encoding` | The server compressed the response despite the identity request. Supply the original as a local file, or use a URL that honors the request. |
 | A repeated video analysis returns an old result | Use `video_analyze` with `use_cache=false`; cache clearing requires mutation permission |
 | Knowledge operation is unavailable | Weaviate connection, collection access, and optional dependencies |
 | Local frames are missing | `ffmpeg`, local source access, and the frame-extraction workflow |

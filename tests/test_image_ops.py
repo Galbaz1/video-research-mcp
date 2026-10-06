@@ -1,10 +1,12 @@
 """PNG preflight rejects unsafe inputs before the optional decoder starts."""
 
+import asyncio
 import hashlib
 from pathlib import Path
 import shutil
 import struct
 import subprocess
+import threading
 from unittest.mock import Mock
 import zlib
 
@@ -156,3 +158,102 @@ def test_changed_source_after_header_cannot_rebind_metadata(tmp_path, monkeypatc
         crop_png(str(source), str(tmp_path / "out.png"), (0, 0, 2, 2))
     spawn.assert_not_called()
     assert not (tmp_path / "out.png").exists()
+
+
+
+def test_cancelled_crop_preserves_source_and_never_starts_decoder(tmp_path, monkeypatch):
+    """GIVEN observed cancellation WHEN cropping THEN do not decode or publish."""
+    from video_research_mcp import image_ops
+
+    source = png(tmp_path / "source.png")
+    original = source.read_bytes()
+    cancellation = image_ops.CropCancellation()
+    cancellation.cancel()
+    monkeypatch.setattr(image_ops.shutil, "which", lambda _: "ffmpeg")
+    spawn = Mock(side_effect=AssertionError("cancelled crop must not start decoder"))
+    monkeypatch.setattr(image_ops.subprocess, "run", spawn)
+    with pytest.raises(asyncio.CancelledError):
+        crop_png(str(source), str(tmp_path / "crop.png"), (0, 0, 2, 2), cancellation=cancellation)
+    spawn.assert_not_called()
+    assert source.read_bytes() == original
+    assert not (tmp_path / "crop.png").exists()
+    assert not list(tmp_path.glob("vrm-crop-*"))
+
+
+def test_cancelled_promotion_never_removes_an_existing_target(tmp_path):
+    """GIVEN another owner's target WHEN cancelled THEN leave it intact."""
+    from video_research_mcp.image_ops import CropCancellation
+
+    staged = png(tmp_path / "staged.png", 2, 2)
+    target = tmp_path / "crop.png"
+    target.write_bytes(b"other owner's bytes")
+    custody = CropCancellation()
+    custody.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        custody.publish(staged, target)
+    assert target.read_bytes() == b"other owner's bytes"
+    with pytest.raises(asyncio.CancelledError):
+        custody.publish(staged, tmp_path / "fresh.png")
+    assert not (tmp_path / "fresh.png").exists()
+
+
+def test_promotion_wins_cancellation_race_without_losing_ownership(tmp_path, monkeypatch):
+    """GIVEN publication owns the lock WHEN cancelled THEN retain its artifact."""
+    from video_research_mcp import image_ops
+
+    staged = png(tmp_path / "staged.png", 2, 2)
+    target = tmp_path / "crop.png"
+    entered, release, cancelling, cancelled = (threading.Event() for _ in range(4))
+    custody = image_ops.CropCancellation()
+    link = image_ops.os.link
+    errors = []
+
+    def held_link(source, destination):
+        entered.set()
+        assert release.wait(5), "publication was not released"
+        link(source, destination)
+
+    def publish():
+        try:
+            custody.publish(staged, target)
+        except BaseException as exc:
+            errors.append(exc)
+
+    def cancel():
+        cancelling.set()
+        custody.cancel()
+        cancelled.set()
+
+    monkeypatch.setattr(image_ops.os, "link", held_link)
+    publisher = threading.Thread(target=publish)
+    canceller = threading.Thread(target=cancel)
+    publisher.start()
+    try:
+        assert entered.wait(5)
+        canceller.start()
+        assert cancelling.wait(5)
+        assert not cancelled.is_set()
+    finally:
+        release.set()
+        publisher.join(5)
+        if canceller.ident is not None:
+            canceller.join(5)
+    assert not publisher.is_alive() and not canceller.is_alive()
+    assert not errors
+    assert cancelled.is_set()
+    assert target.read_bytes() == staged.read_bytes()
+    with pytest.raises(asyncio.CancelledError):
+        custody.publish(staged, tmp_path / "later.png")
+    assert not (tmp_path / "later.png").exists()
+
+
+def test_custody_promotion_preserves_fresh_no_overwrite(tmp_path):
+    """GIVEN a concurrent target WHEN publishing THEN fail without overwriting."""
+    from video_research_mcp.image_ops import CropCancellation
+
+    staged = png(tmp_path / "staged.png", 2, 2)
+    target = tmp_path / "crop.png"
+    target.write_bytes(b"concurrent owner")
+    with pytest.raises(FileExistsError):
+        CropCancellation().publish(staged, target)
+    assert target.read_bytes() == b"concurrent owner"

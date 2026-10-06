@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from weaviate.classes.config import DataType, Property
 
 from .config import get_config
+from .redaction import redact_text
 from .weaviate_migrate import build_vector_config, migrate_all_if_needed
 from .weaviate_schema import CollectionDef, PropertyDef
 
@@ -211,7 +212,7 @@ class WeaviateClient:
         with _lock:
             if _client is None:
                 _client = _connect(cfg.weaviate_url, cfg.weaviate_api_key)
-                logger.info("Connected to Weaviate at %s", cfg.weaviate_url)
+                logger.info("Connected to Weaviate at %s", redact_text(cfg.weaviate_url))
 
             if not _schema_ensured:
                 cls.ensure_collections()
@@ -238,7 +239,7 @@ class WeaviateClient:
         async with _async_lock:
             if _async_client is None:
                 _async_client = await _aconnect(cfg.weaviate_url, cfg.weaviate_api_key)
-                logger.info("Async-connected to Weaviate at %s", cfg.weaviate_url)
+                logger.info("Async-connected to Weaviate at %s", redact_text(cfg.weaviate_url))
 
         return _async_client
 
@@ -299,13 +300,14 @@ class WeaviateClient:
                 col.config.add_property(_to_property(prop_def))
                 logger.info("Added property %s.%s", col_def.name, prop_def.name)
             except Exception as exc:
-                logger.debug("Property %s.%s already exists or failed: %s", col_def.name, prop_def.name, exc)
+                logger.debug("Property %s.%s already exists or failed: %s",
+                             col_def.name, prop_def.name, redact_text(str(exc)))
 
         if get_config().reranker_enabled:
             try:
                 col.config.update(reranker_config=Reconfigure.Reranker.cohere())
             except Exception as exc:
-                logger.debug("Reranker config for %s: %s", col_def.name, exc)
+                logger.debug("Reranker config for %s: %s", col_def.name, redact_text(str(exc)))
 
     @classmethod
     def _ensure_references(cls, collections: list[CollectionDef]) -> None:
@@ -324,7 +326,8 @@ class WeaviateClient:
                     ))
                     logger.info("Added reference %s.%s → %s", col_def.name, ref_def.name, ref_def.target_collection)
                 except Exception as exc:
-                    logger.debug("Reference %s.%s already exists or failed: %s", col_def.name, ref_def.name, exc)
+                    logger.debug("Reference %s.%s already exists or failed: %s",
+                                 col_def.name, ref_def.name, redact_text(str(exc)))
 
     @classmethod
     def is_available(cls) -> bool:

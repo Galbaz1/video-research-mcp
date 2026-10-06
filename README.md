@@ -17,14 +17,14 @@ The [English user documentation](https://github.com/Galbaz1/video-research-mcp/b
 also covers setup problems and examples. Describe your problem in your MCP client
 in ordinary language to begin.
 
-[Release](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.4) ·
-[npm](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.4) ·
-[PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc4/) ·
-[Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4)
+[Release](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.5) ·
+[npm](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.5) ·
+[PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc5/) ·
+[Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.5)
 
-**RC4 prerelease source: `0.8.0-rc.4` (Python `0.8.0rc4`).**
+**RC5 prerelease source: `0.8.0-rc.5` (Python `0.8.0rc5`).**
 Examples pin these versions; tool source references use the immutable
-`v0.8.0-rc.4` tag, while installation guides follow main. Check the release and
+`v0.8.0-rc.5` tag, while installation guides follow main. Check the release and
 registry links above for availability before
 installing. The npm prerelease channel is `next`. Verify your installed version
 using the steps below. Stable `0.7.1` predates the native Codex plugin and
@@ -101,7 +101,7 @@ parent directories if needed:
       "source": {
         "source": "npm",
         "package": "video-research-mcp",
-        "version": "0.8.0-rc.4"
+        "version": "0.8.0-rc.5"
       },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity"
@@ -117,7 +117,7 @@ codex plugin list --json
 ```
 
 Start a fresh Codex session. Check that `video-research@video-research` is enabled,
-its source is npm at `0.8.0-rc.4`, and the server's tools are available.
+its source is npm at `0.8.0-rc.5`, and the server's tools are available.
 
 For an existing installation, use the
 [native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
@@ -129,7 +129,7 @@ disabled; the guide describes the specific configuration to remove.
 ### Claude Code: workflow installer
 
 ```bash
-npx video-research-mcp@0.8.0-rc.4 --global
+npx video-research-mcp@0.8.0-rc.5 --global
 ```
 
 This installs slash commands, skills and agents into `~/.claude/`, registers the
@@ -153,14 +153,14 @@ Use your client's stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp==0.8.0-rc.4"]
+      "args": ["video-research-mcp==0.8.0-rc.5"]
     }
   }
 }
 ```
 
 This connects the same tools; agent workflows are installed separately. Python
-package filenames use the normalized spelling `0.8.0rc4`.
+package filenames use the normalized spelling `0.8.0rc5`.
 
 ### Verify your first connection
 
@@ -185,8 +185,8 @@ are non-fatal; verify the stored record when persistence matters. The
 [knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/KNOWLEDGE_STORE.md)
 covers embeddings, collections and optional query dependencies. For a manually
 configured server, retain the version pin when adding extras, for example
-`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.4'`. The full runtime configuration lives in
-[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/config.py).
+`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.5'`. The full runtime configuration lives in
+[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/config.py).
 
 Image edits, OCR, speech inference, Blender, FreeCAD and local model services have
 additional runtime or backend requirements. Installing the plugin does not install
@@ -202,11 +202,11 @@ also provide workflows for narration, image generation, clip generation and asse
 
 ## Inspect and extend
 
-- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
+- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.5/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
 - [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
-- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md): source setup and checks.
-- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/SECURITY.md): local access, provider boundaries and reporting.
-- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CHANGELOG.md): changes in this candidate.
+- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CONTRIBUTING.md): source setup and checks.
+- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/SECURITY.md): local access, provider boundaries and reporting.
+- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CHANGELOG.md): changes in this candidate.
 
 The selected RC3 native check covered the installed baseline and restart, with
 124 cache files. Fresh npm network acquisition versus reuse of the same-version
@@ -220,6 +220,6 @@ Created by **Fausto Albers** · [Wonder Why](https://wonderwhy.ai).
 Built with [Google Gemini](https://ai.google.dev/),
 [FastMCP](https://github.com/PrefectHQ/fastmcp) and
 [Pydantic](https://docs.pydantic.dev/), with optional knowledge and tracing integrations.
-Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/LICENSE);
-[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/THIRD_PARTY_NOTICES.md)
+Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/LICENSE);
+[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/THIRD_PARTY_NOTICES.md)
 cover bundled components with their own terms.

@@ -575,3 +575,63 @@ class TestAsyncConnect:
         result = await WeaviateClient.aget()
         assert result is mock_client
         mock_async_cloud.assert_called_once()
+
+
+@pytest.mark.parametrize("asynchronous", [False, True])
+async def test_diagnostic_redaction_connection(asynchronous, monkeypatch, caplog):
+    """GIVEN credential URL WHEN connecting THEN SDK keeps original and logs redact."""
+    import video_research_mcp.weaviate_client as mod
+
+    uri = "https://url-user-canary:url-password-canary@cluster.example/run?token=url-query-canary#url-fragment-canary"
+    cfg = MagicMock(weaviate_url=uri, weaviate_api_key="fixture-key")
+    client = MagicMock()
+    client.connect = AsyncMock()
+    sdk = MagicMock()
+    sdk.connect_to_weaviate_cloud.return_value = client
+    sdk.use_async_with_weaviate_cloud.return_value = client
+    monkeypatch.setattr(mod, "get_config", lambda: cfg)
+    monkeypatch.setattr(mod, "_weaviate", lambda: sdk)
+    monkeypatch.setattr(mod, "_collect_provider_headers", lambda: {})
+    monkeypatch.setattr(mod, "_client", None)
+    monkeypatch.setattr(mod, "_async_client", None)
+    monkeypatch.setattr(mod, "_schema_ensured", True)
+    caplog.set_level("INFO", logger=mod.__name__)
+    if asynchronous:
+        assert await mod.WeaviateClient.aget() is client
+        call = sdk.use_async_with_weaviate_cloud.call_args
+        client.connect.assert_awaited_once()
+    else:
+        assert mod.WeaviateClient.get() is client
+        call = sdk.connect_to_weaviate_cloud.call_args
+    assert call.kwargs["cluster_url"] == uri
+    assert "cluster.example/run" in caplog.text
+    for canary in ("url-user-canary", "url-password-canary", "url-query-canary", "url-fragment-canary"):
+        assert canary not in caplog.text
+
+
+@pytest.mark.parametrize("branch", ["property", "reranker", "reference"])
+def test_diagnostic_redaction_schema_errors(branch, monkeypatch, caplog):
+    """GIVEN SDK error WHEN schema update fails THEN DEBUG diagnostics redact credentials."""
+    import video_research_mcp.weaviate_client as mod
+    from video_research_mcp.weaviate_schema import CollectionDef, PropertyDef, ReferenceDef
+
+    client = MagicMock()
+    collection = client.collections.get.return_value
+    collection.config.get.return_value.properties = []
+    error = RuntimeError("backend rejected https://error-user-canary:error-password-canary@cluster.example/?token=error-query-canary#error-fragment-canary password=error-field-canary")
+    collection.config.add_property.side_effect = error
+    collection.config.update.side_effect = error
+    collection.config.add_reference.side_effect = error
+    monkeypatch.setattr(mod, "_client", client)
+    monkeypatch.setattr(mod, "get_config", lambda: MagicMock(reranker_enabled=branch == "reranker"))
+    caplog.set_level("DEBUG", logger=mod.__name__)
+    if branch == "reference":
+        mod.WeaviateClient._ensure_references([CollectionDef(name="Fixture", references=[ReferenceDef("edge", "Target")])])
+    else:
+        properties = [PropertyDef("text", ["text"], "Fixture")] if branch == "property" else []
+        mod.WeaviateClient._evolve_collection(CollectionDef(name="Fixture", properties=properties))
+    assert "backend rejected" in caplog.text
+    assert "cluster.example" in caplog.text
+    assert "[redacted]" in caplog.text
+    for canary in ("error-user-canary", "error-password-canary", "error-query-canary", "error-fragment-canary", "error-field-canary"):
+        assert canary not in caplog.text

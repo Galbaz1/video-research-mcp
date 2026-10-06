@@ -6,15 +6,18 @@ import math
 from pathlib import Path
 import random
 import struct
+from fractions import Fraction
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
+from fastmcp import Client, FastMCP
 from pydantic import TypeAdapter
 import pytest
 
 from video_research_mcp.client import GeminiClient
+from video_research_mcp.errors import make_tool_error
 from video_research_mcp.models.video_memory_av import (
-    InducedFact, InducedFacts, InducedName, VideoMemoryRequest,
+    AVRoute, InducedFact, InducedFacts, InducedName, VideoMemoryRequest,
 )
 from video_research_mcp.tools import video_memory_av as tool
 from video_research_mcp.video_memory import av_build, av_store
@@ -472,6 +475,85 @@ async def test_evidence_alignment_accepts_linked_self_introduction(src, text):
                        basis="evidence_aligned", evidence_ids=[record])
     assert result["identity_revision"]["evidence_ids"] == [record]
     assert result["identity_revision"]["basis"] == "evidence_aligned"
+
+
+@pytest.mark.parametrize("duration,roles,max_calls", [
+    (1_200_000_000.0, ["occurrences"], 8),
+    (math.nextafter(120.0, math.inf), ["occurrences"], 1),
+    (math.nextafter(3840.0, math.inf), ["occurrences", "environment"], 64),
+    (1e300, ["occurrences", "environment"], 64),
+    (float.fromhex("0x1.fffffffffffffp+1023"), ["occurrences"], 64),
+])
+def test_route_preflight_refuses_large_clock_before_iteration(monkeypatch, duration, roles, max_calls):
+    """GIVEN a large finite clock WHEN planned THEN refuse before duration-sized iteration."""
+    def iteration_forbidden(*args):
+        raise AssertionError("Duration-sized iteration reached before call-count refusal")
+
+    monkeypatch.setattr(av_build, "range", iteration_forbidden, raising=False)
+    expected_count = math.ceil(Fraction(duration) / 120) * len(roles)
+    with pytest.raises(ValueError) as error:
+        av_build.route_calls(AVRoute(roles=roles, max_calls=max_calls), duration)
+    assert str(error.value) == (
+        f"AV route needs {expected_count} calls; av_route.max_calls is {max_calls}"
+    )
+
+
+@pytest.mark.parametrize("duration,roles,intervals", [
+    (math.nextafter(0.0, math.inf), ["occurrences"], [(0.0, math.nextafter(0.0, math.inf))]),
+    (math.nextafter(120.0, 0.0), ["occurrences"], [(0.0, math.nextafter(120.0, 0.0))]),
+    (120.0, ["occurrences"], [(0.0, 120.0)]),
+    (math.nextafter(120.0, math.inf), ["occurrences"],
+     [(0.0, 120.0), (120.0, math.nextafter(120.0, math.inf))]),
+    (240.0, ["environment", "occurrences"], [(0.0, 120.0), (120.0, 240.0)]),
+    (3840.0, ["occurrences", "environment"], [(i * 120.0, (i + 1) * 120.0) for i in range(32)]),
+    (7680.0, ["occurrences"], [(i * 120.0, (i + 1) * 120.0) for i in range(64)]),
+])
+def test_route_preflight_preserves_boundaries_roles_and_max64(duration, roles, intervals):
+    """GIVEN accepted boundaries and roles WHEN planned THEN retain ordered windows and max64."""
+    route = AVRoute(roles=roles, max_calls=len(intervals) * len(roles))
+    calls = av_build.route_calls(route, duration)
+    assert calls == [
+        {"operation": "media_caption_events", "role": role, "start_seconds": start,
+         "end_seconds": end, "window_seconds": 30.0}
+        for start, end in intervals for role in roles
+    ]
+    assert not route.authorize_submission
+
+
+@pytest.mark.parametrize("mounted", [False, True], ids=["direct", "mounted"])
+@pytest.mark.parametrize("duration", [1_200_000_000.0, float.fromhex("0x1.fffffffffffffp+1023")])
+async def test_imported_clock_dry_plan_refuses_before_allocation(
+    src, monkeypatch, mock_gemini_client, mounted, duration,
+):
+    """GIVEN an imported large clock WHEN dry-planned directly or mounted THEN no allocation/calls."""
+    def iteration_forbidden(*args):
+        raise AssertionError("Duration-sized iteration reached before call-count refusal")
+
+    monkeypatch.setattr(av_build, "range", iteration_forbidden, raising=False)
+    caption = AsyncMock()
+    monkeypatch.setattr(av_build, "caption_events", caption)
+    transcript = _write(src["tmp"] / "large-clock.json", _transcript(
+        src, segments=[], source=src["clock"] | {"presentation_end_seconds": duration},
+    )) | {"kind": "transcript"}
+    payload = {"action": "build", "memory_dir": str(src["tmp"] / "memory"),
+               "expected_source_sha256": src["sha256"], "file_path": src["path"],
+               "artifacts": [transcript], "av_route": {"max_calls": 8}}
+    if mounted:
+        app = FastMCP("av-preflight-test")
+        app.mount(tool.video_memory_av_server)
+        async with Client(app) as client:
+            reply = await client.call_tool("video_memory_av", {"request": payload})
+        result = reply.structured_content
+        assert result == json.loads(reply.content[0].text)
+    else:
+        result = await tool.video_memory_av(REQUEST.validate_python(payload))
+    expected_count = math.ceil(Fraction(duration) / 120)
+    expected_error = f"AV route needs {expected_count} calls; av_route.max_calls is 8"
+    assert result == make_tool_error(ValueError(expected_error))
+    assert not (src["tmp"] / "memory").exists()
+    caption.assert_not_awaited()
+    for mock in mock_gemini_client.values():
+        mock.assert_not_called()
 
 
 async def test_build_route_plans_then_executes(src, monkeypatch):

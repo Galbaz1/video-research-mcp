@@ -8,8 +8,9 @@ upstream renderer to prepare inputs, preview scenes, and render the video.
 Two tools are available: `agent_generate_scenes` and
 `agent_generate_single_scene`.
 
-Source-code references below target the immutable `v0.8.0-rc.4` source tag.
-This companion's published PyPI version is `0.2.2rc2`. For the exact source and
+Source-code references below target the immutable `v0.8.0-rc.5` source tag.
+This companion's release version is `0.2.2rc3`; check PyPI availability before
+installation. For the exact source and
 bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-agent-mcp/#files).
@@ -35,7 +36,7 @@ this entry to your client's `mcpServers` configuration:
 {
   "video-agent": {
     "command": "uvx",
-    "args": ["video-agent-mcp==0.2.2rc2"]
+    "args": ["video-agent-mcp==0.2.2rc3"]
   }
 }
 ```
@@ -61,7 +62,7 @@ AGENT_MAX_TURNS=1
 The override also works when `EXPLAINER_PATH` is unset.
 
 `AGENT_MODEL` overrides the default in
-[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
+[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
 [official model overview](https://platform.claude.com/docs/en/models/overview)
 for a supported ID. Restart the server after configuration changes.
 
@@ -124,5 +125,5 @@ uv build
 
 Tests mock SDK queries and do not generate paid content. The lockfile records the
 development environment; `pyproject.toml` defines supported dependency ranges.
-See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md) for repository workflow
-and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PUBLISHING.md) for release verification.
+See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CONTRIBUTING.md) for repository workflow
+and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/docs/PUBLISHING.md) for release verification.

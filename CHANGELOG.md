@@ -7,21 +7,35 @@ and provider configuration.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.8.0-rc.5] - 2026-10-06
 
 ### Fixed
+
+- Check the AV dry-plan call limit before allocating its windows and calls.
+- Bound explainer diagnostic patterns while preserving credential redaction.
+- Redact credential-bearing document and service URL diagnostics; retain the
+  original URL for the requested operation.
+- Request identity-encoded downloads and reject compressed response bodies
+  before decoding, so the existing byte limit bounds downloaded content.
+- Derive download filenames from the URL path, excluding query strings and
+  fragments from file-extension validation and diagnostics.
+- Join cancelled crop workers and order cancellation against fresh output
+  publication. Preserve outputs that completed before cancellation.
+- Align core/plugin versions and companion source documentation with this
+  prerelease. Companion versions are `0.2.2-rc.3`.
+
+Check each registry before installing. These repairs do not establish broad
+runtime, provider, held-out or comparative qualification.
+
+## [0.8.0-rc.4] - 2026-10-06
+
+### Candidate fixes
 
 - Preserve replacement files during lesson rollback and keep the primary error
   when cleanup or failure-receipt writing also fails.
 - Verify the selected DSP helper's hash before and after execution.
 - Add renderer browser-capture test diagnostics for the retained 10-second
   timeout. The historical timeout's root cause remains unknown.
-
-These changes are on main after PR #93 and are not in the published RC3 packages.
-
-## [0.8.0-rc.4] - 2026-10-06
-
-### Candidate fixes
 
 - Bind checked HTTPS downloads to admitted addresses and preserve Unicode host
   identity across DNS, TLS and redirects.
@@ -486,4 +500,5 @@ These changes are on main after PR #93 and are not in the published RC3 packages
 [0.3.5]: https://pypi.org/project/video-research-mcp/0.3.5/
 [0.3.4]: https://pypi.org/project/video-research-mcp/0.3.4/
 
+[0.8.0-rc.5]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.5
 [0.8.0-rc.4]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.4
