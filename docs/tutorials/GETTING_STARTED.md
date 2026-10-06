@@ -1,17 +1,19 @@
 # Getting started
 
-Install the published RC3 prerelease, connect your client, then check the running
+Install the RC4 prerelease, connect your client, then check the running
 configuration before sending material for analysis. Examples pin core
-`0.8.0-rc.3` (Python `0.8.0rc3`); stable `0.7.1` predates the native Codex plugin.
+`0.8.0-rc.4` (Python `0.8.0rc4`); stable `0.7.1` predates the native Codex plugin.
+The Python runtime is published. Check npm registry availability before using
+the workflow bundle; the server-only route below works without that bundle.
 The video companions are optional, separate installations.
 
 For a route matched to your task or setup problem, use the
 [user documentation](../README.md#choose-a-task). You can describe your problem
 in your MCP client; `/gr:*` commands below are specific to Claude Code.
 
-This guide follows corrected source main. The public RC3 core package does not
-include main `ef4a6cf`'s later lesson error/cleanup or audio-DSP helper-drift fixes.
-Use the [source checkout route](#a-source-checkout) for those fixes.
+This guide follows source main. RC4 includes the lesson error/cleanup and
+audio-DSP helper-drift fixes that followed RC3. Use the
+[source checkout route](#a-source-checkout) to inspect the implementation.
 
 ## Before you install
 
@@ -31,9 +33,9 @@ analysis interval does not necessarily limit the uploaded file.
 
 Follow the [README's pinned npm marketplace setup](../../README.md#codex-native-plugin),
 then start a fresh Codex session. It supplies skills and the research server.
-The selected RC3 baseline and restart were checked on Codex 0.160.1 on 2026-10-06;
-provider quality and fresh network acquisition versus cache reuse remain separate,
-unverified outcomes. See [Distribution](../PLUGIN_DISTRIBUTION.md#native-codex-plugin)
+The selected RC4 local-source baseline and restart were checked on Codex
+0.160.1 on 2026-10-06. The earlier RC3 check used an npm source. Provider quality
+and fresh npm network acquisition versus cache reuse remain unverified. See [Distribution](../PLUGIN_DISTRIBUTION.md#native-codex-plugin)
 for migration and cache preservation.
 
 <a id="install-the-claude-code-workflows"></a>
@@ -43,9 +45,9 @@ for migration and cache preservation.
 Choose the scope explicitly:
 
 ```bash
-npx video-research-mcp@0.8.0-rc.3 --global
+npx video-research-mcp@0.8.0-rc.4 --global
 # Or, from the project directory:
-npx video-research-mcp@0.8.0-rc.3 --local
+npx video-research-mcp@0.8.0-rc.4 --local
 ```
 
 Global workflows go into `~/.claude/` and core registration into `~/.claude.json`.
@@ -54,7 +56,7 @@ into `./.config/video-research-mcp/.env`. The installer registers only the core;
 Playwright, MLflow MCP and video companions require separate registration.
 
 Set the key in the selected template, restart Claude Code and inspect `/mcp`.
-`npx video-research-mcp@0.8.0-rc.3 --global --check` inspects the global installation;
+`npx video-research-mcp@0.8.0-rc.4 --global --check` inspects the global installation;
 use `--local --check` for the project. This checks files and configuration hashes,
 not a provider request.
 
@@ -131,11 +133,11 @@ The npm installer registers the server for you. To register only the published
 Python runtime, use:
 
 ```bash
-claude mcp add --transport stdio --scope user video-research -- uvx video-research-mcp==0.8.0rc3
+claude mcp add --transport stdio --scope user video-research -- uvx video-research-mcp==0.8.0rc4
 claude mcp list
 ```
 
-For tracing, use `'video-research-mcp[tracing]==0.8.0rc3'` and configure a tracking
+For tracing, use `'video-research-mcp[tracing]==0.8.0rc4'` and configure a tracking
 URI. See the [official MCP registration guide](https://code.claude.com/docs/en/mcp)
 for client scope and command syntax.
 
@@ -153,7 +155,7 @@ Use your client's supported stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp==0.8.0rc3"]
+      "args": ["video-research-mcp==0.8.0rc4"]
     }
   }
 }

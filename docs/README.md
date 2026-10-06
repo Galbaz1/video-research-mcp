@@ -11,8 +11,9 @@ server works with any stdio MCP client. Codex uses the native plugin and skills;
 
 ## Choose a task
 
-The core routes below are present in published **RC3** (`0.8.0-rc.3` on npm,
-`0.8.0rc3` on PyPI). Optional backends still require their own setup.
+The core routes below are present in **RC4**, published as `0.8.0rc4` on PyPI.
+The npm workflow bundle uses `0.8.0-rc.4`; check its registry availability before
+installing. Optional backends still require their own setup.
 
 | Your task or problem | Recommended route | Next guide or example | Prerequisites and result bounds |
 | --- | --- | --- | --- |
@@ -53,15 +54,12 @@ use your client's normal conversation to refine the request.
 
 ## Which version does this guide describe?
 
-Installation examples pin the public RC3 prerelease. Stable `0.7.1` predates the
-native Codex plugin and expanded media routes. The companion packages are separate;
-the delivered companion candidate is `0.2.2rc1`.
+Installation examples pin core RC4 and the separately published companions
+`0.2.2rc2`. Stable `0.7.1` predates the native Codex plugin and expanded media
+routes. RC4 includes the lesson error/cleanup and audio-DSP helper-drift fixes
+that followed RC3.
 
-Detailed guides in this directory follow source main. As of 2026-10-06, main
-`ef4a6cf` includes later lesson error/cleanup and audio-DSP helper-drift fixes.
-Those fixes are not in the published RC3 core package; use a
-[source checkout](tutorials/GETTING_STARTED.md#a-source-checkout) to use them until
-a new package release includes them. The connected server's discovered schema
+Detailed guides follow source main. The connected server's discovered schema
 is authoritative for its tool arguments. The
 [tool manifest](metrics/tool-contract-manifest.json) is a dated generated source
 snapshot. It does not establish the inventory or schemas of your installed server.

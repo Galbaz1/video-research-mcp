@@ -13,7 +13,7 @@ transform source files. Optional providers and runtimes extend that core.
 
 **[Open the interactive user guide (Dutch): from your problem to an approach](https://galbaz1.github.io/video-research-mcp/guide/).**
 Search the function map or choose a task to see its tools, prerequisites and steps.
-The [English user documentation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/README.md)
+The [English user documentation](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/README.md)
 also covers setup problems and examples. Describe your problem in your MCP client
 in ordinary language to begin.
 
@@ -23,8 +23,9 @@ in ordinary language to begin.
 [Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4)
 
 **RC4 prerelease source: `0.8.0-rc.4` (Python `0.8.0rc4`).**
-Examples pin these versions; source references use the immutable `v0.8.0-rc.4`
-tag. Check the release and registry links above for availability before
+Examples pin these versions; tool source references use the immutable
+`v0.8.0-rc.4` tag, while installation guides follow main. Check the release and
+registry links above for availability before
 installing. The npm prerelease channel is `next`. Verify your installed version
 using the steps below. Stable `0.7.1` predates the native Codex plugin and
 expanded media surface.
@@ -119,7 +120,7 @@ Start a fresh Codex session. Check that `video-research@video-research` is enabl
 its source is npm at `0.8.0-rc.4`, and the server's tools are available.
 
 For an existing installation, use the
-[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
+[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
 Back up local plugin edits before reinstalling: Codex replaces its managed cache.
 A manual `mcp_servers.video-research` entry can hide the plugin server. In the
 historical RC1 check on Codex 0.160.0, this also occurred when the entry was
@@ -140,7 +141,7 @@ Use `--local` for project scope and set the key in
 `./.config/video-research-mcp/.env`; this replaces the shared credential-file route.
 Use `--global --check` to inspect the global installation. Updates preserve modified
 workflow files and custom configuration. See
-[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/integrations/ONBOARDING.md)
+[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/integrations/ONBOARDING.md)
 for scope, checkpoints and rollback.
 
 ### Other MCP clients: server only
@@ -181,7 +182,7 @@ checking the returned evidence verifies the particular result.
 
 Research works without Weaviate. When storage is configured, write-through errors
 are non-fatal; verify the stored record when persistence matters. The
-[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/tutorials/KNOWLEDGE_STORE.md)
+[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/KNOWLEDGE_STORE.md)
 covers embeddings, collections and optional query dependencies. For a manually
 configured server, retain the version pin when adding extras, for example
 `uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.4'`. The full runtime configuration lives in
@@ -202,7 +203,7 @@ also provide workflows for narration, image generation, clip generation and asse
 ## Inspect and extend
 
 - [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
-- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
+- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
 - [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md): source setup and checks.
 - [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/SECURITY.md): local access, provider boundaries and reporting.
 - [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CHANGELOG.md): changes in this candidate.

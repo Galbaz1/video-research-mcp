@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bead_id": "vrm-0e8.2.6",
-  "observed_at": "2026-10-06T17:54:29.243722+00:00",
+  "observed_at": "2026-10-06T18:50:47.780339+00:00",
   "source_head": "533572ea770d03da3942e0122096b813e0ba1907",
   "inventory": "docs/research/2026-09-30-capability-transfer.json",
   "scope": "Pinned source-unit routes, component rights and exact dependency/archive clearance. Accepted evaluation, security, evidence/native contract and offline onboarding requirements have exact own-source implementation receipts; no external programme code, asset, weight or optional runtime copied/imported.",
@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "e6a691514dade19f627346922b94e2e4ccc1abe5a9c43e4d7898dfc53d8290f5",
+          "target_sha256": "d1cad1588e967f1a02477dd2425dc27c04a3885768fadb28f97bac64e422bdcf",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4492,7 +4492,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "e6a691514dade19f627346922b94e2e4ccc1abe5a9c43e4d7898dfc53d8290f5",
+          "target_sha256": "d1cad1588e967f1a02477dd2425dc27c04a3885768fadb28f97bac64e422bdcf",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
