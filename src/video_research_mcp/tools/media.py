@@ -14,7 +14,7 @@ from mcp.types import CallToolResult, ImageContent, TextContent, ToolAnnotations
 from pydantic import Field, StrictInt, TypeAdapter
 
 from ..errors import ToolError, make_tool_error
-from ..image_ops import crop_png
+from ..image_ops import CropCancellation, crop_png
 from ..models.media import CropResult
 from ..tracing import trace
 
@@ -68,7 +68,30 @@ async def image_crop(
         Native/text content plus structured CropResult, or a redacted ToolError.
     """
     try:
-        metadata = await asyncio.to_thread(crop_png, file_path, output_path, tuple(crop_box))
+        cancellation = CropCancellation()
+        worker = asyncio.create_task(
+            asyncio.to_thread(
+                crop_png,
+                file_path,
+                output_path,
+                tuple(crop_box),
+                cancellation=cancellation,
+            )
+        )
+        try:
+            metadata = await asyncio.shield(worker)
+        except asyncio.CancelledError:
+            cancellation.cancel()
+            while not worker.done():
+                try:
+                    await asyncio.shield(worker)
+                except asyncio.CancelledError:
+                    continue
+                except Exception:
+                    break
+            if not worker.cancelled():
+                worker.exception()
+            raise
         image = None
         status = "text_only"
         if include_image:

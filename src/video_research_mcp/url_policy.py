@@ -159,7 +159,7 @@ def _verify_peer_ip(response: httpx.Response) -> None:
 
 @asynccontextmanager
 async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[str] | None = None):
-    """Open an HTTPS response after checking every redirect and actual peer."""
+    """Open guarded HTTPS metadata or an identity-encoded response body."""
     hosts = None if allowed_hosts is None else {
         httpx.URL(host=host).raw_host for host in allowed_hosts
     }
@@ -172,6 +172,7 @@ async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[
     transport = _PinnedTransport(await validate_url(url))
     async with httpx.AsyncClient(
         follow_redirects=False, timeout=60, trust_env=False, transport=transport,
+        headers={"Accept-Encoding": "identity"},
     ) as client:
         for hop in range(6):
             async with client.stream(method, url) as response:
@@ -187,6 +188,11 @@ async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[
                     transport.addresses = await validate_url(url)
                     continue
                 response.raise_for_status()
+                if method.upper() != "HEAD" and any(
+                    encoding.strip().lower() != "identity"
+                    for encoding in response.headers.get("content-encoding", "identity").split(",")
+                ):
+                    raise UrlPolicyError("Unsupported Content-Encoding: response must use identity")
                 yield response
                 return
 
@@ -210,7 +216,7 @@ async def download_checked(url: str, tmp_dir: Path, *, max_bytes: int) -> Path:
             detected, or the response exceeds max_bytes.
         httpx.HTTPStatusError: If the server returns an error status.
     """
-    url_path = url.rsplit("/", 1)[-1].split("?")[0]
+    url_path = Path(urlparse(url).path).name
     filename = url_path if "." in url_path else "document.pdf"
     if filename in {".", ".."}:
         filename = "document.pdf"

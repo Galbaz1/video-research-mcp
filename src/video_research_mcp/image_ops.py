@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import os
 from pathlib import Path
@@ -9,6 +10,7 @@ import shutil
 import struct
 import subprocess
 import tempfile
+import threading
 import zlib
 
 from .config import get_config
@@ -18,6 +20,33 @@ from .redaction import redact_text
 MAX_INPUT_PIXELS = 8_000_000
 MAX_OUTPUT_PIXELS = 4_000_000
 MAX_DECODE_ALLOCATION = 64 * 1024 * 1024
+
+
+class CropCancellation:
+    """Order one worker's cancellation against fresh artifact publication."""
+
+    def __init__(self) -> None:
+        """Create custody for one crop, independent of other requests."""
+        self._lock = threading.Lock()
+        self._cancelled = False
+
+    def cancel(self) -> None:
+        """Prevent promotion unless publication already owns the lock."""
+        with self._lock:
+            self._cancelled = True
+
+    def raise_if_cancelled(self) -> None:
+        """Stop work at a cooperative boundary after cancellation is observed."""
+        with self._lock:
+            if self._cancelled:
+                raise asyncio.CancelledError
+
+    def publish(self, staged: Path, target: Path) -> None:
+        """Publish once, or reject cancellation without deleting any target."""
+        with self._lock:
+            if self._cancelled:
+                raise asyncio.CancelledError
+            os.link(staged, target)
 
 
 def _source_digest(path: Path) -> str:
@@ -56,13 +85,20 @@ def inspect_png(file_path: str) -> dict:
     return {"path": str(path), "width": width, "height": height}
 
 
-def crop_png(file_path: str, output_path: str, box: tuple[int, int, int, int]) -> dict:
+def crop_png(
+    file_path: str,
+    output_path: str,
+    box: tuple[int, int, int, int],
+    *,
+    cancellation: CropCancellation | None = None,
+) -> dict:
     """Crop an in-bounds PNG rectangle and atomically retain its checked artifact.
 
     Args:
         file_path: Original PNG within the local access fence.
         output_path: New PNG path within the same server access fence.
         box: Integer x, y, width and height in original image pixels.
+        cancellation: Optional custody signal for the async MCP caller.
 
     Returns:
         Source/output hashes, original dimensions and exact crop coordinates.
@@ -85,7 +121,9 @@ def crop_png(file_path: str, output_path: str, box: tuple[int, int, int, int]) -
         raise RuntimeError("PNG cropping requires an independently installed FFmpeg")
     original = Path(source["path"])
     source_hash = _source_digest(original)
-    artifact_hash = _render_crop(original, target, box, executable, source_hash, source)
+    artifact_hash = _render_crop(
+        original, target, box, executable, source_hash, source, cancellation
+    )
     return {
         "source_sha256": source_hash,
         "source_width": source["width"],
@@ -122,6 +160,7 @@ def _render_crop(
     executable: str,
     source_hash: str,
     source: dict,
+    cancellation: CropCancellation | None = None,
 ) -> str:
     """Decode one bounded frame, verify it and promote only a fresh output."""
     x, y, width, height = box
@@ -154,6 +193,8 @@ def _render_crop(
             "1",
             str(staged),
         ]
+        if cancellation is not None:
+            cancellation.raise_if_cancelled()
         result = subprocess.run(command, capture_output=True, timeout=30, check=False)
         if result.returncode:
             raise RuntimeError(
@@ -165,5 +206,8 @@ def _render_crop(
         if _source_digest(original) != source_hash:
             raise ValueError("PNG source changed during cropping")
         artifact_hash = hashlib.sha256(staged.read_bytes()).hexdigest()
-        os.link(staged, target)
+        if cancellation is None:
+            os.link(staged, target)
+        else:
+            cancellation.publish(staged, target)
     return artifact_hash

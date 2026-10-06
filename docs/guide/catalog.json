@@ -1,7 +1,7 @@
 {
-  "revision": "v0.8.0-rc.4",
-  "plugin_version": "0.8.0-rc.4",
-  "availability": "RC4-broninventaris; controleer registry en geïnstalleerde versie afzonderlijk",
+  "revision": "v0.8.0-rc.5",
+  "plugin_version": "0.8.0-rc.5",
+  "availability": "RC5-broninventaris; controleer registry en geïnstalleerde versie afzonderlijk",
   "tools": [
     {
       "id": "video-agent/agent_generate_scenes",
@@ -16,12 +16,12 @@
         "Claude Agent SDK, geconfigureerde toegang en expliciete toestemming voor tekstgeneratie. Er wordt geen video gerenderd."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py",
         "line": 225,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py#L225"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py#L225"
       },
       "limitations": []
     },
@@ -38,12 +38,12 @@
         "Claude Agent SDK, geconfigureerde toegang en expliciete toestemming voor tekstgeneratie. Er wordt geen video gerenderd."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py",
         "line": 346,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py#L346"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-agent-mcp/src/video_agent_mcp/tools/scenes.py#L346"
       },
       "limitations": []
     },
@@ -60,12 +60,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L25"
       },
       "limitations": []
     },
@@ -82,12 +82,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
         "line": 53,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L53"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L53"
       },
       "limitations": []
     },
@@ -104,12 +104,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py",
         "line": 77,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L77"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L77"
       },
       "limitations": []
     },
@@ -127,12 +127,12 @@
         "Bestaande audio en gebruiksverklaringen in het project; commerciële uitvoer vraagt passende gebruiksrechten."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py",
         "line": 18,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py#L18"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py#L18"
       },
       "limitations": []
     },
@@ -149,12 +149,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 39,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L39"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L39"
       },
       "limitations": []
     },
@@ -171,12 +171,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 71,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L71"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L71"
       },
       "limitations": []
     },
@@ -193,12 +193,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 87,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L87"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L87"
       },
       "limitations": []
     },
@@ -215,12 +215,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 105,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L105"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L105"
       },
       "limitations": []
     },
@@ -237,12 +237,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 125,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L125"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L125"
       },
       "limitations": []
     },
@@ -259,12 +259,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 143,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L143"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L143"
       },
       "limitations": []
     },
@@ -281,12 +281,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py",
         "line": 166,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L166"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L166"
       },
       "limitations": []
     },
@@ -302,12 +302,12 @@
         "Aparte verbinding met video-explainer-mcp; een geconfigureerd project voor projectbewerkingen."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py",
         "line": 17,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py#L17"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py#L17"
       },
       "limitations": []
     },
@@ -324,12 +324,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py",
         "line": 18,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py#L18"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py#L18"
       },
       "limitations": []
     },
@@ -346,12 +346,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
         "line": 108,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L108"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L108"
       },
       "limitations": []
     },
@@ -368,12 +368,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
         "line": 164,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L164"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L164"
       },
       "limitations": []
     },
@@ -390,12 +390,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py",
         "line": 212,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L212"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L212"
       },
       "limitations": []
     },
@@ -411,12 +411,12 @@
         "Aparte verbinding met video-explainer-mcp; een geconfigureerd project voor projectbewerkingen."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py",
         "line": 20,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20"
       },
       "limitations": []
     },
@@ -433,12 +433,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27"
       },
       "limitations": []
     },
@@ -455,12 +455,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
         "line": 55,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L55"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L55"
       },
       "limitations": []
     },
@@ -477,12 +477,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
         "line": 112,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L112"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L112"
       },
       "limitations": []
     },
@@ -499,12 +499,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py",
         "line": 139,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L139"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L139"
       },
       "limitations": []
     },
@@ -521,12 +521,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L23"
       },
       "limitations": []
     },
@@ -543,12 +543,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
         "line": 56,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L56"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L56"
       },
       "limitations": []
     },
@@ -565,12 +565,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py",
         "line": 81,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L81"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/quality.py#L81"
       },
       "limitations": []
     },
@@ -587,12 +587,12 @@
         "Afzonderlijk geïnstalleerde upstream video_explainer CLI waar de gekozen stap die gebruikt; provider en sleutels voor generatie."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/refinement.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/refinement.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/refinement.py#L25"
       },
       "limitations": []
     },
@@ -609,12 +609,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_factcheck.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_factcheck.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_factcheck.py#L25"
       },
       "limitations": []
     },
@@ -631,12 +631,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
         "line": 36,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L36"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L36"
       },
       "limitations": []
     },
@@ -653,12 +653,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
         "line": 70,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L70"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L70"
       },
       "limitations": []
     },
@@ -675,12 +675,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
         "line": 150,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L150"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L150"
       },
       "limitations": []
     },
@@ -697,12 +697,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py",
         "line": 171,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L171"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L171"
       },
       "limitations": []
     },
@@ -719,12 +719,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/timing.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/timing.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/timing.py#L23"
       },
       "limitations": []
     },
@@ -741,12 +741,12 @@
         "Lokale bronbestanden binnen de ingestelde bestandsgrens; FFmpeg/ffprobe en, voor de renderroute, de geconfigureerde renderer."
       ],
       "execution": "Companion · lokaal / provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/variants.py",
         "line": 18,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/src/video_explainer_mcp/tools/variants.py#L18"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/variants.py#L18"
       },
       "limitations": []
     },
@@ -762,12 +762,12 @@
         "Toegang tot Semantic Scholar; configureer een API-sleutel waar de dienst die vereist."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/academic.py",
         "line": 49,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/academic.py#L49"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L49"
       },
       "limitations": []
     },
@@ -783,12 +783,12 @@
         "Toegang tot Semantic Scholar; configureer een API-sleutel waar de dienst die vereist."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/academic.py",
         "line": 106,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/academic.py#L106"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L106"
       },
       "limitations": []
     },
@@ -804,12 +804,12 @@
         "Toegang tot Semantic Scholar; configureer een API-sleutel waar de dienst die vereist."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/academic.py",
         "line": 141,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/academic.py#L141"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L141"
       },
       "limitations": []
     },
@@ -825,12 +825,12 @@
         "Toegang tot Semantic Scholar; configureer een API-sleutel waar de dienst die vereist."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/academic.py",
         "line": 191,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/academic.py#L191"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L191"
       },
       "limitations": []
     },
@@ -846,12 +846,12 @@
         "Toegang tot Semantic Scholar; configureer een API-sleutel waar de dienst die vereist."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/academic.py",
         "line": 233,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/academic.py#L233"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L233"
       },
       "limitations": []
     },
@@ -867,12 +867,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/audience.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/audience.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audience.py#L23"
       },
       "limitations": []
     },
@@ -890,12 +890,12 @@
         "Standaardanalyse meet de bron. Optionele Juzzy/Ferrous-bewerkingen vragen een afzonderlijk geïnstalleerde, exact gekozen native backend."
       ],
       "execution": "Lokaal · optionele native backend",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/audio_dsp.py",
         "line": 29,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/audio_dsp.py#L29"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_dsp.py#L29"
       },
       "limitations": []
     },
@@ -913,12 +913,12 @@
         "Expliciete model- en runtimedescriptor voor optionele diarizatie of stemembeddings. Namen komen van de gebruiker."
       ],
       "execution": "Experimenteel · lokaal model",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/audio_speakers.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/audio_speakers.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_speakers.py#L27"
       },
       "limitations": []
     },
@@ -936,12 +936,12 @@
         "Expliciete model- en runtimedescriptor voor optionele diarizatie of stemembeddings. Namen komen van de gebruiker."
       ],
       "execution": "Experimenteel · lokaal model",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/audio_speakers.py",
         "line": 59,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/audio_speakers.py#L59"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_speakers.py#L59"
       },
       "limitations": []
     },
@@ -958,12 +958,12 @@
         "Geef ondertitels mee, of selecteer expliciet een ASR-backend en toestemming voor broninzending. FFmpeg/ffprobe is nodig voor audiovoorbereiding."
       ],
       "execution": "Ondertitels / optionele ASR",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/audio_transcribe.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/audio_transcribe.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_transcribe.py#L27"
       },
       "limitations": [
         "Lokale ASR is optioneel. De totale intake-deadline is nog niet gekwalificeerd; een workerlimiet van 60 seconden dekt niet het hele verzoek.",
@@ -982,12 +982,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/collections.py",
         "line": 26,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/collections.py#L26"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/collections.py#L26"
       },
       "limitations": []
     },
@@ -1003,12 +1003,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/content.py",
         "line": 68,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/content.py#L68"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/content.py#L68"
       },
       "limitations": []
     },
@@ -1024,12 +1024,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/content.py",
         "line": 242,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/content.py#L242"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/content.py#L242"
       },
       "limitations": []
     },
@@ -1045,12 +1045,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/content_batch.py",
         "line": 174,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/content_batch.py#L174"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/content_batch.py#L174"
       },
       "limitations": []
     },
@@ -1066,12 +1066,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/corpus.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/corpus.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/corpus.py#L27"
       },
       "limitations": []
     },
@@ -1087,12 +1087,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/corrections.py",
         "line": 26,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/corrections.py#L26"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/corrections.py#L26"
       },
       "limitations": []
     },
@@ -1108,12 +1108,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/evidence_export.py",
         "line": 24,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/evidence_export.py#L24"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/evidence_export.py#L24"
       },
       "limitations": []
     },
@@ -1130,12 +1130,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/footage_edit.py",
         "line": 29,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/footage_edit.py#L29"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/footage_edit.py#L29"
       },
       "limitations": []
     },
@@ -1151,12 +1151,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/grounding.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/grounding.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/grounding.py#L25"
       },
       "limitations": []
     },
@@ -1172,12 +1172,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 66,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L66"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L66"
       },
       "limitations": []
     },
@@ -1193,12 +1193,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 88,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L88"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L88"
       },
       "limitations": []
     },
@@ -1214,12 +1214,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 107,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L107"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L107"
       },
       "limitations": []
     },
@@ -1235,12 +1235,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 123,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L123"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L123"
       },
       "limitations": []
     },
@@ -1256,12 +1256,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 141,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L141"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L141"
       },
       "limitations": []
     },
@@ -1277,12 +1277,12 @@
         "Expliciete simulatorconfiguratie; wijzigingen vragen passende toestemming. Dit is geen verbinding met fysieke hardware."
       ],
       "execution": "Experimenteel · simulator",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/hardware.py",
         "line": 170,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/hardware.py#L170"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L170"
       },
       "limitations": []
     },
@@ -1299,12 +1299,12 @@
         "Pillow voor beeldverwerking; OCR vraagt expliciet Tesseract met taaldata of Apple Vision op macOS."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/image.py",
         "line": 43,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/image.py#L43"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L43"
       },
       "limitations": []
     },
@@ -1321,12 +1321,12 @@
         "Pillow voor beeldverwerking; OCR vraagt expliciet Tesseract met taaldata of Apple Vision op macOS."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/image.py",
         "line": 76,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/image.py#L76"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L76"
       },
       "limitations": []
     },
@@ -1343,12 +1343,12 @@
         "Pillow voor beeldverwerking; OCR vraagt expliciet Tesseract met taaldata of Apple Vision op macOS."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/image.py",
         "line": 105,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/image.py#L105"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L105"
       },
       "limitations": []
     },
@@ -1365,12 +1365,12 @@
         "Pillow voor beeldverwerking; OCR vraagt expliciet Tesseract met taaldata of Apple Vision op macOS."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/image.py",
         "line": 132,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/image.py#L132"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L132"
       },
       "limitations": []
     },
@@ -1386,12 +1386,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/infra.py",
         "line": 58,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/infra.py#L58"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/infra.py#L58"
       },
       "limitations": []
     },
@@ -1407,12 +1407,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/infra.py",
         "line": 101,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/infra.py#L101"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/infra.py#L101"
       },
       "limitations": []
     },
@@ -1429,12 +1429,12 @@
         "Voor ingebouwde PDF-extractie met source_ingest is afzonderlijk geïnstalleerde Poppler nodig: pdftotext en pdfimages op PATH; deze binaries zijn niet gebundeld. Docling blijft een optionele, afzonderlijk geconfigureerde parser."
       ],
       "execution": "Lokaal · optionele parser",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/ingestion.py",
         "line": 36,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/ingestion.py#L36"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L36"
       },
       "limitations": []
     },
@@ -1451,12 +1451,12 @@
         "Een bestaande ingest-job met behouden bron- en extractiebytes. Deze stap start geen nieuwe extractie; de oorspronkelijke ingebouwde PDF-ingest vraagt afzonderlijk geïnstalleerde Poppler. Docling blijft optioneel."
       ],
       "execution": "Lokaal · optionele parser",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/ingestion.py",
         "line": 67,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/ingestion.py#L67"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L67"
       },
       "limitations": []
     },
@@ -1473,12 +1473,12 @@
         "Een bestaande ingest-job met behouden bron- en extractiebytes. Deze stap start geen nieuwe extractie; de oorspronkelijke ingebouwde PDF-ingest vraagt afzonderlijk geïnstalleerde Poppler. Docling blijft optioneel."
       ],
       "execution": "Lokaal · optionele parser",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/ingestion.py",
         "line": 89,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/ingestion.py#L89"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L89"
       },
       "limitations": []
     },
@@ -1494,12 +1494,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/jobs.py",
         "line": 19,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/jobs.py#L19"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/jobs.py#L19"
       },
       "limitations": []
     },
@@ -1515,12 +1515,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/jobs.py",
         "line": 43,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/jobs.py#L43"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/jobs.py#L43"
       },
       "limitations": []
     },
@@ -1537,12 +1537,12 @@
         "De optionele agents-extra en een compatibele QueryAgent-dienst."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/agent.py",
         "line": 73,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/agent.py#L73"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/agent.py#L73"
       },
       "limitations": []
     },
@@ -1559,12 +1559,12 @@
         "De optionele agents-extra en een compatibele QueryAgent-dienst."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/agent.py",
         "line": 128,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/agent.py#L128"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/agent.py#L128"
       },
       "limitations": [
         "Verouderde ingang; gebruik knowledge_search voor nieuwe zoekvragen."
@@ -1582,12 +1582,12 @@
         "WEAVIATE_URL en de vereiste toegang tot de geconfigureerde Weaviate-collecties."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/ingest.py",
         "line": 30,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/ingest.py#L30"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/ingest.py#L30"
       },
       "limitations": []
     },
@@ -1603,12 +1603,12 @@
         "WEAVIATE_URL en de vereiste toegang tot de geconfigureerde Weaviate-collecties."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/retrieval.py",
         "line": 35,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/retrieval.py#L35"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L35"
       },
       "limitations": []
     },
@@ -1624,12 +1624,12 @@
         "WEAVIATE_URL en de vereiste toegang tot de geconfigureerde Weaviate-collecties."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/retrieval.py",
         "line": 101,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/retrieval.py#L101"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L101"
       },
       "limitations": []
     },
@@ -1645,12 +1645,12 @@
         "WEAVIATE_URL en de vereiste toegang tot de geconfigureerde Weaviate-collecties."
       ],
       "execution": "Optionele kennisbank",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/retrieval.py",
         "line": 166,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/retrieval.py#L166"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L166"
       },
       "limitations": []
     },
@@ -1666,12 +1666,12 @@
         "De kernserver; het ingebouwde schema vereist geen actieve kennisbank."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/schema.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/schema.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/schema.py#L25"
       },
       "limitations": []
     },
@@ -1691,12 +1691,12 @@
         "Zonder WEAVIATE_URL levert deze tool lege resultaten; ook overgeslagen zoekfouten kunnen lege of gedeeltelijke resultaten geven. Dat bewijst niet dat opgeslagen kennis ontbreekt."
       ],
       "execution": "Optionele kennisbank · optionele providers",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/knowledge/search.py",
         "line": 30,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/knowledge/search.py#L30"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/search.py#L30"
       },
       "limitations": []
     },
@@ -1712,12 +1712,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 28,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L28"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L28"
       },
       "limitations": []
     },
@@ -1733,12 +1733,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 48,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L48"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L48"
       },
       "limitations": []
     },
@@ -1754,12 +1754,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 68,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L68"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L68"
       },
       "limitations": []
     },
@@ -1775,12 +1775,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 88,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L88"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L88"
       },
       "limitations": []
     },
@@ -1796,12 +1796,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 108,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L108"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L108"
       },
       "limitations": []
     },
@@ -1817,12 +1817,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 128,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L128"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L128"
       },
       "limitations": []
     },
@@ -1838,12 +1838,12 @@
         "Bestaande replaygegevens voor replay/read/monitor. Capture vraagt een afzonderlijk geschikte captureomgeving en opnametoestemming."
       ],
       "execution": "Experimenteel · replay / capture",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/live.py",
         "line": 148,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/live.py#L148"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L148"
       },
       "limitations": []
     },
@@ -1860,12 +1860,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media.py",
         "line": 37,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media.py#L37"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media.py#L37"
       },
       "limitations": []
     },
@@ -1882,12 +1882,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_assets.py",
         "line": 50,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_assets.py#L50"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_assets.py#L50"
       },
       "limitations": []
     },
@@ -1904,12 +1904,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_assets.py",
         "line": 67,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_assets.py#L67"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_assets.py#L67"
       },
       "limitations": []
     },
@@ -1926,12 +1926,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_assets.py",
         "line": 84,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_assets.py#L84"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_assets.py#L84"
       },
       "limitations": []
     },
@@ -1948,12 +1948,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_assets.py",
         "line": 101,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_assets.py#L101"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_assets.py#L101"
       },
       "limitations": []
     },
@@ -1970,12 +1970,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_assets.py",
         "line": 126,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_assets.py#L126"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_assets.py#L126"
       },
       "limitations": []
     },
@@ -1993,12 +1993,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_perceive.py",
         "line": 28,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_perceive.py#L28"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L28"
       },
       "limitations": []
     },
@@ -2016,12 +2016,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_perceive.py",
         "line": 48,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_perceive.py#L48"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L48"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2041,12 +2041,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_perceive.py",
         "line": 64,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_perceive.py#L64"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L64"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2066,12 +2066,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_perceive.py",
         "line": 83,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_perceive.py#L83"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L83"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2091,12 +2091,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_perceive.py",
         "line": 99,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_perceive.py#L99"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L99"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2115,12 +2115,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_read.py",
         "line": 28,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_read.py#L28"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L28"
       },
       "limitations": []
     },
@@ -2137,12 +2137,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_read.py",
         "line": 50,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_read.py#L50"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L50"
       },
       "limitations": []
     },
@@ -2159,12 +2159,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_read.py",
         "line": 81,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_read.py#L81"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L81"
       },
       "limitations": []
     },
@@ -2181,12 +2181,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_read.py",
         "line": 120,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_read.py#L120"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L120"
       },
       "limitations": []
     },
@@ -2203,12 +2203,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_read.py",
         "line": 171,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_read.py#L171"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L171"
       },
       "limitations": []
     },
@@ -2225,12 +2225,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 42,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L42"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L42"
       },
       "limitations": []
     },
@@ -2247,12 +2247,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 66,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L66"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L66"
       },
       "limitations": []
     },
@@ -2269,12 +2269,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 92,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L92"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L92"
       },
       "limitations": []
     },
@@ -2291,12 +2291,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 118,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L118"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L118"
       },
       "limitations": []
     },
@@ -2313,12 +2313,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 145,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L145"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L145"
       },
       "limitations": []
     },
@@ -2335,12 +2335,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/media_scenes.py",
         "line": 172,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/media_scenes.py#L172"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L172"
       },
       "limitations": []
     },
@@ -2356,12 +2356,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/notebooks.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/notebooks.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/notebooks.py#L23"
       },
       "limitations": []
     },
@@ -2377,12 +2377,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research.py",
         "line": 39,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research.py#L39"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L39"
       },
       "limitations": []
     },
@@ -2398,12 +2398,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research.py",
         "line": 119,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research.py#L119"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L119"
       },
       "limitations": []
     },
@@ -2419,12 +2419,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research.py",
         "line": 177,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research.py#L177"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L177"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2442,12 +2442,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_document.py",
         "line": 55,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_document.py#L55"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_document.py#L55"
       },
       "limitations": []
     },
@@ -2463,12 +2463,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_execute.py",
         "line": 24,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_execute.py#L24"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_execute.py#L24"
       },
       "limitations": []
     },
@@ -2484,12 +2484,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_web.py",
         "line": 79,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_web.py#L79"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_web.py#L79"
       },
       "limitations": []
     },
@@ -2505,12 +2505,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_web.py",
         "line": 119,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_web.py#L119"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_web.py#L119"
       },
       "limitations": []
     },
@@ -2526,12 +2526,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_web.py",
         "line": 146,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_web.py#L146"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_web.py#L146"
       },
       "limitations": []
     },
@@ -2547,12 +2547,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/research_web.py",
         "line": 186,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/research_web.py#L186"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_web.py#L186"
       },
       "limitations": []
     },
@@ -2568,12 +2568,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/search.py",
         "line": 24,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/search.py#L24"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search.py#L24"
       },
       "limitations": []
     },
@@ -2589,12 +2589,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/search_provider.py",
         "line": 26,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/search_provider.py#L26"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L26"
       },
       "limitations": []
     },
@@ -2610,12 +2610,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/search_provider.py",
         "line": 46,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/search_provider.py#L46"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L46"
       },
       "limitations": []
     },
@@ -2633,12 +2633,12 @@
         "Uitvoering gebruikt altijd een nieuwe publieke Uguu-upload en bytecontrole vóór Lens; een bestaande publieke URL vervangt die upload niet. Een fout na upload maakt publicatie niet ongedaan; retentie en verwijdering zijn niet gekwalificeerd."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/search_provider.py",
         "line": 66,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/search_provider.py#L66"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L66"
       },
       "limitations": []
     },
@@ -2654,12 +2654,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/segmentation.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/segmentation.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/segmentation.py#L27"
       },
       "limitations": []
     },
@@ -2675,12 +2675,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/session_memory.py",
         "line": 45,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/session_memory.py#L45"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/session_memory.py#L45"
       },
       "limitations": []
     },
@@ -2696,12 +2696,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/synthesis.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/synthesis.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/synthesis.py#L25"
       },
       "limitations": []
     },
@@ -2717,12 +2717,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/text_provider.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/text_provider.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/text_provider.py#L23"
       },
       "limitations": []
     },
@@ -2738,12 +2738,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/text_provider.py",
         "line": 43,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/text_provider.py#L43"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/text_provider.py#L43"
       },
       "limitations": []
     },
@@ -2759,12 +2759,12 @@
         "Selecteer een ondersteunde provider en configureer de bijbehorende sleutel of dienst. Controleer eerst de planning en grenzen van het verzoek."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/twelvelabs.py",
         "line": 21,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/twelvelabs.py#L21"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/twelvelabs.py#L21"
       },
       "limitations": []
     },
@@ -2780,12 +2780,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video.py",
         "line": 117,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video.py#L117"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L117"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -2803,12 +2803,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video.py",
         "line": 426,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video.py#L426"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L426"
       },
       "limitations": []
     },
@@ -2824,12 +2824,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video.py",
         "line": 550,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video.py#L550"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L550"
       },
       "limitations": []
     },
@@ -2846,12 +2846,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model. De geselecteerde videobestanden worden aan Gemini verstrekt; providergebruik kan kosten veroorzaken."
       ],
       "execution": "Lokale bestanden · Gemini-cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_batch.py",
         "line": 31,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_batch.py#L31"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_batch.py#L31"
       },
       "limitations": []
     },
@@ -2869,12 +2869,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 32,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L32"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L32"
       },
       "limitations": []
     },
@@ -2892,12 +2892,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 43,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L43"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L43"
       },
       "limitations": []
     },
@@ -2915,12 +2915,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 75,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L75"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L75"
       },
       "limitations": []
     },
@@ -2938,12 +2938,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 100,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L100"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L100"
       },
       "limitations": []
     },
@@ -2961,12 +2961,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 125,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L125"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L125"
       },
       "limitations": []
     },
@@ -2984,12 +2984,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 152,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L152"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L152"
       },
       "limitations": []
     },
@@ -3007,12 +3007,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 169,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L169"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L169"
       },
       "limitations": []
     },
@@ -3030,12 +3030,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 187,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L187"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L187"
       },
       "limitations": []
     },
@@ -3053,12 +3053,12 @@
         "Optionele, door de beheerder geconfigureerde dubbingservice voor stems, VAD en TTS; toestemming voor de stemreferentie."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_dubbing.py",
         "line": 212,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_dubbing.py#L212"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L212"
       },
       "limitations": []
     },
@@ -3076,12 +3076,12 @@
         "Expliciete lokale OCR-backend; geselecteerde punten bewijzen geen continue tekstdekking."
       ],
       "execution": "Lokaal · OCR",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_evidence.py",
         "line": 25,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_evidence.py#L25"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_evidence.py#L25"
       },
       "limitations": []
     },
@@ -3099,12 +3099,12 @@
         "Bestaande transcript-/AV-records voor opbouw en zoeken; nieuwe waarnemingen vragen een expliciet geschikte provider of native route."
       ],
       "execution": "Lokaal · optionele AV-analyse",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_memory_av.py",
         "line": 317,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_memory_av.py#L317"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_memory_av.py#L317"
       },
       "limitations": []
     },
@@ -3122,12 +3122,12 @@
         "Bestaande transcript-/AV-records voor opbouw en zoeken; nieuwe waarnemingen vragen een expliciet geschikte provider of native route."
       ],
       "execution": "Lokaal · optionele AV-analyse",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_memory_lifecycle.py",
         "line": 24,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_memory_lifecycle.py#L24"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_memory_lifecycle.py#L24"
       },
       "limitations": []
     },
@@ -3144,12 +3144,12 @@
         "FFmpeg/ffprobe voor decoderen, meten of exporteren; deze binaries zijn afzonderlijke afhankelijkheden."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_note.py",
         "line": 22,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_note.py#L22"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_note.py#L22"
       },
       "limitations": []
     },
@@ -3165,12 +3165,12 @@
         "GEMINI_API_KEY en een ondersteund geconfigureerd Gemini-model; bronmateriaal wordt aan de provider verstrekt."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/video_windows.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/video_windows.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_windows.py#L23"
       },
       "limitations": []
     },
@@ -3188,12 +3188,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/vision.py",
         "line": 23,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/vision.py#L23"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/vision.py#L23"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -3213,12 +3213,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/vision.py",
         "line": 41,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/vision.py#L41"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/vision.py#L41"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -3238,12 +3238,12 @@
         "Kies expliciet een geconfigureerde cloudbackend. Een lokale modelbackend is optioneel en vraagt een afzonderlijk gekwalificeerde runtime."
       ],
       "execution": "Optionele provider",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/vision.py",
         "line": 58,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/vision.py#L58"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/vision.py#L58"
       },
       "limitations": [
         "Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Controleer de oorspronkelijke bron."
@@ -3261,12 +3261,12 @@
         "Bestaande lokale records of aangeleverde gegevens; gebruik de juiste workspace, record-ID en grenzen."
       ],
       "execution": "Lokaal",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/wiki.py",
         "line": 27,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/wiki.py#L27"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/wiki.py#L27"
       },
       "limitations": []
     },
@@ -3282,12 +3282,12 @@
         "YOUTUBE_API_KEY voor YouTube Data API v3; alleen metadata en reacties, geen volledige videodekking."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/youtube.py",
         "line": 81,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/youtube.py#L81"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube.py#L81"
       },
       "limitations": []
     },
@@ -3303,12 +3303,12 @@
         "YOUTUBE_API_KEY voor YouTube Data API v3; alleen metadata en reacties, geen volledige videodekking."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/youtube.py",
         "line": 122,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/youtube.py#L122"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube.py#L122"
       },
       "limitations": []
     },
@@ -3324,12 +3324,12 @@
         "YOUTUBE_API_KEY voor YouTube Data API v3; alleen metadata en reacties, geen volledige videodekking."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/youtube.py",
         "line": 165,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/youtube.py#L165"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube.py#L165"
       },
       "limitations": []
     },
@@ -3345,12 +3345,12 @@
         "YOUTUBE_API_KEY voor YouTube Data API v3; alleen metadata en reacties, geen volledige videodekking."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/youtube_channels.py",
         "line": 17,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/youtube_channels.py#L17"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube_channels.py#L17"
       },
       "limitations": []
     },
@@ -3366,12 +3366,12 @@
         "YOUTUBE_API_KEY voor YouTube Data API v3; alleen metadata en reacties, geen volledige videodekking."
       ],
       "execution": "Cloud",
-      "availability": "Geregistreerd in RC4-kandidaatbron; voorwaarden gelden per route",
+      "availability": "Geregistreerd in RC5-kandidaatbron; voorwaarden gelden per route",
       "source": {
         "path": "src/video_research_mcp/tools/youtube_channels.py",
         "line": 38,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/tools/youtube_channels.py#L38"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube_channels.py#L38"
       },
       "limitations": []
     }
@@ -3387,12 +3387,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/av-events/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/av-events/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/av-events/SKILL.md#L1"
       },
       "tools": [
         "video-research/media_analyze_music",
@@ -3412,12 +3412,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/educational-explainer/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/educational-explainer/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/educational-explainer/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3431,12 +3431,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/ffmpeg-production/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/ffmpeg-production/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/ffmpeg-production/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3450,12 +3450,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/footage-edit/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/footage-edit/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/footage-edit/SKILL.md#L1"
       },
       "tools": [
         "video-research/image_manifest_read",
@@ -3472,12 +3472,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/gemini-visualize/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/gemini-visualize/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/gemini-visualize/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3491,12 +3491,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/gr-advisor/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/gr-advisor/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/gr-advisor/SKILL.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -3521,12 +3521,12 @@
         "Externe bron, geschikte runtime en taakgebonden controle vereist. RC3 levert geen algemeen gekwalificeerde native uitvoering."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/hardware-evidence-capture/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/hardware-evidence-capture/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/hardware-evidence-capture/SKILL.md#L1"
       },
       "tools": [
         "video-research/mhs_discover",
@@ -3546,12 +3546,12 @@
         "Een afzonderlijk beschikbare generator of provider; deze skill is een werkwijze en voegt geen generator aan de kernserver toe."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/image-generation/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/image-generation/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/image-generation/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3565,12 +3565,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/mlflow-traces/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/mlflow-traces/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/mlflow-traces/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3584,12 +3584,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/movie-commentary/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/movie-commentary/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/movie-commentary/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3603,12 +3603,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/plugin-maintenance/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/plugin-maintenance/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/plugin-maintenance/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3622,12 +3622,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/research-brief-builder/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/research-brief-builder/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/research-brief-builder/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3642,12 +3642,12 @@
         "Externe bron, geschikte runtime en taakgebonden controle vereist. RC3 levert geen algemeen gekwalificeerde native uitvoering."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/research-visualization-blender/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/research-visualization-blender/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/research-visualization-blender/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3662,12 +3662,12 @@
         "Externe bron, geschikte runtime en taakgebonden controle vereist. RC3 levert geen algemeen gekwalificeerde native uitvoering."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/research-visualization-freecad/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/research-visualization-freecad/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/research-visualization-freecad/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3681,12 +3681,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/reverse-search-video-frame/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/reverse-search-video-frame/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/reverse-search-video-frame/SKILL.md#L1"
       },
       "tools": [
         "video-research/image_ocr",
@@ -3705,12 +3705,12 @@
         "Externe bron, geschikte runtime en taakgebonden controle vereist. RC3 levert geen algemeen gekwalificeerde native uitvoering."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/spatial-video-analysis/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/spatial-video-analysis/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/spatial-video-analysis/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3725,12 +3725,12 @@
         "Een afzonderlijk beschikbare generator of provider; deze skill is een werkwijze en voegt geen generator aan de kernserver toe."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/tts-production/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/tts-production/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/tts-production/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3744,12 +3744,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-explainer/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-explainer/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-explainer/SKILL.md#L1"
       },
       "tools": [
         "video-explainer/explainer_create",
@@ -3782,12 +3782,12 @@
         "Een afzonderlijk beschikbare generator of provider; deze skill is een werkwijze en voegt geen generator aan de kernserver toe."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-generation/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-generation/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-generation/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3801,12 +3801,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-production/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-production/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-production/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3820,12 +3820,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-research/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-research/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-research/SKILL.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -3868,12 +3868,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-to-skill/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-to-skill/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-to-skill/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3887,12 +3887,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Experimentele integratie",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/video-translation/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/video-translation/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-translation/SKILL.md#L1"
       },
       "tools": []
     },
@@ -3906,12 +3906,12 @@
         "Host die deze workflow laadt; de genoemde tools moeten afzonderlijk verbonden en geconfigureerd zijn."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "skills/weaviate-setup/SKILL.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/weaviate-setup/SKILL.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/weaviate-setup/SKILL.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -3949,12 +3949,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/advisor.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/advisor.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/advisor.md#L1"
       },
       "tools": [
         "video-research/knowledge_search"
@@ -3970,12 +3970,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/analyze.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/analyze.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/analyze.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -3993,12 +3993,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/doctor.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/doctor.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/doctor.md#L1"
       },
       "tools": [
         "video-research/infra_configure",
@@ -4016,12 +4016,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/explain-status.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/explain-status.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/explain-status.md#L1"
       },
       "tools": [
         "video-explainer/explainer_list",
@@ -4039,12 +4039,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/explain-video.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/explain-video.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/explain-video.md#L1"
       },
       "tools": [
         "video-explainer/explainer_create",
@@ -4069,12 +4069,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/explainer.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/explainer.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/explainer.md#L1"
       },
       "tools": [
         "video-explainer/explainer_create",
@@ -4103,12 +4103,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/getting-started.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/getting-started.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/getting-started.md#L1"
       },
       "tools": [
         "video-research/infra_configure"
@@ -4124,12 +4124,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/ingest.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/ingest.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/ingest.md#L1"
       },
       "tools": [
         "video-research/knowledge_ingest",
@@ -4147,12 +4147,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/models.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/models.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/models.md#L1"
       },
       "tools": [
         "video-research/infra_configure"
@@ -4168,12 +4168,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/recall.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/recall.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/recall.md#L1"
       },
       "tools": [
         "video-research/knowledge_ask",
@@ -4194,12 +4194,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/research-deep.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/research-deep.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/research-deep.md#L1"
       },
       "tools": [
         "video-research/knowledge_search",
@@ -4217,12 +4217,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/research-doc.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/research-doc.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/research-doc.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -4241,12 +4241,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/research.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/research.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/research.md#L1"
       },
       "tools": [
         "video-research/research_assess_evidence",
@@ -4264,12 +4264,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/search.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/search.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/search.md#L1"
       },
       "tools": [
         "video-research/web_search"
@@ -4285,12 +4285,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/traces.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/traces.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/traces.md#L1"
       },
       "tools": []
     },
@@ -4304,12 +4304,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/video-chat.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/video-chat.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/video-chat.md#L1"
       },
       "tools": [
         "video-research/video_continue_session",
@@ -4326,12 +4326,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "commands/video.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/commands/video.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/commands/video.md#L1"
       },
       "tools": [
         "video-research/video_analyze",
@@ -4352,12 +4352,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/comment-analyst.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/comment-analyst.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/comment-analyst.md#L1"
       },
       "tools": [
         "video-research/content_analyze",
@@ -4375,12 +4375,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/content-to-video.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/content-to-video.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/content-to-video.md#L1"
       },
       "tools": [
         "video-explainer/explainer_create",
@@ -4409,12 +4409,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/gr-advisor.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/gr-advisor.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/gr-advisor.md#L1"
       },
       "tools": [
         "video-research/knowledge_search"
@@ -4430,12 +4430,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/researcher.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/researcher.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/researcher.md#L1"
       },
       "tools": [
         "video-research/knowledge_search",
@@ -4458,12 +4458,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/video-analyst.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/video-analyst.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/video-analyst.md#L1"
       },
       "tools": [
         "video-research/video_analyze",
@@ -4481,12 +4481,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/video-producer.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/video-producer.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/video-producer.md#L1"
       },
       "tools": [
         "video-explainer/explainer_create",
@@ -4515,12 +4515,12 @@
         "Claude-command of agentbestand uit het npm-pakket; Codex laadt deze ingangen niet automatisch."
       ],
       "execution": "Workflow · aparte voorwaarden",
-      "availability": "Opgenomen in RC4-kandidaatbron",
+      "availability": "Opgenomen in RC5-kandidaatbron",
       "source": {
         "path": "agents/visualizer.md",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/agents/visualizer.md#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/agents/visualizer.md#L1"
       },
       "tools": []
     }
@@ -4536,12 +4536,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "bin/install.js",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/bin/install.js#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/bin/install.js#L1"
       },
       "tools": []
     },
@@ -4555,12 +4555,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "plugin.json",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/plugin.json#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/plugin.json#L1"
       },
       "tools": []
     },
@@ -4574,12 +4574,12 @@
       "requirements": [
         "Afzonderlijk geschikte externe bron en runtime; native werking en brede vergelijkende kwaliteit zijn niet vastgesteld."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/core_session.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/core_session.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/core_session.py#L1"
       },
       "tools": []
     },
@@ -4593,12 +4593,12 @@
       "requirements": [
         "Afzonderlijk geschikte externe bron en runtime; native werking en brede vergelijkende kwaliteit zijn niet vastgesteld."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/spatial_session.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/spatial_session.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/spatial_session.py#L1"
       },
       "tools": []
     },
@@ -4612,12 +4612,12 @@
       "requirements": [
         "Afzonderlijk geschikte externe bron en runtime; native werking en brede vergelijkende kwaliteit zijn niet vastgesteld."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/blender_session.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/blender_session.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/blender_session.py#L1"
       },
       "tools": []
     },
@@ -4631,12 +4631,12 @@
       "requirements": [
         "Afzonderlijk geschikte externe bron en runtime; native werking en brede vergelijkende kwaliteit zijn niet vastgesteld."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/freecad_session.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/freecad_session.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/freecad_session.py#L1"
       },
       "tools": []
     },
@@ -4650,12 +4650,12 @@
       "requirements": [
         "Afzonderlijk geschikte externe bron en runtime; native werking en brede vergelijkende kwaliteit zijn niet vastgesteld."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "integrations/qwen/api.json",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/integrations/qwen/api.json#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/integrations/qwen/api.json#L1"
       },
       "tools": []
     },
@@ -4669,12 +4669,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "skills/educational-explainer/scripts/lesson.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/skills/educational-explainer/scripts/lesson.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/educational-explainer/scripts/lesson.py#L1"
       },
       "tools": []
     },
@@ -4688,12 +4688,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/validate_video_skill.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/validate_video_skill.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/validate_video_skill.py#L1"
       },
       "tools": []
     },
@@ -4707,12 +4707,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/package_video_skill.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/package_video_skill.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/package_video_skill.py#L1"
       },
       "tools": []
     },
@@ -4726,12 +4726,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/check_release.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/check_release.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/check_release.py#L1"
       },
       "tools": []
     },
@@ -4745,12 +4745,12 @@
       "requirements": [
         "Volg de releasebron voor de exacte CLI-invoer en vereiste lokale afhankelijkheden."
       ],
-      "availability": "Broningang in RC4-kandidaat; geen extra MCP-tool",
+      "availability": "Broningang in RC5-kandidaat; geen extra MCP-tool",
       "source": {
         "path": "scripts/inspect_provider_readiness.py",
         "line": 1,
-        "revision": "v0.8.0-rc.4",
-        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/scripts/inspect_provider_readiness.py#L1"
+        "revision": "v0.8.0-rc.5",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/inspect_provider_readiness.py#L1"
       },
       "tools": []
     }
@@ -4770,8 +4770,8 @@
     "codex_packaged_skills": 24
   },
   "coverage": {
-    "method": "Statische tooldeclaraties en bestaande serverindeling uit de actuele RC4-kandidaatbron; geen provideroproepen of uitvoering.",
+    "method": "Statische tooldeclaraties en bestaande serverindeling uit de actuele RC5-kandidaatbron; geen provideroproepen of uitvoering.",
     "limits": "Brede vergelijkende kwalificatie is onvolledig. Een geregistreerde tool is geen garantie dat jouw provider of runtime beschikbaar is.",
-    "postrelease": "RC4-bron bevat de broncorrecties voor lesfouten/cleanup en de DSP-helper; controleer publicatie en de geïnstalleerde versie afzonderlijk."
+    "postrelease": "Versies en documentatie zijn op RC5 afgestemd; controleer publicatie en de geïnstalleerde versie afzonderlijk."
   }
 }

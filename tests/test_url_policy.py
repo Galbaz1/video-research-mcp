@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import gzip
 import socket
+import zlib
 from pathlib import Path
 from unittest.mock import ANY, AsyncMock, MagicMock, patch
 
@@ -302,7 +304,7 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False, transport=ANY)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False, transport=ANY, headers={"Accept-Encoding": "identity"})
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
@@ -450,3 +452,155 @@ async def test_checked_download_never_overwrites_existing_file(tmp_path):
         with pytest.raises(FileExistsError):
             await download_checked('https://example.org/original.pdf', tmp_path, max_bytes=10)
     assert sentinel.read_bytes() == b'keep original'
+
+
+class _ObservedHTTPXStream(httpx.AsyncByteStream):
+    """Observe actual HTTPX body consumption without a network or large payload."""
+
+    def __init__(self, chunks):
+        self.chunks = chunks
+        self.consumed_bytes = 0
+        self.closed = False
+
+    async def __aiter__(self):
+        for chunk in self.chunks:
+            self.consumed_bytes += len(chunk)
+            yield chunk
+
+    async def aclose(self):
+        self.closed = True
+
+
+@pytest.fixture
+def actual_httpx_responses(monkeypatch):
+    """Keep the real AsyncClient/Response while replacing only DNS and transport."""
+    monkeypatch.setattr(_DNS_MOCK_TARGET, AsyncMock(return_value=_mock_getaddrinfo("93.184.216.34")))
+
+    def install(responses):
+        remaining = iter(responses)
+        requests = []
+
+        def handle(request):
+            requests.append(request)
+            response = next(remaining)
+            response.extensions["network_stream"] = _FakeNetworkStream("93.184.216.34")
+            return response
+
+        monkeypatch.setattr("video_research_mcp.url_policy._PinnedTransport", lambda addresses: httpx.MockTransport(handle))
+        return requests
+
+    return install
+
+
+@pytest.mark.parametrize("encodings", [
+    ["gzip"], ["deflate"], ["br"], ["GZip"], ["identity, gzip"],
+    ["gzip, identity"], ["identity", "gzip"], [""],
+], ids=["gzip", "deflate", "br", "case", "stacked", "reverse", "duplicate", "empty"])
+async def test_encoded_response_is_refused_before_decoder_stream_or_file(
+    tmp_path, actual_httpx_responses, encodings,
+):
+    """GIVEN ignored identity negotiation, THEN refuse before decoding or creating output."""
+    body = gzip.compress(b"small fixture") if encodings[0].lower() == "gzip" else zlib.compress(b"small fixture")
+    stream = _ObservedHTTPXStream([body])
+    actual_httpx_responses([httpx.Response(200, headers=[("content-encoding", value) for value in encodings], stream=stream)])
+    error = None
+    with patch.object(httpx.Response, "_get_content_decoder", autospec=True, side_effect=httpx.Response._get_content_decoder) as decoder:
+        try:
+            await download_checked("https://example.org/document.pdf", tmp_path, max_bytes=64)
+        except UrlPolicyError as exc:
+            error = exc
+    assert (decoder.call_count, stream.consumed_bytes, (tmp_path / "document.pdf").exists()) == (0, 0, False)
+    assert isinstance(error, UrlPolicyError) and "Content-Encoding" in str(error)
+    assert stream.closed
+
+
+@pytest.mark.parametrize("encoding", [None, "identity", "Identity"])
+@pytest.mark.parametrize("max_bytes", [4, 3])
+async def test_actual_identity_stream_preserves_success_and_size_cleanup(
+    tmp_path, actual_httpx_responses, encoding, max_bytes,
+):
+    """GIVEN an unencoded stream, THEN retain exact success or reject/clean over-limit output."""
+    stream = _ObservedHTTPXStream([b"ab", b"cd"])
+    headers = {} if encoding is None else {"content-encoding": encoding}
+    requests = actual_httpx_responses([httpx.Response(200, headers=headers, stream=stream)])
+    if max_bytes == 4:
+        result = await download_checked("https://example.org/document.pdf", tmp_path, max_bytes=max_bytes)
+        assert result.read_bytes() == b"abcd"
+    else:
+        with pytest.raises(UrlPolicyError, match="exceeds size limit"):
+            await download_checked("https://example.org/document.pdf", tmp_path, max_bytes=max_bytes)
+        assert not (tmp_path / "document.pdf").exists()
+    assert requests[0].headers["accept-encoding"] == "identity"
+    assert stream.consumed_bytes == 4 and stream.closed
+
+
+async def test_identity_header_persists_across_actual_manual_redirects(tmp_path, actual_httpx_responses):
+    """GIVEN two manual redirects, THEN every real HTTPX request asks for identity."""
+    streams = [_ObservedHTTPXStream([]), _ObservedHTTPXStream([]), _ObservedHTTPXStream([b"data"])]
+    responses = [
+        httpx.Response(302, headers={"location": "https://cdn.example.org/step"}, stream=streams[0]),
+        httpx.Response(307, headers={"location": "/document.pdf"}, stream=streams[1]),
+        httpx.Response(200, stream=streams[2]),
+    ]
+    requests = actual_httpx_responses(responses)
+    result = await download_checked("https://example.org/start", tmp_path, max_bytes=4)
+    assert result.read_bytes() == b"data"
+    assert [str(request.url) for request in requests] == [
+        "https://example.org/start", "https://cdn.example.org/step", "https://cdn.example.org/document.pdf",
+    ]
+    assert [request.headers["accept-encoding"] for request in requests] == ["identity"] * 3
+    assert all(stream.closed for stream in streams)
+
+
+@pytest.mark.parametrize("encoding", ["gzip", "deflate", "br"])
+async def test_head_encoded_metadata_does_not_consume_a_body(actual_httpx_responses, encoding):
+    """GIVEN HEAD metadata for an encoded resource, THEN yield metadata without reading/decoding."""
+    stream = _ObservedHTTPXStream([b"never consumed"])
+    requests = actual_httpx_responses([httpx.Response(200, headers={"content-encoding": encoding}, stream=stream)])
+    with patch.object(httpx.Response, "_get_content_decoder", autospec=True, side_effect=httpx.Response._get_content_decoder) as decoder:
+        async with checked_response("https://example.org/document.pdf", method="HEAD") as response:
+            assert response.headers["content-encoding"] == encoding
+    assert requests[0].method == "HEAD" and requests[0].headers["accept-encoding"] == "identity"
+    assert decoder.call_count == stream.consumed_bytes == 0 and stream.closed
+
+
+@pytest.mark.parametrize("suffix", [
+    "#opaque-fragment-canary",
+    "?download=opaque-query-canary#opaque-fragment-canary",
+], ids=["opaque-fragment", "query-and-fragment"])
+async def test_document_fragment_filename_diagnostics_and_source_identity(
+    tmp_path, actual_httpx_responses, monkeypatch, caplog, suffix,
+):
+    """GIVEN URL metadata, THEN prepare a PDF without leaking it into the filename or issues."""
+    import hashlib
+    import logging
+    from types import SimpleNamespace
+
+    from video_research_mcp.tools import research_document_file as documents
+
+    monkeypatch.setattr("video_research_mcp.config._config", None)
+    monkeypatch.setenv("LOCAL_FILE_ACCESS_ROOT", str(tmp_path))
+    url = "https://example.org/paper.pdf" + suffix
+    payload = b"%PDF-1.7\nsmall fixture\n"
+    content_id = hashlib.sha256(payload).hexdigest()
+    scratch = tmp_path / "documents"
+    scratch.mkdir()
+    stream = _ObservedHTTPXStream([payload])
+    requests = actual_httpx_responses([httpx.Response(200, stream=stream)])
+    monkeypatch.setattr(documents, "view_directory", lambda: scratch)
+    monkeypatch.setattr(documents, "get_config", lambda: SimpleNamespace(
+        doc_max_download_bytes=1024, research_document_phase_concurrency=1,
+    ))
+    upload = AsyncMock(return_value="files/prepared-pdf")
+    monkeypatch.setattr(documents, "_upload_large_file", upload)
+    caplog.set_level(logging.INFO, logger="video_research_mcp.url_policy")
+    with patch.object(documents, "download_checked", wraps=download_checked) as download:
+        prepared, issues = await documents._prepare_all_documents_with_issues(None, [url])
+    download.assert_called_once_with(url, scratch, max_bytes=1024)
+    assert str(requests[0].url) == url
+    assert stream.closed and not scratch.exists()
+    assert issues == [], caplog.text
+    assert prepared == [("files/prepared-pdf", content_id, url)]
+    upload.assert_awaited_once_with(scratch / "paper.pdf", "application/pdf", content_hash=content_id)
+    assert "opaque-fragment-canary" not in caplog.text
+    assert "opaque-query-canary" not in caplog.text
