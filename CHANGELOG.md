@@ -37,9 +37,19 @@ These changes are on main after PR #93 and are not in the published RC3 packages
 - Redact configured secrets within surrounding diagnostic text and bound agent
   diagnostic patterns. Preserve native timeout termination despite receipt
   failures and bind watchdogs to the job they monitor.
-- Prepare companion versions `0.2.2-rc.2` and matching core/plugin manifests.
-  Publication and installed-runtime checks are pending. These corrections do not
-  establish programme-wide, live-provider or held-out acceptance.
+- Align companion versions `0.2.2-rc.2` and matching core/plugin manifests.
+  These corrections do not establish programme-wide, live-provider or held-out
+  acceptance.
+
+### Publication and verification
+
+- GitHub prerelease `v0.8.0-rc.4`, core PyPI `0.8.0rc4`, and both companion PyPI
+  packages `0.2.2rc2` are published. Downloaded archives match the accepted build.
+- Selected local-source Codex startup and restart expose 120 core tool contracts;
+  published companion wheels expose 32 explainer and two scene-agent contracts.
+  These discovery checks do not establish provider or renderer quality.
+- npm RC4 publication remains pending human authentication. Check registry
+  availability before using RC4 npm commands; the stable channel remains `0.7.1`.
 
 ## [0.8.0-rc.3] - 2026-10-06
 
@@ -475,3 +485,5 @@ These changes are on main after PR #93 and are not in the published RC3 packages
 [0.3.6]: https://pypi.org/project/video-research-mcp/0.3.6/
 [0.3.5]: https://pypi.org/project/video-research-mcp/0.3.5/
 [0.3.4]: https://pypi.org/project/video-research-mcp/0.3.4/
+
+[0.8.0-rc.4]: https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.4

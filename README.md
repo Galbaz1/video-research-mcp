@@ -194,9 +194,9 @@ those runtimes, model weights or provider accounts. Inspect the relevant skill a
 its prerequisites before using an optional integration.
 
 For video production, the separate
-[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/README.md)
+[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/main/packages/video-explainer-mcp/README.md)
 orchestrates an external rendering pipeline; the
-[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/README.md)
+[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/main/packages/video-agent-mcp/README.md)
 handles scene-code generation. Neither is required for research. Production skills
 also provide workflows for narration, image generation, clip generation and assembly.
 

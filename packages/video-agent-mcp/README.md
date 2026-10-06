@@ -8,9 +8,9 @@ upstream renderer to prepare inputs, preview scenes, and render the video.
 Two tools are available: `agent_generate_scenes` and
 `agent_generate_single_scene`.
 
-Repository links below target the immutable `v0.8.0-rc.4` source tag.
-This companion's version is `0.2.2rc2`. Verify registry availability before
-installation. For the exact source and bundled README of a registry version,
+Source-code references below target the immutable `v0.8.0-rc.4` source tag.
+This companion's published PyPI version is `0.2.2rc2`. For the exact source and
+bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-agent-mcp/#files).
 
@@ -28,27 +28,19 @@ uv sync --locked --extra dev
 uv run --locked video-agent-mcp
 ```
 
-The command starts a stdio MCP server. Register it in your client's configuration
-rather than expecting a terminal UI. For Claude Code, add this entry to the
-appropriate `mcpServers` object, replacing the absolute checkout path:
+The published wrapper can run directly from PyPI as a stdio MCP server. Add
+this entry to your client's `mcpServers` configuration:
 
 ```json
 {
   "video-agent": {
-    "command": "uv",
-    "args": [
-      "run", "--locked", "--directory",
-      "/absolute/path/to/video-research-mcp/packages/video-agent-mcp",
-      "video-agent-mcp"
-    ]
+    "command": "uvx",
+    "args": ["video-agent-mcp==0.2.2rc2"]
   }
 }
 ```
 
-After publication of this prepared candidate, register `uvx` with
-`video-agent-mcp==0.2.2rc2`. Use the checkout command above until publication
-and verify the exact registry archive separately. The core npm installer
-does not register this companion.
+The core npm installer does not register this companion.
 
 Configuration comes from the process environment and
 `~/.config/video-research-mcp/.env`; nonempty process values take precedence.
@@ -76,7 +68,7 @@ for a supported ID. Restart the server after configuration changes.
 ## First scene generation
 
 1. Prepare a project with `script/script.json` containing a `scenes` list.
-   The [explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/README.md) can create the
+   The [explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/main/packages/video-explainer-mcp/README.md) can create the
    project and run the script step. Scene titles must produce unique component
    filenames and registry keys.
 2. If exact speech timing matters, generate voiceover first. Optional
