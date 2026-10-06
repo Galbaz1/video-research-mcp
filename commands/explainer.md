@@ -78,7 +78,7 @@ Between each step, call `explainer_status` and report progress.
 
 ### Phase 4: Review
 
-1. Call `explainer_factcheck(project_id)` to verify claims
+1. Call `explainer_factcheck(project_id)` for a report; check decisive claims against primary sources
 2. Present results to the user
 3. If issues found, use `explainer_refine` on affected phases
 
@@ -104,8 +104,4 @@ After each phase, report:
 
 ## TTS Provider Notes
 
-- **mock** (default): No audio — fastest for testing pipeline
-- **elevenlabs**: Best quality, native timestamps (recommended for production)
-- **openai**: Budget alternative, good quality
-- **gemini**: Experimental option
-- **edge**: Deprecated — unreliable due to auth breakage
+The wrapper accepts `mock` (default), `elevenlabs`, and `edge`. Mock produces silent test audio. For real speech, verify the selected upstream provider, credentials, voice/model compatibility, pricing, and actual output. OpenAI and Gemini are not accepted values of `EXPLAINER_TTS_PROVIDER`; an old Edge failure does not establish current availability.

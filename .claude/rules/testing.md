@@ -12,7 +12,7 @@ paths: "tests/**/*.py"
 
 ## Key Fixtures (conftest.py)
 
-- `mock_gemini_client` — patches `GeminiClient.get()`, `.generate()`, `.generate_structured()`
+- `mock_gemini_client` — patches `GeminiClient.get()`, `.generate()`, `.generate_structured()`, `.generate_json_validated()`
 - `clean_config` — resets config singleton between tests
 - `mock_weaviate_client` — patches Weaviate client + collection
 - `mock_weaviate_disabled` — ensures Weaviate is disabled (depends on `clean_config`)
@@ -21,6 +21,7 @@ paths: "tests/**/*.py"
 - `_disable_tracing` (autouse) — sets `GEMINI_TRACING_ENABLED=false`
 - `_isolate_dotenv` (autouse) — prevents loading real `.env` files
 - `_isolate_upload_cache` (autouse) — temp dir for upload cache
+- `_isolate_durable_jobs` (autouse) — temporary `VRM_JOB_DB` SQLite database
 
 ## Patterns
 

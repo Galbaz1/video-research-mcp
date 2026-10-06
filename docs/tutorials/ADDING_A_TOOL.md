@@ -6,8 +6,9 @@ server mounts domain servers, so most additions do not need a new server.
 
 This walkthrough uses a hypothetical `content_compare` tool. It is an extension
 example, not part of the installed tool surface. The
-[tool manifest](../metrics/tool-contract-manifest.json) lists registered tools;
-the [architecture guide](../ARCHITECTURE.md) explains their shared services.
+[tool manifest](../metrics/tool-contract-manifest.json) is a dated registration
+snapshot; current discovery or a fresh export lists the current tools.
+The [architecture guide](../ARCHITECTURE.md) explains their shared services.
 
 ## Step 1: Choose a Sub-Server
 
@@ -20,7 +21,11 @@ the [architecture guide](../ARCHITECTURE.md) explains their shared services.
 | Grounded web search | `tools/search.py` |
 | Configuration or cache operations | `tools/infra.py` |
 | Knowledge retrieval, ingestion, or schemas | `tools/knowledge/` |
+| Deterministic media preparation or inspection | `tools/media.py`, `media_read.py`, `image.py`, and `media_scenes.py` |
+| Other domains | Follow the owning import and mount in `server.py` |
 
+Deterministic native media tools follow the typed `CallToolResult` exception in
+[src/AGENTS.md](../../src/AGENTS.md); they do not need a Gemini call.
 Keep provider work in the existing clients. Keep output models in `models/`,
 shared parameter aliases in `types.py`, and substantive prompts in `prompts/`
 when they warrant a separate module. A new domain server is appropriate when its

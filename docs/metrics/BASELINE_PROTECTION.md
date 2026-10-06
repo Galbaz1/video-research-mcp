@@ -11,7 +11,13 @@ The command verifies the frozen source/lock receipts, current tool compatibility
 and the original checkout's protected files. Required final commands stay frozen
 in the baseline manifest; this check does not substitute for executing them.
 
-## Current boundaries
+> Scope: this document preserves the frozen baseline and its original implementation
+> checkpoint. Native image operations are now registered; see the current
+> [image and vision guide](../integrations/IMAGE_VISION.md) and
+> [image exports guide](../integrations/IMAGE_EXPORTS.md). The registration and
+> acceptance statements below describe that earlier checkpoint.
+
+## Boundary contract and original implementation checkpoint
 
 URL adapters retain HTTPS, credential rejection, public DNS and redirect checks,
 post-connect private-peer checks and streamed document byte limits. Local adapters

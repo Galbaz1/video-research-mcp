@@ -1,6 +1,6 @@
 ---
 name: video-explainer
-description: Teaches Claude how to use the 15 video explainer tools to create explainer videos from research content. Activates when working with video synthesis, explainer creation, or the video-explainer MCP server.
+description: Teaches Claude how to use the video explainer tools to create explainer videos from research content. Activates when working with video synthesis, explainer creation, or the video-explainer MCP server.
 ---
 
 # Video Explainer MCP — Tool Usage Guide
@@ -27,7 +27,7 @@ This server is a **synthesis** companion to `video-research-mcp`. Research extra
 | Generate short-form video | `explainer_short` |
 | Improve a step's output | `explainer_refine` |
 | Add iterative feedback | `explainer_feedback` |
-| Verify script accuracy | `explainer_factcheck` |
+| Request a script fact-check report | `explainer_factcheck` |
 | Add sound effects | `explainer_sound` |
 | Add background music | `explainer_music` |
 
@@ -75,14 +75,14 @@ job_id = result["job_id"]
 
 # Poll every 30 seconds
 status = explainer_render_poll(job_id=job_id)
-# status["status"] is "pending", "running", "completed", or "failed"
+# Inspect status, playable, and errors; preserve cancelled, partial, and unknown results
 ```
 
 ## Quality Iteration Loop
 
 After generating the pipeline:
 
-1. `explainer_factcheck(project_id)` — Verify claims
+1. `explainer_factcheck(project_id)` — Inspect the report and check decisive claims against primary sources
 2. `explainer_feedback(project_id, "Make the intro more engaging")` — Add notes
 3. `explainer_refine(project_id, phase="script")` — Improve specific phase
 4. Re-run dependent steps: `explainer_generate(project_id, from_step="narration")`
@@ -95,26 +95,13 @@ The external `video_explainer` CLI owns provider implementations and model setti
 |---|---|
 | `mock` | Preview/testing only; inspect placeholder audio |
 | `elevenlabs` | Credential, voice/model compatibility, timing, and current pricing |
-| `openai` | Current speech model, output format, timing method, and pricing |
-| `gemini` | Current speech model and schema; latest Gemini TTS returns WAV by default |
 | `edge` | Upstream support and authentication; not a guaranteed production path |
 
-Set via `EXPLAINER_TTS_PROVIDER` in `~/.config/video-research-mcp/.env`.
+Set via `EXPLAINER_TTS_PROVIDER` in `~/.config/video-research-mcp/.env`. The wrapper accepts only `mock`, `elevenlabs`, and `edge`; other values fail configuration validation.
 
 ## ElevenLabs Voice Settings
 
-When using `elevenlabs` as TTS provider, configure voice characteristics via env vars:
-
-| Variable | Range | Default | Effect |
-|----------|-------|---------|--------|
-| `ELEVENLABS_VOICE_ID` | voice ID string | Rachel | Which voice to use |
-| `ELEVENLABS_STABILITY` | 0.0-1.0 | 0.45 | Lower = more expressive, higher = more consistent |
-| `ELEVENLABS_SIMILARITY_BOOST` | 0.0-1.0 | 0.75 | How closely to match the reference voice |
-| `ELEVENLABS_SPEED` | 0.7-1.2 | 1.0 | Speech pacing (0.7 = slow, 1.2 = fast) |
-
-These can also be set per-project in `config.yaml` under `tts:`.
-
-**Recommended settings for narration:** stability=0.45, similarity=0.75, speed=1.0 (natural pacing with emotional range).
+Set `ELEVENLABS_API_KEY` locally. The checked upstream `tts:` configuration exposes `provider`, `voice_id`, `model`, and `output_format`. Its ElevenLabs requests hard-code stability `0.5` and similarity boost `0.75`; they do not read the voice/stability/speed environment variables formerly listed here. Inspect the selected external checkout before assuming additional voice controls. For direct HTTP settings, use the TTS production skill.
 
 ## Production Order Documents
 

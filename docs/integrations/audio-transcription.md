@@ -91,7 +91,9 @@ glossary hints. The client verifies the returned descriptor/WAV identity, durati
 settings and typed word intervals before applying the existing absolute source
 clock and export/readback path. All speakers remain unknown. Returned model and
 runtime receipts are service assertions; accuracy and alignment still require
-independent reference evidence. This backend has no cloud fallback.
+independent reference evidence. Its 60-second worker timer excludes HTTP intake
+and service admission; the service's whole-request deadline remains unqualified.
+This backend has no cloud fallback.
 
 The component distinguishes planned, complete, partial and failed states, with empty
 and explicit abstained inference outcomes separate. A later-window failure retains

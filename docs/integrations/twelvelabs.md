@@ -1,6 +1,6 @@
 # Optional TwelveLabs hosted workflows
 
-`twelvelabs_call` implements selected current REST operations against
+`twelvelabs_call` implements selected REST operations against
 `https://api.twelvelabs.io`. It uses TwelveLabs' own BYOK credential and hosted
 processing. The adapter is disabled by default and does not install the
 external npm MCP, discover its tools, or provide local inference.
@@ -118,11 +118,11 @@ clips stay in the rejection denominator. Grouped-video DTOs remain in bounded
 
 Source authority is the MIT client plugin
 [pinned source](https://github.com/twelvelabs-io/twelve-labs-claude-code-plugin/tree/c9d4936dbee87ecfd4fb8c54f7369d9b83439f14)
-and independently inspected current official REST contracts. All twelve mapped
+and the official REST contracts inspected for this adapter. All twelve mapped
 files, one necessary helper, and the MIT grant were read at that revision.
 The adapter is independently authored; no upstream code, SDK, server, assets or
 weights are copied/imported. The MIT client license does not grant hosted service,
-account, data-processing or model rights. The plugin's24 documented external tool
+account, data-processing or model rights. The plugin's 24 documented external tool
 names remain undiscovered until a separately authorized external integration test.
 Mocked contracts and installed MCP journeys establish local behavior; live schema,
 inference quality, costs, remote cleanup, human acceptance and release remain unverified.

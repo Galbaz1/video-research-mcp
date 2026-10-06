@@ -2,28 +2,36 @@
 
 These diagrams show which component owns each step. Read the
 [architecture guide](ARCHITECTURE.md) for contracts and limitations, and the
-[tool manifest](metrics/tool-contract-manifest.json) for exact parameters.
+[tool manifest](metrics/tool-contract-manifest.json) for its dated parameter
+snapshot. Current app discovery or a fresh export gives the current schemas.
 Arrows describe the current source flows; they do not establish live provider
 availability or successful installation.
 
 ## 1. Server Mounting Hierarchy
 
-The research app mounts seven domain servers and exposes 34 tools. Deferred
-imports finish research and content registration before mounting.
+The research app mounts domain servers without name prefixes. The diagram groups
+the extended surface; `server.py` lists every mount. Deferred imports finish
+research and content registration before mounting.
 
 ```mermaid
 flowchart TD
     Entry["Console script: video-research-mcp"] --> App["server.py: FastMCP video-research"]
-    App --> Video["video_server: 4 tools"]
-    App --> Research["research_server: 13 tools"]
-    App --> Content["content_server: 3 tools"]
+    App --> Video["video_server and video_windows_server"]
+    App --> Research["research_server"]
+    App --> Content["content_server"]
     App --> Search["search_server: web_search"]
-    App --> Infra["infra_server: 2 tools"]
-    App --> YouTube["youtube_server: 3 tools"]
-    App --> Knowledge["knowledge_server: 8 tools"]
+    App --> Infra["infra_server"]
+    App --> YouTube["youtube_server: metadata and channels"]
+    App --> Knowledge["knowledge_server"]
+    App --> Media["Media, image, vision, segmentation, and perception domains"]
+    App --> Audio["Audio and dubbing domains"]
+    App --> State["Jobs, ingestion, and memory domains"]
+    App --> Workspace["Research workspace, evidence, and synthesis domains"]
+    App --> Adapters["Provider, live, and hardware domains"]
     Document["research_document.py"] -. "deferred registration" .-> Research
     Web["research_web.py"] -. "deferred registration" .-> Research
     Academic["academic.py"] -. "deferred registration" .-> Research
+    Execute["research_execute.py"] -. "deferred registration" .-> Research
     Batch["content_batch.py"] -. "deferred registration" .-> Content
     VideoBatch["video_batch.py"] -. "import registration" .-> Video
     App -. "lifespan" .-> Life["Set up tracing; on shutdown flush traces and close clients"]
@@ -93,20 +101,22 @@ sequenceDiagram
     Store->>DB: Read through on memory miss, if configured
     Store-->>Tool: Session or missing
     Tool->>Cache: Refresh known cache TTL
+    Note over Tool: Build bounded recent-turn view; keep original archive intact
     alt Cache remains usable
-        Tool->>API: Retained history + text prompt + cached_content
+        Tool->>API: Selected history/context + text prompt + cached_content
     else Uncached or refresh failed
-        Tool->>API: Retained history + video URI and text prompt
+        Tool->>API: Selected history/context + video URI and text prompt
     end
     API-->>Tool: SDK content
-    Tool->>Store: Append user/model pair; trim history; update activity
+    Tool->>Store: Append original user/model pair; update activity
     Store->>DB: Save if configured
     Note over Tool: Best-effort SessionTranscripts write after a successful turn
     Tool-->>Caller: SessionResponse
 ```
 
-In-memory expiry and capacity eviction do not delete SQLite rows. The current
-SQLite read-through path does not separately reject expired rows; see
+In-memory expiry and capacity eviction do not delete SQLite rows. Active SQLite
+read-through checks scope and expiry; archive access preserves retained originals.
+See
 [Session Management](ARCHITECTURE.md#8-session-management) before treating the
 memory timeout as a retention guarantee.
 
@@ -218,11 +228,13 @@ the research server a video-rendering service.
 flowchart TD
     Repo["video-research-mcp repository"] --> Research["Root Python package: research MCP"]
     Repo --> Agent["packages/video-agent-mcp: scene-text MCP"]
-    Repo --> Explainer["packages/video-explainer-mcp: pipeline-wrapper MCP"]
+    Repo --> Explainer["packages/video-explainer-mcp: production workflows MCP"]
     Repo --> NPM["npm installer: plugin assets and MCP configuration"]
     Research --> Gemini["Gemini / YouTube / Semantic Scholar / optional Weaviate"]
     Agent --> SDK["Claude Agent SDK: bounded text queries"]
     Explainer --> Upstream["Separately installed video_explainer checkout and console script"]
+    Explainer --> Renderer["Explicitly configured renderer route"]
+    Explainer --> Jobs["Durable render jobs: start, poll, cancel, and restart reconciliation"]
     Upstream --> Providers["Generation and rendering prerequisites"]
 ```
 
@@ -258,37 +270,48 @@ They do not prove factual accuracy or browser rendering; details are in
 ## 9. Autonomous Web Research Lifecycle
 
 Deep Research uses the Interactions API, separate from ordinary GenerateContent.
-The launch tracker is local bookkeeping; the provider owns task execution.
+The durable job store owns request/operation bookkeeping; the provider owns task
+execution. A recorded launch can be resumed without resubmission.
 
 ```mermaid
 sequenceDiagram
     participant Caller
     participant Tools as research_web tools
-    participant Tracker as Process launch tracker
+    participant Jobs as Durable JobStore
     participant API as Gemini Interactions
 
-    Caller->>Tools: research_web(topic)
-    Tools->>Tracker: Reject a likely-active tracked task
-    Tools->>API: create(agent, background=true, store=true)
-    API-->>Tools: interaction_id and status
-    Tools->>Tracker: Record topic, launch time, status
-    Tools-->>Caller: Launch envelope
-    Caller->>Tools: research_web_status(interaction_id)
-    Tools->>API: get(interaction_id)
-    API-->>Tools: Current status and steps/output
-    alt Completed
-        Note over Tools: Extract output_text and citation/search sources; best-effort storage
-        Tools-->>Caller: Report, sources, usage, available duration metadata
-    else Running or failed
-        Tools-->>Caller: Status and provider errors if present
+    Caller->>Tools: research_web(topic, optional job_id)
+    Tools->>Jobs: Persist request; reject active work in configured key scope
+    alt Existing attempted job
+        Tools-->>Caller: Retained state and job_receipt; no submission
+    else New admitted launch
+        Tools->>API: create(agent, background=true, store=true)
+        API-->>Tools: interaction_id and status
+        Tools->>Jobs: Bind interaction ID and checkpoint status under lease
+        Tools-->>Caller: Launch envelope and job_receipt
     end
-    Caller->>Tools: research_web_followup(completed_id, question)
+    Caller->>Tools: research_web_status(interaction_id)
+    Tools->>Jobs: Look up recorded operation
+    alt Retained terminal result available
+        Tools-->>Caller: Retained result and job_receipt
+    else Provider readback needed
+        Tools->>API: get(interaction_id)
+        API-->>Tools: Current status and steps/output
+        Tools->>Jobs: Checkpoint result for a recorded operation
+        Note over Tools: Completed report extracts output_text and sources; best-effort storage
+        Tools-->>Caller: Report or status, provider errors, and available metadata
+    end
+    Caller->>Tools: research_web_followup(completed_id, question, optional job_id)
+    Tools->>Jobs: Persist follow-up request before submission
     Tools->>API: create(model, previous_interaction_id, question)
     API-->>Tools: Follow-up interaction
+    Tools->>Jobs: Bind operation and retain response
     Tools-->>Caller: Completed response or current status
 ```
 
-`research_web_cancel` requests provider cancellation and clears local tracking.
-A restart loses launch timing/topic bookkeeping, so those fields are not durable
-proof of a task's history. The provider interaction ID remains the handle used
-for polling and follow-up.
+`research_web_cancel` requests provider cancellation and records the returned
+status. A missing acknowledgement remains `cancel_requested`; a lost submission
+response remains `unknown`. Recorded jobs retain topic/timing across restart.
+Polling an interaction without a matching local record has unknown launch
+duration and no retained topic. The interaction ID remains the provider handle;
+the job ID and receipt bind the local request and retained result.

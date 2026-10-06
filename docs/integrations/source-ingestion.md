@@ -23,6 +23,11 @@ the existing HTTPS, public-DNS, connected-peer and redirect checks.
 }
 ```
 
+Keep the job database selected by `VRM_JOB_DB` and the retained files under
+`GEMINI_CACHE_DIR`. If `LOCAL_FILE_ACCESS_ROOT` is configured, it must allow both
+the selected local original and the cache paths. Removing retained files makes
+readback fail even when the job record survives.
+
 The response contains a durable `job_id`, exact retained `original`, located
 `extraction`, parser implementation commitments and a byte-verified manifest.
 `source_ingest_read(job_id)` rechecks those bytes after restart. The existing
@@ -124,11 +129,13 @@ tabular originals retain their stricter original/snapshot equality rule.
 Successful byte validation establishes extraction provenance. It does not prove
 that a claim is true or supply editorial approval. Speech abstentions stay empty.
 
-Indexing is a separate explicit `knowledge_ingest` operation. The default
-`parser: "builtin"` preserves the local extraction route above. It does not
-insert into Weaviate, invoke a model, upload to a parsing service or transform
-an extracted note into original evidence. MinerU/content-core, OCR/model and
-speech workflows remain unqualified by this route.
+`source_ingest` defaults to `parser: "builtin"` and uses the local extraction
+route above. It does not insert into Weaviate, invoke a model, upload to a parsing
+service or transform an extracted note into original evidence. To index selected
+properties in Weaviate, configure that store, inspect `knowledge_schema`, then
+call `knowledge_ingest` with its collection and properties. There is no automatic
+extraction-to-index conversion. MinerU/content-core, OCR/model and speech workflows
+remain unqualified by this route.
 
 The LightRAG parser/sidecar requirements were inspected at
 `453dce83d6d0354a06e46c8d4029a0895c4e054b`; this implementation is independently
@@ -139,9 +146,8 @@ and distribution obligations.
 
 ## Explicit optional Docling HTTP entry
 
-Docling is an optional, separately qualified service for structured extraction.
-It is not needed for the original-PDF/hash/exact-page workflow or the builtin
-extraction route, and no comparative quality superiority is established.
+The Docling entry uses an optional, separately qualified service for structured
+extraction. The original-PDF/page workflow and builtin parser do not require it.
 For PDF, DOCX, Markdown or HTML, a request may select `parser: "docling"` and
 `authorize_submission: true`. Both configured operator qualification and request
 authorization are required before source retention. This entry does not install

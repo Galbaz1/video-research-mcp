@@ -6,8 +6,9 @@ provider access; caches, sessions, and Weaviate each own a different kind of
 state. This guide explains those boundaries so contributors can choose the
 right place for a change.
 
-Use the [tool manifest](metrics/tool-contract-manifest.json) for exact names,
-parameters, defaults, and annotations. Use [Getting Started](tutorials/GETTING_STARTED.md)
+The [tool manifest](metrics/tool-contract-manifest.json) records a dated schema
+snapshot. Use current app discovery or a fresh export for exact names, parameters,
+defaults, and annotations. Use [Getting Started](tutorials/GETTING_STARTED.md)
 to run the server, [Adding a Tool](tutorials/ADDING_A_TOOL.md) to extend it, and
 [Writing Tests](tutorials/WRITING_TESTS.md) to verify a change without live APIs.
 The [diagrams](DIAGRAMS.md) show the main flows visually.
@@ -48,19 +49,26 @@ Start source exploration with these files:
 
 ## 2. Composite Server Pattern
 
-`server.py` mounts eight domain servers without a namespace prefix. Tool names
+`server.py` mounts domain servers without a namespace prefix. Tool names
 such as `video_analyze` are therefore the names exposed by the root app.
 
-| Server | Owning module | Registered tools |
-| --- | --- | ---: |
-| Video | `tools/video.py`, with `video_batch.py` | 4 |
-| Research | `tools/research.py`, with document, web, and academic modules | 13 |
-| Content | `tools/content.py`, with `content_batch.py` | 3 |
-| Search | `tools/search.py` | 1 |
-| Infrastructure | `tools/infra.py` | 2 |
-| YouTube | `tools/youtube.py` | 3 |
-| Knowledge | `tools/knowledge/` | 8 |
-| Local media | `tools/media.py` | 1 |
+| Workflow family | Owning modules under `tools/` |
+| --- | --- |
+| Video analysis and sessions | `video.py`, `video_batch.py`, `video_windows.py` |
+| Research and source ingestion | `research.py`, `research_document.py`, `research_web.py`, `academic.py`, `research_execute.py`, `ingestion.py` |
+| Content, search, and provider adapters | `content.py`, `content_batch.py`, `search.py`, `search_provider.py`, `text_provider.py`, `twelvelabs.py` |
+| Configuration and knowledge | `infra.py`, `knowledge/` |
+| YouTube metadata and channels | `youtube.py`, `youtube_channels.py` |
+| Media preparation and inspection | `media.py`, `media_read.py`, `media_assets.py`, `image.py`, `media_scenes.py`, `footage_edit.py` |
+| Vision and audiovisual perception | `vision.py`, `segmentation.py`, `media_perceive.py`, `video_evidence.py` |
+| Audio and dubbing | `audio_dsp.py`, `audio_transcribe.py`, `audio_speakers.py`, `video_dubbing.py` |
+| Durable jobs and memory | `jobs.py`, `video_memory_av.py`, `video_memory_lifecycle.py`, `session_memory.py` |
+| Research workspaces and outputs | `corpus.py`, `collections.py`, `wiki.py`, `audience.py`, `evidence_export.py`, `notebooks.py`, `synthesis.py`, `corrections.py`, `grounding.py`, `video_note.py` |
+| Live workflows and hardware | `live.py`, `hardware.py` |
+
+This table groups responsibilities; `server.py` is the exact mount inventory.
+Optional provider and native routes have their own configuration and runtime
+requirements. Registration does not establish that those routes are available.
 
 Research and content use deferred registration helpers before mounting. These
 helpers import modules that register tools on the already-created domain
@@ -135,13 +143,14 @@ Annotations describe behavior to the client. They do not authorize operations or
 enforce access policy. When extending a tool, account for uploads, cache writes,
 knowledge writes, and provider work as well as its primary result.
 
-## 5. Tool Reference (35 tools)
+## 5. Tool Workflows
 
-The [generated manifest](metrics/tool-contract-manifest.json) contains the full
-registered surface. It is a snapshot of local registration, not evidence that
+The [generated manifest](metrics/tool-contract-manifest.json) records the
+registered surface at its `generated_at` date. It is not evidence that
 credentials, provider access, or a particular installed server work. Regenerate it
 with [export_tool_contract_manifest.py](../scripts/export_tool_contract_manifest.py)
-when tool contracts change.
+when tool contracts change. Use `--output` for an inspection copy; the default
+path overwrites the repository snapshot.
 
 The domains follow several distinct workflows:
 
@@ -152,7 +161,7 @@ The domains follow several distinct workflows:
 | YouTube API tools | Fetch metadata, comments, or playlist items without Gemini generation. [tools/youtube.py](../src/video_research_mcp/tools/youtube.py) |
 | Prompt-based research | `research_deep` runs scope, evidence, and synthesis prompts; `research_plan` returns a plan without starting agents; evidence assessment consumes supplied source descriptions. [research.py](../src/video_research_mcp/tools/research.py) |
 | Document research | Uploads prepared sources and runs document mapping, evidence extraction, cross-reference, and synthesis. [research_document.py](../src/video_research_mcp/tools/research_document.py) |
-| Autonomous web research | Launches and polls a provider-managed Deep Research interaction; follow-ups chain by interaction ID. [research_web.py](../src/video_research_mcp/tools/research_web.py) |
+| Autonomous web research | Persists launch/follow-up requests before provider submission, then polls by interaction ID; resuming a recorded job does not resubmit it. [research_web.py](../src/video_research_mcp/tools/research_web.py), [research_operations.py](../src/video_research_mcp/research_operations.py) |
 | Academic metadata | Queries Semantic Scholar for papers, citations/references, recommendations, or authors. Metadata and an open-access URL are separate from retrieved full text. [academic.py](../src/video_research_mcp/tools/academic.py) |
 | Content analysis | Accepts exactly one file, URL, or text source; batch comparison sends files together, while individual mode uses three concurrent workers. [content.py](../src/video_research_mcp/tools/content.py), [content_batch.py](../src/video_research_mcp/tools/content_batch.py) |
 | Grounded search | `web_search` uses Google Search grounding and returns response text plus grounding sources. [search.py](../src/video_research_mcp/tools/search.py) |
@@ -283,7 +292,8 @@ uploads or inference. They add no imports or startup dependencies to the core.
 | QueryAgent | `tools/knowledge/agent.py` | Cached for a target collection set |
 
 These are process-local owners. Multiple server processes do not share session
-memory, pending cache tasks, or the web-research launch tracker.
+memory or pending cache tasks. Web-research operations use the durable job store
+selected by `VRM_JOB_DB`, independently of the optional session database.
 
 ## 7. Weaviate Integration
 
@@ -355,13 +365,21 @@ server tries yt-dlp, uploads the local download, and attempts a context cache.
 Download or cache failure is reflected in the returned status; cache creation
 failure can still leave a usable File API URI.
 
-For each continuation, `prepare_cached_request()` refreshes a known context
-cache. A live cache receives the text prompt plus retained conversation history;
-otherwise the new user content reattaches the source video. The request uses the
-cache's model while cached and the current default model otherwise. A successful
-response appends both SDK content objects, trims history to
-`session_max_turns * 2` items, updates activity time, and stores the turn when
-Weaviate is enabled.
+For each continuation, source recovery checks the bound media and
+`prepare_cached_request()` refreshes a known context cache. A live cache receives
+a text prompt; otherwise the new user content reattaches the source video. Both
+paths use a detached, bounded view of recent conversation pairs and optional
+scoped derived memory. The request uses the cache's model while cached and the
+current default model otherwise. A successful response appends both SDK content
+objects to the original history, updates activity time, and attempts to store
+the turn when Weaviate is enabled.
+
+`session_compaction.py` limits the request view without trimming the original
+archive. It reports omitted message ranges, source/history hashes, and whether
+originals are persisted. Its serialized-byte token estimate does not measure
+provider media or cache tokens. Derived memory is explicitly non-authoritative.
+The original archive is capped at 8 MiB; an oversized turn fails before append.
+Scoped sessions require the exact workspace/notebook pair on lookup.
 
 `SessionStore.create()` and `get()` evict inactive sessions from memory; creation
 also evicts the least recently active in-memory session at capacity. Setting
@@ -369,10 +387,11 @@ also evicts the least recently active in-memory session at capacity. Setting
 turns, plus SQLite read-through on lookup. Persistence uses WAL mode and preserves
 SDK content fields, including opaque thought signatures.
 
-Memory eviction does not delete SQLite rows. The current read-through path loads
-rows without a separate expiry check, so the memory timeout is not a persistent
-retention guarantee. Configure the database before starting the process: the
-module-level session store captures its backing database at initialization.
+Memory eviction does not delete SQLite rows. Read-through rejects expired rows
+for active use; `SessionStore.archive()` can inspect retained originals without
+reactivating an expired session. The timeout is therefore an activity limit,
+not a database deletion policy. Configure the database before starting the
+process: the module-level store captures it at initialization.
 
 ## 9. Caching
 
@@ -424,15 +443,16 @@ returns diagnostics; `action="stats"` and `"list"` inspect local cache files.
 ## 10. Configuration
 
 [ServerConfig](../src/video_research_mcp/config.py) defines every field, environment
-mapping, default, and model compatibility rule. `get_config()` loads
-`~/.config/video-research-mcp/.env` before constructing the singleton; existing
-process environment variables take precedence.
+mapping, default, and model compatibility rule. `get_config()` loads the file
+selected by `VIDEO_RESEARCH_ENV_FILE`, or `~/.config/video-research-mcp/.env`,
+before constructing the singleton. Nonempty process values take precedence;
+blank values and unresolved self-placeholders can be filled from that file.
 
 | Concern | Environment settings |
 | --- | --- |
 | Model routing | `GEMINI_MODEL`, `GEMINI_FLASH_MODEL`, `GEMINI_THINKING_LEVEL`, `DEEP_RESEARCH_AGENT` |
 | Cache lifetime | `GEMINI_CACHE_DIR`, `GEMINI_CACHE_TTL_DAYS`, `GEMINI_CONTEXT_CACHE_TTL`, `CLEAR_CACHE_ON_SHUTDOWN` |
-| Session bounds | `GEMINI_MAX_SESSIONS`, `GEMINI_SESSION_TIMEOUT_HOURS`, `GEMINI_SESSION_MAX_TURNS`, `GEMINI_SESSION_DB` |
+| Session bounds | `GEMINI_MAX_SESSIONS`, `GEMINI_SESSION_TIMEOUT_HOURS`, `GEMINI_SESSION_MAX_TURNS`, `GEMINI_SESSION_CONTEXT_TOKEN_BUDGET`, `GEMINI_SESSION_RECENT_TURNS`, `GEMINI_SESSION_DB` |
 | Document bounds | `DOC_MAX_DOWNLOAD_BYTES`, `RESEARCH_DOCUMENT_MAX_SOURCES`, `RESEARCH_DOCUMENT_PHASE_CONCURRENCY` |
 | Local read boundary | `LOCAL_FILE_ACCESS_ROOT` |
 | Knowledge storage | `WEAVIATE_URL`, `WEAVIATE_API_KEY`, `WEAVIATE_VECTORIZER`, `WEAVIATE_AUTO_MIGRATE` |
@@ -552,10 +572,18 @@ and inherited settings/MCP configuration, and overrides `CLAUDECODE` only in the
 child environment. A result succeeds only after a successful terminal SDK message
 and nonempty output; partial text from an errored run is not returned as success.
 
-[video-explainer-mcp](../packages/video-explainer-mcp/README.md) wraps a separately
-installed upstream `video_explainer` checkout. Its runner invokes the upstream
-console script with an argument list, injects the configured projects directory,
-and terminates timed-out or cancelled subprocesses before escalating to a kill.
-The scanner reports filesystem step state; the in-memory job registry tracks
-background renders. Source installation, upstream prerequisites, and a completed
-render are separate conditions.
+[video-explainer-mcp](../packages/video-explainer-mcp/README.md) supports upstream
+`video_explainer` CLI workflows and explicitly configured renderer routes. The
+runner uses argument-list subprocesses, injects the projects directory for CLI
+work, and joins owned processes on timeout or cancellation. The scanner reports
+filesystem step state.
+
+Render start/poll/cancel uses durable SQLite jobs with frozen source/settings,
+leases, and artifact readback. Startup reconciles retained jobs; an expired lease
+or unverified output is reported as `unknown`. Full MP4 decode establishes
+playability separately from renderer identity and audiovisual semantics. See
+`tools/render_jobs.py` and `render_worker.py` in the companion package.
+Its server also mounts planning, diagnostics, audio, commentary, timing,
+refinement, and existing-material assembly. Stock-media search/download remains
+unmounted. Source installation, runtime prerequisites, and accepted output are
+separate conditions.

@@ -20,23 +20,26 @@ and companion servers for scene generation and upstream CLI execution. Relevant
 boundaries include:
 
 - **Credentials and external processing.** Configuration is read from the process
-  environment and `~/.config/video-research-mcp/.env`. Nonempty process values
-  take precedence. Provider requests send selected content and authentication to
-  configured services; local configuration is not an offline-processing guarantee.
+  environment and the selected credential file. The core defaults to
+  `~/.config/video-research-mcp/.env`; local installs select the project file through
+  `VIDEO_RESEARCH_ENV_FILE`. Nonempty process values take precedence. Provider
+  requests send selected content and authentication to configured services;
+  local configuration is not an offline-processing guarantee.
 - **URLs.** YouTube inputs require recognized YouTube hosts. Content/document URL
   validation requires HTTPS and rejects embedded credentials and blocked IP
-  ranges. Document downloads also validate redirects, cap size, and inspect peer
-  addresses when the transport exposes them.
-- **Local files.** Resolved paths are constrained by `LOCAL_FILE_ACCESS_ROOT` when
-  configured. Without it, local input access is bounded by the process user's
+  ranges. Document downloads also validate redirects, cap size, and require a
+  verifiable public peer address; missing transport peer information causes refusal.
+- **Local files.** Supported local inputs are constrained by
+  `LOCAL_FILE_ACCESS_ROOT` when configured. Without it, local input access is bounded by the process user's
   filesystem permissions. This setting does not sandbox the external renderer.
 - **Runtime mutation.** Cache clearing and configuration changes require
   `INFRA_MUTATIONS_ENABLED=true`; when `INFRA_ADMIN_TOKEN` is configured, the
   matching token is also required. Read-only inspection does not require it.
 - **Installer writes.** Assets go under user/project `.claude/`; registrations go
-  to `~/.claude.json` or project `.mcp.json`; shared credentials remain in the user
-  config directory. Manifest validation and hashes control managed file writes
-  and removal. See [Distribution](docs/PLUGIN_DISTRIBUTION.md).
+  to `~/.claude.json` or project `.mcp.json`; credential templates go in the selected
+  user/project `.config/video-research-mcp/` directory. Manifest validation and
+  hashes control managed file writes and removal. See
+  [Distribution](docs/PLUGIN_DISTRIBUTION.md).
 - **Companion execution.** The explainer invokes its configured CLI directly
   without a shell and constrains injected filenames to the project input folder.
   Scene SDK queries have no tools or loaded user/project settings. Returned TSX

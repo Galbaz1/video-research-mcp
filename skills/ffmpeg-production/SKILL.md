@@ -11,7 +11,7 @@ For platform-specific export presets (YouTube, TikTok, Instagram, Twitter), see 
 
 ## Post-Processing Filter Order
 
-**Sequence determines correctness, not just quality.** This is a physical constraint.
+Use this order when these filters are needed. Compare against the original; unnecessary processing can remove detail or introduce artifacts.
 
 ```
 [1] Temporal denoise  — remove inter-frame shimmer before any processing
@@ -23,7 +23,7 @@ For platform-specific export presets (YouTube, TikTok, Instagram, Twitter), see 
 [7] Encode            — libx265 -tune grain or AV1 FGS
 ```
 
-Violations cause correctness failures: grain before denoising destroys it; interpolation after grain synthesis causes tearing.
+Denoising can remove added grain, and interpolation can distort it. Add grain after those operations.
 
 Full chain as a single filtergraph:
 
@@ -41,7 +41,7 @@ ffmpeg -i input.mp4 \
 
 ### Hald CLUT Color Grading
 
-Preferred for iterative grading: export a Hald CLUT, grade in Photoshop/GIMP, re-import. No re-encoding between iterations.
+For iterative grading, export a Hald CLUT, edit it in Photoshop/GIMP, and re-import. LUT edits leave the source untouched; rendering the graded video still encodes it.
 
 ```bash
 ffmpeg -i input.mp4 -i hald_clut_graded.png \
@@ -56,8 +56,8 @@ ffmpeg -i input.mp4 -i hald_clut_graded.png \
 | Target | Codec | When to use |
 |--------|-------|-------------|
 | Web/streaming | libx264 | Universal compatibility |
-| Archive/master | libx265 | ~40% smaller at same quality |
-| Modern distribution | libsvtav1 | Best compression, slower encode |
+| Compact retained copy | libx265 | Compare quality/size for the actual material; CRF encoding is lossy |
+| Modern distribution | libsvtav1 | Compare compression, encode time, and target-player support |
 | Browser embed | libvpx-vp9 | WebM container, good compression |
 
 ### Essential Flags
@@ -179,7 +179,7 @@ ffmpeg -i input.mp4 -filter:v "setpts=0.5*PTS" -an output.mp4
 
 **Speed math:** To fit X seconds into Y seconds: `speed = X / Y`, `setpts = 1/speed * PTS`, `atempo = speed`.
 
-**Extreme speeds (>2x audio):** Chain atempo filters (each limited to 0.5-2.0):
+**Extreme speeds (>2x audio):** `atempo` accepts 0.5–100, but values above 2 skip samples. Chain factors at or below 2 to avoid that behavior ([filter contract](https://ffmpeg.org/ffmpeg-filters.html#atempo)):
 
 ```bash
 # 4x audio: atempo=2.0,atempo=2.0
@@ -200,7 +200,7 @@ ffmpeg -i input.mp4 \
 
 ## Two-Pass Loudnorm (EBU R128)
 
-Always two-pass. Single-pass acts as a dynamic compressor; two-pass applies linear gain and preserves dynamic range.
+Use two passes when targeting linear normalization. Supply all measured values; the filter falls back to dynamic mode if the target LRA or true-peak constraints prevent linear gain. Inspect its reported mode ([loudnorm contract](https://ffmpeg.org/ffmpeg-filters.html#loudnorm)).
 
 ```bash
 # Pass 1: measure
@@ -225,7 +225,7 @@ ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:no
 # Full info as JSON
 ffprobe -v quiet -print_format json -show_format -show_streams input.mp4
 
-# Validate output is playable
+# Inspect the reported video codec; verify decode/playback separately
 ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 output.mp4
 ```
 

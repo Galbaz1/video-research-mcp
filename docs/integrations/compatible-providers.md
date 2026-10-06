@@ -27,11 +27,13 @@ No new embedding/rerank runtime, automatic installer or provider registry is add
 
 ## Structured text
 
-`TEXT_BACKENDS_JSON` is a JSON object of named text profiles. Every profile must
-select `provider`, `base_url`, `model` and optional `api_key_env` and
-`structured_format`. Profile names contain at most64 letters/digits/underscores/
-hyphens; configuration contains at most32 profiles. Model IDs come from the
-operator's selected account and current capability evidence.
+`TEXT_BACKENDS_JSON` is a JSON object of named text profiles. Each profile requires
+`base_url` and `model`; `provider` defaults to `dashscope` and can explicitly select
+`local_compatible`. `api_key_env` is optional for local profiles and required for
+DashScope; `structured_format` defaults to `json_object`. Profile names contain
+at most 64 letters/digits/underscores/hyphens; configuration contains at most 32
+profiles. Model IDs come from the operator's selected account and current
+capability evidence.
 
 For `provider=dashscope`, select an exact workspace-specific regional endpoint:
 `https://WORKSPACE.REGION.maas.aliyuncs.com/compatible-mode/v1`. Supported origin
@@ -77,8 +79,10 @@ when observed, including after an invalid answer; absent usage remains null.
 
 The shared HTTP boundary pins a public DNS address, checks the connected API peer
 before transmitting headers/body, rejects redirects/proxies/retries/compression,
-and joins bounded cleanup on cancellation. Text requests have a configurable
-deadline up to120seconds; shared cleanup has a separate five-second grace.
+and joins bounded cleanup on cancellation. Text HTTP submission has a configurable
+deadline of 60 seconds by default, capped at 120 seconds. Preflight validation and
+answer/schema validation occur outside that timer; shared HTTP cleanup has a
+separate five-second grace.
 Local operation permits only its exact configured loopback origin.
 
 Execution reports the number of owned HTTP exchange attempts, response/request

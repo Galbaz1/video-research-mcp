@@ -4,9 +4,9 @@ One MCP tool that builds a persistent, source-bound memory of people, dialogue, 
 facts and audio-visual evidence for one exact media file, and retrieves **evidence records
 only**. No action returns a model answer; answering stays with the caller.
 
-Status: unit-tested contract (mocked provider and media seams). Native acceptance on a real
-source, server mounting, reuse-ledger and tool-manifest entries remain coordinator-owned
-and open.
+The root [server](../../src/video_research_mcp/server.py) mounts this tool. The tests
+described here mock provider and media boundaries; they do not establish native
+acceptance on a real source.
 
 ## Workflow
 

@@ -32,22 +32,22 @@ The current priority is API-first delivery; stop expanding local options.
 
 ## What This Is
 
-A monorepo with 3 MCP servers (51 tools total):
+A monorepo with three separately launched MCP servers:
 
-1. **video-research-mcp** (root) — 34 tools for video analysis, deep research, content extraction, web search, and context caching. Powered by Gemini Flash (`google-genai`) and YouTube Data API v3.
-2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — 15 tools for synthesizing explainer videos.
-3. **video-agent-mcp** (`packages/video-agent-mcp/`) — 2 tools for parallel scene generation via Claude Agent SDK.
+1. **video-research-mcp** (root) — research, media analysis, source ingestion, knowledge retrieval, and optional provider adapters. Uses the configured Gemini models (`google-genai`) and YouTube Data API v3.
+2. **video-explainer-mcp** (`packages/video-explainer-mcp/`) — explainer planning, generation, durable rendering, and assembly of existing materials. Upstream CLI and configured renderer routes have separate prerequisites.
+3. **video-agent-mcp** (`packages/video-agent-mcp/`) — bounded scene-text generation via Claude Agent SDK.
 
 Python >= 3.11.
 
 ## Commands
 
 ```bash
-uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"
-uv run pytest tests/ -v
-uv run pytest tests/ -k "video_analyze" -v
-uv run ruff check src/ tests/
-GEMINI_API_KEY=... uv run video-research-mcp
+uv sync --locked --extra dev
+uv run --locked pytest tests/ -v
+uv run --locked pytest tests/ -k "video_analyze" -v
+uv run --locked ruff check src/ tests/
+GEMINI_API_KEY=... uv run --locked video-research-mcp
 scripts/detect_review_scope.py --json
 ```
 
@@ -75,13 +75,18 @@ Do not mix review scopes in one pass unless explicitly requested.
 - `tools/infra.py`: infra/cache/config tools
 - `tools/knowledge/`: knowledge tools
 
+These are the core domains. `server.py` also mounts media, image/vision, audio,
+jobs, memory, ingestion, live, and other workflow servers. Use its imports and
+mount calls for the current inventory; optional runtime registration does not
+establish provider availability. The companion servers are launched separately.
+
 Supporting modules: `video_cache.py`, `video_batch.py`, `research_document_file.py` (File API upload + URL download).
 
 Core project patterns:
 - Instruction-driven tools (`instruction` + optional `output_schema`)
-- Structured output via `GeminiClient.generate_structured(...)`
-- Tools return error dicts (`make_tool_error()`), no exception escape
-- Write-through Weaviate storage when configured (non-fatal)
+- Generative output via `GeminiClient.generate_structured(...)`; deterministic operations validate typed inputs/results without Gemini
+- Tools catch operational errors with `make_tool_error()` in their published dictionary or native `CallToolResult` envelope
+- Selected workflows write through to Weaviate when configured (non-fatal)
 - Context caching with prewarm + session reuse
 - MLflow tracing via `@trace()` decorator on all tools (no-op when mlflow not installed)
 - Knowledge search with optional Cohere reranking + Flash summarization
@@ -94,7 +99,12 @@ Every tool must have:
 1. `ToolAnnotations` on the decorator
 2. `Annotated[...]` params with `Field(...)`
 3. Google-style docstring
-4. Structured output via `GeminiClient.generate_structured(...)`
+4. An explicit result contract: generative output via `GeminiClient.generate_structured(...)`, or direct typed validation for deterministic operations
+
+Native media tools may use `mcp.types.CallToolResult` with typed
+`structuredContent`, a JSON text block, and bounded `ImageContent`. Declare
+success/error output schemas and offer the same metadata without images.
+Preserve existing return contracts; follow the native exception in `src/AGENTS.md`.
 
 Shared types belong in `types.py`.
 

@@ -48,10 +48,10 @@ Use this quick-reference to select the right command:
 | Analyze a URL/file/text | `/gr:analyze` | provider billing applies |
 | Find past work | `/gr:recall` | provider billing applies |
 | Save to knowledge store | `/gr:ingest` | provider billing applies |
-| Check setup | `/gr:doctor` | provider billing applies |
-| View/change model preset | `/gr:models` | provider billing applies |
-| Debug MLflow traces | `/gr:traces` | provider billing applies |
-| First-time setup guide | `/gr:getting-started` | provider billing applies |
+| Check setup | `/gr:doctor` | metadata quota; inference needs separate authority |
+| View/change model preset | `/gr:models` | no inference; changes are policy-gated |
+| Debug MLflow traces | `/gr:traces` | reads do not run inference; scorers may bill |
+| First-time setup guide | `/gr:getting-started` | setup only; an authorized smoke may bill |
 
 Present your recommendation in this format:
 

@@ -5,7 +5,7 @@ external source and a separate compatible Python environment. It launches one
 disposable factory GUI session with an owned profile, working directory,
 temporary directory and loopback port. Ordinary installation and onboarding do
 not activate it. The wrapper's tests verify admission, isolation, serialization and cleanup.
-The selected Blender5.2.1LTS addon/discovery/scene/render/viewport journey passed
+The selected Blender 5.2.1 LTS addon/discovery/scene/render/viewport journey passed
 16 fixed local controls after one isolated-helper path correction; the original
 pre-initialize failure is retained. The receipt is bound in the descriptor.
 The own red cube/material/light/camera, saved scene and both rendered/viewport
@@ -27,8 +27,8 @@ closure. The selected native Requests evidence remains a partial package
 certificate; actual imports are an additional acceptance gate.
 
 The external runtime must match the descriptor's selected Python and direct
-package versions. It uses MCP1 and Pillow11 independently of the core MCP2 and
-Pillow12 environment. No dependency installation, download, version resolution,
+package versions. It uses MCP 1 and Pillow 11 independently of the core MCP 2 and
+Pillow 12 environment. No dependency installation, download, version resolution,
 stock launcher, ambient Qwen configuration or core dependency change occurs.
 
 Use the manually selected external Python with `-I`. Supply an independently

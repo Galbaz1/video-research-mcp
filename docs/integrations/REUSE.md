@@ -24,9 +24,12 @@ a top-level repository grant alone never clears its assets or vendored files.
 ```bash
 uv run python scripts/check_reuse_ledger.py
 uv run pytest tests/test_reuse_ledger.py -q
-uv build --out-dir /tmp/vrm-reuse-build
-npm pack --pack-destination /tmp/vrm-reuse-build --ignore-scripts
-uv run python scripts/check_reuse_ledger.py --archive /tmp/vrm-reuse-build/video_research_mcp-0.7.1-py3-none-any.whl --archive /tmp/vrm-reuse-build/video_research_mcp-0.7.1.tar.gz --archive /tmp/vrm-reuse-build/video-research-mcp-0.7.1.tgz
+reuse_build=$(mktemp -d)
+uv build --out-dir "$reuse_build"
+npm pack --pack-destination "$reuse_build" --ignore-scripts
+for archive in "$reuse_build"/*; do
+  uv run python scripts/check_reuse_ledger.py --archive "$archive"
+done
 ```
 
 The archive check reads actual tar/wheel bytes without extracting or executing
@@ -51,7 +54,7 @@ weights/assets and service/output terms have their own receipt. Credentials and
 weights stay external. Readiness never supplies spend, device or publication
 authority.
 
-The current three Python locks contain 114 distinct registry name/version pairs.
+The three Python locks define the selected registry name/version pairs.
 Their exact lock hashes, package identities and registry artifact hashes are
 recorded. PyPI license expressions/classifiers are observed metadata, not a full
 transitive source/asset audit. The optional `weaviate-agents` wheel's absent license

@@ -6,9 +6,9 @@
 `retrieval`; it introduces no provider SDK, memory engine, dependency, worker queue,
 listener or background automation.
 
-The source-only fixture checks do not establish native MCP registration, installed
-runtime behavior, AV quality, a real presentation clock, speaker identity, held-out
-acceptance or release. Root owns those integration and acceptance steps.
+The tool is registered in the root [server](../../src/video_research_mcp/server.py).
+Fixture checks do not establish installed runtime behavior, AV quality, a real
+presentation clock, speaker identity, held-out acceptance or release.
 
 ## Inputs and state
 
@@ -139,12 +139,10 @@ parent. Partial completion, missing clips and native/runtime unknowns stay expli
 
 ## Root integration and source notice
 
-Root must mount `video_memory_lifecycle_server` from
-`video_research_mcp.tools.video_memory_lifecycle` on the shared server and update the
-shared installer/manifest/reuse ledger as appropriate. No shared file was changed in
-this lane. Root must preserve lifecycle source mappings when routing reads/exports:
-the original single-source `moment` exporter cannot use the anchor file to export an
-appended source's global window. Existing retrieval can consume the canonical records;
+The root server mounts `video_memory_lifecycle_server` from
+`video_research_mcp.tools.video_memory_lifecycle`. Reads and exports must preserve
+lifecycle source mappings: the original single-source `moment` exporter cannot
+use the anchor file to export an appended source's global window. Existing retrieval can consume the canonical records;
 use explicit global time ranges through the lifecycle's full declared duration.
 
 This is an independent implementation of the lifecycle protocol in

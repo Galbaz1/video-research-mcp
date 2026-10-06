@@ -12,7 +12,7 @@ The core ships under the same name on two registries:
 
 | Package | Registry | Purpose | Used by |
 | --- | --- | --- | --- |
-| `video-research-mcp` | npm | Claude installer, workflow Markdown and native Codex plugin root | `npx video-research-mcp@latest`; Codex npm marketplace source |
+| `video-research-mcp` | npm | Claude installer, workflow Markdown and native Codex plugin root | `npx video-research-mcp@0.8.0-rc.3`; Codex npm marketplace source |
 | `video-research-mcp` | PyPI | Python research MCP runtime | `uvx` when the MCP client starts the server |
 
 Core versions must match across `pyproject.toml`, `package.json`,
@@ -23,20 +23,24 @@ Companion servers are separate Python packages with their own versions. A GitHub
 release can contain all package archives; uploading those archives to PyPI and
 npm is a separate step. See [Publishing](PUBLISHING.md).
 
+The examples select published prerelease `0.8.0-rc.3` (Python `0.8.0rc3`);
+`@latest` selects the stable channel. Later source fixes require a checkout or
+a new release.
+
 ## npm Package — The Installer
 
 ### What it does
 
 The installer requires Node.js 22 or newer. The runtime requires Python 3.11 or
-newer and [uv](https://docs.astral.sh/uv/). Missing `uv` or `python3` produces an
-installer warning; it does not stop workflow files from being copied.
+newer and [uv](https://docs.astral.sh/uv/). Workflow copying can succeed without
+the runtime executables; use `--doctor` to inspect setup before starting a client.
 
 Choose the scope explicitly for a repeatable installation:
 
 ```sh
-npx video-research-mcp@latest --global
+npx video-research-mcp@0.8.0-rc.3 --global
 # Or, from the project root:
-npx video-research-mcp@latest --local
+npx video-research-mcp@0.8.0-rc.3 --local
 ```
 
 Without a scope flag, the installer prompts for global or local installation.
@@ -57,11 +61,10 @@ Local install, update, doctor and recovery use only the selected project templat
 Legacy local checkpoints that contain a home `.env` snapshot cannot be restored
 automatically; compare their before/after hashes and restore that home file separately.
 
-The copy map contains 94 files: 17 commands, 32 skill files across 24 skills,
-7 agents and 38 shared support files. Contracts, descriptors, adjacent Python
-helpers and license texts live under `skills/video-research-resources/`; this
-support directory is not another skill. All files use the existing ownership,
-hash and checkpoint recovery rules. Installing them does not install optional
+The copy map defines commands, skills, agents and shared support files.
+Contracts, descriptors, adjacent Python helpers and license texts live under
+`skills/video-research-resources/`; this support directory is not another skill.
+All files use the existing ownership, hash and checkpoint recovery rules. Installing them does not install optional
 Python/native runtimes, activate external sources/providers or start an MCP server.
 
 Restart Claude Code after installation and use `/gr:getting-started` for setup.
@@ -122,15 +125,15 @@ evidence.
 To uninstall one scope:
 
 ```sh
-npx video-research-mcp@latest --uninstall --global
+npx video-research-mcp@0.8.0-rc.3 --uninstall --global
 # Or, from the affected project:
-npx video-research-mcp@latest --uninstall --local
+npx video-research-mcp@0.8.0-rc.3 --uninstall --local
 ```
 
 Uninstall removes tracked files whose hashes match, keeps modified files, and
 removes empty managed directories. It retains a manifest for files kept. Without
-a scope flag, it handles both the global and current project's local installation.
-The shared `.env` file remains.
+a scope flag, uninstall defaults to global; uninstall a project explicitly with
+`--local`. Credential templates remain.
 
 ### MCP config merge
 
@@ -156,9 +159,9 @@ not registered automatically. Follow [onboarding](tutorials/GETTING_STARTED.md)
 to add them explicitly.
 
 Uninstall removes a server entry only if it still matches the hash recorded at
-installation. Customized entries remain for manual inspection. A malformed
-client configuration produces a warning: files and their manifest may still
-install, so check registration separately.
+installation. Customized entries remain for manual inspection. Malformed client
+configuration is rejected before planned writes; repair it and check registration
+separately.
 
 The selected `.env` template is created with owner-only permissions. Upgrades
 append missing commented keys and preserve existing values. Nonempty process
@@ -172,10 +175,10 @@ registration and the Codex `mcp.json` both run `uvx video-research-mcp==X.Y.Z`,
 which resolves that exact version at server launch. Source edits and npm
 workflow upgrades do not themselves change that published package.
 
-The current core registers 90 tools. See
-[Architecture](ARCHITECTURE.md) and the generated
-[tool contract manifest](metrics/tool-contract-manifest.json) for the current
-surface. Other clients can register the same stdio server in their own format.
+See [Architecture](ARCHITECTURE.md) and the generated
+[tool contract manifest](metrics/tool-contract-manifest.json) for the source
+surface. The running client's discovered schemas identify its actual version.
+Other clients can register the same stdio server in their own format.
 
 ## How Claude Code Discovers Plugin Assets
 
@@ -231,23 +234,16 @@ agent file does not grant access to an absent server.
 | `/ve:explain-video` | Analysis to explainer content | [explain-video](../commands/explain-video.md) |
 | `/ve:explain-status` | Explainer project inspection | [explain-status](../commands/explain-status.md) |
 
-### Skills (13)
+### Skills
 
-| Skill | Purpose |
+| Work | Skills |
 | --- | --- |
-| `video-research` | Research tools, sessions, caching, evidence |
-| `gemini-visualize` | HTML visualizations and three templates |
-| `video-explainer` | Companion tools and pipeline workflows |
-| `weaviate-setup` | Optional knowledge-store setup |
-| `mlflow-traces` | Trace inspection and field guidance |
-| `research-brief-builder` | Specific research briefs |
-| `gr-advisor` | Research command selection |
-| `tts-production` | Speech, alignment, audio QA |
-| `ffmpeg-production` | Filters, encoding, export recipes |
-| `video-generation` | Provider discovery and bounded clip generation |
-| `video-production` | Continuity, shot QA, repair, assembly |
-| `image-generation` | Reference prompts and inspected image edits |
-| `plugin-maintenance` | Bounded audit and modernization workflow |
+| Research and retrieval | `video-research`, `research-brief-builder`, `gr-advisor`, `weaviate-setup`, `mlflow-traces` |
+| Visualization and spatial evidence | `gemini-visualize`, `research-visualization-blender`, `research-visualization-freecad`, `spatial-video-analysis` |
+| Speech and images | `tts-production`, `image-generation`, `reverse-search-video-frame` |
+| Video production and editing | `video-explainer`, `ffmpeg-production`, `video-generation`, `video-production`, `footage-edit`, `video-translation`, `movie-commentary` |
+| Evidence and lessons | `hardware-evidence-capture`, `av-events`, `video-to-skill`, `educational-explainer` |
+| Maintenance | `plugin-maintenance` |
 
 ### Agents (7)
 
@@ -263,14 +259,10 @@ agent file does not grant access to an absent server.
 
 ## Complete Flow
 
-1. `npx` copies workflows, merges client registration, and records file ownership.
-2. Claude Code loads those workflows and starts registered servers. `uvx` obtains
-   the research runtime from PyPI.
-3. A command supplies instructions to the agent, which calls available MCP tools.
-4. Research tools call providers and attempt non-fatal Weaviate write-through
-   when the knowledge store is enabled.
-5. The client presents the result. Installation, a returned analysis, and
-   verification of its evidence are separate checks.
+The client loads workflows and starts the registered Python server through
+`uvx`. Workflows guide MCP calls; provider results can be written to Weaviate
+when configured. Check installation, the returned analysis and its source
+material separately.
 
 ## Native Codex plugin
 
@@ -280,8 +272,8 @@ The npm package root is a portable Agent Plugins package as described in the
 | Path | Role in Codex |
 | --- | --- |
 | [`plugin.json`](../plugin.json) | Agent Plugins 1.0.0 manifest. `video-research` is the stable plugin identifier; `extensions.com.openai.interface` supplies presentation. |
-| [`mcp.json`](../mcp.json) | One stdio server, `video-research`, launched as `uvx video-research-mcp==X.Y.Z`: the same name and command as the Claude registration. Keep `command` a bare executable name (or a contained `./` path): Codex silently ignores a stdio server with an absolute command. |
-| `skills/` | Discovered without a manifest field. Codex sees all 23 shipped skills directly. The Claude installer copies the same skills plus their managed support resources. |
+| [`mcp.json`](../mcp.json) | One stdio server, `video-research`, launched as `uvx video-research-mcp==X.Y.Z`: the same name and command as the Claude registration. Keep `command` a bare executable name (or a contained `./` path); earlier Codex 0.160.0 checks ignored absolute stdio commands. |
+| `skills/` | Discovered without a manifest field. Codex discovers the shipped skills directly. The Claude installer copies the same skills plus their managed support resources. |
 | `commands/`, `agents/`, `bin/` | Claude assets; Codex does not load them. |
 
 The package has no lifecycle hooks, `.app.json`, `.codex-plugin/` overlay or npm
@@ -327,6 +319,7 @@ servers. Start a new Codex session after installing.
 Install the exact packed bytes from a local marketplace:
 
 ```sh
+CANDIDATE="$(mktemp -d)"
 npm pack --ignore-scripts --pack-destination "$CANDIDATE"
 mkdir -p "$CANDIDATE/marketplace/plugins/video-research" "$CANDIDATE/marketplace/.agents/plugins"
 tar -xzf "$CANDIDATE/video-research-mcp-X.Y.Z.tgz" --strip-components 1 \
@@ -373,7 +366,7 @@ unrelated configuration and the shared credential file. Disabling that manual
 table alone does not complete this migration. Plugin-scoped server policy, such as tool approval,
 uses `plugins.<plugin>.mcp_servers.video-research` in Codex configuration.
 
-An isolated 0.160.0 install was verified with the exact packed candidate and built
+The earlier isolated Codex 0.160.0 trial was verified with its packed candidate and built
 wheel: all 22 skills came from the managed cache, all 90 MCP tools connected,
 read-only configuration and local image-crop/error journeys passed, and a fresh
 session repeated the runtime checks. The loaded Python modules and metadata
@@ -381,6 +374,12 @@ matched the selected wheel. These checks used offline resolution and a dummy key
 They do not establish registry installation, the running desktop app's `PATH`,
 first-launch download timing or live-provider quality. The shared advisor selects
 discovered MCP tools in Codex and registered `/gr:*` commands in Claude.
+
+As of 2026-10-06, the selected RC3 npm-source installation and fresh-session
+restart on Codex 0.160.1 covered 120 research tools, 24 skills and 124 cache files.
+Fresh npm network acquisition versus same-version cache reuse remains unknown.
+These checks do not qualify every provider or optional runtime. Earlier RC1 native
+and RC2 source/archive checks remain results for their named candidates.
 
 Consult the current [Claude Code skills documentation](https://code.claude.com/docs/en/skills)
 before changing the Claude route.

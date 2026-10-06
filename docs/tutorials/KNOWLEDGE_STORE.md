@@ -370,13 +370,14 @@ counts and `total_objects`. Check logs when interpreting zero counts.
 ```
 
 Enable the `agents` extra in the environment that launches the MCP server.
-The npm installer uses an isolated `uvx` environment; installing the extra with
-`uv pip install` in a separate environment does not add it to that server.
+The npm installer registers a version-pinned core runtime in an isolated `uvx`
+environment; installing the extra in a separate environment does not add it to
+that server. The example below pins the version declared by this source checkout.
 
 For a new Claude Code user-scope registration, use:
 
 ```bash
-claude mcp add --scope user video-research -- uvx --refresh 'video-research-mcp[tracing,agents]'
+claude mcp add --scope user video-research -- uvx 'video-research-mcp[agents]==0.8.0rc3'
 ```
 
 If the server is already registered, edit its existing launch arguments instead
@@ -385,15 +386,16 @@ of adding a second entry. The research launch should contain:
 ```json
 {
   "command": "uvx",
-  "args": ["--refresh", "video-research-mcp[tracing,agents]"]
+  "args": ["video-research-mcp[agents]==0.8.0rc3"]
 }
 ```
 
 Preserve the entry's environment and other settings. User-scope registration
 lives in `~/.claude.json`; the npm installer's project registration uses
-`.mcp.json`. Restart the MCP client after changing the launch. Installer upgrades
-replace managed launch arguments with `video-research-mcp[tracing]`, so recheck
-and restore the `agents` extra after an upgrade.
+`.mcp.json`. Restart the MCP client after changing the launch. The current
+installer updates an entry only when its recorded ownership hash still matches;
+it preserves customized entries. Recheck the pinned version and enabled extras
+when upgrading a customized launch. Keep any existing tracing extra if needed.
 
 For a source checkout, run from its root:
 

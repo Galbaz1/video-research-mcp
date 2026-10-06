@@ -1,55 +1,75 @@
 # Getting started
 
-This guide takes you from installation to a connected research server and a first
-useful call. Choose the Claude Code workflow bundle for slash commands, or connect
-the Python server directly from another MCP client. The two video companions are
-separate installations.
+Install the published RC3 prerelease, connect your client, then check the running
+configuration before sending material for analysis. Examples pin core
+`0.8.0-rc.3` (Python `0.8.0rc3`); stable `0.7.1` predates the native Codex plugin.
+The video companions are optional, separate installations.
+
+For a route matched to your task or setup problem, use the
+[user documentation](../README.md#choose-a-task). You can describe your problem
+in your MCP client; `/gr:*` commands below are specific to Claude Code.
+
+This guide follows corrected source main. The public RC3 core package does not
+include main `ef4a6cf`'s later lesson error/cleanup or audio-DSP helper-drift fixes.
+Use the [source checkout route](#a-source-checkout) for those fixes.
 
 ## Before you install
 
-For the research server, you need:
+You need Python 3.11+, [uv](https://docs.astral.sh/uv/getting-started/installation/)
+with `uvx` on the client's `PATH`, a stdio MCP client, and a
+[Gemini API key](https://aistudio.google.com/apikey) for analysis. Plugin routes
+also need Node.js 22+ and npm. Install FFmpeg/FFprobe for local media inspection,
+frame extraction and clip exports. Weaviate, tracing and production providers
+are optional.
 
-- Python 3.11 or later and [uv](https://docs.astral.sh/uv/getting-started/installation/).
-- A [Gemini API key](https://aistudio.google.com/apikey) with access to the models
-  you plan to use.
-- A client that supports stdio MCP.
+Gemini processes selected content remotely and can incur usage charges. A selected
+analysis interval does not necessarily limit the uploaded file.
 
-The npm workflow installer also needs Node.js 22 or later. Local video-frame
-extraction needs `ffmpeg`. Weaviate, MLflow tracing, academic API keys, and media
-production providers are optional.
+## Choose an installation route
 
-Gemini processes selected content remotely. Check your provider access and data
-requirements before submitting sensitive recordings or documents.
+### Codex: native plugin
 
-## Install the Claude Code workflows
+Follow the [README's pinned npm marketplace setup](../../README.md#codex-native-plugin),
+then start a fresh Codex session. It supplies skills and the research server.
+The selected RC3 baseline and restart were checked on Codex 0.160.1 on 2026-10-06;
+provider quality and fresh network acquisition versus cache reuse remain separate,
+unverified outcomes. See [Distribution](../PLUGIN_DISTRIBUTION.md#native-codex-plugin)
+for migration and cache preservation.
+
+<a id="install-the-claude-code-workflows"></a>
+
+### Claude Code: workflow bundle
+
+Choose the scope explicitly:
 
 ```bash
-npx video-research-mcp@latest
+npx video-research-mcp@0.8.0-rc.3 --global
+# Or, from the project directory:
+npx video-research-mcp@0.8.0-rc.3 --local
 ```
 
-The installer copies commands, skills, and agents into `~/.claude/` and registers
-MCP servers in Claude Code's user configuration, `~/.claude.json`. For a project
-installation, run the following from the project directory:
+Global workflows go into `~/.claude/` and core registration into `~/.claude.json`.
+Local workflows go into `.claude/`, registration into `.mcp.json`, and credentials
+into `./.config/video-research-mcp/.env`. The installer registers only the core;
+Playwright, MLflow MCP and video companions require separate registration.
 
-```bash
-npx video-research-mcp@latest --local
-```
+Set the key in the selected template, restart Claude Code and inspect `/mcp`.
+`npx video-research-mcp@0.8.0-rc.3 --global --check` inspects the global installation;
+use `--local --check` for the project. This checks files and configuration hashes,
+not a provider request.
 
-Project workflows go into `.claude/`; project MCP registrations go into
-`.mcp.json`. The installer creates a shared credential template if it is missing.
-It also registers Playwright and MLflow MCP, but does not start a tracking server
-or register the video companions.
+### Server-only clients
 
-Set credentials as described below, restart Claude Code, and inspect `/mcp`.
-`npx video-research-mcp@latest --check` checks the installed files and registration;
-it does not prove that a provider request succeeds.
+Use the [server-only registration](#other-mcp-clients) below. It connects the
+same tools without the workflow bundle.
 
 ## Configuration
 
 The research server loads configuration in this order:
 
 1. Process environment variables, including those supplied by the MCP client.
-2. `~/.config/video-research-mcp/.env`.
+2. The file selected by `VIDEO_RESEARCH_ENV_FILE`, otherwise
+   `~/.config/video-research-mcp/.env`.
 3. Built-in defaults.
 
 A `.env` in the source checkout is not loaded automatically. Shell exports reach
@@ -57,8 +77,10 @@ clients launched from that shell; a GUI client may have a different environment.
 The shared file is useful when the same configuration should work in several
 projects or clients.
 
-After running the installer, edit the template and set `GEMINI_API_KEY`. If you
-have not run it, create the file with a text editor:
+After installation, edit the selected template and set `GEMINI_API_KEY`. A local
+install selects the project file and does not fall back to home credentials when
+that file is missing. For Codex or a manual server registration, create the shared
+file if needed:
 
 ```bash
 mkdir -p ~/.config/video-research-mcp
@@ -109,12 +131,13 @@ The npm installer registers the server for you. To register only the published
 Python runtime, use:
 
 ```bash
-claude mcp add --scope user video-research -- uvx --refresh 'video-research-mcp[tracing]'
+claude mcp add --transport stdio --scope user video-research -- uvx video-research-mcp==0.8.0rc3
 claude mcp list
 ```
 
-The `tracing` extra installs the dependency; tracing still needs a tracking URI.
-For the smallest runtime, use `video-research-mcp` without the extra.
+For tracing, use `'video-research-mcp[tracing]==0.8.0rc3'` and configure a tracking
+URI. See the [official MCP registration guide](https://code.claude.com/docs/en/mcp)
+for client scope and command syntax.
 
 Restart the client, inspect its MCP connection status, and ask it to call
 `infra_configure()` with no arguments. Check `current_config.default_model` and
@@ -130,7 +153,7 @@ Use your client's supported stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["--refresh", "video-research-mcp"]
+      "args": ["video-research-mcp==0.8.0rc3"]
     }
   }
 }
@@ -139,9 +162,9 @@ Use your client's supported stdio registration format. A typical JSON entry is:
 Ensure the client can find `uvx` and the shared configuration file. Avoid assuming
 that a client substitutes shell variables inside JSON strings.
 
-Codex and other MCP clients can use the research tools. The npm installer targets
-Claude Code; it does not create a native Codex plugin. Claude slash commands and
-agent frontmatter may need adaptation in another client's workflow format.
+Codex can use this manual server route or the native plugin above. Choose one
+registration for `video-research`; a manual entry can hide the plugin server.
+Claude slash commands and agent frontmatter need a compatible workflow client.
 
 ### A source checkout
 
@@ -188,10 +211,37 @@ Use content_analyze on <document path or URL> to extract its method and limitati
 Use web_search to find primary sources about <topic> and retain the source links.
 ```
 
+For reusable page-level extraction rather than a model answer, follow
+[original-source ingestion](../integrations/source-ingestion.md). Builtin PDF
+extraction needs Poppler; Docling is an optional, separately qualified service.
+For a background report, launch `research_web` and retrieve it with
+`research_web_status`; see [research status and recovery](../integrations/DURABLE_JOBS.md#research-operations).
+
 Tool arguments are defined by the connected server's schema. The
-[tool manifest](../metrics/tool-contract-manifest.json) is a source snapshot of
-those contracts. Commands such as `/gr:video` add a workflow around a tool call;
+[tool manifest](../metrics/tool-contract-manifest.json) is a dated source snapshot,
+not a version guarantee for your running package. Claude Code commands such as
+`/gr:video` add a workflow around a tool call;
 they may save notes, extract frames, or use additional providers.
+
+### Inspect a local frame
+
+With FFmpeg/FFprobe and the required image dependencies installed, ask your client
+to call `video_frame` with an accessible local video:
+
+```json
+{
+  "file_path": "/absolute/allowed/path/recording.mp4",
+  "time_seconds": 12.5,
+  "include_image": false
+}
+```
+
+This returns source metadata for the selected frame without an image block. Set
+`include_image` to `true` for a native image preview. Inspect the actual decoded
+time; the first frame at or after the request can differ from the requested time.
+The [source-export guide](../integrations/IMAGE_EXPORTS.md) covers image edits and
+finite clip exports. See the [task selector](../README.md#choose-a-task) for audio,
+knowledge and optional production routes.
 
 ### Responses and errors
 

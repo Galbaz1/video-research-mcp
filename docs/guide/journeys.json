@@ -1,0 +1,854 @@
+[
+  {
+    "id": "video",
+    "title": "Een video begrijpen",
+    "problem": "Wat zegt deze video over mijn vraag?",
+    "result": "Een gerichte analyse met bronmomenten, onzekerheden en vervolgvragen.",
+    "requirements": [
+      "Kernserver en Gemini; YouTube Data API alleen als je metadata wilt ophalen."
+    ],
+    "prompt": "Analyseer deze video: <YouTube-URL>. Leg uit hoe <onderwerp> werkt. Verwijs naar bronmomenten, benoem wat niet zichtbaar is en stel twee vervolgvragen.",
+    "steps": [
+      {
+        "title": "Kies de bron",
+        "mode": "sequence",
+        "note": "Gebruik metadata bij een YouTube-video; geef een lokaal bestand direct aan de analyseroute.",
+        "tools": [
+          "video-research/video_metadata"
+        ]
+      },
+      {
+        "title": "Analyseer gericht",
+        "mode": "sequence",
+        "note": "Gebruik video_analyze voor één bron; kies windows bij een lang bestand of batch voor meerdere lokale bestanden. Batch selecteert lokaal, maar verstrekt de videobestanden aan Gemini voor mogelijk betaalde analyse.",
+        "tools": [
+          "video-research/video_analyze",
+          "video-research/video_analyze_windows",
+          "video-research/video_batch_analyze"
+        ]
+      },
+      {
+        "title": "Vraag door",
+        "mode": "sequence",
+        "note": "Maak alleen bij meerdere vragen een sessie en hergebruik die context.",
+        "tools": [
+          "video-research/video_create_session",
+          "video-research/video_continue_session"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "speech",
+    "title": "Spraak naar tekst omzetten",
+    "problem": "Ik wil een transcript met tijdstempels.",
+    "result": "Ondertitel- of transcriptieregels met herkomst, export en behouden gedeeltelijke resultaten.",
+    "requirements": [
+      "Lokale bron en eventuele ondertitels; FFmpeg/ffprobe voor audio. ASR vraagt een expliciete backend. Lokale ASR heeft nog geen gekwalificeerde totale intake-deadline."
+    ],
+    "prompt": "Maak een transcript van <bestand>. Gebruik eerst mijn ondertitels. Toon tijdstempels en ontbrekende stukken. Vraag toestemming en noem de backend vóór ASR.",
+    "steps": [
+      {
+        "title": "Controleer bron en audio",
+        "mode": "sequence",
+        "note": "Inspecteer het lokale bestand en bepaal welk interval nodig is.",
+        "tools": [
+          "video-research/media_info"
+        ]
+      },
+      {
+        "title": "Kies ondertitels of ASR",
+        "mode": "sequence",
+        "note": "Ondertitels gaan voor. Modelwoorden en sprekerlabels blijven interpretaties.",
+        "tools": [
+          "video-research/audio_transcribe"
+        ]
+      },
+      {
+        "title": "Bewaar alleen als gewenst",
+        "mode": "sequence",
+        "note": "Neem het transcript op als bron voor later onderzoek.",
+        "tools": [
+          "video-research/source_ingest"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "research",
+    "title": "Een vraag beantwoorden met bronnen",
+    "problem": "Ik wil een controleerbaar antwoord op een afgebakende vraag.",
+    "result": "Een antwoord met bronverwijzingen, tegenargumenten en open vragen.",
+    "requirements": [
+      "Gemini voor planning en synthese; zoekproviders alleen voor de gekozen zoekroute."
+    ],
+    "prompt": "Onderzoek <vraag> voor <doelgroep>. Begrens tot <periode>. Maak eerst een plan, zoek primaire bronnen en onderscheid bronfeiten, interpretatie en onbekenden.",
+    "steps": [
+      {
+        "title": "Begrens de vraag",
+        "mode": "sequence",
+        "note": "Een plan start zelf geen onderzoek.",
+        "tools": [
+          "video-research/research_plan"
+        ]
+      },
+      {
+        "title": "Verzamel bronnen",
+        "mode": "sequence",
+        "note": "Kies Gemini Search of een geconfigureerde zoekprovider en lees de relevante pagina’s.",
+        "tools": [
+          "video-research/web_search",
+          "video-research/web_search_provider",
+          "video-research/web_extract"
+        ]
+      },
+      {
+        "title": "Werk het antwoord uit",
+        "mode": "sequence",
+        "note": "research_execute kan aangeleverde of opgehaalde bronnen gebruiken. research_deep synthetiseert en haalt zelf geen nieuwe bronnen op.",
+        "tools": [
+          "video-research/research_execute",
+          "video-research/research_deep",
+          "video-research/research_assess_evidence"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "papers",
+    "title": "Wetenschappelijke literatuur verkennen",
+    "problem": "Welke papers en tegenbevindingen passen bij mijn vraag?",
+    "result": "Een begrensde literatuurlijst en vergelijking van daadwerkelijk gelezen bronnen.",
+    "requirements": [
+      "Semantic Scholar voor metadata; Gemini voor documentanalyse."
+    ],
+    "prompt": "Zoek papers over <vraag>. Geef een selectie met DOI of paper-ID. Scheid metadata van gelezen volledige teksten en vergelijk methode en beperkingen.",
+    "steps": [
+      {
+        "title": "Zoek papers",
+        "mode": "sequence",
+        "note": "Zoek titels, auteurs en publicatiemetadata.",
+        "tools": [
+          "video-research/research_paper_search",
+          "video-research/research_author_search"
+        ]
+      },
+      {
+        "title": "Volg relevante verwijzingen",
+        "mode": "sequence",
+        "note": "Lees details, citaties en aanbevelingen voor geselecteerde papers.",
+        "tools": [
+          "video-research/research_paper_details",
+          "video-research/research_paper_citations",
+          "video-research/research_paper_recommendations"
+        ]
+      },
+      {
+        "title": "Lees de volledige tekst",
+        "mode": "sequence",
+        "note": "Geef beschikbare documenten expliciet mee; metadata is geen gelezen paper.",
+        "tools": [
+          "video-research/research_document"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "documents",
+    "title": "Een document uitlezen en vergelijken",
+    "problem": "Ik wil weten wat mijn documenten werkelijk onderbouwen.",
+    "result": "Bronpassages met pagina of locatie en een afzonderlijke vergelijking.",
+    "requirements": [
+      "Originele bestanden; afzonderlijk geïnstalleerde Poppler (pdftotext en pdfimages op PATH) voor ingebouwde PDF-extractie met source_ingest, niet gebundeld in het pakket. Docling is optioneel. Gemini voor interpretatie."
+    ],
+    "prompt": "Lees <documenten>. Bewaar paginaverwijzingen. Vergelijk wat ze zeggen over <vraag> en toon passages naast de interpretatie.",
+    "steps": [
+      {
+        "title": "Lees de originele bron",
+        "mode": "sequence",
+        "note": "Bewaar de bronidentiteit en locaties; begin niet met een los opnieuw geschreven document. Controleer de installatievoorwaarden van source_ingest: https://github.com/Galbaz1/video-research-mcp/blob/019c59eafa70315f9f751227eef168bc22ec818e/docs/integrations/source-ingestion.md.",
+        "tools": [
+          "video-research/source_ingest"
+        ]
+      },
+      {
+        "title": "Controleer de extractie",
+        "mode": "sequence",
+        "note": "Lees de relevante pagina’s of elementen opnieuw.",
+        "tools": [
+          "video-research/source_ingest_read"
+        ]
+      },
+      {
+        "title": "Vergelijk inhoud",
+        "mode": "sequence",
+        "note": "Kies gezamenlijke documentanalyse of een specifiek outputschema.",
+        "tools": [
+          "video-research/content_batch_analyze",
+          "video-research/content_extract",
+          "video-research/research_document"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "av",
+    "title": "Gebeurtenissen in beeld en geluid vinden",
+    "problem": "Waar in deze opname gebeurt <gebeurtenis>?",
+    "result": "Ondersteunde tijdsintervallen met bronbeelden of audiovensters en zichtbare ontbrekende dekking.",
+    "requirements": [
+      "Lokale media, FFmpeg/ffprobe en Gemini voor de geselecteerde AV-analyse."
+    ],
+    "prompt": "Zoek <gebeurtenis> in <bestand> tussen <begin> en <eind>. Geef de ondersteunende beelden en audio aan. Meld onzekerheid en gemiste dekking.",
+    "steps": [
+      {
+        "title": "Inspecteer het interval",
+        "mode": "sequence",
+        "note": "Meet de bron en bekijk het storyboard.",
+        "tools": [
+          "video-research/media_info",
+          "video-research/video_storyboard"
+        ]
+      },
+      {
+        "title": "Kies één analyse",
+        "mode": "sequence",
+        "note": "Caption, count, ground en music zijn alternatieven voor verschillende vragen.",
+        "tools": [
+          "video-research/media_caption_events",
+          "video-research/media_count_events",
+          "video-research/media_ground_events",
+          "video-research/media_analyze_music"
+        ]
+      },
+      {
+        "title": "Controleer bronmomenten",
+        "mode": "sequence",
+        "note": "Bekijk frames of exporteer een fragment. Een modelschatting is geen fysiek geverifieerde telling.",
+        "tools": [
+          "video-research/video_frames",
+          "video-research/video_clip_export"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "title": "Een afbeelding lezen of bewerken",
+    "problem": "Ik wil tekst, objecten of een uitsnede uit dit beeld.",
+    "result": "Een brongebonden OCR-resultaat, modelinterpretatie of deterministische bewerking.",
+    "requirements": [
+      "Pillow; lokale OCR vraagt Tesseract of Apple Vision. Vision en segmentatie vragen een afzonderlijke provider."
+    ],
+    "prompt": "Lees <afbeelding>. Begin met een inspecteerbare weergave. Gebruik OCR voor tekst en label modelinterpretaties apart. Bewaar het origineel bij een uitsnede.",
+    "steps": [
+      {
+        "title": "Bekijk de bron",
+        "mode": "sequence",
+        "note": "Lever echte pixels; een modelbeschrijving staat daar los van.",
+        "tools": [
+          "video-research/image_read"
+        ]
+      },
+      {
+        "title": "Kies OCR of vision",
+        "mode": "sequence",
+        "note": "Lokale OCR en model-OCR zijn aparte routes; segmentatie vraagt een externe dienst.",
+        "tools": [
+          "video-research/image_ocr",
+          "video-research/vision_ocr",
+          "video-research/vision_chat",
+          "video-research/image_segment"
+        ]
+      },
+      {
+        "title": "Bewerk indien nodig",
+        "mode": "sequence",
+        "note": "Crop en image_edit zijn deterministische bewerkingen; controleer het manifest.",
+        "tools": [
+          "video-research/image_crop",
+          "video-research/image_edit",
+          "video-research/image_manifest_read"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "footage",
+    "title": "Bestaande footage monteren",
+    "problem": "Ik wil bestaande clips in een korte montage gebruiken.",
+    "result": "Een gecontroleerde hard-cutmontage met goedgekeurde bronmomenten.",
+    "requirements": [
+      "Lokale clips, FFmpeg/ffprobe en toegang tot de bronbestanden."
+    ],
+    "prompt": "Maak een montageplan voor <clips> van ongeveer <duur>. Toon eerst scènepreviews. Monteer pas na mijn goedkeuring en controleer audio en volledige decode.",
+    "steps": [
+      {
+        "title": "Bekijk scènes",
+        "mode": "sequence",
+        "note": "Detecteer cuts en maak een storyboard.",
+        "tools": [
+          "video-research/video_detect_scenes",
+          "video-research/video_storyboard"
+        ]
+      },
+      {
+        "title": "Bereid de montage voor",
+        "mode": "sequence",
+        "note": "De prepare-route maakt previews; leg de gekozen momenten expliciet vast.",
+        "tools": [
+          "video-research/media_edit_footage"
+        ]
+      },
+      {
+        "title": "Assembleer na goedkeuring",
+        "mode": "sequence",
+        "note": "Gebruik dezelfde bron- en plangegevens; lees de werkelijke uitkomst.",
+        "tools": [
+          "video-research/media_edit_footage",
+          "video-research/job_status"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "explainer",
+    "title": "Van onderzoek naar een explainer",
+    "problem": "Ik wil een video maken van onderbouwd onderzoek.",
+    "result": "Een goedgekeurd plan, gebonden script en een gerenderde video met afzonderlijke inhoudscontrole.",
+    "requirements": [
+      "Aparte explainercompanion. Upstream video_explainer CLI voor de gekozen generatiestappen; renderer, Node en FFmpeg/ffprobe. Providers en sleutels per generatieactie."
+    ],
+    "prompt": "Maak een explainerplan voor <onderwerp> op basis van <bronnen>. Controleer de beschikbare companion en renderer. Laat me plan en claims goedkeuren voordat je genereert of rendert.",
+    "steps": [
+      {
+        "title": "Controleer en maak een project",
+        "mode": "sequence",
+        "note": "Lees prerequisites en maak een project in de geconfigureerde omgeving.",
+        "tools": [
+          "video-explainer/explainer_doctor",
+          "video-explainer/explainer_create"
+        ]
+      },
+      {
+        "title": "Plan en bind de inhoud",
+        "mode": "sequence",
+        "note": "Geef bronmateriaal mee, keur het plan goed en kies één generatiestap.",
+        "tools": [
+          "video-explainer/explainer_inject",
+          "video-explainer/explainer_plan",
+          "video-explainer/explainer_step"
+        ]
+      },
+      {
+        "title": "Render en beoordeel",
+        "mode": "sequence",
+        "note": "Volg de renderjob en controleer claims, leesbaarheid en audio apart. De factchecktool verwerkt aangeleverde waarnemingen.",
+        "tools": [
+          "video-explainer/explainer_render_start",
+          "video-explainer/explainer_render_poll",
+          "video-explainer/explainer_render_factcheck"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lesson",
+    "title": "Een kleine interactieve les maken",
+    "problem": "Ik wil een begrensde diagramles met vertelling.",
+    "result": "Een zelfstandige HTML-les en lokale video binnen het vaste drie-scènedomein.",
+    "requirements": [
+      "Educational-explainer skill, lesson.py, lokaal audio-/bronmateriaal en media-afhankelijkheden. Alleen de beschreven drie-scènevoorbeelden."
+    ],
+    "prompt": "Maak een les binnen het educational-explainer-domein over <ondersteund voorbeeld>. Gebruik mijn vertelling. Valideer eerst de specificatie en controleer de HTML en video afzonderlijk.",
+    "steps": [
+      {
+        "title": "Kies een ondersteund voorbeeld",
+        "mode": "sequence",
+        "note": "De skill beschrijft de eindige lesdomeinen; vrije lessen vragen een andere productieroute.",
+        "tools": [
+          "skill/educational-explainer"
+        ]
+      },
+      {
+        "title": "Valideer en bouw",
+        "mode": "sequence",
+        "note": "Gebruik de CLI validate en build met exacte bron- en audio-invoer.",
+        "tools": [
+          "function/education-lesson"
+        ]
+      },
+      {
+        "title": "Controleer het resultaat",
+        "mode": "sequence",
+        "note": "Gebruik check voor bron-/uitvoerbinding; leesbaarheid en verstaanbaarheid vragen eigen beoordeling.",
+        "tools": [
+          "function/education-lesson"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tutorial",
+    "title": "Van demonstratie naar instructie",
+    "problem": "Ik wil de stappen uit een opname hergebruiken.",
+    "result": "Brongebonden instructies of een overdraagbare skill met expliciete ontbrekende informatie.",
+    "requirements": [
+      "Gemini voor interpretatie; lokale frames voor een PDF. De video-to-skill validators voeren de taak niet uit."
+    ],
+    "prompt": "Beschrijf de stappen uit <opname> voor <taak>. Verwijs naar bronmomenten, vul ontbrekende handelingen niet in en maak daarna een herbruikbare instructie.",
+    "steps": [
+      {
+        "title": "Onderzoek de demonstratie",
+        "mode": "sequence",
+        "note": "Bekijk de relevante bronmomenten.",
+        "tools": [
+          "video-research/video_analyze",
+          "video-research/media_ground_events"
+        ]
+      },
+      {
+        "title": "Maak leesbare instructies",
+        "mode": "sequence",
+        "note": "De PDF-route gebruikt echte bronframes; de skillroute bewaart stappen en brongegevens.",
+        "tools": [
+          "video-research/video_note_create",
+          "skill/video-to-skill"
+        ]
+      },
+      {
+        "title": "Valideer vóór verpakken",
+        "mode": "sequence",
+        "note": "Structuur en herkomstcontrole bewijzen geen geslaagde uitvoering van de beschreven taak.",
+        "tools": [
+          "function/video-skill-validate",
+          "function/video-skill-package"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "knowledge",
+    "title": "Eerder onderzoek terugvinden",
+    "problem": "Ik wil zoeken in mijn opgeslagen kennis.",
+    "result": "Relevante opgeslagen objecten en bronverwijzingen; optionele synthese blijft modeloutput.",
+    "requirements": [
+      "WEAVIATE_URL, toegang tot de gekozen collecties en de zoek-/embeddingconfiguratie: hybrid/semantic vragen vectorisatie, keyword gebruikt BM25. Gemini-samenvatting en Cohere-reranking zijn afzonderlijke optionele providerstappen; QueryAgent is optioneel voor een antwoord."
+    ],
+    "prompt": "Zoek eerder onderzoek over <onderwerp> in <collectie>. Geef de bronobjecten terug. Maak alleen een samenvatting als die optie beschikbaar is en label haar als interpretatie.",
+    "steps": [
+      {
+        "title": "Bekijk collecties",
+        "mode": "sequence",
+        "note": "Lees beschikbare schema’s en aantallen.",
+        "tools": [
+          "video-research/knowledge_schema",
+          "video-research/knowledge_stats"
+        ]
+      },
+      {
+        "title": "Zoek en lees de bronobjecten",
+        "mode": "sequence",
+        "note": "Gebruik knowledge_search, fetch en related; knowledge_query is verouderd. Zonder Weaviate-configuratie geeft search lege resultaten; ook zoekfouten kunnen resultaten beperken. Dat bewijst niet dat er geen opgeslagen kennis is.",
+        "tools": [
+          "video-research/knowledge_search",
+          "video-research/knowledge_fetch",
+          "video-research/knowledge_related"
+        ]
+      },
+      {
+        "title": "Vraag alleen indien gewenst een antwoord",
+        "mode": "sequence",
+        "note": "knowledge_ask vraagt de optionele QueryAgent.",
+        "tools": [
+          "video-research/knowledge_ask"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "audience",
+    "title": "Publieksreacties begrijpen",
+    "problem": "Welke vragen of bezwaren staan in deze reacties?",
+    "result": "Een begrensde steekproef met exacte citaten en transparante kenmerken.",
+    "requirements": [
+      "YouTube Data API voor acquisitie; audience_manage bewaart en analyseert aangeleverde reacties lokaal."
+    ],
+    "prompt": "Lees een begrensde selectie reacties op <video>. Groepeer vragen en bezwaren, geef exacte citaten en behandel de steekproef niet als het hele publiek.",
+    "steps": [
+      {
+        "title": "Bekijk kanaalcontext",
+        "mode": "sequence",
+        "note": "Lees alleen de benodigde metadata of uploadpagina.",
+        "tools": [
+          "video-research/youtube_channel_inspect",
+          "video-research/youtube_channel_catalog"
+        ]
+      },
+      {
+        "title": "Haal de steekproef op",
+        "mode": "sequence",
+        "note": "Behoud de gekozen omvang en sortering.",
+        "tools": [
+          "video-research/video_comments"
+        ]
+      },
+      {
+        "title": "Bewaar en vergelijk",
+        "mode": "sequence",
+        "note": "Werk met brongebonden citaten; inferentie via een model is een afzonderlijke keuze.",
+        "tools": [
+          "video-research/audience_manage"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "spatial",
+    "title": "Ruimtelijke visualisatie verkennen · experimenteel",
+    "problem": "Ik wil een ruimtelijke schets bij bronbeelden.",
+    "result": "Een gekozen externe route met expliciete voorwaarden; geometrie en fysieke juistheid vragen eigen controle.",
+    "requirements": [
+      "Afzonderlijk geconfigureerde externe bron en runtime. Deze routes zijn geen algemeen gekwalificeerde native voorziening van RC3."
+    ],
+    "prompt": "Verken een ruimtelijke visualisatie voor <bronbeelden>. Controleer eerst welke externe route werkelijk beschikbaar is. Benoem geometrische aannames en begin geen lokale modeluitvoering zonder geschikte runtime.",
+    "steps": [
+      {
+        "title": "Kies bronbeelden",
+        "mode": "sequence",
+        "note": "Haal de benodigde frames op.",
+        "tools": [
+          "video-research/video_frames"
+        ]
+      },
+      {
+        "title": "Controleer de externe route",
+        "mode": "sequence",
+        "note": "De spatial skill en adapter zijn experimenteel; aanwezigheid is geen uitvoeringsbewijs.",
+        "tools": [
+          "skill/spatial-video-analysis",
+          "function/spatial-session"
+        ]
+      },
+      {
+        "title": "Kies een visualisatieomgeving",
+        "mode": "sequence",
+        "note": "Blender en FreeCAD hebben afzonderlijke prerequisites.",
+        "tools": [
+          "skill/research-visualization-blender",
+          "skill/research-visualization-freecad"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hardware",
+    "title": "Hardwaregedrag simuleren · experimenteel",
+    "problem": "Ik wil een simulator lezen of aanpassen.",
+    "result": "Simulatiewaarden en vastgelegde wijzigingen; geen fysieke hardwarewaarneming.",
+    "requirements": [
+      "Expliciete simulatorregistratie en passende toestemming voor wijzigingen."
+    ],
+    "prompt": "Bekijk <simulator>. Lees eerst apparaten, metadata en limieten. Stel een wijziging voor en voer die pas uit met de vereiste toestemming.",
+    "steps": [
+      {
+        "title": "Lees apparaten en limieten",
+        "mode": "sequence",
+        "note": "Discovery beschrijft de simulator.",
+        "tools": [
+          "video-research/mhs_discover",
+          "video-research/mhs_meta_info"
+        ]
+      },
+      {
+        "title": "Inspecteer de toestand",
+        "mode": "sequence",
+        "note": "Health en read bewijzen geen fysieke aanwezigheid.",
+        "tools": [
+          "video-research/mhs_health_check",
+          "video-research/mhs_read"
+        ]
+      },
+      {
+        "title": "Wijzig alleen expliciet",
+        "mode": "sequence",
+        "note": "Write en reset veranderen simulatorstate en vragen de toepasselijke toestemming.",
+        "tools": [
+          "video-research/mhs_write",
+          "video-research/mhs_reset"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "operate",
+    "title": "Installeren en beschikbaarheid controleren",
+    "problem": "Welke onderdelen heb ik nodig voor mijn taak?",
+    "result": "Een gekozen kernserver of companion met gecontroleerde configuratie.",
+    "requirements": [
+      "Python ≥3.11 en uv/uvx voor MCP; Node ≥22 voor de npm-installer. De native Codex-plugin koppelt de kernserver; companions verbind je apart."
+    ],
+    "prompt": "Controleer welke video-research-tools en skills verbonden zijn. Toon ontbrekende configuratie voor <taak>, zonder sleutels te tonen. Installeer of wijzig niets zonder mijn opdracht.",
+    "steps": [
+      {
+        "title": "Kies de ingang",
+        "mode": "sequence",
+        "note": "Codex heeft 24 verpakte skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources.",
+        "tools": [
+          "function/native-codex-plugin",
+          "function/plugin-installer"
+        ]
+      },
+      {
+        "title": "Lees configuratie",
+        "mode": "sequence",
+        "note": "provider_capabilities beschrijft routes en test geen providerverbinding.",
+        "tools": [
+          "video-research/infra_configure",
+          "video-research/provider_capabilities"
+        ]
+      },
+      {
+        "title": "Volg eigen werk",
+        "mode": "sequence",
+        "note": "Lees een bestaande job; vraag annulering alleen als dat gewenst is.",
+        "tools": [
+          "video-research/job_status",
+          "video-research/job_cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "origin",
+    "title": "De herkomst van een beeld zoeken",
+    "problem": "Waar komt dit beeld of fragment vandaan?",
+    "result": "Kandidaatpagina’s met afzonderlijke visuele en tekstuele controle.",
+    "requirements": [
+      "Een exact lokaal PNG-frame; ingeschakelde Serper-route en SERPER_API_KEY. Uitvoering van reverse_search_frame uploadt het geselecteerde PNG altijd publiek naar Uguu, controleert de hosted bytes en stuurt daarna de URL naar Serper Lens. Concrete toestemming voor publicatie, inzending en mogelijk betaald gebruik is vereist. Een dry-run publiceert niets."
+    ],
+    "prompt": "Zoek de herkomst van <beeld>. Geef kandidaten met bronpagina’s. Publiceer mijn beeld niet zonder toestemming en verifieer matches aan uiterlijk, tekst en context.",
+    "steps": [
+      {
+        "title": "Kies een exact beeld",
+        "mode": "sequence",
+        "note": "Haal één bronframe op.",
+        "tools": [
+          "video-research/video_frame"
+        ]
+      },
+      {
+        "title": "Zoek kandidaten",
+        "mode": "alternative",
+        "note": "Kies een lokale dry-run zonder upload of uitvoering van reverse_search_frame met publieke PNG-upload naar Uguu, bytecontrole en daaropvolgende URL-inzending naar Serper Lens. web_search_provider is een afzonderlijke tekstzoekroute; die vervangt deze framezoekroute niet.",
+        "tools": [
+          "video-research/reverse_search_frame",
+          "video-research/web_search_provider"
+        ]
+      },
+      {
+        "title": "Controleer de pagina’s",
+        "mode": "sequence",
+        "note": "Een zoekmatch is nog geen vastgestelde oorsprong.",
+        "tools": [
+          "video-research/web_extract"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "assets",
+    "title": "Vertelling en visuele assets maken",
+    "problem": "Ik wil audio of beelden voor een video produceren.",
+    "result": "Providerartefacten die nog op inhoud, kwaliteit en samenhang beoordeeld moeten worden.",
+    "requirements": [
+      "Afzonderlijk beschikbare generators en geconfigureerde providers. De kernserver heeft geen ingebouwde afbeelding-, TTS- of clipgenerator."
+    ],
+    "prompt": "Maak een assetplan voor <video>. Controleer echte generators, invoer en kosten vóór uitvoering. Begin met één voorbeeld en beoordeel beeld en audio voordat je opschaalt.",
+    "steps": [
+      {
+        "title": "Kies een beschikbare generator",
+        "mode": "sequence",
+        "note": "Deze skills begeleiden gebruik; ze voegen geen generator toe.",
+        "tools": [
+          "skill/tts-production",
+          "skill/image-generation",
+          "skill/video-generation"
+        ]
+      },
+      {
+        "title": "Gebruik de companion indien aangesloten",
+        "mode": "sequence",
+        "note": "Narratie vraagt een goedgekeurd gebonden script; muziek en SFX gebruiken gekozen upstream routes.",
+        "tools": [
+          "video-explainer/explainer_narration",
+          "video-explainer/explainer_music",
+          "video-explainer/explainer_sound"
+        ]
+      },
+      {
+        "title": "Inspecteer en meng",
+        "mode": "sequence",
+        "note": "Meet bronmedia en meng bestaande projectaudio afzonderlijk.",
+        "tools": [
+          "video-research/media_info",
+          "video-research/audio_dsp_analyze",
+          "video-explainer/explainer_audio_mix"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "materials",
+    "title": "Bestaande materialen samenstellen",
+    "problem": "Ik heb eigen beelden en clips en wil daar een video van maken.",
+    "result": "Een lokale MP4 volgens een vastgelegde volgorde en timing.",
+    "requirements": [
+      "Aparte explainercompanion, geconfigureerd project, lokale materialen met gebruiksverklaringen en FFmpeg/ffprobe. Stock zoeken/downloaden is niet aangesloten."
+    ],
+    "prompt": "Stel mijn bestaande materialen <bestanden> samen tot <duur>. Gebruik alleen deze bestanden. Leg volgorde, timing en gebruiksverklaringen vast en controleer de volledige MP4.",
+    "steps": [
+      {
+        "title": "Maak of kies een project",
+        "mode": "sequence",
+        "note": "Gebruik een bestaande projectomgeving; create gebruikt de upstream CLI.",
+        "tools": [
+          "video-explainer/explainer_create",
+          "video-explainer/explainer_status"
+        ]
+      },
+      {
+        "title": "Leg het plan en de materialen vast",
+        "mode": "sequence",
+        "note": "Bind scènes, script en de expliciet aangeleverde bronnen.",
+        "tools": [
+          "video-explainer/explainer_plan"
+        ]
+      },
+      {
+        "title": "Assembleer en controleer",
+        "mode": "sequence",
+        "note": "Gebruik lokale materialen; deze route zoekt of downloadt geen stock.",
+        "tools": [
+          "video-explainer/explainer_materials_assemble"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "library",
+    "title": "Bronnen en notities lokaal hergebruiken",
+    "problem": "Ik wil passages uit mijn eigen bronnen terugvinden en delen.",
+    "result": "Lokale collecties, citeerbare passages, notities en leesbare exports.",
+    "requirements": [
+      "Bestaande lokale bronrecords; geen Weaviate of modelprovider nodig voor deze recordbewerkingen."
+    ],
+    "prompt": "Orden <bronrecords> in een collectie. Zoek passages over <vraag>, bewaar notities met exacte verwijzingen en exporteer een leesbaar overzicht.",
+    "steps": [
+      {
+        "title": "Orden en zoek",
+        "mode": "sequence",
+        "note": "Werk met de aangeleverde bronrecords en een begrensde zoekvraag.",
+        "tools": [
+          "video-research/collections_manage",
+          "video-research/corpus_retrieve"
+        ]
+      },
+      {
+        "title": "Bewaar context",
+        "mode": "sequence",
+        "note": "Koppel notities of wiki-revisies aan exacte passages.",
+        "tools": [
+          "video-research/notebook_manage",
+          "video-research/wiki_manage"
+        ]
+      },
+      {
+        "title": "Deel brongegevens",
+        "mode": "sequence",
+        "note": "Controleer welke brongegevens geschikt zijn om te delen.",
+        "tools": [
+          "video-research/evidence_export"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dubbing",
+    "title": "Een video vertalen · experimenteel",
+    "problem": "Ik wil gesproken vertaling bij mijn video.",
+    "result": "Een brongebonden vertaalplan en mogelijke render; stemkwaliteit en beluistering blijven afzonderlijke controles.",
+    "requirements": [
+      "Optionele geconfigureerde dubbingservice voor stems, VAD en TTS; lokale media en FFmpeg/ffprobe. Goedgekeurde stemreferenties."
+    ],
+    "prompt": "Bereid vertaling van <video> naar <taal> voor. Controleer eerst de dubbingservice. Maak alleen een analyse en plan; vraag goedkeuring vóór synthese en beoordeel de uiteindelijke audio.",
+    "steps": [
+      {
+        "title": "Controleer en bereid voor",
+        "mode": "sequence",
+        "note": "Ontbrekende service is een stopvoorwaarde.",
+        "tools": [
+          "video-research/check_dubbing_service",
+          "video-research/prepare_video_translation_project"
+        ]
+      },
+      {
+        "title": "Controleer het vertaalplan",
+        "mode": "sequence",
+        "note": "Werk met exacte bronmomenten, sprekertoewijzingen en slots.",
+        "tools": [
+          "video-research/get_video_translation_state",
+          "video-research/validate_video_translation_plan"
+        ]
+      },
+      {
+        "title": "Render na goedkeuring",
+        "mode": "sequence",
+        "note": "Technische levering en beluisterde stemkwaliteit zijn aparte uitkomsten.",
+        "tools": [
+          "video-research/render_video_translation",
+          "video-research/validate_video_translation_delivery"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "commentary",
+    "title": "Filmcommentaar maken",
+    "problem": "Ik wil uitleg bij geselecteerde filmfragmenten.",
+    "result": "Een goedgekeurd commentaarplan, afzonderlijk uitgevoerde segmentgroepen en gecontroleerde levering.",
+    "requirements": [
+      "Aparte explainercompanion; lokale bronvideo, FFmpeg/ffprobe en een geschikte uitvoerroute voor de goedgekeurde segmentgroepen."
+    ],
+    "prompt": "Bereid commentaar voor bij <video> over <vraag>. Leg exacte bronmomenten en vertelling vast. Laat me het plan en de segmentgroepen goedkeuren voordat je deelrenders maakt.",
+    "steps": [
+      {
+        "title": "Maak en controleer het plan",
+        "mode": "sequence",
+        "note": "Koppel het project aan de exacte bronvideo.",
+        "tools": [
+          "video-explainer/commentary_prepare",
+          "video-explainer/commentary_validate_plan"
+        ]
+      },
+      {
+        "title": "Leg segmentgroepen vast",
+        "mode": "sequence",
+        "note": "Approve geeft uitvoeringsscope; de tool voert geen deelrender uit. Die uitvoering vraagt een afzonderlijke geschikte route.",
+        "tools": [
+          "video-explainer/commentary_freeze_shards",
+          "video-explainer/commentary_approve_shard"
+        ]
+      },
+      {
+        "title": "Voeg bestaande deelrenders samen",
+        "mode": "sequence",
+        "note": "Pas na geslaagde deeluitkomsten volgt assemble en leveringcontrole.",
+        "tools": [
+          "video-explainer/commentary_assemble",
+          "video-explainer/commentary_validate_delivery"
+        ]
+      }
+    ]
+  }
+]

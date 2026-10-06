@@ -1,5 +1,11 @@
 # Goal command: finish the multimodal capability programme
 
+> **Historical plan — October 3–4, 2026.** The commands, routing decisions and
+> status tables below retain that preparation and continuation. Before using them,
+> read the [canonical handoff](/Users/fausto_home/Coding/video-research-mcp/.claude/handoff.md),
+> current [project instructions](../../../AGENTS.md) and the active assignment.
+> Beads owns live status; these records do not extend today's execution authority.
+
 > **October 4 continuation:** Start with [NEXT-SESSION-GOAL.md](NEXT-SESSION-GOAL.md)
 > and the canonical handoff. The current source is the spatial admission checkpoint,
 > and the user explicitly permits models on this machine. This overrides the older

@@ -22,15 +22,13 @@ You receive a prompt containing:
 
 ### 1. Fetch Comments
 
-Try these methods in order — use the first that works:
-
-#### Method A: YouTube Data API v3 (preferred)
+Use the YouTube Data API v3 tools below.
 
 First, check if comments exist using `video_metadata`:
 ```
 mcp__video-research__video_metadata(url="<video_url>")
 ```
-If `comment_count` is 0, skip to Step 2 ("No comments available").
+If `comment_count` is 0, return a brief "No comments available" note and stop.
 
 Then fetch comments via the MCP tool:
 ```
@@ -82,9 +80,7 @@ Keep quotes verbatim. Attribute by author name.",
 
 Write the section to a separate `community-reaction.md` beside the analysis and return it to the parent for merging after all workers join. Do not append concurrently to a shared analysis file. State sample count, retrieval method, ordering, and coverage; a relevance-ranked subset cannot establish population-wide consensus. Verify quoted text against fetched comments and sentiment totals against classified sample counts.
 
-The parent appends this format to analysis.md:
-
-Read the current `analysis.md` and append the Community Reaction section based on the `content_analyze` response:
+The parent reads the current `analysis.md` and merges the returned section in this format:
 
 ```markdown
 ## Community Reaction  <!-- <YYYY-MM-DD HH:MM> -->
@@ -111,7 +107,7 @@ Update the `updated` timestamp in YAML frontmatter.
 ## Error Handling
 
 - If video has comments disabled, note it and stop
-- If API quota is exceeded, fall through to next method
+- If API quota is exceeded, retain the failure and return an availability note
 - If `content_analyze` fails, fall back to writing raw comment stats only (count, top 3 by likes)
-- Never raise errors — always append what you can to analysis.md
+- Return errors or partial results in your owned output; the parent merges them
 - If zero comments are found, note "No comments available" and stop

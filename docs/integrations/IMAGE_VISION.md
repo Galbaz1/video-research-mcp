@@ -9,20 +9,23 @@ Every request supplies an instruction and one to four exact local sources, each
 with `file_path` and `expected_source_sha256`. Select `kind: image`, a precise
 `kind: frame` with `time_seconds`, or `kind: video` with a bounded interval, FPS
 and frame count. Image/frame crops and resizes retain inverse matrices to the
-original oriented and stored pixels. Video chat defaults to at most32 sampled
-images and8MiB aggregate raw image bytes; the10MB encoded per-item limit is
-conservative implementation policy. Sampling does not establish continuous watched
-coverage or audio understanding.
+original oriented and stored pixels. Each video source defaults to 16 sampled
+frames, with `max_frames` capped at 32 and `fps` in 0.1..10, default 1. The complete
+request admits at most 32 sampled images and 8 MiB of raw image bytes; the 10 MB
+encoded per-item limit is implementation policy. Sampling does not establish
+continuous watched coverage or audio understanding.
 
 ```json
 {
-  "sources": [
-    {"file_path": "/allowed/source-a.png", "expected_source_sha256": "<sha256>"},
-    {"file_path": "/allowed/source-b.png", "expected_source_sha256": "<sha256>"}
-  ],
-  "instruction": "Compare the visible labels and cite each source index.",
-  "backend": "gemini",
-  "dry_run": true
+  "request": {
+    "sources": [
+      {"file_path": "/allowed/source-a.png", "expected_source_sha256": "<sha256>"},
+      {"file_path": "/allowed/source-b.png", "expected_source_sha256": "<sha256>"}
+    ],
+    "instruction": "Compare the visible labels and cite each source index.",
+    "backend": "gemini",
+    "dry_run": true
+  }
 }
 ```
 
@@ -75,8 +78,10 @@ A selected local endpoint must use literal `127.0.0.1` or `::1`. Remote endpoint
 require HTTPS, entirely public DNS answers, pinned peer IP/port and the original
 Host/TLS hostname. Requests disable redirects, proxy environment and retries.
 Transport logs are suppressed only for the calling exchange. Bodies and raw
-responses have32MiB/256KiB ceilings and a120-second request deadline, followed
-by at most five seconds of independently bounded, joined HTTP cleanup. These
+responses have 32 MiB/256 KiB ceilings. One workflow deadline, configured by
+`MEDIA_ACQUIRE_TIMEOUT_SECONDS` and capped at 120 seconds, covers preparation,
+uploads, inference and verification. HTTP exchanges also have a 120-second
+deadline and at most five seconds of separate, joined cleanup. These
 controls are tested against the installed transport with mocked socket/TLS
 boundaries; live provider interoperability is unverified.
 
@@ -86,7 +91,9 @@ declare `images` and `structured_json`, plus `video` for video requests. Set
 `structured_format: json_schema` only when the selected service supports it.
 Capability declarations establish routing eligibility; they do not prove model
 vision quality, weight licensing or local inference. A local server can forward
-work to another service. No actual input-token or dollar ceiling is established
+work to another service. Local profiles require a separately operated service,
+installed model and qualified runtime; this adapter starts or installs none of
+them. No actual input-token or dollar ceiling is established
 for compatible image inputs. One chat call is bounded; numeric provider token
 usage is retained when supplied, and unknown usage remains unknown.
 

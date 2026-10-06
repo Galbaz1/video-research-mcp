@@ -158,10 +158,9 @@ The local implementation adopts immutable cursor replay, declared clock alignmen
 bounded literal monitoring and finalization; it does not dispatch foreign observer
 corrections or trigger actions from untrusted evidence text.
 
-## Root integration and validation
+## Registration and source checks
 
-Root must add the following alongside the existing imports and `app.mount(...)`
-calls in `server.py`:
+The root server already imports and mounts the subserver in `server.py`:
 
 ```python
 from .tools.live import live_server
@@ -171,11 +170,9 @@ app.mount(live_server)
 
 The seven tools are
 `live_replay`, `live_read`, `live_monitor`, `live_stop`, `live_finalize`,
-`live_capability_probe`, and `live_capture_prepare`. This lane does not edit the
-shared server, configuration, clients, dependencies, manifest or reuse ledger.
-There are no new core dependencies or configuration fields. Root should record the
-independent implementation and optional companion route in its shared reuse ledger
-and include this document in its integration/release metadata as appropriate.
+`live_capability_probe`, and `live_capture_prepare`. Replay adds no core dependency
+or configuration field. The optional capture process retains its separate runtime
+and recording prerequisites.
 
 Focused source checks are:
 
@@ -190,9 +187,9 @@ capture/OS availability. The dummy companion artifact is not recorded media.
 Companion tests use self-contained dummy source bytes and fixture-specific hash
 commitments; production pins are unchanged and the actual upstream source/license
 byte join is retained separately in the private primary receipt.
-Passing these checks establishes source behavior only. Root owns independent
-review, shared mounting, built MCP discovery and separately authorized native,
-device, permission, provider and human acceptance. The parent remains open.
+Passing these checks establishes source behavior only. Native capture, device
+permissions, provider behavior and human acceptance require separate evidence;
+registration alone establishes none of them.
 
 ## Primary provenance
 

@@ -3,9 +3,10 @@
 For an installed Claude workflow, select an explicit Python interpreter with the
 accepted core wheel installed and run `<skill directory>/scripts/lesson.py` with
 `-I -B`. Read `importlib.metadata.version("video-research-mcp")` in that interpreter
-and compare its normalized version with the installer manifest: `0.8.0rc1`
-corresponds to npm `0.8.0-rc.1`. Bind the accepted candidate wheel receipt too;
-a matching version alone does not identify same-version development bytes.
+and compare its normalized version with the selected installer manifest: for
+example, `0.8.0rc3` corresponds to npm `0.8.0-rc.3`. Bind the accepted candidate
+wheel receipt too: a matching version alone does not identify same-version
+development bytes.
 Even `--help` imports the core package. The `uv run --no-sync --locked` examples
 below require the source checkout; unpacked npm supplies workflow/helper files,
 not a Python environment.
@@ -192,14 +193,14 @@ commitments and the measured sample/quantization timeline in version2 receipts.
 The compositor selects lossless RGB H264 (`libx264rgb`, CRF 0) and lossless ALAC audio.
 It applies no gain, resampling, default narration, external music or font assets.
 Complete decoded video must be 640×360 at 12 fps, with exactly the admitted frame
-count and clocks (72/six seconds for schema1, at most360/30 seconds for schema2).
+count and clocks (72/six seconds for schema1, at most 360/30 seconds for schema2).
 One complete education-specific ffprobe inspects every video/audio frame; the
-shared footage256-frame guard remains intact. Each actual
+shared footage 256-frame guard remains intact. Each actual
 RGB frame is compared with source-derived shapes/glyphs/captions at zero tolerance.
 Decoded audio must retain every supplied PCM sample exactly. Output is bounded to
-8MiB, authored PNGs to 8 MiB in aggregate, decoded RGB to 256 MiB, decoded WAV to
+8 MiB, authored PNGs to 8 MiB in aggregate, decoded RGB to 256 MiB, decoded WAV to
 8 MiB, page to 8 MiB, source to 128 KiB, receipt to 128 KiB for schema1 or 512 KiB
-for schema2, and native stdout/stderr to 1 MiB. The full360-frame RGB population
+for schema2, and native stdout/stderr to 1 MiB. The full 360-frame RGB population
 is 248,832,000 bytes. Raw evidence extraction does not truncate at a frame cap;
 extra and missing frames/samples are terminal refusals. Container duration
 metadata may round to milliseconds; schema2 allows at most 1.001 ms deviation

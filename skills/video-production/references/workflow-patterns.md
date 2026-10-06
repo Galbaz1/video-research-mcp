@@ -29,13 +29,13 @@ Check whether the provider accepts the source video, its origin, duration, and r
 ### Frame extraction commands
 
 ```bash
-# Standard: every 100ms (10 fps) — full QA pass
+# Standard: every 100ms (10 fps) — sampled QA
 ffmpeg -i input.mp4 -vf "fps=10" /tmp/qa/frame_%04d.png
 
 # Light: every 200ms (5 fps) — quick scan
 ffmpeg -i input.mp4 -vf "fps=5" /tmp/qa/frame_%04d.png
 
-# Contact sheet: all frames in one image — fastest scan
+# Contact sheet: up to 30 samples from the first 30 seconds
 ffmpeg -i input.mp4 -vf "fps=1,scale=320:-1,tile=6x5" -frames:v 1 -q:v 3 contact_sheet.jpg
 
 # Specific timestamp
@@ -47,9 +47,9 @@ ffmpeg -sseof -0.1 -i input.mp4 -frames:v 1 -q:v 2 last_frame.jpg
 
 ### Inspection workflow
 
-1. **Contact sheet first** — one Read call to scan the entire clip
+1. **Contact sheet first** — scan the sampled interval; use further sheets or playback for the rest
 2. **Sample frames** — frames 1, 10, 20, 30 from each variant to identify best candidate
-3. **Winner deep scan** — frame-by-frame on the selected variant
+3. **Winner deep scan** — inspect original frames and playback on the selected variant; the 10 fps extraction is sampled evidence
 
 ### Visual inspection checklist
 
@@ -254,9 +254,9 @@ Record the current prompt, reference, and exact failed timestamp. Change one rel
 
 ## Frame Interpolation
 
-### RIFE (recommended)
+### Optional RIFE
 
-GPU-accelerated, superior results for AI footage:
+Use only an already selected, compatible external runtime. It is not bundled or qualified by this plugin; verify its CLI, frame input layout, model assets, and output names before adapting this example:
 
 ```bash
 rife-ncnn-vulkan -i input.mp4 -o frames/ -m rife-v4.6 -j 1:4:4

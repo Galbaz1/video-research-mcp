@@ -6,24 +6,23 @@ allowed-tools: mcp__video-research__web_search, mcp__video-research__research_de
 
 # Research: $ARGUMENTS
 
-> For web-grounded deep research with the Gemini Deep Research Agent ($2-5/task, 10-20 min),
-> use `/gr:research-deep` instead. This command uses model-driven analysis (provider billing applies).
+> For hosted web-grounded research, use `/gr:research-deep`. Both workflows use provider quota/billing; check current pricing and the authorized budget.
 
 Run a multi-phase deep research analysis with progressive memory saving and automatic evidence-network visualization.
 
 ## Phase 1: Research (run BOTH in parallel)
 
-These two calls are independent — they hit different models with separate quotas. Issue both tool calls in a single turn:
+These calls are independent. Issue both in one turn within the authorized budget; configured model routes may coincide and share quota:
 
-1. `web_search(query="$ARGUMENTS")` — uses Gemini Flash with Google Search grounding
-2. `research_deep(topic="$ARGUMENTS", scope="moderate", thinking_level="high")` — uses Gemini Pro
+1. `web_search(query="$ARGUMENTS")` — uses the configured `flash_model` with Google Search grounding
+2. `research_deep(topic="$ARGUMENTS", scope="moderate", thinking_level="high")` — uses the configured analysis model for three-phase model-only synthesis
 
-Do NOT wait for one to finish before starting the other.
+Do NOT wait for one to finish before starting the other. The synthesis does not consume the parallel search response or retrieve sources. Keep its model proposals separate from inspected search evidence.
 
 ## Phase 2: Present & Save Initial Results
 
 1. Present findings organized by evidence tier:
-   - **CONFIRMED** — Multiple independent sources agree
+   - **CONFIRMED** — Inspected independent primary evidence supports the claim; model-written tiers alone do not qualify
    - **STRONG INDICATOR** — Credible evidence with minor gaps
    - **INFERENCE** — Reasonable conclusion from indirect evidence
    - **SPECULATION** — Plausible but unverified

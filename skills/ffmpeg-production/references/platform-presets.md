@@ -2,17 +2,17 @@
 
 Platform-specific FFmpeg recipes for distributing finished video.
 
-## Platform Requirements
+## Recipe Targets
 
-| Platform | Max Resolution | Max Size | Max Duration | Audio |
-|----------|---------------|----------|--------------|-------|
-| YouTube | 8K | 256GB | 12 hours | AAC 48kHz |
-| YouTube Shorts | 1080x1920 | 256GB | 60s | AAC 48kHz |
-| Twitter/X | 1920x1200 | 512MB | 140s | AAC 44.1kHz |
-| LinkedIn | 4096x2304 | 5GB | 10 min | AAC 48kHz |
-| Instagram Feed | 1080x1350 | 4GB | 60s | AAC 48kHz |
-| Instagram Reels | 1080x1920 | 4GB | 90s | AAC 48kHz |
-| TikTok | 1080x1920 | 287MB | 10 min | AAC |
+These are export recipes, not current platform upload ceilings. Verify size, duration, aspect ratio, codec, and account-specific limits at the destination before publishing. The Instagram examples deliberately trim to 60/90 seconds; those values are recipe choices. [YouTube documents Shorts up to three minutes](https://support.google.com/youtube/answer/15424877?hl=en), rather than the former 60-second limit.
+
+| Destination | Recipe size | Audio |
+|-------------|-------------|-------|
+| YouTube | Source dimensions | AAC 48kHz |
+| Shorts, Reels, TikTok | 1080x1920 | AAC |
+| Instagram feed | 1080x1080 or 1080x1350 | AAC 48kHz |
+| X | Up to 1280x720 | AAC 44.1kHz |
+| LinkedIn | Up to 1920x1080 | AAC 48kHz |
 
 ## YouTube
 
@@ -37,7 +37,7 @@ ffmpeg -i input.mp4 \
 
 ## TikTok
 
-Vertical 9:16 required. Keep file under 287MB.
+This recipe exports vertical 9:16. Verify the selected upload route's current size and duration limits.
 
 ```bash
 # TikTok vertical
@@ -82,7 +82,7 @@ ffmpeg -i input.mp4 \
 
 ## Twitter/X
 
-Strict limits: max 140s, 512MB, 1920x1200.
+This recipe targets a compact 1280x720 export. Current upload ceilings depend on the account and upload route.
 
 ```bash
 # Twitter optimized (target <15MB for fast upload)
@@ -175,9 +175,9 @@ echo "Exported:" && ls -lh "${BASE}"-*.mp4
 | Codec | Container | Compression | Encode speed | Decode support | Best for |
 |-------|-----------|-------------|-------------|----------------|----------|
 | libx264 (H.264) | MP4 | Good | Fast | Universal | Web, streaming, social |
-| libx265 (H.265) | MP4 | ~40% better | 2-5x slower | Most modern devices | Archive, master files |
-| libsvtav1 (AV1) | MP4/WebM | ~50% better | Slow | Growing | Distribution with size limits |
-| libvpx-vp9 (VP9) | WebM | ~30% better | Moderate | All browsers | Web embed alternative |
+| libx265 (H.265) | MP4 | Measure on the source | Measure on the host | Verify target device | Compact retained copies |
+| libsvtav1 (AV1) | MP4/WebM | Measure on the source | Measure on the host | Verify target player | Distribution with size limits |
+| libvpx-vp9 (VP9) | WebM | Measure on the source | Measure on the host | Verify target browser | Web embed alternative |
 
 ## AV1 Film Grain Synthesis
 
@@ -211,26 +211,26 @@ ffmpeg -i input.mp4 -c:v hevc_videotoolbox -b:v 5M output.mp4
 
 ```bash
 # H.264 NVENC
-ffmpeg -hwaccel cuda -i input.mp4 -c:v h264_nvenc -preset p7 -crf 20 output.mp4
+ffmpeg -hwaccel cuda -i input.mp4 -c:v h264_nvenc -preset p7 -rc vbr -cq 20 -b:v 0 output.mp4
 
 # H.265 NVENC
-ffmpeg -hwaccel cuda -i input.mp4 -c:v hevc_nvenc -preset p7 -crf 20 output.mp4
+ffmpeg -hwaccel cuda -i input.mp4 -c:v hevc_nvenc -preset p7 -rc vbr -cq 20 -b:v 0 output.mp4
 ```
 
 Hardware encoders trade quality for speed. Use software encoding (libx264/libx265) for final masters; hardware for previews, drafts, and batch processing.
 
 ## Frame Interpolation (minterpolate)
 
-For clean slow-motion, use `mci:mc_mode=aobmc:me_mode=bidir`. The default `blend` mode only works for mild slowdowns.
+For motion-compensated interpolation, use `mci:mc_mode=aobmc:me_mode=bidir` and inspect the result. Interpolation changes frame rate; slow motion also requires adjusted timestamps ([filter contract](https://ffmpeg.org/ffmpeg-filters.html#minterpolate)).
 
 ```bash
-# High-quality 2x slow motion (aobmc — required for clean results)
+# Interpolate to 48 fps (duration unchanged; inspect artifacts)
 ffmpeg -i input.mp4 \
   -vf "minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1" \
   output_slow.mp4
 
-# Fast blend mode (mild slow-down only)
+# Blend adjacent frames at 48 fps (duration unchanged)
 ffmpeg -i input.mp4 -vf "minterpolate=fps=48:mi_mode=blend" output.mp4
 ```
 
-`mci:aobmc` is single-threaded. For long clips, chunk and parallel-process.
+Measure interpolation time on the selected build. If chunking is authorized, inspect every joined boundary.

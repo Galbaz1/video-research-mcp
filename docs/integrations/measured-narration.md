@@ -2,7 +2,7 @@
 
 The optional companion `explainer_narration` entrypoint produces a measured WAV
 from the current approved, source-bound script. It runs inside the companion's
-real plan transaction and reads the actual script and source commitments again
+plan transaction and reads the actual script and source commitments again
 before publishing an accepted artifact. It does not change the approved script,
 storyboard durations, or the existing external render CLI's mock, ElevenLabs,
 and Edge interfaces. Renderer consumption is a separate, unverified boundary.
@@ -145,11 +145,13 @@ packaged acceptance and independent review are distinct gates; unit success
 does not establish physical voice quality, spoken content truth, live provider
 behavior, or renderer consumption.
 
+## Recorded packaged acceptance
+
 The frozen root-owned packaged journey passed all 16 offline controls on its first
 run: 33 public calls, 36 mocked HTTP requests and no real provider or socket
 requests. Both original review findings were reproduced and repaired: cached
 receipt digest authority and self-contained companion source-archive rebuilding.
-Final verification passed 3,111 root tests and 388 companion tests; all 83 root
+In that epoch, final verification passed 3,111 root tests and 388 companion tests; all 83 root
 and 18 prior companion tool objects remained exact. Seven fresh distributions
 and an independently rebuilt companion wheel passed source/resource byte
 readback. These results accept the owned synthetic/mocked audio contracts;

@@ -6,7 +6,7 @@ allowed-tools: mcp__video-research__research_document, mcp__video-research__cont
 
 # Document Research: $ARGUMENTS
 
-Run multi-phase evidence-tiered research grounded in source documents, with progressive memory saving.
+Run multi-phase document analysis with progressive memory saving. Retain document/page pointers and check decisive claims against the originals; generated citations and tiers are proposals.
 
 ## Phase 1: Identify Documents
 
@@ -31,7 +31,7 @@ Run multi-phase evidence-tiered research grounded in source documents, with prog
 ## Phase 2: Present & Save Results
 
 1. Present findings organized by evidence tier:
-   - **CONFIRMED** — Directly stated with data in the document
+   - **CONFIRMED** — Checked against the cited original passage/data; distinguish what the document states from independently established truth
    - **STRONG INDICATOR** — Strongly implied by document evidence
    - **INFERENCE** — Reasonable conclusion from document context
    - **SPECULATION** — Extrapolation beyond what documents support
@@ -115,7 +115,7 @@ evidence_tiers:
 Offer follow-up options:
 - **Quick comparison**: Use `content_batch_analyze` with `mode="compare"` for a lighter cross-document view
 - **Re-run deeper**: Call `research_document` again with `scope="deep"` or `"comprehensive"`
-- **Verify claim**: Use `research_assess_evidence` on a specific finding
-- **Individual deep-dive**: Use `content_analyze` on a single document for targeted questions
+- **Assess a claim**: In a separately available workflow, use `research_assess_evidence` for a model proposal, then inspect primary material
+- **Individual deep-dive**: Use an available content-analysis workflow for a targeted document question
 
 Any follow-up appends timestamped sections to the existing `analysis.md`.

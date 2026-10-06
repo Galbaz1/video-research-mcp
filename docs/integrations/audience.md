@@ -1,12 +1,10 @@
 # Durable comments and transparent audience heuristics
 
-`tools/audience.py` defines the directly callable `audience_manage` tool and
-`audience_server`, mounted by the root server. Independent source review found
-no material defects. Installed bounded acceptance passed the 20-control R350
-author-error-corrected epoch and R364 independent original-clause audit. The
-original R328 result remains 19 PASS / 1 FAIL without rescoring; general audience
-accuracy and platform completeness remain unqualified. No model, provider,
-YouTube acquisition, external service or listener is started by these operations.
+`audience_manage`, mounted by the root server through `audience_server`, imports
+immutable comment samples, searches their exact text and computes fixed audience
+heuristics. It starts no models, services or listeners and performs no provider
+or YouTube acquisition calls. General audience accuracy and platform completeness
+remain unqualified.
 
 Use an existing canonical corpus SQLite index and an existing `comments` or
 `mixed` collection configured through `collections_manage`. Every request names
@@ -128,8 +126,11 @@ The implementation is independently authored. The static mapped
 lead, not a verified per-file grant. No upstream source was downloaded, copied or
 imported. Existing first-party SQLite/tool/error/tracing contracts are reused.
 
-R266 checks use local SQLite/fixtures and the directly callable public tool under
-network denial, including a fresh interpreter search. These source tests do not
-establish installed/native acceptance or verified YouTube acquisition. Root owns
-mounting `audience_server`, shared manifests/ledger/schema admission, independent
-review and the original native criterion journey.
+R266 source checks used local SQLite/fixtures and the directly callable public
+tool under network denial, including a fresh interpreter search. They did not
+establish installed/native acceptance or verified YouTube acquisition.
+Independent source review found no material defects. Later installed bounded
+acceptance passed the 20-control R350 author-error-corrected epoch and R364
+independent original-clause audit. The original R328 result remains 19 PASS /
+1 FAIL without rescoring. Those bounded results do not establish general audience
+accuracy or complete platform acquisition.

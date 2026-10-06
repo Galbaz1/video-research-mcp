@@ -1,6 +1,6 @@
 # Corpus retrieval and optional LightRAG
 
-R142/r1, vrm-0e8.6.5. Independent source implementation; installation and programme acceptance remain OPEN. Root owns mounting `tools.corpus.corpus_server`, the shared manifest/reuse ledger and Beads. Existing Weaviate retrieval remains a separate route. No shared flags or dependencies were added.
+`corpus_retrieve` is mounted in the root [server](../../src/video_research_mcp/server.py). It retrieves evidence from a local SQLite corpus without requiring Weaviate or an embedding runtime. Optional LightRAG queries use a separately operated service. Registration alone does not establish installed runtime or programme acceptance.
 
 Call `corpus_retrieve` with a discriminated `action`: `index`, `query`, or `repair`. Every request requires a local `.sqlite3` path and collection. Indexing supplies observations and an optimistic `expected_revision` (zero initially). Each observation contains video/observation IDs, speech/OCR/description type, finite exact endpoints, source revision, media digest, text, entities, and local artifact IDs/paths/digests. Metadata is supplied, not authenticated artifact bytes. Querying requires an explicit `source_revisions` map. Missing or stale sources are filtered; historical observations and vectors remain retained. Reusing a historical revision or changing an immutable observation fails.
 
@@ -10,7 +10,7 @@ All results are context-only: whole chosen chunks, linked entities and source ID
 
 An explicit `graph` request supplies an HTTP literal loopback origin with port, `local/global/hybrid/mix` mode, and nonempty high/low keyword lists. The adapter POSTs `/query/data` once with `only_need_context=true`, explicit budgets and references, no reranking, environment proxy or redirects. It caps replies at 1 MiB and checks response mode. Returned chunks must exactly match registered text and artifact paths in the current collection/revisions. Graph entities require a single returned chunk ID and are labeled `external_graph_assertion`. Unsupported composite source IDs are omitted. Graph disabled imports no upstream framework and contacts no service. Service authentication, indexing, embeddings, availability and remote costs remain operator responsibilities; protected endpoints need a separately qualified operator route. Context-only does not prove absence of remote embedding/inference calls.
 
-| Clause | Source checks | Original remaining gate |
+| Clause | R142 source checks | Remaining gate at that checkpoint |
 |---|---|---|
 | C1 | Fixed multi-video types, intervals, explicit absence | Installed fixed corpus |
 | C2 | No shared edits; disabled graph contacts nothing | Root mount and installed core/Weaviate availability |
@@ -26,4 +26,4 @@ Source ideas only; no foreign code, assets, models or runtime copied/imported:
 - [direct.retrieval contract](https://github.com/smallthinkingmachines/video-context-mcp/blob/4f39f0312401bc428f07dcd69da6b757daf3e441/src/tools/search-videos.ts), MIT. [Notice/license](https://github.com/smallthinkingmachines/video-context-mcp/blob/4f39f0312401bc428f07dcd69da6b757daf3e441/LICENSE): Copyright (c) 2026 Studio1804, Small Thinking Machines, and Ricardo Ledan.
 - [LightRAG query contract](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/api/routers/query_routes.py), integration-only, MIT. [Notice/license](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/LICENSE): Copyright (c) 2025 LightRAG Team. Query schema, endpoint, data schema and handler were read in bounded pinned fragments; receipts are in the private R142 packet. Dependencies and operated services retain separate licenses.
 
-Source mocks cannot close this feature or establish LightRAG superiority/default adoption. No installed, native, human or held-out evaluation was executed.
+The R142 source checkpoint used mocks; no installed, native, human or held-out evaluation ran in that stage. It establishes neither LightRAG superiority nor default adoption.

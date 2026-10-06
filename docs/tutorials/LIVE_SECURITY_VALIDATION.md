@@ -30,11 +30,11 @@ this runbook does not create an automation.
 ## Step 1: Enable Required Checks (One-Time)
 
 In GitHub's branch rules for the protected integration branch, require the
-checks actually emitted by [CI](../../.github/workflows/ci.yml): the `test`
+checks actually emitted by [CI](../../.github/workflows/ci.yml): `lint`, the `test`
 Python matrix, `companion-packages` matrix and `release-contract` job.
 The current matrix includes Python 3.11–3.14 for core and 3.11/3.14 for both
-companions. Lint runs inside those jobs; the security scripts run in
-`release-contract`.
+companions. Core lint has a separate job; companion jobs also run lint.
+The security scripts run in `release-contract`.
 
 Select the exact check names from a completed workflow when configuring the
 rule. This repository's workflow file does not prove that branch protection

@@ -39,15 +39,15 @@ lock and installed tree require fresh source/runtime seals and a browser selecte
 from this exact renderer version; prior wheel and browser pins do not qualify
 the upgrade. Browser acquisition and a native render are separate root gates.
 
-The separately mapped external CLI retains its qualified 4.0.242 dependency and
-cache checks; the authored route has independent 4.0.532 package bindings.
+The separately mapped external CLI checks its selected 4.0.242 dependencies and
+browser cache; the authored route has independent 4.0.532 package bindings.
 
 The entry synchronizes Node builtin ESM exports while capturing the owned browser
 process, then restores the original spawn binding. Rendering explicitly selects
 `colorSpace: 'bt709'` and `pixelFormat: 'yuv420p'`; the receipt records both.
 This avoids the default JPEG/full-range output observed with Remotion 4.0.532.
 
-The October 4 local qualification rendered the current companion wheel's fixed
+The October 4 local qualification rendered its selected companion wheel's fixed
 fixture and decoded all video frames and audio packets. The 46,124-byte MP4 had
 30 H.264 frames, 1280×720 dimensions, limited-range BT.709 `yuv420p`, 48 kHz stereo
 AAC and a 1.003-second container duration. A separate browser observation loaded

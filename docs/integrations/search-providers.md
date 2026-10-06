@@ -8,7 +8,7 @@ instructions found in snippets or webpages.
 Enable only the intended services:
 
 ```bash
-SEARCH_BACKENDS_JSON='["serper","tavily","exa","serply"]'
+export SEARCH_BACKENDS_JSON='["serper","tavily","exa","serply"]'
 # Set each enabled provider's own key through the environment/secret store:
 # SERPER_API_KEY, TAVILY_API_KEY, EXA_API_KEY, SERPLY_API_KEY
 ```

@@ -1,16 +1,10 @@
 # Source-linked movie commentary with frozen execution shards
 
-The package `video_explainer_mcp.commentary` and the server `tools/commentary.py` (`commentary_server`,
-seven tools) manage one durable commentary project per fixed source movie. They reuse the explainer's
-existing helpers:
-
-- `render_artifacts.file_revision` for bounded hashing;
-- `render_validation.codec_executables` for pinned ffprobe/ffmpeg with their byte identities;
-- `media_process.run_media_process` for bounded, owned subprocesses;
-- `evidence.atomic_write` and `narration_pcm.atomic_bytes`;
-- `make_tool_error`.
-
-They add no dependency, pipeline framework or agent spawning.
+The seven `commentary_server` tools manage one durable project per fixed source
+movie: prepare it, validate a plan, freeze and approve execution shards, then
+assemble and verify the outputs. Host execution of each shard remains a separate
+authorized step. The implementation reuses the companion's hashing, codec,
+process and atomic-write helpers; it adds no dependency or agent spawning.
 
 ## Provenance and licence
 
@@ -93,11 +87,11 @@ has status `success`. It lists exactly the frozen segment IDs, each `resolved` w
 
 A failed concat, decode or probe removes the unqualified final MP4.
 
-## Status
+## Recorded qualification
 
 - Unit tests mock only the native ffprobe/ffmpeg boundary and use caller-authored dummy bytes, not media.
 - All four acceptance criteria remain **native OPEN**: there has been no actual movie, decode, playback,
   render or host shard execution.
-- `commentary_server` is mounted, and a private installed candidate exposes all 26 companion tools.
+- `commentary_server` is mounted. The recorded private installed candidate exposed 26 companion tools.
 - The installer includes the commentary skill and support document; all 51 installer checks pass.
 - Source review, canonical manifest/reuse-ledger updates and the installed public journey remain open.

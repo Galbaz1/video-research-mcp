@@ -112,7 +112,7 @@ evaluate_traces({ experiment_id: "<id>", trace_ids: "tr-abc,tr-def",
 
 ```javascript
 // Step 1: Preview
-search_traces({ experiment_id: "<id>", filter_string: "timestamp < 1704067200000",
+search_traces({ experiment_id: "<id>", filter_string: "timestamp_ms < 1704067200000",
   max_results: 10, extract_fields: "info.trace_id,info.request_time" })
 
 // Step 2: Verify count and IDs, then delete
@@ -133,13 +133,13 @@ delete_traces({ experiment_id: "<id>", max_timestamp_millis: 1704067200000 })
 
 | Setting | Value |
 |---------|-------|
-| Tracking server | `http://127.0.0.1:5001` (default) |
+| Tracking server | Operator-selected URI; `http://127.0.0.1:5001` is a loopback example |
 | Experiment name | `video-research-mcp` |
 | Env var | `MLFLOW_TRACKING_URI` |
 | Autolog captures | All `GeminiClient` generate/generate_structured calls |
 | Trace spans | Gemini API calls with model, thinking level, tokens, cost |
 
-Traces are captured automatically when `MLFLOW_TRACKING_URI` is set. No code changes needed — `mlflow.gemini.autolog()` hooks into the google-genai SDK.
+Tracing requires the installed tracing extra and a reachable `MLFLOW_TRACKING_URI`. `GEMINI_TRACING_ENABLED=false` disables it even with a URI. When enabled, `mlflow.gemini.autolog()` captures SDK calls; inspect actual retained traces before claiming coverage.
 
 ## Troubleshooting
 
@@ -155,7 +155,7 @@ Then restart Claude Code to reconnect.
 
 1. Check `MLFLOW_TRACKING_URI` is set in the server environment
 2. Verify the experiment name: search with `max_results: 1` across experiment IDs
-3. Confirm traces are being captured: run a tool call, then search again
+3. Use a separately authorized inference call if needed, then search its retained trace; do not send user material solely for diagnostics without authority
 
 ### Wrong experiment
 

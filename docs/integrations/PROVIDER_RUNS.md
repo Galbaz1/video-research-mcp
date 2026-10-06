@@ -1,8 +1,8 @@
 # Provider readiness and bounded development runs
 
 `vrm-0e8.2.9` supplies a read-only inspector and a separately reviewable pilot
-proposal. The [matrix and plans](provider-readiness.json) cover 15 adopted
-core/companion integration groups and 12 explicitly optional planned families.
+proposal. The [matrix and plans](provider-readiness.json) cover core/companion
+integration groups and explicitly optional families.
 Settings refer to the current config fields and environment variables. They do
 not pin provider model IDs in prose.
 
@@ -29,7 +29,7 @@ or provider settings are reported without echoing their values.
 | `mocked` | The companion's selected TTS provider is mock; no real synthesis is established |
 | `installed` | Required local runtime metadata/PATH entries exist; service authentication remains unverified |
 | `configured-but-unverified` | Current configuration and local prerequisites are present; connectivity, scope, quota and actual provider behavior remain unverified |
-| `live-verified` | Requires a separately accepted exact provider-run receipt; no such receipts exist in this programme stage |
+| `live-verified` | Requires a separately accepted exact provider-run receipt; the inspector cannot establish it |
 
 The inspector consequently emits `live_verified=false` for every current row.
 It rejects a manifest that attempts to supply authority or live-verification
@@ -39,11 +39,12 @@ login. The renderer follows its current source auto-detection as well as
 block. Planned CAD/FEM, hardware, local models, parsers, Qwen/cloud generation and
 publication families stay disabled even if a related executable is installed.
 
-The current local PNG inspection/crop helper requires an independently installed
-FFmpeg for decoding/cropping; the matrix reports that executable's presence
-without executing it. Native media MCP registration remains pending in
-`vrm-0e8.2.8`/`vrm-0e8.3.2`. A local helper and installed decoder establish no
-provider-media acceptance.
+The local PNG inspection/crop helper requires independently installed FFmpeg;
+the matrix reports its presence without executing it. The matrix's original
+registration-pending note is historical: the root now mounts the media, media-read
+and image subservers. See [native media](NATIVE_MEDIA.md) and
+[image exports](IMAGE_EXPORTS.md) for the current entry points and prerequisites.
+Registration and an installed decoder establish no provider-media acceptance.
 
 The source fingerprints identify the code actually inspected. A safe local
 presence report is not an exact effective model/settings freeze. An authorized
