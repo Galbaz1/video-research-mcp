@@ -109,6 +109,23 @@ async def test_order_is_part_of_cache_identity(project, codec):
     assert (project / second["path"]).read_bytes().endswith(b"second-source|first-source")
 
 
+@pytest.mark.parametrize("cached", [False, True])
+async def test_missing_clip_refuses_even_with_cached_output(project, codec, cached):
+    """A deleted source cannot become successful assembly or cached verification."""
+    req = request(project)
+    if cached:
+        await explainer_materials_assemble("fixture", req)
+    before = (project / materials.MANIFEST).read_bytes() if cached else None
+    commands = len(codec[0])
+    (project / req.clips[0].source.path).unlink()
+    result = await explainer_materials_assemble("fixture", req)
+    assert "error" in result and len(codec[0]) == commands
+    if cached:
+        assert (project / materials.MANIFEST).read_bytes() == before
+    else:
+        assert not (project / materials.MANIFEST).exists()
+
+
 @pytest.mark.parametrize("change", [{"clip_use_allowed": False}, {"valid_until": "2000-01-01T00:00:00Z"}])
 async def test_rights_refusal_precedes_codec_work(project, codec, change):
     req = request(project)

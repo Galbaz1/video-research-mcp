@@ -177,6 +177,9 @@ def mutate(request) -> dict:
 def observation(row) -> dict:
     """Validate stored metadata and reapply the current access boundary to artifact paths."""
     value = Observation.model_validate_json(row["payload"]).model_dump(mode="json")
+    identity = (value["observation_id"], value["source_revision"], value["video_id"], value["media_digest"])
+    if identity != (row["observation"], row["revision"], row["video"], row["digest"]):
+        raise ValueError("Stored observation identity differs from the admitted row")
     for ref in value["artifact_refs"]:
         enforce_local_access_root(resolve_path(ref["path"]))
     value["source_id"] = value["video_id"] + "@" + value["source_revision"]

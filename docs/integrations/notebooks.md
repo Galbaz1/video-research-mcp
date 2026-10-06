@@ -1,0 +1,13 @@
+# Scoped local notebooks
+
+`notebook_manage` stores append-only notebook revisions in the existing canonical corpus SQLite index. Every request names the index and workspace; notebook operations also name the notebook. Workspace selection is explicit scope, not authentication. No external service, model or credential is used.
+
+Actions are `import`, `note`, `query`, `export`, and `status`. Imported documents preserve notebook ID, revision, collection scope, note IDs and exact observation citations. Identical imports are unchanged; older or divergent revisions refuse. Adding a note uses the expected notebook revision and appends the next revision atomically.
+
+Citations identify a collection, observation ID, source revision and media digest. Their exact stored payload identity must match the selected row before import, note or export succeeds. Notes express caller-authored claims; a valid citation establishes passage availability, not independent factual support.
+
+Queries use literal Unicode casefold matching over this notebook's collections and its own notes. Attributed historical observation versions remain visible. Exports include the portable document, its digest, Markdown and escaped standalone HTML. Each HTML citation links to a local supporting-passage anchor with the exact source revision, interval and payload digest. HTML has no scripts or external assets. The full response, including HTML, remains inside the existing 64 KiB bound.
+
+Bounds are 32 collections, 500 notes, 256 KiB per revision, 64 KiB per returned result and the existing 64 MiB index limit. Immutable history triggers and transactional revision checks protect stored revisions. Unsupported or unavailable sources return structured errors.
+
+R363 source tests and the R372 citation-identity repair passed. R367 found that missing identity check, and its original finding and six pre-repair failing regressions remain recorded. R373 independently accepted the identity repair at source level; the Root mount is present. R395 adds passage anchors: its preserved navigation failures precede 15 passing notebook tests and lint checks. R415 independently accepted the navigation repair. R417 completed the installed DEV metadata journey and R419 verified one actual supporting-passage click. R422 independently accepted the local notebook clauses for identity, scope, export, navigation and core usability under network denial. Document-ingestion predecessor acceptance remains open, so the notebook Bead remains open. These fixtures do not establish real-media truth, authentication, an external-service integration or release acceptance.

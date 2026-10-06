@@ -2,7 +2,10 @@
 
 `tools/audience.py` defines the directly callable `audience_manage` tool and
 `audience_server`, mounted by the root server. Independent source review found
-no material defects; installed/native acceptance remains open. No model, provider,
+no material defects. Installed bounded acceptance passed the 20-control R350
+author-error-corrected epoch and R364 independent original-clause audit. The
+original R328 result remains 19 PASS / 1 FAIL without rescoring; general audience
+accuracy and platform completeness remain unqualified. No model, provider,
 YouTube acquisition, external service or listener is started by these operations.
 
 Use an existing canonical corpus SQLite index and an existing `comments` or

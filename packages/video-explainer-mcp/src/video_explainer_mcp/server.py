@@ -9,6 +9,8 @@ from fastmcp import FastMCP
 
 from .config import get_config
 from .tools.audio import audio_server
+from .tools.audio_mix import audio_mix_server
+from .tools.variants import variants_server
 from .tools.doctor import doctor_server
 from .tools.planning import planning_server
 from .tools.pipeline import cancel_background_renders, pipeline_server
@@ -50,6 +52,8 @@ app.mount(project_server)
 app.mount(pipeline_server)
 app.mount(quality_server)
 app.mount(audio_server)
+app.mount(audio_mix_server)
+app.mount(variants_server)
 app.mount(planning_server)
 app.mount(doctor_server)
 app.mount(commentary_server)
