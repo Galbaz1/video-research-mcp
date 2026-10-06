@@ -305,6 +305,9 @@ async def test_truncated_pcm_header_cannot_claim_full_audio_interval(tmp_path):
 
 @pytest.fixture
 def controlled_pdf(tmp_path, monkeypatch):
+    monkeypatch.setattr(ingestion_pdf, "pixel_profile", lambda: {
+        "available": False, "limitation": "PDFium unavailable in this mocked Poppler fixture",
+    })
     paths = {name: tmp_path / name for name in ("pdftotext", "pdfimages")}
     for name, path in paths.items():
         path.write_bytes(("owned command identity: " + name).encode())

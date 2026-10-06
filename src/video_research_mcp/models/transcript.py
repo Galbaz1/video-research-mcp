@@ -11,13 +11,15 @@ from ..errors import ToolError
 
 
 class ASRService(StrictModel):
-    """One explicitly configured Qwen-compatible service; qualification is operator asserted."""
+    """One explicitly configured ASR wire; qualification is operator asserted."""
 
     base_url: Annotated[str, Field(min_length=1, max_length=2048)]
     local: Annotated[bool, Field(strict=True)] = False
     api_key_env: Annotated[str | None, Field(pattern=r"^[A-Z][A-Z0-9_]*API_KEY$")] = None
     declared_model: Annotated[str | None, Field(min_length=1, max_length=256)] = None
     runtime_qualified: Annotated[bool, Field(strict=True)] = False
+    protocol: Literal["qwen", "faster_whisper_v1"] = "qwen"
+    expected_descriptor_sha256: Digest | None = None
 
     @model_validator(mode="after")
     def configured_origin(self):
@@ -32,6 +34,8 @@ class ASRService(StrictModel):
             raise ValueError("Remote ASR requires HTTPS")
         if p.port is not None and not 1 <= p.port <= 65535:
             raise ValueError("ASR service port is invalid")
+        if self.protocol == "faster_whisper_v1" and (not self.local or self.expected_descriptor_sha256 is None or self.api_key_env is not None):
+            raise ValueError("Timed local ASR requires literal loopback, an exact descriptor digest and no remote credential")
         return self
 
 
@@ -173,7 +177,7 @@ class TranscriptRequest(StrictModel):
     window_seconds: Annotated[Number, Field(ge=1, le=30)] = 30
     caption_sources: Annotated[list[CaptionSource], Field(max_length=8)] = []
     caption_preference: list[Literal["uploaded", "embedded", "native", "sidecar"]] = ["uploaded", "embedded", "native", "sidecar"]
-    backend: Literal["none", "gemini", "qwen"] = "none"
+    backend: Literal["none", "gemini", "qwen", "faster_whisper"] = "none"
     fallback_backend: Literal["qwen"] | None = None
     local_only: Annotated[bool, Field(strict=True)] = False
     language: Annotated[str | None, Field(min_length=1, max_length=32)] = None

@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
 import shutil
 import wave
@@ -40,21 +41,51 @@ def inputs(tmp_path, clean_config):
             "expected_audio_sha256": digest(audio), "output_directory": str(tmp_path / "result")}
 
 
-def probe_reply():
+def probe_reply(frames=72, samples=288000):
     video = {"index": 0, "codec_type": "video", "codec_name": "h264", "width": 640, "height": 360, "time_base": "1/12000"}
     audio = {"index": 1, "codec_type": "audio", "codec_name": "alac", "sample_rate": "48000", "channels": 1, "time_base": "1/48000"}
-    rows = [{"stream_index": 0, "pts": i * 1000, "pts_time": str(i / 12)} for i in range(72)]
-    rows.extend({"stream_index": 1, "pts": i * 48000, "pts_time": str(i), "nb_samples": 48000} for i in range(6))
-    return {"format": {"duration": "6"}, "streams": [video, audio], "frames": rows}
+    rows = [{"stream_index": 0, "pts": i * 1000, "pts_time": str(i / 12)} for i in range(frames)]
+    rows.extend({"stream_index": 1, "pts": start, "pts_time": str(start / 48000),
+                 "nb_samples": min(48000, samples - start)} for start in range(0, samples, 48000))
+    return {"format": {"duration": str(math.ceil(frames / 12 * 1000) / 1000)}, "streams": [video, audio], "frames": rows}
 
 
-def framehash_reply(directory):
+def framehash_reply(directory, count=72):
     rows = ["#hash: SHA256", "#tb 0: 1/12"]
-    for i in range(72):
+    for i in range(count):
         with Image.open(directory / f"frame-{i:03}.png") as image:
             sha = hashlib.sha256(image.tobytes()).hexdigest()
         rows.append(f"0, {i}, {i}, 1, 691200, {sha}")
     return ("\n".join(rows) + "\n").encode()
+
+
+def native_reply(command):
+    """Produce bounded fake transport evidence from the actual authored files."""
+    directory = Path(command[command.index("-i") + 1]).parent
+    count = len(list(directory.glob("frame-*.png")))
+    with wave.open(str(directory / "narration.wav"), "rb") as reader:
+        samples = reader.getnframes()
+    if "libx264rgb" in command:
+        Path(command[-1]).write_bytes(b"SYNTHETIC_MP4_BOUNDARY_ONLY_NO_NATIVE_ENCODING")
+        return b"", b""
+    if Path(command[0]).name == "ffprobe":
+        return json.dumps(probe_reply(count, samples)).encode(), b""
+    if "-progress" in command:
+        return f"frame={count}\nprogress=end\n".encode(), b""
+    if "ebur128=peak=true" in command:
+        return b"", b" Summary:\n I: -20 LUFS\n LRA: 0 LU\n Peak: -12 dBFS\n"
+    if "framehash" in command:
+        return framehash_reply(directory, count), b""
+    if "rawvideo" in command:
+        with Path(command[-1]).open("xb") as writer:
+            for i in range(count):
+                with Image.open(directory / f"frame-{i:03}.png") as image:
+                    writer.write(image.tobytes())
+        return b"", b""
+    if "pcm_s16le" in command:
+        shutil.copyfile(directory / "narration.wav", command[-1])
+        return b"", b""
+    raise AssertionError(command)
 
 
 @pytest.fixture
@@ -77,8 +108,6 @@ def native(monkeypatch, tmp_path):
         state["calls"].append(command)
         assert 0 < timeout <= 120
         assert "-protocol_whitelist" in command and "file" in command
-        source = Path(command[command.index("-i") + 1])
-        directory = source.parent
         if "libx264rgb" in command:
             state["entered"].set()
             if state["block"]:
@@ -87,27 +116,7 @@ def native(monkeypatch, tmp_path):
                     await asyncio.Future()
                 finally:
                     state["joined"] = True
-            Path(command[-1]).write_bytes(b"SYNTHETIC_MP4_BOUNDARY_ONLY_NO_NATIVE_ENCODING")
-            result = b"", b""
-        elif Path(command[0]).name == "ffprobe":
-            result = json.dumps(probe_reply()).encode(), b""
-        elif "-progress" in command:
-            result = b"frame=72\nprogress=end\n", b""
-        elif "ebur128=peak=true" in command:
-            result = b"", b" Summary:\n I: -20 LUFS\n LRA: 0 LU\n Peak: -12 dBFS\n"
-        elif "framehash" in command:
-            result = framehash_reply(directory), b""
-        elif "rawvideo" in command:
-            with Path(command[-1]).open("xb") as writer:
-                for i in range(72):
-                    with Image.open(directory / f"frame-{i:03}.png") as image:
-                        writer.write(image.tobytes())
-            result = b"", b""
-        elif "pcm_s16le" in command:
-            shutil.copyfile(directory / "narration.wav", command[-1])
-            result = b"", b""
-        else:
-            raise AssertionError(command)
+        result = native_reply(command)
         if state["hook"]:
             state["hook"](command)
         return result

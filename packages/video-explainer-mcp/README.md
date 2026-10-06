@@ -2,7 +2,8 @@
 
 Create explainer projects, run pipeline steps, and render videos through MCP.
 This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
-with 18 tools for projects, editorial plans, generation, rendering, audio, and quality checks.
+with 32 tools for projects, editorial plans, generation, rendering, audio, commentary,
+narration timing, revision-bound feedback, licensed media, and quality checks.
 The upstream checkout owns provider integrations, model selection, Remotion
 code, and rendering dependencies. The pinned upstream licence grant remains
 unresolved: this package independently authors the plan contract and ships no

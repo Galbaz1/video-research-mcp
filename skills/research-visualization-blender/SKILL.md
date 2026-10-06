@@ -5,6 +5,14 @@ description: Create evidence-grounded Blender research illustrations through an 
 
 # Blender research visualization
 
+## Installed workflow resources
+
+For a Claude installer layout, use the adjacent managed support directory
+`../video-research-resources/` and its `../video-research-resources/docs/integrations/qwen-blender.md`.
+The `../video-research-resources/integrations/qwen/blender.json` records the selected component and requirements.
+Run `../video-research-resources/scripts/blender_session.py` with the explicitly selected interpreter; its adjacent helpers are installed together.
+The repository-relative references below apply when using a source checkout or unpacked npm package. Installing resources does not activate optional runtimes, providers or external source components.
+
 Translate supplied research into an inspectable local Blender illustration.
 Keep factual claims and measured geometry linked to the supplied evidence;
 label illustrative assumptions in the deliverable. Choose the useful output

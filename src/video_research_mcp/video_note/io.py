@@ -56,7 +56,7 @@ def admit(request):
     if source == output or (output_identity and source_identity[:2] == output_identity[:2]):
         raise NoteError("Tutorial destination must differ from the original input")
     if output_identity and not request.overwrite:
-        raise FileExistsError("Tutorial destination exists; explicit overwrite is required")
+        raise NoteError("Tutorial destination exists; explicit overwrite is required")
     if output_identity and output_identity[2] > MAX_PDF_BYTES:
         raise NoteError("Existing tutorial PDF exceeds the 8 MiB destination bound")
     if request.perception and checked_path(request.perception.file_path) != source:

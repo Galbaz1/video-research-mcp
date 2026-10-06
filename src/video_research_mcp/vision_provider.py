@@ -24,13 +24,13 @@ def selected_backend(request):
     profile = cfg.vision_backends.get(request.backend)
     if profile is None:
         raise ValueError("Unknown vision backend; select a configured VISION_BACKENDS_JSON profile")
-    needed = {"images", "structured_json"}
+    needed = {"images"} if profile.protocol == "ollama_plain" else {"images", "structured_json"}
     if any(s.kind == "video" for s in request.sources):
         needed.add("video")
     if not needed <= set(profile.capabilities):
         raise ValueError("Selected backend does not declare the requested vision capabilities")
     credential = os.environ.get(profile.api_key_env, "") if profile.api_key_env else ""
-    return profile.model_copy(deep=True), profile.model, credential, None
+    return profile.model_copy(deep=True), profile.model, credential, 0 if profile.protocol == "ollama_plain" else None
 
 
 def schema_and_prompt(request, operation):
@@ -55,6 +55,9 @@ def schema_and_prompt(request, operation):
 
 def backend_binding(request, profile, model, credential, temperature, schema, prompt, prepared, parts):
     """Bind all source revisions and effective settings without returning a secret."""
+    if profile is not None and profile.protocol == "ollama_plain":
+        from .vision_ollama import binding
+        return binding(request, profile, prepared, parts)
     binding = {"backend": request.backend, "protocol": "gemini" if profile is None else "compatible_chat",
                "endpoint": "https://generativelanguage.googleapis.com" if profile is None else profile.base_url,
                "model": model, "credential_sha256": hashlib.sha256(credential.encode()).hexdigest(),
@@ -65,7 +68,7 @@ def backend_binding(request, profile, model, credential, temperature, schema, pr
                "sources": [p["source"]["sha256"] for p in prepared],
                "payloads": [{key: p.get(key) for key in ("source_index", "sha256", "bytes", "kind", "actual_seconds", "original_pts", "time_base")} for p in parts],
                "source_selection": [s.model_dump(mode="json") for s in request.sources],
-               "profile": profile.model_dump(mode="json") if profile is not None else None}
+               "profile": profile.model_dump(mode="json", exclude={"protocol"}) if profile is not None else None}
     return binding, json_digest(binding)
 
 

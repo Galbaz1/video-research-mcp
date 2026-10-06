@@ -1,6 +1,6 @@
 [project]
 name = "video-research-mcp"
-version = "0.8.0-rc.1"
+version = "0.8.0-rc.3"
 description = "MCP server for video analysis, document extraction, cited research and optional knowledge storage"
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -77,6 +77,10 @@ packages = ["src/video_research_mcp"]
 "scripts/core_dispatch.py" = "core/scripts/core_dispatch.py"
 "integrations/qwen/asr.json" = "asr/integrations/qwen/asr.json"
 "docs/integrations/audio-transcription.md" = "asr/docs/integrations/audio-transcription.md"
+"scripts/local_asr_service.py" = "asr/scripts/local_asr_service.py"
+"scripts/local_asr_launch.py" = "asr/scripts/local_asr_launch.py"
+"scripts/local_asr_worker.py" = "asr/scripts/local_asr_worker.py"
+"docs/integrations/local-asr.md" = "asr/docs/integrations/local-asr.md"
 "integrations/qwen/education.json" = "education/integrations/qwen/education.json"
 "docs/integrations/qwen-education.md" = "education/docs/integrations/qwen-education.md"
 "skills/educational-explainer" = "education/skills/educational-explainer"
@@ -91,6 +95,9 @@ packages = ["src/video_research_mcp"]
 "integrations/qwen/tts.json" = "narration/integrations/qwen/tts.json"
 "docs/integrations/measured-narration.md" = "narration/docs/integrations/measured-narration.md"
 "scripts/spatial_session.py" = "spatial/scripts/spatial_session.py"
+"scripts/spatial_launch.py" = "spatial/scripts/spatial_launch.py"
+"scripts/spatial_runtime.py" = "spatial/scripts/spatial_runtime.py"
+"scripts/spatial_fonts.py" = "spatial/scripts/spatial_fonts.py"
 "scripts/spatial_inputs.py" = "spatial/scripts/spatial_inputs.py"
 "scripts/spatial_dispatch.py" = "spatial/scripts/spatial_dispatch.py"
 "scripts/spatial_motion.py" = "spatial/scripts/spatial_motion.py"

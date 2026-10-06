@@ -15,6 +15,7 @@ from .models.vision import VisionBackend
 from .models.text_provider import TextBackend
 from .models.segmentation import SegmentationService
 from .models.transcript import ASRService
+from .models.ingestion_service import DoclingService
 
 logger = logging.getLogger(__name__)
 
@@ -117,6 +118,34 @@ def _resolve_tracing_enabled(flag_value: str, tracking_uri: str) -> bool:
     return bool(tracking_uri)
 
 
+def _extended_env(local_file_access_root: str, vectorizer: str) -> dict:
+    """Read existing document/media, optional service and operator settings."""
+    return dict(
+        doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
+        media_max_input_bytes=int(os.getenv("MEDIA_MAX_INPUT_BYTES", str(512 * 1024 * 1024))),
+        media_acquire_timeout_seconds=float(os.getenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "120")),
+        media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
+        vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
+        segmentation_services=json.loads(os.getenv("SEGMENTATION_SERVICES_JSON", "{}")),
+        asr_service=json.loads(os.getenv("ASR_SERVICE_JSON", "null")),
+        docling_service=json.loads(os.getenv("DOCLING_SERVICE_JSON", "null")),
+        text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
+        search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
+        twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),
+        mhs_mode=os.getenv("MHS_MODE", "disabled"),
+        mhs_authority_file=os.getenv("MHS_AUTHORITY_FILE", ""),
+        research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
+        research_document_phase_concurrency=int(os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")),
+        local_file_access_root=local_file_access_root,
+        deep_research_agent=os.getenv("DEEP_RESEARCH_AGENT", "deep-research-preview-04-2026"),
+        weaviate_vectorizer=vectorizer,
+        weaviate_auto_migrate=os.getenv("WEAVIATE_AUTO_MIGRATE", "").lower() in ("1", "true", "yes"),
+        infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
+        infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
+        s2_api_key=os.environ.get("S2_API_KEY", os.environ.get("SEMANTIC_SCHOLAR_API_KEY", "")),
+    )
+
+
 class ServerConfig(BaseModel):
     """Runtime configuration resolved from environment."""
 
@@ -155,6 +184,7 @@ class ServerConfig(BaseModel):
     vision_backends: dict[str, VisionBackend] = Field(default_factory=dict)
     segmentation_services: dict[Annotated[str, Field(pattern=r"^[a-z][a-z0-9_-]{0,63}$")], SegmentationService] = Field(default_factory=dict, max_length=8)
     asr_service: ASRService | None = None
+    docling_service: DoclingService | None = None
     text_backends: dict[Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,64}$")], TextBackend] = Field(default_factory=dict, max_length=32)
     search_backends: list[Literal["serper", "tavily", "exa", "serply"]] = Field(default_factory=list, max_length=4)
     twelvelabs_enabled: bool = Field(default=False)
@@ -295,32 +325,7 @@ class ServerConfig(BaseModel):
             ),
             mlflow_tracking_uri=os.getenv("MLFLOW_TRACKING_URI", ""),
             mlflow_experiment_name=os.getenv("MLFLOW_EXPERIMENT_NAME", "video-research-mcp"),
-            doc_max_download_bytes=int(os.getenv("DOC_MAX_DOWNLOAD_BYTES", str(50 * 1024 * 1024))),
-            media_max_input_bytes=int(os.getenv("MEDIA_MAX_INPUT_BYTES", str(512 * 1024 * 1024))),
-            media_acquire_timeout_seconds=float(os.getenv("MEDIA_ACQUIRE_TIMEOUT_SECONDS", "120")),
-            media_cookies_file=os.getenv("MEDIA_COOKIES_FILE", ""),
-            vision_backends=json.loads(os.getenv("VISION_BACKENDS_JSON", "{}")),
-            segmentation_services=json.loads(os.getenv("SEGMENTATION_SERVICES_JSON", "{}")),
-            asr_service=json.loads(os.getenv("ASR_SERVICE_JSON", "null")),
-            text_backends=json.loads(os.getenv("TEXT_BACKENDS_JSON", "{}")),
-            search_backends=json.loads(os.getenv("SEARCH_BACKENDS_JSON", "[]")),
-            twelvelabs_enabled=os.getenv("TWELVELABS_ENABLED", "").lower() in ("1", "true", "yes"),
-            mhs_mode=os.getenv("MHS_MODE", "disabled"),
-            mhs_authority_file=os.getenv("MHS_AUTHORITY_FILE", ""),
-            research_document_max_sources=int(os.getenv("RESEARCH_DOCUMENT_MAX_SOURCES", "12")),
-            research_document_phase_concurrency=int(
-                os.getenv("RESEARCH_DOCUMENT_PHASE_CONCURRENCY", "4")
-            ),
-            local_file_access_root=local_file_access_root,
-            deep_research_agent=os.getenv("DEEP_RESEARCH_AGENT", "deep-research-preview-04-2026"),
-            weaviate_vectorizer=(
-                _vectorizer_flag
-                or ("openai" if _has_openai else "weaviate")
-            ),
-            weaviate_auto_migrate=os.getenv("WEAVIATE_AUTO_MIGRATE", "").lower() in ("1", "true", "yes"),
-            infra_mutations_enabled=os.getenv("INFRA_MUTATIONS_ENABLED", "").lower() in ("1", "true", "yes"),
-            infra_admin_token=os.getenv("INFRA_ADMIN_TOKEN", ""),
-            s2_api_key=os.environ.get("S2_API_KEY", os.environ.get("SEMANTIC_SCHOLAR_API_KEY", "")),
+            **_extended_env(local_file_access_root, _vectorizer_flag or ("openai" if _has_openai else "weaviate")),
         )
 
 

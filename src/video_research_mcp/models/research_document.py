@@ -18,6 +18,7 @@ class DocumentSource(BaseModel):
     original_path: str
     page_count: int = 0
     file_uri: str = ""
+    original_sha256: str = ""
 
 
 class DocumentPreparationIssue(BaseModel):

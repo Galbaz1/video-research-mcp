@@ -112,8 +112,9 @@ async def research_document(
                 source_type="url" if orig.startswith("http") else "file",
                 original_path=orig,
                 file_uri=uri,
+                original_sha256=cid,
             )
-            for uri, _cid, orig in prepared
+            for uri, cid, orig in prepared
         ]
         file_parts = [
             types.Part(file_data=types.FileData(file_uri=uri))

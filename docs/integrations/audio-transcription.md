@@ -42,7 +42,8 @@ including when the source video has no audio. Non-WAV extent observation and emb
 extraction require separately installed FFmpeg; there is no installer. PCM16 WAV
 extent observation reads the complete source using the existing ingestion helper.
 
-The optional backend is explicit: `none` (default), `gemini` or `qwen`. ASR defaults
+The optional backend is explicit: `none` (default), `gemini`, `qwen` or
+`faster_whisper`. ASR defaults
 to `dry_run=true`; live submission also requires `authorize_submission=true`.
 Caption parsing is local work and can complete during a dry run. A dry ASR run retains
 measured WAV windows and records a plan without selecting an account or submitting
@@ -79,6 +80,18 @@ selected WAV support separately. Cloud-to-local fallback is available only throu
 explicit `backend=gemini, fallback_backend=qwen` and an admitted local profile/options.
 Every requested/actual attempt is retained. `local_only=true` rejects cloud selection
 or a cloud-to-local plan before any SDK/HTTP action. There is no implicit fallback.
+
+The [local timed service](local-asr.md) uses `backend=faster_whisper` and an
+explicit `ASR_SERVICE_JSON` profile with `protocol=faster_whisper_v1`, `local=true`,
+`runtime_qualified=true` and a separately pinned `expected_descriptor_sha256`.
+It runs in its own qualified environment and starts only through an operator's
+explicit command. Core startup needs no model library. The service receives the
+actual selected WAV with its SHA256 and forwards Dutch/English language and
+glossary hints. The client verifies the returned descriptor/WAV identity, duration,
+settings and typed word intervals before applying the existing absolute source
+clock and export/readback path. All speakers remain unknown. Returned model and
+runtime receipts are service assertions; accuracy and alignment still require
+independent reference evidence. This backend has no cloud fallback.
 
 The component distinguishes planned, complete, partial and failed states, with empty
 and explicit abstained inference outcomes separate. A later-window failure retains

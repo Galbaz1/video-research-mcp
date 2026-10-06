@@ -30,6 +30,41 @@ def test_framehash_absence_malformed_or_incomplete_refuses(wire):
         qa.frame_hashes(wire, 2)
 
 
+def test_education_population_requires_explicit_ceiling_and_complete_hashes():
+    """Keep footage at256 frames while admitting the concrete30s education population."""
+    wire = hash_rows(list(range(360)))
+    with pytest.raises(ValueError, match="complete population"):
+        qa.frame_hashes(wire, 360)
+    assert len(qa.frame_hashes(wire, 360, max_frames=360)) == 360
+    for count in (359, 361):
+        with pytest.raises(ValueError, match="complete population"):
+            qa.frame_hashes(hash_rows(list(range(count))), 360, max_frames=360)
+    with pytest.raises(ValueError, match="complete population"):
+        qa.frame_hashes(hash_rows(list(range(361))), 361, max_frames=360)
+
+
+async def test_full_review_carries_explicit_education_frame_ceiling():
+    """Inspect all360 native hash rows through the complete technical-review caller."""
+    times = [n / 12 for n in range(360)]
+    measured = {"output": {"frame_count": 360, "decoded_frame_seconds": times,
+                           "duration_seconds": 30, "width": 640, "height": 360,
+                           "video_codec": "h264"}, "audio": None}
+    timeline = {"frames": [{"timeline_seconds": t} for t in times],
+                "duration_seconds": 30, "fps": 12, "dimensions": [640, 360]}
+
+    class Work:
+        def __init__(self):
+            self.outputs = iter([(b"frame=360\nprogress=end\n", b""),
+                                 (hash_rows(list(range(360))), b"")])
+
+        async def run(self, command):
+            return next(self.outputs)
+
+    result = await qa.full_review("unused.mp4", Work(), measured, timeline, False,
+                                  max_frames=360)
+    assert result["full_decode"] and len(result["decoded_frames"]) == 360
+
+
 @pytest.mark.parametrize("wire", [b"", b"frame=2\nprogress=continue\n", b"frame=1\nprogress=end\n",
                                   b"progress=end\n", b"frame=2\nprogress=end\nextra"])
 def test_full_decoder_progress_must_be_terminal_and_complete(wire):

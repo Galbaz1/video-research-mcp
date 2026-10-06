@@ -16,6 +16,7 @@ a different directory is specified.
   `uv run --locked pytest tests/ -q`, and `uv run --locked ruff check src/ tests/`.
 - [ ] Installer journeys pass: `node --test tests/installer.test.js`.
 - [ ] Native Codex package checks pass: `node --test tests/codex-plugin.test.js`.
+- [ ] Complete packaged Claude workflows pass: `node --test tests/installer-packaged-skills.test.js`.
 - [ ] Security smoke passes: `./scripts/run_security_smoke.sh`.
 - [ ] Offline tool security checks pass:
   `PYTHONPATH=src uv run --locked python scripts/run_live_tool_security_checks.py`.
