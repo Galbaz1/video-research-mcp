@@ -38,7 +38,7 @@ jobs:
         run: |
           if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
             sudo timeout --kill-after=15s 120s apt-get update
-            sudo timeout --kill-after=15s 120s apt-get install -y ffmpeg
+            sudo timeout --kill-after=15s 300s apt-get install -y ffmpeg
           fi
           ffmpeg -version
           ffprobe -version
@@ -90,7 +90,7 @@ jobs:
         run: |
           if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
             sudo timeout --kill-after=15s 120s apt-get update
-            sudo timeout --kill-after=15s 120s apt-get install -y ffmpeg
+            sudo timeout --kill-after=15s 300s apt-get install -y ffmpeg
           fi
           ffmpeg -version
           ffprobe -version
