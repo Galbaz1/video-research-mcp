@@ -341,16 +341,15 @@ async def test_native_caller_repair_preserves_terminal_semantics(
     )
     if fault == "changed_helper":
         helper = tmp_path / "audio_dsp_stdio.py"
-        helper.write_bytes(
-            Path(audio_dsp_stdio.__file__).read_bytes()
-            + b"\n# changed first-party helper fixture\n"
-        )
+        helper.write_bytes(Path(audio_dsp_stdio.__file__).read_bytes())
         monkeypatch.setattr(audio_dsp_backend, "__file__", str(tmp_path / "audio_dsp_backend.py"))
     original = audio_dsp_backend.run_media_process
     pids = []
 
     async def run(command, timeout):
         assert timeout <= 5
+        if fault == "changed_helper":
+            helper.write_bytes(helper.read_bytes() + b"\n# changed first-party helper fixture\n")
         try:
             return await original(command, timeout)
         except BaseException:
@@ -445,6 +444,46 @@ async def test_native_controller_success_preserves_payload(tmp_path, monkeypatch
     assert JobStore().get("diagnostic-job")["attempts"] == 1
     with pytest.raises(ProcessLookupError):
         os.kill(native["pid"], 0)
+
+
+@pytest.mark.parametrize("phase", ["before_launch", "after_collection"])
+async def test_changed_helper_cannot_complete_successful_job(tmp_path, monkeypatch, phase):
+    """GIVEN a pinned helper WHEN its bytes change THEN refuse completion without retry."""
+    request = await controller_fixture(tmp_path, monkeypatch, "success")
+    helper = tmp_path / "audio_dsp_stdio.py"
+    original = Path(audio_dsp_stdio.__file__).read_bytes()
+    changed = original + b"\n# changed first-party helper fixture\n"
+    helper.write_bytes(changed if phase == "before_launch" else original)
+    monkeypatch.setattr(audio_dsp_backend, "__file__", str(tmp_path / "audio_dsp_backend.py"))
+    calls = []
+
+    async def collect(command, timeout):
+        """Return an exact successful artifact without launching an optional runtime."""
+        calls.append(command)
+        assert command[2] == str(helper) and timeout > 0
+        path = Path(command[-1]).parent / "native-response.json"
+        body = canonical({"result": {"content": [{"type": "text", "text": "fixture"}]}})
+        path.write_bytes(body)
+        if phase == "after_collection":
+            helper.write_bytes(changed)
+        return canonical({
+            "path": str(path), "sha256": hashlib.sha256(body).hexdigest(),
+            "bytes": len(body), "process_joined": True,
+        }), b""
+
+    monkeypatch.setattr(audio_dsp_backend, "run_media_process", collect)
+    result = await audio_dsp.execute(request)
+    assert result["metadata"]["status"] == "failed"
+    assert "SHA256" in result["metadata"]["error"]
+    assert "native" not in result["metadata"]
+    assert len(calls) == (0 if phase == "before_launch" else 1)
+    job = JobStore().get(request.job_id)
+    assert job["status"] == "failed" and job["owner"] is None and job["attempts"] == 1
+    assert job["attestation"]["verified"]
+    assert list((tmp_path / "media/views").iterdir()) == []
+    assert (await audio_dsp.execute(request))["metadata"] == result["metadata"]
+    assert len(calls) == (0 if phase == "before_launch" else 1)
+    assert JobStore().get(request.job_id)["attempts"] == 1
 
 
 async def test_ferrous_phase4_is_observed_request_metadata(tmp_path, record_property):

@@ -99,11 +99,13 @@ def _promote(stage, output, receipt_body):
             target = output / source.name
             os.link(source, target, follow_symlinks=False)
             linked.append(target)
-    except BaseException:
-        for target in linked:
-            target.unlink()
-        if not any(output.iterdir()):
-            output.rmdir()
+    except BaseException as exc:
+        try:
+            _discard_promoted(linked, stage, output)
+            if not linked and not any(output.iterdir()):
+                output.rmdir()
+        except BaseException as cleanup:
+            exc.add_note(f"Lesson promotion rollback failed: {type(cleanup).__name__}: {cleanup}")
         raise
     return linked
 
@@ -120,11 +122,18 @@ def _discard_promoted(linked, stage, output):
 
 def _failed_attempt(exc, attempt, stage, output, linked):
     """Retain a bounded failure receipt after removing only invocation-created outputs."""
-    _discard_promoted(linked, stage, output)
+    try:
+        _discard_promoted(linked, stage, output)
+    except BaseException as cleanup:
+        exc.add_note(f"Lesson output cleanup failed: {type(cleanup).__name__}: {cleanup}")
     attempt.update(status="cancelled" if isinstance(exc, asyncio.CancelledError) else "failed", error_type=type(exc).__name__)
     record = output.parent / (".education-attempt-" + stage.name.removeprefix(".education-") + ".json")
-    _write(record, (json.dumps(attempt, indent=2) + "\n").encode())
-    exc.lesson_attempt_path = str(record)
+    try:
+        _write(record, (json.dumps(attempt, indent=2) + "\n").encode())
+    except BaseException as evidence:
+        exc.add_note(f"Lesson failure receipt {record} failed: {type(evidence).__name__}: {evidence}")
+    else:
+        exc.lesson_attempt_path = str(record)
 
 
 async def _build(admitted, directory, work, attempt):
@@ -160,6 +169,7 @@ async def build_lesson(spec_path, expected_spec_sha256, audio_path=None, expecte
         raise FileExistsError("Lesson output must be absent with an existing regular parent directory")
     stage = output.parent / (".education-" + uuid.uuid4().hex)
     attempt, linked, created = {"status": "running", "stages": [], "output_directory": str(output)}, [], False
+    failure = None
     try:
         async with asyncio.timeout(timeout_seconds), _LOCK:
             admitted = await _admission(spec_path, expected_spec_sha256, audio_path, expected_audio_sha256, deadline)
@@ -181,11 +191,17 @@ async def build_lesson(spec_path, expected_spec_sha256, audio_path=None, expecte
                 "video": next(r for r in receipt["files"] if r["path"] == "video.mp4"),
                 "source_domain": receipt["source_domain"], "finished_output": receipt["finished_output"], "unverified": receipt["unverified"]}
     except BaseException as exc:
+        failure = exc
         _failed_attempt(exc, attempt, stage, output, linked)
         raise
     finally:
         if created:
-            shutil.rmtree(stage)
+            try:
+                shutil.rmtree(stage)
+            except BaseException as cleanup:
+                if failure is None:
+                    raise
+                failure.add_note(f"Lesson stage cleanup failed: {type(cleanup).__name__}: {cleanup}")
 
 
 async def _check(directory, expected_sha, work, scratch):

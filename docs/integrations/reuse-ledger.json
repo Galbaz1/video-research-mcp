@@ -2578,7 +2578,7 @@
         },
         {
           "target_path": "src/video_research_mcp/education.py",
-          "target_sha256": "8e693e822c3e364cf2d307544d831fb9929d8afc87db811f4691dbffca3decd1",
+          "target_sha256": "7542b605717e15c69ee076c3346e41abb71147c881a60bc65ab6254604fe3ea8",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -2618,7 +2618,7 @@
         },
         {
           "target_path": "tests/test_education_workflow.py",
-          "target_sha256": "25c289ba9d34ffe4701221f26038e9a0b01bc3defd8cbc43c36eb11dc60d1d4c",
+          "target_sha256": "abaec8c44a0e9f839e40a71748a9841ee39339d32816713234f7c9b306a77dbf",
           "provenance": "Independently authored finite lesson source/page/local-video and source/finished-output gates. Qwen requirements reference-only, no foreign execution/code/assets imported. Own primitive glyphs/JS are MIT; supplied WAV exact measured clocks do not verify speech. Actual narration, broader12 templates/multilingual/general proof/human/comparison/release acceptance remain separate."
         },
         {
@@ -4625,7 +4625,7 @@
         },
         {
           "target_path": "src/video_research_mcp/audio_dsp_backend.py",
-          "target_sha256": "b024e8e1f138892029585c0a7fb13b6d0806cdaf6ca33b77a4dcf13e8f4a9e95",
+          "target_sha256": "907ecc6aa08bf3ab589661aac9de4e9f3cc50b9442160b84d0c446d242033ad7",
           "provenance": "Independently authored bounded DSP requirements and adapter for pinned Juzzy/Ferrous contracts; existing PCM/fingerprint/process/snapshot/JobStore helpers reused. No upstream Rust/code/crate/binary/asset copied or imported into product; optional operator runtime is separate and heuristic observations are explicit."
         },
         {
@@ -4731,7 +4731,7 @@
         },
         {
           "target_path": "tests/test_audio_dsp_diagnostics.py",
-          "target_sha256": "62e9bf53ac06e4bd010e4230b981b9657a4bebe34a9fe94c5a4eee72516dd7bd",
+          "target_sha256": "9d3c09978f814c48f4b04fd6053181d4c7f479c8780c9e9f3a6211c97680062f",
           "provenance": "Independently authored bounded DSP failure diagnostics and first-party fixtures for vrm-0e8.4.7. No upstream source, binary, crate or model copied or imported; native qualification remains separate."
         },
         {
@@ -6572,7 +6572,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_render_authored.py",
-          "target_sha256": "76c8405ee74becf64c1b299da9409d2f39e65c35c0d29f213cd49a46db520a7c",
+          "target_sha256": "a813f7aa384a6721f15d2a004fedbdcb07dbb8949c8d4870139cb90aee195c8f",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6584,7 +6584,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/fixtures/browser_capture.mjs",
-          "target_sha256": "385cb167bebdc10c992c3dbf3e3d2dc01ef1c92b270a29341f58bb286cca0061",
+          "target_sha256": "cdec6cbff9c2262f34a8317e1ad89b08a356fe7b0effdd0e69f7827484b50862",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
