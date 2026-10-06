@@ -81,6 +81,8 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "direct.audio_qa",
         "direct.live",
         "direct.grounding",
+        "direct.audience",
+        "direct.reports",
         "qwen_memory_lifecycle",
         "adj_research_eval",
         "adj_video_eval",
@@ -129,6 +131,13 @@ def test_current_source_and_lock_population_is_accounted_for(receipt_root):
         "qwen_spatial",
         "qwen_tts",
         "adj_tts_audio",
+        "direct.collections",
+        "direct.wiki",
+        "qwen_movie_commentary",
+        "adj_storyboard_sync",
+        "adj_factcheck",
+        "adj_refinement",
+        "adj_material_assets",
     }
     assert all(not u["imports"] for u in data["units"])
     transfers = [(u, receipt) for u in data["units"] for receipt in u["transfers"]]

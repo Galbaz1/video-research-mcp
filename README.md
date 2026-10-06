@@ -70,7 +70,7 @@ limit the uploaded file.
 
 ### Codex: native plugin
 
-The plugin supplies **23 skills** and the version-pinned research server. The
+The plugin supplies **24 skills** and the version-pinned research server. The
 native npm installation was checked on Codex **0.160.0**. You do not run the
 Claude installer for this route.
 

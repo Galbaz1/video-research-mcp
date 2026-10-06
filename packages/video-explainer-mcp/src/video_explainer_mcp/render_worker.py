@@ -21,6 +21,8 @@ from .render_storyboard import production_project
 from .render_storyboard_binding import production_binding
 from .render_storyboard_output import qualify_production
 from .errors import SubprocessError
+from .planning import plan_transaction
+from .storyboard_timing import require_current_timing, verify_render_timing
 
 _background_tasks: set[asyncio.Task] = set()
 _job_tasks: dict[str, tuple[str, asyncio.Task]] = {}
@@ -167,6 +169,9 @@ async def _validate_request(row: dict) -> tuple[Path, dict]:
     if contract != request["render_contract"]:
         raise ValueError("Render input/output route changed after admission")
     if renderer and renderer.get("route") == "authored_storyboard":
+        with plan_transaction(project_dir) as (_, state):
+            if state is not None:
+                require_current_timing(project_dir, state)
         await require_render_ready(request["project_id"], resolution=request["resolution"])
     else:
         await require_render_ready(request["project_id"])
@@ -218,6 +223,10 @@ async def _qualify_output(artifact: dict, request: dict) -> dict:
     if (request.get("renderer") or {}).get("route") == "authored_storyboard":
         qualification["renderer_identity"] = "authored project scene registry"
         qualification["authored_storyboard"] = await qualify_production(artifact, qualification, request)
+        with plan_transaction(Path(request["project_dir"])) as (_, state):
+            if state is not None:
+                qualification["narration_timing"] = verify_render_timing(
+                    Path(request["project_dir"]), state, request, qualification)
     elif request.get("renderer"):
         qualification["renderer_identity"] = "authored fixed-fixture entry"
         qualification["authored_fixture"] = await qualify_authored(artifact, qualification, request)

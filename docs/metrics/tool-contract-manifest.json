@@ -1,7 +1,654 @@
 {
-  "generated_at": "2026-10-05T19:49:04.120835+00:00",
-  "tool_count": 114,
+  "generated_at": "2026-10-06T00:06:05.671350+00:00",
+  "tool_count": 117,
   "tools": [
+    {
+      "name": "audience_manage",
+      "description": "Persist comments and return evidence-linked deterministic audience heuristics.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "Explicit canonical comments collection; import exact supplied sample, search immutable samples, or analyze a fixed cohort/timezone",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Admit one immutable sample with the shared optimistic collection revision.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "import",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "sample": {
+                    "additionalProperties": false,
+                    "description": "Immutable sampled comments and metadata, with no claim of platform completeness.",
+                    "properties": {
+                      "sample_id": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      "source_revision": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "youtube",
+                          "caller_fixture"
+                        ],
+                        "type": "string"
+                      },
+                      "source_url": {
+                        "maxLength": 2048,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "retrieved_at": {
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "sampling_method": {
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "sample_size": {
+                        "maximum": 500,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "population_size": {
+                        "anyOf": [
+                          {
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "default": null
+                      },
+                      "comments": {
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "An exact supplied quote; replies retain both their own and parent identities.",
+                          "properties": {
+                            "video_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "comment_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "thread_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "parent_comment_id": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 128,
+                                  "minLength": 1,
+                                  "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "reply_id": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 128,
+                                  "minLength": 1,
+                                  "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "posted_at": {
+                              "maxLength": 64,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "quoted_text": {
+                              "maxLength": 8000,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "author": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 256,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "like_count": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            }
+                          },
+                          "required": [
+                            "video_id",
+                            "comment_id",
+                            "thread_id",
+                            "posted_at",
+                            "quoted_text"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 500,
+                        "type": "array"
+                      },
+                      "videos": {
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "Caller-supplied metadata compatible with existing YouTube metadata fields.",
+                          "properties": {
+                            "video_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "channel_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "title": {
+                              "maxLength": 500,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "tags": {
+                              "items": {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "maxItems": 50,
+                              "type": "array"
+                            },
+                            "published_at": {
+                              "maxLength": 64,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "duration_seconds": {
+                              "maximum": 86400,
+                              "minimum": 0,
+                              "type": "number"
+                            },
+                            "format": {
+                              "enum": [
+                                "short",
+                                "long"
+                              ],
+                              "type": "string"
+                            },
+                            "view_count": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "like_count": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "comment_count": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "opening_text": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 1000,
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            }
+                          },
+                          "required": [
+                            "video_id",
+                            "channel_id",
+                            "title",
+                            "published_at",
+                            "duration_seconds",
+                            "format"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 100,
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "sample_id",
+                      "source_revision",
+                      "source",
+                      "source_url",
+                      "retrieved_at",
+                      "sampling_method",
+                      "sample_size",
+                      "comments"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "collection",
+                  "action",
+                  "expected_revision",
+                  "sample"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Literal casefolded search of caller-selected immutable samples with finite output.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "search",
+                    "type": "string"
+                  },
+                  "sample_ids": {
+                    "items": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "type": "string"
+                    },
+                    "maxItems": 100,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "query": {
+                    "maxLength": 256,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "offset": {
+                    "default": 0,
+                    "maximum": 5000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "default": 20,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "output_bytes": {
+                    "default": 65536,
+                    "maximum": 65536,
+                    "minimum": 2048,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "collection",
+                  "action",
+                  "sample_ids",
+                  "query"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Freeze a supplied video cohort and IANA timezone for transparent local metrics.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "collection": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "analyze",
+                    "type": "string"
+                  },
+                  "sample_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "video_ids": {
+                    "items": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "type": "string"
+                    },
+                    "maxItems": 100,
+                    "minItems": 1,
+                    "type": "array"
+                  },
+                  "timezone": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "evidence_limit": {
+                    "default": 5,
+                    "maximum": 20,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "output_bytes": {
+                    "default": 65536,
+                    "maximum": 65536,
+                    "minimum": 2048,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "workspace",
+                  "collection",
+                  "action",
+                  "sample_id",
+                  "video_ids",
+                  "timezone"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Local receipts keep provenance, evidence and sample-based limitations inspectable.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "imported",
+                  "unchanged",
+                  "found",
+                  "no_evidence",
+                  "analyzed"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "workspace": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                "title": "Workspace",
+                "type": "string"
+              },
+              "collection": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                "title": "Collection",
+                "type": "string"
+              },
+              "index_revision": {
+                "title": "Index Revision",
+                "type": "integer"
+              },
+              "sample_id": {
+                "anyOf": [
+                  {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sample Id"
+              },
+              "sample_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Sample Sha256"
+              },
+              "sampling": {
+                "additionalProperties": true,
+                "title": "Sampling",
+                "type": "object"
+              },
+              "records": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Records",
+                "type": "array"
+              },
+              "next_offset": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Next Offset"
+              },
+              "total_matches": {
+                "default": 0,
+                "title": "Total Matches",
+                "type": "integer"
+              },
+              "analysis": {
+                "additionalProperties": true,
+                "title": "Analysis",
+                "type": "object"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "model_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Model Calls",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "status",
+              "workspace",
+              "collection",
+              "index_revision"
+            ],
+            "title": "Response",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
     {
       "name": "audio_clip_export",
       "description": "Export a whole or one-sided audio selection to a unique private 16kHz mono WAV.\n\nOriginals and prior exports remain unchanged. Caller-selected output paths\nand overwriting are rejected. Use image_manifest_read for verified restart.",
@@ -4284,6 +4931,726 @@
       },
       "output_schema": {
         "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    {
+      "name": "evidence_export",
+      "description": "Export escaped, standalone evidence and retain exact provenance labels.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "additionalProperties": false,
+            "description": "Canonical corpus/wiki/collection selection or explicit fixture records; new local output directory and finite HTML/Markdown/JSON byte bounds",
+            "properties": {
+              "source": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "description": "Select existing observations through the concrete corpus retrieval route.",
+                    "properties": {
+                      "kind": {
+                        "const": "corpus",
+                        "type": "string"
+                      },
+                      "request": {
+                        "additionalProperties": false,
+                        "description": "Use existing local FTS/supplied-vector retrieval with graph contact disabled.",
+                        "properties": {
+                          "index_path": {
+                            "maxLength": 2048,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "collection": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "pattern": "^[A-Za-z0-9_.:@-]+$",
+                            "type": "string"
+                          },
+                          "action": {
+                            "const": "query",
+                            "type": "string"
+                          },
+                          "query": {
+                            "maxLength": 2000,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "source_revisions": {
+                            "maxProperties": 100,
+                            "minProperties": 1,
+                            "patternProperties": {
+                              "^[A-Za-z0-9_.:@-]+$": {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                "type": "string"
+                              }
+                            },
+                            "propertyNames": {
+                              "maxLength": 128,
+                              "minLength": 1
+                            },
+                            "type": "object"
+                          },
+                          "mode": {
+                            "default": "hybrid",
+                            "enum": [
+                              "fts",
+                              "dense",
+                              "hybrid"
+                            ],
+                            "type": "string"
+                          },
+                          "query_vector": {
+                            "anyOf": [
+                              {
+                                "items": {
+                                  "maximum": 1000000.0,
+                                  "minimum": -1000000.0,
+                                  "type": "number"
+                                },
+                                "maxItems": 1024,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          },
+                          "vector_model": {
+                            "anyOf": [
+                              {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          },
+                          "top_k": {
+                            "default": 10,
+                            "maximum": 50,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "token_budget": {
+                            "default": 2048,
+                            "maximum": 32768,
+                            "minimum": 32,
+                            "type": "integer"
+                          },
+                          "graph": {
+                            "default": null,
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "index_path",
+                          "collection",
+                          "action",
+                          "query",
+                          "source_revisions"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "request"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "Select canonical wiki pages and their digest-bound observation context.",
+                    "properties": {
+                      "kind": {
+                        "const": "wiki",
+                        "type": "string"
+                      },
+                      "request": {
+                        "additionalProperties": false,
+                        "description": "Retrieve canonical wiki context without any synthesis or model invocation.",
+                        "properties": {
+                          "index_path": {
+                            "maxLength": 2048,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "action": {
+                            "const": "ask",
+                            "type": "string"
+                          },
+                          "question": {
+                            "maxLength": 2000,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "concept_ids": {
+                            "items": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "maxItems": 10,
+                            "type": "array"
+                          },
+                          "mode": {
+                            "const": "context",
+                            "default": "context",
+                            "type": "string"
+                          },
+                          "caller_text": {
+                            "default": null,
+                            "type": "null"
+                          },
+                          "model": {
+                            "default": null,
+                            "type": "null"
+                          },
+                          "context_bytes": {
+                            "default": 32768,
+                            "maximum": 65536,
+                            "minimum": 1024,
+                            "type": "integer"
+                          },
+                          "top_k": {
+                            "default": 5,
+                            "maximum": 10,
+                            "minimum": 1,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "index_path",
+                          "action",
+                          "question"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "request"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "Select existing assets/observations through bounded canonical recall.",
+                    "properties": {
+                      "kind": {
+                        "const": "collections",
+                        "type": "string"
+                      },
+                      "request": {
+                        "additionalProperties": false,
+                        "description": "Reuse canonical collection recall and its persisted LRU bookkeeping.",
+                        "properties": {
+                          "index_path": {
+                            "maxLength": 2048,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "workspace": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "pattern": "^[A-Za-z0-9_.:@-]+$",
+                            "type": "string"
+                          },
+                          "action": {
+                            "const": "recall",
+                            "default": "recall",
+                            "type": "string"
+                          },
+                          "collection": {
+                            "anyOf": [
+                              {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "default": null
+                          },
+                          "offset": {
+                            "default": 0,
+                            "maximum": 100000,
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "limit": {
+                            "default": 20,
+                            "maximum": 50,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "output_bytes": {
+                            "default": 32768,
+                            "maximum": 65536,
+                            "minimum": 1024,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "index_path",
+                          "workspace"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "request"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "Explicitly supplied fixture records, not canonical retrieval or validation.",
+                    "properties": {
+                      "kind": {
+                        "const": "fixture",
+                        "type": "string"
+                      },
+                      "records": {
+                        "items": {
+                          "additionalProperties": false,
+                          "description": "An attributed evidence interval; unknown provenance is never invented.",
+                          "properties": {
+                            "video_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "source_revision": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "pattern": "^[A-Za-z0-9_.:@-]+$",
+                              "type": "string"
+                            },
+                            "media_digest": {
+                              "pattern": "^[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "observation_id": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 128,
+                                  "minLength": 1,
+                                  "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "start_seconds": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "end_seconds": {
+                              "anyOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "kind": {
+                              "maxLength": 64,
+                              "type": "string"
+                            },
+                            "title": {
+                              "default": "",
+                              "maxLength": 256,
+                              "type": "string"
+                            },
+                            "text": {
+                              "default": "",
+                              "maxLength": 20000,
+                              "type": "string"
+                            },
+                            "citation_id": {
+                              "maxLength": 128,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "basis": {
+                              "default": "unknown",
+                              "enum": [
+                                "observed",
+                                "inferred",
+                                "unknown"
+                              ],
+                              "type": "string"
+                            },
+                            "model": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 128,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "method": {
+                              "default": "not_recorded",
+                              "maxLength": 128,
+                              "type": "string"
+                            },
+                            "origin": {
+                              "default": "caller_fixture",
+                              "enum": [
+                                "canonical_corpus",
+                                "canonical_wiki",
+                                "canonical_collections",
+                                "caller_fixture"
+                              ],
+                              "type": "string"
+                            },
+                            "artifact_refs": {
+                              "items": {
+                                "additionalProperties": false,
+                                "description": "Caller-supplied artifact identity; bytes are not authenticated by the index.",
+                                "properties": {
+                                  "artifact_id": {
+                                    "maxLength": 128,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                                    "type": "string"
+                                  },
+                                  "kind": {
+                                    "enum": [
+                                      "frame",
+                                      "transcript",
+                                      "description"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "maxLength": 2048,
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "sha256": {
+                                    "pattern": "^[a-f0-9]{64}$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "artifact_id",
+                                  "kind",
+                                  "path",
+                                  "sha256"
+                                ],
+                                "type": "object"
+                              },
+                              "maxItems": 16,
+                              "type": "array"
+                            },
+                            "attribution": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 256,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "claim": {
+                              "anyOf": [
+                                {
+                                  "maxLength": 2000,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "stance": {
+                              "anyOf": [
+                                {
+                                  "enum": [
+                                    "reported",
+                                    "unknown",
+                                    "conflicting"
+                                  ],
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "page_revision": {
+                              "anyOf": [
+                                {
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "page_sha256": {
+                              "anyOf": [
+                                {
+                                  "pattern": "^[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "default": null
+                            },
+                            "source_state": {
+                              "default": "supplied_not_independently_verified",
+                              "maxLength": 128,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "video_id",
+                            "source_revision",
+                            "media_digest",
+                            "kind",
+                            "citation_id"
+                          ],
+                          "type": "object"
+                        },
+                        "maxItems": 50,
+                        "minItems": 1,
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "records"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "output_directory": {
+                "maxLength": 2048,
+                "minLength": 1,
+                "type": "string"
+              },
+              "title": {
+                "default": "Offline evidence",
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "formats": {
+                "items": {
+                  "enum": [
+                    "html",
+                    "markdown",
+                    "json"
+                  ],
+                  "type": "string"
+                },
+                "maxItems": 3,
+                "minItems": 1,
+                "type": "array"
+              },
+              "missing_frames": {
+                "default": "report",
+                "enum": [
+                  "report",
+                  "refuse"
+                ],
+                "type": "string"
+              },
+              "max_inline_bytes": {
+                "default": 524288,
+                "maximum": 4194304,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_export_bytes": {
+                "default": 2097152,
+                "maximum": 8388608,
+                "minimum": 1024,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "source",
+              "output_directory"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Export receipts distinguish byte integrity from semantic evidence truth.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "exported",
+                  "partial",
+                  "no_evidence"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "complete": {
+                "title": "Complete",
+                "type": "boolean"
+              },
+              "output_directory": {
+                "title": "Output Directory",
+                "type": "string"
+              },
+              "records": {
+                "title": "Records",
+                "type": "integer"
+              },
+              "artifacts": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Artifacts",
+                "type": "array"
+              },
+              "frame_issues": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Frame Issues",
+                "type": "array"
+              },
+              "selection": {
+                "additionalProperties": true,
+                "title": "Selection",
+                "type": "object"
+              },
+              "provider_calls": {
+                "const": 0,
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "evidence_verification": {
+                "default": "inline_frame_bytes_verified_only; semantic_and_caller_claims_unqualified",
+                "title": "Evidence Verification",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "complete",
+              "output_directory",
+              "records",
+              "artifacts",
+              "frame_issues",
+              "selection"
+            ],
+            "title": "Response",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
+            "type": "object"
+          }
+        ],
         "type": "object"
       }
     },
@@ -36906,6 +38273,588 @@
               "execution"
             ],
             "title": "SearchProviderError",
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "wiki_manage",
+      "description": "Preserve evidence-linked page history and expose the basis of wiki synthesis.",
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": true
+      },
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "description": "Explicit canonical concept/evidence identities; write/get/history/list/toc/search/remove_source/ask, with prose disabled by default",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Create/update one explicit concept identity and append immutable evidence links.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "write",
+                    "type": "string"
+                  },
+                  "concept_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revision": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "kind": {
+                    "enum": [
+                      "concept",
+                      "topic",
+                      "entity",
+                      "video"
+                    ],
+                    "type": "string"
+                  },
+                  "title": {
+                    "maxLength": 256,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "body": {
+                    "default": "",
+                    "maxLength": 20000,
+                    "type": "string"
+                  },
+                  "tags": {
+                    "items": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "type": "array"
+                  },
+                  "evidence": {
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Caller-selected concept claim bound to an exact existing observation version.",
+                      "properties": {
+                        "evidence_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "collection": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "video_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "observation_id": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "source_revision": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9_.:@-]+$",
+                          "type": "string"
+                        },
+                        "media_digest": {
+                          "pattern": "^[a-f0-9]{64}$",
+                          "type": "string"
+                        },
+                        "attribution": {
+                          "maxLength": 256,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "claim": {
+                          "maxLength": 2000,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "stance": {
+                          "enum": [
+                            "reported",
+                            "unknown",
+                            "conflicting"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "evidence_id",
+                        "collection",
+                        "video_id",
+                        "observation_id",
+                        "source_revision",
+                        "media_digest",
+                        "attribution",
+                        "claim",
+                        "stance"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 100,
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "action",
+                  "concept_id",
+                  "expected_revision",
+                  "kind",
+                  "title",
+                  "evidence"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Page access/history, typed listing/TOC and literal-term FTS retrieval.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "action": {
+                    "enum": [
+                      "get",
+                      "history",
+                      "list",
+                      "toc",
+                      "search"
+                    ],
+                    "type": "string"
+                  },
+                  "concept_id": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "revision": {
+                    "anyOf": [
+                      {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "concept",
+                          "topic",
+                          "entity",
+                          "video"
+                        ],
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "tag": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_.:@-]+$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "query": {
+                    "default": "",
+                    "maxLength": 2000,
+                    "type": "string"
+                  },
+                  "offset": {
+                    "default": 0,
+                    "maximum": 1000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "default": 10,
+                    "maximum": 50,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "output_bytes": {
+                    "default": 65536,
+                    "maximum": 262144,
+                    "minimum": 1024,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "action"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Remove a video's current contributions using caller-pinned affected page revisions.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "remove_source",
+                    "type": "string"
+                  },
+                  "video_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_.:@-]+$",
+                    "type": "string"
+                  },
+                  "expected_revisions": {
+                    "maxProperties": 100,
+                    "minProperties": 1,
+                    "patternProperties": {
+                      "^[A-Za-z0-9_.:@-]+$": {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer"
+                      }
+                    },
+                    "propertyNames": {
+                      "maxLength": 128,
+                      "minLength": 1
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "action",
+                  "video_id",
+                  "expected_revisions"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "Retrieve context first; prose is optional and its origin is always disclosed.",
+                "properties": {
+                  "index_path": {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "ask",
+                    "type": "string"
+                  },
+                  "question": {
+                    "maxLength": 2000,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "concept_ids": {
+                    "items": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9_.:@-]+$",
+                      "type": "string"
+                    },
+                    "maxItems": 10,
+                    "type": "array"
+                  },
+                  "mode": {
+                    "default": "context",
+                    "enum": [
+                      "context",
+                      "caller",
+                      "gemini"
+                    ],
+                    "type": "string"
+                  },
+                  "caller_text": {
+                    "anyOf": [
+                      {
+                        "maxLength": 8000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "model": {
+                    "anyOf": [
+                      {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "context_bytes": {
+                    "default": 32768,
+                    "maximum": 65536,
+                    "minimum": 1024,
+                    "type": "integer"
+                  },
+                  "top_k": {
+                    "default": 5,
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "index_path",
+                  "action",
+                  "question"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "description": "Bounded inspectable wiki results; synthesis never upgrades attributed claims.",
+            "properties": {
+              "status": {
+                "enum": [
+                  "written",
+                  "found",
+                  "no_evidence",
+                  "removed",
+                  "answered"
+                ],
+                "title": "Status",
+                "type": "string"
+              },
+              "pages": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Pages",
+                "type": "array"
+              },
+              "next_offset": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Next Offset"
+              },
+              "context": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Context",
+                "type": "array"
+              },
+              "context_sha256": {
+                "anyOf": [
+                  {
+                    "pattern": "^[a-f0-9]{64}$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Context Sha256"
+              },
+              "context_bytes": {
+                "default": 0,
+                "title": "Context Bytes",
+                "type": "integer"
+              },
+              "omitted_pages": {
+                "default": 0,
+                "title": "Omitted Pages",
+                "type": "integer"
+              },
+              "retrieval": {
+                "default": "canonical_wiki_fts_literal_terms_v1",
+                "title": "Retrieval",
+                "type": "string"
+              },
+              "synthesis": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Synthesis"
+              },
+              "synthesis_origin": {
+                "default": "none",
+                "enum": [
+                  "none",
+                  "caller_text",
+                  "model_generated"
+                ],
+                "title": "Synthesis Origin",
+                "type": "string"
+              },
+              "model_generated": {
+                "default": false,
+                "title": "Model Generated",
+                "type": "boolean"
+              },
+              "model": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Model"
+              },
+              "cited_evidence_ids": {
+                "items": {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9_.:@-]+$",
+                  "type": "string"
+                },
+                "title": "Cited Evidence Ids",
+                "type": "array"
+              },
+              "provider_calls": {
+                "default": 0,
+                "title": "Provider Calls",
+                "type": "integer"
+              },
+              "modified_pages": {
+                "default": 0,
+                "title": "Modified Pages",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "title": "Response",
+            "type": "object"
+          },
+          {
+            "description": "Structured error returned from any tool.",
+            "properties": {
+              "error": {
+                "title": "Error",
+                "type": "string"
+              },
+              "category": {
+                "title": "Category",
+                "type": "string"
+              },
+              "hint": {
+                "title": "Hint",
+                "type": "string"
+              },
+              "retryable": {
+                "default": false,
+                "title": "Retryable",
+                "type": "boolean"
+              },
+              "retry_after_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Retry After Seconds"
+              }
+            },
+            "required": [
+              "error",
+              "category",
+              "hint"
+            ],
+            "title": "ToolError",
             "type": "object"
           }
         ],

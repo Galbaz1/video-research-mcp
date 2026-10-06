@@ -57,8 +57,8 @@ Local install, update, doctor and recovery use only the selected project templat
 Legacy local checkpoints that contain a home `.env` snapshot cannot be restored
 automatically; compare their before/after hashes and restore that home file separately.
 
-The copy map contains 92 files: 17 commands, 34 skill files across 23 skills,
-7 agents and 34 shared support files. Contracts, descriptors, adjacent Python
+The copy map contains 94 files: 17 commands, 32 skill files across 24 skills,
+7 agents and 38 shared support files. Contracts, descriptors, adjacent Python
 helpers and license texts live under `skills/video-research-resources/`; this
 support directory is not another skill. All files use the existing ownership,
 hash and checkpoint recovery rules. Installing them does not install optional

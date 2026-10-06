@@ -12,6 +12,7 @@ from .planning import plan_transaction, require_approved, save_plan
 from .planning_sources import canonical, external_plan
 from .prereqs import require_generation_ready
 from .render_artifacts import project_revision
+from .storyboard_timing import require_current_timing
 
 STEPS = ("script", "narration", "scenes", "voiceover", "storyboard")
 
@@ -104,4 +105,5 @@ def freeze_render_source(project: Path) -> dict:
         if state is not None:
             require_approved(project, state)
             require_binding(project, state, "storyboard")
+            require_current_timing(project, state)
         return project_revision(project)

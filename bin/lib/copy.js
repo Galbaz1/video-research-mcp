@@ -65,6 +65,7 @@ const FILE_MAP = {
   'skills/research-visualization-freecad/SKILL.md':               'skills/research-visualization-freecad/SKILL.md',
   'skills/spatial-video-analysis/SKILL.md':                      'skills/spatial-video-analysis/SKILL.md',
   'skills/video-translation/SKILL.md':                           'skills/video-translation/SKILL.md',
+  'skills/movie-commentary/SKILL.md':                            'skills/movie-commentary/SKILL.md',
 
   // Preserve the support tree's relative docs/descriptors and adjacent helper imports.
   'LICENSE':                              'skills/video-research-resources/LICENSE',
@@ -79,6 +80,7 @@ const FILE_MAP = {
   'docs/integrations/qwen-spatial.md':       'skills/video-research-resources/docs/integrations/qwen-spatial.md',
   'docs/integrations/local-asr.md':          'skills/video-research-resources/docs/integrations/local-asr.md',
   'docs/integrations/qwen-dubbing.md':       'skills/video-research-resources/docs/integrations/qwen-dubbing.md',
+  'docs/integrations/movie-commentary.md':   'skills/video-research-resources/docs/integrations/movie-commentary.md',
   'integrations/qwen/av-events.json':        'skills/video-research-resources/integrations/qwen/av-events.json',
   'integrations/qwen/footage-edit.json':     'skills/video-research-resources/integrations/qwen/footage-edit.json',
   'integrations/qwen/education.json':        'skills/video-research-resources/integrations/qwen/education.json',
@@ -121,6 +123,7 @@ const CLEANUP_DIRS = [
   'skills/research-visualization-freecad',
   'skills/spatial-video-analysis',
   'skills/video-translation',
+  'skills/movie-commentary',
   'skills/video-research-resources/docs/integrations',
   'skills/video-research-resources/docs',
   'skills/video-research-resources/integrations/qwen',

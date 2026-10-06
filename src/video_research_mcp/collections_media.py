@@ -7,6 +7,7 @@ import uuid
 
 from .collections_store import advance, expect, protected, tick, transaction, workspace
 from .collections_owned_io import copy_owned, open_owned, verify_output
+from .collections_wiki_refs import referenced_by_wiki
 from .media_local_io import _copy_hash
 from .media_snapshot import checked_path
 
@@ -111,6 +112,8 @@ def put(request) -> dict:
 
 def referenced(db, asset) -> bool:
     """Protect every retained corpus revision and explicit artifact link across the index."""
+    if referenced_by_wiki(db, asset):
+        return True
     rows = db.execute("SELECT payload FROM observations LIMIT 5001").fetchall()
     if len(rows) > 5000:
         raise ValueError("Cleanup reference scan exceeds 5000 retained observations")
