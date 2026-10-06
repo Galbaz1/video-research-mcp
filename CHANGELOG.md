@@ -16,6 +16,21 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   edited and unmanaged resources through upgrades and recovery, and check complete
   packed-skill coverage in CI.
 
+## [0.8.0-rc.2] - 2026-10-06
+
+### Changed
+
+- Prepare a new API-first candidate with synchronized Python, npm and plugin
+  versions and an exact core MCP runtime pin.
+- Preserve the mounted Gemini video analysis, reusable sessions and batch tools;
+  YouTube metadata, comments and playlists; content analysis and extraction;
+  grounded web, document and academic research; and context caching.
+- Retain optional knowledge storage and existing provider integrations. Local
+  routes remain optional and require their own runtime qualification; unqualified
+  comparisons remain separate from release acceptance.
+- This candidate does not establish provider quality, comparative superiority or
+  completion of the broader capability programme.
+
 ## [0.8.0-rc.1] - 2026-10-02
 
 ### Added

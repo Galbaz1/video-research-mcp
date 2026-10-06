@@ -16,16 +16,19 @@ Codex project instructions equivalent to this repo's Claude setup.
 
 This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-based AGENTS discovery.
 
-## Herdr parallel execution
+## Herdr account routing — current user instruction, 2026-10-06
 
-For substantial implementation and acceptance work, actively use both Codex
-accounts and the Claude account through Herdr. Keep useful independent lanes
-running instead of serializing work in the coordinator. Check each account's live
-capacity before allocating a wave; capacity is large but not assumed unlimited.
-Give each lane an exact checkout, exclusive files, explicit child allowance,
-bounded resources, acceptance checks and a stop condition. Workers preserve
-others' edits. Collect and verify their results before integration, then close
-finished sessions. Current task authority and configuration select model and effort.
+Use only **Codex account 2** for every execution and review session in Herdr,
+through codex-herdr 2 and its isolated ~/.codex-account-2 home.
+Do not dispatch Codex account 1 or Claude until account 2 usable credits are
+verified exhausted. Unknown balance, login problems, rate limits and the calendar
+alone do not end this override. Fausto reports expiry on 7 October.
+On verified exhaustion, record its end, notify Fausto and resolve previously
+authorized project routing. There is no fixed lane ceiling; useful independent
+sessions require capacity, exclusive ownership and bounded allocations.
+Verify effective identity/home. Existing credits are authorized; no purchase,
+reset, auth copy or new API billing. Preserve unrelated sessions and close finished lanes.
+The current priority is API-first delivery; stop expanding local options.
 
 ## What This Is
 
