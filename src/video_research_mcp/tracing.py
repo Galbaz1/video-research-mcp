@@ -22,6 +22,8 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
+from .redaction import redact_text
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -96,7 +98,7 @@ def setup() -> None:
     if not _tracking_server_reachable(tracking_uri):
         logger.warning(
             "MLflow tracking server unreachable (%s) — tracing disabled",
-            tracking_uri,
+            redact_text(tracking_uri),
         )
         return
 
@@ -104,9 +106,11 @@ def setup() -> None:
         mlflow.set_tracking_uri(tracking_uri)
         mlflow.set_experiment(experiment)
         mlflow.gemini.autolog()
-        logger.info("MLflow tracing enabled (uri=%s, experiment=%s)", tracking_uri, experiment)
-    except Exception:
-        logger.warning("MLflow tracing setup failed — continuing without tracing", exc_info=True)
+        logger.info("MLflow tracing enabled (uri=%s, experiment=%s)",
+                    redact_text(tracking_uri), redact_text(experiment))
+    except Exception as exc:
+        logger.warning("MLflow tracing setup failed — continuing without tracing: %s",
+                       redact_text(str(exc)))
 
 
 def shutdown() -> None:
@@ -120,5 +124,5 @@ def shutdown() -> None:
     try:
         mlflow.flush_trace_async_logging()
         logger.info("MLflow traces flushed")
-    except Exception:
-        logger.warning("MLflow trace flush failed", exc_info=True)
+    except Exception as exc:
+        logger.warning("MLflow trace flush failed: %s", redact_text(str(exc)))

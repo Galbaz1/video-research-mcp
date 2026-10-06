@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock, patch
 
+import pytest
+
 from video_research_mcp.tools.research_document_file import (
     _prepare_all_documents_with_issues,
     _normalize_document_url,
@@ -162,3 +164,59 @@ class TestPrepareAllDocumentsWithIssues:
             )
 
             mock_rmtree.assert_called_once_with(tmp_dir, True)
+
+
+@pytest.mark.parametrize("phase", ["download", "upload"])
+async def test_diagnostic_redaction_preparation_issues(phase, tmp_path, monkeypatch, caplog):
+    """GIVEN credential source/error WHEN preparation fails THEN only diagnostics redact."""
+    import video_research_mcp.tools.research_document_file as mod
+    from video_research_mcp.models.research_document import DocumentPreparationIssue
+
+    uri = "https://url-user-canary:url-password-canary@documents.example/paper.pdf?token=url-query-canary#url-fragment-canary"
+    error = RuntimeError("backend rejected https://error-user-canary:error-password-canary@documents.example/?token=error-query-canary#error-fragment-canary password=error-field-canary")
+    directory = tmp_path / "download"
+    directory.mkdir()
+    path = directory / "paper.pdf"
+    download = AsyncMock(side_effect=error if phase == "download" else None, return_value=path)
+    prepare = AsyncMock(side_effect=error if phase == "upload" else None)
+    monkeypatch.setattr(mod, "view_directory", lambda: directory)
+    monkeypatch.setattr(mod, "download_checked", download)
+    monkeypatch.setattr(mod, "_prepare_document", prepare)
+    prepared, issues = await mod._prepare_all_documents_with_issues(None, [uri])
+    assert prepared == []
+    download.assert_awaited_once()
+    assert download.await_args.args[0] == uri
+    if phase == "upload":
+        prepare.assert_awaited_once_with(path)
+    assert len(issues) == 1
+    issue = DocumentPreparationIssue(**issues[0]).model_dump(mode="json")
+    assert set(issue) == {"source", "phase", "error_type", "error"}
+    assert issue["phase"] == phase
+    assert issue["error_type"] == "RuntimeError"
+    assert "documents.example/paper.pdf" in issue["source"]
+    assert "backend rejected" in issue["error"]
+    assert "documents.example" in caplog.text
+    for canary in ("url-user-canary", "url-password-canary", "url-query-canary", "url-fragment-canary", "error-user-canary", "error-password-canary", "error-query-canary", "error-fragment-canary", "error-field-canary"):
+        assert canary not in repr(issue)
+        assert canary not in caplog.text
+    assert not directory.exists()
+
+
+async def test_diagnostic_redaction_preserves_prepared_source(tmp_path, monkeypatch):
+    """GIVEN successful preparation THEN original URL and content identity remain exact."""
+    import video_research_mcp.tools.research_document_file as mod
+
+    uri = "https://documents.example/paper.pdf?token=source-identity-canary#source-fragment-canary"
+    directory = tmp_path / "download"
+    directory.mkdir()
+    path = directory / "paper.pdf"
+    download = AsyncMock(return_value=path)
+    prepare = AsyncMock(return_value=("fixture://file", "fixture-content-hash"))
+    monkeypatch.setattr(mod, "view_directory", lambda: directory)
+    monkeypatch.setattr(mod, "download_checked", download)
+    monkeypatch.setattr(mod, "_prepare_document", prepare)
+    prepared, issues = await mod._prepare_all_documents_with_issues(None, [uri])
+    assert prepared == [("fixture://file", "fixture-content-hash", uri)]
+    assert issues == []
+    assert download.await_args.args[0] == uri
+    prepare.assert_awaited_once_with(path)

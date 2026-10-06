@@ -12,6 +12,7 @@ from typing import Awaitable, TypeVar
 from ..config import get_config
 from ..local_path_policy import enforce_local_access_root, resolve_path
 from ..media_snapshot import view_directory
+from ..redaction import redact_text
 from ..url_policy import download_checked
 
 from .video_file import _file_content_hash, _upload_large_file
@@ -122,7 +123,7 @@ async def _prepare_all_documents_with_issues(
     Returns:
         Tuple of:
         - prepared documents as (file_uri, content_id, original_path_or_url)
-        - preparation issues with source, phase, error_type, and error message
+        - preparation issues with redacted source/error diagnostics, phase and error_type
     """
     prepared: list[tuple[str, str, str]] = []
     issues: list[dict[str, str]] = []
@@ -139,13 +140,14 @@ async def _prepare_all_documents_with_issues(
             results = await _gather_bounded(download_tasks, phase_concurrency)
             for url, result in zip(urls, results):
                 if isinstance(result, Exception):
-                    logger.warning("Failed to download %s (%s): %s", url, type(result).__name__, result)
+                    logger.warning("Failed to download %s (%s): %s",
+                                   redact_text(url), type(result).__name__, redact_text(str(result)))
                     issues.append(
                         {
-                            "source": url,
+                            "source": redact_text(url),
                             "phase": "download",
                             "error_type": type(result).__name__,
-                            "error": str(result),
+                            "error": redact_text(str(result)),
                         }
                     )
                 else:
@@ -168,13 +170,13 @@ async def _prepare_all_documents_with_issues(
         results = await _gather_bounded(upload_tasks, phase_concurrency)
         for (_path, original), result in zip(all_paths, results):
             if isinstance(result, Exception):
-                logger.warning("Failed to upload document: %s", result)
+                logger.warning("Failed to upload document: %s", redact_text(str(result)))
                 issues.append(
                     {
-                        "source": original,
+                        "source": redact_text(original),
                         "phase": "upload",
                         "error_type": type(result).__name__,
-                        "error": str(result),
+                        "error": redact_text(str(result)),
                     }
                 )
             else:

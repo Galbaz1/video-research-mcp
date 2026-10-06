@@ -2,10 +2,27 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+import tempfile
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_configure(config):
+    """Isolate configuration before collection and session-level tool imports."""
+    from video_research_mcp import dotenv
+
+    scratch = tempfile.TemporaryDirectory(prefix="vrm-test-config-")
+    config.add_cleanup(scratch.cleanup)
+    bootstrap = pytest.MonkeyPatch()
+    bootstrap.setattr(dotenv, "DEFAULT_ENV_PATH", Path(scratch.name) / "nonexistent.env")
+    bootstrap.delenv("VIDEO_RESEARCH_ENV_FILE", raising=False)
+    bootstrap.setenv("GEMINI_API_KEY", "test-key-not-real")
+    bootstrap.setenv("GEMINI_TRACING_ENABLED", "false")
+    config.add_cleanup(bootstrap.undo)
 
 
 def unwrap_tool(tool: Any) -> Any:

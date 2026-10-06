@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "bead_id": "vrm-0e8.2.6",
-  "observed_at": "2026-10-06T18:50:47.780339+00:00",
-  "source_head": "533572ea770d03da3942e0122096b813e0ba1907",
+  "observed_at": "2026-10-06T21:59:42.052090+00:00",
+  "source_head": "7b43d5a1f4ca3f21a631f58a3c69085c0661ca9c",
   "inventory": "docs/research/2026-09-30-capability-transfer.json",
   "scope": "Pinned source-unit routes, component rights and exact dependency/archive clearance. Accepted evaluation, security, evidence/native contract and offline onboarding requirements have exact own-source implementation receipts; no external programme code, asset, weight or optional runtime copied/imported.",
   "components": [
@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "4dbeeb3475b9f13a09f1eee8b0b6b3d775154616f6743561a01d729a5b7c6f30",
+          "target_sha256": "1414e05711da4f022efe9465b1898275d209c05362ef0fd75da429525c9170d7",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -1218,7 +1218,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0b189727c921f8a59d2e5cb7c2f5e3bcfbe638d79496e0548519ba84f55cd1c8",
+          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -1868,7 +1868,7 @@
         },
         {
           "target_path": "src/video_research_mcp/video_memory/av_build.py",
-          "target_sha256": "9c15627c1d6cdf2ceeaed50dddda3c070e5a3fd6f4c85143b8688c4a431db7ec",
+          "target_sha256": "ff570c7b345d256926692722f42aae7e6b7cee961fd1c42b406658c07ba34657",
           "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN."
         },
         {
@@ -1888,7 +1888,7 @@
         },
         {
           "target_path": "tests/test_video_memory_av.py",
-          "target_sha256": "49ab91c63efd05d1c51348a4ed0265e796f92db01c0ba58df923461a2517f310",
+          "target_sha256": "075fb5a1eb05346f59d7560a60a65b5343a8ad99f54ca7411e36a7c49a2efc26",
           "provenance": "Independently authored structured AV memory and evidence retrieval with persistent revisions. R127 final source review no material findings; 31 mock-boundary tests. No foreign source or runtime copied. Actual installed four-criterion AV journey remains OPEN. R152 actual installed addressee alignment exposed C4 defect. R156 independently authored conservative same-person self-introduction guard and targeted regressions: first five failures retained, repaired AV family39 pass. Repair independent review/installed supplement pending; prior native epoch unchanged."
         },
         {
@@ -3074,7 +3074,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "6561799e5f36208b711fba6809f8b8710c1d010ec160fcae145a6106e43f17dd",
+          "target_sha256": "def935cc01d7539e86d2ebe08452a1c538904bdae20c5c656970eca4e281311c",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -4492,7 +4492,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "4dbeeb3475b9f13a09f1eee8b0b6b3d775154616f6743561a01d729a5b7c6f30",
+          "target_sha256": "1414e05711da4f022efe9465b1898275d209c05362ef0fd75da429525c9170d7",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4583,7 +4583,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "b5c880828e532da473b78a3792a607c51534471c401cfe6269ed9ffb07ec4c1d",
+          "target_sha256": "14332dc979cfbd9d86234d3e51f5fc6c50c9971a71b48f6f04d03dac74c85509",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -4882,7 +4882,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "6561799e5f36208b711fba6809f8b8710c1d010ec160fcae145a6106e43f17dd",
+          "target_sha256": "def935cc01d7539e86d2ebe08452a1c538904bdae20c5c656970eca4e281311c",
           "provenance": "Independently authored requirements implementation; no upstream code, assets, weights or runtime copied/imported."
         },
         {
@@ -4902,7 +4902,7 @@
         },
         {
           "target_path": "src/video_research_mcp/image_ops.py",
-          "target_sha256": "40d97d1492f8ba88222b693fe117710f29f9067d91faf2937464703e1988aebf",
+          "target_sha256": "b7d05b5d185e4cdc4ddc6a627d4eb0fe940b297407bebbbf12a5d47c5ff6bd50",
           "provenance": "Independently authored PNG header/pixel/crop limits with optional operator-installed FFmpeg; no runtime or upstream code copied/imported/bundled."
         }
       ]
@@ -5265,7 +5265,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "6561799e5f36208b711fba6809f8b8710c1d010ec160fcae145a6106e43f17dd",
+          "target_sha256": "def935cc01d7539e86d2ebe08452a1c538904bdae20c5c656970eca4e281311c",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -5285,7 +5285,7 @@
         },
         {
           "target_path": "tests/test_url_policy.py",
-          "target_sha256": "0605029cc676ea4b3d8035f92df75547244c072688cd5651243ecc1cb3eba951",
+          "target_sha256": "fa201433982f560fe6debc4fe86cc58131d05b35e18b533b12ead4ee758b2f6f",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -5503,7 +5503,7 @@
         },
         {
           "target_path": "src/video_research_mcp/weaviate_client.py",
-          "target_sha256": "2b2f4af9776f88c75dc3b7e5415fbee37662ba3645082e4f9ec0ffca397e4dc1",
+          "target_sha256": "dc7838ccfa0c519ffb6d9d1a299ed635c4855386c7e9498c0b755771b75e3e85",
           "provenance": "Independently authored selected HTTP search/extraction/text contracts and reuse of existing own MIT embeddings/Cohere rerank. No foreign code, SDK framework, assets, weights or runtime copied/imported."
         },
         {
@@ -6069,13 +6069,13 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "2cf3c4b786a0073f83665488bddb6547bc648cdac80a330d9da158f6acc87329",
+          "target_sha256": "51ba8c0a2cbf437597339606ab49beb8c9c4c57331291da9d8b312fd591dc889",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
           "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0b189727c921f8a59d2e5cb7c2f5e3bcfbe638d79496e0548519ba84f55cd1c8",
+          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
         },
         {
@@ -6302,7 +6302,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "740b14f8b1378cefdb7a50c982446b8370f5295336f6461d8c277222a966998d",
+          "target_sha256": "c9906f5b1d1c97d17acc666e5063680493a24da9a2e18af7ae3a5b6e059111d1",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -6434,13 +6434,13 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "2cf3c4b786a0073f83665488bddb6547bc648cdac80a330d9da158f6acc87329",
+          "target_sha256": "51ba8c0a2cbf437597339606ab49beb8c9c4c57331291da9d8b312fd591dc889",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "740b14f8b1378cefdb7a50c982446b8370f5295336f6461d8c277222a966998d",
+          "target_sha256": "c9906f5b1d1c97d17acc666e5063680493a24da9a2e18af7ae3a5b6e059111d1",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6500,7 +6500,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "0b189727c921f8a59d2e5cb7c2f5e3bcfbe638d79496e0548519ba84f55cd1c8",
+          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -7447,7 +7447,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/media.py",
-          "target_sha256": "756840c08621a4a92d40eb2c3e90eed9494917ca9d91a108197dadf66b779d19",
+          "target_sha256": "481663392057ebed1bcaeba41517b0335a718d95afce82392d50cb9d8aab0d5a",
           "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -7602,7 +7602,7 @@
         },
         {
           "target_path": "src/video_research_mcp/url_policy.py",
-          "target_sha256": "6561799e5f36208b711fba6809f8b8710c1d010ec160fcae145a6106e43f17dd",
+          "target_sha256": "def935cc01d7539e86d2ebe08452a1c538904bdae20c5c656970eca4e281311c",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -7622,7 +7622,7 @@
         },
         {
           "target_path": "tests/test_url_policy.py",
-          "target_sha256": "0605029cc676ea4b3d8035f92df75547244c072688cd5651243ecc1cb3eba951",
+          "target_sha256": "fa201433982f560fe6debc4fe86cc58131d05b35e18b533b12ead4ee758b2f6f",
           "provenance": "Independently authored bounded research/source/curation/recovery and original-claim handoff requirements. Existing own MIT source retained; no upstream code, runtime, assets or weights copied/imported."
         },
         {
@@ -7848,7 +7848,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "a800b41c5b2b2d5534b38579bcd4430851f2f0caf35fc5a34bcd4934b9d43759",
+      "sha256": "bb098496f9c1afc374d4e115455fc503da660f9fae9dbe708565544b596323c8",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8326,7 +8326,7 @@
     },
     {
       "path": "packages/video-agent-mcp/uv.lock",
-      "sha256": "482487b4700b4dfed817937f1fb1fa2b7cdb39eae5b4482a498fe4ca04c45f71",
+      "sha256": "1b6265a06ccdca5e4f342faf151b7de83358070f6a73aeab0218f82927d5bd0a",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8660,7 +8660,7 @@
     },
     {
       "path": "packages/video-explainer-mcp/uv.lock",
-      "sha256": "a14a9d9d658480952fc2e153b438151841c625f1bc2bc78454c25fa9839880ad",
+      "sha256": "81308ea60226665aba87352086293cb4dfd6e3edc4094f7cef4f50c00ff4867d",
       "registry_packages": [
         {
           "name": "aiofile",

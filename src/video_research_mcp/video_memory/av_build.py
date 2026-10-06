@@ -190,12 +190,14 @@ def suggest_names(records: list[MemoryRecord]) -> list[Suggestion]:
 
 def route_calls(route: AVRoute, duration: float) -> list[dict]:
     """Planned media_caption_events calls: up to four 30 s windows per call and role."""
+    end, step = math.ceil(duration), int(ROUTE_SPAN_SECONDS)
+    count = ((end + step - 1) // step) * len(route.roles)
+    if count > route.max_calls:
+        raise ValueError(f"AV route needs {count} calls; av_route.max_calls is {route.max_calls}")
     edges = [(float(s), min(float(s) + ROUTE_SPAN_SECONDS, duration))
-             for s in range(0, math.ceil(duration), int(ROUTE_SPAN_SECONDS))]
+             for s in range(0, end, step)]
     calls = [{"operation": "media_caption_events", "role": role, "start_seconds": a,
               "end_seconds": b, "window_seconds": WINDOW_SECONDS} for a, b in edges for role in route.roles]
-    if len(calls) > route.max_calls:
-        raise ValueError(f"AV route needs {len(calls)} calls; av_route.max_calls is {route.max_calls}")
     return calls
 
 

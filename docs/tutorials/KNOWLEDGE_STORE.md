@@ -377,7 +377,7 @@ that server. The example below pins the version declared by this source checkout
 For a new Claude Code user-scope registration, use:
 
 ```bash
-claude mcp add --scope user video-research -- uvx 'video-research-mcp[agents]==0.8.0rc4'
+claude mcp add --scope user video-research -- uvx 'video-research-mcp[agents]==0.8.0rc5'
 ```
 
 If the server is already registered, edit its existing launch arguments instead
@@ -386,7 +386,7 @@ of adding a second entry. The research launch should contain:
 ```json
 {
   "command": "uvx",
-  "args": ["video-research-mcp[agents]==0.8.0rc4"]
+  "args": ["video-research-mcp[agents]==0.8.0rc5"]
 }
 ```
 

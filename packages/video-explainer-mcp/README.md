@@ -11,8 +11,9 @@ unresolved: this package independently authors the plan contract and ships no
 upstream code or runtime. Installation and rights for a separate CLI remain
 operator responsibilities.
 
-Repository links below target the immutable `v0.8.0-rc.4` source tag.
-This companion's published PyPI version is `0.2.2rc2`. For the exact source and
+Repository links below target the immutable `v0.8.0-rc.5` source tag.
+This companion's release version is `0.2.2rc3`; check PyPI availability before
+installation. For the exact source and
 bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-explainer-mcp/#files).
@@ -42,7 +43,7 @@ this entry to your client's `mcpServers` configuration:
 {
   "video-explainer": {
     "command": "uvx",
-    "args": ["video-explainer-mcp==0.2.2rc2"]
+    "args": ["video-explainer-mcp==0.2.2rc3"]
   }
 }
 ```
@@ -179,5 +180,5 @@ uv build
 Tests use temporary projects and mocked CLI processes; no paid provider calls
 are made. The lockfile records the development environment; `pyproject.toml`
 defines supported dependency ranges. See the root
-[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md) and
-[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PUBLISHING.md) for repository and release checks.
+[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CONTRIBUTING.md) and
+[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/docs/PUBLISHING.md) for repository and release checks.
