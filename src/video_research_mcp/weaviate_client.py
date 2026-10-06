@@ -90,23 +90,15 @@ def _timeout_config():
 
     return AdditionalConfig(timeout=Timeout(init=30, query=60, insert=120))
 
-# Provider API key env vars → Weaviate header names (for third-party vectorizers)
-_PROVIDER_HEADER_MAP: dict[str, str] = {
-    "OPENAI_API_KEY": "X-OpenAI-Api-Key",
-    "COHERE_API_KEY": "X-Cohere-Api-Key",
-    "HUGGINGFACE_API_KEY": "X-HuggingFace-Api-Key",
-    "JINAAI_API_KEY": "X-JinaAI-Api-Key",
-    "VOYAGEAI_API_KEY": "X-VoyageAI-Api-Key",
-}
-
-
 def _collect_provider_headers() -> dict[str, str]:
-    """Scan env for third-party vectorizer API keys and return as Weaviate headers."""
-    return {
-        header: os.environ[env_var]
-        for env_var, header in _PROVIDER_HEADER_MAP.items()
-        if os.environ.get(env_var)
-    }
+    """Return credentials required by the configured vectorizer and reranker."""
+    cfg = get_config()
+    headers = {}
+    if cfg.weaviate_vectorizer == "openai" and os.environ.get("OPENAI_API_KEY"):
+        headers["X-OpenAI-Api-Key"] = os.environ["OPENAI_API_KEY"]
+    if cfg.reranker_enabled and os.environ.get("COHERE_API_KEY"):
+        headers["X-Cohere-Api-Key"] = os.environ["COHERE_API_KEY"]
+    return headers
 
 
 def _connect(url: str, api_key: str) -> weaviate.WeaviateClient:

@@ -377,7 +377,7 @@ def _make_yt_metadata(
 class TestYoutubeMetadataPipeline:
     @pytest.mark.asyncio
     async def test_metadata_pipeline_enriches_analysis(self, mock_gemini_client):
-        """Metadata available → context string returned with preamble + optimized focus."""
+        """Metadata available → bounded JSON data includes metadata and optimized focus."""
         mock_gemini_client["generate"].return_value = "Focus on CLI commands and setup steps"
 
         with patch(
@@ -435,7 +435,7 @@ class TestYoutubeMetadataPipeline:
 
     @pytest.mark.asyncio
     async def test_flash_failure_uses_preamble_only(self, mock_gemini_client):
-        """Flash optimizer fails → preamble still returned without optimizer text."""
+        """Flash optimizer fails → metadata JSON remains without optimizer text."""
         mock_gemini_client["generate"].side_effect = Exception("Flash unavailable")
 
         with patch(

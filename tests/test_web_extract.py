@@ -188,7 +188,7 @@ async def test_actual_redirect_allowlist_checked_before_next_dns_and_http(monkey
 
     monkeypatch.setattr(url_policy, "_resolve_dns", resolve)
     monkeypatch.setattr(url_policy.httpx, "AsyncClient", lambda **kwargs: original_client(
-        **kwargs, transport=httpx.MockTransport(handler)))
+        **{**kwargs, "transport": httpx.MockTransport(handler)}))
     result = await web_extract(request(allowed_domains=["source.example", "next.example"] if allowed else []))
     assert dns == (["source.example", "next.example"] if allowed else ["source.example"])
     assert len(wire) == (2 if allowed else 1)

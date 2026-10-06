@@ -289,7 +289,7 @@ async def test_denied_redirect_hostname_is_checked_before_dns_and_http(tmp_path,
 
     monkeypatch.setattr(url_policy, "_resolve_dns", resolve)
     monkeypatch.setattr(url_policy.httpx, "AsyncClient", lambda **kwargs: client(
-        **kwargs, transport=httpx.MockTransport(transport)))
+        **{**kwargs, "transport": httpx.MockTransport(transport)}))
     result = await owner.prepare_sources(retrieval(), directory(tmp_path))
     assert dns == ["public.example"] and wire == ["https://public.example/source"]
     assert len(result["rejections"]) == 1

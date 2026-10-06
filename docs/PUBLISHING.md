@@ -72,6 +72,9 @@ uv run --locked python scripts/smoke_built_mcp.py "$release_dir"/video_research_
 ```
 
 Expect one wheel and one sdist per Python package, plus one npm `.tgz`.
+The reuse-ledger archive checker currently holds decompressed member bodies in
+memory. Use it only on reviewed archives generated for this release; resource
+bounds for arbitrary archives remain unqualified.
 The core wheel smoke compares every discovered tool contract with the candidate
 source, reads configuration with a dummy key, and verifies a local image-crop
 journey. It sends no provider requests and requires FFmpeg. Record archive hashes with the source

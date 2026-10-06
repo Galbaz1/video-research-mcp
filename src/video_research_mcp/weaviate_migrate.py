@@ -214,31 +214,30 @@ def _restore_references(col: Any, col_def: CollectionDef, objects: list[dict]) -
 
 
 def migrate_collection(client: weaviate.WeaviateClient, col_def: CollectionDef) -> None:
-    """Export, delete, recreate, re-insert with correct vector config.
+    """Recreate an empty collection; refuse populated destructive migration.
 
-    Cross-references (schema and edges) are preserved: exported before
-    deletion and restored after re-insertion. Reference schema is also
-    added by _ensure_references() in ensure_collections() as a safety net.
+    An in-memory export cannot recover from process loss after deletion.
 
     Args:
         client: Connected Weaviate client.
         col_def: Collection definition with correct vectorization flags.
+
+    Raises:
+        RuntimeError: If the collection contains objects without durable recovery.
     """
+    from weaviate.classes.config import Configure
+
     from .weaviate_client import _to_property
 
     name = col_def.name
     col = client.collections.get(name)
-
-    # Phase 1: export objects and references
-    objects = _export_objects(col, col_def)
-    logger.info("Exported %d objects from %s", len(objects), name)
-
-    # Phase 2: delete and recreate
-    client.collections.delete(name)
+    if next(iter(col.iterator()), None) is not None:
+        raise RuntimeError(
+            f"Refusing automatic migration of populated collection {name!r}: "
+            "no durable recovery export is available"
+        )
 
     cfg = get_config()
-    from weaviate.classes.config import Configure
-
     create_kwargs: dict = {
         "name": name,
         "description": col_def.description,
@@ -247,30 +246,9 @@ def migrate_collection(client: weaviate.WeaviateClient, col_def: CollectionDef) 
     }
     if cfg.reranker_enabled:
         create_kwargs["reranker_config"] = Configure.Reranker.cohere()
+    client.collections.delete(name)
     client.collections.create(**create_kwargs)
-    logger.info("Recreated %s with updated vector config", name)
-
-    # Phase 3: re-insert objects
-    if not objects:
-        return
-
-    col = client.collections.get(name)
-    with col.batch.fixed_size(batch_size=100) as batch:
-        for obj in objects:
-            batch.add_object(properties=obj["properties"], uuid=obj["uuid"])
-
-    if col.batch.failed_objects:
-        failed = len(col.batch.failed_objects)
-        logger.warning(
-            "%d batch failures in %s migration", failed, name,
-        )
-        for err in col.batch.failed_objects[:3]:
-            logger.warning("  %s", getattr(err, "message", str(err)))
-    else:
-        logger.info("Re-inserted %d objects into %s", len(objects), name)
-
-    # Phase 4: restore reference schema and edges
-    _restore_references(col, col_def, objects)
+    logger.info("Recreated empty %s with updated vector config", name)
 
 
 def migrate_all_if_needed(
@@ -293,6 +271,8 @@ def migrate_all_if_needed(
             col = client.collections.get(col_def.name)
             col_config = col.config.get()
         except Exception as exc:
+            if auto_migrate:
+                raise
             logger.debug("Cannot check %s vector config: %s", col_def.name, exc)
             continue
 
@@ -303,14 +283,11 @@ def migrate_all_if_needed(
             logger.warning(
                 "Collection %s has mismatched vector config "
                 "(source_properties or vectorizer). "
-                "Set WEAVIATE_AUTO_MIGRATE=true to auto-fix, or run "
-                "scripts/revectorize_openai.py manually.",
+                "Automatic migration recreates empty collections only; "
+                "populated collections require durable external recovery.",
                 col_def.name,
             )
             continue
 
         logger.info("Migrating %s (vector config mismatch)...", col_def.name)
-        try:
-            migrate_collection(client, col_def)
-        except Exception as exc:
-            logger.error("Migration failed for %s: %s", col_def.name, exc)
+        migrate_collection(client, col_def)

@@ -8,8 +8,10 @@ upstream renderer to prepare inputs, preview scenes, and render the video.
 Two tools are available: `agent_generate_scenes` and
 `agent_generate_single_scene`.
 
-Repository links below are pinned source references. For the exact source
-and bundled README of a registry version, use its source archive on
+Repository links below target the immutable `v0.8.0-rc.4` source tag.
+This companion's version is `0.2.2rc2`. Verify registry availability before
+installation. For the exact source and bundled README of a registry version,
+use its source archive on
 [PyPI](https://pypi.org/project/video-agent-mcp/#files).
 
 ## Install and configure
@@ -43,9 +45,9 @@ appropriate `mcpServers` object, replacing the absolute checkout path:
 }
 ```
 
-For the published candidate, register `uvx` with
-`video-agent-mcp==0.2.2rc1`. Use the checkout command above for later source
-fixes; an existing registry archive does not contain them. The core npm installer
+After publication of this prepared candidate, register `uvx` with
+`video-agent-mcp==0.2.2rc2`. Use the checkout command above until publication
+and verify the exact registry archive separately. The core npm installer
 does not register this companion.
 
 Configuration comes from the process environment and
@@ -67,14 +69,14 @@ AGENT_MAX_TURNS=1
 The override also works when `EXPLAINER_PATH` is unset.
 
 `AGENT_MODEL` overrides the default in
-[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
+[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
 [official model overview](https://platform.claude.com/docs/en/models/overview)
 for a supported ID. Restart the server after configuration changes.
 
 ## First scene generation
 
 1. Prepare a project with `script/script.json` containing a `scenes` list.
-   The [explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/packages/video-explainer-mcp/README.md) can create the
+   The [explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/README.md) can create the
    project and run the script step. Scene titles must produce unique component
    filenames and registry keys.
 2. If exact speech timing matters, generate voiceover first. Optional
@@ -130,5 +132,5 @@ uv build
 
 Tests mock SDK queries and do not generate paid content. The lockfile records the
 development environment; `pyproject.toml` defines supported dependency ranges.
-See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/CONTRIBUTING.md) for repository workflow
-and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/docs/PUBLISHING.md) for release verification.
+See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md) for repository workflow
+and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PUBLISHING.md) for release verification.

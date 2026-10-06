@@ -14,6 +14,7 @@ import logging
 
 from ..client import GeminiClient
 from ..prompts.content import GRAPH_EXTRACT_SYSTEM
+from ._base import _is_enabled
 from .concepts import store_concept_knowledge, store_relationship_edges
 
 logger = logging.getLogger(__name__)
@@ -80,6 +81,8 @@ async def extract_and_store_graph(
         source_category: One of video, video-chat, research, analysis.
     """
     try:
+        if not _is_enabled():
+            return
         # Adapt to different result shapes
         title = result.get("title", result.get("topic", ""))
         summary = result.get("summary", result.get("executive_summary", ""))

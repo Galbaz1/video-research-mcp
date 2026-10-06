@@ -19,6 +19,28 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 These changes are on main after PR #93 and are not in the published RC3 packages.
 
+## [0.8.0-rc.4] - 2026-10-06
+
+### Candidate fixes
+
+- Bind checked HTTPS downloads to admitted addresses and preserve Unicode host
+  identity across DNS, TLS and redirects.
+- Validate nested schema limits, batch work bounds and numeric media durations;
+  admit local files through regular descriptors before reading.
+- Keep provider metadata in user data, join cancelled pipeline siblings and
+  preserve primary failures through publication cleanup.
+- Report knowledge query failures, validate date bounds and avoid optional graph
+  generation when persistence is disabled. Forward only selected provider keys
+  to Weaviate and refuse destructive migration of populated collections.
+- Serialize optional research follow-up appends within one process. Concurrent
+  external writers and distributed backend consistency remain unqualified.
+- Redact configured secrets within surrounding diagnostic text and bound agent
+  diagnostic patterns. Preserve native timeout termination despite receipt
+  failures and bind watchdogs to the job they monitor.
+- Prepare companion versions `0.2.2-rc.2` and matching core/plugin manifests.
+  Publication and installed-runtime checks are pending. These corrections do not
+  establish programme-wide, live-provider or held-out acceptance.
+
 ## [0.8.0-rc.3] - 2026-10-06
 
 ### Fixed

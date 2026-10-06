@@ -14,7 +14,7 @@ import json
 # ---------------------------------------------------------------------------
 
 STYLES_TEMPLATE = '''/**
- * Shared Style Constants for {project_title}
+ * Shared Style Constants
  *
  * Light theme with glow effects and dynamic layout system.
  * Uses Outfit font - modern geometric sans-serif for tech content.
@@ -387,7 +387,7 @@ export default {{ COLORS, FONTS, ANIMATION, SIDEBAR }};
 # ---------------------------------------------------------------------------
 
 INDEX_TEMPLATE = '''/**
- * {project_title} Scene Registry
+ * Scene Registry
  *
  * Exports all scene components for the video.
  * Keys match scene_id suffixes in storyboard.json (e.g., "scene1_hook" -> "hook")
@@ -524,17 +524,16 @@ def generate_styles_content(
     project_title: str,
     sidebar_width: int = 0,
 ) -> str:
-    """Format STYLES_TEMPLATE with the given project title and sidebar width.
+    """Format STYLES_TEMPLATE with the given sidebar width.
 
     Args:
-        project_title: Human-readable project name for the file header.
+        project_title: Accepted for compatibility with existing callers.
         sidebar_width: Right-side sidebar width in pixels (0 = full width).
 
     Returns:
         Formatted TypeScript source for ``styles.ts``.
     """
     return STYLES_TEMPLATE.format(
-        project_title=project_title,
         sidebar_width=sidebar_width,
     )
 
@@ -555,7 +554,7 @@ def generate_index_content(
 
     Args:
         scenes: Ordered list of scene descriptors.
-        project_title: Human-readable project name for the file header.
+        project_title: Accepted for compatibility with existing callers.
 
     Returns:
         Formatted TypeScript source for ``index.ts``.
@@ -575,7 +574,6 @@ def generate_index_content(
         registry_entries.append(f"  {scene_key_literal}: {name},")
 
     return INDEX_TEMPLATE.format(
-        project_title=project_title,
         imports="\n".join(imports),
         exports="\n".join(exports),
         registry_entries="\n".join(registry_entries),

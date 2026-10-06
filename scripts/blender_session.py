@@ -158,14 +158,23 @@ def verify_identity(actual: dict, session: dict, process) -> None:
         raise ValueError("Readiness identity is not the live owned Blender session")
 
 
-def socket_identity(port: int) -> dict:
+def socket_identity(port: int, deadline: float) -> dict:
     """Read actual native identity over the selected loopback listener with a deadline."""
-    with socket.create_connection(("127.0.0.1", port), timeout=1) as connection:
+    def remaining_timeout():
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Native identity exceeded the startup deadline")
+        return min(1.0, remaining)
+
+    with socket.create_connection(("127.0.0.1", port), timeout=remaining_timeout()) as connection:
+        connection.settimeout(remaining_timeout())
         connection.sendall(json.dumps({"type": "execute_code",
                                       "params": {"code": IDENTITY_CODE}}).encode())
         response = b""
         while len(response) < 65536:
-            chunk = connection.recv(8192)
+            connection.settimeout(remaining_timeout())
+            chunk = connection.recv(min(8192, 65536 - len(response)))
+            remaining_timeout()
             if not chunk:
                 raise ValueError("Native identity connection closed before response")
             response += chunk
@@ -189,13 +198,13 @@ def wait_ready(session: dict, process, timeout: float = 60) -> None:
         if receipt.exists():
             verify_identity(json.loads(receipt.read_text()), session, process)
             try:
-                actual = socket_identity(session["port"])
+                actual = socket_identity(session["port"], deadline)
             except (OSError, TimeoutError):
-                time.sleep(0.1)
+                time.sleep(min(0.1, max(0, deadline - time.monotonic())))
                 continue
             verify_identity(actual, session, process)
             return
-        time.sleep(0.1)
+        time.sleep(min(0.1, max(0, deadline - time.monotonic())))
     raise TimeoutError("Blender startup exceeded 60 seconds; inspect native.log")
 
 

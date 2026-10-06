@@ -74,8 +74,10 @@ class AssetCatalog:
             _private_directory(path)
 
     @contextmanager
-    def _connection(self) -> Iterator[sqlite3.Connection]:
-        """Use private database files; errors and unreadable state fail closed."""
+    def _connection(
+        self, *, commit_state: dict[str, bool] | None = None
+    ) -> Iterator[sqlite3.Connection]:
+        """Use private files and mark a supplied state only after commit succeeds."""
         self._directories()
         for path in (self.database, Path(str(self.database) + "-journal")):
             if path.is_symlink() or (path.exists() and not stat.S_ISREG(path.lstat().st_mode)):
@@ -89,10 +91,19 @@ class AssetCatalog:
             db.execute("BEGIN IMMEDIATE")
             yield db
             db.commit()
-        except BaseException:
-            db.rollback()
+            if commit_state is not None:
+                commit_state["committed"] = True
+        except BaseException as error:
+            for operation, cleanup in (("rollback", db.rollback), ("close", db.close)):
+                try:
+                    cleanup()
+                except BaseException as cleanup_error:
+                    error.add_note(
+                        f"Media catalog {operation} cleanup failed "
+                        f"({type(cleanup_error).__name__[:80]}); cleanup unverified"
+                    )
             raise
-        finally:
+        else:
             db.close()
 
     def _path(self, row: sqlite3.Row) -> Path:
@@ -175,8 +186,9 @@ class AssetCatalog:
     ) -> dict:
         """Publish without replacing an untracked file; rollback only our exact bytes."""
         published = None
+        commit_state = {"committed": False}
         try:
-            with self._connection() as db:
+            with self._connection(commit_state=commit_state) as db:
                 if cancelled and cancelled.is_set():
                     raise TimeoutError("Media adoption canceled before catalog write")
                 row = _select_row(db, digest)
@@ -206,9 +218,15 @@ class AssetCatalog:
                 if cancelled and cancelled.is_set():
                     raise TimeoutError("Media adoption canceled before transaction commit")
             return result
-        except BaseException:
-            if published and _copy_hash(published) == (digest, size):
-                published.unlink()
+        except BaseException as error:
+            try:
+                if not commit_state["committed"] and published and _copy_hash(published) == (digest, size):
+                    published.unlink()
+            except BaseException as cleanup_error:
+                error.add_note(
+                    f"Media asset rollback cleanup failed ({type(cleanup_error).__name__}); "
+                    "owned-file cleanup unverified"
+                )
             raise
 
     def get(self, asset_id: str) -> dict:

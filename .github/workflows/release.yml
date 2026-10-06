@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           uv run --locked python scripts/check_release.py
-          uv run --locked python - <<'PYEOF' > release-notes.md
+          uv run --locked python - <<'PYEOF' > "$RUNNER_TEMP/video-research-release-notes.md"
           import os
           import pathlib
           import re
@@ -77,4 +77,4 @@ jobs:
             RELEASE_FLAGS+=(--prerelease --latest=false)
           fi
           gh release create "$REF_NAME" dist/* --title "$REF_NAME" \
-            --notes-file release-notes.md --verify-tag "${RELEASE_FLAGS[@]}"
+            --notes-file "$RUNNER_TEMP/video-research-release-notes.md" --verify-tag "${RELEASE_FLAGS[@]}"

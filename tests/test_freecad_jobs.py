@@ -266,3 +266,54 @@ def test_fem_completion_requires_actual_corresponding_artifacts(session, tmp_pat
         frd.symlink_to(outside)
     promoted = json.loads(jobs.normalize_fem([{"type": "text", "text": json.dumps(result)}], session)[0]["text"])
     assert promoted["success"] is False and promoted["upstream_result"] == result
+
+
+@pytest.mark.parametrize("operation", ["write", "replace"])
+def test_fatal_watch_terminates_when_receipt_persistence_fails(session, monkeypatch, operation):
+    """GIVEN receipt I/O failure WHEN timeout is fatal THEN termination still runs."""
+    failure = OSError(f"receipt {operation} failed")
+    terminated = []
+    native = jobs.NativeJobs(session, {}, lambda: terminated.append(True))
+    initial = {"state": "pending", "job_id": "a" * 32}
+    native.active = initial
+    def refused(*args, **kwargs):
+        raise failure
+    monkeypatch.setattr(Path, "write_text" if operation == "write" else "replace", refused)
+    with pytest.raises(OSError) as caught:
+        native._watch(initial, SimpleNamespace(wait=lambda timeout: False))
+    assert caught.value is failure
+    assert terminated == [True]
+    assert native.active["state"] == "timed_out"
+    assert not native.lock.locked()
+
+
+@pytest.mark.parametrize("finished,state", [(True, "pending"), (False, "complete"), (False, "failed")])
+def test_fatal_watch_does_not_terminate_finished_jobs(session, finished, state):
+    terminated = []
+    native = jobs.NativeJobs(session, {}, lambda: terminated.append(True))
+    native.active = {"state": state}
+    native._watch(native.active, SimpleNamespace(wait=lambda timeout: finished))
+    assert terminated == []
+
+
+def test_stale_watchdog_preserves_later_pending_job(monkeypatch):
+    """GIVEN a later pending job WHEN its predecessor's watch expires THEN it survives."""
+    saved, terminated = [], []
+    native = jobs.NativeJobs({"session": "owned-session"}, {}, lambda: terminated.append(True))
+    initial = {"state": "pending", "job_id": "a" * 32}
+    later = {"state": "pending", "job_id": "b" * 32}
+    native.active = initial
+    monkeypatch.setattr(native, "_save", lambda result: saved.append(dict(result)))
+
+    def expired_wait(timeout):
+        assert timeout == jobs.DEADLINE
+        # Prior work completed and a later job started before this watch acquired the lock.
+        native.active = later
+        return False
+
+    native._watch(initial, SimpleNamespace(wait=expired_wait))
+    assert native.active is later
+    assert later["state"] == "pending"
+    assert saved == []
+    assert terminated == []
+    assert not native.lock.locked()

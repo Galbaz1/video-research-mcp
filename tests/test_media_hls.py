@@ -122,7 +122,7 @@ def _mock_http(monkeypatch, routes):
 
     def client(**kwargs):
         clients.append(kwargs)
-        return original(transport=httpx.MockTransport(handler), **kwargs)
+        return original(**{**kwargs, "transport": httpx.MockTransport(handler)})
 
     async def resolve(host):
         address = "127.0.0.1" if host == "private.example" else "93.184.216.34"

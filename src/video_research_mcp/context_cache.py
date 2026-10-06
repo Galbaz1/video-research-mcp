@@ -147,9 +147,8 @@ async def get_or_create(
             _last_failure[key] = "suppressed:too_few_tokens"
             logger.info("Suppressing future cache attempts for %s/%s (too few tokens)", content_id, model)
         else:
-            detail = str(exc)[:200]
-            _last_failure[key] = f"api_error:{type(exc).__name__}:{detail}"
-            logger.warning("Failed to create context cache for %s", content_id, exc_info=True)
+            _last_failure[key] = "api_error"
+            logger.warning("Failed to create context cache for %s", content_id)
 
     return None
 
@@ -160,8 +159,7 @@ def failure_reason(content_id: str, model: str) -> str:
     Checks suppression set first, then the last-failure map.
 
     Returns:
-        Reason string (e.g. "suppressed:too_few_tokens",
-        "api_error:ClientError:400 INVALID_ARGUMENT. {...}")
+        Safe reason category (e.g. "suppressed:too_few_tokens" or "api_error"),
         or empty string if no failure recorded.
     """
     key = (content_id, model)

@@ -47,57 +47,47 @@ def check_schema_complexity(
     _check_enums(schema, max_enum_size)
 
 
+def _schema_children(schema: dict):
+    """Visit the inline schema keywords supported by TextRequest, with depth steps."""
+    for key in ("properties", "$defs", "definitions", "dependentSchemas"):
+        for child in schema.get(key, {}).values():
+            if isinstance(child, dict):
+                yield child, 1
+    for key in (
+        "items", "additionalProperties", "contains", "propertyNames", "not", "if",
+        "then", "else", "unevaluatedItems", "unevaluatedProperties", "contentSchema",
+    ):
+        child = schema.get(key)
+        if isinstance(child, dict):
+            yield child, 1
+    for key in ("allOf", "anyOf", "oneOf", "prefixItems"):
+        step = 1 if key == "prefixItems" else 0
+        for child in schema.get(key, []):
+            if isinstance(child, dict):
+                yield child, step
+
+
 def _measure_depth(schema: dict, current: int = 0) -> int:
     """Recursively measure the maximum nesting depth of a JSON schema."""
-    max_d = current
-
-    if "properties" in schema:
-        for prop in schema["properties"].values():
-            max_d = max(max_d, _measure_depth(prop, current + 1))
-
-    if "items" in schema and isinstance(schema["items"], dict):
-        max_d = max(max_d, _measure_depth(schema["items"], current + 1))
-
-    for key in ("allOf", "anyOf", "oneOf"):
-        if key in schema:
-            for sub in schema[key]:
-                max_d = max(max_d, _measure_depth(sub, current))
-
-    return max_d
+    maximum = current
+    for child, step in _schema_children(schema):
+        maximum = max(maximum, _measure_depth(child, current + step))
+    return maximum
 
 
 def _count_properties(schema: dict) -> int:
-    """Count total properties across all levels of a JSON schema."""
+    """Count total properties across all supported inline subschemas."""
     count = len(schema.get("properties", {}))
-
-    for prop in schema.get("properties", {}).values():
-        count += _count_properties(prop)
-
-    if "items" in schema and isinstance(schema["items"], dict):
-        count += _count_properties(schema["items"])
-
-    for key in ("allOf", "anyOf", "oneOf"):
-        if key in schema:
-            for sub in schema[key]:
-                count += _count_properties(sub)
-
+    for child, _ in _schema_children(schema):
+        count += _count_properties(child)
     return count
 
 
 def _check_enums(schema: dict, max_size: int) -> None:
-    """Raise SchemaComplexityError if any enum exceeds max_size."""
+    """Raise SchemaComplexityError if any supported subschema enum exceeds max_size."""
     if "enum" in schema and len(schema["enum"]) > max_size:
         raise SchemaComplexityError(
             f"Enum has {len(schema['enum'])} values, exceeds limit {max_size}."
         )
-
-    for prop in schema.get("properties", {}).values():
-        _check_enums(prop, max_size)
-
-    if "items" in schema and isinstance(schema["items"], dict):
-        _check_enums(schema["items"], max_size)
-
-    for key in ("allOf", "anyOf", "oneOf"):
-        if key in schema:
-            for sub in schema[key]:
-                _check_enums(sub, max_size)
+    for child, _ in _schema_children(schema):
+        _check_enums(child, max_size)

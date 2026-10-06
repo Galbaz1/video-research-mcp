@@ -441,3 +441,34 @@ def test_eof_native_cleanup_precedes_worker_stream_join():
             order.append("stream closed")
     asyncio.run(stdio.forward_input(incoming(), Outgoing(), lambda: order.append("native reaped")))
     assert order == ["native reaped", "stream closed"]
+
+
+@pytest.mark.parametrize("operation", ["write", "replace"])
+def test_fatal_dispatch_terminates_when_receipt_persistence_fails(owned, monkeypatch, operation):
+    """GIVEN fatal GUI timeout plus receipt failure THEN exit is requested before propagation."""
+    failure = OSError(f"receipt {operation} failed")
+    exits = []
+    rpc = SimpleNamespace(FreeCADRPC=type("RPC", (), {}), start_rpc_server=lambda port: None,
+        rpc_server_instance=SimpleNamespace(server_address=("127.0.0.1", owned.session["port"])))
+    dispatch = SimpleNamespace(dispatch_to_gui=lambda task, **kw: {"error": "GUI dispatch timed out"})
+    monkeypatch.setattr(startup.os, "_exit", exits.append)
+    startup.install_owned_rpc(rpc, dispatch, None, None, None, owned.session, None)
+    def refused(*args, **kwargs):
+        raise failure
+    monkeypatch.setattr(Path, "write_text" if operation == "write" else "replace", refused)
+    with pytest.raises(OSError) as caught:
+        rpc.dispatch_to_gui(lambda: pytest.fail("queued work must not run"))
+    assert caught.value is failure
+    assert exits == [124]
+
+
+def test_nonfatal_dispatch_returns_without_exit(owned, monkeypatch):
+    exits = []
+    rpc = SimpleNamespace(FreeCADRPC=type("RPC", (), {}), start_rpc_server=lambda port: None,
+        rpc_server_instance=SimpleNamespace(server_address=("127.0.0.1", owned.session["port"])))
+    result = {"success": True}
+    dispatch = SimpleNamespace(dispatch_to_gui=lambda task, **kw: result)
+    monkeypatch.setattr(startup.os, "_exit", exits.append)
+    startup.install_owned_rpc(rpc, dispatch, None, None, None, owned.session, None)
+    assert rpc.dispatch_to_gui(lambda: None) is result
+    assert exits == []

@@ -73,9 +73,11 @@ def install_owned_rpc(rpc, dispatch, parts, app, gui, session: dict, jobs):
     def bounded_dispatch(task, timeout=DEADLINE):
         result = original_dispatch(task, timeout=min(timeout, DEADLINE))
         if isinstance(result, dict) and "timed out" in str(result.get("error", "")).lower():
-            write_receipt(Path(session["output"]) / "native-failure.json",
-                          {"session": session["session"], "state": "timed_out", "error": result["error"]})
-            os._exit(124)
+            try:
+                write_receipt(Path(session["output"]) / "native-failure.json",
+                              {"session": session["session"], "state": "timed_out", "error": result["error"]})
+            finally:
+                os._exit(124)
         return result
 
     rpc.dispatch_to_gui = bounded_dispatch

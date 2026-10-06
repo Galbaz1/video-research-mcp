@@ -2,7 +2,7 @@
 
 Enforces HTTPS-only, blocks private/loopback/link-local IP ranges,
 rejects embedded credentials, and streams downloads with a size cap.
-Post-connect peer IP verification guards against DNS rebinding.
+Validated address snapshots prevent DNS rebinding during connection setup.
 Used by research_document to safely fetch user-supplied URLs.
 """
 
@@ -49,7 +49,7 @@ async def _resolve_dns(hostname: str) -> list:
     )
 
 
-async def validate_url(url: str) -> None:
+async def validate_url(url: str) -> tuple[str, ...]:
     """Validate a URL against the security policy.
 
     Uses async DNS resolution to avoid blocking the event loop.
@@ -59,6 +59,9 @@ async def validate_url(url: str) -> None:
     - No embedded credentials (userinfo)
     - Hostname present and DNS-resolvable
     - Resolved IPs are not private, loopback, link-local, multicast, or reserved
+
+    Returns:
+        The ordered, deduplicated public addresses admitted for this URL.
 
     Raises:
         UrlPolicyError: If any check fails.
@@ -71,7 +74,7 @@ async def validate_url(url: str) -> None:
     if parsed.username or parsed.password:
         raise UrlPolicyError("URLs with embedded credentials are not allowed")
 
-    hostname = parsed.hostname
+    hostname = httpx.URL(url).raw_host.decode("ascii")
     if not hostname:
         raise UrlPolicyError("URL has no hostname")
 
@@ -83,21 +86,57 @@ async def validate_url(url: str) -> None:
     if not addr_infos:
         raise UrlPolicyError(f"DNS resolution returned no addresses for '{hostname}'")
 
+    addresses = []
     for _family, _type, _proto, _canonname, sockaddr in addr_infos:
         ip_str = sockaddr[0]
         if _is_blocked_ip(ip_str):
             raise UrlPolicyError(
                 f"URL resolves to blocked IP range ({ip_str}) — {_BLOCKED_RANGES_MSG}"
             )
+        addresses.append(ip_str)
+    return tuple(dict.fromkeys(addresses))
+
+
+class _PinnedTransport(httpx.AsyncHTTPTransport):
+    """Connect only to admitted addresses while retaining the logical HTTP origin."""
+
+    def __init__(self, addresses: tuple[str, ...]):
+        super().__init__(
+            trust_env=False,
+            limits=httpx.Limits(max_connections=1, max_keepalive_connections=0),
+        )
+        self.addresses = addresses
+
+    async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
+        """Pin each connect, preserving Host, hostname TLS and response identity."""
+        original_url = request.url
+        timeouts = request.extensions["timeout"]
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + timeouts["connect"]
+        request.extensions["sni_hostname"] = original_url.raw_host.decode("ascii")
+        try:
+            for index, address in enumerate(self.addresses):
+                remaining = deadline - loop.time()
+                if remaining <= 0:
+                    raise httpx.ConnectTimeout("Admitted address connection budget expired", request=request)
+                request.url = original_url.copy_with(host=address)
+                request.extensions["timeout"] = {**timeouts, "connect": remaining}
+                try:
+                    return await super().handle_async_request(request)
+                except (httpx.ConnectError, httpx.ConnectTimeout):
+                    if index == len(self.addresses) - 1:
+                        raise
+        finally:
+            # HTTPX extracts cookies and joins redirects after the transport returns.
+            request.url = original_url
+            request.extensions["timeout"] = timeouts
 
 
 def _verify_peer_ip(response: httpx.Response) -> None:
     """Verify the connected peer IP is not in a blocked range.
 
-    Guards against DNS rebinding: even though we pre-validated DNS,
-    the HTTP client performs its own resolution. This post-connect
-    check catches cases where DNS returned a different (internal) IP
-    for the actual fetch.
+    Fails closed if the transport cannot report a public actual peer,
+    independently of its admitted address snapshot.
 
     Raises:
         UrlPolicyError: If the peer IP is in a blocked range.
@@ -121,14 +160,18 @@ def _verify_peer_ip(response: httpx.Response) -> None:
 @asynccontextmanager
 async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[str] | None = None):
     """Open an HTTPS response after checking every redirect and actual peer."""
+    hosts = None if allowed_hosts is None else {
+        httpx.URL(host=host).raw_host for host in allowed_hosts
+    }
+
     def check_host(value: str) -> None:
-        if allowed_hosts is not None and urlparse(value).hostname not in allowed_hosts:
+        if hosts is not None and httpx.URL(value).raw_host not in hosts:
             raise UrlPolicyError("Source domain is outside the requested allowlist")
 
     check_host(url)
-    await validate_url(url)
+    transport = _PinnedTransport(await validate_url(url))
     async with httpx.AsyncClient(
-        follow_redirects=False, timeout=60, trust_env=False,
+        follow_redirects=False, timeout=60, trust_env=False, transport=transport,
     ) as client:
         for hop in range(6):
             async with client.stream(method, url) as response:
@@ -141,7 +184,7 @@ async def checked_response(url: str, method: str = "GET", *, allowed_hosts: set[
                         raise UrlPolicyError("Too many redirects (>5) while downloading URL")
                     url = str(response.url.join(location))
                     check_host(url)
-                    await validate_url(url)
+                    transport.addresses = await validate_url(url)
                     continue
                 response.raise_for_status()
                 yield response

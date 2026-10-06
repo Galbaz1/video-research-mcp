@@ -56,3 +56,27 @@ print('bounded')
 """
     stdout, _ = await run_media_process([sys.executable, '-c', script], 2)
     assert stdout == b'bounded\n'
+
+
+@pytest.mark.parametrize("encoded", ["dummy key/value", "dummy%20key%2Fvalue", "dummy+key%2Fvalue"])
+@pytest.mark.parametrize("prefix,suffix", [("prefix", "suffix"), ("_", "_"), ("-", "-")])
+def test_known_secret_embedded_in_diagnostic_word(monkeypatch, encoded, prefix, suffix):
+    """GIVEN an embedded known secret WHEN an error is returned THEN it cannot escape."""
+    monkeypatch.setattr("video_research_mcp.redaction.os.environ", {"EXAMPLE_API_KEY": "dummy key/value"})
+    result = make_tool_error(RuntimeError(f"Diagnostic {prefix}{encoded}{suffix}"))
+    assert result["error"] == f"Diagnostic {prefix}[redacted]{suffix}"
+    assert encoded not in str(result)
+
+
+def test_known_alphanumeric_secret_embedded_without_field(monkeypatch):
+    """GIVEN a known value inside a word WHEN redacted THEN the full value is removed."""
+    monkeypatch.setattr("video_research_mcp.redaction.os.environ", {"EXAMPLE_API_KEY": "abcdefgh"})
+    assert redact_text("diagnostic prefixabcdefghsuffix") == "diagnostic prefix[redacted]suffix"
+
+
+@pytest.mark.parametrize("name,secret", [("EXAMPLE_API_KEY", "abc"), ("OTHER_SETTING", "abcdefgh")])
+def test_known_secret_policy_is_preserved(monkeypatch, name, secret):
+    """GIVEN an excluded short value or name WHEN redacted THEN the policy is preserved."""
+    monkeypatch.setattr("video_research_mcp.redaction.os.environ", {name: secret})
+    diagnostic = f"diagnostic prefix{secret}suffix"
+    assert redact_text(diagnostic) == diagnostic

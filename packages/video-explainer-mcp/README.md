@@ -11,8 +11,10 @@ unresolved: this package independently authors the plan contract and ships no
 upstream code or runtime. Installation and rights for a separate CLI remain
 operator responsibilities.
 
-Repository links below are pinned source references. For the exact source
-and bundled README of a registry version, use its source archive on
+Repository links below target the immutable `v0.8.0-rc.4` source tag.
+This companion's version is `0.2.2rc2`. Verify registry availability before
+installation. For the exact source and bundled README of a registry version,
+use its source archive on
 [PyPI](https://pypi.org/project/video-explainer-mcp/#files).
 
 ## Install and configure
@@ -49,9 +51,9 @@ configuration, replacing the absolute checkout path:
 }
 ```
 
-For the published candidate, register `uvx` with
-`video-explainer-mcp==0.2.2rc1`. Use the checkout command above for later source
-fixes; an existing registry archive does not contain them.
+After publication of this prepared candidate, register `uvx` with
+`video-explainer-mcp==0.2.2rc2`. Use the checkout command above until publication
+and verify the exact registry archive separately.
 The core npm installer does not register this companion or install the upstream
 renderer.
 
@@ -184,5 +186,5 @@ uv build
 Tests use temporary projects and mocked CLI processes; no paid provider calls
 are made. The lockfile records the development environment; `pyproject.toml`
 defines supported dependency ranges. See the root
-[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/CONTRIBUTING.md) and
-[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/96f11b8c7d70a1bc4d73bfa500482f9811e4141f/docs/PUBLISHING.md) for repository and release checks.
+[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md) and
+[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PUBLISHING.md) for repository and release checks.

@@ -93,13 +93,18 @@ class NativeJobs:
     def _watch(self, initial: dict, finished) -> None:
         if finished.wait(DEADLINE):
             return
-        with self.lock:
-            if self.active["state"] != "pending":
-                return
-            self.active = {**initial, "state": "timed_out", "finished": time.time(),
-                           "error": "Background computation exceeded 60 seconds; native terminated"}
-            self._save(self.active)
-        self.terminate()
+        fatal = False
+        try:
+            with self.lock:
+                if self.active["state"] != "pending" or self.active["job_id"] != initial["job_id"]:
+                    return
+                self.active = {**initial, "state": "timed_out", "finished": time.time(),
+                               "error": "Background computation exceeded 60 seconds; native terminated"}
+                fatal = True
+                self._save(self.active)
+        finally:
+            if fatal:
+                self.terminate()
 
     def close(self) -> None:
         """Join completed native workers; a pending worker requires process termination."""

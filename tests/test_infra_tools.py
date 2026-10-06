@@ -14,7 +14,7 @@ infra_configure = unwrap_tool(infra_mod.infra_configure)
 
 @pytest.fixture(autouse=True)
 def _clean_config(monkeypatch):
-    monkeypatch.setenv("GEMINI_API_KEY", "test")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key-not-real")
     monkeypatch.setenv("INFRA_MUTATIONS_ENABLED", "true")
     cfg_mod._config = None
     yield
