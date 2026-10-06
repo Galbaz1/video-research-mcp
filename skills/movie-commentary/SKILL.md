@@ -8,8 +8,8 @@ description: Turn one fixed local movie into a source-linked narrated commentary
 The video-explainer server provides seven `commentary_*` tools. They prepare projects, check plans, freeze
 shards, record approvals, assemble the cut and validate delivery. They never write narration, interpret
 the film or render a shard, and no tool spawns an agent. The full contract is in
-[movie-commentary.md](../video-research-resources/docs/integrations/movie-commentary.md)
-in the installed support tree (`docs/integrations/movie-commentary.md` in the source package).
+[movie-commentary.md](../../docs/integrations/movie-commentary.md) in the source package
+(`../video-research-resources/docs/integrations/movie-commentary.md` in the installed support tree).
 
 ## Route by state
 

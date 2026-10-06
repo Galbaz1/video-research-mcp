@@ -2428,7 +2428,7 @@
         },
         {
           "target_path": "skills/movie-commentary/SKILL.md",
-          "target_sha256": "f9c1f2718e70bdac006f3b479fdaa20b3092258d72c2c8067ebcd2a3d2f13ee4",
+          "target_sha256": "f768c3e41027dfa044d018f28c190c4f0773cfdac32a36ee4123a645ceac3e3d",
           "provenance": "Independent own movie-commentary implementation informed by Qwen original Apache-2.0 contracts; no foreign code/font/model/media/runtime copied or imported. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
