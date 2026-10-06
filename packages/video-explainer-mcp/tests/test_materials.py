@@ -12,9 +12,8 @@ import pytest
 
 from video_explainer_mcp import config, materials, materials_remote as remote, materials_render as render
 from video_explainer_mcp.models.materials import MaterialsRequest, StockDownload, StockSearch
-from video_explainer_mcp.tools.materials import (
-    explainer_materials_assemble, explainer_materials_download, explainer_materials_search,
-)
+from video_explainer_mcp.tools.materials import explainer_materials_assemble
+from video_explainer_mcp.tools.materials_stock import explainer_materials_download, explainer_materials_search
 
 
 def sha(body):
@@ -550,3 +549,22 @@ def test_pixabay_key_allowed_only_for_internal_search(http_boundary):
     with pytest.raises(ValueError, match="Credential-bearing"):
         remote._fetch("https://pixabay.com/media.mp4?key=SYNTHETIC_PROVIDER_KEY",
                       {"Accept": "application/json"}, ["pixabay.com"], 20, time.monotonic() + 20)
+
+
+async def test_public_local_own_and_generated_images(project, codec):
+    """Own/generated image files reach the mounted assembly contract without stock."""
+    req = request(project).model_dump()
+    for i, name in enumerate(("own.png", "generated.png")):
+        data = b"local image fixture:" + name.encode()
+        (project / name).write_bytes(data)
+        req["clips"][i].update(
+            source={"path": name, "sha256": sha(data)}, kind="image",
+            rights=rights(project, sha(data), f"image-rights-{i}.json", url=f"project:{name}"),
+        )
+    result = await explainer_materials_assemble("fixture", MaterialsRequest.model_validate(req))
+    assert result["success"] and result["factual_success"] is False
+    clips = result["recipe"]["request"]["clips"]
+    assert [clip["source"]["path"] for clip in clips] == ["own.png", "generated.png"]
+    assert all(clip["kind"] == "image" for clip in clips)
+    assert len(codec[0]) == 1
+    assert (project / materials.MANIFEST).is_file()

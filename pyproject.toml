@@ -1,6 +1,6 @@
 [project]
 name = "video-research-mcp"
-version = "0.8.0-rc.2"
+version = "0.8.0-rc.3"
 description = "MCP server for video analysis, document extraction, cited research and optional knowledge storage"
 requires-python = ">=3.11"
 license = { text = "MIT" }

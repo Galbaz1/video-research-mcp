@@ -306,6 +306,7 @@ async def test_bounded_normal_exit_sweeps_remaining_owned_group(mock_subprocess,
     monkeypatch.setattr(runner, "_collect_bounded", AsyncMock(return_value=(b"ok", b"")))
     monkeypatch.setattr(runner, "_reap_uninterruptibly", cleanup)
     monkeypatch.setattr(os, "killpg", group)
+    monkeypatch.setattr(os, "kill", MagicMock(side_effect=ProcessLookupError))
     result = await runner._invoke_cli(["/frozen/node"], None, 1, None, bounded=True)
     assert result == (b"ok", b"", 0)
     cleanup.assert_awaited_once_with(proc)
@@ -326,8 +327,10 @@ async def test_short_permission_drain_is_observed_absent(mock_subprocess, monkey
         raise PermissionError()
 
     monkeypatch.setattr(os, "killpg", group)
+    monkeypatch.setattr(os, "kill", MagicMock(side_effect=ProcessLookupError))
     receipt = await runner._finish_bounded(proc)
     assert receipt["node"]["group_absent"] is True
+    assert receipt["node"]["pid_absent"] is True
 
 
 @pytest.mark.parametrize("stop", ["normal", "error", "timeout", "cancel", "repeated_cancel"])
@@ -404,10 +407,12 @@ async def test_normal_cleanup_returns_durable_signal_receipt(mock_subprocess, mo
             raise ProcessLookupError()
 
     monkeypatch.setattr(os, "killpg", group)
+    monkeypatch.setattr(os, "kill", MagicMock(side_effect=ProcessLookupError))
     receipt = await runner._finish_bounded(proc)
     assert receipt["node"]["pgid"] == proc.pid
     assert receipt["node"]["signals"] == ["SIGKILL"]
     assert receipt["node"]["group_absent"] is True
+    assert receipt["node"]["pid_absent"] is True
 
 
 async def test_persistent_permission_drain_refuses(mock_subprocess, monkeypatch):
@@ -450,6 +455,7 @@ async def test_repeated_cancel_cannot_interrupt_group_drain(mock_subprocess, mon
 
     monkeypatch.setattr(asyncio, "sleep", pause)
     monkeypatch.setattr(os, "killpg", group)
+    monkeypatch.setattr(os, "kill", MagicMock(side_effect=ProcessLookupError))
     task = asyncio.create_task(runner._finish_bounded(proc))
     await draining.wait()
     task.cancel()

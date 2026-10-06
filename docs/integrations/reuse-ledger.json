@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "d7b8a961509941ff3e2a26192cb4b6ad4afe6d75f24c9c2353c9127236b2f94d",
+          "target_sha256": "05054d5a3e5804e0c5bc9a74dcf63bb7aaf2c3c348e6274f4a5f300518926c64",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -1218,7 +1218,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
+          "target_sha256": "52765445a9059d5c8c3a6fce3f4bd4611d0e84545894c973c4ea77871a11b9f3",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -2368,7 +2368,7 @@
       "implementations": [
         {
           "target_path": "docs/integrations/movie-commentary.md",
-          "target_sha256": "662e34637b22a04d91ee32e0bd413e50364f539d5c4d329a258fad01a73a0997",
+          "target_sha256": "a20ee8931dd4ce8fe53ab8be0d9d2a31f6c2982ce0d7845fb2451d624c4b771f",
           "provenance": "Independent own movie-commentary implementation informed by Qwen original Apache-2.0 contracts; no foreign code/font/model/media/runtime copied or imported. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -2378,7 +2378,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/commentary/delivery.py",
-          "target_sha256": "5de97c6e8e56cf55a2aa58fc8aad207c307b44e60f22a683b78966b2edba89cb",
+          "target_sha256": "a4da116082b6ec19701fc2fca1576c62a7a672afa42a48d8939eeb660f8bc801",
           "provenance": "Independent own movie-commentary implementation informed by Qwen original Apache-2.0 contracts; no foreign code/font/model/media/runtime copied or imported. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -2388,7 +2388,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/commentary/project.py",
-          "target_sha256": "b4ee9a7864fba6f76c84524edbe787859fa0deb372d9a9f56ec4d20a34982894",
+          "target_sha256": "06729a6a7f758c0b3d5a614e736ee81a4d867503938ab44f2ff27e62a0864d25",
           "provenance": "Independent own movie-commentary implementation informed by Qwen original Apache-2.0 contracts; no foreign code/font/model/media/runtime copied or imported. SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
         },
         {
@@ -2435,6 +2435,11 @@
           "target_path": "packages/video-explainer-mcp/tests/test_movie_commentary_boundaries.py",
           "target_sha256": "2a5679d61fa28d3dc8fd888b90aaa8d4a58712b480636a7e2ce8567ee8c96217",
           "provenance": "Independent regression coverage; R236/R246 source repairs and R249 independent no-material-findings review. Source adoption only; native commentary UNRUN.SOURCE_ONLY adopted by Root after recorded independent source review (collections R218/R223, wiki R223, commentary R243/R249); native leaf, integrated, heldout and release acceptance remain separate. Failures retained."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_movie_commentary_media.py",
+          "target_sha256": "b90deea818c068f1ff7ec4d5895ec02d87f7394917c025487356daba03debaeb",
+          "provenance": "Independent first-party source and deterministic regression coverage for API-first release scope. Optional stock wrappers retained unmounted; known header/DNS deadline limitations remain unqualified. Commentary tests enforce local container/protocol command boundaries. No foreign code/assets/runtime copied; native/provider/full-programme acceptance is separate."
         }
       ]
     },
@@ -4487,7 +4492,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "d7b8a961509941ff3e2a26192cb4b6ad4afe6d75f24c9c2353c9127236b2f94d",
+          "target_sha256": "05054d5a3e5804e0c5bc9a74dcf63bb7aaf2c3c348e6274f4a5f300518926c64",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4578,7 +4583,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "5d61d6de9d05f434990016c3a16ef212125eaa6f14f8c1e61dca0909f171c906",
+          "target_sha256": "2e09915626d8028144a2e617a0f51dfd463b56d21e316eff644fd441c826676c",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -6070,7 +6075,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
+          "target_sha256": "52765445a9059d5c8c3a6fce3f4bd4611d0e84545894c973c4ea77871a11b9f3",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
         },
         {
@@ -6495,7 +6500,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
+          "target_sha256": "52765445a9059d5c8c3a6fce3f4bd4611d0e84545894c973c4ea77871a11b9f3",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6573,7 +6578,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_runner.py",
-          "target_sha256": "d48b9c0388118f90d40f4925819374cd7401eb14fc87206f692a46b8f991eac0",
+          "target_sha256": "8fdf189baeee06cb96ea74d95904fcba6c6b91a5ef8dea8fd8b66d01fec4cc10",
           "provenance": "Independently authored bounded single-card renderer source/config/tests/documentation and dependency lock metadata. The six authored entry files are shipped; Node, Remotion/compositor and browser remain separately installed optional runtimes. No blocked upstream renderer code/fonts/assets are copied or imported. Code adoption does not accept native rendering/playback, production storyboards or commercial deployment.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -7089,17 +7094,17 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py",
-          "target_sha256": "317a3230153172a5b1e440f98839885781a8711e1d17ee0bff09233e4de812b2",
+          "target_sha256": "a89fecc9bedeb7ea43ec4beb44da601e872d3ecc5a694bd1b20548735c1534b4",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_materials.py",
-          "target_sha256": "719a8e48ea7188dc00acaa6e88d373e852a6e28e18d9ac3678e197b0ad599e09",
+          "target_sha256": "b8394db5d996fafa21e983564f0c46d1a74624a37f0c8385d5c85fecee55f1dd",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/materials.md",
-          "target_sha256": "15159d405f2246a71bfe00c33f5a31d90607f94e7dc5039324f5354a93f2a0f6",
+          "target_sha256": "2be68617e645c2805357b26e6a05a22c5dcfe2cc2643125d9f8507f2205396a6",
           "provenance": "Independent own implementation/adapter; original source grant and permitted route unchanged; no foreign code/runtime/prompts/assets copied or imported. SOURCE_ONLY adopted by Root after R256/R274/R280 independent reviews and affected source tests. Numeric/operator reconciliation uses a conservative literal contract. Installed/native/leaf/parent/heldout/release acceptance remains separate. Prior failures and R235 read-only network scope deviation retained; asset/provider rights not inferred."
         },
         {
@@ -7109,8 +7114,18 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_materials_security.py",
-          "target_sha256": "6a45007f7a551564d2aff7fa0af0f75233076acbf85c4b9493a9c4b0d358b556",
+          "target_sha256": "1cf9a4938dcb8dcfc2680daa7c03ed243dabce80b54443aa15874053b24e3e32",
           "provenance": "Independent first-party regression tests for stock credential URL refusal, fixed provider credential slots and joined cooperative cancellation. No foreign code/assets/runtime copied. R474/R479 source findings and harness failures retained; R487 independent F1/F2/F3 source disposition PASS and R488 full companion 984-test PASS. Full programme/security/provider qualification remains separate."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials_stock.py",
+          "target_sha256": "ae237831bb4a8bcbaea377cf6ba5493d79f396770b5bcd785cb2db2675a2b008",
+          "provenance": "Independent first-party source and deterministic regression coverage for API-first release scope. Optional stock wrappers retained unmounted; known header/DNS deadline limitations remain unqualified. Commentary tests enforce local container/protocol command boundaries. No foreign code/assets/runtime copied; native/provider/full-programme acceptance is separate."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_materials_discovery.py",
+          "target_sha256": "8ad5feac376b79118d181c1640a3dfb2a4cea30838f05110ed09d4e8ce6cd05a",
+          "provenance": "Independent first-party source and deterministic regression coverage for API-first release scope. Optional stock wrappers retained unmounted; known header/DNS deadline limitations remain unqualified. Commentary tests enforce local container/protocol command boundaries. No foreign code/assets/runtime copied; native/provider/full-programme acceptance is separate."
         }
       ]
     },
@@ -7788,7 +7803,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "58c7ad585c82e89fc8a62c69908430f9078d5b2cd6968fefdfac53f107301f9e",
+      "sha256": "b911167211cbf936b4b739eaedfbcbf79318e587afb984efba3c6e7ff315f141",
       "registry_packages": [
         {
           "name": "aiofile",

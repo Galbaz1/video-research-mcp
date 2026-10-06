@@ -1,6 +1,6 @@
 {
   "name": "video-research-mcp",
-  "version": "0.8.0-rc.2",
+  "version": "0.8.0-rc.3",
   "description": "Native Codex plugin plus Claude Code workflows and installer for video analysis, document extraction and cited research",
   "bin": {
     "video-research-mcp": "bin/install.js"

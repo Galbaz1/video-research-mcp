@@ -13,6 +13,7 @@ from .store import (
 )
 
 PROBE_TIMEOUT = 60
+SOURCE_FORMATS = "mov,mp4,m4a,3gp,3g2,mj2,matroska,webm,avi,mpeg,mpegts,ogg,asf,flv"
 TARGETS = ("analysis_only", "plan_only", "full")
 DIRECTORIES = ("plan/watch_notes", "shards", "approvals", "out", "full")
 PROBE_FIELDS = ("format=duration,format_name:stream=index,codec_type,codec_name,width,height,"
@@ -40,7 +41,8 @@ def _facts(stdout: bytes) -> dict:
 async def probe_receipt(source: Path) -> dict:
     """Run the pinned ffprobe once and keep its identity, argv and output digest."""
     executables = codec_executables()
-    command = [executables["ffprobe"]["path"], "-v", "error", "-show_entries", PROBE_FIELDS,
+    command = [executables["ffprobe"]["path"], "-v", "error", "-protocol_whitelist", "file",
+               "-format_whitelist", SOURCE_FORMATS, "-show_entries", PROBE_FIELDS,
                "-of", "json", str(source)]
     stdout, _ = await run_media_process(command, PROBE_TIMEOUT)
     return {"ffprobe": executables["ffprobe"], "command": command,

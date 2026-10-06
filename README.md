@@ -11,12 +11,12 @@ Use it in **Codex**, **Claude Code**, or any client that supports stdio
 Gemini handles the main analysis and research routes; local tools inspect and
 transform source files. Optional providers and runtimes extend that core.
 
-[Release target](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.2) ·
-[npm target](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.2) ·
-[PyPI target](https://pypi.org/project/video-research-mcp/0.8.0rc2/) ·
-[Source target](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.2)
+[Release target](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.3) ·
+[npm target](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.3) ·
+[PyPI target](https://pypi.org/project/video-research-mcp/0.8.0rc3/) ·
+[Source target](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3)
 
-**This guide targets the `0.8.0-rc.2` candidate (Python `0.8.0rc2`).**
+**This guide targets the `0.8.0-rc.3` candidate (Python `0.8.0rc3`).**
 Installation examples pin this candidate; reference links use its source tag. Stable `0.7.1`
 predates the native Codex plugin and the expanded media surface.
 
@@ -89,7 +89,7 @@ parent directories if needed:
       "source": {
         "source": "npm",
         "package": "video-research-mcp",
-        "version": "0.8.0-rc.2"
+        "version": "0.8.0-rc.3"
       },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity"
@@ -105,10 +105,10 @@ codex plugin list --json
 ```
 
 Start a fresh Codex session. Check that `video-research@video-research` is enabled,
-its source is npm at `0.8.0-rc.2`, and the server's tools are available.
+its source is npm at `0.8.0-rc.3`, and the server's tools are available.
 
 For an existing installation, use the
-[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
+[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
 Back up local plugin edits before reinstalling: Codex replaces its managed cache.
 A manual `mcp_servers.video-research` entry can hide the plugin server. In the
 historical RC1 check on Codex 0.160.0, this also occurred when the entry was
@@ -117,7 +117,7 @@ disabled; the guide describes the specific configuration to remove.
 ### Claude Code: workflow installer
 
 ```bash
-npx video-research-mcp@0.8.0-rc.2 --global
+npx video-research-mcp@0.8.0-rc.3 --global
 ```
 
 This installs slash commands, skills and agents into `~/.claude/`, registers the
@@ -129,7 +129,7 @@ Use `--local` for project scope and set the key in
 `./.config/video-research-mcp/.env`; this replaces the shared credential-file route.
 Use `--global --check` to inspect the global installation. Updates preserve modified
 workflow files and custom configuration. See
-[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/docs/integrations/ONBOARDING.md)
+[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/integrations/ONBOARDING.md)
 for scope, checkpoints and rollback.
 
 ### Other MCP clients: server only
@@ -141,14 +141,14 @@ Use your client's stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp==0.8.0-rc.2"]
+      "args": ["video-research-mcp==0.8.0-rc.3"]
     }
   }
 }
 ```
 
 This connects the same tools; agent workflows are installed separately. Python
-package filenames use the normalized spelling `0.8.0rc2`.
+package filenames use the normalized spelling `0.8.0rc3`.
 
 ### Verify your first connection
 
@@ -170,11 +170,11 @@ checking the returned evidence verifies the particular result.
 
 Research works without Weaviate. When storage is configured, write-through errors
 are non-fatal; verify the stored record when persistence matters. The
-[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/docs/tutorials/KNOWLEDGE_STORE.md)
+[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/tutorials/KNOWLEDGE_STORE.md)
 covers embeddings, collections and optional query dependencies. For a manually
 configured server, retain the version pin when adding extras, for example
-`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.2'`. The full runtime configuration lives in
-[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/src/video_research_mcp/config.py).
+`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.3'`. The full runtime configuration lives in
+[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/src/video_research_mcp/config.py).
 
 Image edits, OCR, speech inference, Blender, FreeCAD and local model services have
 additional runtime or backend requirements. Installing the plugin does not install
@@ -182,22 +182,22 @@ those runtimes, model weights or provider accounts. Inspect the relevant skill a
 its prerequisites before using an optional integration.
 
 For video production, the separate
-[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/packages/video-explainer-mcp/README.md)
+[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/packages/video-explainer-mcp/README.md)
 orchestrates an external rendering pipeline; the
-[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/packages/video-agent-mcp/README.md)
+[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/packages/video-agent-mcp/README.md)
 handles scene-code generation. Neither is required for research. Production skills
 also provide workflows for narration, image generation, clip generation and assembly.
 
 ## Inspect and extend
 
-- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.2/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
-- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
-- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/CONTRIBUTING.md): source setup and checks.
-- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/SECURITY.md): local access, provider boundaries and reporting.
-- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/CHANGELOG.md): changes in this candidate.
+- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
+- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
+- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/CONTRIBUTING.md): source setup and checks.
+- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/SECURITY.md): local access, provider boundaries and reporting.
+- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/CHANGELOG.md): changes in this candidate.
 
 For RC1 (`0.8.0-rc.1`) on Codex 0.160.0, packaged installation, native tool
-discovery, local tool journeys and fresh-session restart were verified. Current
+discovery, local tool journeys and fresh-session restart were verified. Historical
 RC2 archive and installer checks establish source and archive consistency only;
 native acceptance on Codex 0.160.1 requires a check of the current candidate. The
 120 tool contracts do not establish qualification of every optional runtime.
@@ -209,6 +209,6 @@ Created by **Fausto Albers** · [Wonder Why](https://wonderwhy.ai).
 Built with [Google Gemini](https://ai.google.dev/),
 [FastMCP](https://github.com/PrefectHQ/fastmcp) and
 [Pydantic](https://docs.pydantic.dev/), with optional knowledge and tracing integrations.
-Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/LICENSE);
-[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.2/THIRD_PARTY_NOTICES.md)
+Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/LICENSE);
+[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/THIRD_PARTY_NOTICES.md)
 cover bundled components with their own terms.

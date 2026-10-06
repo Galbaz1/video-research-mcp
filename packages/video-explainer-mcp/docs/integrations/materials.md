@@ -1,12 +1,17 @@
 # Local and explicitly configured stock materials
 
-This companion source seam provides three typed tools on `materials_server`:
-`explainer_materials_assemble`, `explainer_materials_search`, and
-`explainer_materials_download`. The companion source server mounts these tools;
-Root owns installation, review, adoption and native admission. Source tests use dummy
-media and mocked network/codec boundaries. No native media or provider journey
-has been run. They introduce no dependency, root asset catalog, database schema,
-provider activation, inference or renderer framework.
+The companion mounts only `explainer_materials_assemble` on `materials_server`.
+Delivery uses existing own/generated local images or local video with explicit
+source and rights pins. Optional Pexels/Pixabay search and download are parked:
+`explainer_materials_search` and `explainer_materials_download` retain their
+implementation and source tests in `tools/materials_stock.py`, whose
+`stock_server` is unmounted. Normal companion tool imports do not import
+`materials_remote`, and public discovery omits both stock wrappers.
+
+Root owns installation, review, adoption and native admission. Source tests use
+dummy media and mocked codec/network boundaries; no native media or provider
+journey has been run. Parking stock adds no HTTP implementation, dependency,
+feature flag or provider activation.
 
 Assembly uses an existing project selected through the companion's configured
 projects root. Inputs are canonical relative project paths and caller-observed
@@ -71,7 +76,8 @@ be rescued by a cache hit. These are explicit caller retained declarations,
 labelled `caller_declared_unverified` and `rights_verified: false`. They do not
 authenticate a principal or independently verify an asset license.
 
-Remote tools require a separate pinned project `StockConfig` JSON record with
+The stock behavior below is retained for future qualification and is not exposed
+by the mounted companion. Retained remote tools require a separate pinned project `StockConfig` JSON record with
 `provider` (`pexels` or `pixabay`), `api_key_env`, exact `download_hosts`,
 `principal`, explicit `search_allowed`/`download_allowed`, and an absolute
 `valid_until`. Both permissions default to false. Configuration or principal
@@ -102,8 +108,12 @@ private addresses, malformed bodies, excessive metadata and non-200 responses
 are refused; provider errors are not retried. Search exposes retained partial
 results and the failed page when later pagination fails.
 
-The HTTP/body budget is20seconds per search and20seconds per download, with
-individual socket waits at most10seconds and checked remaining deadlines.
+The retained HTTP/body code targets20seconds per search/download and individual
+socket waits of at most10seconds. Known finding R493-F1 remains unfixed: response
+status/header reads can exceed the absolute deadline and delay cooperative
+cancellation, worker joining and release of the held project transaction. This
+parked transport remains unqualified; parking is not a deadline fix or security
+PASS.
 The platform DNS resolver is synchronous and cannot be cancelled by this
 helper; its scheduling/IO and a hard whole-call DNS deadline are unqualified.
 Cancellation signals the worker and waits for its completion before returning
@@ -161,7 +171,7 @@ each command bounded to90seconds,2MiB log,1GiB sampled main-process RSS and
 | Original criterion | Implemented source behavior | Retained source evidence | Native gate |
 | --- | --- | --- | --- |
 | C1 local fixture, scene/script IDs, ordered fitted output | Explicit IDs, exact snapshots, ordered trim/fit/concat recipe, duration and full-decode checks | Local order/reverse-order, fit, image motion, source mutation, admission and cancellation tests | Actual R217 local MP4 journey, visual order/fit and playback UNRUN |
-| C2 stock search/download with pagination/errors/redirects | Explicit configured source/caller permission, typed metadata, partial page failures, pinned exact acquisition | Both provider fixture shapes, wrong hash, absent authority, redirect/DNS/body/deadline refusal tests | Provider API, pagination and DNS whole-call bounds UNRUN/unqualified |
+| C2 stock search/download with pagination/errors/redirects | Parked unmounted implementation; explicit configured source/caller permission, typed metadata, partial page failures, pinned exact acquisition | Both provider fixture shapes, wrong hash, absent authority, redirect/DNS/body/deadline refusal tests | Provider API, pagination and DNS whole-call bounds UNRUN/unqualified |
 | C3 URL/hash/license/credit/retrieval/use | Durable receipts and explicit original evidence clock/revision binding | Restart/cache provenance and original evidence span tests | Asset grants and factual/semantic truth unverified |
 | C4 missing rights/provider cannot be final success; source/config cache identity | Rights/config/source/output rechecks before success; refused stale hits | Denied/expired/unknown rights, altered cache/source, source permission change, missing codec and atomic failure tests | Independent review, installed/public journey, adoption and native acceptance OPEN |
 
@@ -175,7 +185,8 @@ repository's MIT license. Neither MIT grant supplies stock media rights,
 provider terms, download authority, credit requirements or factual support.
 
 The companion source server mounts `materials_server` from
-`video_explainer_mcp.tools.materials` with the three exact contracts. Configured projects,
+`video_explainer_mcp.tools.materials` with only the local assembly contract. `tools.materials_stock.stock_server` is
+unmounted; its search/download contracts are retained, not admitted. Configured projects,
 codecs, asset rights and source permissions require qualification before native admission.
 The remote transport connects to the selected public DNS address with its actual IPv4 or
 IPv6 socket family and retains TLS hostname validation. No new dependency or provider

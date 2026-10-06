@@ -12,7 +12,7 @@ import pytest
 
 from video_explainer_mcp import config, materials, materials_remote as remote
 from video_explainer_mcp.models.materials import StockDownload, StockSearch
-from video_explainer_mcp.tools.materials import explainer_materials_download, explainer_materials_search
+from video_explainer_mcp.tools.materials_stock import explainer_materials_download, explainer_materials_search
 
 
 def sha(body):

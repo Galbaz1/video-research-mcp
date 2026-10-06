@@ -42,6 +42,13 @@ The design changes are:
 output digest. It writes write-once `project.json` and `plan/execution_facts.json`. `source_cut_max_sec`
 defaults to the probed duration; when the caller supplies it, it is recorded as caller-asserted.
 
+Source probing accepts direct MOV/MP4 (including 3GP/MJ2), Matroska/WebM, AVI, MPEG-PS/TS,
+Ogg, ASF and FLV containers, with the `file` input protocol only. Indirect inputs such as
+HLS, DASH, SDP and concat playlists are refused even when renamed as movie files.
+Assembly retains absolute shard paths (`-safe 0`) and stream-copy concat, but each shard
+is restricted to the MOV/MP4 demuxer and `file` protocol. Final decode and probing also
+force MOV/MP4. These command restrictions do not establish native media qualification.
+
 ## Contracts
 
 **Plan** (`vrm/movie-commentary-plan/v1`):

@@ -16,6 +16,29 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   edited and unmanaged resources through upgrades and recovery, and check complete
   packed-skill coverage in CI.
 
+## [0.8.0-rc.3] - 2026-10-06
+
+### Security
+
+- Reject credential-bearing and unnamed stock-media URL query parameters before
+  requests, and restrict each stock provider to its configured credential slot.
+- Join cancelled stock fetch workers before returning, preserving the actual
+  publication outcome when cancellation races with an atomic commit.
+
+### Changed
+
+- Park the optional Pexels/Pixabay search and download tools outside the active
+  explainer server. Assembly of local user-supplied or generated visuals remains
+  available; stock acquisition and its unresolved header deadline are deferred.
+- Restrict commentary probing and assembly to local movie containers, with
+  explicit MOV/MP4 shard and output decoding. Indirect playlists are refused.
+- Align the core runtime, npm archive and plugin manifests with a new immutable
+  prerelease. The published `0.8.0rc2` archives remain unchanged; the explainer
+  companion includes the stock-media repairs in its unpublished `0.2.2-rc.1`.
+- Keep the API-first candidate's provider and optional-runtime qualification
+  boundaries; this release does not establish programme-wide acceptance or
+  comparative superiority.
+
 ## [0.8.0-rc.2] - 2026-10-06
 
 ### Changed

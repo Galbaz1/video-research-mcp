@@ -102,11 +102,17 @@ async def _assemble_owned(root: Path, name: str, rows: list[dict], tolerance_sec
     tools = codec_executables()
     listing = root / "full" / "concat.txt"
     quoted = [r["path"].replace("'", "'\\''") for r in rows]
-    listing.write_text("".join(f"file '{path}'\n" for path in quoted), encoding="utf-8")
+    # Child options prevent a shard from being autodetected as another concat script.
+    listing.write_text("".join(f"file '{path}'\noption format_whitelist mov\n"
+                               "option protocol_whitelist file\n" for path in quoted), encoding="utf-8")
     ffmpeg, ffprobe = tools["ffmpeg"]["path"], tools["ffprobe"]["path"]
-    concat = [ffmpeg, "-v", "error", "-f", "concat", "-safe", "0", "-i", str(listing), "-c", "copy", str(final)]
-    decode = [ffmpeg, "-v", "error", "-xerror", "-i", str(final), "-f", "null", "-"]
-    probe = [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "json", str(final)]
+    concat = [ffmpeg, "-v", "error", "-nostdin", "-protocol_whitelist", "file",
+              "-format_whitelist", "concat,mov", "-f", "concat", "-safe", "0",
+              "-i", str(listing), "-c", "copy", str(final)]
+    decode = [ffmpeg, "-v", "error", "-nostdin", "-xerror", "-protocol_whitelist", "file",
+              "-f", "mov", "-i", str(final), "-f", "null", "-"]
+    probe = [ffprobe, "-v", "error", "-protocol_whitelist", "file", "-f", "mov",
+             "-show_entries", "format=duration", "-of", "json", str(final)]
     try:
         await run_media_process(concat, MEDIA_TIMEOUT)
         _, decode_stderr = await run_media_process(decode, MEDIA_TIMEOUT)
