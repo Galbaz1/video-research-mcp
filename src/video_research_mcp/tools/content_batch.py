@@ -11,7 +11,7 @@ from google.genai import types
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
-from ..batch_discovery import discover_files
+from ..batch_discovery import MAX_SCAN_ENTRIES, discover_files
 from ..config import get_config
 from ..content_file_data import read_content_bytes
 from ..errors import make_tool_error
@@ -66,6 +66,9 @@ def _resolve_files(
         if not dir_path.is_dir():
             raise FileNotFoundError(f"Not a directory: {directory}")
         return discover_files(dir_path, glob_pattern, SUPPORTED_CONTENT_EXTENSIONS, max_files)
+
+    if len(file_paths) > MAX_SCAN_ENTRIES:
+        raise ValueError(f"Explicit file list exceeds {MAX_SCAN_ENTRIES} entries")
 
     resolved: list[Path] = []
     for fp in file_paths:  # type: ignore[union-attr]
@@ -177,6 +180,7 @@ async def content_batch_analyze(
         description="Directory to scan for content files"
     )] = None,
     file_paths: Annotated[list[str] | None, Field(
+        max_length=MAX_SCAN_ENTRIES,
         description="Explicit list of file paths to analyze"
     )] = None,
     glob_pattern: Annotated[str, Field(
@@ -254,9 +258,11 @@ async def content_batch_analyze(
                     instruction,
                     local_filepath=item.file_path,
                 )
-                await extract_and_store_graph(
-                    data, item.file_path, source_tool="content_batch_analyze",
-                )
+                # Graph provenance supports one source, not an aggregate comparison.
+                if mode == "individual":
+                    await extract_and_store_graph(
+                        data, item.file_path, source_tool="content_batch_analyze",
+                    )
 
         return result.model_dump(mode="json")
     except Exception as exc:

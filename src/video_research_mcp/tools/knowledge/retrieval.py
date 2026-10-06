@@ -140,7 +140,7 @@ async def knowledge_stats(
                     ))
                 except Exception as exc:
                     logger.warning("Stats failed for %s: %s", col_name, exc)
-                    stats.append(CollectionStats(name=col_name, count=0))
+                    raise
             return stats
 
         stats = await asyncio.to_thread(_count)
@@ -205,16 +205,13 @@ async def knowledge_fetch(
 
 def _aggregate_groups(col, group_by: str) -> dict[str, int]:
     """Aggregate counts grouped by a text property value."""
-    try:
-        from weaviate.classes.aggregate import GroupByAggregate
-        response = col.aggregate.over_all(
-            group_by=GroupByAggregate(prop=group_by),
-            total_count=True,
-        )
-        groups: dict[str, int] = {}
-        for group in response.groups:
-            key = str(group.grouped_by.value) if group.grouped_by else "(empty)"
-            groups[key] = group.total_count or 0
-        return groups
-    except Exception:
-        return {}
+    from weaviate.classes.aggregate import GroupByAggregate
+    response = col.aggregate.over_all(
+        group_by=GroupByAggregate(prop=group_by),
+        total_count=True,
+    )
+    groups: dict[str, int] = {}
+    for group in response.groups:
+        key = str(group.grouped_by.value) if group.grouped_by else "(empty)"
+        groups[key] = group.total_count or 0
+    return groups

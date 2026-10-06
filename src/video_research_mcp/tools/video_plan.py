@@ -7,6 +7,7 @@ import hashlib
 from google.genai import types
 
 from ..config import get_config
+from ..media_local_io import _open_regular
 from ..models.execution import ExecutionLimits
 from ..media_identity import identify_source
 from ..models.video import VideoResult
@@ -130,7 +131,7 @@ def bounded_contents(plan: dict, instruction: str, limits: ExecutionLimits) -> t
     source = plan["remote_payloads"][0]["source"]
     if source["kind"] == "local_file":
         path, mime = _validate_video_path(source["path"])
-        with path.open("rb") as stream:
+        with _open_regular(path) as stream:
             data = stream.read(LARGE_FILE_THRESHOLD)
         if (
             len(data) >= LARGE_FILE_THRESHOLD

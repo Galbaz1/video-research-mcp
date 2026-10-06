@@ -12,6 +12,7 @@ import logging
 import re
 import time
 from typing import Any
+from urllib.parse import quote
 
 from .config import get_config
 from .retry import with_retry
@@ -41,7 +42,7 @@ _PAPER_ID_RE = re.compile(
 
 
 def validate_paper_id(paper_id: str) -> str:
-    """Validate paper ID format to prevent path traversal."""
+    """Validate supported paper identifier formats."""
     if not _PAPER_ID_RE.match(paper_id):
         raise ValueError(
             f"Invalid paper ID format: {paper_id!r}. "
@@ -133,7 +134,7 @@ class SemanticScholarClient:
     @classmethod
     async def get_paper(cls, paper_id: str) -> dict:
         """Get paper details via /graph/v1/paper/{paper_id}."""
-        validate_paper_id(paper_id)
+        paper_id = quote(validate_paper_id(paper_id), safe="")
         return await cls._request(
             "GET",
             f"/graph/v1/paper/{paper_id}",
@@ -143,7 +144,7 @@ class SemanticScholarClient:
     @classmethod
     async def get_references(cls, paper_id: str, limit: int = 20) -> dict:
         """Get paper references via /graph/v1/paper/{paper_id}/references."""
-        validate_paper_id(paper_id)
+        paper_id = quote(validate_paper_id(paper_id), safe="")
         return await cls._request(
             "GET",
             f"/graph/v1/paper/{paper_id}/references",
@@ -153,7 +154,7 @@ class SemanticScholarClient:
     @classmethod
     async def get_citations(cls, paper_id: str, limit: int = 20) -> dict:
         """Get paper citations via /graph/v1/paper/{paper_id}/citations."""
-        validate_paper_id(paper_id)
+        paper_id = quote(validate_paper_id(paper_id), safe="")
         return await cls._request(
             "GET",
             f"/graph/v1/paper/{paper_id}/citations",

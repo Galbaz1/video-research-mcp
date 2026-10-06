@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -158,69 +159,74 @@ class TestNeedsVectorMigration:
 class TestMigrateCollection:
     """Tests for migrate_collection()."""
 
-    def test_export_recreate_reinsert(self, clean_config, monkeypatch, sample_col_def):
-        """Happy path: export, delete, recreate, re-insert."""
+    def test_populated_migration_refuses_without_recovery(
+        self, clean_config, monkeypatch, sample_col_def,
+    ):
+        """GIVEN populated data, WHEN migration starts, THEN refuse without mutation."""
         monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.delenv("COHERE_API_KEY", raising=False)
         from video_research_mcp.weaviate_migrate import migrate_collection
 
         mock_client = MagicMock()
+        objects = [
+            SimpleNamespace(uuid="uuid-1", properties={"title": "Test"}),
+            SimpleNamespace(uuid="uuid-2", properties={"title": "Another"}),
+        ]
+        collection = mock_client.collections.get.return_value
+        collection.iterator.return_value = objects
 
-        # Mock iterator for export
-        obj1 = MagicMock()
-        obj1.uuid = "uuid-1"
-        obj1.properties = {"title": "Test", "summary": "A summary"}
-        obj2 = MagicMock()
-        obj2.uuid = "uuid-2"
-        obj2.properties = {"title": "Test 2", "summary": "Another"}
+        with pytest.raises(RuntimeError, match="populated.*durable recovery"):
+            migrate_collection(mock_client, sample_col_def)
 
-        mock_col_export = MagicMock()
-        mock_col_export.iterator.return_value = [obj1, obj2]
+        mock_client.collections.delete.assert_not_called()
+        mock_client.collections.create.assert_not_called()
+        collection.config.update.assert_not_called()
+        collection.data.update.assert_not_called()
+        collection.batch.fixed_size.assert_not_called()
+        assert objects[0].properties == {"title": "Test"}
+        assert objects[1].properties == {"title": "Another"}
 
-        mock_col_reinsert = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__enter__ = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__exit__ = MagicMock(return_value=False)
-        mock_col_reinsert.batch.failed_objects = []
+    def test_refusal_propagates_and_schema_stays_unensured(
+        self, clean_config, monkeypatch, sample_col_def,
+    ):
+        """GIVEN populated mismatch, WHEN admission retries, THEN refusal stays visible."""
+        from video_research_mcp import weaviate_client, weaviate_schema
 
-        # First .get() for export, second .get() for re-insert
-        mock_client.collections.get.side_effect = [mock_col_export, mock_col_reinsert]
-
-        migrate_collection(mock_client, sample_col_def)
-
-        mock_client.collections.delete.assert_called_once_with("TestCollection")
-        mock_client.collections.create.assert_called_once()
-        create_kwargs = mock_client.collections.create.call_args[1]
-        assert create_kwargs["name"] == "TestCollection"
-        assert "vector_config" in create_kwargs
-
-    def test_batch_failures_logged_not_raised(self, clean_config, monkeypatch, sample_col_def):
-        """Batch failures are logged but don't raise."""
-        monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
-        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
-        monkeypatch.delenv("COHERE_API_KEY", raising=False)
-        from video_research_mcp.weaviate_migrate import migrate_collection
-
+        monkeypatch.setenv("WEAVIATE_URL", "https://unit.invalid")
+        monkeypatch.setenv("WEAVIATE_AUTO_MIGRATE", "true")
+        monkeypatch.setenv("WEAVIATE_VECTORIZER", "weaviate")
+        monkeypatch.setenv("RERANKER_ENABLED", "false")
+        monkeypatch.setattr(weaviate_schema, "ALL_COLLECTIONS", [sample_col_def])
+        monkeypatch.setattr(weaviate_client, "_client", None)
+        monkeypatch.setattr(weaviate_client, "_schema_ensured", False)
         mock_client = MagicMock()
+        mock_client.collections.list_all.return_value = {sample_col_def.name: None}
+        collection = mock_client.collections.get.return_value
+        config = _make_col_config(source_properties=["title"])
+        config.properties = [SimpleNamespace(name=p.name) for p in sample_col_def.properties]
+        collection.config.get.return_value = config
+        collection.iterator.return_value = [
+            SimpleNamespace(uuid="uuid-1", properties={"title": "retained"}),
+        ]
 
-        obj = MagicMock()
-        obj.uuid = "uuid-1"
-        obj.properties = {"title": "Test"}
+        with patch(
+            "video_research_mcp.weaviate_client.weaviate.connect_to_weaviate_cloud",
+            return_value=mock_client,
+        ) as connect:
+            for _ in range(2):
+                with pytest.raises(RuntimeError, match="populated.*durable recovery"):
+                    weaviate_client.WeaviateClient.get()
+                assert weaviate_client._schema_ensured is False
+            connect.assert_called_once()
 
-        mock_col_export = MagicMock()
-        mock_col_export.iterator.return_value = [obj]
-
-        fail_obj = MagicMock()
-        fail_obj.message = "Insert failed"
-        mock_col_reinsert = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__enter__ = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__exit__ = MagicMock(return_value=False)
-        mock_col_reinsert.batch.failed_objects = [fail_obj]
-
-        mock_client.collections.get.side_effect = [mock_col_export, mock_col_reinsert]
-
-        # Should not raise
-        migrate_collection(mock_client, sample_col_def)
+        mock_client.collections.delete.assert_not_called()
+        mock_client.collections.create.assert_not_called()
+        collection.config.add_property.assert_not_called()
+        collection.config.add_reference.assert_not_called()
+        collection.config.update.assert_not_called()
+        collection.data.update.assert_not_called()
+        collection.batch.fixed_size.assert_not_called()
 
 
 class TestMigrateAllIfNeeded:
@@ -470,54 +476,36 @@ class TestReferencePreservation:
         # Should not raise
         _restore_references(mock_col, sample_col_def_with_refs, objects)
 
-    def test_migrate_collection_preserves_references(
+    def test_populated_refusal_preserves_existing_references(
         self, clean_config, monkeypatch, sample_col_def_with_refs,
     ):
-        """Full migration preserves cross-references end-to-end.
-
-        GIVEN: collection with objects that have cross-reference edges
-        WHEN: migrate_collection runs
-        THEN: references are exported, schema recreated, edges restored
-        """
+        """GIVEN reference edges, WHEN populated migration refuses, THEN edges stay intact."""
         monkeypatch.delenv("WEAVIATE_VECTORIZER", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.delenv("COHERE_API_KEY", raising=False)
         from video_research_mcp.weaviate_migrate import migrate_collection
 
         mock_client = MagicMock()
-
-        # Mock object with references for export
-        target_ref = MagicMock()
-        target_ref.uuid = "target-uuid"
-        cross_refs = MagicMock()
-        cross_refs.objects = [target_ref]
-
-        obj = MagicMock()
-        obj.uuid = "source-uuid"
-        obj.properties = {"title": "Test", "summary": "Sum"}
-        obj.references = {"has_target": cross_refs}
-
-        mock_col_export = MagicMock()
-        mock_col_export.iterator.return_value = [obj]
-
-        mock_col_reinsert = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__enter__ = MagicMock()
-        mock_col_reinsert.batch.fixed_size.return_value.__exit__ = MagicMock(
-            return_value=False,
+        target = SimpleNamespace(uuid="target-uuid")
+        references = {"has_target": SimpleNamespace(objects=[target])}
+        obj = SimpleNamespace(
+            uuid="source-uuid", properties={"title": "Test", "summary": "Sum"},
+            references=references,
         )
-        mock_col_reinsert.batch.failed_objects = []
+        collection = mock_client.collections.get.return_value
+        collection.iterator.return_value = [obj]
 
-        mock_client.collections.get.side_effect = [
-            mock_col_export, mock_col_reinsert,
-        ]
+        with pytest.raises(RuntimeError, match="populated.*durable recovery"):
+            migrate_collection(mock_client, sample_col_def_with_refs)
 
-        migrate_collection(mock_client, sample_col_def_with_refs)
-
-        # Verify reference schema was added
-        mock_col_reinsert.config.add_reference.assert_called_once()
-        # Verify reference edge was restored
-        mock_col_reinsert.data.reference_add.assert_called_once()
-        ref_call = mock_col_reinsert.data.reference_add.call_args[1]
-        assert ref_call["from_uuid"] == "source-uuid"
-        assert ref_call["from_property"] == "has_target"
-        assert ref_call["to"] == "target-uuid"
+        mock_client.collections.delete.assert_not_called()
+        mock_client.collections.create.assert_not_called()
+        collection.config.add_reference.assert_not_called()
+        collection.config.update.assert_not_called()
+        collection.data.reference_add.assert_not_called()
+        collection.data.update.assert_not_called()
+        collection.batch.fixed_size.assert_not_called()
+        assert obj.references is references
+        assert obj.references["has_target"].objects == [target]
+        assert target.uuid == "target-uuid"
+        assert obj.properties == {"title": "Test", "summary": "Sum"}

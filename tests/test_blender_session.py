@@ -274,7 +274,7 @@ def test_wrong_readiness_identity_refused(tmp_path, monkeypatch, field, value):
     receipt = bs.expected_identity(session, process.pid)
     (tmp_path / "ready.json").write_text(json.dumps(receipt))
     actual = receipt | {field: value}
-    monkeypatch.setattr(bs, "socket_identity", lambda port: actual)
+    monkeypatch.setattr(bs, "socket_identity", lambda port, deadline: actual)
     with pytest.raises(ValueError, match="not the live owned"):
         bs.wait_ready(session, process)
 
@@ -358,7 +358,7 @@ def test_serving_uses_transport_that_owns_eof_cleanup(tmp_path, monkeypatch):
         "mcp_framework": SimpleNamespace(serve=framework_serve),
         "qwen_mm_plugins_blender.loader": SimpleNamespace(),
     }
-    monkeypatch.setattr(bs.importlib, "import_module", modules.__getitem__)
+    monkeypatch.setattr(bs, "importlib", SimpleNamespace(import_module=modules.__getitem__))
     bs.serve({"source_root": str(tmp_path)}, SimpleNamespace(pid=456))
     assert callable(seen["transport"])
 
@@ -423,3 +423,76 @@ assert sys.modules["blender_stdio"].__file__=={str(script.with_name('blender_std
 '''
     result = subprocess.run([sys.executable, "-I", "-B", "-c", code], capture_output=True, timeout=10)
     assert result.returncode == 0, result.stderr.decode()
+
+
+@pytest.mark.parametrize("expires_during", ["connect", "send", "recv"])
+def test_socket_identity_uses_absolute_startup_deadline(tmp_path, monkeypatch, expires_during):
+    """GIVEN a trickling fake socket THEN the existing absolute deadline stops read retries."""
+    session = {"output": str(tmp_path), "binary": "/fake/Blender", "session": "owned", "port": 12345}
+    process = SimpleNamespace(pid=777, poll=lambda: None)
+    identity = bs.expected_identity(session, process.pid)
+    (tmp_path / "ready.json").write_text(json.dumps(identity))
+    clock, calls = [0.0], []
+    class Connection:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            calls.append(("closed", clock[0]))
+        def settimeout(self, timeout):
+            calls.append(("timeout", timeout))
+            assert 0 < timeout <= min(1, max(0, 1 - clock[0]))
+        def sendall(self, request):
+            calls.append(("send", clock[0]))
+            if expires_during == "send":
+                clock[0] = 1.0
+        def recv(self, size):
+            calls.append(("recv", clock[0]))
+            if clock[0] >= 1:
+                raise AssertionError("receive started after absolute startup deadline")
+            clock[0] += .4
+            assert size <= 8192
+            return b" "
+    def connect(address, timeout):
+        calls.append(("connect", timeout))
+        if expires_during == "connect":
+            clock[0] = 1.0
+        return Connection()
+    monkeypatch.setattr(bs.socket, "create_connection", connect)
+    monkeypatch.setattr(bs.time, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(bs.time, "sleep", lambda value: clock.__setitem__(0, clock[0] + value))
+    with pytest.raises(TimeoutError, match="startup exceeded"):
+        bs.wait_ready(session, process, timeout=1)
+    assert len([c for c in calls if c[0] == "recv"]) <= 3
+    assert calls[-1][0] == "closed"
+
+
+@pytest.mark.parametrize("expired", [False, True])
+def test_socket_identity_preserves_valid_identity_and_refuses_expired_connect(monkeypatch, expired):
+    clock, calls = [1.0 if expired else 0.0], []
+    identity = {"pid": 777, "session": "owned"}
+    payload = json.dumps({"status": "success", "result": {"result": json.dumps(identity)}}).encode()
+    class Connection:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            calls.append("closed")
+        def settimeout(self, value):
+            assert 0 < value <= 1 - clock[0]
+        def sendall(self, request):
+            clock[0] += .2
+        def recv(self, size):
+            clock[0] += .2
+            return payload
+    def connect(address, timeout):
+        calls.append("connect")
+        clock[0] += .2
+        return Connection()
+    monkeypatch.setattr(bs.socket, "create_connection", connect)
+    monkeypatch.setattr(bs.time, "monotonic", lambda: clock[0])
+    if expired:
+        with pytest.raises(TimeoutError, match="startup deadline"):
+            bs.socket_identity(12345, 1.0)
+        assert calls == []
+    else:
+        assert bs.socket_identity(12345, 1.0) == identity
+        assert calls == ["connect", "closed"]

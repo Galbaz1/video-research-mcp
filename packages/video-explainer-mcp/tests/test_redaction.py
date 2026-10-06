@@ -43,3 +43,22 @@ def test_url_retains_resource_and_strips_all_query_values():
     assert redact_text("Fetch https://example.org/report?odd_signed_field=private#secret.") == (
         "Fetch https://example.org/report?[redacted]#[redacted]."
     )
+
+
+@pytest.mark.parametrize("encoded", ["dummy key/value", "dummy%20key%2Fvalue", "dummy+key%2Fvalue"])
+@pytest.mark.parametrize("prefix,suffix", [("prefix", "suffix"), ("_", "_"), ("-", "-")])
+def test_known_secret_embedded_in_diagnostic_word(monkeypatch, encoded, prefix, suffix):
+    """GIVEN an embedded known secret WHEN an error is returned THEN both fields redact it."""
+    monkeypatch.setattr(
+        "video_explainer_mcp.redaction.os.environ", {"EXAMPLE_API_KEY": "dummy key/value"}
+    )
+    result = make_tool_error(RuntimeError(f"Diagnostic {prefix}{encoded}{suffix}"))
+    expected = f"Diagnostic {prefix}[redacted]{suffix}"
+    assert result["error"] == expected
+    assert result["hint"] == expected
+
+
+def test_known_alphanumeric_secret_embedded_without_field(monkeypatch):
+    """GIVEN the reported word-boundary counterexample THEN the whole known value is removed."""
+    monkeypatch.setattr("video_explainer_mcp.redaction.os.environ", {"EXAMPLE_API_KEY": "abcdefgh"})
+    assert redact_text("diagnostic prefixabcdefghsuffix") == "diagnostic prefix[redacted]suffix"

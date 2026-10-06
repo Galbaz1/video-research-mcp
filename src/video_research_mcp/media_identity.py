@@ -3,13 +3,16 @@
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
 from .config import get_config
 from .local_path_policy import enforce_local_access_root, resolve_path
+from .media_local_io import _open_regular
 
 
 @dataclass(frozen=True)
@@ -65,17 +68,31 @@ def _write_aliases(aliases: dict) -> None:
 
 
 def _hash_original(path: Path) -> str:
-    """Hash original bytes with the current configured input byte ceiling."""
-    ceiling = get_config().media_max_input_bytes
-    if not path.is_file() or path.stat().st_size > ceiling:
-        raise ValueError("Source missing or exceeds MEDIA_MAX_INPUT_BYTES")
+    """Hash bounded original bytes through an admitted, stable regular descriptor."""
+    cfg = get_config()
+    ceiling = cfg.media_max_input_bytes
+    deadline = time.monotonic() + cfg.media_acquire_timeout_seconds
     digest, size = hashlib.sha256(), 0
-    with path.open("rb") as stream:
-        while chunk := stream.read(64 * 1024):
+    with _open_regular(path) as stream:
+        before = os.fstat(stream.fileno())
+        if before.st_size > ceiling:
+            raise ValueError("Source exceeds MEDIA_MAX_INPUT_BYTES")
+        while size < ceiling:
+            chunk = stream.read(min(64 * 1024, ceiling - size))
+            if not chunk:
+                break
+            if time.monotonic() > deadline:
+                raise TimeoutError("Source exceeds MEDIA_ACQUIRE_TIMEOUT_SECONDS")
             size += len(chunk)
-            if size > ceiling:
-                raise ValueError("Source exceeds MEDIA_MAX_INPUT_BYTES")
             digest.update(chunk)
+        after = os.fstat(stream.fileno())
+        current = path.lstat()
+        if (before.st_dev, before.st_ino) != (current.st_dev, current.st_ino):
+            raise ValueError("Source path changed while reading")
+        if (before.st_size, before.st_mtime_ns, before.st_ctime_ns) != (
+            after.st_size, after.st_mtime_ns, after.st_ctime_ns
+        ) or size != before.st_size:
+            raise ValueError("Source changed while reading")
     return digest.hexdigest()
 
 

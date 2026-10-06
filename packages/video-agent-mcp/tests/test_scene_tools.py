@@ -102,18 +102,25 @@ class TestExtractCode:
 class TestWriteInfrastructure:
     """Tests for styles.ts and Reference.tsx generation."""
 
-    def test_writes_styles_and_reference(self, tmp_path):
-        scenes_dir = tmp_path / "scenes"
-        _write_infrastructure(scenes_dir, "Test Project")
+    def test_writes_styles_and_reference(self, project_dir, sample_script):
+        scenes_dir = project_dir / "scenes"
+        project_title = sample_script["title"]
+        _write_infrastructure(scenes_dir, project_title)
 
         assert (scenes_dir / "styles.ts").exists()
         styles = (scenes_dir / "styles.ts").read_text()
-        assert "Test Project" in styles
+        assert styles.startswith("/**\n * Shared Style Constants\n")
+        assert project_title not in styles
         assert "COLORS" in styles
+        assert "export const COLORS = {" in styles
+        assert "export default { COLORS, FONTS, ANIMATION, SIDEBAR };" in styles
 
         assert (scenes_dir / "components" / "Reference.tsx").exists()
         ref = (scenes_dir / "components" / "Reference.tsx").read_text()
         assert "Reference" in ref
+        assert "sources: string[];" in ref
+        assert "{source}" in ref
+        assert _read_script(project_dir) == sample_script
 
 
 # ---------------------------------------------------------------------------

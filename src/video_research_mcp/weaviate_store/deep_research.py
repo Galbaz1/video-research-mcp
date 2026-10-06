@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import asyncio
 import json
+import threading
 
 from ..weaviate_client import WeaviateClient
 from ._base import _is_enabled, _now, logger
+
+_followup_lock = threading.Lock()
 
 
 async def store_deep_research(report_dict: dict) -> str | None:
@@ -122,37 +125,39 @@ async def store_deep_research_followup(
         return False
     try:
         def _update():
-            client = WeaviateClient.get()
-            collection = client.collections.get("DeepResearchReports")
-            results = collection.query.fetch_objects(
-                filters=_interaction_id_filter(original_id),
-                limit=1,
-            )
-            objs = getattr(results, "objects", [])
-            if not objs:
-                return False
+            """Serialize this process's appends; external writers are not covered."""
+            with _followup_lock:
+                client = WeaviateClient.get()
+                collection = client.collections.get("DeepResearchReports")
+                results = collection.query.fetch_objects(
+                    filters=_interaction_id_filter(original_id),
+                    limit=1,
+                )
+                objs = getattr(results, "objects", [])
+                if not objs:
+                    return False
 
-            obj = objs[0]
-            existing_ids = obj.properties.get("follow_up_ids", []) or []
-            existing_ids.append(followup_id)
+                obj = objs[0]
+                existing_ids = obj.properties.get("follow_up_ids", []) or []
+                existing_ids.append(followup_id)
 
-            existing_json = obj.properties.get("follow_ups_json", "") or "[]"
-            followups = json.loads(existing_json)
-            followups.append({
-                "id": followup_id,
-                "question": question,
-                "response": response,
-            })
+                existing_json = obj.properties.get("follow_ups_json", "") or "[]"
+                followups = json.loads(existing_json)
+                followups.append({
+                    "id": followup_id,
+                    "question": question,
+                    "response": response,
+                })
 
-            collection.data.update(
-                uuid=obj.uuid,
-                properties={
-                    "follow_up_ids": existing_ids,
-                    "follow_ups_json": json.dumps(followups),
-                    "updated_at": _now(),
-                },
-            )
-            return True
+                collection.data.update(
+                    uuid=obj.uuid,
+                    properties={
+                        "follow_up_ids": existing_ids,
+                        "follow_ups_json": json.dumps(followups),
+                        "updated_at": _now(),
+                    },
+                )
+                return True
 
         return await asyncio.to_thread(_update)
     except Exception as exc:

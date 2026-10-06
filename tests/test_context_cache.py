@@ -608,8 +608,8 @@ class TestFailureReason:
 
     def test_api_error_returns_reason(self):
         """GIVEN a last_failure entry WHEN failure_reason called THEN returns it."""
-        cc_mod._last_failure[("vid1", "model")] = "api_error:ValueError"
-        assert cc_mod.failure_reason("vid1", "model") == "api_error:ValueError"
+        cc_mod._last_failure[("vid1", "model")] = "api_error"
+        assert cc_mod.failure_reason("vid1", "model") == "api_error"
 
     def test_no_failure_returns_empty(self):
         """GIVEN no failure recorded WHEN failure_reason called THEN returns empty string."""
@@ -619,12 +619,12 @@ class TestFailureReason:
         """GIVEN both suppressed and last_failure WHEN failure_reason called THEN suppressed wins."""
         key = ("vid1", "model")
         cc_mod._suppressed.add(key)
-        cc_mod._last_failure[key] = "api_error:RuntimeError"
+        cc_mod._last_failure[key] = "api_error"
         assert cc_mod.failure_reason("vid1", "model") == "suppressed:too_few_tokens"
 
     async def test_last_failure_cleared_on_success(self):
         """GIVEN a previous failure WHEN get_or_create succeeds THEN failure cleared."""
-        cc_mod._last_failure[("abc", "gemini-pro")] = "api_error:RuntimeError"
+        cc_mod._last_failure[("abc", "gemini-pro")] = "api_error"
 
         mock_cached = MagicMock()
         mock_cached.name = "cachedContents/success"
@@ -647,8 +647,8 @@ class TestFailureReason:
             await cc_mod.get_or_create("vid1", _video_parts(), "gemini-pro")
 
         reason = cc_mod._last_failure[("vid1", "gemini-pro")]
-        assert reason.startswith("api_error:RuntimeError:")
-        assert "quota exceeded" in reason
+        assert reason == "api_error"
+        assert "quota exceeded" not in str(cc_mod.diagnostics())
 
     async def test_get_or_create_records_stale_eviction(self):
         """GIVEN a stale registry entry WHEN validation fails THEN records stale_cache_evicted."""
@@ -676,13 +676,13 @@ class TestDiagnostics:
         """GIVEN various cache states WHEN diagnostics called THEN returns structured dict."""
         cc_mod._registry[("vid1", "model-a")] = "cachedContents/aaa"
         cc_mod._suppressed.add(("short", "model-a"))
-        cc_mod._last_failure[("fail", "model-a")] = "api_error:TimeoutError"
+        cc_mod._last_failure[("fail", "model-a")] = "api_error"
 
         result = cc_mod.diagnostics()
 
         assert result["registry"] == {"vid1/model-a": "cachedContents/aaa"}
         assert "short/model-a" in result["suppressed"]
-        assert result["recent_failures"] == {"fail/model-a": "api_error:TimeoutError"}
+        assert result["recent_failures"] == {"fail/model-a": "api_error"}
         assert isinstance(result["pending"], list)
 
     def test_diagnostics_empty_state(self):
@@ -692,7 +692,7 @@ class TestDiagnostics:
 
     async def test_clear_resets_last_failure(self):
         """GIVEN failures recorded WHEN clear() called THEN last_failure emptied."""
-        cc_mod._last_failure[("vid1", "model")] = "api_error:ValueError"
+        cc_mod._last_failure[("vid1", "model")] = "api_error"
         cc_mod._registry[("a", "m")] = "cachedContents/1"
 
         mock_client = MagicMock()

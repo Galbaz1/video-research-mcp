@@ -13,20 +13,21 @@ transform source files. Optional providers and runtimes extend that core.
 
 **[Open the interactive user guide (Dutch): from your problem to an approach](https://galbaz1.github.io/video-research-mcp/guide/).**
 Search the function map or choose a task to see its tools, prerequisites and steps.
-The [English user documentation](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/README.md)
+The [English user documentation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/README.md)
 also covers setup problems and examples. Describe your problem in your MCP client
 in ordinary language to begin.
 
-[Release](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.3) ·
-[npm](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.3) ·
-[PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc3/) ·
-[Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3)
+[Release](https://github.com/Galbaz1/video-research-mcp/releases/tag/v0.8.0-rc.4) ·
+[npm](https://www.npmjs.com/package/video-research-mcp/v/0.8.0-rc.4) ·
+[PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc4/) ·
+[Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4)
 
-**Install the published `0.8.0-rc.3` prerelease (Python `0.8.0rc3`) below.**
-Examples pin that release; source references use its immutable tag. The user guide
-links to corrected main documentation and marks fixes beyond RC3. Stable
-`0.7.1` predates the native Codex plugin and expanded media surface. Later source
-fixes require a checkout or a new package release.
+**RC4 prerelease source: `0.8.0-rc.4` (Python `0.8.0rc4`).**
+Examples pin these versions; source references use the immutable `v0.8.0-rc.4`
+tag. Check the release and registry links above for availability before
+installing. The npm prerelease channel is `next`. Verify your installed version
+using the steps below. Stable `0.7.1` predates the native Codex plugin and
+expanded media surface.
 
 ## From source material to a useful result
 
@@ -78,10 +79,12 @@ limit the uploaded file.
 
 ### Codex: native plugin
 
-The plugin supplies **24 skills** and the version-pinned research server. On
-2026-10-06, the selected Codex 0.160.1 RC3 installation and fresh-session restart
-loaded the research tools and packaged skills. Use the native route below;
-it does not run the Claude workflow installer.
+The plugin supplies **24 skills** and the version-pinned research server.
+Historical RC3 observation: on 2026-10-06, the selected Codex 0.160.1 RC3
+installation and fresh-session restart loaded the research tools and packaged
+skills. This is historical RC3 evidence. Follow the verification steps below
+for the version you install. The native route does not run the Claude workflow
+installer.
 
 For a new installation, save this catalog as
 `~/.local/share/video-research-mcp/.agents/plugins/marketplace.json`, creating its
@@ -97,7 +100,7 @@ parent directories if needed:
       "source": {
         "source": "npm",
         "package": "video-research-mcp",
-        "version": "0.8.0-rc.3"
+        "version": "0.8.0-rc.4"
       },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity"
@@ -113,10 +116,10 @@ codex plugin list --json
 ```
 
 Start a fresh Codex session. Check that `video-research@video-research` is enabled,
-its source is npm at `0.8.0-rc.3`, and the server's tools are available.
+its source is npm at `0.8.0-rc.4`, and the server's tools are available.
 
 For an existing installation, use the
-[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
+[native plugin and migration guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/PLUGIN_DISTRIBUTION.md#native-codex-plugin).
 Back up local plugin edits before reinstalling: Codex replaces its managed cache.
 A manual `mcp_servers.video-research` entry can hide the plugin server. In the
 historical RC1 check on Codex 0.160.0, this also occurred when the entry was
@@ -125,7 +128,7 @@ disabled; the guide describes the specific configuration to remove.
 ### Claude Code: workflow installer
 
 ```bash
-npx video-research-mcp@0.8.0-rc.3 --global
+npx video-research-mcp@0.8.0-rc.4 --global
 ```
 
 This installs slash commands, skills and agents into `~/.claude/`, registers the
@@ -137,7 +140,7 @@ Use `--local` for project scope and set the key in
 `./.config/video-research-mcp/.env`; this replaces the shared credential-file route.
 Use `--global --check` to inspect the global installation. Updates preserve modified
 workflow files and custom configuration. See
-[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/integrations/ONBOARDING.md)
+[installer options and recovery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/integrations/ONBOARDING.md)
 for scope, checkpoints and rollback.
 
 ### Other MCP clients: server only
@@ -149,14 +152,14 @@ Use your client's stdio registration format. A typical JSON entry is:
   "mcpServers": {
     "video-research": {
       "command": "uvx",
-      "args": ["video-research-mcp==0.8.0-rc.3"]
+      "args": ["video-research-mcp==0.8.0-rc.4"]
     }
   }
 }
 ```
 
 This connects the same tools; agent workflows are installed separately. Python
-package filenames use the normalized spelling `0.8.0rc3`.
+package filenames use the normalized spelling `0.8.0rc4`.
 
 ### Verify your first connection
 
@@ -178,11 +181,11 @@ checking the returned evidence verifies the particular result.
 
 Research works without Weaviate. When storage is configured, write-through errors
 are non-fatal; verify the stored record when persistence matters. The
-[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/tutorials/KNOWLEDGE_STORE.md)
+[knowledge-store guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/tutorials/KNOWLEDGE_STORE.md)
 covers embeddings, collections and optional query dependencies. For a manually
 configured server, retain the version pin when adding extras, for example
-`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.3'`. The full runtime configuration lives in
-[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/src/video_research_mcp/config.py).
+`uvx 'video-research-mcp[tracing,agents]==0.8.0-rc.4'`. The full runtime configuration lives in
+[`ServerConfig`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/src/video_research_mcp/config.py).
 
 Image edits, OCR, speech inference, Blender, FreeCAD and local model services have
 additional runtime or backend requirements. Installing the plugin does not install
@@ -190,19 +193,19 @@ those runtimes, model weights or provider accounts. Inspect the relevant skill a
 its prerequisites before using an optional integration.
 
 For video production, the separate
-[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/packages/video-explainer-mcp/README.md)
+[explainer companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-explainer-mcp/README.md)
 orchestrates an external rendering pipeline; the
-[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/packages/video-agent-mcp/README.md)
+[scene-agent companion](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/packages/video-agent-mcp/README.md)
 handles scene-code generation. Neither is required for research. Production skills
 also provide workflows for narration, image generation, clip generation and assembly.
 
 ## Inspect and extend
 
-- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.3/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
-- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
-- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/CONTRIBUTING.md): source setup and checks.
-- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/SECURITY.md): local access, provider boundaries and reporting.
-- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/CHANGELOG.md): changes in this candidate.
+- [Tool implementations](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.4/src/video_research_mcp/tools): exact parameters and behavior. Your client's discovered MCP schemas describe the running version.
+- [Windowed video analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/docs/integrations/VIDEO_WINDOWS.md): dry-run budgets, continuation, upload limits and retained partial results.
+- [Contributing](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CONTRIBUTING.md): source setup and checks.
+- [Security policy](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/SECURITY.md): local access, provider boundaries and reporting.
+- [Changelog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/CHANGELOG.md): changes in this candidate.
 
 The selected RC3 native check covered the installed baseline and restart, with
 124 cache files. Fresh npm network acquisition versus reuse of the same-version
@@ -216,6 +219,6 @@ Created by **Fausto Albers** · [Wonder Why](https://wonderwhy.ai).
 Built with [Google Gemini](https://ai.google.dev/),
 [FastMCP](https://github.com/PrefectHQ/fastmcp) and
 [Pydantic](https://docs.pydantic.dev/), with optional knowledge and tracing integrations.
-Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/LICENSE);
-[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.3/THIRD_PARTY_NOTICES.md)
+Project code is [MIT licensed](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/LICENSE);
+[third-party notices](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.4/THIRD_PARTY_NOTICES.md)
 cover bundled components with their own terms.

@@ -40,7 +40,7 @@ def redact_text(value: str) -> str:
     for name, secret in os.environ.items():
         if len(secret) >= 4 and re.search(r"(?:API_KEY|TOKEN|SECRET|PASSWORD|COOKIE)$", name, re.I):
             for encoded in {secret, quote(secret, safe=""), quote_plus(secret)}:
-                value = re.sub(rf"(?<![\w-]){re.escape(encoded)}(?![\w-])", "[redacted]", value)
+                value = value.replace(encoded, "[redacted]")
     value = _URL.sub(_redact_url, value)
     value = _QUOTED_SECRET.sub(lambda m: f"{m[1]}{m[2]}[redacted]{m[2]}", value)
     value = _HEADERS.sub(r"\1[redacted]", value)

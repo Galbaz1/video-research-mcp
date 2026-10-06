@@ -12,7 +12,7 @@ from ...errors import make_tool_error
 from ...models.knowledge import KnowledgeHit, KnowledgeSearchResult
 from ...types import KnowledgeCollection, coerce_json_param
 from ...weaviate_client import WeaviateClient
-from ..knowledge_filters import build_collection_filter
+from ..knowledge_filters import _parse_date, build_collection_filter
 from . import knowledge_server
 from .helpers import ALL_COLLECTION_NAMES, ALLOWED_PROPERTIES, RERANK_PROPERTY, SearchType, logger, serialize
 from ...tracing import trace
@@ -68,14 +68,17 @@ async def knowledge_search(
     Returns:
         Dict matching KnowledgeSearchResult schema.
     """
-    if not get_config().weaviate_enabled:
-        return KnowledgeSearchResult(query=query).model_dump(mode="json")
-
-    collections = coerce_json_param(collections, list)
-
     try:
+        for bound, value in (("date_from", date_from), ("date_to", date_to)):
+            if value is not None and _parse_date(value) is None:
+                raise ValueError(f"{bound} must be a valid ISO date")
         cfg = get_config()
-        target = list(collections) if collections else ALL_COLLECTION_NAMES
+        if not cfg.weaviate_enabled:
+            return KnowledgeSearchResult(query=query).model_dump(mode="json")
+        collections = coerce_json_param(collections, list)
+        target = list(dict.fromkeys(collections or ALL_COLLECTION_NAMES))
+        if any(name not in ALL_COLLECTION_NAMES for name in target):
+            raise ValueError("Unknown knowledge collection")
         filter_kwargs = dict(
             evidence_tier=evidence_tier, source_tool=source_tool,
             date_from=date_from, date_to=date_to,
@@ -115,6 +118,7 @@ async def knowledge_search(
                         ))
                 except Exception as exc:
                     logger.warning("Search failed for %s: %s", col_name, exc)
+                    raise
 
             # Sort by rerank_score when available, fall back to base score
             hits.sort(

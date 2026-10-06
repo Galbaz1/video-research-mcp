@@ -251,7 +251,7 @@ async def test_url_ingestion_reuses_dns_peer_and_seed_host_policy(tmp_path, monk
 
     def client(**kwargs):
         assert kwargs["trust_env"] is False and kwargs["follow_redirects"] is False
-        return real_client(transport=httpx.MockTransport(respond), **kwargs)
+        return real_client(**{**kwargs, "transport": httpx.MockTransport(respond)})
 
     monkeypatch.setattr(url_policy, "_resolve_dns", resolve)
     monkeypatch.setattr(url_policy.httpx, "AsyncClient", client)

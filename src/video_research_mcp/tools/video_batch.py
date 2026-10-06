@@ -21,10 +21,10 @@ from video_research_mcp.tracing import trace
 
 @video_server.tool(
     annotations=ToolAnnotations(
-        readOnlyHint=True,
+        readOnlyHint=False,
         destructiveHint=False,
-        idempotentHint=True,
-        openWorldHint=False,
+        idempotentHint=False,
+        openWorldHint=True,
     )
 )
 @trace(name="video_batch_analyze", span_type="TOOL")

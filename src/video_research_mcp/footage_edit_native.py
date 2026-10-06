@@ -155,17 +155,20 @@ def scene_command(owned, source, request, offset, transform, audio, output, scen
 
 def assemble_command(scenes, directory, output):
     """Concatenate exact staged local scenes with one explicit source-audio policy."""
+    durations = [scene["duration_seconds"] for scene in scenes]
+    if any(type(duration) not in (int, float) or not 0 < duration <= 60 for duration in durations):
+        raise ValueError("Prepared scene duration must be a finite number greater than zero and at most 60 seconds")
     command = [binary("ffmpeg"), "-hide_banner", "-nostdin", "-nostats", "-v", "info", "-xerror", "-n",
                "-max_alloc", "67108864", "-threads", "1", "-filter_threads", "1", "-filter_complex_threads", "1"]
     for i in range(len(scenes)):
         command += ["-protocol_whitelist", "file", "-format_whitelist", FORMATS, "-i", str(directory / f"input-{i}.mp4")]
     audio = scenes[0]["audio"]["included"]
     filters, inputs = [], []
-    for i, scene in enumerate(scenes):
+    for i, duration in enumerate(durations):
         filters.append(f"[{i}:v:0]setpts=PTS-STARTPTS[v{i}]")
         inputs.append(f"[v{i}]")
         if audio:
-            filters.append(f"[{i}:a:0]atrim=duration={scene['duration_seconds']},asetpts=PTS-STARTPTS[a{i}]")
+            filters.append(f"[{i}:a:0]atrim=duration={duration},asetpts=PTS-STARTPTS[a{i}]")
             inputs.append(f"[a{i}]")
     filters.append("".join(inputs) + f"concat=n={len(scenes)}:v=1:a={int(audio)}[v]" + ("[a]" if audio else ""))
     command += ["-filter_complex", ";".join(filters), "-map", "[v]", "-sn", "-dn", "-map_metadata", "-1",

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import socket
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import ANY, AsyncMock, MagicMock, patch
 
 import httpx
 import pytest
@@ -302,7 +302,7 @@ class TestDownloadChecked:
             await download_checked(
                 "https://example.com/doc.pdf", tmp_path, max_bytes=10_000
             )
-            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False)
+            mock_cls.assert_called_once_with(follow_redirects=False, timeout=60, trust_env=False, transport=ANY)
 
     async def test_redirect_validates_final_url(self, tmp_path: Path):
         """GIVEN a URL that redirects to a different host,
