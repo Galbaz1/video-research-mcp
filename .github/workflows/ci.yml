@@ -35,7 +35,13 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: uv sync --locked --extra dev
       - name: Install native media test prerequisites
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo timeout --kill-after=15s 120s apt-get update
+            sudo timeout --kill-after=15s 120s apt-get install -y ffmpeg
+          fi
+          ffmpeg -version
+          ffprobe -version
       - run: uv run --locked pytest tests/ -q
         env:
           GEMINI_API_KEY: test-key-not-real
@@ -62,6 +68,7 @@ jobs:
 
   release-contract:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -80,6 +87,12 @@ jobs:
       - run: uv build
       - run: uv run --locked python scripts/check_reuse_ledger.py --archive dist/*.whl --archive dist/*.tar.gz
       - name: Install native media smoke prerequisite
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo timeout --kill-after=15s 120s apt-get update
+            sudo timeout --kill-after=15s 120s apt-get install -y ffmpeg
+          fi
+          ffmpeg -version
+          ffprobe -version
       - run: uv run --locked python scripts/smoke_built_mcp.py dist/*.whl
       - run: npm pack --dry-run

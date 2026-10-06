@@ -12,8 +12,8 @@ upstream code or runtime. Installation and rights for a separate CLI remain
 operator responsibilities.
 
 Repository links below target the immutable `v0.8.0-rc.4` source tag.
-This companion's version is `0.2.2rc2`. Verify registry availability before
-installation. For the exact source and bundled README of a registry version,
+This companion's published PyPI version is `0.2.2rc2`. For the exact source and
+bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-explainer-mcp/#files).
 
@@ -35,25 +35,18 @@ uv sync --locked --extra dev
 uv run --locked video-explainer-mcp
 ```
 
-The command starts a stdio server. Add this entry to your client's `mcpServers`
-configuration, replacing the absolute checkout path:
+The published wrapper can run directly from PyPI as a stdio MCP server. Add
+this entry to your client's `mcpServers` configuration:
 
 ```json
 {
   "video-explainer": {
-    "command": "uv",
-    "args": [
-      "run", "--locked", "--directory",
-      "/absolute/path/to/video-research-mcp/packages/video-explainer-mcp",
-      "video-explainer-mcp"
-    ]
+    "command": "uvx",
+    "args": ["video-explainer-mcp==0.2.2rc2"]
   }
 }
 ```
 
-After publication of this prepared candidate, register `uvx` with
-`video-explainer-mcp==0.2.2rc2`. Use the checkout command above until publication
-and verify the exact registry archive separately.
 The core npm installer does not register this companion or install the upstream
 renderer.
 
