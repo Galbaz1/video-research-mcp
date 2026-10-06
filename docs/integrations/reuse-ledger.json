@@ -1218,7 +1218,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "4105e89c6744667c7d0c36104aabdb15fc3cb0ca364b3e23d96f6c22c24423b5",
+          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -4578,7 +4578,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "f9c7e5582208509033bc17fee9432fabeb2c9b763d9eff654383c41bba9ea398",
+          "target_sha256": "5d61d6de9d05f434990016c3a16ef212125eaa6f14f8c1e61dca0909f171c906",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -6064,13 +6064,13 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "8b5d1613913cb8e0b1717e40baf217b38eee414fc809746c3402a9da0c17a6c9",
+          "target_sha256": "44179859c46d16c7caf951056fd6d6d34da98e3e6cc6a55593eea8e787fc13e0",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
           "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "4105e89c6744667c7d0c36104aabdb15fc3cb0ca364b3e23d96f6c22c24423b5",
+          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
         },
         {
@@ -6429,7 +6429,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "8b5d1613913cb8e0b1717e40baf217b38eee414fc809746c3402a9da0c17a6c9",
+          "target_sha256": "44179859c46d16c7caf951056fd6d6d34da98e3e6cc6a55593eea8e787fc13e0",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6495,7 +6495,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "4105e89c6744667c7d0c36104aabdb15fc3cb0ca364b3e23d96f6c22c24423b5",
+          "target_sha256": "729ffd6c00a58cbc7d8e6fe820a6659110b4e104fc316dd566235b50135fe73a",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -7783,7 +7783,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "b358bc387cad92a6bd52dca41a212a3ab1599612470faa51c4c3ef6bb0528907",
+      "sha256": "58c7ad585c82e89fc8a62c69908430f9078d5b2cd6968fefdfac53f107301f9e",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8261,7 +8261,7 @@
     },
     {
       "path": "packages/video-agent-mcp/uv.lock",
-      "sha256": "a041de01a7b46991a12fc1b77f6c46deb0c87dcee4d31f8e89cdad39a37769d1",
+      "sha256": "b0e22e854b948708c1ec45e3e32665cf98d1312032c47a9b9b6138d8db4ef102",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8595,7 +8595,7 @@
     },
     {
       "path": "packages/video-explainer-mcp/uv.lock",
-      "sha256": "109aabb730e50247915ca883b6436ebbda3c802211e291630fdf613280b965f2",
+      "sha256": "9cab8816e86e668717e4118cc855b4fcb9543522f3305c1d01eb1f1bb28fdbb1",
       "registry_packages": [
         {
           "name": "aiofile",
