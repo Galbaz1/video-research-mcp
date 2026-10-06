@@ -8,6 +8,7 @@ import math
 from pathlib import Path
 import shutil
 import wave
+from unittest.mock import AsyncMock
 
 from PIL import Image
 import pytest
@@ -208,6 +209,131 @@ async def test_changed_original_staged_or_encoded_bytes_never_deliver(drift, inp
     assert not [p for p in Path(inputs["output_directory"]).parent.glob(".education-*") if p.is_dir()]
     attempts = list(Path(inputs["output_directory"]).parent.glob(".education-attempt-*.json"))
     assert len(attempts) == 1 and json.loads(attempts[0].read_text())["status"] == "failed"
+
+
+def test_partial_promotion_preserves_replacement_inode(tmp_path, monkeypatch):
+    """A later link refusal must preserve another writer's replacement of an earlier link."""
+    stage, output = tmp_path / "stage", tmp_path / "output"
+    stage.mkdir()
+    (stage / "first.txt").write_bytes(b"owned")
+    original_link = education.os.link
+    primary = OSError("second link refused")
+    targets = []
+
+    def link(source, target, **kwargs):
+        if targets:
+            raise primary
+        original_link(source, target, **kwargs)
+        targets.append(target)
+        target.unlink()
+        target.write_bytes(b"unrelated replacement")
+
+    monkeypatch.setattr(education.os, "link", link)
+    with pytest.raises(OSError) as caught:
+        education._promote(stage, output, b"{}")
+    assert caught.value is primary
+    assert targets[0].read_bytes() == b"unrelated replacement"
+    assert (stage / targets[0].name).read_bytes() != b"unrelated replacement"
+
+
+def test_partial_promotion_cleanup_failure_keeps_link_error(tmp_path, monkeypatch):
+    """A rollback unlink failure must leave the original link error observable."""
+    stage, output = tmp_path / "stage", tmp_path / "output"
+    stage.mkdir()
+    (stage / "first.txt").write_bytes(b"owned")
+    original_link, original_unlink = education.os.link, Path.unlink
+    primary = OSError("second link refused")
+    targets = []
+
+    def link(source, target, **kwargs):
+        if targets:
+            raise primary
+        original_link(source, target, **kwargs)
+        targets.append(target)
+
+    def unlink(path, *args, **kwargs):
+        if targets and path == targets[0]:
+            raise OSError("secondary rollback")
+        return original_unlink(path, *args, **kwargs)
+
+    monkeypatch.setattr(education.os, "link", link)
+    monkeypatch.setattr(Path, "unlink", unlink)
+    with pytest.raises(OSError) as caught:
+        education._promote(stage, output, b"{}")
+    assert caught.value is primary
+    assert any("secondary rollback" in note for note in caught.value.__notes__)
+    assert targets[0].exists()
+
+
+@pytest.mark.parametrize("primary_type", [ValueError, asyncio.CancelledError])
+@pytest.mark.parametrize("failures", [("receipt",), ("discard",), ("stage",), ("receipt", "discard", "stage")])
+async def test_failure_evidence_and_cleanup_keep_primary(inputs, monkeypatch, primary_type, failures):
+    """Admission/build errors and cancellation retain identity through secondary failures."""
+    primary = primary_type("primary build failure")
+    monkeypatch.setattr(education, "_admission", AsyncMock(return_value=()))
+    monkeypatch.setattr(education, "_build", AsyncMock(side_effect=primary))
+    original_write, original_discard, original_rmtree = education._write, education._discard_promoted, education.shutil.rmtree
+
+    def write(path, body):
+        if "receipt" in failures:
+            raise OSError("secondary receipt")
+        return original_write(path, body)
+
+    def discard(*args):
+        if "discard" in failures:
+            raise OSError("secondary discard")
+        return original_discard(*args)
+
+    def rmtree(path):
+        if "stage" in failures:
+            raise OSError("secondary stage")
+        return original_rmtree(path)
+
+    monkeypatch.setattr(education, "_write", write)
+    monkeypatch.setattr(education, "_discard_promoted", discard)
+    monkeypatch.setattr(education.shutil, "rmtree", rmtree)
+    with pytest.raises(primary_type) as caught:
+        await education.build_lesson(**inputs)
+    assert caught.value is primary
+    for failure in failures:
+        assert any(f"secondary {failure}" in note for note in primary.__notes__)
+    if "receipt" not in failures:
+        record = json.loads(Path(primary.lesson_attempt_path).read_text())
+        assert record["status"] == ("cancelled" if primary_type is asyncio.CancelledError else "failed")
+    assert not Path(inputs["output_directory"]).exists()
+
+
+async def test_caller_cancellation_survives_receipt_and_stage_cleanup_failures(inputs, monkeypatch):
+    """Actual task cancellation must survive failure evidence and stage cleanup errors."""
+    entered, cancelled = asyncio.Event(), []
+    monkeypatch.setattr(education, "_admission", AsyncMock(return_value=()))
+
+    async def build(*args):
+        entered.set()
+        try:
+            await asyncio.Future()
+        except asyncio.CancelledError as exc:
+            cancelled.append(exc)
+            raise
+
+    def fail_write(*args):
+        raise OSError("secondary receipt")
+
+    def fail_cleanup(*args):
+        raise OSError("secondary stage")
+
+    monkeypatch.setattr(education, "_build", build)
+    monkeypatch.setattr(education, "_write", fail_write)
+    monkeypatch.setattr(education.shutil, "rmtree", fail_cleanup)
+    task = asyncio.create_task(education.build_lesson(**inputs))
+    await entered.wait()
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError) as caught:
+        await task
+    assert caught.value is cancelled[0]
+    assert task.cancelled()
+    for failure in ("receipt", "stage"):
+        assert any(f"secondary {failure}" in note for note in caught.value.__notes__)
 
 
 async def test_cancellation_joins_mocked_native_then_removes_only_owned_stage(inputs, native):

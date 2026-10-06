@@ -571,12 +571,18 @@ def test_browser_capture_synchronizes_esm_bindings():
     if node is None:
         pytest.skip("Node is unavailable for the builtin-only capture control")
     tests = Path(__file__).parent
-    result = subprocess.run(
-        [node, str(tests / "fixtures/browser_capture.mjs"),
-         str(tests.parent / "renderer-entry/render_entry.mjs")],
-        capture_output=True, text=True, timeout=10,
-        env={"PATH": "/usr/bin:/bin", "LC_ALL": "C"},
-    )
+    try:
+        result = subprocess.run(
+            [node, str(tests / "fixtures/browser_capture.mjs"),
+             str(tests.parent / "renderer-entry/render_entry.mjs")],
+            capture_output=True, text=True, timeout=10,
+            env={"PATH": "/usr/bin:/bin", "LC_ALL": "C"},
+        )
+    except subprocess.TimeoutExpired as exc:
+        pytest.fail(
+            "Browser capture exceeded its 10-second timeout; "
+            f"stdout={exc.stdout!r}; stderr={exc.stderr!r}",
+        )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {
         "controls": 4, "native_child_spawns": 0,

@@ -208,6 +208,9 @@ async def native_call(owned, request, configured, selections, state):
     helper_sha256 = state["job"]["request"]["diagnostic_contract"]["helper_sha256"]
     diagnostic_binding = request_binding(canonical(payload), helper_sha256)
     try:
+        await image_worker(
+            binary_identity, str(helper), None, helper_sha256, deadline=owned.deadline
+        )
         try:
             stdout, _ = await run_media_process(
                 [sys.executable, "-I", str(helper), str(path)], owned.remaining()
@@ -221,6 +224,9 @@ async def native_call(owned, request, configured, selections, state):
             ) from None
         record = await image_worker(response_record, stdout, directory, deadline=owned.deadline)
         await image_worker(binary_identity, binary_path, None, digest, deadline=owned.deadline)
+        await image_worker(
+            binary_identity, str(helper), None, helper_sha256, deadline=owned.deadline
+        )
         return attributed_record(record, configured, selections)
     finally:
         for item in directory.iterdir():
