@@ -1,8 +1,10 @@
 """Actual SQLite recovery around mocked research and video submission boundaries."""
 
 import asyncio
+import base64
 from copy import deepcopy
 import hashlib
+import json
 from pathlib import Path
 import sqlite3
 import threading
@@ -10,6 +12,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from google.genai import interactions, types
+from fastmcp import Client, FastMCP
 
 from video_research_mcp.job_store import JobStore
 from video_research_mcp.research_jobs import find_operation
@@ -19,7 +22,7 @@ from video_research_mcp.tools.research_web import (
     research_web_cancel,
 )
 from video_research_mcp.tools.video import video_batch_analyze
-from video_research_mcp.tools.jobs import job_cancel, job_status
+from video_research_mcp.tools.jobs import job_cancel, job_status, jobs_server
 import video_research_mcp.video_jobs as batch
 
 
@@ -307,10 +310,10 @@ async def test_job_status_artifact_readback_keeps_event_loop_responsive(tmp_path
     started, release = asyncio.Event(), threading.Event()
     loop = asyncio.get_running_loop()
 
-    def controlled_readback(values, check=None):
+    def controlled_readback(values, check=None, max_bytes=None):
         loop.call_soon_threadsafe(started.set)
         assert release.wait(timeout=5)
-        return original(values, check)
+        return original(values, check, max_bytes)
 
     monkeypatch.setattr(store_module, "_artifact_readback", controlled_readback)
     task = asyncio.create_task(job_status("slow-artifact"))
@@ -339,3 +342,98 @@ async def test_inline_payload_mutation_never_dispatches(videos, monkeypatch):
     assert result["failed"] == 4
     assert analysis.await_count == 0
     assert all("bytes differ" in item["error"] for item in result["items"])
+
+
+@pytest.mark.parametrize(
+    "kind,poll_tool",
+    [
+        ("dashscope_image_generation", "explainer_image_generation_poll"),
+        ("dashscope_generation", "explainer_generation_poll"),
+    ],
+)
+@pytest.mark.parametrize("route", ["direct", "mounted_mcp"])
+async def test_job_status_refuses_companion_private_custody(kind, poll_tool, route):
+    """GIVEN shared private SQLite custody, WHEN read publicly, THEN refuse it intact."""
+    image_url = "https://fixture.invalid/image.png?signature=image-secret"
+    output_url = "https://fixture.invalid/output.mp4?token=output-secret"
+    message = "Authorization: Bearer translation-secret; " + image_url
+    provider_body = json.dumps({"output": {"message": message, "url": output_url}}).encode()
+    encoded_body = base64.b64encode(provider_body).decode("ascii")
+    provider_hash = hashlib.sha256(provider_body).hexdigest()
+    private_result = {
+        "translation_message": message,
+        "image_urls": [image_url],
+        "output_url": output_url,
+        "response_body": encoded_body,
+        "response_sha256": provider_hash,
+    }
+    store = JobStore()
+    store.create(kind, {"prompt": "request-secret"}, "fixture", job_id="companion")
+    assert store.claim("companion", "owner") is not None
+    assert store.checkpoint(
+        "companion", "owner", status="completed", external_id="provider-identity",
+        result=private_result, error={"message": "error-secret"}, release=True,
+    )
+    before = store.get("companion")
+    with sqlite3.connect(store.path) as connection:
+        raw_before = connection.execute(
+            "SELECT * FROM jobs WHERE job_id=?", ("companion",)
+        ).fetchone()
+
+    if route == "direct":
+        public = await job_status("companion")
+        serialized = json.dumps(public)
+    else:
+        app = FastMCP("custody-regression")
+        app.mount(jobs_server)
+        async with Client(app) as client:
+            tools = await client.list_tools()
+            schema = next(tool.inputSchema for tool in tools if tool.name == "job_status")
+            assert schema["required"] == ["job_id"]
+            assert set(schema["properties"]) == {"job_id"}
+            response = await client.call_tool("job_status", {"job_id": "companion"})
+        public = response.structured_content
+        serialized = json.dumps({
+            "structuredContent": public,
+            "content": [block.model_dump(mode="json") for block in response.content],
+        })
+
+    after = JobStore().get("companion")
+    with sqlite3.connect(store.path) as connection:
+        assert connection.execute(
+            "SELECT * FROM jobs WHERE job_id=?", ("companion",)
+        ).fetchone() == raw_before
+    before["attestation"].pop("checked_at")
+    after["attestation"].pop("checked_at")
+    assert after == before
+    assert after["result"] == private_result
+    assert after["external_id"] == "provider-identity"
+    assert after["attestation"]["verified"]
+    assert base64.b64decode(after["result"]["response_body"]) == provider_body
+    assert after["result"]["response_sha256"] == provider_hash
+    assert "error" in public, "core job_status returned companion private custody"
+    assert poll_tool in public["error"]
+    assert "bounded operation" in public["error"]
+    assert public["retryable"] is False
+    for private in (
+        *private_result, message, image_url, output_url, encoded_body,
+        "translation-secret", "request-secret", "error-secret", "provider-identity",
+    ):
+        assert private not in serialized
+
+
+@pytest.mark.parametrize("kind", ["video_batch", "video_windows", "research", "fixture", "render"])
+async def test_job_status_retains_supported_core_readback(kind):
+    """GIVEN a retained core result, WHEN queried, THEN preserve identity and attestation."""
+    store = JobStore()
+    store.create(kind, {"input": "owned"}, "fixture", job_id="core-readback")
+    assert store.claim("core-readback", "owner") is not None
+    assert store.checkpoint(
+        "core-readback", "owner", status="completed", result={"output": "owned"}, release=True,
+    )
+    expected = store.get("core-readback")
+    actual = await job_status("core-readback")
+    expected["attestation"].pop("checked_at")
+    actual["attestation"].pop("checked_at")
+    assert actual == expected
+    assert actual["attestation"]["verified"]

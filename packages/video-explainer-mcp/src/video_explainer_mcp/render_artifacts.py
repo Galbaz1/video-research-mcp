@@ -60,10 +60,10 @@ def render_outputs(output_dir: Path) -> dict[str, dict]:
     return outputs
 
 
-def verify_output(artifact: dict) -> bool:
+def verify_output(artifact: dict, max_bytes: int = MAX_RENDER_BYTES) -> bool:
     """Read back the exact accepted output bytes; a path alone proves nothing."""
     try:
-        return file_revision(Path(artifact["path"]), MAX_RENDER_BYTES) == {
+        return file_revision(Path(artifact["path"]), max_bytes) == {
             "sha256": artifact["sha256"],
             "size_bytes": artifact["size_bytes"],
         }

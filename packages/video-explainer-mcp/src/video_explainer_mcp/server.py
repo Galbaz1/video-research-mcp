@@ -22,8 +22,12 @@ from .tools.render_factcheck import render_factcheck_server
 from .tools.timing import timing_server
 from .tools.refinement import refinement_server
 from .tools.materials import materials_server
+from .tools.generation import generation_server
+from .tools.image_generation import image_generation_server
 
 logger = logging.getLogger(__name__)
+# HTTPX INFO logs include complete signed result URLs.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 @asynccontextmanager
@@ -61,6 +65,8 @@ app.mount(render_factcheck_server)
 app.mount(timing_server)
 app.mount(refinement_server)
 app.mount(materials_server)
+app.mount(generation_server)
+app.mount(image_generation_server)
 
 
 def main() -> None:

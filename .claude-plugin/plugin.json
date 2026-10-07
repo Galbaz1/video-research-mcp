@@ -1,6 +1,6 @@
 {
   "name": "gr",
-  "version": "0.8.0-rc.5",
+  "version": "0.8.0-rc.6",
   "description": "Claude Code workflows for video analysis, research, content extraction, knowledge search, and optional explainer video production.",
   "author": {
     "name": "Fausto Albers"

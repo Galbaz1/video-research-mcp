@@ -105,7 +105,7 @@ def _artifacts(values) -> dict:
     return values
 
 
-def _artifact_readback(values, check=None) -> tuple[str, dict]:
+def _artifact_readback(values, check=None, max_bytes=None) -> tuple[str, dict]:
     """Stream regular original files; missing, changed and symlink outputs are unverified."""
     details = {}
     try:
@@ -122,13 +122,26 @@ def _artifact_readback(values, check=None) -> tuple[str, dict]:
             flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
             descriptor = os.open(name, flags)
             with os.fdopen(descriptor, "rb") as stream:
-                if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                before = os.fstat(stream.fileno())
+                if not stat.S_ISREG(before.st_mode):
                     raise ValueError("Nonregular artifact")
+                limit = before.st_size
+                if max_bytes is not None and limit > max_bytes:
+                    raise ValueError("Artifact exceeds readback byte ceiling")
                 digest = hashlib.sha256()
-                while chunk := stream.read(1024 * 1024):
+                total = 0
+                while chunk := stream.read(min(1024 * 1024, limit - total + 1)):
+                    total += len(chunk)
+                    if total > limit:
+                        raise ValueError("Artifact grew during readback")
                     if check:
                         check()
                     digest.update(chunk)
+                after = os.fstat(stream.fileno())
+                if (before.st_size, before.st_mtime_ns, before.st_ctime_ns) != (
+                    after.st_size, after.st_mtime_ns, after.st_ctime_ns
+                ):
+                    raise ValueError("Artifact changed during readback")
                 actual = digest.hexdigest()
             status = "verified" if actual == expected else "mismatch"
         except (OSError, ValueError):
@@ -181,7 +194,7 @@ def _result_state(row, result, parsed, artifacts, artifact_state, request_state)
     return "verified" if row["result_sha256"] == expected else "mismatch"
 
 
-def _record(row, readback_check=None) -> dict | None:
+def _record(row, readback_check=None, max_artifact_bytes=None) -> dict | None:
     """Attest readback bytes separately from retained lifecycle status or semantic truth."""
     if row is None:
         return None
@@ -191,7 +204,7 @@ def _record(row, readback_check=None) -> dict | None:
     result["result"], parsed_result = _read_json(result.pop("result_json"))
     result["error"], _ = _read_json(result.pop("error_json"))
     result["artifact_hashes"], _ = _read_json(result.pop("artifact_hashes_json"))
-    artifact_state, details = _artifact_readback(result["artifact_hashes"], readback_check)
+    artifact_state, details = _artifact_readback(result["artifact_hashes"], readback_check, max_artifact_bytes)
     result_state = _result_state(
         row,
         result["result"],
@@ -290,12 +303,13 @@ def _initialize(db) -> None:
 class JobStore:
     """Durable lease/CAS store shared by adapters; recovered ownership never permits resubmission."""
 
-    def __init__(self, path=None, *, readback_check=None):
+    def __init__(self, path=None, *, readback_check=None, max_artifact_bytes=None):
         """Resolve the shared location without opening the database at import/construction."""
         self.path = Path(
             path or os.getenv("VRM_JOB_DB") or "~/.local/state/video-research-mcp/jobs.sqlite3"
         ).expanduser()
         self.readback_check = readback_check
+        self.max_artifact_bytes = max_artifact_bytes
 
     @contextmanager
     def _connect(self):
@@ -342,13 +356,13 @@ class JobStore:
                     raise ValueError("Active or unknown job already uses exclusive_key") from error
                 row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
             db.commit()
-        return _record(row, self.readback_check)
+        return _record(row, self.readback_check, self.max_artifact_bytes)
 
     def get(self, job_id) -> dict | None:
         """Return current byte attestations without promoting retained status text."""
         with self._connect() as db:
             row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
-        return _record(row, self.readback_check)
+        return _record(row, self.readback_check, self.max_artifact_bytes)
 
     def find_external(self, external_id, *, kind=None) -> dict | None:
         """Find terminal as well as active operations; ambiguous cross-kind IDs do not bind."""
@@ -361,7 +375,7 @@ class JobStore:
                 rows = db.execute(
                     "SELECT * FROM jobs WHERE external_id=? AND kind=?", (external_id, kind)
                 ).fetchall()
-        return _record(rows[0], self.readback_check) if len(rows) == 1 else None
+        return _record(rows[0], self.readback_check, self.max_artifact_bytes) if len(rows) == 1 else None
 
     def claim(self, job_id, owner, *, lease_seconds=30, now=None) -> dict | None:
         """Acquire queued or stale/unowned work for reconciliation, never an external retry."""
@@ -383,7 +397,7 @@ class JobStore:
                 else None
             )
             db.commit()
-        return _record(row, self.readback_check)
+        return _record(row, self.readback_check, self.max_artifact_bytes)
 
     def heartbeat(self, job_id, owner, *, lease_seconds=30, now=None) -> bool:
         """Extend only this unexpired owner; terminal and expired leases remain closed."""
@@ -464,7 +478,7 @@ class JobStore:
                 )
                 row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
             db.commit()
-        return _record(row, self.readback_check)
+        return _record(row, self.readback_check, self.max_artifact_bytes)
 
     def list_active(self, kind) -> list[dict]:
         """Retain all queued, active, cancellation-requested and uncertain jobs for reconciliation."""
@@ -473,4 +487,4 @@ class JobStore:
                 "SELECT * FROM jobs WHERE kind=? AND status IN ('queued','running','cancel_requested','unknown') ORDER BY created_at,job_id",
                 (kind,),
             ).fetchall()
-        return [_record(row, self.readback_check) for row in rows]
+        return [_record(row, self.readback_check, self.max_artifact_bytes) for row in rows]

@@ -6,6 +6,23 @@ source: /Users/fausto_home/.codex/instruction-modules.md
 selection: adapted for Herdr execution in this project
 -->
 
+## Current release scope and hard stop — 7 October 2026
+
+Fausto explicitly narrowed this delivery at 15:08:23 UTC. Deliver the API-first
+RC6 successor (`vrm-0e8.14.23`) from this worktree. Local models, local-model
+qualification, optional feature expansion, and full-programme integrated,
+comparative and held-out acceptance are outside this release. Preserve their
+work, frozen evaluations and failures as deferred backlog; do not mark them
+accepted. Ship only supported behavior and describe unqualified routes clearly.
+
+Hard stop: **2026-10-07 21:08:23 UTC (23:08:23 Europe/Amsterdam)**. Stop all
+owned execution and review lanes by then and report the verified delivered
+result and remaining work. No further work after that deadline without a new
+user instruction. Finish reviewed source/docs, required CI/package checks,
+actual native installation/restart/upgrade/removal, main/dev reconciliation,
+and authorized publication with exact registry/artifact readback. Reuse current
+checks where bytes are unchanged. Avoid new gates, frameworks or options.
+
 ## Scope
 
 Codex project instructions equivalent to this repo's Claude setup.
@@ -16,19 +33,9 @@ Codex project instructions equivalent to this repo's Claude setup.
 
 This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-based AGENTS discovery.
 
-## Herdr account routing — current user instruction, 2026-10-06
+## Herdr account routing — current user instruction, 2026-10-07
 
-Use only **Codex account 2** for every execution and review session in Herdr,
-through codex-herdr 2 and its isolated ~/.codex-account-2 home.
-Do not dispatch Codex account 1 or Claude until account 2 usable credits are
-verified exhausted. Unknown balance, login problems, rate limits and the calendar
-alone do not end this override. Fausto reports expiry on 7 October.
-On verified exhaustion, record its end, notify Fausto and resolve previously
-authorized project routing. There is no fixed lane ceiling; useful independent
-sessions require capacity, exclusive ownership and bounded allocations.
-Verify effective identity/home. Existing credits are authorized; no purchase,
-reset, auth copy or new API billing. Preserve unrelated sessions and close finished lanes.
-The current priority is API-first delivery; stop expanding local options.
+User routing 2026-10-07 revokes the 2026-10-06 account2-only override. Codex account1, account2 and Claude are available through real Herdr. Balance useful independent work by task fit and verified live capacity, with exclusive ownership and bounded allocations; verify effective account/home. Existing credits allowed; no purchase, reset, auth copy or new API billing. API-first delivery; stop expanding local options. Independent Codex account2 review is required before claiming full review; installed Claude/Anthropic security reviewer remains unauthorized on this coordinator route.
 
 ## What This Is
 

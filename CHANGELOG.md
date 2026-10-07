@@ -7,6 +7,37 @@ and provider configuration.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0-rc.6] - Unreleased candidate
+
+Companion candidates: `0.2.2-rc.4` (PyPI `0.2.2rc4`). Core PyPI spelling:
+`0.8.0rc6`. Publication, registry installation and fresh-client checks are pending.
+
+### Added
+
+- Seven durable companion image/video lifecycle tools: text-to-image, image edit,
+  image translation, and video from text or first/first-plus-last frames.
+  Direct HTTP routes use the companion `generation` extra and existing pinned
+  project sources; no upstream CLI is required for these operations.
+- Explicit operation, quote, price/access and source commitments, saved artifact
+  hashes and complete image/video decode checks. Request spending flags record
+  caller acknowledgements; actual human authority remains separate.
+- English setup documentation and Dutch problem-to-solution routes for the
+  candidate's 120 core, 39 explainer and two scene-agent tool declarations.
+
+### Fixed
+
+- Require HTTPS for generated image acquisition and redact credential/signed-URL
+  text in public image-translation readback while retaining private provider data.
+- Refuse both generated-media kinds through core `job_status`; direct callers to
+  bounded companion image/video operations.
+- Avoid importing optional MLflow integrations when tracing is disabled.
+
+Source/mock and synthetic decode evidence does not establish live delivery,
+creative quality, full security review, comparative superiority or programme
+acceptance. Optional S2V/HappyHorse successors need separate source acceptance.
+Stock search, local ASR intake timing and retained renderer timing limits remain.
+Historical entries below retain their original versions and evidence.
+
 ## [0.8.0-rc.5] - 2026-10-06
 
 ### Fixed

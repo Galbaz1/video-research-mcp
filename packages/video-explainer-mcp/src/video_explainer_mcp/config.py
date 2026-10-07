@@ -27,6 +27,9 @@ class ServerConfig(BaseModel):
     renderer_spec_sha256: str = Field(default="")
     elevenlabs_api_key: str = Field(default="")
     openai_api_key: str = Field(default="")
+    dashscope_api_key: str = Field(default="", repr=False)
+    dashscope_base_url: str = Field(default="")
+    dashscope_image_base_url: str = Field(default="")
 
     @field_validator("timeout", "render_timeout")
     @classmethod
@@ -87,6 +90,9 @@ class ServerConfig(BaseModel):
             renderer_spec_sha256=os.getenv("EXPLAINER_RENDERER_SPEC_SHA256", ""),
             elevenlabs_api_key=os.getenv("ELEVENLABS_API_KEY", ""),
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
+            dashscope_api_key=os.getenv("DASHSCOPE_API_KEY", ""),
+            dashscope_base_url=os.getenv("EXPLAINER_DASHSCOPE_BASE_URL", ""),
+            dashscope_image_base_url=os.getenv("EXPLAINER_DASHSCOPE_IMAGE_BASE_URL", ""),
         )
 
 

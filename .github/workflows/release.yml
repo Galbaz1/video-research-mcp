@@ -73,7 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           RELEASE_FLAGS=()
-          if ! git merge-base --is-ancestor HEAD origin/main; then
+          if [[ "${REF_NAME%%+*}" == *-* ]] || ! git merge-base --is-ancestor HEAD origin/main; then
             RELEASE_FLAGS+=(--prerelease --latest=false)
           fi
           gh release create "$REF_NAME" dist/* --title "$REF_NAME" \

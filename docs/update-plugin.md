@@ -1,15 +1,15 @@
 # Updating the Plugin
 
-This guide selects core `0.8.0-rc.5` (Python `0.8.0rc5`). Pin the intended version:
+This guide selects core `0.8.0-rc.6` (Python `0.8.0rc6`). Pin the intended version:
 `@latest` selects the stable npm channel, not this prerelease. Plugin assets and
 the Python runtime have separate installation checks. Check PyPI and npm
-availability for this RC5 candidate before using the pinned commands below:
+availability for this RC6 candidate before using the pinned commands below:
 
 ```sh
-npm view video-research-mcp@0.8.0-rc.5 version
+npm view video-research-mcp@0.8.0-rc.6 version
 ```
 
-If npm RC5 is unavailable, keep the existing plugin installation or use the
+If npm RC6 is unavailable, keep the existing plugin installation or use the
 [server-only Python route](tutorials/GETTING_STARTED.md#other-mcp-clients).
 
 ## Codex native plugin
@@ -31,18 +31,18 @@ from reuse of an existing same-version cache. Neither proves provider quality.
 1. Inspect the scope you use:
 
    ```sh
-   npx video-research-mcp@0.8.0-rc.5 --global --check
+   npx video-research-mcp@0.8.0-rc.6 --global --check
    # Or, from the project root:
-   npx video-research-mcp@0.8.0-rc.5 --local --check
+   npx video-research-mcp@0.8.0-rc.6 --local --check
    ```
 
 2. Back up custom workflows, client configuration, and the ownership manifest.
    Upgrade that scope:
 
    ```sh
-   npx video-research-mcp@0.8.0-rc.5 --global
+   npx video-research-mcp@0.8.0-rc.6 --global
    # Or, from the project root:
-   npx video-research-mcp@0.8.0-rc.5 --local
+   npx video-research-mcp@0.8.0-rc.6 --local
    ```
 
 3. Inspect skipped files. Ordinary upgrades preserve modified or unowned workflows.

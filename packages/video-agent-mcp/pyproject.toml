@@ -1,6 +1,6 @@
 [project]
 name = "video-agent-mcp"
-version = "0.2.2-rc.3"
+version = "0.2.2-rc.4"
 description = "Parallel scene generation for video explainer pipeline via Claude Agent SDK + FastMCP"
 readme = "README.md"
 requires-python = ">=3.11"
