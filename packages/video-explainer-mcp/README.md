@@ -2,7 +2,7 @@
 
 Create explainer projects, run pipeline steps, and render videos through MCP.
 This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
-with 32 tools for projects, editorial plans, generation, rendering, audio, commentary,
+with MCP tools for projects, editorial plans, generation, rendering, audio, commentary,
 narration timing, revision-bound feedback, existing-material assembly, and quality
 checks. Stock-media search/download tools are not mounted.
 The upstream checkout owns provider integrations, model selection, Remotion
@@ -168,6 +168,8 @@ See the repository's `docs/integrations/video-planning.md` for complete examples
 output checks and the remaining provider/media acceptance boundaries.
 
 ## Development
+
+The development checkout adds a [selected durable video generation route](docs/integrations/generation.md). It is absent from published `0.2.2rc3`; live provider and creative acceptance remain open.
 
 From this package directory:
 

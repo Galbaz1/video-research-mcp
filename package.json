@@ -68,7 +68,9 @@
     "docs/integrations/audio-transcription.md",
     "docs/integrations/qwen-search.md",
     "docs/integrations/qwen-dubbing.md",
-    "docs/integrations/movie-commentary.md"
+    "docs/integrations/movie-commentary.md",
+    "integrations/qwen/video-edit.json",
+    "docs/integrations/qwen-video-edit.md"
   ],
   "engines": {
     "node": ">=22"

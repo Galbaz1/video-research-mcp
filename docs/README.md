@@ -92,6 +92,8 @@ The [root README](../README.md) gives the pinned installation routes.
 | [Architecture](ARCHITECTURE.md) | Follow requests through validation, providers, sessions, caches, and storage |
 | [Diagrams](DIAGRAMS.md) | See the server boundaries and main request flows |
 | [Adding a tool](tutorials/ADDING_A_TOOL.md) | Implement and register a tool using the existing contracts |
+| [Selected video generation, development](../packages/video-explainer-mcp/docs/integrations/generation.md) | Configure the source-only Wan route and understand its remaining acceptance limits |
+| [Optional Qwen image/video contracts](integrations/qwen-video-edit.md) | Inspect the disabled pinned integration, schemas and operating limits |
 | [Writing tests](tutorials/WRITING_TESTS.md) | Use mocked fixtures and verify observable behavior |
 | [Contributing](../CONTRIBUTING.md) | Prepare a focused change and run its required checks |
 | [Security policy](../SECURITY.md) | Understand the trust boundaries and report a vulnerability |

@@ -67,6 +67,9 @@ const FILE_MAP = {
   'skills/video-translation/SKILL.md':                           'skills/video-translation/SKILL.md',
   'skills/movie-commentary/SKILL.md':                            'skills/movie-commentary/SKILL.md',
 
+  'skills/qwen-image-integration/SKILL.md': 'skills/qwen-image-integration/SKILL.md',
+  'skills/qwen-video-integration/SKILL.md': 'skills/qwen-video-integration/SKILL.md',
+
   // Preserve the support tree's relative docs/descriptors and adjacent helper imports.
   'LICENSE':                              'skills/video-research-resources/LICENSE',
   'licenses/fpdf2/GPL-3.0.txt':            'skills/video-research-resources/licenses/fpdf2/GPL-3.0.txt',
@@ -81,6 +84,8 @@ const FILE_MAP = {
   'docs/integrations/local-asr.md':          'skills/video-research-resources/docs/integrations/local-asr.md',
   'docs/integrations/qwen-dubbing.md':       'skills/video-research-resources/docs/integrations/qwen-dubbing.md',
   'docs/integrations/movie-commentary.md':   'skills/video-research-resources/docs/integrations/movie-commentary.md',
+  'docs/integrations/qwen-video-edit.md': 'skills/video-research-resources/docs/integrations/qwen-video-edit.md',
+  'integrations/qwen/video-edit.json': 'skills/video-research-resources/integrations/qwen/video-edit.json',
   'integrations/qwen/av-events.json':        'skills/video-research-resources/integrations/qwen/av-events.json',
   'integrations/qwen/footage-edit.json':     'skills/video-research-resources/integrations/qwen/footage-edit.json',
   'integrations/qwen/education.json':        'skills/video-research-resources/integrations/qwen/education.json',
@@ -115,6 +120,8 @@ const FILE_MAP = {
 
 /** Directories to clean up during uninstall (deepest first). */
 const CLEANUP_DIRS = [
+  'skills/qwen-image-integration',
+  'skills/qwen-video-integration',
   'skills/av-events',
   'skills/educational-explainer/scripts',
   'skills/educational-explainer',

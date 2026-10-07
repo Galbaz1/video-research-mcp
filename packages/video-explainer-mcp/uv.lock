@@ -1438,6 +1438,9 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "ruff" },
 ]
+generation = [
+    { name = "httpx" },
+]
 narration = [
     { name = "httpx" },
 ]
@@ -1446,13 +1449,14 @@ narration = [
 requires-dist = [
     { name = "fastmcp", specifier = ">=4.0.10,<5" },
     { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.1,<0.29" },
+    { name = "httpx", marker = "extra == 'generation'", specifier = ">=0.28.1,<0.29" },
     { name = "httpx", marker = "extra == 'narration'", specifier = ">=0.28.1,<0.29" },
     { name = "pydantic", specifier = ">=2.13.5,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.1.1,<10" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.4.0,<2" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.16.9,<0.17" },
 ]
-provides-extras = ["narration", "dev"]
+provides-extras = ["narration", "generation", "dev"]
 
 [[package]]
 name = "watchfiles"

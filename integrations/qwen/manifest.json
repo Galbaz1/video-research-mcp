@@ -566,7 +566,21 @@
         "tests/test_footage_edit.py",
         "tests/test_footage_edit_native.py",
         "tests/test_footage_edit_qa.py",
-        "skills/footage-edit/SKILL.md"
+        "skills/footage-edit/SKILL.md",
+        "integrations/qwen/video-edit.json",
+        "docs/integrations/qwen-video-edit.md",
+        "tests/test_qwen_generation_contract.py",
+        "skills/qwen-image-integration/SKILL.md",
+        "skills/qwen-video-integration/SKILL.md",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/generation.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/generation_request.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/generation_assets.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/models/generation.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/config.py",
+        "packages/video-explainer-mcp/src/video_explainer_mcp/server.py",
+        "packages/video-explainer-mcp/tests/test_generation_adapters.py",
+        "packages/video-explainer-mcp/docs/integrations/generation.md"
       ],
       "applicable_notice_receipts": [
         {
@@ -621,6 +635,13 @@
         "tool": "media_edit_footage",
         "state": "owned fixed two-scene native edit/visual frame checks verified; optional creative engines/native whole certificate unqualified",
         "claim_boundary": "Independent file-only owned FFmpeg local edit; external Qwen/HyperFrames/font/SFX/GSAP runtime stays disabled and unqualified. Exact source/artifact/full-decode/timeline checks are separate from visual/human/comparison/release acceptance."
+      },
+      "owned_generation": {
+        "descriptor": "integrations/qwen/video-edit.json",
+        "optional_state": "disabled; source/mock and six-tool discovery only",
+        "guide": "packages/video-explainer-mcp/docs/integrations/generation.md",
+        "selected_model": "wan2.7-t2v",
+        "claim_boundary": "Independent selected HTTP lifecycle with operator-declared price/access admission and source/mock controls; earlier synthetic full-decode witness covers decoder component. Live generation, installed final admission, anchors/style/continuation and whole C1-C11 remain unqualified. Qwen SDK/runtime operating guards remain unqualified."
       }
     },
     {
@@ -721,7 +742,12 @@
     "bin/lib/manifest.js",
     "docs/integrations/ONBOARDING.md",
     "docs/integrations/QWEN_REUSE.md",
-    "tests/installer.test.js"
+    "tests/installer.test.js",
+    "integrations/qwen/video-edit.json",
+    "docs/integrations/qwen-video-edit.md",
+    "tests/test_qwen_generation_contract.py",
+    "skills/qwen-image-integration/SKILL.md",
+    "skills/qwen-video-integration/SKILL.md"
   ],
   "source_tag_limit": "Declared capability tags are metadata from the exact source index. No tagged release tree/byte identity, executable, weight or asset clearance is established."
 }
