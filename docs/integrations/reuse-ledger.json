@@ -1791,7 +1791,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "Own installer manifest adds the new self-contained verification skill and empty-directory cleanup; no upstream code transferred. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ],
@@ -2144,12 +2144,12 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "First-party managed registration and actual packed local/global install/rollback checks for optional disabled integration resources."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "4dfd35f0fb47b0dabc0aff24950425ae4bb6f635c1a4774ed976296a5304a5d6",
+          "target_sha256": "53a129ff34e56e33b5cb060b9f67ece5f565d246eaa97d3d1e719b96147a4987",
           "provenance": "First-party managed registration and actual packed local/global install/rollback checks for optional disabled integration resources."
         }
       ]
@@ -2193,12 +2193,12 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "First-party managed registration and actual packed local/global install/rollback checks for optional disabled integration resources."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "4dfd35f0fb47b0dabc0aff24950425ae4bb6f635c1a4774ed976296a5304a5d6",
+          "target_sha256": "53a129ff34e56e33b5cb060b9f67ece5f565d246eaa97d3d1e719b96147a4987",
           "provenance": "First-party managed registration and actual packed local/global install/rollback checks for optional disabled integration resources."
         }
       ]
@@ -2597,12 +2597,12 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "Independently authored exact video-translation skill and qwen-dubbing resource distribution using existing ownership/upgrade/uninstall rules; both native npm and Claude layouts checked with temporary offline archives. No foreign code, runtime, model or user plugin installed."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "4dfd35f0fb47b0dabc0aff24950425ae4bb6f635c1a4774ed976296a5304a5d6",
+          "target_sha256": "53a129ff34e56e33b5cb060b9f67ece5f565d246eaa97d3d1e719b96147a4987",
           "provenance": "Independently authored exact video-translation skill and qwen-dubbing resource distribution using existing ownership/upgrade/uninstall rules; both native npm and Claude layouts checked with temporary offline archives. No foreign code, runtime, model or user plugin installed."
         }
       ]
@@ -3036,7 +3036,7 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "Independently authored persistent simulator and host-authority workflow from pinned MHS requirements; no Qwen code/runtime, physical adapter, device media or model assets copied, imported or bundled. Simulator qualification and physical qualification remain separate. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         }
       ]
@@ -4650,12 +4650,12 @@
         },
         {
           "target_path": "bin/lib/copy.js",
-          "target_sha256": "feb7e236aefe0f502ea8d90bb9093dedfcfba06bb1a9e5e965392b388faf7809",
+          "target_sha256": "ff07700357912294c1020c45fe23147a9601b45ac76fb9e01ebf22def9ee656a",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         },
         {
           "target_path": "tests/installer-packaged-skills.test.js",
-          "target_sha256": "4dfd35f0fb47b0dabc0aff24950425ae4bb6f635c1a4774ed976296a5304a5d6",
+          "target_sha256": "53a129ff34e56e33b5cb060b9f67ece5f565d246eaa97d3d1e719b96147a4987",
           "provenance": "Independently authored explicit distribution map and isolated packed-artifact installer tests for vrm-0e8.7.12. Reuses existing first-party hash, ownership, checkpoint and recovery mechanisms. No foreign code, provider/runtime installation or model assets introduced."
         }
       ]

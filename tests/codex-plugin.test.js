@@ -106,3 +106,40 @@ test('packed payload carries every tracked skill with valid metadata and resolva
     }
   }
 });
+
+test('creative brief and production routes resolve in packed native and Claude layouts', (t) => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vr-creative-layout-'));
+  t.after(() => fs.rmSync(home, { recursive: true, force: true }));
+  execFileSync(process.execPath, [path.join(root, 'bin/install.js'), '--local'],
+    { cwd: home, env: { PATH: process.env.PATH, HOME: home, USERPROFILE: home }, stdio: 'ignore' });
+  for (const layout of [root, path.join(home, '.claude')]) {
+    const skill = path.join(layout, 'skills/creative-concept-design/SKILL.md');
+    const brief = path.join(path.dirname(skill), 'templates/production-brief.md');
+    const creativeFiles = ['skills/creative-concept-design/SKILL.md',
+      'skills/creative-concept-design/templates/production-brief.md',
+      ...['art-direction.md', 'motion-and-rhythm.md', 'narration-audition.md', 'current-media-routes.md'].map(name =>
+        `skills/creative-concept-design/references/${name}`)];
+    for (const relative of creativeFiles) {
+      assert.deepEqual(fs.readFileSync(path.join(layout, relative)),
+        fs.readFileSync(path.join(SOURCE, relative)), relative);
+      const document = path.join(layout, relative);
+      for (const [, target] of fs.readFileSync(document, 'utf8').matchAll(/\]\(([^)\s#]+)[^)]*\)/g)) {
+        if (/^[a-z][a-z0-9+.-]*:/i.test(target)) continue;
+        assert.ok(fs.existsSync(path.resolve(path.dirname(document), target)), `${relative} -> ${target}`);
+      }
+    }
+    assert.ok(fs.existsSync(brief));
+    const routes = [...fs.readFileSync(skill, 'utf8').matchAll(/\]\(([^)\s#]+)[^)]*\)/g)]
+      .map(([, target]) => path.resolve(path.dirname(skill), target));
+    for (const name of ['image-generation', 'video-generation', 'tts-production',
+      'ffmpeg-production', 'video-production', 'video-explainer']) {
+      assert.ok(routes.includes(path.join(layout, 'skills', name, 'SKILL.md')), name);
+    }
+    assert.ok(routes.includes(brief));
+    for (const route of routes) assert.ok(fs.existsSync(route), route);
+    const production = path.join(layout, 'skills/video-production/SKILL.md');
+    const links = [...fs.readFileSync(production, 'utf8').matchAll(/\]\(([^)\s#]+)[^)]*\)/g)]
+      .map(([, target]) => path.resolve(path.dirname(production), target));
+    assert.ok(links.includes(skill));
+  }
+});
