@@ -114,7 +114,7 @@ Lees <documenten>. Bewaar paginaverwijzingen. Vergelijk wat ze zeggen over <vraa
 
 ## Gebeurtenissen in beeld en geluid vinden
 
-**Probleem:** Waar in deze opname gebeurt <gebeurtenis>?
+**Probleem:** Waar in deze opname gebeurt `<gebeurtenis>`?
 
 **Resultaat:** Ondersteunde tijdsintervallen met bronbeelden of audiovensters en zichtbare ontbrekende dekking.
 

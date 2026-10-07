@@ -114,7 +114,7 @@ Read <documents>. Keep page references. Compare what they say about <question> a
 
 ## Find events in video and audio
 
-**Problem:** Where in this recording does <event> happen?
+**Problem:** Where in this recording does `<event>` happen?
 
 **Result:** Supported time intervals with source frames or audio windows, and visible gaps in coverage.
 
