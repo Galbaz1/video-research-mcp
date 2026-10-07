@@ -8,9 +8,10 @@ upstream renderer to prepare inputs, preview scenes, and render the video.
 Two tools are available: `agent_generate_scenes` and
 `agent_generate_single_scene`.
 
-Source-code references below target the immutable `v0.8.0-rc.5` source tag.
-This companion's release version is `0.2.2rc3`; check PyPI availability before
-installation. For the exact source and
+Source-code references below target the immutable `v0.8.0-rc.6` source tag.
+This companion's candidate version is `0.2.2-rc.4` (PyPI `0.2.2rc4`).
+Publication and installation verification are pending; check PyPI before using
+the pinned example below. Candidate tag links resolve after publication. For the exact source and
 bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-agent-mcp/#files).
@@ -29,14 +30,14 @@ uv sync --locked --extra dev
 uv run --locked video-agent-mcp
 ```
 
-The published wrapper can run directly from PyPI as a stdio MCP server. Add
+After publication, the wrapper can run from PyPI as a stdio MCP server. Add
 this entry to your client's `mcpServers` configuration:
 
 ```json
 {
   "video-agent": {
     "command": "uvx",
-    "args": ["video-agent-mcp==0.2.2rc3"]
+    "args": ["video-agent-mcp==0.2.2rc4"]
   }
 }
 ```
@@ -62,7 +63,7 @@ AGENT_MAX_TURNS=1
 The override also works when `EXPLAINER_PATH` is unset.
 
 `AGENT_MODEL` overrides the default in
-[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
+[`config.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-agent-mcp/src/video_agent_mcp/config.py). Check the
 [official model overview](https://platform.claude.com/docs/en/models/overview)
 for a supported ID. Restart the server after configuration changes.
 
@@ -125,5 +126,5 @@ uv build
 
 Tests mock SDK queries and do not generate paid content. The lockfile records the
 development environment; `pyproject.toml` defines supported dependency ranges.
-See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CONTRIBUTING.md) for repository workflow
-and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/docs/PUBLISHING.md) for release verification.
+See the root [contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/CONTRIBUTING.md) for repository workflow
+and [publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/docs/PUBLISHING.md) for release verification.

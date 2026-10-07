@@ -1,18 +1,17 @@
-# Selected video generation: development route
+# Durable video generation
 
-The development source adds three explainer MCP tools for Wan text-to-video,
-first-frame and first-plus-last-frame generation:
-`explainer_generation_submit`, `explainer_generation_poll`, and
-`explainer_generation_cancel`. Published companion `0.2.2rc3` does not contain
-these tools. This route has source/mock checks and a synthetic MP4 decode witness;
-paid generation and picture/sound quality remain unqualified. Text-to-video uses
-`wan2.7-t2v`; frame modes select `wan2.7-i2v` and send the pinned wire model
-`wan2.7-i2v-2026-04-25`.
-
+Companion RC4 candidate (`0.2.2rc4` on PyPI, source tag `v0.8.0-rc.6`)
+adds `explainer_generation_submit`, `explainer_generation_poll` and
+`explainer_generation_cancel`. Publication and installation verification are
+pending; published `0.2.2rc3` lacks these tools. Source/mock checks and synthetic
+MP4 decode evidence leave paid generation and picture/sound quality unqualified.
+Text-to-video selects `wan2.7-t2v`; first-frame and first-plus-last-frame modes
+select `wan2.7-i2v` and send wire model `wan2.7-i2v-2026-04-25`.
 Use the [image route](image-generation.md) for durable image generation, editing
 and translation. The [optional Qwen integration](../../../../docs/integrations/qwen-video-edit.md)
-has separate lip-sync and HappyHorse contracts, stays disabled by default and
-has no qualified durable generation workflow. These routes use provider APIs.
+is a separate raw-process route, disabled by default. Optional durable S2V/HappyHorse
+modes are implemented in this candidate, with separate input contracts below.
+Their native/provider and creative acceptance remains pending.
 
 ## Configure the source checkout
 
@@ -45,12 +44,12 @@ This route uses the existing project/job store and does not require the external
 
 Create an existing project directory and retain its script and scene files.
 Each `PinnedFile` supplies a project-relative path and SHA256 of its exact bytes.
-Use the schemas in [models/generation.py](../../src/video_explainer_mcp/models/generation.py)
+Use the schemas in [models/generation.py](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/models/generation.py)
 for the complete request and declaration fields.
 
 A request binds a unique `logical_job_id`, script/scene IDs and pins, prompt,
 model, duration, resolution, ratio, seed and `synthetic illustrative` label.
-Supported durations are integer 2–15 seconds; resolutions are 720P/1080P and
+For the selected Wan2.7 modes, durations are integer 2–15 seconds; resolutions are 720P/1080P and
 ratios are 16:9, 9:16, 1:1, 4:3 and 3:4. The selected contract requires audio.
 `watermark=true` and `prompt_extend=false` are the defaults; both controls are
 explicitly configurable and retained in the saved request and asset handoff.
@@ -66,6 +65,30 @@ the exact pinned image bytes as data URIs. Identity/style references, driving
 audio, continuation and transparency remain unsupported on this video route;
 unsupported intent fails before submission.
 
+### Optional cloud modes in the candidate
+
+These models use the same durable submit, poll and cancel tools. They require
+model-specific quotes and pinned inputs; they do not use the optional Qwen CLI.
+
+| Model | Inputs | Duration and resolution |
+| --- | --- | --- |
+| `wan2.2-s2v` | One `portrait` image and one `driving_audio` WAV/MP3 | Whole audio, shorter than 20 seconds; 480P/720P; Beijing workspace only |
+| `happyhorse-1.0-t2v` | Prompt and ratio; no references | Integer 3–15 seconds; 720P/1080P |
+| `happyhorse-1.0-i2v` | One `first_frame` image | Integer 3–15 seconds; 720P/1080P |
+| `happyhorse-1.0-r2v` | 1–9 image references, each identified as `[Image N]` in the prompt | Integer 3–15 seconds; 720P/1080P |
+| `happyhorse-1.0-video-edit` | One `source_video` H.264 MP4/MOV and 0–5 image references | Whole video, 3–15 seconds; 720P/1080P |
+
+Declare `expected_dimensions` and `expected_audio`. Output dimensions must
+match the selected tier and the declared ratio or input aspect. The local
+admission policy allows 10% deviation from the nominal tier pixel area and 2%
+from the aspect ratio; these tolerances are not provider output guarantees.
+Optional modes do not require a multiple-of-16 pixel grid. S2V and video-edit
+retain measured whole-media duration: declared duration must be within 0.1
+seconds, and the quote uses the measured value, including fractional seconds.
+S2V requires audio in the output. See the request schema for each mode's allowed
+controls, media formats, roles and size bounds; unsupported controls or excess
+references fail before submission.
+
 Before submit, provide three pinned JSON declarations inside the project:
 
 1. `PriceDeclaration`: selected model/resolution, currency, positive per-second
@@ -76,12 +99,15 @@ Before submit, provide three pinned JSON declarations inside the project:
    absolute issue/expiry times, the request hash and selected contract hash.
 
 The request hash uses the fully validated `GenerationRequest` JSON with only
-`quote` omitted. The contract hash uses `CONTRACT` in
-[generation_request.py](../../src/video_explainer_mcp/generation_request.py).
+`quote` omitted. Compute the contract hash as `digest(contract_for(request.model))`
+for that validated request, using the model-specific contract in
+[generation_request.py](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/generation_request.py).
 Both use the existing `planning_sources.digest` canonical JSON function. Pin the
 finished quote in `request.quote`; set `max_cost`, `currency`,
-`spend_authorized=true` and an explicit authorized submit operation.
-The declared price × duration must fit the caller's bound. Missing, expired,
+`spend_authorized=true` and an explicit authorized submit operation. The flag
+is an input acknowledgement; it does not establish actual human spending authority.
+The declared price × admitted duration must fit the caller's bound; whole-media
+modes use the measured input duration rather than the rounded declaration. Missing, expired,
 changed or mismatched declarations block submission. These are operator
 declarations: the server does not authenticate the named principal, verify live
 account access/prices or impose a provider billing cap. Obtain actual source,
@@ -108,10 +134,13 @@ a cancel acknowledgment alone does not establish cancellation.
 
 On provider success, a poll downloads up to 32 MiB, hashes the saved MP4 and
 fully decodes it with FFmpeg. Qualification checks exact dimensions, duration
-within 0.1 seconds and one H.264 video plus one audio stream. Only the selected
-Shanghai result hostname is accepted; other legitimate provider result origins
-are currently unsupported. Expired URLs, redirects, changed bytes and decode
+within 0.1 seconds and one H.264 video plus the declared audio presence. Only explicitly admitted HTTPS result origins are accepted; other provider
+origins are unsupported. Redirects are refused. Expired URLs, redirects, changed bytes and decode
 errors retain failure or unknown status. Outputs bind the original script/scene,
 request/source hashes, model, task ID and synthetic label. Inspect the returned
 `state.asset` and `attestation`; file validity does not certify style, factual
 accuracy or musical/visual quality.
+
+Core `job_status` refuses this generated-media kind. Use
+`explainer_generation_poll(job_id, operation)` for bounded readback/recovery.
+Full security review and whole-programme acceptance remain open.

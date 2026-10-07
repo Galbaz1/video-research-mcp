@@ -1,13 +1,23 @@
 # Video Research: van probleem naar oplossing
 
-Nederlandse tekstversie van de [interactieve gids](index.html) bij de **v0.8.0-rc.5**-broninventaris.
-Release- en bronlinks gebruiken de vaste tag. Controleer de release en registry vóór installatie.
+Nederlandse tekstversie van de [interactieve gids](https://galbaz1.github.io/video-research-mcp/guide/).
+Dit is de RC6/RC4-kandidaatbron: publicatie en installatiecontrole staan nog open.
+Bronlinks gebruiken de toekomstige vaste tag `v0.8.0-rc.6` en werken na publicatie.
 
-De kernserver heeft 120 MCP-tools; de afzonderlijk aangesloten explainer- en agentservers hebben 32 en 2 tools. Het pakket bevat 24 skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. Bekijk [installatie en configuratie](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/GETTING_STARTED.md) vóór gebruik.
+De kernserver heeft 120 tools; de apart aangesloten explainer- en agentservers
+hebben 39 en twee tools. Het pakket bevat 24 skills. Begin met
+[installatie en configuratie](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/GETTING_STARTED.md).
+Kies hieronder je probleem, controleer de voorwaarden en volg de stappen.
 
-Provider- en runtimevoorwaarden staan per route. Modelinterpretaties zijn geen onafhankelijk geverifieerde feiten. Stock zoeken/downloaden is niet aangesloten; bestaande materialen samenstellen is beschikbaar. Lokale ASR heeft nog geen gekwalificeerde deadline voor de totale intake. Brede vergelijkende kwalificatie is onvolledig. De RC5-bron bevat de broncorrecties; controleer publicatie en de geïnstalleerde versie afzonderlijk.
+Stock zoeken/downloaden is niet aangesloten. Lokale ASR-intaketiming en de
+behouden renderer-timingfout blijven open. Providerkwaliteit, volledige
+securityreview en brede vergelijkende acceptatie zijn niet vastgesteld.
+De HTTP-beeld/video-routes vereisen geen upstream CLI; andere pipelinefuncties
+hebben hun eigen voorwaarden. Modelleerresultaten controleer je tegen de bron.
 
-Alle exacte ingangen en releasebronnen staan in [catalog.json](catalog.json).
+Alle exacte ingangen staan in [catalog.json](catalog.json); routes in
+[journeys.json](journeys.json). [Engelse documentatie](../README.md) ·
+[Probleem melden](https://github.com/Galbaz1/video-research-mcp/issues).
 
 ## Een video begrijpen
 
@@ -23,10 +33,9 @@ Alle exacte ingangen en releasebronnen staan in [catalog.json](catalog.json).
 Analyseer deze video: <YouTube-URL>. Leg uit hoe <onderwerp> werkt. Verwijs naar bronmomenten, benoem wat niet zichtbaar is en stel twee vervolgvragen.
 ```
 
-- **Kies de bron.** Gebruik metadata bij een YouTube-video; geef een lokaal bestand direct aan de analyseroute. [video_metadata](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube.py#L81)
-- **Analyseer gericht.** Gebruik video_analyze voor één bron; kies windows bij een lang bestand of batch voor meerdere lokale bestanden. Batch selecteert lokaal, maar verstrekt de videobestanden aan Gemini voor mogelijk betaalde analyse. [video_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L117), [video_analyze_windows](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_windows.py#L23), [video_batch_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_batch.py#L31)
-- **Vraag door.** Maak alleen bij meerdere vragen een sessie en hergebruik die context. [video_create_session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L426), [video_continue_session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L550)
-
+- **Kies de bron.** Gebruik metadata bij een YouTube-video; geef een lokaal bestand direct aan de analyseroute. [video_metadata](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/youtube.py#L81)
+- **Analyseer gericht.** Gebruik video_analyze voor één bron; kies windows bij een lang bestand of batch voor meerdere lokale bestanden. Batch selecteert lokaal, maar verstrekt de videobestanden aan Gemini voor mogelijk betaalde analyse. [video_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video.py#L117), [video_analyze_windows](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_windows.py#L23), [video_batch_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_batch.py#L31)
+- **Vraag door.** Maak alleen bij meerdere vragen een sessie en hergebruik die context. [video_create_session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video.py#L426), [video_continue_session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video.py#L550)
 
 ## Spraak naar tekst omzetten
 
@@ -42,10 +51,9 @@ Analyseer deze video: <YouTube-URL>. Leg uit hoe <onderwerp> werkt. Verwijs naar
 Maak een transcript van <bestand>. Gebruik eerst mijn ondertitels. Toon tijdstempels en ontbrekende stukken. Vraag toestemming en noem de backend vóór ASR.
 ```
 
-- **Controleer bron en audio.** Inspecteer het lokale bestand en bepaal welk interval nodig is. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L28)
-- **Kies ondertitels of ASR.** Ondertitels gaan voor. Modelwoorden en sprekerlabels blijven interpretaties. [audio_transcribe](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_transcribe.py#L27)
-- **Bewaar alleen als gewenst.** Neem het transcript op als bron voor later onderzoek. [source_ingest](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L36)
-
+- **Controleer bron en audio.** Inspecteer het lokale bestand en bepaal welk interval nodig is. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L28)
+- **Kies ondertitels of ASR.** Ondertitels gaan voor. Modelwoorden en sprekerlabels blijven interpretaties. [audio_transcribe](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/audio_transcribe.py#L27)
+- **Bewaar alleen als gewenst.** Neem het transcript op als bron voor later onderzoek. [source_ingest](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/ingestion.py#L36)
 
 ## Een vraag beantwoorden met bronnen
 
@@ -61,10 +69,9 @@ Maak een transcript van <bestand>. Gebruik eerst mijn ondertitels. Toon tijdstem
 Onderzoek <vraag> voor <doelgroep>. Begrens tot <periode>. Maak eerst een plan, zoek primaire bronnen en onderscheid bronfeiten, interpretatie en onbekenden.
 ```
 
-- **Begrens de vraag.** Een plan start zelf geen onderzoek. [research_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L119)
-- **Verzamel bronnen.** Kies Gemini Search of een geconfigureerde zoekprovider en lees de relevante pagina’s. [web_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search.py#L24), [web_search_provider](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L26), [web_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L46)
-- **Werk het antwoord uit.** research_execute kan aangeleverde of opgehaalde bronnen gebruiken. research_deep synthetiseert en haalt zelf geen nieuwe bronnen op. [research_execute](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_execute.py#L24), [research_deep](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L39), [research_assess_evidence](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research.py#L177)
-
+- **Begrens de vraag.** Een plan start zelf geen onderzoek. [research_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research.py#L119)
+- **Verzamel bronnen.** Kies Gemini Search of een geconfigureerde zoekprovider en lees de relevante pagina’s. [web_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search.py#L24), [web_search_provider](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search_provider.py#L26), [web_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search_provider.py#L46)
+- **Werk het antwoord uit.** research_execute kan aangeleverde of opgehaalde bronnen gebruiken. research_deep synthetiseert en haalt zelf geen nieuwe bronnen op. [research_execute](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research_execute.py#L24), [research_deep](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research.py#L39), [research_assess_evidence](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research.py#L177)
 
 ## Wetenschappelijke literatuur verkennen
 
@@ -80,10 +87,9 @@ Onderzoek <vraag> voor <doelgroep>. Begrens tot <periode>. Maak eerst een plan, 
 Zoek papers over <vraag>. Geef een selectie met DOI of paper-ID. Scheid metadata van gelezen volledige teksten en vergelijk methode en beperkingen.
 ```
 
-- **Zoek papers.** Zoek titels, auteurs en publicatiemetadata. [research_paper_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L49), [research_author_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L233)
-- **Volg relevante verwijzingen.** Lees details, citaties en aanbevelingen voor geselecteerde papers. [research_paper_details](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L106), [research_paper_citations](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L141), [research_paper_recommendations](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/academic.py#L191)
-- **Lees de volledige tekst.** Geef beschikbare documenten expliciet mee; metadata is geen gelezen paper. [research_document](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_document.py#L55)
-
+- **Zoek papers.** Zoek titels, auteurs en publicatiemetadata. [research_paper_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/academic.py#L49), [research_author_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/academic.py#L233)
+- **Volg relevante verwijzingen.** Lees details, citaties en aanbevelingen voor geselecteerde papers. [research_paper_details](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/academic.py#L106), [research_paper_citations](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/academic.py#L141), [research_paper_recommendations](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/academic.py#L191)
+- **Lees de volledige tekst.** Geef beschikbare documenten expliciet mee; metadata is geen gelezen paper. [research_document](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research_document.py#L55)
 
 ## Een document uitlezen en vergelijken
 
@@ -99,10 +105,9 @@ Zoek papers over <vraag>. Geef een selectie met DOI of paper-ID. Scheid metadata
 Lees <documenten>. Bewaar paginaverwijzingen. Vergelijk wat ze zeggen over <vraag> en toon passages naast de interpretatie.
 ```
 
-- **Lees de originele bron.** Bewaar de bronidentiteit en locaties; begin niet met een los opnieuw geschreven document. Controleer de installatievoorwaarden van source_ingest: https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/docs/integrations/source-ingestion.md. [source_ingest](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L36)
-- **Controleer de extractie.** Lees de relevante pagina’s of elementen opnieuw. [source_ingest_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/ingestion.py#L67)
-- **Vergelijk inhoud.** Kies gezamenlijke documentanalyse of een specifiek outputschema. [content_batch_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/content_batch.py#L174), [content_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/content.py#L242), [research_document](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/research_document.py#L55)
-
+- **Lees de originele bron.** Bewaar de bronidentiteit en locaties; begin niet met een los opnieuw geschreven document. Controleer de installatievoorwaarden van source_ingest: https://github.com/Galbaz1/video-research-mcp/blob/019c59eafa70315f9f751227eef168bc22ec818e/docs/integrations/source-ingestion.md. [source_ingest](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/ingestion.py#L36)
+- **Controleer de extractie.** Lees de relevante pagina’s of elementen opnieuw. [source_ingest_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/ingestion.py#L67)
+- **Vergelijk inhoud.** Kies gezamenlijke documentanalyse of een specifiek outputschema. [content_batch_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/content_batch.py#L174), [content_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/content.py#L242), [research_document](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/research_document.py#L55)
 
 ## Gebeurtenissen in beeld en geluid vinden
 
@@ -118,10 +123,9 @@ Lees <documenten>. Bewaar paginaverwijzingen. Vergelijk wat ze zeggen over <vraa
 Zoek <gebeurtenis> in <bestand> tussen <begin> en <eind>. Geef de ondersteunende beelden en audio aan. Meld onzekerheid en gemiste dekking.
 ```
 
-- **Inspecteer het interval.** Meet de bron en bekijk het storyboard. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L28), [video_storyboard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L66)
-- **Kies één analyse.** Caption, count, ground en music zijn alternatieven voor verschillende vragen. [media_caption_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L48), [media_count_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L64), [media_ground_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L83), [media_analyze_music](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L99)
-- **Controleer bronmomenten.** Bekijk frames of exporteer een fragment. Een modelschatting is geen fysiek geverifieerde telling. [video_frames](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L120), [video_clip_export](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L132)
-
+- **Inspecteer het interval.** Meet de bron en bekijk het storyboard. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L28), [video_storyboard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_scenes.py#L66)
+- **Kies één analyse.** Caption, count, ground en music zijn alternatieven voor verschillende vragen. [media_caption_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_perceive.py#L48), [media_count_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_perceive.py#L64), [media_ground_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_perceive.py#L83), [media_analyze_music](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_perceive.py#L99)
+- **Controleer bronmomenten.** Bekijk frames of exporteer een fragment. Een modelschatting is geen fysiek geverifieerde telling. [video_frames](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L120), [video_clip_export](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/image.py#L132)
 
 ## Een afbeelding lezen of bewerken
 
@@ -137,10 +141,9 @@ Zoek <gebeurtenis> in <bestand> tussen <begin> en <eind>. Geef de ondersteunende
 Lees <afbeelding>. Begin met een inspecteerbare weergave. Gebruik OCR voor tekst en label modelinterpretaties apart. Bewaar het origineel bij een uitsnede.
 ```
 
-- **Bekijk de bron.** Lever echte pixels; een modelbeschrijving staat daar los van. [image_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L50)
-- **Kies OCR of vision.** Lokale OCR en model-OCR zijn aparte routes; segmentatie vraagt een externe dienst. [image_ocr](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L105), [vision_ocr](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/vision.py#L41), [vision_chat](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/vision.py#L23), [image_segment](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/segmentation.py#L27)
-- **Bewerk indien nodig.** Crop en image_edit zijn deterministische bewerkingen; controleer het manifest. [image_crop](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media.py#L37), [image_edit](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L43), [image_manifest_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/image.py#L76)
-
+- **Bekijk de bron.** Lever echte pixels; een modelbeschrijving staat daar los van. [image_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L50)
+- **Kies OCR of vision.** Lokale OCR en model-OCR zijn aparte routes; segmentatie vraagt een externe dienst. [image_ocr](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/image.py#L105), [vision_ocr](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/vision.py#L41), [vision_chat](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/vision.py#L23), [image_segment](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/segmentation.py#L27)
+- **Bewerk indien nodig.** Crop en image_edit zijn deterministische bewerkingen; controleer het manifest. [image_crop](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media.py#L37), [image_edit](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/image.py#L43), [image_manifest_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/image.py#L76)
 
 ## Bestaande footage monteren
 
@@ -156,10 +159,9 @@ Lees <afbeelding>. Begin met een inspecteerbare weergave. Gebruik OCR voor tekst
 Maak een montageplan voor <clips> van ongeveer <duur>. Toon eerst scènepreviews. Monteer pas na mijn goedkeuring en controleer audio en volledige decode.
 ```
 
-- **Bekijk scènes.** Detecteer cuts en maak een storyboard. [video_detect_scenes](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L42), [video_storyboard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_scenes.py#L66)
-- **Bereid de montage voor.** De prepare-route maakt previews; leg de gekozen momenten expliciet vast. [media_edit_footage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/footage_edit.py#L29)
-- **Assembleer na goedkeuring.** Gebruik dezelfde bron- en plangegevens; lees de werkelijke uitkomst. [media_edit_footage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/footage_edit.py#L29), [job_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/jobs.py#L19)
-
+- **Bekijk scènes.** Detecteer cuts en maak een storyboard. [video_detect_scenes](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_scenes.py#L42), [video_storyboard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_scenes.py#L66)
+- **Bereid de montage voor.** De prepare-route maakt previews; leg de gekozen momenten expliciet vast. [media_edit_footage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/footage_edit.py#L29)
+- **Assembleer na goedkeuring.** Gebruik dezelfde bron- en plangegevens; lees de werkelijke uitkomst. [media_edit_footage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/footage_edit.py#L29), [job_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/jobs.py#L19)
 
 ## Van onderzoek naar een explainer
 
@@ -175,10 +177,9 @@ Maak een montageplan voor <clips> van ongeveer <duur>. Toon eerst scènepreviews
 Maak een explainerplan voor <onderwerp> op basis van <bronnen>. Controleer de beschikbare companion en renderer. Laat me plan en claims goedkeuren voordat je genereert of rendert.
 ```
 
-- **Controleer en maak een project.** Lees prerequisites en maak een project in de geconfigureerde omgeving. [explainer_doctor](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py#L17), [explainer_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27)
-- **Plan en bind de inhoud.** Geef bronmateriaal mee, keur het plan goed en kies één generatiestap. [explainer_inject](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L55), [explainer_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20), [explainer_step](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L164)
-- **Render en beoordeel.** Volg de renderjob en controleer claims, leesbaarheid en audio apart. De factchecktool verwerkt aangeleverde waarnemingen. [explainer_render_start](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L70), [explainer_render_poll](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L150), [explainer_render_factcheck](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_factcheck.py#L25)
-
+- **Controleer en maak een project.** Lees prerequisites en maak een project in de geconfigureerde omgeving. [explainer_doctor](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/doctor.py#L17), [explainer_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27)
+- **Plan en bind de inhoud.** Geef bronmateriaal mee, keur het plan goed en kies één generatiestap. [explainer_inject](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L55), [explainer_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20), [explainer_step](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/pipeline.py#L164)
+- **Render en beoordeel.** Volg de renderjob en controleer claims, leesbaarheid en audio apart. De factchecktool verwerkt aangeleverde waarnemingen. [explainer_render_start](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L70), [explainer_render_poll](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_jobs.py#L150), [explainer_render_factcheck](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/render_factcheck.py#L25)
 
 ## Een kleine interactieve les maken
 
@@ -194,10 +195,9 @@ Maak een explainerplan voor <onderwerp> op basis van <bronnen>. Controleer de be
 Maak een les binnen het educational-explainer-domein over <ondersteund voorbeeld>. Gebruik mijn vertelling. Valideer eerst de specificatie en controleer de HTML en video afzonderlijk.
 ```
 
-- **Kies een ondersteund voorbeeld.** De skill beschrijft de eindige lesdomeinen; vrije lessen vragen een andere productieroute. [educational-explainer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/educational-explainer/SKILL.md#L1)
-- **Valideer en bouw.** Gebruik de CLI validate en build met exacte bron- en audio-invoer. [education-lesson](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/educational-explainer/scripts/lesson.py#L1)
-- **Controleer het resultaat.** Gebruik check voor bron-/uitvoerbinding; leesbaarheid en verstaanbaarheid vragen eigen beoordeling. [education-lesson](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/educational-explainer/scripts/lesson.py#L1)
-
+- **Kies een ondersteund voorbeeld.** De skill beschrijft de eindige lesdomeinen; vrije lessen vragen een andere productieroute. [educational-explainer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/educational-explainer/SKILL.md#L1)
+- **Valideer en bouw.** Gebruik de CLI validate en build met exacte bron- en audio-invoer. [education-lesson](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/educational-explainer/scripts/lesson.py#L1)
+- **Controleer het resultaat.** Gebruik check voor bron-/uitvoerbinding; leesbaarheid en verstaanbaarheid vragen eigen beoordeling. [education-lesson](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/educational-explainer/scripts/lesson.py#L1)
 
 ## Van demonstratie naar instructie
 
@@ -213,10 +213,9 @@ Maak een les binnen het educational-explainer-domein over <ondersteund voorbeeld
 Beschrijf de stappen uit <opname> voor <taak>. Verwijs naar bronmomenten, vul ontbrekende handelingen niet in en maak daarna een herbruikbare instructie.
 ```
 
-- **Onderzoek de demonstratie.** Bekijk de relevante bronmomenten. [video_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video.py#L117), [media_ground_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_perceive.py#L83)
-- **Maak leesbare instructies.** De PDF-route gebruikt echte bronframes; de skillroute bewaart stappen en brongegevens. [video_note_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_note.py#L22), [video-to-skill](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-to-skill/SKILL.md#L1)
-- **Valideer vóór verpakken.** Structuur en herkomstcontrole bewijzen geen geslaagde uitvoering van de beschreven taak. [video-skill-validate](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/validate_video_skill.py#L1), [video-skill-package](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/package_video_skill.py#L1)
-
+- **Onderzoek de demonstratie.** Bekijk de relevante bronmomenten. [video_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video.py#L117), [media_ground_events](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_perceive.py#L83)
+- **Maak leesbare instructies.** De PDF-route gebruikt echte bronframes; de skillroute bewaart stappen en brongegevens. [video_note_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_note.py#L22), [video-to-skill](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/video-to-skill/SKILL.md#L1)
+- **Valideer vóór verpakken.** Structuur en herkomstcontrole bewijzen geen geslaagde uitvoering van de beschreven taak. [video-skill-validate](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/scripts/validate_video_skill.py#L1), [video-skill-package](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/scripts/package_video_skill.py#L1)
 
 ## Eerder onderzoek terugvinden
 
@@ -232,10 +231,9 @@ Beschrijf de stappen uit <opname> voor <taak>. Verwijs naar bronmomenten, vul on
 Zoek eerder onderzoek over <onderwerp> in <collectie>. Geef de bronobjecten terug. Maak alleen een samenvatting als die optie beschikbaar is en label haar als interpretatie.
 ```
 
-- **Bekijk collecties.** Lees beschikbare schema’s en aantallen. [knowledge_schema](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/schema.py#L25), [knowledge_stats](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L101)
-- **Zoek en lees de bronobjecten.** Gebruik knowledge_search, fetch en related; knowledge_query is verouderd. Zonder Weaviate-configuratie geeft search lege resultaten; ook zoekfouten kunnen resultaten beperken. Dat bewijst niet dat er geen opgeslagen kennis is. [knowledge_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/search.py#L30), [knowledge_fetch](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L166), [knowledge_related](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/retrieval.py#L35)
-- **Vraag alleen indien gewenst een antwoord.** knowledge_ask vraagt de optionele QueryAgent. [knowledge_ask](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/knowledge/agent.py#L73)
-
+- **Bekijk collecties.** Lees beschikbare schema’s en aantallen. [knowledge_schema](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/schema.py#L25), [knowledge_stats](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/retrieval.py#L101)
+- **Zoek en lees de bronobjecten.** Gebruik knowledge_search, fetch en related; knowledge_query is verouderd. Zonder Weaviate-configuratie geeft search lege resultaten; ook zoekfouten kunnen resultaten beperken. Dat bewijst niet dat er geen opgeslagen kennis is. [knowledge_search](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/search.py#L30), [knowledge_fetch](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/retrieval.py#L166), [knowledge_related](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/retrieval.py#L35)
+- **Vraag alleen indien gewenst een antwoord.** knowledge_ask vraagt de optionele QueryAgent. [knowledge_ask](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/knowledge/agent.py#L73)
 
 ## Publieksreacties begrijpen
 
@@ -251,10 +249,9 @@ Zoek eerder onderzoek over <onderwerp> in <collectie>. Geef de bronobjecten teru
 Lees een begrensde selectie reacties op <video>. Groepeer vragen en bezwaren, geef exacte citaten en behandel de steekproef niet als het hele publiek.
 ```
 
-- **Bekijk kanaalcontext.** Lees alleen de benodigde metadata of uploadpagina. [youtube_channel_inspect](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube_channels.py#L17), [youtube_channel_catalog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube_channels.py#L38)
-- **Haal de steekproef op.** Behoud de gekozen omvang en sortering. [video_comments](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/youtube.py#L122)
-- **Bewaar en vergelijk.** Werk met brongebonden citaten; inferentie via een model is een afzonderlijke keuze. [audience_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audience.py#L23)
-
+- **Bekijk kanaalcontext.** Lees alleen de benodigde metadata of uploadpagina. [youtube_channel_inspect](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/youtube_channels.py#L17), [youtube_channel_catalog](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/youtube_channels.py#L38)
+- **Haal de steekproef op.** Behoud de gekozen omvang en sortering. [video_comments](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/youtube.py#L122)
+- **Bewaar en vergelijk.** Werk met brongebonden citaten; inferentie via een model is een afzonderlijke keuze. [audience_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/audience.py#L23)
 
 ## Ruimtelijke visualisatie verkennen · experimenteel
 
@@ -270,10 +267,9 @@ Lees een begrensde selectie reacties op <video>. Groepeer vragen en bezwaren, ge
 Verken een ruimtelijke visualisatie voor <bronbeelden>. Controleer eerst welke externe route werkelijk beschikbaar is. Benoem geometrische aannames en begin geen lokale modeluitvoering zonder geschikte runtime.
 ```
 
-- **Kies bronbeelden.** Haal de benodigde frames op. [video_frames](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L120)
-- **Controleer de externe route.** De spatial skill en adapter zijn experimenteel; aanwezigheid is geen uitvoeringsbewijs. [spatial-video-analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/spatial-video-analysis/SKILL.md#L1), [spatial-session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/scripts/spatial_session.py#L1)
-- **Kies een visualisatieomgeving.** Blender en FreeCAD hebben afzonderlijke prerequisites. [research-visualization-blender](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/research-visualization-blender/SKILL.md#L1), [research-visualization-freecad](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/research-visualization-freecad/SKILL.md#L1)
-
+- **Kies bronbeelden.** Haal de benodigde frames op. [video_frames](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L120)
+- **Controleer de externe route.** De spatial skill en adapter zijn experimenteel; aanwezigheid is geen uitvoeringsbewijs. [spatial-video-analysis](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/spatial-video-analysis/SKILL.md#L1), [spatial-session](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/scripts/spatial_session.py#L1)
+- **Kies een visualisatieomgeving.** Blender en FreeCAD hebben afzonderlijke prerequisites. [research-visualization-blender](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/research-visualization-blender/SKILL.md#L1), [research-visualization-freecad](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/research-visualization-freecad/SKILL.md#L1)
 
 ## Hardwaregedrag simuleren · experimenteel
 
@@ -289,10 +285,9 @@ Verken een ruimtelijke visualisatie voor <bronbeelden>. Controleer eerst welke e
 Bekijk <simulator>. Lees eerst apparaten, metadata en limieten. Stel een wijziging voor en voer die pas uit met de vereiste toestemming.
 ```
 
-- **Lees apparaten en limieten.** Discovery beschrijft de simulator. [mhs_discover](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L66), [mhs_meta_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L107)
-- **Inspecteer de toestand.** Health en read bewijzen geen fysieke aanwezigheid. [mhs_health_check](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L88), [mhs_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L123)
-- **Wijzig alleen expliciet.** Write en reset veranderen simulatorstate en vragen de toepasselijke toestemming. [mhs_write](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L141), [mhs_reset](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/hardware.py#L170)
-
+- **Lees apparaten en limieten.** Discovery beschrijft de simulator. [mhs_discover](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L66), [mhs_meta_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L107)
+- **Inspecteer de toestand.** Health en read bewijzen geen fysieke aanwezigheid. [mhs_health_check](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L88), [mhs_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L123)
+- **Wijzig alleen expliciet.** Write en reset veranderen simulatorstate en vragen de toepasselijke toestemming. [mhs_write](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L141), [mhs_reset](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/hardware.py#L170)
 
 ## Installeren en beschikbaarheid controleren
 
@@ -308,10 +303,9 @@ Bekijk <simulator>. Lees eerst apparaten, metadata en limieten. Stel een wijzigi
 Controleer welke video-research-tools en skills verbonden zijn. Toon ontbrekende configuratie voor <taak>, zonder sleutels te tonen. Installeer of wijzig niets zonder mijn opdracht.
 ```
 
-- **Kies de ingang.** Codex heeft 24 verpakte skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. [native-codex-plugin](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/plugin.json#L1), [plugin-installer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/bin/install.js#L1)
-- **Lees configuratie.** provider_capabilities beschrijft routes en test geen providerverbinding. [infra_configure](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/infra.py#L101), [provider_capabilities](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/text_provider.py#L43)
-- **Volg eigen werk.** Lees een bestaande job; vraag annulering alleen als dat gewenst is. [job_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/jobs.py#L19), [job_cancel](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/jobs.py#L43)
-
+- **Kies de ingang.** Codex heeft 24 verpakte skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. [native-codex-plugin](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/plugin.json#L1), [plugin-installer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/bin/install.js#L1)
+- **Lees configuratie.** provider_capabilities beschrijft routes en test geen providerverbinding. [infra_configure](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/infra.py#L101), [provider_capabilities](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/text_provider.py#L43)
+- **Volg eigen werk.** job_status leest ondersteunde kernjobs. Voor gegenereerde media: companion image finalize/poll of video poll met een expliciete operatie; job_cancel is alleen voor kern-videojobs. [job_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/jobs.py#L19), [job_cancel](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/jobs.py#L50)
 
 ## De herkomst van een beeld zoeken
 
@@ -327,10 +321,9 @@ Controleer welke video-research-tools en skills verbonden zijn. Toon ontbrekende
 Zoek de herkomst van <beeld>. Geef kandidaten met bronpagina’s. Publiceer mijn beeld niet zonder toestemming en verifieer matches aan uiterlijk, tekst en context.
 ```
 
-- **Kies een exact beeld.** Haal één bronframe op. [video_frame](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L81)
-- **Zoek kandidaten.** Kies een lokale dry-run zonder upload of uitvoering van reverse_search_frame met publieke PNG-upload naar Uguu, bytecontrole en daaropvolgende URL-inzending naar Serper Lens. web_search_provider is een afzonderlijke tekstzoekroute; die vervangt deze framezoekroute niet. [reverse_search_frame](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L66), [web_search_provider](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L26)
-- **Controleer de pagina’s.** Een zoekmatch is nog geen vastgestelde oorsprong. [web_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/search_provider.py#L46)
-
+- **Kies een exact beeld.** Haal één bronframe op. [video_frame](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L81)
+- **Zoek kandidaten.** Kies een lokale dry-run zonder upload of uitvoering van reverse_search_frame met publieke PNG-upload naar Uguu, bytecontrole en daaropvolgende URL-inzending naar Serper Lens. web_search_provider is een afzonderlijke tekstzoekroute; die vervangt deze framezoekroute niet. [reverse_search_frame](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search_provider.py#L66), [web_search_provider](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search_provider.py#L26)
+- **Controleer de pagina’s.** Een zoekmatch is nog geen vastgestelde oorsprong. [web_extract](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/search_provider.py#L46)
 
 ## Vertelling en visuele assets maken
 
@@ -338,7 +331,7 @@ Zoek de herkomst van <beeld>. Geef kandidaten met bronpagina’s. Publiceer mijn
 
 **Resultaat:** Providerartefacten die nog op inhoud, kwaliteit en samenhang beoordeeld moeten worden.
 
-**Nodig:** Afzonderlijk beschikbare generators en geconfigureerde providers. De kernserver heeft geen ingebouwde afbeelding-, TTS- of clipgenerator.
+**Nodig:** Kernserver genereert geen beelden/TTS/clips. Kies de aparte HTTP-companionroute hieronder of een afzonderlijk beschikbare providerworkflow. CLI-narratie/muziek/SFX vragen upstreamvoorwaarden.
 
 **Eerste prompt:**
 
@@ -346,10 +339,9 @@ Zoek de herkomst van <beeld>. Geef kandidaten met bronpagina’s. Publiceer mijn
 Maak een assetplan voor <video>. Controleer echte generators, invoer en kosten vóór uitvoering. Begin met één voorbeeld en beoordeel beeld en audio voordat je opschaalt.
 ```
 
-- **Kies een beschikbare generator.** Deze skills begeleiden gebruik; ze voegen geen generator toe. [tts-production](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/tts-production/SKILL.md#L1), [image-generation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/image-generation/SKILL.md#L1), [video-generation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/skills/video-generation/SKILL.md#L1)
-- **Gebruik de companion indien aangesloten.** Narratie vraagt een goedgekeurd gebonden script; muziek en SFX gebruiken gekozen upstream routes. [explainer_narration](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L77), [explainer_music](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L53), [explainer_sound](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L25)
-- **Inspecteer en meng.** Meet bronmedia en meng bestaande projectaudio afzonderlijk. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/media_read.py#L28), [audio_dsp_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/audio_dsp.py#L29), [explainer_audio_mix](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py#L18)
-
+- **Kies een beschikbare generator.** Deze skills begeleiden gebruik; ze voegen geen generator toe. [tts-production](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/tts-production/SKILL.md#L1), [image-generation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/image-generation/SKILL.md#L1), [video-generation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/video-generation/SKILL.md#L1)
+- **Gebruik de companion indien aangesloten.** Narratie vraagt een goedgekeurd gebonden script; muziek en SFX gebruiken gekozen upstream routes. [explainer_narration](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L77), [explainer_music](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L53), [explainer_sound](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio.py#L25)
+- **Inspecteer en meng.** Meet bronmedia en meng bestaande projectaudio afzonderlijk. [media_info](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/media_read.py#L28), [audio_dsp_analyze](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/audio_dsp.py#L29), [explainer_audio_mix](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/audio_mix.py#L18)
 
 ## Bestaande materialen samenstellen
 
@@ -365,10 +357,9 @@ Maak een assetplan voor <video>. Controleer echte generators, invoer en kosten v
 Stel mijn bestaande materialen <bestanden> samen tot <duur>. Gebruik alleen deze bestanden. Leg volgorde, timing en gebruiksverklaringen vast en controleer de volledige MP4.
 ```
 
-- **Maak of kies een project.** Gebruik een bestaande projectomgeving; create gebruikt de upstream CLI. [explainer_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27), [explainer_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L112)
-- **Leg het plan en de materialen vast.** Bind scènes, script en de expliciet aangeleverde bronnen. [explainer_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20)
-- **Assembleer en controleer.** Gebruik lokale materialen; deze route zoekt of downloadt geen stock. [explainer_materials_assemble](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py#L18)
-
+- **Maak of kies een project.** Gebruik een bestaande projectomgeving; create gebruikt de upstream CLI. [explainer_create](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L27), [explainer_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/project.py#L112)
+- **Leg het plan en de materialen vast.** Bind scènes, script en de expliciet aangeleverde bronnen. [explainer_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/planning.py#L20)
+- **Assembleer en controleer.** Gebruik lokale materialen; deze route zoekt of downloadt geen stock. [explainer_materials_assemble](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/materials.py#L18)
 
 ## Bronnen en notities lokaal hergebruiken
 
@@ -384,10 +375,9 @@ Stel mijn bestaande materialen <bestanden> samen tot <duur>. Gebruik alleen deze
 Orden <bronrecords> in een collectie. Zoek passages over <vraag>, bewaar notities met exacte verwijzingen en exporteer een leesbaar overzicht.
 ```
 
-- **Orden en zoek.** Werk met de aangeleverde bronrecords en een begrensde zoekvraag. [collections_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/collections.py#L26), [corpus_retrieve](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/corpus.py#L27)
-- **Bewaar context.** Koppel notities of wiki-revisies aan exacte passages. [notebook_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/notebooks.py#L23), [wiki_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/wiki.py#L27)
-- **Deel brongegevens.** Controleer welke brongegevens geschikt zijn om te delen. [evidence_export](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/evidence_export.py#L24)
-
+- **Orden en zoek.** Werk met de aangeleverde bronrecords en een begrensde zoekvraag. [collections_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/collections.py#L26), [corpus_retrieve](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/corpus.py#L27)
+- **Bewaar context.** Koppel notities of wiki-revisies aan exacte passages. [notebook_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/notebooks.py#L23), [wiki_manage](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/wiki.py#L27)
+- **Deel brongegevens.** Controleer welke brongegevens geschikt zijn om te delen. [evidence_export](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/evidence_export.py#L24)
 
 ## Een video vertalen · experimenteel
 
@@ -403,10 +393,9 @@ Orden <bronrecords> in een collectie. Zoek passages over <vraag>, bewaar notitie
 Bereid vertaling van <video> naar <taal> voor. Controleer eerst de dubbingservice. Maak alleen een analyse en plan; vraag goedkeuring vóór synthese en beoordeel de uiteindelijke audio.
 ```
 
-- **Controleer en bereid voor.** Ontbrekende service is een stopvoorwaarde. [check_dubbing_service](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L32), [prepare_video_translation_project](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L43)
-- **Controleer het vertaalplan.** Werk met exacte bronmomenten, sprekertoewijzingen en slots. [get_video_translation_state](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L152), [validate_video_translation_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L169)
-- **Render na goedkeuring.** Technische levering en beluisterde stemkwaliteit zijn aparte uitkomsten. [render_video_translation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L187), [validate_video_translation_delivery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L212)
-
+- **Controleer en bereid voor.** Ontbrekende service is een stopvoorwaarde. [check_dubbing_service](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L32), [prepare_video_translation_project](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L43)
+- **Controleer het vertaalplan.** Werk met exacte bronmomenten, sprekertoewijzingen en slots. [get_video_translation_state](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L152), [validate_video_translation_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L169)
+- **Render na goedkeuring.** Technische levering en beluisterde stemkwaliteit zijn aparte uitkomsten. [render_video_translation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L187), [validate_video_translation_delivery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/video_dubbing.py#L212)
 
 ## Filmcommentaar maken
 
@@ -422,28 +411,42 @@ Bereid vertaling van <video> naar <taal> voor. Controleer eerst de dubbingservic
 Bereid commentaar voor bij <video> over <vraag>. Leg exacte bronmomenten en vertelling vast. Laat me het plan en de segmentgroepen goedkeuren voordat je deelrenders maakt.
 ```
 
-- **Maak en controleer het plan.** Koppel het project aan de exacte bronvideo. [commentary_prepare](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L39), [commentary_validate_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L87)
-- **Leg segmentgroepen vast.** Approve geeft uitvoeringsscope; de tool voert geen deelrender uit. Die uitvoering vraagt een afzonderlijke geschikte route. [commentary_freeze_shards](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L105), [commentary_approve_shard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L125)
-- **Voeg bestaande deelrenders samen.** Pas na geslaagde deeluitkomsten volgt assemble en leveringcontrole. [commentary_assemble](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L143), [commentary_validate_delivery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L166)
+- **Maak en controleer het plan.** Koppel het project aan de exacte bronvideo. [commentary_prepare](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L39), [commentary_validate_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L87)
+- **Leg segmentgroepen vast.** Approve geeft uitvoeringsscope; de tool voert geen deelrender uit. Die uitvoering vraagt een afzonderlijke geschikte route. [commentary_freeze_shards](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L105), [commentary_approve_shard](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L125)
+- **Voeg bestaande deelrenders samen.** Pas na geslaagde deeluitkomsten volgt assemble en leveringcontrole. [commentary_assemble](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L143), [commentary_validate_delivery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/commentary.py#L166)
 
+## Een afbeelding maken, bewerken of vertalen
 
-**Live- en dubbingkaarten — concrete vragen en resultaten:**
+**Probleem:** Ik wil een nieuw beeld, een edit met referenties of vertaalde tekst in een beeld.
 
-| Vraag | Resultaat | Exacte tool |
-| --- | --- | --- |
-| Ik wil bestaande gebeurtenissen met hun tijdstempels bewaren. | Bewaar een begrensde, onveranderlijke replay met bronidentiteiten en klokkoppelingen; deze stap neemt niets op en voert geen interpretatie uit. | [live_replay](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L28) |
-| Ik wil een deel van mijn bewaarde gebeurtenissen teruglezen. | Lees een begrensde pagina met oorspronkelijke tijdstempels, klokkoppelingen en expliciete resterende, wachtende en verloren gebeurtenissen. | [live_read](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L48) |
-| Ik wil weten of mijn bewaarde gebeurtenissen aan een voorwaarde voldoen. | Controleer een letterlijke tekst-, type- of telvoorwaarde binnen vaste limieten; toon gevonden bewijs of een expliciet niet-behaald resultaat, zonder corrigerende actie. | [live_monitor](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L68) |
-| Ik wil mijn bewaarde gebeurtenissessie afsluiten. | Bewaar een afsluitrecord voor de exacte sessieversie; eerdere gebeurtenissen blijven onveranderd en worden niet opnieuw verwerkt. | [live_stop](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L88) |
-| Ik wil mijn bewaarde gebeurtenissen in mijn bronbibliotheek opnemen. | Sluit de sessie af en indexeer het bewijs met de oorspronkelijke klok in de bestaande lokale bibliotheek; onzekere inzending blijft zichtbaar en wordt niet herhaald. | [live_finalize](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L108) |
-| Ik wil weten of mijn opnameomgeving beschikbaar is. | Inspecteer opgegeven paden, uitvoerbare bestanden en apparaten; toon ontbrekende mogelijkheden en onbekende opnamerechten zonder een opname te starten. | [live_capability_probe](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L128) |
-| Ik wil een begrensde scherm- of vensteropname voorbereiden. | Bereid een overdracht aan een afzonderlijk opnameproces voor, met doel, duur en bewaarscope, of meld dat de omgeving niet wordt ondersteund; deze tool start geen opname. | [live_capture_prepare](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/live.py#L148) |
-| Ik wil weten of de nasynchronisatiedienst klaar is. | Controleer de geconfigureerde dienst en meld ontbrekende of ongereedstaande toegang als stopvoorwaarde; beschikbaarheid bewijst nog geen stemkwaliteit. | [check_dubbing_service](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L32) |
-| Ik wil mijn video voorbereiden op gesproken vertaling. | Bereid brongebonden PCM-audio, lokale stem- en achtergrondsporen en spraakintervallen voor; bewaar de doeltaal, stijl en gekozen stopfase of meld dat de dienst niet klaar is. | [prepare_video_translation_project](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L43) |
-| Ik wil spraak en achtergrondgeluid apart kunnen verwerken. | Stuur lokale PCM-audio naar de geconfigureerde dienst en bewaar alleen gecontroleerde, lokaal teruggelezen stem- en achtergrondsporen, of een expliciete fout. | [separate_dubbing_audio](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L75) |
-| Ik wil weten in welke audio-intervallen wordt gesproken. | Vraag de geconfigureerde TEN-VAD-dienst om geordende spraakintervallen en gemeten duur uit het gecontroleerde stemspoor; dit levert geen transcript of sprekeridentiteit. | [detect_dubbing_speech](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L100) |
-| Ik wil één goedgekeurde vertaalde zin als audio maken. | Laat de geconfigureerde dienst de zin uitspreken met een goedgekeurde lokale stemreferentie en bewaar de werkelijke WAV; stemkwaliteit en beluistering blijven afzonderlijk onbeoordeeld. | [synthesize_dubbing_speech](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L125) |
-| Ik wil weten welke vertaalstap mijn project nu nodig heeft. | Lees de toestand uit de werkelijke projectbestanden: analyse, vertaling, render of beoordeling; meld ontbrekend of ongeldig bewijs. | [get_video_translation_state](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L152) |
-| Ik wil mijn vertaalplan vóór uitvoering controleren. | Controleer de exacte bronkoppelingen, sprekerreferenties, zinsgroepen en tijdslots; geef de planhash en timingdiagnostiek of een validatiefout. | [validate_video_translation_plan](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L169) |
-| Ik wil mijn goedgekeurde gesproken vertaling renderen. | Render uit gecontroleerd lokaal bewijs met begrensde spraaksynthese en technische controles; geef gemeten uitvoerbestanden en rapporten, met beluistering nog apart open. | [render_video_translation](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L187) |
-| Ik wil controleren of mijn vertaalde video technisch klopt. | Controleer uitvoerhashes, alle streams, volledige decode en de audiomix; rapporteer technische uitkomsten en aangeleverde luisterbeoordeling afzonderlijk. | [validate_video_translation_delivery](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/src/video_research_mcp/tools/video_dubbing.py#L212) |
+**Resultaat:** Lokaal opgeslagen PNG/JPG met bronpins, hashes en volledige rasterdecode; semantiek en stijl beoordeel je apart.
+
+**Nodig:** Aparte explainercompanion met generation-extra; regionale DashScope-configuratie en een bestaand project. Exacte script-/scènepins en actuele gepinde prijs-, toegangs- en offertedeclaraties. Werkelijke toestemming voor inzending en kosten is apart vereist. Pillow/HTTPX via generation-extra. Text/edit: qwen-image-2.0-pro. Vertaling: qwen-mt-image in Beijing, reeds publieke HTTPS-bron; Chinees of Engels aan één kant. Geen upstream CLI.
+
+**Eerste prompt:**
+
+```text
+Kies tekst, edit of vertaling voor <beeldtaak>. Controleer companion, regio, bronnen en actuele offerte. Leg bronpins en kosten vast; vraag mijn echte toestemming vóór inzending. Bewaar job-ID en controleer de opgeslagen bestanden.
+```
+
+- **Bereid bron en offerte voor.** Volg https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/docs/integrations/image-generation.md. Pin script/scène, referenties en actuele prijs/toegang/offerte. spend_authorized=true is een invoerbevestiging, geen menselijke bevoegdheid. [explainer_image_generation_submit](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py#L17)
+- **Bewaar of herstel expliciet.** Finalize voor synchrone beelden; poll voor vertaling/herstel. Elke fetch krijgt een operation_id, dezelfde principal en authorize=true. Gebruik geen core job_status. [explainer_image_generation_finalize](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py#L57), [explainer_image_generation_poll](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py#L37)
+- **Controleer uitkomst en grenzen.** Bekijk assets, hashes en decode; betaalde providerkwaliteit en identiteit/stijl blijven ongekwalificeerd. Bij UNKNOWN eerst oorspronkelijke taak reconciliëren. Synchrone cancel is niet ondersteund. [explainer_image_generation_cancel](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py#L77)
+
+## Een korte video maken uit tekst of frames
+
+**Probleem:** Ik wil een synthetische clip met tekst, een eerste frame of eerste plus laatste frame.
+
+**Resultaat:** Een opgeslagen MP4 met script-/scène-identiteit, bron-/verzoekhashes en volledige decode; beeld- en geluidskwaliteit blijven apart.
+
+**Nodig:** Aparte explainercompanion met generation-extra; regionale DashScope-configuratie en een bestaand project. Exacte script-/scènepins en actuele gepinde prijs-, toegangs- en offertedeclaraties. Werkelijke toestemming voor inzending en kosten is apart vereist. FFmpeg/ffprobe; Wan text/frame-modellen en expliciete video-endpointconfiguratie. Geen upstream CLI. S2V/HappyHorse zijn afzonderlijke optionele opvolgers zonder geaccepteerde kwalificatie hier.
+
+**Eerste prompt:**
+
+```text
+Bereid één korte synthetische clip voor over <scène>. Kies tekst of eerste/laatste frame en pin script, scène en referenties. Controleer quote en grenzen. Vraag toestemming vóór inzending; inspecteer de volledig gedecodeerde MP4.
+```
+
+- **Begrens en dien eenmaal in.** Volg https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/docs/integrations/generation.md. Tekst/frame: gehele 2–15 seconden, 720P/1080P, toegelaten ratio. Framepins en verwachte dimensies zijn expliciet. spend_authorized is geen werkelijke kostenbevoegdheid. [explainer_generation_submit](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py#L17)
+- **Fetch en controleer expliciet.** Eén poll per operation_id/principal/authorize; geen achtergrondloop en geen core job_status. Alleen toegelaten HTTPS-uitvoer, opgeslagen hashes, dimensies/duur en volledige decode. [explainer_generation_poll](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py#L37)
+- **Herstel of annuleer gecontroleerd.** UNKNOWN vraagt reconciliatie van de oorspronkelijke taak, geen nieuw logical_job_id. Cancel alleen na verse PENDING en aparte bevestiging. Provider/creatieve kwaliteit, volledige securityreview en programma-acceptatie blijven open. [explainer_generation_cancel](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py#L57)

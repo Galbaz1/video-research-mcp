@@ -1035,7 +1035,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "1414e05711da4f022efe9465b1898275d209c05362ef0fd75da429525c9170d7",
+          "target_sha256": "2270952e81cdb0b443df5cd4def215b6a4d08ec1e6b8983db553b66283d8abd1",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -1218,7 +1218,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
+          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -4554,7 +4554,7 @@
         },
         {
           "target_path": "README.md",
-          "target_sha256": "1414e05711da4f022efe9465b1898275d209c05362ef0fd75da429525c9170d7",
+          "target_sha256": "2270952e81cdb0b443df5cd4def215b6a4d08ec1e6b8983db553b66283d8abd1",
           "provenance": "Own selected-account dispatch, bounded joined transport cleanup and public integration documentation; no foreign source body/dependency/weight/asset transferred."
         },
         {
@@ -4645,7 +4645,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "254e095a63120c6ccf3d77b17090a8472af58247cce3f68cf1919bf82778492c",
+          "target_sha256": "bb97df32149ed24fb0c070a5c8c71a47a702dde56ec62e56570b7f732800a3f2",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -6131,13 +6131,13 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "e4ae5f12c92c1884d19ab8e57170c34d9b555acb27a116a23b81e8e7af2d418b",
+          "target_sha256": "10141da1aac87a39d1ee88a26dfe9c03b66a2d2269ab341ab5a8816703ff748a",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation.",
           "receipt_refresh": "Current independently authored production storyboard/registry route and R77 causal repairs; source adoption only. Native multi-scene/playback and full nine-tool/three-workflow acceptance remain pending; foreign grants and frozen evaluations unchanged."
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
+          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
         },
         {
@@ -6364,7 +6364,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "785db7f578f8d4d656c97ea5cd0fff04cea1b846bd1e8d88c868f1b1d2048411",
+          "target_sha256": "97ac8320dc73414f79e4a59a12c4eabd1e1decb48f382ace8e5abf385c866d25",
           "provenance": "Independent noninteractive multi-source editorial plan, exact original/claim commitments, SQLite revision admission and actual script/storyboard byte binding. Full selected pinned public contracts read first; unresolved upstream grant prohibits copying/import/bundling. Optional separately installed CLI public wire only; no foreign source/runtime distributed."
         },
         {
@@ -6496,13 +6496,13 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/pyproject.toml",
-          "target_sha256": "e4ae5f12c92c1884d19ab8e57170c34d9b555acb27a116a23b81e8e7af2d418b",
+          "target_sha256": "10141da1aac87a39d1ee88a26dfe9c03b66a2d2269ab341ab5a8816703ff748a",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
         {
           "target_path": "packages/video-explainer-mcp/README.md",
-          "target_sha256": "785db7f578f8d4d656c97ea5cd0fff04cea1b846bd1e8d88c868f1b1d2048411",
+          "target_sha256": "97ac8320dc73414f79e4a59a12c4eabd1e1decb48f382ace8e5abf385c866d25",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6544,7 +6544,7 @@
         },
         {
           "target_path": "docs/PUBLISHING.md",
-          "target_sha256": "05e8067168b8e201738e95f5d60c6c584a82dd40db23a69a4c86a507f442d25e",
+          "target_sha256": "2bac9b55b002f41cfbde50ea1ce933c0c2d2511a6bfca9623cfa8bc21d67bd11",
           "provenance": "Independently authored current-request MP4 qualification and local readiness/source/public-flag gates. Original own bounded media-process helper shared/materialized in companion archives. No foreign code, browser, modules or assets imported/copied/bundled. Real configured renderer journey remains unqualified; this records code adoption, not leaf acceptance.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -6562,7 +6562,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "70a31253655c112164403bc7203ceedde3ae68d91dd81ea4ed93be3128ec835c",
+          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -7212,22 +7212,22 @@
       "implementations": [
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/generation.py",
-          "target_sha256": "4de89ec099cd0e78c1bfe56b25c0c48c1dd37ee628b9e9d12e30ff1bcdfb2dde",
+          "target_sha256": "40f437297448545e27631d8ec0baa723b6763132c222e7b41ed6c2eb73f8e9cc",
           "provenance": "Independently authored selected DashScope HTTP lifecycle informed by pinned MIT adjacent lifecycle sources. Source/mock controls and earlier synthetic decoder witness only; live output, anchors/style and whole Bead unqualified. No foreign provider wire copied."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/generation_request.py",
-          "target_sha256": "c5b86e28ad11fb548084f3e31d193390001b3e5be34369835a2a3a644e2ecd83",
+          "target_sha256": "ed97793c2698dd4263ea9c19abf706fc098004fbfd6125216e972550822f8e2b",
           "provenance": "Independently authored selected DashScope HTTP lifecycle informed by pinned MIT adjacent lifecycle sources. Source/mock controls and earlier synthetic decoder witness only; live output, anchors/style and whole Bead unqualified. No foreign provider wire copied."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/generation_assets.py",
-          "target_sha256": "86fcbdff0b8d8a7d0c701b6f767b8a36c3c974db517b5d923f425a1d319f8b0b",
+          "target_sha256": "85f24aa39f82bbb6c62b2d1516c7ff37b3e1cdbb79bc4d502dad419388ab177f",
           "provenance": "Independently authored selected DashScope HTTP lifecycle informed by pinned MIT adjacent lifecycle sources. Source/mock controls and earlier synthetic decoder witness only; live output, anchors/style and whole Bead unqualified. No foreign provider wire copied."
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/models/generation.py",
-          "target_sha256": "877f690266c3f63056ea10cb756721694de1fa29f86d0209525d18ef267cde14",
+          "target_sha256": "7340d7e1a2fc01ab9c5e4be4324579c6b8ab800ddd28bb4bfaba968ba8e3c778",
           "provenance": "Independently authored selected DashScope HTTP lifecycle informed by pinned MIT adjacent lifecycle sources. Source/mock controls and earlier synthetic decoder witness only; live output, anchors/style and whole Bead unqualified. No foreign provider wire copied."
         },
         {
@@ -7252,7 +7252,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/generation.md",
-          "target_sha256": "e14c8375dcff08e68e58e0774c4359c063b21674a5ed5f3c1f72a05ea82c3187",
+          "target_sha256": "e9c562768c4a022ac92e114cab191a4ba651ac9b8854a8c33ecc4ad5df7b3341",
           "provenance": "Independently authored selected DashScope HTTP lifecycle informed by pinned MIT adjacent lifecycle sources. Source/mock controls and earlier synthetic decoder witness only; live output, anchors/style and whole Bead unqualified. No foreign provider wire copied."
         },
         {
@@ -7307,7 +7307,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/image-generation.md",
-          "target_sha256": "26823528c6b8979d464b28cfc3f3a609536c86d3be3e1e1ea52cc8b7b51adac8",
+          "target_sha256": "2182c707b6652f576487e9b0530ffb6cc759eb74ed084b2a13eceddae4660ac7",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
         },
         {
@@ -7319,6 +7319,21 @@
           "target_path": "packages/video-explainer-mcp/tests/test_generation_references.py",
           "target_sha256": "8e0c47638de2eebbd00d1396050830220ebc1d5293a5c857ebf400ef0350a15f",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/generation_optional.py",
+          "target_sha256": "fd0ee874c1f3c630a0208534f8cf6098fee184a09ed8072e90f5bf7180d38cac",
+          "provenance": "Independently authored optional Wan S2V and HappyHorse HTTP adapters and mocked boundary tests. No upstream code, SDK, runtime or model weights copied or activated. Source and fixture checks do not establish live-provider, creative, native or whole-programme acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_generation_optional_modes.py",
+          "target_sha256": "3559c1f6dbd5b4a8349387edc7794feb15b501f2a1e18a2cbd0e6c09e2f81e09",
+          "provenance": "Independently authored optional Wan S2V and HappyHorse HTTP adapters and mocked boundary tests. No upstream code, SDK, runtime or model weights copied or activated. Source and fixture checks do not establish live-provider, creative, native or whole-programme acceptance."
+        },
+        {
+          "target_path": "packages/video-explainer-mcp/tests/test_generation_optional_admission_bounds.py",
+          "target_sha256": "baa4a10ab896fc9f6787683325716904f4043aff1086a1dcd7a4d791497c35ee",
+          "provenance": "Independently authored causal whole-media cost and optional geometry admission tests. Uses closed HTTP fixtures and deterministic local WAV/MP4 media; no upstream implementation, SDK, runtime or model weights copied or activated. Preserves the original optional test cohort and retained failures; does not establish live-provider, creative, native or programme acceptance."
         }
       ]
     },
@@ -8021,7 +8036,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "bb098496f9c1afc374d4e115455fc503da660f9fae9dbe708565544b596323c8",
+      "sha256": "37c878c1a33abc79b246b50244c7d630b6b04a9748410448c3db9e357ec73fb1",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8499,7 +8514,7 @@
     },
     {
       "path": "packages/video-agent-mcp/uv.lock",
-      "sha256": "1b6265a06ccdca5e4f342faf151b7de83358070f6a73aeab0218f82927d5bd0a",
+      "sha256": "0dd8ee56ae83a724e3c615679a56a927d025171d477580a33e3c19c3479cc2b0",
       "registry_packages": [
         {
           "name": "aiofile",
@@ -8833,7 +8848,7 @@
     },
     {
       "path": "packages/video-explainer-mcp/uv.lock",
-      "sha256": "5338ea72889f23f65862d770271e9ac35b751826cac8d03c5ec1c8c93b5d4563",
+      "sha256": "a5395d25ef1412f178e3359d94a14e738b02f0ff1cd6374272ed9e95134608a7",
       "registry_packages": [
         {
           "name": "aiofile",

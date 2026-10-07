@@ -1,31 +1,36 @@
 # video-explainer-mcp
 
-Create explainer projects, run pipeline steps, and render videos through MCP.
-This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_explainer)
-with MCP tools for projects, editorial plans, generation, rendering, audio, commentary,
-narration timing, revision-bound feedback, existing-material assembly, and quality
-checks. Stock-media search/download tools are not mounted.
-For the CLI pipeline, the upstream checkout owns provider integrations, model selection, Remotion
-code, and rendering dependencies. The pinned upstream licence grant remains
-unresolved: this package independently authors the plan contract and ships no
-upstream code or runtime. Installation and rights for a separate CLI remain
-operator responsibilities.
+Create source-bound images, short videos and explainer projects through **39 MCP
+tools**. The candidate provides direct HTTP image and text/frame-video APIs,
+local editorial planning and existing-material assembly, plus an optional
+[video_explainer CLI](https://github.com/prajwal-y/video_explainer) pipeline for
+projects, narration, scenes and rendering. Stock search/download is unmounted.
 
-Repository links below target the immutable `v0.8.0-rc.5` source tag.
-This companion's release version is `0.2.2rc3`; check PyPI availability before
-installation. For the exact source and
-bundled README of a registry version,
-use its source archive on
-[PyPI](https://pypi.org/project/video-explainer-mcp/#files).
+Candidate `0.2.2-rc.4` (PyPI `0.2.2rc4`) is not yet publication- or
+installation-verified. Source links target the prospective immutable
+`v0.8.0-rc.6` tag and resolve after publication. Check
+[PyPI](https://pypi.org/project/video-explainer-mcp/#files) before installing;
+use an exact source checkout while publication is pending.
 
-See the [Dutch problem-to-solution guide](https://galbaz1.github.io/video-research-mcp/guide/)
-for released RC5 workflows and troubleshooting. The separate development
-[image](docs/integrations/image-generation.md) and [text/frame-video](docs/integrations/generation.md)
-APIs use HTTP directly and have their own setup instructions.
+Use the [Dutch problem-to-solution guide](https://galbaz1.github.io/video-research-mcp/guide/)
+to choose a route. The [image](docs/integrations/image-generation.md) and
+[text/frame-video](docs/integrations/generation.md) APIs have their own regional
+credentials, `generation` extra, pinned inputs and quote lifecycle. They use HTTP
+directly and require no upstream CLI. Provider access and creative quality remain
+unqualified. The candidate also implements durable S2V/HappyHorse modes; their
+input contracts and pending native/provider acceptance are documented in the
+[video route](docs/integrations/generation.md#optional-cloud-modes-in-the-candidate).
+
+The CLI pipeline requires a separate upstream checkout, provider configuration
+and rendering dependencies. Its pinned upstream licence grant remains unresolved;
+this package ships no upstream runtime. Installation and rights for that separate
+CLI remain operator responsibilities.
 
 ## Install and configure
 
-The wrapper requires Python 3.11 or newer and [uv](https://docs.astral.sh/uv/).
+The server requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+For direct image/video generation, follow the route setup above. The following
+prerequisites apply to the separate CLI pipeline.
 For CLI pipeline generation and rendering, install the upstream CLI in its own
 checkout and virtual environment, following that checkout's instructions.
 That pipeline expects:
@@ -42,14 +47,14 @@ uv sync --locked --extra dev
 uv run --locked video-explainer-mcp
 ```
 
-The published wrapper can run directly from PyPI as a stdio MCP server. Add
+After publication, the wrapper can run from PyPI as a stdio MCP server. Add
 this entry to your client's `mcpServers` configuration:
 
 ```json
 {
   "video-explainer": {
     "command": "uvx",
-    "args": ["video-explainer-mcp==0.2.2rc3"]
+    "args": ["video-explainer-mcp==0.2.2rc4"]
   }
 }
 ```
@@ -114,8 +119,9 @@ These are MCP calls, made through your client after registration:
    installs or downloads nothing. `all_ok` means technical prerequisites are present;
    real renderer execution, runtime grants and picture/sound quality remain unverified.
 6. Start a render with `explainer_render_start(project_id="my-video")`. Poll the
-   returned `job_id` with `explainer_render_poll` until `completed` or `failed`.
-   Use blocking `explainer_render` for a short render.
+   returned `job_id` with `explainer_render_poll` until `completed`, `failed` or `unknown`.
+   On `unknown`, inspect the retained job, process ownership and existing output
+   before choosing recovery or another render. Use blocking `explainer_render` for a short render.
 
 Render acceptance requires a fresh regular H264 MP4 at the exact selected CLI output
 path, requested dimensions, finite duration and a complete FFmpeg decode. The
@@ -175,8 +181,11 @@ output checks and the remaining provider/media acceptance boundaries.
 
 ## Development
 
-The development checkout adds durable [image generation, editing and translation](docs/integrations/image-generation.md) and [video generation from text or frames](docs/integrations/generation.md). These operations are absent from published `0.2.2rc3`; live provider and creative acceptance remain open.
-
+The RC4 candidate adds seven image/video lifecycle tools to the 32-tool CLI,
+planning and assembly surface. Published `0.2.2rc3` lacks those seven APIs.
+Source checks and synthetic fixtures do not establish paid-provider delivery or
+creative quality. Use explicit image finalize/poll or video poll operations;
+core `job_status` rejects generated-media jobs.
 From this package directory:
 
 ```sh
@@ -188,5 +197,5 @@ uv build
 Tests use temporary projects and mocked CLI processes; no paid provider calls
 are made. The lockfile records the development environment; `pyproject.toml`
 defines supported dependency ranges. See the root
-[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/CONTRIBUTING.md) and
-[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.5/docs/PUBLISHING.md) for repository and release checks.
+[contribution guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/CONTRIBUTING.md) and
+[publishing guide](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/docs/PUBLISHING.md) for repository and release checks.

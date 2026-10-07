@@ -5,6 +5,8 @@ Lifecycle requirements were informed by MoneyPrinterTurbo at
 """
 
 import asyncio
+import base64
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -12,7 +14,8 @@ import time
 from uuid import uuid4
 
 from .generation_assets import MAX_ASSET_BYTES, acquire_asset, executable_identity, qualify_asset, request_bytes
-from .generation_request import CONTRACT, adapter_revisions, freeze_request, provider_payload, read_operator_quote, selected_config, verify_sources
+from .generation_request import contract_for, adapter_revisions, freeze_request, provider_payload, read_operator_quote, selected_config, verify_sources
+from .generation_optional import MODES, verify_public_references
 from .job_store import JobStore
 from .models.generation import GenerationOperation, GenerationRequest, GenerationResult, TaskResponse
 from .planning_sources import digest, project_directory
@@ -43,6 +46,38 @@ def _load(job_id: str) -> dict:
     return row
 
 
+def _public(value):
+    """Exclude private provider bodies and signed input URLs from public readback."""
+    if isinstance(value, dict):
+        return {key: _public(item) for key, item in value.items()
+                if key not in {"public_url", "provider_evidence"}}
+    if isinstance(value, list):
+        return [_public(item) for item in value]
+    return value
+
+
+def _evidence(state: dict, body: bytes) -> None:
+    """Retain the exact bounded provider response privately, including failed schemas."""
+    state.setdefault("provider_evidence", []).append({"sha256": hashlib.sha256(body).hexdigest(),
+        "bytes": len(body), "body_base64": base64.b64encode(body).decode("ascii")})
+
+
+def _handoff(row: dict) -> dict:
+    """Bind final media to the same durable scene, controls and reference commitments."""
+    value = row["request"]["generation"]
+    return {"provider": "dashscope", "model": value["model"],
+            "provider_operation_id": row["external_id"], "source_revision": row["source_revision"],
+            "request_sha256": row["request_sha256"],
+            **{name: value[name] for name in ("scene_id", "script_id", "scene", "script", "label",
+                "seed", "references", "continuation", "transparent_background", "duration", "resolution",
+                "ratio", "expected_audio")},
+            "audio_setting": value.get("audio_setting"),
+            "prompt_extend": value.get("prompt_extend", False), "watermark": value.get("watermark", True),
+            "expected_dimensions": row["request"]["expected_pixels"],
+            **{name: row["request"][name] for name in ("wire_model", "mode", "reference_metadata",
+                "dimension_basis", "continuation_settings", "expected_seconds") if name in row["request"]}}
+
+
 def _view(row: dict) -> dict:
     """Report current byte proof and source handoff independently of recorded status."""
     state = row["result"] or {}
@@ -53,12 +88,17 @@ def _view(row: dict) -> dict:
         artifact = state.get("asset", {})
         proof = artifact.get("qualification", {})
         if (not row["attestation"]["verified"] or not verify_output(artifact, MAX_ASSET_BYTES)
-                or not proof.get("full_decode") or proof.get("artifact_sha256") != artifact.get("sha256")):
+                or not proof.get("full_decode") or proof.get("artifact_sha256") != artifact.get("sha256")
+                or artifact.get("handoff") != _handoff(row)):
+            status = "unknown"
+        try:
+            verify_sources(Path(row["request"]["project_dir"]), row["request"]["generation"])
+        except (ValueError, OSError):
             status = "unknown"
     return GenerationResult(job_id=row["job_id"], status=status, recorded_status=row["status"],
                             model=row["request"]["generation"]["model"], source_revision=row["source_revision"],
                             request_sha256=row["request_sha256"], provider_operation_id=row["external_id"],
-                            state={**state, "request": row["request"]["generation"]},
+                            state=_public({**state, "request": row["request"]["generation"]}),
                             artifact_hashes=row["artifact_hashes"], attestation=row["attestation"],
                             error=row["error"]).model_dump(mode="json")
 
@@ -93,7 +133,7 @@ def _begin(row: dict, action: str, operation: GenerationOperation) -> tuple[str,
     if action != "submit" and not row["external_id"]:
         return None
     if (adapter_revisions() != row["request"]["adapter_revision"]
-            or CONTRACT != row["request"]["contract"]):
+            or contract_for(row["request"]["generation"]["model"]) != row["request"]["contract"]):
         raise ValueError("Generation adapter changed; frozen job requires reconciliation")
     base, _ = selected_config()
     if base != row["request"]["api_origin"]:
@@ -129,6 +169,8 @@ async def _task_request(row: dict, owner: str, state: dict) -> TaskResponse:
         raise ValueError("Task fetch origin differs from the frozen request")
     body = await request_bytes("GET", base + "/tasks/" + row["external_id"],
                                {"Authorization": "Bearer " + key}, None, 65536)
+    _evidence(state, body)
+    _save(row, owner, state, "unknown")
     task = TaskResponse.model_validate_json(body)
     if task.output.task_id != row["external_id"]:
         raise ValueError("Fetched provider task identity differs from durable operation")
@@ -145,19 +187,8 @@ async def _apply(row: dict, owner: str, state: dict, task: TaskResponse, action:
         project = project_directory(row["request"]["project_id"])
         if str(project) != row["request"]["project_dir"]:
             raise ValueError("Generation project differs from frozen output location")
-        artifact = await acquire_asset(project, row["job_id"], task.output.video_url)
-        value = row["request"]["generation"]
-        artifact["handoff"] = {"provider": "dashscope", "model": value["model"],
-                               "provider_operation_id": row["external_id"],
-                               "source_revision": row["source_revision"], "request_sha256": row["request_sha256"],
-                               **{name: value[name] for name in ("scene_id", "script_id", "scene", "script", "label",
-                                                                "seed", "references", "continuation", "transparent_background")},
-                               "prompt_extend": value.get("prompt_extend", False),
-                               "watermark": value.get("watermark", True),
-                               "expected_dimensions": row["request"]["expected_pixels"],
-                               **{name: row["request"][name] for name in
-                                  ("wire_model", "mode", "reference_metadata", "dimension_basis")
-                                  if name in row["request"]}}
+        artifact = await acquire_asset(project, row["job_id"], task.output.video_url or (task.output.results or {}).get("video_url"))
+        artifact["handoff"] = _handoff(row)
         state["asset"] = artifact
         hashes = {artifact["path"]: artifact["sha256"]}
         _save(row, owner, state, "unknown", artifact_hashes=hashes)
@@ -202,15 +233,19 @@ async def submit_generation(project_id: str, request: GenerationRequest) -> dict
         verify_sources(Path(frozen["project_dir"]), frozen["generation"])
         if read_operator_quote(Path(frozen["project_dir"]), request, frozen["api_origin"]) != frozen["quote"]:
             raise ValueError("Selected operator quote changed before submission")
+        if request.model in MODES:
+            await verify_public_references(frozen, request_bytes)
         state["submit_count"] = 1
         state["submission_intent_id"] = request.operation.operation_id
         _save(row, owner, state, "unknown")
         base, key = selected_config()
         if base != frozen["api_origin"]:
             raise ValueError("Submit origin differs from the frozen request")
-        body = await request_bytes("POST", base + "/services/aigc/video-generation/video-synthesis",
+        body = await request_bytes("POST", base + frozen.get("submit_path", "/services/aigc/video-generation/video-synthesis"),
                                    {"Authorization": "Bearer " + key, "X-DashScope-Async": "enable"},
                                    provider_payload(frozen), 65536)
+        _evidence(state, body)
+        _save(row, owner, state, "unknown")
         task = TaskResponse.model_validate_json(body)
         state["provider_status"] = task.output.task_status
         state["last_request_id"] = task.request_id
@@ -264,6 +299,8 @@ async def cancel_generation(job_id: str, operation: GenerationOperation) -> dict
         _save(row, owner, state, "unknown")
         body = await request_bytes("POST", base + "/tasks/" + row["external_id"] + "/cancel",
                                    {"Authorization": "Bearer " + key}, None, 65536)
+        _evidence(state, body)
+        _save(row, owner, state, "unknown")
         ack = json.loads(body)
         if not isinstance(ack, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{1,100}", ack):
             raise ValueError("Cancel success must be the official JSON-string request ID")

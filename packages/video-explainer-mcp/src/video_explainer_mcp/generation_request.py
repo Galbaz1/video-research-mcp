@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 from pydantic import ValidationError
 
 from .config import get_config
+from .generation_optional import PRIMARY, MODES, freeze_optional, payload_optional
 from .generation_references import I2V_WIRE_MODEL, freeze_references, provider_media
 from .materials import pinned_object
 from .models.generation import GenerationRequest, OperatorQuote, PriceDeclaration, ModelAccessDeclaration
@@ -26,6 +27,11 @@ PIXELS = {
               "4:3": (1648, 1248), "3:4": (1248, 1648)},
 }
 RESULT_HOST = "dashscope-result-sh.oss-accelerate.aliyuncs.com"
+
+
+def contract_for(model: str) -> dict:
+    """Retain the selected contract and add exact optional primary body commitments."""
+    return {**CONTRACT, **PRIMARY} if model in MODES else CONTRACT
 
 
 def selected_config() -> tuple[str, str]:
@@ -63,7 +69,7 @@ def read_operator_quote(project: Path, request: GenerationRequest, base: str) ->
     body.pop("quote")
     if (quote.api_origin != base or quote.model != request.model or quote.resolution != request.resolution
             or quote.currency != request.currency or quote.principal != request.operation.principal
-            or quote.request_sha256 != digest(body) or quote.contract_sha256 != digest(CONTRACT)):
+            or quote.request_sha256 != digest(body) or quote.contract_sha256 != digest(contract_for(request.model))):
         raise ValueError("Selected operator quote differs from exact caller/request/source contract")
     try:
         from .materials_remote import public_url
@@ -82,7 +88,9 @@ def read_operator_quote(project: Path, request: GenerationRequest, base: str) ->
     if (price.resolution != quote.resolution or price.currency != quote.currency
             or price.price_per_second != quote.price_per_second or access.api_origin != base):
         raise ValueError("Operator selected price/access evidence differs from quote")
-    total = quote.price_per_second * Decimal(request.duration)
+    duration = (freeze_optional(project, request)["expected_seconds"]
+                if request.model in MODES else request.duration)
+    total = quote.price_per_second * Decimal(str(duration))
     if not total.is_finite() or total <= 0 or total > request.max_cost:
         raise ValueError("Operator-declared total exceeds caller cost bound")
     return {**quote.model_dump(mode="json"), "total_cost": str(total),
@@ -93,12 +101,13 @@ def read_operator_quote(project: Path, request: GenerationRequest, base: str) ->
 
 def verify_sources(project: Path, request: dict) -> None:
     """Verify every declared local source against its exact immutable commitment."""
-    refs = [request["script"], request["scene"]]
-    refs.extend(ref["source"] for ref in request["references"])
+    refs = [(request["script"], 20 * 1024 * 1024), (request["scene"], 20 * 1024 * 1024)]
+    refs.extend((ref["source"], 100_000_000 if ref["role"] == "source_video" else 20 * 1024 * 1024)
+                for ref in request["references"])
     if request["continuation"]:
-        refs.append(request["continuation"])
-    for ref in refs:
-        pin = file_pin(confined_path(project, ref["path"]), 20 * 1024 * 1024)
+        refs.append((request["continuation"], 20 * 1024 * 1024))
+    for ref, limit in refs:
+        pin = file_pin(confined_path(project, ref["path"]), limit)
         if pin["sha256"] != ref["sha256"] or not pin["size_bytes"]:
             raise ValueError("Generation source/reference integrity failed")
 
@@ -108,14 +117,14 @@ def adapter_revisions() -> dict[str, str]:
     package = Path(__file__).parent
     return {name: file_pin((package / name).resolve(), 128 * 1024)["sha256"] for name in (
         "generation.py", "generation_request.py", "generation_assets.py", "generation_references.py",
-        "models/generation.py", "tools/generation.py", "job_store.py", "render_artifacts.py")}
+        "models/generation.py", "tools/generation.py", "generation_optional.py", "job_store.py", "render_artifacts.py")}
 
 
 def freeze_request(project_id: str, request: GenerationRequest) -> tuple[dict, str]:
     """Freeze actual adapter/source bytes and exact selected parameters before POST."""
     if not request.operation.authorize or not request.spend_authorized:
         raise ValueError("Explicit submit operation and spend authorization are required")
-    if not request.prompt.strip():
+    if request.model != "wan2.2-s2v" and request.model != "happyhorse-1.0-i2v" and not request.prompt.strip():
         raise ValueError("Generation prompt must contain text")
     if request.transparent_background:
         raise ValueError("Selected video model does not support transparent background")
@@ -123,28 +132,40 @@ def freeze_request(project_id: str, request: GenerationRequest) -> tuple[dict, s
         raise ValueError("Selected text-to-video model does not support these references or continuation")
     if request.model == "wan2.7-t2v" and request.expected_dimensions is not None:
         raise ValueError("Selected text-to-video dimensions are fixed by resolution and ratio")
-    if request.expected_audio != "present":
+    if request.model not in MODES and (request.resolution not in PIXELS or request.ratio not in PIXELS[request.resolution]
+            or not isinstance(request.duration, int) or not 2 <= request.duration <= 15
+            or request.audio_setting is not None):
+        raise ValueError("Selected Wan controls exceed the original contract")
+    if request.model not in MODES and any(ref.public_url is not None for ref in request.references):
+        raise ValueError("Selected I2V uses pinned image bytes without URL intent")
+    if request.model not in MODES and request.expected_audio != "present":
         raise ValueError("Selected contract has no qualified silent-output control")
     project = project_directory(project_id)
     value = request.model_dump(mode="json")
     verify_sources(project, value)
     references = freeze_references(project, value) if request.model == "wan2.7-i2v" else None
+    optional = freeze_optional(project, request) if request.model in MODES else None
     base, _ = selected_config()
+    if request.model == "wan2.2-s2v" and not urlsplit(base).hostname.endswith(".cn-beijing.maas.aliyuncs.com"):
+        raise ValueError("Pinned S2V contract is Beijing only")
     quote = read_operator_quote(project, request, base)
     revisions = adapter_revisions()
     envelope = {"provider": "dashscope", "project_id": project_id, "project_dir": str(project),
-                "api_origin": base, "generation": value, "contract": CONTRACT,
+                "api_origin": base, "generation": value, "contract": contract_for(request.model),
                 "adapter_revision": revisions, "quote": quote,
                 "expected_pixels": (list(request.expected_dimensions) if references is not None
-                                    else list(PIXELS[request.resolution][request.ratio]))}
+                                    else optional["expected_pixels"] if optional else list(PIXELS[request.resolution][request.ratio]))}
     source = {"script": value["script"], "scene": value["scene"],
-              "adapter_revision": revisions, "contract": CONTRACT}
+              "adapter_revision": revisions, "contract": contract_for(request.model)}
     if references is not None:
         envelope.update(wire_model=I2V_WIRE_MODEL, reference_metadata=references,
                         mode="first_last_frame" if len(references) == 2 else "first_frame",
                         dimension_basis="caller_declared_i2v_output_not_provider_guarantee")
         source.update(references=value["references"], wire_model=I2V_WIRE_MODEL,
                       reference_metadata=references, expected_dimensions=list(request.expected_dimensions))
+    if optional is not None:
+        envelope.update(optional)
+        source.update(generation=value, optional=optional)
     return envelope, digest(source)
 
 
@@ -165,8 +186,10 @@ def provider_payload(request: dict) -> dict:
     else:
         parameters["ratio"] = value["ratio"]
     verify_sources(project, value)
-    if request["contract"] != CONTRACT or request["adapter_revision"] != adapter_revisions():
+    if request["contract"] != contract_for(model) or request["adapter_revision"] != adapter_revisions():
         raise ValueError("Generation adapter or contract changed before POST")
     if selected_config()[0] != request["api_origin"]:
         raise ValueError("Submit origin differs from the frozen request")
+    if model in MODES:
+        return payload_optional(request)
     return {"model": model, "input": inputs, "parameters": parameters}

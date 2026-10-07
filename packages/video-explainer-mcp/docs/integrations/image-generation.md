@@ -1,8 +1,12 @@
-# Development image generation
+# Image generation, editing and translation
 
-These operations are development-only. Published `0.2.2rc3` does not contain them.
+Companion RC4 candidate (`0.2.2rc4` on PyPI, source tag `v0.8.0-rc.6`)
+adds four image lifecycle tools. Publication and installation verification are
+pending; published `0.2.2rc3` does not contain them. Candidate tag links resolve
+after publication.
 This adapter uses primary HTTP contracts directly, without the DashScope SDK.
 Live access, output quality and identity preservation remain unqualified.
+The submit/finalize/poll/cancel route needs no upstream `video_explainer` CLI.
 
 From `packages/video-explainer-mcp` in the development checkout:
 
@@ -55,8 +59,11 @@ response reporting no translatable text is retained as such.
 
 Each request includes a logical job ID, an explicit authorized operation ID and
 caller declaration, `script_id`, `scene_id`, pinned script and scene files,
-`spend_authorized`, `max_cost`, currency, and a pinned quote. Price, access and
-quote files use the [request, operation and declaration schemas](../../src/video_explainer_mcp/models/image_generation.py).
+`spend_authorized`, `max_cost`, currency, and a pinned quote.
+`spend_authorized=true` records an input acknowledgement; obtain actual human
+submission and spending authority separately. It does not authenticate a
+principal, verify live account access or cap provider billing. Price, access and
+quote files use the [request, operation and declaration schemas](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/models/image_generation.py).
 The price unit is
 `image`; the quoted total is `price_per_image × n`. The quote commits the request
 excluding its own pin, the captured contract hashes, origin, model, mode,
@@ -68,54 +75,28 @@ declarations refuse before generation.
 Prepare a validated request with its pinned script/scene, optional references
 and placeholder quote pin. Serialize it with `model_dump(mode="json")`, remove
 only `quote`, then hash it with
-[`planning_sources.digest`](../../src/video_explainer_mcp/planning_sources.py).
+[`planning_sources.digest`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/planning_sources.py).
 Use the same function on `CONTRACT` in
-[`image_generation_request.py`](../../src/video_explainer_mcp/image_generation_request.py).
+[`image_generation_request.py`](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/src/video_explainer_mcp/image_generation_request.py).
 Store those values in `ImageQuote.request_sha256` and `contract_sha256`, pin the
 finished quote file and replace the request's quote pin. Price/access declarations
 must describe the selected real model and region; synthetic test prices are not
 live evidence.
 
-After the quote and spending authorization are complete, this source-checkout
-example submits one request from `request.json`, finalizes a synchronous result
-or fetches one translation status, and locates qualified files:
+After validating the request and obtaining human authority:
 
-```python
-import asyncio
-from pathlib import Path
-from fastmcp import Client
-from video_explainer_mcp.models.image_generation import ImageGenerationRequest
-from video_explainer_mcp.server import app
-
-async def main():
-    request = ImageGenerationRequest.model_validate_json(Path("request.json").read_text())
-    async with Client(app) as client:
-        row = (await client.call_tool("explainer_image_generation_submit", {
-            "project_id": "my-project", "request": request.model_dump(mode="json")})).data
-        if row.get("error"):
-            print(row)
-            return
-        action = "poll" if request.mode == "image_translate" else "finalize"
-        row = (await client.call_tool(f"explainer_image_generation_{action}", {
-            "job_id": row["job_id"], "operation": {
-                "operation_id": "recover-1", "principal": request.operation.principal,
-                "authorize": True}})).data
-        if "error" in row and "status" not in row:
-            print(row)
-            return
-        if row["status"] == "completed":
-            for asset in row["state"]["assets"]:
-                print(asset["path"], asset["sha256"], asset["qualification"])
-        else:
-            print(row["status"], row["error"])
-
-asyncio.run(main())
+```text
+explainer_image_generation_submit(project_id, request) → save job_id
+explainer_image_generation_finalize(job_id, operation) → synchronous images
+explainer_image_generation_poll(job_id, operation) → translation/recovery
 ```
 
-Submission can incur provider charges. Keep the returned job ID for subsequent
-recovery rather than creating another logical request. Handle a returned tool
-`error` before accessing `job_id`. Translation may need another explicit poll
-with a fresh operation ID; the example performs one fetch.
+Each `operation` has a fresh `operation_id`, the original declared `principal`
+and `authorize=true`. Inspect tool errors before reading `job_id` or assets.
+One translation poll makes one fetch; another fetch needs another explicit
+operation. On completion, inspect `state.assets`: each saved path, SHA256,
+decoded format/dimensions and qualification. Keep the original logical job ID
+when recovering. Core `job_status` refuses this generated-media kind.
 
 For editing, `input`, `identity`, and `style` reference roles retain actual ordered
 files and hashes. The provider receives their image bytes with the explicit
@@ -161,10 +142,6 @@ no documented alpha control.
    JSON-string request-ID ACK, then fetch confirmation. The ACK alone is not
    cancellation. An ambiguous cancel is not resubmitted.
 
-The three-mode mapping was inspected at QwenLM/Qwen-MM-Plugins revision
-`07736672525443c7f8a3f6405eed37d2236f023f`, under
-[Apache-2.0](https://github.com/QwenLM/Qwen-MM-Plugins/blob/07736672525443c7f8a3f6405eed37d2236f023f/LICENSE).
-Its source is a private reference fixture; no foreign body, SDK or weights are
-copied into core. The existing Wan durable lease/CAS design is reused with
-independently authored image contracts and per-image declarations. Whole-Bead
-acceptance, full security review, and live/provider quality remain open.
+The adapter retains source/contract revisions and independently authored HTTP
+contracts. Fixture success does not establish live delivery, semantic fidelity,
+full security review or whole-programme acceptance.

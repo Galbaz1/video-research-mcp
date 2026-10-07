@@ -55,7 +55,8 @@ async def acquire_asset(project: Path, job_id: str, url: str) -> dict:
     safe_url = urlunsplit((parts.scheme, parts.netloc, parts.path, "", parts.fragment))
     from .materials_remote import public_url
 
-    public_url(safe_url, [RESULT_HOST])
+    public_url(safe_url, [RESULT_HOST, "dashscope-result.oss-cn-beijing.aliyuncs.com",
+                          "dashscope-result-hz.oss-cn-hangzhou.aliyuncs.com"])
     body = await request_bytes("GET", url, {}, None, MAX_ASSET_BYTES)
     if not body:
         raise ValueError("Generated video response was empty")
@@ -102,7 +103,8 @@ def measured_media(body: bytes, request: dict) -> dict:
     streams = value.get("streams", [])
     videos = [stream for stream in streams if stream.get("codec_type") == "video"]
     audios = [stream for stream in streams if stream.get("codec_type") == "audio"]
-    if len(videos) != 1 or len(audios) != 1 or len(streams) != 2:
+    audio_count = 1 if generation["expected_audio"] == "present" else 0
+    if len(videos) != 1 or len(audios) != audio_count or len(streams) != 1 + audio_count:
         raise ValueError("Selected generated asset requires one video and one audio stream")
     video = videos[0]
     if (video.get("codec_name") != "h264"
@@ -111,13 +113,14 @@ def measured_media(body: bytes, request: dict) -> dict:
             or any(side.get("rotation", 0) != 0 for side in video.get("side_data_list", []))):
         raise ValueError("Generated video codec/dimensions differ from selected contract")
     duration = float(value.get("format", {}).get("duration", 0))
-    expected = request["generation"]["duration"]
+    expected = request.get("expected_seconds", request["generation"]["duration"])
     for actual in (duration, *(float(stream.get("duration", 0)) for stream in streams)):
         if not math.isfinite(actual) or abs(actual - expected) > DURATION_TOLERANCE:
             raise ValueError("Generated audio/video duration differs from selected request")
     return {"width": video["width"], "height": video["height"], "duration_seconds": duration,
-            "video_codec": "h264", "audio_codec": audios[0].get("codec_name"),
-            "audio_present": True, "stream_durations": [float(s["duration"]) for s in streams]}
+            "video_codec": "h264", "audio_codec": audios[0].get("codec_name") if audios else None,
+            "audio_present": bool(audios), "stream_durations": [float(s["duration"]) for s in streams], "streams": streams,
+            "format": value.get("format", {})}
 
 
 async def qualify_asset(artifact: dict, request: dict) -> dict:
@@ -129,7 +132,7 @@ async def qualify_asset(artifact: dict, request: dict) -> dict:
         _snapshot(artifact, path)
         probe = [identity["ffprobe"]["path"], "-v", "error", "-protocol_whitelist", "file,pipe",
                  "-f", "mov", "-show_entries",
-                 "format=duration:stream=codec_type,codec_name,width,height,duration,sample_aspect_ratio:stream_side_data=rotation",
+                 "format=duration:stream=codec_type,codec_name,width,height,duration,sample_aspect_ratio,avg_frame_rate,sample_rate,channels:stream_side_data=rotation",
                  "-of", "json", str(path)]
         stdout, stderr = await run_media_process(probe, 10)
         if stderr:
@@ -137,14 +140,14 @@ async def qualify_asset(artifact: dict, request: dict) -> dict:
         media = measured_media(stdout, request)
         decode = [identity["ffmpeg"]["path"], "-v", "error", "-nostdin", "-xerror",
                   "-protocol_whitelist", "file,pipe", "-f", "mov", "-i", str(path),
-                  "-map", "0:v:0", "-map", "0:a:0", "-progress", "pipe:1", "-nostats",
+                  "-map", "0:v:0", "-map", "0:a:0?", "-progress", "pipe:1", "-nostats",
                   "-f", "null", "-"]
         progress, stderr = await run_media_process(decode, 60)
         values = dict(line.split("=", 1) for line in progress.decode().splitlines() if "=" in line)
         decoded = float(values.get("out_time_us", "nan")) / 1000000
         if (stderr or values.get("progress") != "end" or int(values.get("frame", "0")) <= 0
                 or not math.isfinite(decoded)
-                or abs(decoded - request["generation"]["duration"]) > DURATION_TOLERANCE):
+                or abs(decoded - request.get("expected_seconds", request["generation"]["duration"])) > DURATION_TOLERANCE):
             raise ValueError("Generation full decode did not reach the requested EOF")
     if executable_identity() != identity or not verify_output(artifact, MAX_ASSET_BYTES):
         raise ValueError("Generation artifact or decoder identity changed during qualification")

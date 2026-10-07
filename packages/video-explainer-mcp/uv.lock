@@ -1509,7 +1509,7 @@ wheels = [
 
 [[package]]
 name = "video-explainer-mcp"
-version = "0.2.2rc3"
+version = "0.2.2rc4"
 source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
