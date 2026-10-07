@@ -22,11 +22,10 @@ in ordinary language to begin.
 [PyPI](https://pypi.org/project/video-research-mcp/0.8.0rc6/) ·
 [Source](https://github.com/Galbaz1/video-research-mcp/tree/v0.8.0-rc.6)
 
-**RC6 source candidate: `0.8.0-rc.6` (PyPI `0.8.0rc6`).** Publication,
-registry installation and fresh-client verification are pending. The links above
-and source references target the prospective immutable `v0.8.0-rc.6` tag;
-they become available after publication. Check each registry before using the
-pinned installation examples. The npm prerelease channel is `next`.
+**Release candidate: `0.8.0-rc.6` (PyPI `0.8.0rc6`).** The links above
+identify the exact packages and immutable source tag. Check the release notes
+and each route's prerequisites before installing. The npm prerelease channel
+is `next`. Local-model qualification is outside this API-first release.
 Stable `0.7.1` predates the native Codex plugin and expanded media surface.
 
 ## From source material to a useful result

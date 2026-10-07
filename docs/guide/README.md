@@ -1,8 +1,9 @@
 # Video Research: van probleem naar oplossing
 
 Nederlandse tekstversie van de [interactieve gids](https://galbaz1.github.io/video-research-mcp/guide/).
-Dit is de RC6/RC4-kandidaatbron: publicatie en installatiecontrole staan nog open.
-Bronlinks gebruiken de toekomstige vaste tag `v0.8.0-rc.6` en werken na publicatie.
+Deze gids beschrijft release candidate RC6/RC4. Bronlinks verwijzen naar de
+vaste tag `v0.8.0-rc.6`. Controleer de release en voorwaarden per route.
+Lokale-modelkwalificatie valt buiten deze API-release.
 
 De kernserver heeft 120 tools; de apart aangesloten explainer- en agentservers
 hebben 39 en twee tools. Het pakket bevat 26 skills. Begin met
