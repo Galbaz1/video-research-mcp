@@ -449,7 +449,7 @@
       {
         "title": "Zoek en lees de bronobjecten",
         "mode": "sequence",
-        "note": "Gebruik knowledge_search, fetch en related; knowledge_query is verouderd. Zonder Weaviate-configuratie geeft search lege resultaten; ook zoekfouten kunnen resultaten beperken. Dat bewijst niet dat er geen opgeslagen kennis is.",
+        "note": "Gebruik knowledge_search, fetch en related; knowledge_query is verouderd. Zonder Weaviate-configuratie geeft search lege resultaten; een zoekfout wordt als toolfout teruggegeven. Lege resultaten bewijzen niet dat er geen opgeslagen kennis is.",
         "tools": [
           "video-research/knowledge_search",
           "video-research/knowledge_fetch",

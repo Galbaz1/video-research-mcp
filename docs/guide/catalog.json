@@ -818,7 +818,7 @@
       "name": "research_paper_recommendations",
       "server": "video-research",
       "problem_nl": "Welke papers sluiten aan op mijn geselecteerde startpapers?",
-      "purpose_nl": "Vraag aanbevelingen op basis van de opgegeven positieve en eventueel negatieve paper-ID’s.",
+      "purpose_nl": "Vraag aanbevelingen op basis van de opgegeven startpaper-ID’s.",
       "description": "Get paper recommendations based on seed papers.",
       "category": "Onderzoek & bronnen",
       "requirements": [
@@ -1690,7 +1690,7 @@
         "Kies hybrid, semantic of keyword. Hybrid en semantic vragen een ondersteunde embedding-/vectorizerconfiguratie en de bijbehorende toegang; keyword gebruikt BM25.",
         "Optioneel: Gemini-samenvatting met GEMINI_API_KEY en GEMINI_FLASH_MODEL; standaard ingeschakeld, uit te zetten met FLASH_SUMMARIZE=false.",
         "Optioneel: Cohere-reranking met COHERE_API_KEY en de Cohere-module in Weaviate; uit te zetten met RERANKER_ENABLED=false. Samenvatting en reranking sturen tekst naar hun provider en kunnen kosten veroorzaken.",
-        "Zonder WEAVIATE_URL levert deze tool lege resultaten; ook overgeslagen zoekfouten kunnen lege of gedeeltelijke resultaten geven. Dat bewijst niet dat opgeslagen kennis ontbreekt."
+        "Zonder WEAVIATE_URL levert deze tool lege resultaten; een zoekfout wordt als toolfout teruggegeven. Lege resultaten bewijzen niet dat opgeslagen kennis ontbreekt."
       ],
       "execution": "Optionele kennisbank · optionele providers",
       "availability": "Geregistreerd in RC6-kandidaatbron; voorwaarden gelden per route",
