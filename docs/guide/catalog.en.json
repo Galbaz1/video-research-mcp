@@ -4994,8 +4994,8 @@
     "codex_packaged_skills": 26
   },
   "coverage": {
-    "method": "Statische tooldeclaraties en bestaande serverindeling uit de actuele RC6-kandidaatbron; geen provideroproepen of uitvoering.",
-    "limits": "Brede vergelijkende kwalificatie is onvolledig. Een geregistreerde tool is geen garantie dat jouw provider of runtime beschikbaar is.",
-    "postrelease": "RC6/RC4 zijn kandidaten; publicatie, installatie, providerkwaliteit en volledige securityreview zijn afzonderlijke open controles."
+    "method": "Static tool declarations and the existing server layout from the current RC6 candidate source; no provider calls or execution.",
+    "limits": "Broad comparative qualification is incomplete. A registered tool does not guarantee that your provider or runtime is available.",
+    "postrelease": "RC6/RC4 are candidates; publication, installation, provider quality and full security review are separate open checks."
   }
 }
