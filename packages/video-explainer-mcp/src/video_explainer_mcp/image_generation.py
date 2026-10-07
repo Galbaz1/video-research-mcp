@@ -19,6 +19,7 @@ from .image_generation_request import CONTRACT, adapter_revisions, freeze_reques
 from .job_store import JobStore
 from .models.image_generation import ImageGenerationRequest, ImageGenerationResult, ImageOperation, ImageTaskResponse
 from .planning_sources import project_directory
+from .redaction import redact_text
 from .render_artifacts import verify_output
 
 KIND = "dashscope_image_generation"
@@ -51,6 +52,8 @@ def _view(row: dict) -> dict:
     state = dict(row["result"] or {})
     state.pop("image_urls", None)
     state.pop("response_body", None)
+    if state.get("translation_message") is not None:
+        state["translation_message"] = redact_text(state["translation_message"])
     status = row["status"]
     if status in {"queued", "running"}:
         status = "unknown"

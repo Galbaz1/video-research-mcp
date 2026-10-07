@@ -3591,7 +3591,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/jobs.py",
-          "target_sha256": "f9e3028f7a02a113bd5a6c256aa9dc1ecba2a86fb03fdec333e61e4b2a26e3ad",
+          "target_sha256": "b6cd0e6cd190153c4c116faeca3f76bf37dac0bed1e4c36765d2a0dd16a6b72c",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -4095,7 +4095,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/jobs.py",
-          "target_sha256": "f9e3028f7a02a113bd5a6c256aa9dc1ecba2a86fb03fdec333e61e4b2a26e3ad",
+          "target_sha256": "b6cd0e6cd190153c4c116faeca3f76bf37dac0bed1e4c36765d2a0dd16a6b72c",
           "provenance": "Own-source evaluation or independent implementation from pinned requirements; no external code/assets/weights/runtime copied or imported."
         }
       ]
@@ -4777,7 +4777,7 @@
         },
         {
           "target_path": "tests/test_research_job_recovery.py",
-          "target_sha256": "23891fc628c0f3895686bf3b14a1ce9d534e43685ca370f4504687831e26b2a9",
+          "target_sha256": "0547d6ed4800a66566f6c5830dee29335e018232b3fde81428fbbab60fee4ee8",
           "provenance": "Owned DSP integration test reconciliation: existing slow-readback test double accepts the concrete guard callback; adoption-set test includes actual direct.audio_qa. No assertion, fixture population or failure denominator removed."
         },
         {
@@ -7277,7 +7277,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/image_generation.py",
-          "target_sha256": "16ae5be48bea0c526b4319f114c885740c2d0c01361684b43bfcd2361d0ed82f",
+          "target_sha256": "2ebe2db3323fa981741a80128bb08da37ab2e7a4b08cf72c1ade13b78b086619",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
         },
         {
@@ -7287,7 +7287,7 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/src/video_explainer_mcp/image_generation_assets.py",
-          "target_sha256": "bb973db2432b3ab2acc32693e909013a09bbffd6a6b6de0dc685eccdf632ec75",
+          "target_sha256": "3971a59895594364d7829049460ce557e1ef23e821417d6601d3ac4ef7c13312",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
         },
         {
@@ -7302,12 +7302,12 @@
         },
         {
           "target_path": "packages/video-explainer-mcp/tests/test_image_generation.py",
-          "target_sha256": "1751bd1fad171569299c2a9873d70afdd1a6aab8f7e959a9d4420133e910acda",
+          "target_sha256": "947db530b6ef31b5dbda640a45a4a40a7c88af25bd1058797010287ed7606990",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
         },
         {
           "target_path": "packages/video-explainer-mcp/docs/integrations/image-generation.md",
-          "target_sha256": "9a91f469d21251c7f4626e19bcb225afa5469bae0937cef78749ab393db306d3",
+          "target_sha256": "26823528c6b8979d464b28cfc3f3a609536c86d3be3e1e1ea52cc8b7b51adac8",
           "provenance": "Independently authored image and frame HTTP adapters using current primary contracts and existing durable custody. No foreign provider source/SDK/runtime copied. Source/mock and native fixture evidence remain distinct from live provider, semantic/quality and whole-Bead acceptance."
         },
         {

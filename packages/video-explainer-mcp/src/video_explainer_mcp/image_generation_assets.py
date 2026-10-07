@@ -106,9 +106,9 @@ async def acquire_images(project: Path, job_id: str, urls: list[str], request: d
         if not isinstance(url, str) or len(url) > 4096:
             raise ValueError("Invalid provider image URL")
         parts = urlsplit(url)
-        if parts.scheme not in {"http", "https"}:
-            raise ValueError("Provider result requires documented HTTP or HTTPS transport")
-        public_url(urlunsplit(("https", parts.netloc, parts.path, "", parts.fragment)), RESULT_HOSTS)
+        if parts.scheme != "https":
+            raise ValueError("Provider result requires HTTPS transport")
+        public_url(urlunsplit((parts.scheme, parts.netloc, parts.path, "", parts.fragment)), RESULT_HOSTS)
         body = await request_bytes("GET", url, {}, None, min(MAX_IMAGE_BYTES, MAX_JOB_BYTES - total))
         info = raster(body, output=True)
         expected_format = "JPEG" if request["generation"]["mode"] == "image_translate" else "PNG"

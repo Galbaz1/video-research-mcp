@@ -146,8 +146,10 @@ no documented alpha control.
 3. For translation, call `explainer_image_generation_poll` with a fresh operation
    for one documented `GET /tasks/{task_id}`. Poll count is finite and durable.
    A successful task is downloaded and qualified; signed URLs are kept in private
-   durable state and omitted from public readback. Documented result HTTP/HTTPS
-   origins are validated; redirects and automatic HTTP retries are refused.
+   durable state and omitted from public readback. Result downloads require HTTPS
+   with validated origins; redirects and automatic HTTP retries are refused.
+   Public readback redacts credentials and signed URLs in translation messages;
+   exact provider response bytes and messages remain in private durable state.
 4. After interruption or restart, use explicit poll/finalize recovery. Ambiguous
    submission without a recoverable provider ID/response remains UNKNOWN and
    requires provider reconciliation. A new operation ID never authorizes another

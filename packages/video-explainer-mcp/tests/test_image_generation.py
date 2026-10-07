@@ -345,3 +345,114 @@ async def test_operation_conflict_and_provider_task_substitution(project, monkey
     final = await lifecycle.recover_image_generation(row["job_id"], op("poll"))
     assert final["status"] == "unknown" and final["provider_task_id"] == "translation-task"
     assert final["state"]["failures"][-1]["action"] == "poll" and len(calls) == 2
+
+
+@pytest.mark.parametrize("scheme", ["http", "https"])
+async def test_result_transport_preserves_task_without_regeneration(project, monkeypatch, scheme):
+    """GIVEN signed results, THEN only exact HTTPS transport can enter image custody."""
+    from video_explainer_mcp import materials_remote
+
+    monkeypatch.setattr(materials_remote, "_fetch", lambda url, headers, hosts, limit, deadline:
+                        (image_bytes(), url))
+    url = URL.replace("https:", scheme + ":", 1)
+    calls = []
+    raw = json.dumps({"request_id": "poll-request", "output": {
+        "task_id": "translation-task", "task_status": "SUCCEEDED", "image_url": url}}).encode()
+
+    def handler(http):
+        calls.append(http)
+        if http.method == "POST":
+            return httpx.Response(200, json={"request_id": "submit-request", "output": {
+                "task_id": "translation-task", "task_status": "PENDING"}})
+        if http.url.path.endswith("/tasks/translation-task"):
+            return httpx.Response(200, content=raw)
+        assert str(http.url) == url and "Authorization" not in http.headers
+        return httpx.Response(200, content=image_bytes("JPEG"))
+
+    transport(monkeypatch, handler)
+    req = request(project, "image_translate")
+    submitted = await lifecycle.submit_image_generation("scene", req)
+    frozen = lifecycle._load(submitted["job_id"])["request"]
+    row = await lifecycle.recover_image_generation(submitted["job_id"], op("poll"))
+    if scheme == "http":
+        assert row["status"] == "unknown" and not row["artifact_hashes"]
+        assert row["state"]["failures"][-1] == {"action": "poll", "type": "ValueError"}
+    else:
+        assert row["status"] == "completed"
+        assert row["state"]["assets"][0]["url_sha256"] == hashlib.sha256(url.encode()).hexdigest()
+    raw_row = lifecycle._load(row["job_id"])
+    assert raw_row["external_id"] == "translation-task"
+    assert raw_row["request"] == frozen
+    assert raw_row["result"]["image_urls"] == [url]
+    assert base64.b64decode(raw_row["result"]["response_body"]) == raw
+    assert raw_row["result"]["generation_intent_count"] == 1
+    assert raw_row["result"]["post_attempt_count"] == 1
+    await lifecycle.submit_image_generation("scene", req)
+    await lifecycle.recover_image_generation(row["job_id"], op("poll"))
+    await lifecycle.recover_image_generation(row["job_id"], op("finalize"), finalize=True)
+    await lifecycle.recover_image_generation(row["job_id"], op("finalize"), finalize=True)
+    assert sum(c.method == "POST" for c in calls) == 1
+    assert sum(c.url.host == "dashscope-result-sz.oss-cn-shenzhen.aliyuncs.com" for c in calls) == (scheme == "https")
+    assert lifecycle._load(row["job_id"])["result"]["post_attempt_count"] == 1
+
+
+@pytest.mark.parametrize("message,expected", [
+    ("Input unavailable: " + URL,
+     "Input unavailable: " + URL.split("?", 1)[0] + "?[redacted]"),
+    ("api_key=R725_SYNTHETIC_CREDENTIAL", "api_key=[redacted]"),
+    ("Authorization: Bearer R725_SYNTHETIC_CREDENTIAL", "Authorization: [redacted]"),
+    ("Provider echoed R725_SYNTHETIC_ENV_SECRET", "Provider echoed [redacted]"),
+    ("No text detected for translation", "No text detected for translation"),
+    (None, None),
+])
+async def test_translation_message_projection_all_public_replays(project, monkeypatch, message, expected):
+    """GIVEN provider prose, THEN every public projection is safe and private custody is exact."""
+    from video_explainer_mcp import materials_remote
+
+    monkeypatch.setenv("R725_TEST_API_KEY", "R725_SYNTHETIC_ENV_SECRET")
+    monkeypatch.setattr(materials_remote, "_fetch", lambda url, headers, hosts, limit, deadline:
+                        (image_bytes(), url))
+    pending = json.dumps({"request_id": "submit-request", "output": {
+        "task_id": "translation-task", "task_status": "PENDING", "message": message}}).encode()
+    succeeded = json.dumps({"request_id": "poll-request", "output": {
+        "task_id": "translation-task", "task_status": "SUCCEEDED", "image_url": URL,
+        "message": message}}, indent=2).encode() + b"\n"
+    calls = []
+
+    def handler(http):
+        calls.append(http)
+        if http.method == "POST":
+            return httpx.Response(200, content=pending)
+        if http.url.path.endswith("/tasks/translation-task"):
+            return httpx.Response(200, content=succeeded)
+        return httpx.Response(200, content=image_bytes("JPEG"))
+
+    transport(monkeypatch, handler)
+    req = request(project, "image_translate")
+    row = await lifecycle.submit_image_generation("scene", req)
+    job_id = row["job_id"]
+
+    def check(view, body):
+        assert view["state"]["translation_message"] == expected
+        assert "response_body" not in view["state"] and "image_urls" not in view["state"]
+        private = lifecycle._load(job_id)["result"]
+        assert private["translation_message"] == message
+        assert base64.b64decode(private["response_body"]) == body
+        assert private["response_sha256"] == hashlib.sha256(body).hexdigest()
+
+    check(row, pending)
+    check(await lifecycle.submit_image_generation("scene", req), pending)
+    for _ in range(2):
+        check(await lifecycle.recover_image_generation(job_id, op("before-result"), finalize=True), pending)
+    for _ in range(2):
+        check(await lifecycle.cancel_image_generation(job_id, op("cancel")), succeeded)
+    for _ in range(2):
+        check(await lifecycle.recover_image_generation(job_id, op("poll")), succeeded)
+    for _ in range(2):
+        check(await lifecycle.recover_image_generation(job_id, op("finalize"), finalize=True), succeeded)
+    check(await lifecycle.submit_image_generation("scene", req), succeeded)
+    check(await lifecycle.cancel_image_generation(job_id, op("cancel-after-completion")), succeeded)
+    check(lifecycle._view(lifecycle._load(job_id)), succeeded)
+    check(lifecycle._view(lifecycle._load(job_id)), succeeded)
+    assert sum(c.method == "POST" for c in calls) == 1
+    assert len(calls) == 3
