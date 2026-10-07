@@ -30,17 +30,20 @@ class TestServerConfig:
         assert cfg.timeout == 600
         assert cfg.render_timeout == 1800
         assert cfg.explainer_enabled is False
+        assert cfg.dashscope_image_base_url == ""
 
     def test_from_env(self, monkeypatch):
         """from_env reads env vars correctly."""
         monkeypatch.setenv("EXPLAINER_PATH", "/opt/explainer")
         monkeypatch.setenv("EXPLAINER_TTS_PROVIDER", "elevenlabs")
         monkeypatch.setenv("EXPLAINER_TIMEOUT", "300")
+        monkeypatch.setenv("EXPLAINER_DASHSCOPE_IMAGE_BASE_URL", "https://workspace.example/api/v1")
         cfg = ServerConfig.from_env()
         assert cfg.explainer_path == "/opt/explainer"
         assert cfg.tts_provider == "elevenlabs"
         assert cfg.timeout == 300
         assert cfg.explainer_enabled is True
+        assert cfg.dashscope_image_base_url == "https://workspace.example/api/v1"
 
     def test_from_env_non_numeric_timeout_uses_default(self, monkeypatch):
         """Non-numeric EXPLAINER_TIMEOUT falls back to default instead of crashing."""

@@ -12,7 +12,7 @@ The core ships under the same name on two registries:
 
 | Package | Registry | Purpose | Used by |
 | --- | --- | --- | --- |
-| `video-research-mcp` | npm | Claude installer, workflow Markdown and native Codex plugin root | `npx video-research-mcp@0.8.0-rc.5`; Codex npm marketplace source |
+| `video-research-mcp` | npm | Claude installer, workflow Markdown and native Codex plugin root | `npx video-research-mcp@0.8.0-rc.6`; Codex npm marketplace source |
 | `video-research-mcp` | PyPI | Python research MCP runtime | `uvx` when the MCP client starts the server |
 
 Core versions must match across `pyproject.toml`, `package.json`,
@@ -23,7 +23,7 @@ Companion servers are separate Python packages with their own versions. A GitHub
 release can contain all package archives; uploading those archives to PyPI and
 npm is a separate step. See [Publishing](PUBLISHING.md).
 
-The examples select RC5 source `0.8.0-rc.5` (Python `0.8.0rc5`). The Python
+The examples select RC6 candidate source `0.8.0-rc.6` (Python `0.8.0rc6`). The Python
 runtime and workflow bundle require separate PyPI and npm availability checks.
 `@latest` selects the stable channel.
 
@@ -38,9 +38,9 @@ the runtime executables; use `--doctor` to inspect setup before starting a clien
 Choose the scope explicitly for a repeatable installation:
 
 ```sh
-npx video-research-mcp@0.8.0-rc.5 --global
+npx video-research-mcp@0.8.0-rc.6 --global
 # Or, from the project root:
-npx video-research-mcp@0.8.0-rc.5 --local
+npx video-research-mcp@0.8.0-rc.6 --local
 ```
 
 Without a scope flag, the installer prompts for global or local installation.
@@ -125,9 +125,9 @@ evidence.
 To uninstall one scope:
 
 ```sh
-npx video-research-mcp@0.8.0-rc.5 --uninstall --global
+npx video-research-mcp@0.8.0-rc.6 --uninstall --global
 # Or, from the affected project:
-npx video-research-mcp@0.8.0-rc.5 --uninstall --local
+npx video-research-mcp@0.8.0-rc.6 --uninstall --local
 ```
 
 Uninstall removes tracked files whose hashes match, keeps modified files, and

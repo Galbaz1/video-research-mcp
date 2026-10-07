@@ -7,7 +7,7 @@ Provides two instrumentation layers:
 2. **Tool spans** — the ``trace()`` decorator wraps MCP tool entrypoints,
    producing ``TOOL`` root spans that parent the autolog child spans.
 
-Guarded import — the server runs fine without ``mlflow-tracing`` installed.
+Lazy guarded import — disabled tracing never imports ``mlflow-tracing``.
 Configuration is read from :class:`~video_research_mcp.config.ServerConfig`.
 
 Env vars (all optional):
@@ -26,22 +26,26 @@ from .redaction import redact_text
 
 logger = logging.getLogger(__name__)
 
-try:
-    import mlflow
-    import mlflow.gemini
-
-    _HAS_MLFLOW = True
-except ImportError:
-    _HAS_MLFLOW = False
+_HAS_MLFLOW: bool | None = None
 
 
 def is_enabled() -> bool:
-    """Return True when mlflow-tracing is installed and not explicitly disabled."""
-    if not _HAS_MLFLOW:
-        return False
+    """Load MLflow only when configured, returning whether tracing is available."""
+    global _HAS_MLFLOW, mlflow
+
     from .config import get_config
 
-    return get_config().tracing_enabled
+    if not get_config().tracing_enabled:
+        return False
+    if _HAS_MLFLOW is None:
+        try:
+            import mlflow
+            import mlflow.gemini
+
+            _HAS_MLFLOW = True
+        except ImportError:
+            _HAS_MLFLOW = False
+    return _HAS_MLFLOW
 
 
 def trace(

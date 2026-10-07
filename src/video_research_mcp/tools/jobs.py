@@ -27,12 +27,19 @@ async def job_status(
         job_id: The durable ID returned in job_receipt.
 
     Returns:
-        Actual SQLite record and independent byte attestation, or a tool error.
+        Supported core SQLite record and byte attestation, or a tool error directing
+        companion generation jobs to their explicit bounded polling operation.
     """
     try:
         result = await asyncio.to_thread(JobStore().get, job_id)
         if result is None:
             raise KeyError(f"Job not found: {job_id}")
+        poll_tool = {
+            "dashscope_image_generation": "explainer_image_generation_poll",
+            "dashscope_generation": "explainer_generation_poll",
+        }.get(result["kind"])
+        if poll_tool is not None:
+            raise ValueError(f"Use {poll_tool} with an explicit bounded operation for this job")
         return result
     except Exception as exc:
         return make_tool_error(exc)

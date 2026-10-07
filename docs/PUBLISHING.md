@@ -9,7 +9,7 @@ upload to PyPI or npm.
 | --- | --- | --- |
 | npm | `video-research-mcp` | Native Codex plugin and Claude Code installer, commands, skills, agents |
 | PyPI | `video-research-mcp` | Research MCP runtime |
-| PyPI | `video-explainer-mcp` | Wrapper for a separately installed upstream renderer |
+| PyPI | `video-explainer-mcp` | Direct HTTP image/video generation and a separately configured render/CLI pipeline |
 | PyPI | `video-agent-mcp` | Claude Agent SDK scene generator |
 | GitHub Releases | Tagged source release | Python wheels/sdists and npm installer archive |
 
@@ -88,8 +88,8 @@ are not part of an already published archive.
 
 The [release workflow](../.github/workflows/release.yml) runs reusable CI before
 building assets. Its tag must match the core version and have matching changelog
-notes. A tagged commit outside the ancestry of `origin/main` becomes a prerelease
-and is not marked latest.
+notes. A tag with a prerelease suffix (such as `v0.8.0-rc.6`), or a tagged commit outside
+the ancestry of `origin/main`, becomes a prerelease and is not marked latest.
 
 After reviewed source is committed and the branch is published under repository
 policy, tag that exact verified commit. Replace `vX.Y.Z` and
