@@ -3391,7 +3391,7 @@
         "FFmpeg/ffprobe voor uitvoercontrole; T2V, eerste frame of eerste plus laatste frame."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py",
         "line": 17,
@@ -3417,7 +3417,7 @@
         "Bestaand job-ID en expliciete operation_id, principal en authorize=true."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py",
         "line": 37,
@@ -3443,7 +3443,7 @@
         "Cancel-ACK bewijst geen annulering; een ambigue intentie wordt niet opnieuw verstuurd."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/generation.py",
         "line": 57,
@@ -3469,7 +3469,7 @@
         "Vertaling: reeds publieke HTTPS-afbeelding met overeenkomende lokale pin; geen upload."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py",
         "line": 17,
@@ -3495,7 +3495,7 @@
         "Bestaand job-ID en één expliciete begrensde operatie."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py",
         "line": 37,
@@ -3521,7 +3521,7 @@
         "Geen nieuwe generatie-POST; gewijzigde bytes geven een fout of verlies van bewijs."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py",
         "line": 57,
@@ -3547,7 +3547,7 @@
         "Een ACK alleen is geen bewezen annulering."
       ],
       "execution": "Companion · directe HTTP-provider",
-      "availability": "RC4-kandidaatbron; publicatie en live kwaliteit niet gekwalificeerd",
+      "availability": "Gepubliceerd in companion RC4; live kwaliteit niet gekwalificeerd",
       "source": {
         "path": "packages/video-explainer-mcp/src/video_explainer_mcp/tools/image_generation.py",
         "line": 77,

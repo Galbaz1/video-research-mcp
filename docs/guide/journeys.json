@@ -593,7 +593,7 @@
       {
         "title": "Kies de ingang",
         "mode": "sequence",
-        "note": "Codex heeft 24 verpakte skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources.",
+        "note": "Codex heeft 26 verpakte skills. De Claude-installer heeft 26 skillentries plus ondersteunende resources.",
         "tools": [
           "function/native-codex-plugin",
           "function/plugin-installer"
