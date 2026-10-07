@@ -6,6 +6,23 @@ source: /Users/fausto_home/.codex/instruction-modules.md
 selection: adapted for Herdr execution in this project
 -->
 
+## Current release scope and hard stop — 7 October 2026
+
+Fausto explicitly narrowed this delivery at 15:08:23 UTC. Deliver the API-first
+RC6 successor (`vrm-0e8.14.23`) from this worktree. Local models, local-model
+qualification, optional feature expansion, and full-programme integrated,
+comparative and held-out acceptance are outside this release. Preserve their
+work, frozen evaluations and failures as deferred backlog; do not mark them
+accepted. Ship only supported behavior and describe unqualified routes clearly.
+
+Hard stop: **2026-10-07 21:08:23 UTC (23:08:23 Europe/Amsterdam)**. Stop all
+owned execution and review lanes by then and report the verified delivered
+result and remaining work. No further work after that deadline without a new
+user instruction. Finish reviewed source/docs, required CI/package checks,
+actual native installation/restart/upgrade/removal, main/dev reconciliation,
+and authorized publication with exact registry/artifact readback. Reuse current
+checks where bytes are unchanged. Avoid new gates, frameworks or options.
+
 ## Scope
 
 Codex project instructions equivalent to this repo's Claude setup.

@@ -4120,6 +4120,46 @@
         "video-research/video_metadata",
         "video-research/web_search"
       ]
+    },
+    {
+      "id": "skill/qwen-image-integration",
+      "name": "qwen-image-integration",
+      "problem_nl": "Hoe controleer ik de optionele Qwen-route voor beeldgeneratie, bewerking of vertaling?",
+      "purpose_nl": "Controleer de vastgezette externe beeldtools, bronbestanden en uitvoeringsvoorwaarden; deze native integratie blijft uitgeschakeld.",
+      "category": "Media maken & bewerken",
+      "requirements": [
+        "Afzonderlijk geïnstalleerde vastgezette Qwen-runtime en vereiste SDK’s; niet geactiveerd door het installeren van deze skill.",
+        "Native betaalde oproepen blijven uitgeschakeld totdat hun eigen runtime en duurzame herstelcontroles zijn gekwalificeerd. Bron-, account- en bestedingsbevoegdheid zijn afzonderlijk vereist."
+      ],
+      "execution": "Workflow · aparte voorwaarden",
+      "availability": "Opgenomen in RC6-kandidaatbron",
+      "source": {
+        "path": "skills/qwen-image-integration/SKILL.md",
+        "line": 1,
+        "revision": "v0.8.0-rc.6",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/qwen-image-integration/SKILL.md#L1"
+      },
+      "tools": []
+    },
+    {
+      "id": "skill/qwen-video-integration",
+      "name": "qwen-video-integration",
+      "problem_nl": "Hoe controleer ik de optionele native Wan- en HappyHorse-videoroutes?",
+      "purpose_nl": "Controleer de exacte modus, referenties en limieten van de vastgezette externe videoroute; deze native integratie blijft uitgeschakeld.",
+      "category": "Media maken & bewerken",
+      "requirements": [
+        "Afzonderlijk geïnstalleerde vastgezette Qwen-runtime en vereiste SDK’s; niet geactiveerd door het installeren van deze skill.",
+        "Native betaalde oproepen blijven uitgeschakeld totdat hun eigen runtime en duurzame herstelcontroles zijn gekwalificeerd. Bron-, account- en bestedingsbevoegdheid zijn afzonderlijk vereist."
+      ],
+      "execution": "Workflow · aparte voorwaarden",
+      "availability": "Opgenomen in RC6-kandidaatbron",
+      "source": {
+        "path": "skills/qwen-video-integration/SKILL.md",
+        "line": 1,
+        "revision": "v0.8.0-rc.6",
+        "link": "https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/skills/qwen-video-integration/SKILL.md#L1"
+      },
+      "tools": []
     }
   ],
   "commands": [
@@ -4946,12 +4986,12 @@
       "video-explainer": 39,
       "video-agent": 2
     },
-    "skills": 24,
+    "skills": 26,
     "commands": 17,
     "agents": 7,
     "functions": 12,
-    "claude_installer_skills": 24,
-    "codex_packaged_skills": 24
+    "claude_installer_skills": 26,
+    "codex_packaged_skills": 26
   },
   "coverage": {
     "method": "Statische tooldeclaraties en bestaande serverindeling uit de actuele RC6-kandidaatbron; geen provideroproepen of uitvoering.",

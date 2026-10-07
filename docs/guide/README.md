@@ -5,7 +5,7 @@ Dit is de RC6/RC4-kandidaatbron: publicatie en installatiecontrole staan nog ope
 Bronlinks gebruiken de toekomstige vaste tag `v0.8.0-rc.6` en werken na publicatie.
 
 De kernserver heeft 120 tools; de apart aangesloten explainer- en agentservers
-hebben 39 en twee tools. Het pakket bevat 24 skills. Begin met
+hebben 39 en twee tools. Het pakket bevat 26 skills. Begin met
 [installatie en configuratie](https://github.com/Galbaz1/video-research-mcp/blob/main/docs/tutorials/GETTING_STARTED.md).
 Kies hieronder je probleem, controleer de voorwaarden en volg de stappen.
 
@@ -303,7 +303,7 @@ Bekijk <simulator>. Lees eerst apparaten, metadata en limieten. Stel een wijzigi
 Controleer welke video-research-tools en skills verbonden zijn. Toon ontbrekende configuratie voor <taak>, zonder sleutels te tonen. Installeer of wijzig niets zonder mijn opdracht.
 ```
 
-- **Kies de ingang.** Codex heeft 24 verpakte skills. De Claude-installer heeft 24 skillentries plus ondersteunende resources. [native-codex-plugin](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/plugin.json#L1), [plugin-installer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/bin/install.js#L1)
+- **Kies de ingang.** Codex heeft 26 verpakte skills. De Claude-installer heeft 26 skillentries plus ondersteunende resources. [native-codex-plugin](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/plugin.json#L1), [plugin-installer](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/bin/install.js#L1)
 - **Lees configuratie.** provider_capabilities beschrijft routes en test geen providerverbinding. [infra_configure](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/infra.py#L101), [provider_capabilities](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/text_provider.py#L43)
 - **Volg eigen werk.** job_status leest ondersteunde kernjobs. Voor gegenereerde media: companion image finalize/poll of video poll met een expliciete operatie; job_cancel is alleen voor kern-videojobs. [job_status](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/jobs.py#L19), [job_cancel](https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/src/video_research_mcp/tools/jobs.py#L50)
 

@@ -80,7 +80,7 @@ limit the uploaded file.
 
 ### Codex: native plugin
 
-The plugin supplies **24 skills** and the version-pinned research server.
+The plugin supplies **26 skills** and the version-pinned research server.
 Historical RC3 observation: on 2026-10-06, the selected Codex 0.160.1 RC3
 installation and fresh-session restart loaded the research tools and packaged
 skills. This is historical RC3 evidence. Follow the verification steps below
