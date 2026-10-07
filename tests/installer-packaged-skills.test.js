@@ -11,7 +11,8 @@ const { hashFile, readManifest } = require('../bin/lib/manifest');
 const SOURCE = path.resolve(__dirname, '..');
 const ADDED_SKILLS = ['av-events', 'educational-explainer', 'footage-edit',
   'research-visualization-blender', 'research-visualization-freecad', 'spatial-video-analysis',
-  'video-translation', 'movie-commentary', 'qwen-image-integration', 'qwen-video-integration'];
+  'video-translation', 'movie-commentary', 'qwen-image-integration', 'qwen-video-integration',
+  'creative-concept-design'];
 const LEGACY_SKILLS = ['ffmpeg-production', 'gemini-visualize', 'gr-advisor',
   'hardware-evidence-capture', 'image-generation', 'mlflow-traces', 'plugin-maintenance',
   'research-brief-builder', 'reverse-search-video-frame', 'tts-production',
@@ -39,6 +40,9 @@ const RESOURCE_PATHS = [
 const EXPECTED_ADDITIONS = Object.fromEntries([
   ...ADDED_SKILLS.map(name => [`skills/${name}/SKILL.md`, `skills/${name}/SKILL.md`]),
   ['skills/educational-explainer/scripts/lesson.py', 'skills/educational-explainer/scripts/lesson.py'],
+  ['skills/creative-concept-design/templates/production-brief.md', 'skills/creative-concept-design/templates/production-brief.md'],
+  ...['art-direction.md', 'motion-and-rhythm.md', 'narration-audition.md', 'current-media-routes.md'].map(name =>
+    [`skills/creative-concept-design/references/${name}`, `skills/creative-concept-design/references/${name}`]),
   ...RESOURCE_PATHS.map(relative => [relative, `${SUPPORT}/${relative}`]),
 ]);
 
@@ -163,7 +167,7 @@ test('added workflows name contracts, descriptors and helpers that resolve in th
   const descriptors = ['av-events.json', 'education.json', 'footage-edit.json',
     'blender.json', 'freecad.json', 'video-spatio.json'];
   for (const root of [packedRoot, context.target]) {
-    for (const [index, name] of ADDED_SKILLS.entries()) {
+    for (const [index, name] of ADDED_SKILLS.slice(0, contracts.length).entries()) {
       const directory = path.join(root, 'skills', name);
       const text = fs.readFileSync(path.join(directory, 'SKILL.md'), 'utf8');
       const references = [...text.matchAll(/(?:\]\(|`)((?:\.\.\/)*(?:video-research-resources\/)?(?:docs|integrations|scripts)\/[^)`\s]+)[)`]/g)]

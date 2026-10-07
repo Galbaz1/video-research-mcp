@@ -9,6 +9,8 @@ Use a bounded production loop: brief → assets → draft → inspect → repair
 
 ## 1. Brief and Assets
 
+When the creative approach is open, use [creative-concept-design](../creative-concept-design/SKILL.md) to choose a treatment and inspect a narration audition and representative animatic before full production.
+
 Record audience, message, shot list, duration, format, audio, delivery destination, and acceptance criteria. Audit existing footage and supplied images before generating replacements. Keep source assets unchanged. For paid generation, fix the spend limit, maximum attempts, and worker concurrency before starting.
 
 Completion: each shot has a source or supported generation path, and each parallel worker owns a distinct output directory.

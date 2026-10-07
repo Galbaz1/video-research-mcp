@@ -49,6 +49,12 @@ const FILE_MAP = {
   'skills/video-generation/references/provider-details.md':      'skills/video-generation/references/provider-details.md',
   'skills/video-production/SKILL.md':                            'skills/video-production/SKILL.md',
   'skills/video-production/references/workflow-patterns.md':     'skills/video-production/references/workflow-patterns.md',
+  'skills/creative-concept-design/SKILL.md':                    'skills/creative-concept-design/SKILL.md',
+  'skills/creative-concept-design/templates/production-brief.md': 'skills/creative-concept-design/templates/production-brief.md',
+  'skills/creative-concept-design/references/art-direction.md': 'skills/creative-concept-design/references/art-direction.md',
+  'skills/creative-concept-design/references/motion-and-rhythm.md': 'skills/creative-concept-design/references/motion-and-rhythm.md',
+  'skills/creative-concept-design/references/narration-audition.md': 'skills/creative-concept-design/references/narration-audition.md',
+  'skills/creative-concept-design/references/current-media-routes.md': 'skills/creative-concept-design/references/current-media-routes.md',
   'skills/image-generation/SKILL.md':                            'skills/image-generation/SKILL.md',
   'skills/reverse-search-video-frame/SKILL.md':                 'skills/reverse-search-video-frame/SKILL.md',
   'skills/hardware-evidence-capture/SKILL.md':                  'skills/hardware-evidence-capture/SKILL.md',
@@ -120,6 +126,9 @@ const FILE_MAP = {
 
 /** Directories to clean up during uninstall (deepest first). */
 const CLEANUP_DIRS = [
+  'skills/creative-concept-design/references',
+  'skills/creative-concept-design/templates',
+  'skills/creative-concept-design',
   'skills/qwen-image-integration',
   'skills/qwen-video-integration',
   'skills/av-events',
