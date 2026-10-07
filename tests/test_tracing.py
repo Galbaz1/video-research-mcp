@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import builtins
+import importlib.util
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -24,6 +27,112 @@ def _make_config(**overrides):
     for k, v in defaults.items():
         setattr(cfg, k, v)
     return cfg
+
+
+def _fresh_tracing():
+    """Load the tracing source into a fresh module without the import cache."""
+    path = Path(__file__).parents[1] / "src/video_research_mcp/tracing.py"
+    spec = importlib.util.spec_from_file_location("video_research_mcp._fresh_tracing", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("flag,uri", [("false", "http://127.0.0.1:5001"), ("", "")])
+def test_fresh_disabled_lifecycle_never_imports_mlflow(flag, uri, monkeypatch, clean_config):
+    """GIVEN disabled config WHEN freshly loaded and used THEN MLflow is never imported."""
+    monkeypatch.setenv("GEMINI_TRACING_ENABLED", flag)
+    monkeypatch.setenv("MLFLOW_TRACKING_URI", uri)
+    original_import = builtins.__import__
+
+    def reject_mlflow(name, *args, **kwargs):
+        if name == "mlflow" or name.startswith("mlflow."):
+            raise AssertionError(f"disabled tracing attempted import: {name}")
+        return original_import(name, *args, **kwargs)
+
+    async def tool():
+        return "unchanged"
+
+    with patch("builtins.__import__", side_effect=reject_mlflow):
+        mod = _fresh_tracing()
+        assert mod.is_enabled() is False
+        assert mod.trace(tool) is tool
+        assert mod.trace(name="tool", span_type="TOOL")(tool) is tool
+        mod.setup()
+        mod.shutdown()
+
+
+def test_enabled_lazy_import_preserves_lifecycle(monkeypatch):
+    """GIVEN enabled config WHEN tracing is used THEN import once and preserve SDK calls."""
+    original_import = builtins.__import__
+    mlflow = MagicMock()
+    imports = []
+
+    def import_mlflow(name, *args, **kwargs):
+        if name == "mlflow" or name.startswith("mlflow."):
+            imports.append(name)
+            return mlflow
+        return original_import(name, *args, **kwargs)
+
+    async def tool():
+        return "unchanged"
+
+    with (
+        patch("builtins.__import__", side_effect=import_mlflow),
+        patch("video_research_mcp.config.get_config", return_value=_make_config()),
+    ):
+        mod = _fresh_tracing()
+        assert imports == []
+        assert mod.trace(tool) is mlflow.trace.return_value
+        mlflow.trace.assert_called_once_with(tool, name=None, span_type=None, attributes=None)
+        mlflow.trace.reset_mock()
+        attributes = {"operation": "test"}
+        assert mod.trace(name="tool", span_type="TOOL", attributes=attributes) is mlflow.trace.return_value
+        mlflow.trace.assert_called_once_with(None, name="tool", span_type="TOOL", attributes=attributes)
+        monkeypatch.setattr(mod, "_tracking_server_reachable", lambda uri: True)
+        mod.setup()
+        mod.shutdown()
+        assert mod.is_enabled() is True
+
+    assert imports == ["mlflow", "mlflow.gemini"]
+    mlflow.set_tracking_uri.assert_called_once_with("http://127.0.0.1:5001")
+    mlflow.set_experiment.assert_called_once_with("video-research-mcp")
+    mlflow.gemini.autolog.assert_called_once()
+    mlflow.flush_trace_async_logging.assert_called_once()
+
+
+@pytest.mark.parametrize("missing", ["mlflow", "mlflow.gemini"])
+def test_enabled_missing_sdk_keeps_identity(missing):
+    """GIVEN either optional import missing WHEN enabled THEN the lifecycle stays inert."""
+    original_import = builtins.__import__
+    mlflow = MagicMock()
+    imports = []
+
+    def import_mlflow(name, *args, **kwargs):
+        if name == "mlflow" or name.startswith("mlflow."):
+            imports.append(name)
+            if name == missing:
+                raise ImportError("optional SDK unavailable")
+            return mlflow
+        return original_import(name, *args, **kwargs)
+
+    def tool():
+        return "unchanged"
+
+    with (
+        patch("builtins.__import__", side_effect=import_mlflow),
+        patch("video_research_mcp.config.get_config", return_value=_make_config()),
+    ):
+        mod = _fresh_tracing()
+        assert imports == []
+        assert mod.is_enabled() is False
+        assert mod.trace(tool) is tool
+        assert mod.trace(name="tool")(tool) is tool
+        mod.setup()
+        mod.shutdown()
+
+    assert imports == (["mlflow"] if missing == "mlflow" else ["mlflow", "mlflow.gemini"])
+    assert mlflow.mock_calls == []
 
 
 # ---------------------------------------------------------------------------
@@ -53,7 +162,8 @@ class TestIsEnabled:
         original = mod._HAS_MLFLOW
         try:
             mod._HAS_MLFLOW = False
-            assert mod.is_enabled() is False
+            with patch("video_research_mcp.config.get_config", return_value=_make_config()):
+                assert mod.is_enabled() is False
         finally:
             mod._HAS_MLFLOW = original
 
