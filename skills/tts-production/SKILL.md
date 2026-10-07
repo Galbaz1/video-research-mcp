@@ -5,9 +5,9 @@ description: Produces voiceover audio via ElevenLabs TTS API. Activates for TTS 
 
 # TTS Production with ElevenLabs
 
-Generate, tune, and mix voice-over audio using the ElevenLabs Text-to-Speech API. Provider/model guidance below was checked on 2026-09-29; re-check compatibility and price before execution.
+Generate, audition and mix narration using the ElevenLabs Text-to-Speech API. Model guidance was checked on 2026-10-07 against the official [ElevenLabs TTS skill](https://github.com/elevenlabs/skills/blob/25bd9ad1c31af658fba6cc7d8ec1f1e2a715c049/text-to-speech/SKILL.md) and [models documentation](https://elevenlabs.io/docs/overview/models); re-check the live endpoint, voice eligibility, quota and price before execution.
 
-This skill uses the official HTTP API; an ElevenLabs MCP connector is optional and its schema must be inspected if used. Confirm the voice, model availability, output format, and authorized spend before generation. Never infer a current connector failure from an old local incident.
+This skill uses the official HTTP API; inspect the actual schema if an optional connector is used. Use [narration audition](../creative-concept-design/references/narration-audition.md) for spoken phrasing, delivery and the audition decision. Keep voice identifiers and account receipts in the private execution record.
 
 ## API Pattern
 
@@ -22,9 +22,7 @@ curl --fail-with-body -sS -X POST "https://api.elevenlabs.io/v1/text-to-speech/$
     "model_id": "eleven_v4",
     "voice_settings": {
       "stability": 0.75,
-      "similarity_boost": 0.80,
-      "style": 0.40,
-      "use_speaker_boost": true
+      "similarity_boost": 0.80
     }
   }' \
   --output /tmp/tts-response.json
@@ -49,7 +47,7 @@ print(f'Duration: {ends[-1]:.2f}s' if ends else 'No timestamps')
 curl --fail-with-body -sS -X POST "https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}" \
   -H "xi-api-key: ${ELEVENLABS_API_KEY}" \
   -H "Content-Type: application/json" \
-  -d '{ "text": "...", "model_id": "eleven_multilingual_v2", "voice_settings": {...} }' \
+  -d '{ "text": "Your text here", "model_id": "eleven_v4", "voice_settings": { "stability": 0.75, "similarity_boost": 0.80 } }' \
   --output output.mp3
 ```
 
@@ -68,11 +66,11 @@ curl --fail-with-body -sS -X POST "https://api.elevenlabs.io/v1/sound-generation
 | Model | Use Case | Speed | Quality |
 |-------|----------|-------|---------|
 | `eleven_v4` | Current expressive narration model | Check live latency | Audition for the brief |
-| `eleven_v4_turbo` | Current expressive real-time model | Low latency | Audition for the brief |
+| `eleven_v4_turbo` | Text-to-Dialogue WebSocket for real-time use | Check live latency | Separate endpoint, not a drop-in HTTP model |
 | `eleven_multilingual_v2` | Existing multilingual narration workflows | Established | Retain when voice or endpoint compatibility requires it |
 | `eleven_flash_v2_5` | Fast drafts or realtime workloads | Low latency | Evaluate pronunciation and timing |
 
-Verified on 2026-09-29 against [ElevenLabs models](https://elevenlabs.io/docs/overview/models). Newest does not guarantee the best result for a particular voice. Read the current endpoint/model support before using model-specific settings; do not silently fall back after a failed paid attempt.
+Select for the actual voice, language and endpoint. Model language support does not prove that a chosen voice pronounces the script well. Preserve failed/refused requests; do not silently fall back after a paid attempt.
 
 ## Voice Settings
 
@@ -80,44 +78,43 @@ Verified on 2026-09-29 against [ElevenLabs models](https://elevenlabs.io/docs/ov
 |-----------|-------|--------|-----------------|
 | `stability` | 0–1 | Low=expressive, High=consistent | 0.55–0.75 |
 | `similarity_boost` | 0–1 | Voice matching fidelity | 0.80–0.90 |
-| `style` | 0–1 | Emotional expressiveness | 0.30–0.70 |
-| `use_speaker_boost` | bool | Clarity enhancement | `true` for narration |
-| `speed` | Verify endpoint range | Set inside `voice_settings`; 1.0 is normal pace |
 
-### Starting Presets (model-dependent)
+For `eleven_v4`, use only `stability` and `similarity_boost`. Do not send `style`, `speed`, `use_speaker_boost` or SSML; these are not supported v4 controls. Supported audio tags, punctuation and spoken phrasing can direct delivery, but their result must be auditioned. The TTS `stream-input` WebSocket does not support v4.
+
+### Audition starting points for v4
 
 **Neutral narration** (clean, informational):
 ```json
-{ "stability": 0.75, "similarity_boost": 0.80, "style": 0.40 }
+{ "stability": 0.75, "similarity_boost": 0.80 }
 ```
 
 **Cinematic narration** (authoritative, confident):
 ```json
-{ "stability": 0.55, "similarity_boost": 0.85, "style": 0.70, "use_speaker_boost": true }
+{ "stability": 0.55, "similarity_boost": 0.85 }
 ```
 
 **Warm/conversational:**
 ```json
-{ "stability": 0.60, "similarity_boost": 0.75, "style": 0.55, "use_speaker_boost": true }
+{ "stability": 0.60, "similarity_boost": 0.75 }
 ```
 
 ## Workflow
 
-1. Generate TTS with timestamps (for timing QA)
-2. Verify duration: `ffprobe -i clip.mp3 -show_entries format=duration -v quiet -of csv="p=0"`
-3. First adjust supported `voice_settings.speed` and audition. For existing audio, if too slow: `ffmpeg -y -i clip.mp3 -filter:a "atempo=1.2" -codec:a libmp3lame -b:a 192k clip-fast.mp3` (max 1.35x sounds natural)
-4. If delivery needs work: lower `stability` (more expressive), raise `style` (more emotional)
-5. Mix into video — see [FFmpeg Audio Recipes](references/ffmpeg-audio-recipes.md)
+1. Check current voice/model access and output-format eligibility separately from available quota. A voice can return `402` / `paid_plan_required` even with remaining characters. Preserve the refusal; another eligible voice must fit the brief and budget. A plan upgrade needs separate authority.
+2. Allocate audition, full narration and any one targeted repair within one cumulative production cap. Retain request/operation IDs and measured usage; reconcile unknown outcomes before another submission.
+3. Generate a representative audition with difficult words, numbers and intended pauses. Listen to the actual saved audio before accepting the voice and delivery.
+4. Generate full narration with timestamps when the selected endpoint supports them. Measure duration with `ffprobe -i clip.mp3 -show_entries format=duration -v quiet -of csv="p=0"`; listen through all clauses and any stitched boundaries.
+5. Mix the accepted audio into the representative animatic and final video using [FFmpeg Audio Recipes](references/ffmpeg-audio-recipes.md), then listen to both mixes.
 
 ## QA and bounded repair
 
-- Current [voice settings](https://elevenlabs.io/docs/api-reference/voices/settings/get) include `speed`. [Pace guidance](https://elevenlabs.io/docs/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice) documents 0.7–1.2; verify the selected endpoint rather than using a historical unsupported top-level parameter.
-- Treat 1.35x `atempo` as a starting QA limit, then listen; intelligibility depends on the actual voice and material
+- Adjust v4 pacing by improving spoken phrasing, pauses and supported delivery directions, then audition; do not add a `speed` parameter.
+- If existing audio is time-stretched with FFmpeg, listen for artifacts and recompute/rescale alignment. No universal tempo factor guarantees natural speech.
 - **Hard step ducking** causes audible clicks — always use cosine-ease transitions
 - Duration and expressive quality vary by voice/model; measure the actual output instead of assuming an ordering.
-- One voice can handle multiple languages — the `eleven_multilingual_v2` model auto-detects language from text
+- Check the target language and audition pronunciation with the selected voice; language support alone is insufficient.
 
-Check that the HTTP request succeeded before decoding, the audio file is non-empty and playable, and alignment is present before deriving timing. Listen for pronunciation, omissions, clicks, and pauses. Changing speed with FFmpeg invalidates the original timestamps; rescale alignment by the same factor. Repair one specific defect at most once within the agreed budget, then return the verified file or preserved failure.
+Check HTTP success before decoding, and confirm non-empty playable audio plus alignment before deriving timing. Listen for pronunciation, omissions, clicks and pauses. Changing tempo invalidates original timestamps; divide timing by the tempo multiplier or realign. Repair one observed defect at most once within the agreed budget. Probe/decode and transcription checks do not establish delivery quality; report any missing listening coverage.
 
 ## Environment
 
