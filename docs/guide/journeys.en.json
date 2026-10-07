@@ -1,0 +1,931 @@
+[
+  {
+    "id": "video",
+    "title": "Understand a video",
+    "problem": "What does this video say about my question?",
+    "result": "A focused analysis with source moments, uncertainties and follow-up questions.",
+    "requirements": [
+      "Core server and Gemini; YouTube Data API only if you want to fetch metadata."
+    ],
+    "prompt": "Analyze this video: <YouTube-URL>. Explain how <topic> works. Cite source moments, state what is not visible and ask two follow-up questions.",
+    "steps": [
+      {
+        "title": "Choose the source",
+        "mode": "sequence",
+        "note": "Use metadata for a YouTube video; pass a local file directly to the analysis route.",
+        "tools": [
+          "video-research/video_metadata"
+        ]
+      },
+      {
+        "title": "Analyze with focus",
+        "mode": "sequence",
+        "note": "Use video_analyze for one source; choose windows for a long file or batch for multiple local files. Batch selects locally, but provides the video files to Gemini for potentially paid analysis.",
+        "tools": [
+          "video-research/video_analyze",
+          "video-research/video_analyze_windows",
+          "video-research/video_batch_analyze"
+        ]
+      },
+      {
+        "title": "Ask follow-up questions",
+        "mode": "sequence",
+        "note": "Create a session only for multiple questions and reuse its context.",
+        "tools": [
+          "video-research/video_create_session",
+          "video-research/video_continue_session"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "speech",
+    "title": "Convert speech to text",
+    "problem": "I want a transcript with timestamps.",
+    "result": "Subtitle or transcription lines with provenance, export and retained partial results.",
+    "requirements": [
+      "Local source and any subtitles; FFmpeg/ffprobe for audio. ASR requires an explicit backend. Local ASR does not yet have a qualified total intake deadline."
+    ],
+    "prompt": "Transcribe <file>. Use my subtitles first. Show timestamps and missing sections. Ask for consent and name the backend before ASR.",
+    "steps": [
+      {
+        "title": "Check source and audio",
+        "mode": "sequence",
+        "note": "Inspect the local file and determine which interval is needed.",
+        "tools": [
+          "video-research/media_info"
+        ]
+      },
+      {
+        "title": "Choose subtitles or ASR",
+        "mode": "sequence",
+        "note": "Subtitles take precedence. Model words and speaker labels remain interpretations.",
+        "tools": [
+          "video-research/audio_transcribe"
+        ]
+      },
+      {
+        "title": "Store only if wanted",
+        "mode": "sequence",
+        "note": "Ingest the transcript as a source for later research.",
+        "tools": [
+          "video-research/source_ingest"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "research",
+    "title": "Answer a question with sources",
+    "problem": "I want a verifiable answer to a scoped question.",
+    "result": "An answer with source citations, counterarguments and open questions.",
+    "requirements": [
+      "Gemini for planning and synthesis; search providers only for the chosen search route."
+    ],
+    "prompt": "Research <question> for <audience>. Limit it to <period>. Make a plan first, find primary sources and distinguish source facts, interpretation and unknowns.",
+    "steps": [
+      {
+        "title": "Scope the question",
+        "mode": "sequence",
+        "note": "A plan does not start research by itself.",
+        "tools": [
+          "video-research/research_plan"
+        ]
+      },
+      {
+        "title": "Gather sources",
+        "mode": "sequence",
+        "note": "Choose Gemini Search or a configured search provider and read the relevant pages.",
+        "tools": [
+          "video-research/web_search",
+          "video-research/web_search_provider",
+          "video-research/web_extract"
+        ]
+      },
+      {
+        "title": "Develop the answer",
+        "mode": "sequence",
+        "note": "research_execute can use supplied or fetched sources. research_deep synthesizes and does not fetch new sources itself.",
+        "tools": [
+          "video-research/research_execute",
+          "video-research/research_deep",
+          "video-research/research_assess_evidence"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "papers",
+    "title": "Explore scientific literature",
+    "problem": "Which papers and contrary findings fit my question?",
+    "result": "A bounded literature list and a comparison of sources actually read.",
+    "requirements": [
+      "Semantic Scholar for metadata; Gemini for document analysis."
+    ],
+    "prompt": "Find papers on <question>. Give a selection with DOI or paper ID. Separate metadata from full texts actually read and compare methods and limitations.",
+    "steps": [
+      {
+        "title": "Search for papers",
+        "mode": "sequence",
+        "note": "Search titles, authors and publication metadata.",
+        "tools": [
+          "video-research/research_paper_search",
+          "video-research/research_author_search"
+        ]
+      },
+      {
+        "title": "Follow relevant references",
+        "mode": "sequence",
+        "note": "Read details, citations and recommendations for selected papers.",
+        "tools": [
+          "video-research/research_paper_details",
+          "video-research/research_paper_citations",
+          "video-research/research_paper_recommendations"
+        ]
+      },
+      {
+        "title": "Read the full text",
+        "mode": "sequence",
+        "note": "Pass available documents explicitly; metadata is not a paper that has been read.",
+        "tools": [
+          "video-research/research_document"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "documents",
+    "title": "Read and compare a document",
+    "problem": "I want to know what my documents actually support.",
+    "result": "Source passages with page or location and a separate comparison.",
+    "requirements": [
+      "Original files; separately installed Poppler (pdftotext and pdfimages on PATH) for built-in PDF extraction with source_ingest, not bundled in the package. Docling is optional. Gemini for interpretation."
+    ],
+    "prompt": "Read <documents>. Keep page references. Compare what they say about <question> and show passages next to the interpretation.",
+    "steps": [
+      {
+        "title": "Read the original source",
+        "mode": "sequence",
+        "note": "Keep the source identity and locations; do not start from a separately rewritten document. Check the installation requirements for source_ingest: https://github.com/Galbaz1/video-research-mcp/blob/019c59eafa70315f9f751227eef168bc22ec818e/docs/integrations/source-ingestion.md.",
+        "tools": [
+          "video-research/source_ingest"
+        ]
+      },
+      {
+        "title": "Check the extraction",
+        "mode": "sequence",
+        "note": "Reread the relevant pages or elements.",
+        "tools": [
+          "video-research/source_ingest_read"
+        ]
+      },
+      {
+        "title": "Compare content",
+        "mode": "sequence",
+        "note": "Choose joint document analysis or a specific output schema.",
+        "tools": [
+          "video-research/content_batch_analyze",
+          "video-research/content_extract",
+          "video-research/research_document"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "av",
+    "title": "Find events in video and audio",
+    "problem": "Where in this recording does <event> happen?",
+    "result": "Supported time intervals with source frames or audio windows, and visible gaps in coverage.",
+    "requirements": [
+      "Local media, FFmpeg/ffprobe and Gemini for the selected AV analysis."
+    ],
+    "prompt": "Find <event> in <file> between <start> and <end>. Identify the supporting frames and audio. Report uncertainty and missed coverage.",
+    "steps": [
+      {
+        "title": "Inspect the interval",
+        "mode": "sequence",
+        "note": "Measure the source and view the storyboard.",
+        "tools": [
+          "video-research/media_info",
+          "video-research/video_storyboard"
+        ]
+      },
+      {
+        "title": "Choose one analysis",
+        "mode": "sequence",
+        "note": "Caption, count, ground and music are alternatives for different questions.",
+        "tools": [
+          "video-research/media_caption_events",
+          "video-research/media_count_events",
+          "video-research/media_ground_events",
+          "video-research/media_analyze_music"
+        ]
+      },
+      {
+        "title": "Check source moments",
+        "mode": "sequence",
+        "note": "View frames or export a clip. A model estimate is not a physically verified count.",
+        "tools": [
+          "video-research/video_frames",
+          "video-research/video_clip_export"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "title": "Read or edit an image",
+    "problem": "I want text, objects or a crop from this image.",
+    "result": "A source-bound OCR result, model interpretation or deterministic edit.",
+    "requirements": [
+      "Pillow; local OCR requires Tesseract or Apple Vision. Vision and segmentation require a separate provider."
+    ],
+    "prompt": "Read <image>. Start with an inspectable view. Use OCR for text and label model interpretations separately. Keep the original when cropping.",
+    "steps": [
+      {
+        "title": "View the source",
+        "mode": "sequence",
+        "note": "Provide real pixels; a model description is separate from them.",
+        "tools": [
+          "video-research/image_read"
+        ]
+      },
+      {
+        "title": "Choose OCR or vision",
+        "mode": "sequence",
+        "note": "Local OCR and model OCR are separate routes; segmentation requires an external service.",
+        "tools": [
+          "video-research/image_ocr",
+          "video-research/vision_ocr",
+          "video-research/vision_chat",
+          "video-research/image_segment"
+        ]
+      },
+      {
+        "title": "Edit if needed",
+        "mode": "sequence",
+        "note": "Crop and image_edit are deterministic edits; check the manifest.",
+        "tools": [
+          "video-research/image_crop",
+          "video-research/image_edit",
+          "video-research/image_manifest_read"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "footage",
+    "title": "Edit existing footage",
+    "problem": "I want to use existing clips in a short edit.",
+    "result": "A verified hard-cut edit with approved source moments.",
+    "requirements": [
+      "Local clips, FFmpeg/ffprobe and access to the source files."
+    ],
+    "prompt": "Make an edit plan for <clips> of about <duration>. Show scene previews first. Edit only after my approval and check the audio and full decode.",
+    "steps": [
+      {
+        "title": "Review scenes",
+        "mode": "sequence",
+        "note": "Detect cuts and create a storyboard.",
+        "tools": [
+          "video-research/video_detect_scenes",
+          "video-research/video_storyboard"
+        ]
+      },
+      {
+        "title": "Prepare the edit",
+        "mode": "sequence",
+        "note": "The prepare route creates previews; record the chosen moments explicitly.",
+        "tools": [
+          "video-research/media_edit_footage"
+        ]
+      },
+      {
+        "title": "Assemble after approval",
+        "mode": "sequence",
+        "note": "Use the same source and plan data; read the actual outcome.",
+        "tools": [
+          "video-research/media_edit_footage",
+          "video-research/job_status"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "explainer",
+    "title": "From research to an explainer",
+    "problem": "I want to make a video from well-supported research.",
+    "result": "An approved plan, a bound script and a rendered video with a separate content review.",
+    "requirements": [
+      "Separate explainer companion. Upstream video_explainer CLI for the chosen generation steps; renderer, Node and FFmpeg/ffprobe. Providers and keys per generation action."
+    ],
+    "prompt": "Make an explainer plan for <topic> based on <sources>. Check the available companion and renderer. Let me approve the plan and claims before you generate or render.",
+    "steps": [
+      {
+        "title": "Check prerequisites and create a project",
+        "mode": "sequence",
+        "note": "Read the prerequisites and create a project in the configured environment.",
+        "tools": [
+          "video-explainer/explainer_doctor",
+          "video-explainer/explainer_create"
+        ]
+      },
+      {
+        "title": "Plan and bind the content",
+        "mode": "sequence",
+        "note": "Supply source material, approve the plan and choose one generation step.",
+        "tools": [
+          "video-explainer/explainer_inject",
+          "video-explainer/explainer_plan",
+          "video-explainer/explainer_step"
+        ]
+      },
+      {
+        "title": "Render and review",
+        "mode": "sequence",
+        "note": "Follow the render job and check claims, readability and audio separately. The fact-check tool processes supplied observations.",
+        "tools": [
+          "video-explainer/explainer_render_start",
+          "video-explainer/explainer_render_poll",
+          "video-explainer/explainer_render_factcheck"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lesson",
+    "title": "Make a small interactive lesson",
+    "problem": "I want a bounded diagram lesson with narration.",
+    "result": "A self-contained HTML lesson and local video within the fixed three-scene domain.",
+    "requirements": [
+      "Educational-explainer skill, lesson.py, local audio/source material and media dependencies. Only the described three-scene examples."
+    ],
+    "prompt": "Make a lesson within the educational-explainer domain about <supported example>. Use my narration. Validate the specification first and check the HTML and video separately.",
+    "steps": [
+      {
+        "title": "Choose a supported example",
+        "mode": "sequence",
+        "note": "The skill describes the finite lesson domains; open-ended lessons require a different production route.",
+        "tools": [
+          "skill/educational-explainer"
+        ]
+      },
+      {
+        "title": "Validate and build",
+        "mode": "sequence",
+        "note": "Use the CLI validate and build commands with exact source and audio input.",
+        "tools": [
+          "function/education-lesson"
+        ]
+      },
+      {
+        "title": "Check the result",
+        "mode": "sequence",
+        "note": "Use check for source/output binding; readability and intelligibility require separate review.",
+        "tools": [
+          "function/education-lesson"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tutorial",
+    "title": "From demonstration to instructions",
+    "problem": "I want to reuse the steps from a recording.",
+    "result": "Source-bound instructions or a transferable skill with explicitly marked missing information.",
+    "requirements": [
+      "Gemini for interpretation; local frames for a PDF. The video-to-skill validators do not perform the task."
+    ],
+    "prompt": "Describe the steps from <recording> for <task>. Cite source moments, do not fill in missing actions, and then create a reusable instruction.",
+    "steps": [
+      {
+        "title": "Examine the demonstration",
+        "mode": "sequence",
+        "note": "Review the relevant source moments.",
+        "tools": [
+          "video-research/video_analyze",
+          "video-research/media_ground_events"
+        ]
+      },
+      {
+        "title": "Create readable instructions",
+        "mode": "sequence",
+        "note": "The PDF route uses real source frames; the skill route keeps steps and source data.",
+        "tools": [
+          "video-research/video_note_create",
+          "skill/video-to-skill"
+        ]
+      },
+      {
+        "title": "Validate before packaging",
+        "mode": "sequence",
+        "note": "Structure and provenance checks do not prove that the described task was performed successfully.",
+        "tools": [
+          "function/video-skill-validate",
+          "function/video-skill-package"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "knowledge",
+    "title": "Find earlier research",
+    "problem": "I want to search my stored knowledge.",
+    "result": "Relevant stored objects and source references; optional synthesis remains model output.",
+    "requirements": [
+      "WEAVIATE_URL, access to the chosen collections and the search/embedding configuration: hybrid/semantic require vectorization, keyword uses BM25. Gemini summarization and Cohere reranking are separate optional provider steps; QueryAgent is optional for an answer."
+    ],
+    "prompt": "Find earlier research on <topic> in <collection>. Return the source objects. Create a summary only if that option is available, and label it as interpretation.",
+    "steps": [
+      {
+        "title": "Review collections",
+        "mode": "sequence",
+        "note": "Read the available schemas and counts.",
+        "tools": [
+          "video-research/knowledge_schema",
+          "video-research/knowledge_stats"
+        ]
+      },
+      {
+        "title": "Search and read the source objects",
+        "mode": "sequence",
+        "note": "Use knowledge_search, fetch and related; knowledge_query is deprecated. Without Weaviate configuration, search returns empty results; a search error is returned as a tool error. Empty results do not prove that there is no stored knowledge.",
+        "tools": [
+          "video-research/knowledge_search",
+          "video-research/knowledge_fetch",
+          "video-research/knowledge_related"
+        ]
+      },
+      {
+        "title": "Request an answer only if wanted",
+        "mode": "sequence",
+        "note": "knowledge_ask requires the optional QueryAgent.",
+        "tools": [
+          "video-research/knowledge_ask"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "audience",
+    "title": "Understand audience comments",
+    "problem": "Which questions or objections appear in these comments?",
+    "result": "A bounded sample with exact quotes and transparent characteristics.",
+    "requirements": [
+      "YouTube Data API for acquisition; audience_manage stores and analyzes supplied comments locally."
+    ],
+    "prompt": "Read a bounded selection of comments on <video>. Group questions and objections, give exact quotes and do not treat the sample as the whole audience.",
+    "steps": [
+      {
+        "title": "Review channel context",
+        "mode": "sequence",
+        "note": "Read only the required metadata or uploads page.",
+        "tools": [
+          "video-research/youtube_channel_inspect",
+          "video-research/youtube_channel_catalog"
+        ]
+      },
+      {
+        "title": "Fetch the sample",
+        "mode": "sequence",
+        "note": "Keep the chosen size and sort order.",
+        "tools": [
+          "video-research/video_comments"
+        ]
+      },
+      {
+        "title": "Store and compare",
+        "mode": "sequence",
+        "note": "Work with source-bound quotes; model inference is a separate choice.",
+        "tools": [
+          "video-research/audience_manage"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "spatial",
+    "title": "Explore spatial visualization · experimental",
+    "problem": "I want a spatial sketch based on source footage.",
+    "result": "A chosen external route with explicit requirements; geometry and physical correctness require separate verification.",
+    "requirements": [
+      "Separately configured external source and runtime. These routes are not a generally qualified native feature of RC3."
+    ],
+    "prompt": "Explore a spatial visualization for <source footage>. First check which external route is actually available. State geometric assumptions and do not start local model execution without a suitable runtime.",
+    "steps": [
+      {
+        "title": "Choose source footage",
+        "mode": "sequence",
+        "note": "Fetch the required frames.",
+        "tools": [
+          "video-research/video_frames"
+        ]
+      },
+      {
+        "title": "Check the external route",
+        "mode": "sequence",
+        "note": "The spatial skill and adapter are experimental; their presence is not proof of execution.",
+        "tools": [
+          "skill/spatial-video-analysis",
+          "function/spatial-session"
+        ]
+      },
+      {
+        "title": "Choose a visualization environment",
+        "mode": "sequence",
+        "note": "Blender and FreeCAD have separate prerequisites.",
+        "tools": [
+          "skill/research-visualization-blender",
+          "skill/research-visualization-freecad"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hardware",
+    "title": "Simulate hardware behavior · experimental",
+    "problem": "I want to read or modify a simulator.",
+    "result": "Simulation values and recorded changes; no physical hardware observation.",
+    "requirements": [
+      "Explicit simulator registration and appropriate permission for changes."
+    ],
+    "prompt": "Examine <simulator>. Read devices, metadata and limits first. Propose a change and apply it only with the required permission.",
+    "steps": [
+      {
+        "title": "Read devices and limits",
+        "mode": "sequence",
+        "note": "Discovery describes the simulator.",
+        "tools": [
+          "video-research/mhs_discover",
+          "video-research/mhs_meta_info"
+        ]
+      },
+      {
+        "title": "Inspect the state",
+        "mode": "sequence",
+        "note": "Health and read do not prove physical presence.",
+        "tools": [
+          "video-research/mhs_health_check",
+          "video-research/mhs_read"
+        ]
+      },
+      {
+        "title": "Change only explicitly",
+        "mode": "sequence",
+        "note": "Write and reset change simulator state and require the applicable permission.",
+        "tools": [
+          "video-research/mhs_write",
+          "video-research/mhs_reset"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "operate",
+    "title": "Install and check availability",
+    "problem": "Which components do I need for my task?",
+    "result": "A chosen core server or companion with verified configuration.",
+    "requirements": [
+      "Python ≥3.11 and uv/uvx for MCP; Node ≥22 for the npm installer. The native Codex plugin connects the core server; you connect companions separately."
+    ],
+    "prompt": "Check which video-research tools and skills are connected. Show missing configuration for <task> without displaying keys. Do not install or change anything without my instruction.",
+    "steps": [
+      {
+        "title": "Choose the entry point",
+        "mode": "sequence",
+        "note": "Codex has 26 packaged skills. The Claude installer has 26 skill entries plus supporting resources.",
+        "tools": [
+          "function/native-codex-plugin",
+          "function/plugin-installer"
+        ]
+      },
+      {
+        "title": "Read the configuration",
+        "mode": "sequence",
+        "note": "provider_capabilities describes routes and does not test a provider connection.",
+        "tools": [
+          "video-research/infra_configure",
+          "video-research/provider_capabilities"
+        ]
+      },
+      {
+        "title": "Track your own work",
+        "mode": "sequence",
+        "note": "job_status reads supported core jobs. For generated media: companion image finalize/poll or video poll with an explicit operation; job_cancel is only for core video jobs.",
+        "tools": [
+          "video-research/job_status",
+          "video-research/job_cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "origin",
+    "title": "Find the origin of an image",
+    "problem": "Where does this image or clip come from?",
+    "result": "Candidate pages with separate visual and textual verification.",
+    "requirements": [
+      "An exact local PNG frame; an enabled Serper route and SERPER_API_KEY. Running reverse_search_frame always uploads the selected PNG publicly to Uguu, verifies the hosted bytes and then sends the URL to Serper Lens. Concrete consent to publication, submission and potentially paid use is required. A dry-run publishes nothing."
+    ],
+    "prompt": "Find the origin of <image>. Give candidates with source pages. Do not publish my image without consent, and verify matches by appearance, text and context.",
+    "steps": [
+      {
+        "title": "Choose an exact image",
+        "mode": "sequence",
+        "note": "Fetch one source frame.",
+        "tools": [
+          "video-research/video_frame"
+        ]
+      },
+      {
+        "title": "Find candidates",
+        "mode": "alternative",
+        "note": "Choose either a local dry-run without upload, or execution of reverse_search_frame with a public PNG upload to Uguu, byte verification and subsequent URL submission to Serper Lens. web_search_provider is a separate text search route; it does not replace this frame search route.",
+        "tools": [
+          "video-research/reverse_search_frame",
+          "video-research/web_search_provider"
+        ]
+      },
+      {
+        "title": "Check the pages",
+        "mode": "sequence",
+        "note": "A search match is not yet an established origin.",
+        "tools": [
+          "video-research/web_extract"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "assets",
+    "title": "Create narration and visual assets",
+    "problem": "I want to produce audio or images for a video.",
+    "result": "Provider artifacts that still need to be reviewed for content, quality and coherence.",
+    "requirements": [
+      "The core server does not generate images/TTS/clips. Choose the separate HTTP companion route below or a separately available provider workflow. CLI narration/music/SFX require upstream prerequisites."
+    ],
+    "prompt": "Make an asset plan for <video>. Check the real generators, inputs and costs before execution. Start with one sample and review the image and audio before scaling up.",
+    "steps": [
+      {
+        "title": "Choose an available generator",
+        "mode": "sequence",
+        "note": "These skills guide usage; they do not add a generator.",
+        "tools": [
+          "skill/tts-production",
+          "skill/image-generation",
+          "skill/video-generation"
+        ]
+      },
+      {
+        "title": "Use the companion if connected",
+        "mode": "sequence",
+        "note": "Narration requires an approved bound script; music and SFX use chosen upstream routes.",
+        "tools": [
+          "video-explainer/explainer_narration",
+          "video-explainer/explainer_music",
+          "video-explainer/explainer_sound"
+        ]
+      },
+      {
+        "title": "Inspect and mix",
+        "mode": "sequence",
+        "note": "Measure source media and mix existing project audio separately.",
+        "tools": [
+          "video-research/media_info",
+          "video-research/audio_dsp_analyze",
+          "video-explainer/explainer_audio_mix"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "materials",
+    "title": "Assemble existing materials",
+    "problem": "I have my own images and clips and want to make a video from them.",
+    "result": "A local MP4 following a recorded order and timing.",
+    "requirements": [
+      "Separate explainer companion, a configured project, local materials with usage declarations and FFmpeg/ffprobe. Stock search/download is not connected."
+    ],
+    "prompt": "Assemble my existing materials <files> into <duration>. Use only these files. Record order, timing and usage declarations, and check the full MP4.",
+    "steps": [
+      {
+        "title": "Create or choose a project",
+        "mode": "sequence",
+        "note": "Use an existing project environment; create uses the upstream CLI.",
+        "tools": [
+          "video-explainer/explainer_create",
+          "video-explainer/explainer_status"
+        ]
+      },
+      {
+        "title": "Record the plan and materials",
+        "mode": "sequence",
+        "note": "Bind scenes, script and the explicitly supplied sources.",
+        "tools": [
+          "video-explainer/explainer_plan"
+        ]
+      },
+      {
+        "title": "Assemble and check",
+        "mode": "sequence",
+        "note": "Use local materials; this route does not search for or download stock.",
+        "tools": [
+          "video-explainer/explainer_materials_assemble"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "library",
+    "title": "Reuse sources and notes locally",
+    "problem": "I want to find and share passages from my own sources.",
+    "result": "Local collections, citable passages, notes and readable exports.",
+    "requirements": [
+      "Existing local source records; no Weaviate or model provider is needed for these record operations."
+    ],
+    "prompt": "Organize <source records> into a collection. Find passages about <question>, save notes with exact references and export a readable overview.",
+    "steps": [
+      {
+        "title": "Organize and search",
+        "mode": "sequence",
+        "note": "Work with the supplied source records and a bounded search query.",
+        "tools": [
+          "video-research/collections_manage",
+          "video-research/corpus_retrieve"
+        ]
+      },
+      {
+        "title": "Keep context",
+        "mode": "sequence",
+        "note": "Link notes or wiki revisions to exact passages.",
+        "tools": [
+          "video-research/notebook_manage",
+          "video-research/wiki_manage"
+        ]
+      },
+      {
+        "title": "Share source data",
+        "mode": "sequence",
+        "note": "Check which source data is suitable for sharing.",
+        "tools": [
+          "video-research/evidence_export"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dubbing",
+    "title": "Translate a video · experimental",
+    "problem": "I want a spoken translation for my video.",
+    "result": "A source-bound translation plan and a possible render; voice quality and listening review remain separate checks.",
+    "requirements": [
+      "Optional configured dubbing service for stems, VAD and TTS; local media and FFmpeg/ffprobe. Approved voice references."
+    ],
+    "prompt": "Prepare a translation of <video> into <language>. Check the dubbing service first. Create only an analysis and plan; ask for approval before synthesis and review the final audio.",
+    "steps": [
+      {
+        "title": "Check and prepare",
+        "mode": "sequence",
+        "note": "A missing service is a stop condition.",
+        "tools": [
+          "video-research/check_dubbing_service",
+          "video-research/prepare_video_translation_project"
+        ]
+      },
+      {
+        "title": "Check the translation plan",
+        "mode": "sequence",
+        "note": "Work with exact source moments, speaker assignments and slots.",
+        "tools": [
+          "video-research/get_video_translation_state",
+          "video-research/validate_video_translation_plan"
+        ]
+      },
+      {
+        "title": "Render after approval",
+        "mode": "sequence",
+        "note": "Technical delivery and voice quality verified by listening are separate outcomes.",
+        "tools": [
+          "video-research/render_video_translation",
+          "video-research/validate_video_translation_delivery"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "commentary",
+    "title": "Create film commentary",
+    "problem": "I want commentary on selected film clips.",
+    "result": "An approved commentary plan, separately executed segment groups and verified delivery.",
+    "requirements": [
+      "Separate explainer companion; local source video, FFmpeg/ffprobe and a suitable execution route for the approved segment groups."
+    ],
+    "prompt": "Prepare commentary for <video> about <question>. Record exact source moments and narration. Let me approve the plan and the segment groups before you create partial renders.",
+    "steps": [
+      {
+        "title": "Create and check the plan",
+        "mode": "sequence",
+        "note": "Link the project to the exact source video.",
+        "tools": [
+          "video-explainer/commentary_prepare",
+          "video-explainer/commentary_validate_plan"
+        ]
+      },
+      {
+        "title": "Record segment groups",
+        "mode": "sequence",
+        "note": "Approve grants execution scope; the tool does not run a partial render. That execution requires a separate suitable route.",
+        "tools": [
+          "video-explainer/commentary_freeze_shards",
+          "video-explainer/commentary_approve_shard"
+        ]
+      },
+      {
+        "title": "Combine existing partial renders",
+        "mode": "sequence",
+        "note": "Assemble and delivery validation follow only after successful partial outcomes.",
+        "tools": [
+          "video-explainer/commentary_assemble",
+          "video-explainer/commentary_validate_delivery"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "image-generate",
+    "title": "Create, edit or translate an image",
+    "problem": "I want a new image, an edit with references or translated text in an image.",
+    "result": "A locally stored PNG/JPG with source pins, hashes and full raster decode; you review semantics and style separately.",
+    "requirements": [
+      "Separate explainer companion with the generation extra; regional DashScope configuration and an existing project.",
+      "Exact script/scene pins and current pinned price, access and quote declarations. Actual consent to submission and costs is required separately.",
+      "Pillow/HTTPX via the generation extra. Text/edit: qwen-image-2.0-pro. Translation: qwen-mt-image in Beijing, already-public HTTPS source; Chinese or English on one side. No upstream CLI."
+    ],
+    "prompt": "Choose text, edit or translation for <image task>. Check the companion, region, sources and current quote. Record source pins and costs; ask for my actual consent before submission. Keep the job ID and check the saved files.",
+    "steps": [
+      {
+        "title": "Prepare source and quote",
+        "mode": "sequence",
+        "note": "Follow https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/docs/integrations/image-generation.md. Pin script/scene, references and current price/access/quote. spend_authorized=true is an input confirmation, not human authority.",
+        "tools": [
+          "video-explainer/explainer_image_generation_submit"
+        ]
+      },
+      {
+        "title": "Save or recover explicitly",
+        "mode": "alternative",
+        "note": "Finalize for synchronous images; poll for translation/recovery. Each fetch gets an operation_id, the same principal and authorize=true. Do not use core job_status.",
+        "tools": [
+          "video-explainer/explainer_image_generation_finalize",
+          "video-explainer/explainer_image_generation_poll"
+        ]
+      },
+      {
+        "title": "Check outcome and limits",
+        "mode": "sequence",
+        "note": "Review assets, hashes and decode; paid provider quality and identity/style remain unqualified. On UNKNOWN, reconcile the original task first. Synchronous cancel is not supported.",
+        "tools": [
+          "video-explainer/explainer_image_generation_cancel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "video-generate",
+    "title": "Create a short video from text or frames",
+    "problem": "I want a synthetic clip from text, a first frame or a first plus last frame.",
+    "result": "A saved MP4 with script/scene identity, source/request hashes and full decode; visual and audio quality remain separate.",
+    "requirements": [
+      "Separate explainer companion with the generation extra; regional DashScope configuration and an existing project.",
+      "Exact script/scene pins and current pinned price, access and quote declarations. Actual consent to submission and costs is required separately.",
+      "FFmpeg/ffprobe; Wan text/frame models and explicit video endpoint configuration. No upstream CLI. S2V/HappyHorse are separate optional successors without accepted qualification here."
+    ],
+    "prompt": "Prepare one short synthetic clip about <scene>. Choose text or first/last frame and pin script, scene and references. Check the quote and limits. Ask for consent before submission; inspect the fully decoded MP4.",
+    "steps": [
+      {
+        "title": "Bound and submit once",
+        "mode": "sequence",
+        "note": "Follow https://github.com/Galbaz1/video-research-mcp/blob/v0.8.0-rc.6/packages/video-explainer-mcp/docs/integrations/generation.md. Text/frame: whole-second durations of 2–15 seconds, 720P/1080P, permitted ratio. Frame pins and expected dimensions are explicit. spend_authorized is not actual spending authority.",
+        "tools": [
+          "video-explainer/explainer_generation_submit"
+        ]
+      },
+      {
+        "title": "Fetch and check explicitly",
+        "mode": "sequence",
+        "note": "One poll per operation_id/principal/authorize; no background loop and no core job_status. Only permitted HTTPS output, saved hashes, dimensions/duration and full decode.",
+        "tools": [
+          "video-explainer/explainer_generation_poll"
+        ]
+      },
+      {
+        "title": "Recover or cancel in a controlled way",
+        "mode": "sequence",
+        "note": "UNKNOWN requires reconciliation of the original task, not a new logical_job_id. Cancel only after a fresh PENDING and separate confirmation. Provider/creative quality, full security review and program acceptance remain open.",
+        "tools": [
+          "video-explainer/explainer_generation_cancel"
+        ]
+      }
+    ]
+  }
+]
