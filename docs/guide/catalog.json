@@ -1,7 +1,7 @@
 {
   "revision": "v0.8.0-rc.6",
   "plugin_version": "0.8.0-rc.6",
-  "availability": "RC6-kandidaatbron; publicatie en installatiecontrole zijn nog open",
+  "availability": "RC6-releasecandidate; controleer de release en voorwaarden per route",
   "tools": [
     {
       "id": "video-agent/agent_generate_scenes",
