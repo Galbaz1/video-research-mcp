@@ -16,19 +16,9 @@ Codex project instructions equivalent to this repo's Claude setup.
 
 This layout mirrors `.claude/rules/*.md` path scoping using Codex's directory-based AGENTS discovery.
 
-## Herdr account routing — current user instruction, 2026-10-06
+## Herdr account routing — current user instruction, 2026-10-07
 
-Use only **Codex account 2** for every execution and review session in Herdr,
-through codex-herdr 2 and its isolated ~/.codex-account-2 home.
-Do not dispatch Codex account 1 or Claude until account 2 usable credits are
-verified exhausted. Unknown balance, login problems, rate limits and the calendar
-alone do not end this override. Fausto reports expiry on 7 October.
-On verified exhaustion, record its end, notify Fausto and resolve previously
-authorized project routing. There is no fixed lane ceiling; useful independent
-sessions require capacity, exclusive ownership and bounded allocations.
-Verify effective identity/home. Existing credits are authorized; no purchase,
-reset, auth copy or new API billing. Preserve unrelated sessions and close finished lanes.
-The current priority is API-first delivery; stop expanding local options.
+User routing 2026-10-07 revokes the 2026-10-06 account2-only override. Codex account1, account2 and Claude are available through real Herdr. Balance useful independent work by task fit and verified live capacity, with exclusive ownership and bounded allocations; verify effective account/home. Existing credits allowed; no purchase, reset, auth copy or new API billing. API-first delivery; stop expanding local options. Independent Codex account2 review is required before claiming full review; installed Claude/Anthropic security reviewer remains unauthorized on this coordinator route.
 
 ## What This Is
 
