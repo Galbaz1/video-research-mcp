@@ -5,7 +5,7 @@ This server wraps the [video_explainer CLI](https://github.com/prajwal-y/video_e
 with MCP tools for projects, editorial plans, generation, rendering, audio, commentary,
 narration timing, revision-bound feedback, existing-material assembly, and quality
 checks. Stock-media search/download tools are not mounted.
-The upstream checkout owns provider integrations, model selection, Remotion
+For the CLI pipeline, the upstream checkout owns provider integrations, model selection, Remotion
 code, and rendering dependencies. The pinned upstream licence grant remains
 unresolved: this package independently authors the plan contract and ships no
 upstream code or runtime. Installation and rights for a separate CLI remain
@@ -18,11 +18,17 @@ bundled README of a registry version,
 use its source archive on
 [PyPI](https://pypi.org/project/video-explainer-mcp/#files).
 
+See the [Dutch problem-to-solution guide](https://galbaz1.github.io/video-research-mcp/guide/)
+for released RC5 workflows and troubleshooting. The separate development
+[image](docs/integrations/image-generation.md) and [text/frame-video](docs/integrations/generation.md)
+APIs use HTTP directly and have their own setup instructions.
+
 ## Install and configure
 
 The wrapper requires Python 3.11 or newer and [uv](https://docs.astral.sh/uv/).
-Before generation, install the upstream CLI in its own checkout and virtual
-environment, following that checkout's instructions. The wrapper expects:
+For CLI pipeline generation and rendering, install the upstream CLI in its own
+checkout and virtual environment, following that checkout's instructions.
+That pipeline expects:
 
 - `<EXPLAINER_PATH>/.venv/bin/video-explainer` as an executable console script.
 - The Node.js version required by the upstream checkout, plus FFmpeg on `PATH`.
@@ -169,7 +175,7 @@ output checks and the remaining provider/media acceptance boundaries.
 
 ## Development
 
-The development checkout adds a [selected durable video generation route](docs/integrations/generation.md). It is absent from published `0.2.2rc3`; live provider and creative acceptance remain open.
+The development checkout adds durable [image generation, editing and translation](docs/integrations/image-generation.md) and [video generation from text or frames](docs/integrations/generation.md). These operations are absent from published `0.2.2rc3`; live provider and creative acceptance remain open.
 
 From this package directory:
 

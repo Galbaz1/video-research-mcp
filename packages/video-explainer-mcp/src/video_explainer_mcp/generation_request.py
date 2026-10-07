@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 from pydantic import ValidationError
 
 from .config import get_config
+from .generation_references import I2V_WIRE_MODEL, freeze_references, provider_media
 from .materials import pinned_object
 from .models.generation import GenerationRequest, OperatorQuote, PriceDeclaration, ModelAccessDeclaration
 from .planning_sources import digest, project_directory
@@ -106,7 +107,7 @@ def adapter_revisions() -> dict[str, str]:
     """Bind the concrete files used for new effects and resume compatibility."""
     package = Path(__file__).parent
     return {name: file_pin((package / name).resolve(), 128 * 1024)["sha256"] for name in (
-        "generation.py", "generation_request.py", "generation_assets.py",
+        "generation.py", "generation_request.py", "generation_assets.py", "generation_references.py",
         "models/generation.py", "tools/generation.py", "job_store.py", "render_artifacts.py")}
 
 
@@ -118,31 +119,54 @@ def freeze_request(project_id: str, request: GenerationRequest) -> tuple[dict, s
         raise ValueError("Generation prompt must contain text")
     if request.transparent_background:
         raise ValueError("Selected video model does not support transparent background")
-    if request.model != "wan2.7-t2v":
-        raise ValueError("wan2.7-i2v alias and input-derived dimensions are unqualified")
-    if request.references or request.continuation:
+    if request.model == "wan2.7-t2v" and (request.references or request.continuation):
         raise ValueError("Selected text-to-video model does not support these references or continuation")
+    if request.model == "wan2.7-t2v" and request.expected_dimensions is not None:
+        raise ValueError("Selected text-to-video dimensions are fixed by resolution and ratio")
     if request.expected_audio != "present":
         raise ValueError("Selected contract has no qualified silent-output control")
     project = project_directory(project_id)
     value = request.model_dump(mode="json")
     verify_sources(project, value)
+    references = freeze_references(project, value) if request.model == "wan2.7-i2v" else None
     base, _ = selected_config()
     quote = read_operator_quote(project, request, base)
     revisions = adapter_revisions()
     envelope = {"provider": "dashscope", "project_id": project_id, "project_dir": str(project),
                 "api_origin": base, "generation": value, "contract": CONTRACT,
                 "adapter_revision": revisions, "quote": quote,
-                "expected_pixels": list(PIXELS[request.resolution][request.ratio])}
-    return envelope, digest({"script": value["script"], "scene": value["scene"],
-                             "adapter_revision": revisions, "contract": CONTRACT})
+                "expected_pixels": (list(request.expected_dimensions) if references is not None
+                                    else list(PIXELS[request.resolution][request.ratio]))}
+    source = {"script": value["script"], "scene": value["scene"],
+              "adapter_revision": revisions, "contract": CONTRACT}
+    if references is not None:
+        envelope.update(wire_model=I2V_WIRE_MODEL, reference_metadata=references,
+                        mode="first_last_frame" if len(references) == 2 else "first_frame",
+                        dimension_basis="caller_declared_i2v_output_not_provider_guarantee")
+        source.update(references=value["references"], wire_model=I2V_WIRE_MODEL,
+                      reference_metadata=references, expected_dimensions=list(request.expected_dimensions))
+    return envelope, digest(source)
 
 
 def provider_payload(request: dict) -> dict:
-    """Use only the verified Wan2.7 text-to-video wire without implicit truncation."""
+    """Encode only the pinned selected wire, comparing sources and origin before POST."""
     value = request["generation"]
-    return {"model": value["model"],
-            "input": {"prompt": value["prompt"], "negative_prompt": value["negative_prompt"]},
-            "parameters": {"duration": value["duration"], "resolution": value["resolution"],
-                           "ratio": value["ratio"], "seed": value["seed"],
-                           "prompt_extend": False, "watermark": True}}
+    project = Path(request["project_dir"])
+    inputs = {"prompt": value["prompt"], "negative_prompt": value["negative_prompt"]}
+    parameters = {"duration": value["duration"], "resolution": value["resolution"],
+                  "seed": value["seed"], "prompt_extend": value.get("prompt_extend", False),
+                  "watermark": value.get("watermark", True)}
+    model = value["model"]
+    if model == "wan2.7-i2v":
+        if request["wire_model"] != I2V_WIRE_MODEL:
+            raise ValueError("Selected I2V wire model differs from the frozen contract")
+        inputs["media"] = provider_media(project, value, request["reference_metadata"])
+        model = I2V_WIRE_MODEL
+    else:
+        parameters["ratio"] = value["ratio"]
+    verify_sources(project, value)
+    if request["contract"] != CONTRACT or request["adapter_revision"] != adapter_revisions():
+        raise ValueError("Generation adapter or contract changed before POST")
+    if selected_config()[0] != request["api_origin"]:
+        raise ValueError("Submit origin differs from the frozen request")
+    return {"model": model, "input": inputs, "parameters": parameters}

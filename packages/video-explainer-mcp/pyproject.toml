@@ -27,12 +27,13 @@ Repository = "https://github.com/Galbaz1/video-research-mcp"
 
 [project.optional-dependencies]
 narration = ["httpx>=0.28.1,<0.29"]
-generation = ["httpx>=0.28.1,<0.29"]
+generation = ["httpx>=0.28.1,<0.29", "pillow>=12.3.0,<13"]
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
     "ruff>=0.16.9,<0.17",
     "httpx>=0.28.1,<0.29",
+    "pillow>=12.3.0,<13",
 ]
 
 [project.scripts]

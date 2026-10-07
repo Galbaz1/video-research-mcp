@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -39,7 +39,13 @@ class GenerationRequest(BaseModel):
     duration: int = Field(default=5, ge=2, le=15, strict=True)
     resolution: Literal["720P", "1080P"] = "720P"
     ratio: Literal["16:9", "9:16", "1:1", "4:3", "3:4"] = "16:9"
+    expected_dimensions: tuple[
+        Annotated[int, Field(ge=16, le=8192, strict=True)],
+        Annotated[int, Field(ge=16, le=8192, strict=True)],
+    ] | None = Field(default=None, exclude_if=lambda value: value is None)
     seed: int = Field(default=0, ge=0, le=2147483647, strict=True)
+    prompt_extend: bool = Field(default=False, strict=True, exclude_if=lambda value: value is False)
+    watermark: bool = Field(default=True, strict=True, exclude_if=lambda value: value is True)
     script_id: str = Field(min_length=1, max_length=100)
     scene_id: str = Field(min_length=1, max_length=100)
     script: PinnedFile
@@ -95,7 +101,7 @@ class OperatorQuote(BaseModel):
     evidence_kind: Literal["operator_declaration"]
     provider: Literal["dashscope"]
     api_origin: str = Field(max_length=256)
-    model: Literal["wan2.7-t2v"]
+    model: Literal["wan2.7-t2v", "wan2.7-i2v"]
     resolution: Literal["720P", "1080P"]
     currency: Literal["USD", "CNY"]
     price_per_second: Decimal = Field(gt=0, allow_inf_nan=False)
@@ -114,7 +120,7 @@ class PriceDeclaration(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     evidence_kind: Literal["operator_declaration"]
     provider: Literal["dashscope"]
-    model: Literal["wan2.7-t2v"]
+    model: Literal["wan2.7-t2v", "wan2.7-i2v"]
     resolution: Literal["720P", "1080P"]
     currency: Literal["USD", "CNY"]
     price_per_second: Decimal = Field(gt=0, allow_inf_nan=False)
@@ -131,7 +137,7 @@ class ModelAccessDeclaration(BaseModel):
     evidence_kind: Literal["operator_declaration"]
     provider: Literal["dashscope"]
     api_origin: str = Field(max_length=256)
-    model: Literal["wan2.7-t2v"]
+    model: Literal["wan2.7-t2v", "wan2.7-i2v"]
     principal: str = Field(min_length=1, max_length=100)
     access: Literal["operator_declares_access"]
     source_url: str = Field(max_length=2048)

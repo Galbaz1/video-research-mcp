@@ -10,6 +10,7 @@ import tempfile
 from urllib.parse import urlsplit, urlunsplit
 
 from .generation_request import RESULT_HOST
+from .generation_references import I2V_WIRE_MODEL
 from .materials import publish
 from .media_process import run_media_process
 from .render_artifacts import file_revision, verify_output
@@ -89,6 +90,12 @@ def executable_identity() -> dict:
 
 def measured_media(body: bytes, request: dict) -> dict:
     """Match exact pixel map, duration and every audio/video stream to the request."""
+    generation = request["generation"]
+    if generation["model"] == "wan2.7-i2v" and (
+            request.get("wire_model") != I2V_WIRE_MODEL
+            or request["expected_pixels"] != generation.get("expected_dimensions")
+            or not request.get("reference_metadata")):
+        raise ValueError("I2V output qualification lacks its declared model-specific metadata")
     if len(body) > 16384:
         raise ValueError("Generation metadata exceeded16KiB")
     value = json.loads(body)
@@ -142,6 +149,8 @@ async def qualify_asset(artifact: dict, request: dict) -> dict:
     if executable_identity() != identity or not verify_output(artifact, MAX_ASSET_BYTES):
         raise ValueError("Generation artifact or decoder identity changed during qualification")
     return {"policy": "wan2.7-exact-video-audio-full-decode-v1", "full_decode": True,
+            "model": request["generation"]["model"],
+            "wire_model": request.get("wire_model", request["generation"]["model"]),
             "artifact_sha256": artifact["sha256"], "size_bytes": artifact["size_bytes"],
             "media": media, "decoded_seconds": decoded, "duration_tolerance_seconds": DURATION_TOLERANCE,
             "executables": identity, "executable_byte_identity": "UNQUALIFIED",

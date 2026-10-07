@@ -151,7 +151,13 @@ async def _apply(row: dict, owner: str, state: dict, task: TaskResponse, action:
                                "provider_operation_id": row["external_id"],
                                "source_revision": row["source_revision"], "request_sha256": row["request_sha256"],
                                **{name: value[name] for name in ("scene_id", "script_id", "scene", "script", "label",
-                                                                "seed", "references", "continuation", "transparent_background")}}
+                                                                "seed", "references", "continuation", "transparent_background")},
+                               "prompt_extend": value.get("prompt_extend", False),
+                               "watermark": value.get("watermark", True),
+                               "expected_dimensions": row["request"]["expected_pixels"],
+                               **{name: row["request"][name] for name in
+                                  ("wire_model", "mode", "reference_metadata", "dimension_basis")
+                                  if name in row["request"]}}
         state["asset"] = artifact
         hashes = {artifact["path"]: artifact["sha256"]}
         _save(row, owner, state, "unknown", artifact_hashes=hashes)

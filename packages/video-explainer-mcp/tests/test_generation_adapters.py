@@ -79,7 +79,7 @@ def pinned_json(project, name, value):
 
 def quote_fixture(wire, req, **changes):
     project, _, _, now = wire
-    common = dict(evidence_kind="operator_declaration", provider="dashscope", model="wan2.7-t2v",
+    common = dict(evidence_kind="operator_declaration", provider="dashscope", model=req.model,
                   principal="fixture-caller", recorded_at=now.isoformat(),
                   source_revision="SYNTHETIC_TEST_ONLY_NOT_PROVIDER_EVIDENCE")
     price = pinned_json(project, "price-source.json", {**common, "resolution": req.resolution,
@@ -90,7 +90,7 @@ def quote_fixture(wire, req, **changes):
     body = req.model_dump(mode="json")
     body.pop("quote")
     value = dict(evidence_kind="operator_declaration", provider="dashscope", api_origin=BASE,
-                 model="wan2.7-t2v", resolution=req.resolution, currency="USD", price_per_second="0.01",
+                 model=req.model, resolution=req.resolution, currency="USD", price_per_second="0.01",
                  principal="fixture-caller", request_sha256=digest(body), contract_sha256=digest(admission.CONTRACT),
                  issued_at=now.isoformat(), valid_until=(now + timedelta(hours=1)).isoformat(),
                  price_source=price, model_access_source=access)

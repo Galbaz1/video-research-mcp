@@ -1,14 +1,18 @@
 # Selected video generation: development route
 
-The development source adds three explainer MCP tools for `wan2.7-t2v`:
+The development source adds three explainer MCP tools for Wan text-to-video,
+first-frame and first-plus-last-frame generation:
 `explainer_generation_submit`, `explainer_generation_poll`, and
 `explainer_generation_cancel`. Published companion `0.2.2rc3` does not contain
 these tools. This route has source/mock checks and a synthetic MP4 decode witness;
-paid generation and picture/sound quality remain unqualified.
+paid generation and picture/sound quality remain unqualified. Text-to-video uses
+`wan2.7-t2v`; frame modes select `wan2.7-i2v` and send the pinned wire model
+`wan2.7-i2v-2026-04-25`.
 
-Use the [optional Qwen integration](../../../../docs/integrations/qwen-video-edit.md)
-for its separate image/video contracts. It stays disabled by default and has
-no qualified durable generation workflow. Neither route installs local models.
+Use the [image route](image-generation.md) for durable image generation, editing
+and translation. The [optional Qwen integration](../../../../docs/integrations/qwen-video-edit.md)
+has separate lip-sync and HappyHorse contracts, stays disabled by default and
+has no qualified durable generation workflow. These routes use provider APIs.
 
 ## Configure the source checkout
 
@@ -32,7 +36,8 @@ locally; FFmpeg and ffprobe must be available on `PATH` for output qualification
 
 The exact documented Beijing workspace origin is also accepted. The endpoint and
 key are required; neither has a usable default. Restart after changing them.
-The optional `generation` extra supplies HTTPX, loaded only at the HTTP boundary.
+The optional `generation` extra supplies HTTPX and Pillow. Pillow decodes frame
+references; HTTPX loads at the HTTP boundary.
 This route uses the existing project/job store and does not require the external
 `video_explainer` CLI for submit, poll or cancel.
 
@@ -46,11 +51,20 @@ for the complete request and declaration fields.
 A request binds a unique `logical_job_id`, script/scene IDs and pins, prompt,
 model, duration, resolution, ratio, seed and `synthetic illustrative` label.
 Supported durations are integer 2–15 seconds; resolutions are 720P/1080P and
-ratios are 16:9, 9:16, 1:1, 4:3 and 3:4. The selected contract requires audio. This route always requests the provider's
-visible AI Generated watermark and disables automatic prompt rewriting
-(`watermark=true`, `prompt_extend=false`); neither is configurable.
-Image-to-video, first/last frames, identity/style references, driving audio,
-continuation and transparency are refused before submission.
+ratios are 16:9, 9:16, 1:1, 4:3 and 3:4. The selected contract requires audio.
+`watermark=true` and `prompt_extend=false` are the defaults; both controls are
+explicitly configurable and retained in the saved request and asset handoff.
+
+For `wan2.7-i2v`, supply one `first_frame` reference and optionally one
+`last_frame`. Each pin must identify an opaque, unrotated, single-frame
+JPEG/PNG/BMP/WebP of at most 20 MB, with both sides 240–8000 pixels and no alpha
+channel or palette-transparency metadata. The declared
+ratio must match the first frame exactly. Declare `expected_dimensions` as
+multiples of 16: these are your output acceptance expectation, not a guarantee
+from the provider. Saved video must match them to qualify. The wire carries
+the exact pinned image bytes as data URIs. Identity/style references, driving
+audio, continuation and transparency remain unsupported on this video route;
+unsupported intent fails before submission.
 
 Before submit, provide three pinned JSON declarations inside the project:
 
