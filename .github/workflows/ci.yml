@@ -106,5 +106,7 @@ jobs:
           fi
           ffmpeg -version
           ffprobe -version
-      - run: uv run --locked python scripts/smoke_built_mcp.py dist/*.whl
+      - run: |
+          uv export --locked --no-dev --no-emit-project --no-hashes --output-file "$RUNNER_TEMP/video-research-mcp-constraints.txt"
+          UV_CONSTRAINT="$RUNNER_TEMP/video-research-mcp-constraints.txt" uv run --locked python scripts/smoke_built_mcp.py dist/*.whl
       - run: npm pack --dry-run
