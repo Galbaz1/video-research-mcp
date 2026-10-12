@@ -118,9 +118,22 @@ async def smoke(wheel: Path) -> None:
                 text=True,
             )
         )
+        environment = Path(scratch) / "venv"
+        subprocess.run(
+            ["uv", "venv", "--python", sys.executable, str(environment)],
+            env=env,
+            cwd=scratch,
+            check=True,
+        )
+        subprocess.run(
+            ["uv", "pip", "install", "--python", str(environment / "bin/python"), str(wheel)],
+            env=env,
+            cwd=scratch,
+            check=True,
+        )
         transport = StdioTransport(
-            command="uv",
-            args=["run", "--no-project", "--with", str(wheel), "video-research-mcp"],
+            command=str(environment / "bin/video-research-mcp"),
+            args=[],
             env=env,
             cwd=scratch,
         )
