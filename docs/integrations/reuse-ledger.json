@@ -7663,8 +7663,9 @@
         },
         {
           "target_path": "scripts/smoke_built_mcp.py",
-          "target_sha256": "5cebd84eaf19bd3ef35f8c5e60a969c9b3c2aa97298570063455cff49103c910",
-          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported."
+          "target_sha256": "45e38d26099700d4b45bae1b33a5cc202fdf8672a87617a66f8f77d602265676",
+          "provenance": "Own-source adaptation or independently authored requirements implementation; no external code, assets, weights or runtime copied/imported.",
+          "receipt_refresh": "2026-10-12 storage maintenance: bind scratch virtual-environment creation, wheel installation and cleanup. Wire-contract, configuration and media checks remain unchanged; historical qualification epochs retain their original source bindings."
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
