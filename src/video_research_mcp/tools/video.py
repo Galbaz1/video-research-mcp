@@ -33,7 +33,7 @@ from .video_cache import ensure_session_cache, prewarm_cache, prepare_cached_req
 from .video_core import analyze_video
 from .video_execution import cache_bypass_effects, execute_bounded_video
 from .video_plan import plan_video
-from .video_file import _upload_large_file, _video_file_content, _video_file_uri
+from .video_file import _upload_large_file, _video_file_content, _video_file_uri, _video_mime_type
 from .video_url import (
     _extract_video_id,
     _normalize_youtube_url,
@@ -492,6 +492,7 @@ async def video_create_session(
             title_content = _video_content(
                 clean_url,
                 "What is the title of this video? Reply with just the title.",
+                mime_type=_video_mime_type(Path(file_path)) if file_path else "video/mp4",
             )
             resp = await GeminiClient.generate(title_content, thinking_level="low")
             title = resp.strip()

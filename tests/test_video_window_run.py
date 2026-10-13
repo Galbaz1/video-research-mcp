@@ -71,9 +71,12 @@ def scenario(tmp_path, monkeypatch, clean_config, mock_weaviate_disabled):
         yield source, request, client
 
 
-async def test_actual_inline_count_generation_static_windows_and_single_preparation(scenario):
-    """GIVEN three windows WHEN executed THEN actual core/budget send each metadata pair once."""
+@pytest.mark.parametrize("remote", [False, True])
+async def test_actual_count_generation_static_windows_and_single_preparation(scenario, remote):
+    """GIVEN local or YouTube windows THEN both SDK calls carry static metadata and MIME."""
     source, request, client = scenario
+    if remote:
+        request = request.model_copy(update={"file_path": None, "url": "https://youtu.be/abcdefghijk"})
     plan = plan_windows(request, bounds())
     from video_research_mcp.tools.video_file import _video_file_content
 
@@ -81,7 +84,7 @@ async def test_actual_inline_count_generation_static_windows_and_single_preparat
         "video_research_mcp.video_window_run._video_file_content", wraps=_video_file_content
     ) as prepare:
         result = await execute_windows(plan, bounds(), job_id="inline")
-    assert prepare.await_count == 1
+    assert prepare.await_count == (0 if remote else 1)
     assert result["status"] == "completed" and result["covered_windows"] == [0, 1, 2]
     assert result["remaining_windows"] == result["unknown_windows"] == []
     assert result["run_usage"]["provider_calls"] == result["execution_usage"]["provider_calls"] == 6
@@ -104,7 +107,12 @@ async def test_actual_inline_count_generation_static_windows_and_single_preparat
         for call in (count, generation):
             content = call.kwargs["contents"]
             part = content.parts[0]
-            assert part.inline_data.data == source.read_bytes()
+            if remote:
+                assert part.file_data.file_uri == "https://www.youtube.com/watch?v=abcdefghijk"
+                assert part.file_data.mime_type == "video/mp4"
+            else:
+                assert part.inline_data.data == source.read_bytes()
+                assert part.inline_data.mime_type == "video/mp4"
             assert part.media_processing == types.MediaProcessing.STATIC
             assert part.video_metadata.model_dump(exclude_none=True) == {
                 "fps": 2.0,

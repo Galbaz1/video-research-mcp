@@ -7,6 +7,18 @@ and provider configuration.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0-rc.7] - Unreleased candidate
+
+### Fixed
+
+- Supply explicit `video/mp4` MIME for YouTube video Parts, including bounded
+  STATIC requests and contiguous window analysis. Preserve typed local-file MIME.
+- Check MIME, source URI and window metadata in both count and generation
+  regressions, and document complete-caption and real-screenshot preservation.
+
+This candidate has a distinct runtime/plugin version; it does not replace the
+published RC6 archives. Local installation and registry publication are separate.
+
 ## [0.8.0-rc.6] - Unreleased candidate
 
 Companion candidates: `0.2.2-rc.4` (PyPI `0.2.2rc4`). Core PyPI spelling:
