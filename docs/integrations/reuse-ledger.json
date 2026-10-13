@@ -1218,7 +1218,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
+          "target_sha256": "83fd7f309704ec8bd25fb7580a4546c20aaa37dc99ac87ae40b61d8cfb22260f",
           "provenance": "Independently authored exact-source hard cuts, actual timestamped storyboards, full dHash/MFCC candidate reports and measured whole/one-sided clip/audio exports using accepted snapshot, process, PTS and manifest controls. No foreign source body, media, font, weight or executable transferred to core. Optional NumPy and Pillow grants/artifacts are separately receipted; similarity does not establish identity, speech equality or temporal ordering."
         },
         {
@@ -3612,7 +3612,7 @@
         },
         {
           "target_path": "tests/test_video_window_run.py",
-          "target_sha256": "ee4567e4084cdccabcf462377c5feef3715488ec965c0829961f322be7cebe3b",
+          "target_sha256": "9ebf3e57eb92b3e0ec49754cdd29c35e86c4b45b876bb3417262438610cf5c99",
           "provenance": "Independently authored bounded local/YouTube window planning and canonical job continuation from pinned requirements; no external code, assets, weights or runtime copied/imported."
         },
         {
@@ -4645,7 +4645,7 @@
         },
         {
           "target_path": "package.json",
-          "target_sha256": "bb97df32149ed24fb0c070a5c8c71a47a702dde56ec62e56570b7f732800a3f2",
+          "target_sha256": "757837cf3354145751e8a11b434c9962593df281359c063aa1cafbf3eff0ac2f",
           "provenance": "Independently authored offline onboarding, preservation and source-manifest requirements; no upstream code, assets, weights or external runtime copied/imported/installed. Installer repair vrm-0e8.7.12 supplies independently authored Claude resource paths and the existing managed ownership/checkpoint layout; no new foreign code, assets, runtimes or provider activation."
         },
         {
@@ -6137,7 +6137,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
+          "target_sha256": "83fd7f309704ec8bd25fb7580a4546c20aaa37dc99ac87ae40b61d8cfb22260f",
           "provenance": "Independently authored located extraction/original-byte/durable readback requirements after pinned LightRAG parser-sidecar and MIT grant reads. Separately installed Poppler runs by ordinary CLI; optional PDFium runs only in a selected isolated worker after interpreter/package/native/metadata/source commitments. No LightRAG framework or parser service, foreign source, binary, assets, model or data copied or bundled. Positioned-word table inference and unmasked top-level RGB pixel export retain explicit limits; actual new native acceptance remains separate. No OCR, ASR, indexing or provider operation."
         },
         {
@@ -6562,7 +6562,7 @@
         },
         {
           "target_path": "pyproject.toml",
-          "target_sha256": "f3fd64fef3ac3cf9b69644cbae8b0737d4ab7c134dbf31f3da4d47b9cd6c4064",
+          "target_sha256": "83fd7f309704ec8bd25fb7580a4546c20aaa37dc99ac87ae40b61d8cfb22260f",
           "provenance": "Own package boundary: root sdist excludes nested canonical-helper aliases; standalone companion materializes exact firstparty helper bytes. No foreign assets or runtime transferred.",
           "receipt_refresh": "R92 actual own installed production doctor/start/poll,36frames two scenes/current-byte full decode and timely CUA ended; measured220/440Hz. Own authored component observed; full original9tools3workflows/foreignCLI flags/generation/spokeneducation remain unaccepted. Runtime whole-native coverage unknown; R84/R51 failures retained."
         },
@@ -8036,7 +8036,7 @@
   "dependency_locks": [
     {
       "path": "uv.lock",
-      "sha256": "37c878c1a33abc79b246b50244c7d630b6b04a9748410448c3db9e357ec73fb1",
+      "sha256": "339d6392feab4dfa034443786268fc0427894ad4ab1d740c1ed00d3e99816622",
       "registry_packages": [
         {
           "name": "aiofile",

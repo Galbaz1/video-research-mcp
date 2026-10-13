@@ -49,6 +49,33 @@ Knowledge results may include:
 - `local_filepath`: local video/content file path
 - `screenshot_dir`: local screenshot directory path
 
+### Complete transcript and screenshots
+
+For a request to preserve a complete video, keep the source package even when
+its claims are already covered in the destination wiki. Promote only supported
+new findings or useful strengthening, with source times and existing-page links.
+
+1. Check `infra_configure()` and the source duration. Use
+   `video_analyze_windows` to plan contiguous windows with explicit call, token,
+   output, frame and window limits before executing the authorized Gemini route.
+   Preserve every window outcome, including partial or failed results; a successful
+   request is not proof that every spoken word was transcribed.
+2. Retain any supplied captions byte-for-byte and export their complete ordered
+   text. For exact local media and explicitly associated captions, use
+   `audio_transcribe`; its bounded component requires separate selections for
+   longer videos. It does not fetch YouTube captions. Compare Gemini wording
+   against the complete caption population and record omissions or disagreements.
+   Validate inferred times against their requested windows before creating links.
+   Without complete reference coverage, label the transcript inferred or partial.
+3. Capture real source images through `video_frame` or `video_frames` when local
+   media is available. Retain PNGs, source hashes and actual decoded timestamps.
+   A remote Gemini answer cannot supply original source pixels. If acquisition
+   fails, retain the failure and use authorized browser-player screenshots with
+   observed playback times, explicitly leaving source-frame PTS unknown.
+4. Save transcript exports, screenshots, hashes, source/model identity, coverage
+   and uncertainty in the requested library. Open the dossier and verify the
+   complete transcript readback and rendered image links before reporting delivery.
+
 ## Tool Reference
 
 ### Video and YouTube Tools

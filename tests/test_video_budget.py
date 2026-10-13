@@ -127,6 +127,8 @@ async def test_bounded_real_caller_projects_after_complete_result(sdk_transport)
         "end_offset": "1.000s",
     }
     assert media.file_data.file_uri == "https://www.youtube.com/watch?v=abcdefghijk"
+    for call in (client.aio.models.count_tokens.call_args, client.aio.models.generate_content.call_args):
+        assert call.kwargs["contents"].parts[0].file_data.mime_type == "video/mp4"
     optimizer.assert_not_awaited()
     prewarm.assert_not_called()
 

@@ -15,6 +15,7 @@ class TestVideoContentWithMetadata:
             "https://www.youtube.com/watch?v=abc123", "summarize"
         )
         assert content.parts[0].file_data.file_uri == "https://www.youtube.com/watch?v=abc123"
+        assert content.parts[0].file_data.mime_type == "video/mp4"
         assert content.parts[0].video_metadata is None
         assert content.parts[1].text == "summarize"
 
@@ -52,4 +53,5 @@ class TestVideoContentWithMetadata:
         enhanced = _video_content_with_metadata(url, prompt)
 
         assert basic.parts[0].file_data.file_uri == enhanced.parts[0].file_data.file_uri
+        assert basic.parts[0].file_data.mime_type == enhanced.parts[0].file_data.mime_type == "video/mp4"
         assert basic.parts[1].text == enhanced.parts[1].text

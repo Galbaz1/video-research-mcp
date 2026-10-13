@@ -103,7 +103,7 @@ def _video_content(url: str, prompt: str) -> types.Content:
 
     return types.Content(
         parts=[
-            types.Part(file_data=types.FileData(file_uri=url)),
+            types.Part(file_data=types.FileData(file_uri=url, mime_type="video/mp4")),
             types.Part(text=prompt),
         ]
     )
@@ -135,7 +135,7 @@ def _video_content_with_metadata(
     """
     from google.genai import types
 
-    video_part = types.Part(file_data=types.FileData(file_uri=url))
+    video_part = types.Part(file_data=types.FileData(file_uri=url, mime_type="video/mp4"))
 
     if fps is not None or start_offset is not None or end_offset is not None:
         vm = types.VideoMetadata(
