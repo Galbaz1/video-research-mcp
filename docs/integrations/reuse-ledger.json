@@ -3116,7 +3116,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "8883eb23b65c5d0e67ad6eadb7800bf98087dde7c3eb9c1c5b1a37afba3ce8ce",
+          "target_sha256": "77ae2d63ec2c3d698a2fbbccd38247cb2e6bb1e50751055edb56d895adbff712",
           "provenance": "Independently authored Python source acquisition/metadata/owned video asset lifecycle from pinned capability requirements; no external source body, assets, model weights, executable or new dependency copied/imported/installed. Live source and media rights remain unverified."
         },
         {
@@ -4134,7 +4134,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "8883eb23b65c5d0e67ad6eadb7800bf98087dde7c3eb9c1c5b1a37afba3ce8ce"
+          "target_sha256": "77ae2d63ec2c3d698a2fbbccd38247cb2e6bb1e50751055edb56d895adbff712"
         },
         {
           "target_path": "src/video_research_mcp/tools/video_plan.py",
@@ -5832,7 +5832,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "8883eb23b65c5d0e67ad6eadb7800bf98087dde7c3eb9c1c5b1a37afba3ce8ce",
+          "target_sha256": "77ae2d63ec2c3d698a2fbbccd38247cb2e6bb1e50751055edb56d895adbff712",
           "provenance": "Independent scoped original-history/store implementation. Four exact pinned DeepAgents contracts and MIT grants read before writing; no foreign source, package, model, host filesystem or shell imported/copied. Selected read/write/list/glob/literal-search/automatic-manual compaction surfaces are limited to original bound sessions and derived profiles."
         },
         {
@@ -7398,7 +7398,7 @@
       "implementations": [
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "8883eb23b65c5d0e67ad6eadb7800bf98087dde7c3eb9c1c5b1a37afba3ce8ce",
+          "target_sha256": "77ae2d63ec2c3d698a2fbbccd38247cb2e6bb1e50751055edb56d895adbff712",
           "provenance": "Own-source reconciliation of pinned requirements."
         },
         {
@@ -7668,7 +7668,7 @@
         },
         {
           "target_path": "src/video_research_mcp/tools/video.py",
-          "target_sha256": "8883eb23b65c5d0e67ad6eadb7800bf98087dde7c3eb9c1c5b1a37afba3ce8ce",
+          "target_sha256": "77ae2d63ec2c3d698a2fbbccd38247cb2e6bb1e50751055edb56d895adbff712",
           "provenance": "Own public metadata clarification; input names/defaults/constraints/annotations unchanged."
         },
         {

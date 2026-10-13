@@ -97,13 +97,13 @@ def is_youtube_url(url: str) -> bool:
     return _is_youtube_host(parsed.netloc) or _is_youtu_be_host(parsed.netloc)
 
 
-def _video_content(url: str, prompt: str) -> types.Content:
+def _video_content(url: str, prompt: str, *, mime_type: str = "video/mp4") -> types.Content:
     """Build a Content with video FileData + text prompt."""
     from google.genai import types
 
     return types.Content(
         parts=[
-            types.Part(file_data=types.FileData(file_uri=url, mime_type="video/mp4")),
+            types.Part(file_data=types.FileData(file_uri=url, mime_type=mime_type)),
             types.Part(text=prompt),
         ]
     )
