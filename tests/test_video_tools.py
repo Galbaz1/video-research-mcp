@@ -256,9 +256,12 @@ class TestVideoCreateSession:
         assert result["local_filepath"] == ""
 
     @pytest.mark.asyncio
-    async def test_create_session_local_file(self, tmp_path, mock_gemini_client):
+    @pytest.mark.parametrize("extension,mime", [
+        (".mp4", "video/mp4"), (".webm", "video/webm"), (".mov", "video/quicktime"),
+    ])
+    async def test_create_session_local_file(self, tmp_path, mock_gemini_client, extension, mime):
         """Local file creates session with source_type='local'."""
-        f = tmp_path / "talk.mp4"
+        f = tmp_path / f"talk{extension}"
         f.write_bytes(b"\x00" * 50)
 
         uploaded = MagicMock()
@@ -276,6 +279,11 @@ class TestVideoCreateSession:
         assert result["session_id"]
         assert result["source_type"] == "local"
         assert result["local_filepath"] == str(f.resolve())
+        upload = mock_gemini_client["client"].aio.files.upload.call_args.kwargs
+        assert upload["config"].mime_type == mime
+        title_content = mock_gemini_client["generate"].call_args.args[0]
+        assert title_content.parts[0].file_data.mime_type == mime
+        assert title_content.parts[0].file_data.file_uri == uploaded.uri
 
     @pytest.mark.asyncio
     async def test_create_session_no_source(self):
