@@ -29,7 +29,7 @@ Repository = "https://github.com/Galbaz1/video-research-mcp"
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
-    "ruff>=0.16.9,<0.17",
+    "ruff>=0.16.9,<0.18",
 ]
 
 [project.scripts]
