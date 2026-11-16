@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T07:55:23.760245+00:00",
+  "generated_at": "2026-11-16T21:41:05.463565+00:00",
   "tool_count": 120,
   "tools": [
     {
@@ -4176,6 +4176,7 @@
                 "items": {
                   "type": "string"
                 },
+                "maxItems": 5000,
                 "type": "array"
               },
               {
@@ -30026,7 +30027,7 @@
             "description": "Optional JSON Schema for the response. If omitted, uses default VideoResult schema."
           },
           "thinking_level": {
-            "default": "high",
+            "default": "medium",
             "enum": [
               "minimal",
               "low",
@@ -30053,7 +30054,7 @@
               }
             ],
             "default": null,
-            "description": "Local files only: requested static sampling frames per second; observed coverage remains unknown"
+            "description": "Requested static sampling frames per second; observed coverage remains unknown"
           },
           "start_offset": {
             "anyOf": [
@@ -30066,7 +30067,7 @@
               }
             ],
             "default": null,
-            "description": "Local source interval start, using h/m/s units, for example '27m' or '1m30.5s'"
+            "description": "Source interval start (local file or YouTube URL), using h/m/s units, for example '27m' or '1m30.5s'"
           },
           "end_offset": {
             "anyOf": [
@@ -30079,7 +30080,12 @@
               }
             ],
             "default": null,
-            "description": "Local source interval end using h/m/s units; timestamps retain the original source origin"
+            "description": "Source interval end using h/m/s units; timestamps retain the original source origin"
+          },
+          "agentic": {
+            "default": false,
+            "description": "YouTube URL only: let the model navigate the video itself (media_processing=AGENTIC). Slower (about 1-6 minutes) and adds tool tokens, but finds specific moments in long videos. Not combinable with fps/start_offset/end_offset or execution_budget.",
+            "type": "boolean"
           },
           "strict_contract": {
             "default": false,
@@ -30163,7 +30169,7 @@
         "properties": {
           "request": {
             "additionalProperties": true,
-            "description": "Exactly one local file_path or YouTube url, instruction, start_ms/end_ms, window_ms, optional fps/output_schema/thinking_level; remote byte identity and freshness remain unknown",
+            "description": "Exactly one local file_path or YouTube url, instruction, start_ms/end_ms, window_ms, optional overlap_ms (each window starts this long before the previous ends), fps, output_schema, thinking_level (default medium); remote byte identity and freshness remain unknown",
             "type": "object"
           },
           "execution_budget": {
@@ -30221,10 +30227,10 @@
       "description": "Analyze all video files in a directory concurrently.\n\nScans the directory for supported video files (mp4, webm, mov, avi, mkv,\nmpeg, wmv, 3gpp), then analyzes each with the given instruction using\nbounded concurrency (3 parallel Gemini calls). Discovery rejects more than\n5,000 entry visits; narrow the directory or pattern to stay within that bound.",
       "annotations": {
         "title": null,
-        "read_only_hint": true,
+        "read_only_hint": false,
         "destructive_hint": false,
-        "idempotent_hint": true,
-        "open_world_hint": false
+        "idempotent_hint": false,
+        "open_world_hint": true
       },
       "parameters": {
         "additionalProperties": false,
@@ -30258,7 +30264,7 @@
             "description": "Optional JSON Schema for each video's response"
           },
           "thinking_level": {
-            "default": "high",
+            "default": "medium",
             "enum": [
               "minimal",
               "low",

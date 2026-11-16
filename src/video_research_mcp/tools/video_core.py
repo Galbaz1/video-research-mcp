@@ -98,7 +98,7 @@ async def _generate_result(
     contents: types.Content, schema: dict | None, cfg, thinking: str
 ) -> dict:
     """Use the existing client with the frozen effective model/sampling settings."""
-    options = {"model": cfg.default_model, "thinking_level": thinking}
+    options = {"model": cfg.default_model, "thinking_level": thinking, "stream": True}
     if supports_sampling(cfg.default_model):
         options["temperature"] = cfg.default_temperature
     if schema:
@@ -174,7 +174,7 @@ async def analyze_video(
     content_id: str,
     source_label: str,
     output_schema: dict | None = None,
-    thinking_level: str = "high",
+    thinking_level: str = "medium",
     use_cache: bool = True,
     metadata_context: str | None = None,
     local_filepath: str = "",

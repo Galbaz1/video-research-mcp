@@ -273,7 +273,7 @@ Restart the server after changing those environment settings.
 
 | Preset | Primary model | Auxiliary model |
 |---|---|---|
-| `best` | `gemini-3.1-pro-preview` | `gemini-3.8-flash` |
+| `best` | `gemini-4-carbon` | `gemini-3.8-flash` |
 | `stable` | `gemini-3.8-flash` | `gemini-3.8-flash` |
 | `budget` | `gemini-3.5-flash-lite` | `gemini-3.5-flash-lite` |
 

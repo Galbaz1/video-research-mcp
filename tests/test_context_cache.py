@@ -127,6 +127,19 @@ class TestGetOrCreate:
         assert result is None
         assert ("abc", "gemini-pro") not in cc_mod._registry
 
+    @pytest.mark.parametrize("model", ["gemini-4-carbon", "models/gemini-4-argon"])
+    async def test_implicit_cache_only_model_skips_create(self, model):
+        """GIVEN a Gemini 4 model WHEN get_or_create called THEN no caches.create is sent."""
+        mock_client = MagicMock()
+        mock_client.aio.caches.create = AsyncMock()
+
+        with patch("video_research_mcp.context_cache.GeminiClient.get", return_value=mock_client):
+            result = await cc_mod.get_or_create("abc", _video_parts(), model)
+
+        assert result is None
+        mock_client.aio.caches.create.assert_not_called()
+        assert cc_mod.failure_reason("abc", model) == "skipped:implicit_cache_only"
+
 
 class TestRefreshTtl:
     async def test_refresh_success(self):

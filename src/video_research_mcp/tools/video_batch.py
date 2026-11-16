@@ -39,7 +39,7 @@ async def video_batch_analyze(
     output_schema: Annotated[
         dict | None, Field(description="Optional JSON Schema for each video's response")
     ] = None,
-    thinking_level: ThinkingLevel = "high",
+    thinking_level: ThinkingLevel = "medium",
     max_files: Annotated[int, Field(ge=1, le=50, description="Maximum files to process")] = 20,
     job_id: Annotated[
         str | None,

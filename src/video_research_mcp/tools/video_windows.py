@@ -23,7 +23,7 @@ video_windows_server = FastMCP("video_windows")
 async def video_analyze_windows(
     request: Annotated[
         dict,
-        Field(description="Exactly one local file_path or YouTube url, instruction, start_ms/end_ms, window_ms, optional fps/output_schema/thinking_level; remote byte identity and freshness remain unknown"),
+        Field(description="Exactly one local file_path or YouTube url, instruction, start_ms/end_ms, window_ms, optional overlap_ms (each window starts this long before the previous ends), fps, output_schema, thinking_level (default medium); remote byte identity and freshness remain unknown"),
     ],
     execution_budget: Annotated[
         dict,
