@@ -103,8 +103,10 @@ video_analyze(
   file_path: str | None = None, # Local video file
   instruction: str = "...",     # What to analyze (default: comprehensive analysis)
   output_schema: dict | None,   # Custom JSON Schema for response shape
-  thinking_level: str = "high", # low | medium | high for the default model
-  use_cache: bool = True        # Cache results by instruction hash
+  thinking_level: str = "medium", # low | medium | high for the default model
+  use_cache: bool = True,       # Cache results by instruction hash
+  start_offset/end_offset/fps,  # Static window, local file or YouTube URL
+  agentic: bool = False         # YouTube only: model navigates the video (slower, targeted)
 )
 ```
 

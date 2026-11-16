@@ -333,16 +333,17 @@ async def test_branch_native_id_chaining_is_locally_supported_and_storage_is_imp
     )
 
 
-async def test_actual_sdk_text_accessor_preserves_only_trailing_model_output(
+async def test_actual_sdk_text_accessor_joins_model_outputs_across_thoughts(
     branch_namespace, sdk_mock
 ):
+    """SDK 3 skips thought steps in output_text; research_web extracts its own final run."""
     sdk_mock.responses[0]["steps"] = [
         {"type": "model_output", "content": [{"type": "text", "text": "Earlier original text"}]},
         {"type": "thought", "summary": [{"type": "text", "text": "Original hidden thought"}]},
         {"type": "model_output", "content": [{"type": "text", "text": "Final original text"}]},
     ]
     response = await _interact(branch_namespace, sdk_mock, "Original prompt", store=False)
-    assert response.output_text == "Final original text"
+    assert response.output_text == "Earlier original textFinal original text"
     assert response.steps[0].content[0].text == "Earlier original text"
 
 
@@ -483,7 +484,7 @@ def test_additive_id_column_recovers_but_current_replace_would_reset_it(tmp_path
 
 
 @pytest.mark.parametrize("attempts", [0, 1])
-async def test_installed_sdk_create_retry_option_counts_retries_not_total_attempts(attempts):
+async def test_installed_sdk_create_retry_option_counts_total_attempts(attempts):
     bodies = []
 
     def handler(request):
@@ -511,7 +512,7 @@ async def test_installed_sdk_create_retry_option_counts_retries_not_total_attemp
                 model="original-configured-model", input="Original prompt", store=False
             )
     client.close()
-    assert len(bodies) == 2, (
+    assert len(bodies) == 1, (
         "Re-evaluate installed SDK retry semantics before accepting a create-attempt bound"
     )
 

@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from google.genai import types
 
 from .client import GeminiClient
-from .config import get_config
+from .config import get_config, supports_explicit_cache
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +95,10 @@ async def get_or_create(
     """
     _load_registry()
     key = (content_id, model)
+
+    if not supports_explicit_cache(model):
+        _last_failure[key] = "skipped:implicit_cache_only"
+        return None
 
     if key in _suppressed:
         logger.debug("Skipping cache for %s/%s (suppressed: too few tokens)", content_id, model)

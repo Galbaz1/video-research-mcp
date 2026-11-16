@@ -63,7 +63,7 @@ def _windows(request: WindowAnalysisRequest, fps: float) -> list[dict]:
                 request.instruction, start, min(start + request.window_ms, request.end_ms)
             ),
         }
-        for index, start in enumerate(range(request.start_ms, request.end_ms, request.window_ms))
+        for index, start in enumerate(request.window_starts())
     ]
 
 
@@ -91,7 +91,7 @@ def _source(request: WindowAnalysisRequest) -> dict:
 
 
 def plan_windows(request: WindowAnalysisRequest, limits: WindowRunLimits) -> dict:
-    """Plan contiguous non-overlapping source windows without contacting a provider.
+    """Plan consecutive source windows, optionally overlapping, without provider calls.
 
     Args:
         request: Strict explicit local interval and analysis settings.
@@ -103,7 +103,7 @@ def plan_windows(request: WindowAnalysisRequest, limits: WindowRunLimits) -> dic
     request = WindowAnalysisRequest.model_validate(request)
     limits = WindowRunLimits.model_validate(limits)
     source = _source(request)
-    count = (request.end_ms - request.start_ms + request.window_ms - 1) // request.window_ms
+    count = len(request.window_starts())
     frames_each = max(1, limits.max_frames // (2 * count))
     density = min(
         1.0, frames_each * 1000 / min(request.window_ms, request.end_ms - request.start_ms)

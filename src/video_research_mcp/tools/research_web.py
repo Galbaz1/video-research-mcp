@@ -23,6 +23,27 @@ from .research import research_server
 logger = logging.getLogger(__name__)
 
 
+def _final_output_text(steps) -> str:
+    """Join the trailing run of model-output text; any other step, thoughts included, ends it.
+
+    SDK 3 ``Interaction.output_text`` skips thought steps and so also joins earlier outputs.
+    """
+    texts: list[str] = []
+    for step in reversed(steps or []):
+        if step.type == "user_input":
+            break
+        if step.type != "model_output":
+            if texts:
+                break
+            continue
+        for item in reversed(step.content or []):
+            if item.type == "text":
+                texts.append(item.text or "")
+            elif texts:
+                return "".join(reversed(texts))
+    return "".join(reversed(texts))
+
+
 def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
     """Extract trailing model output text and unique sources from current SDK steps.
 
@@ -58,7 +79,7 @@ def _extract_report(interaction) -> tuple[str, list[DeepResearchSource]]:
                         ),
                     )
 
-    return interaction.output_text or "", list(sources.values())
+    return _final_output_text(interaction.steps), list(sources.values())
 
 
 def _extract_usage(interaction) -> dict:

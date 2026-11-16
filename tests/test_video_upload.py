@@ -381,7 +381,7 @@ async def test_actual_sdk_resumable_upload_and_get_use_owned_bytes(upload_case, 
             return httpx.Response(200, headers={"x-goog-upload-status": "final"}, json={"file": {"name": "files/wire", "uri": "https://fixture.invalid/files/wire", "state": "PROCESSING"}})
         return httpx.Response(200, json={"name": "files/wire", "uri": "https://fixture.invalid/files/wire", "state": "ACTIVE"})
     transport = httpx.AsyncClient(transport=httpx.MockTransport(respond))
-    client = genai.Client(api_key="fixture-key", http_options=types.HttpOptions(httpx_async_client=transport))
+    client = genai.Client(api_key="fixture-key", http_options=types.HttpOptions(api_version="v1beta", httpx_async_client=transport))
     monkeypatch.setattr(video_upload.GeminiClient, "get", lambda: client)
     try:
         assert await _upload_large_file(source, "video/mp4") == "https://fixture.invalid/files/wire"
@@ -424,7 +424,7 @@ async def test_actual_sdk_retained_get_identity_blocks_duplicate_launch(upload_c
                                   json={"file": dict(identity, state="PROCESSING")})
         return httpx.Response(200, json=dict(identity, state="ACTIVE") if len(requests) == 3 else broken)
     transport = httpx.AsyncClient(transport=httpx.MockTransport(respond))
-    client = genai.Client(api_key="fixture-key", http_options=types.HttpOptions(httpx_async_client=transport))
+    client = genai.Client(api_key="fixture-key", http_options=types.HttpOptions(api_version="v1beta", httpx_async_client=transport))
     monkeypatch.setattr(video_upload.GeminiClient, "get", lambda: client)
     try:
         assert await _upload_large_file(source, "video/mp4") == identity["uri"]

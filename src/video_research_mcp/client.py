@@ -32,6 +32,28 @@ def _resolve_thinking_level(value: str) -> str:
     return level
 
 
+_STREAM_TIMEOUT_MS = 600_000
+
+
+async def _streamed(client: genai.Client, **request: Any) -> types.GenerateContentResponse:
+    """Collect a streamed generation into one response with its visible text joined."""
+    from google.genai import types
+
+    last, text = None, []
+    async for chunk in await client.aio.models.generate_content_stream(**request):
+        last = chunk
+        content = chunk.candidates[0].content if chunk.candidates else None
+        for part in (content.parts or []) if content else []:
+            if part.text and not getattr(part, "thought", False):
+                text.append(part.text)
+    if last is None:
+        raise ValueError("Gemini returned an empty stream")
+    if last.candidates:
+        joined = types.Part(text="".join(text))
+        last.candidates[0].content = types.Content(role="model", parts=[joined])
+    return last
+
+
 class GeminiClient:
     """Process-wide Gemini client pool (one client per API key)."""
 
@@ -51,10 +73,12 @@ class GeminiClient:
             client = genai.Client(
                 api_key=key,
                 http_options=types.HttpOptions(
+                    # SDK 3 defaults to v1; agentic video processing exists only on v1beta.
+                    api_version="v1beta",
                     retry_options=types.HttpRetryOptions(attempts=1),
                 ),
             )
-            # Interactions interprets attempts=1 as one retry; launches have no idempotency key.
+            # Interactions launches have no idempotency key: keep them to one attempt.
             client.aio.interactions.sdk_configuration.retry_config = None
             client.interactions.sdk_configuration.retry_config = None
             cls._clients[key] = client
@@ -73,6 +97,7 @@ class GeminiClient:
         api_key: str | None = None,
         system_instruction: str | None = None,
         tools: list[types.Tool] | None = None,
+        stream: bool = False,
         **kwargs: Any,
     ) -> str:
         """Generate text via Gemini with thinking support and optional structured output.
@@ -90,6 +115,9 @@ class GeminiClient:
             api_key: Explicit account credential for a frozen, bounded workflow.
             system_instruction: System-level instruction prepended to the prompt.
             tools: Gemini tool wiring (e.g. GoogleSearch, UrlContext).
+            stream: Stream the response with a 10-minute deadline, for long video
+                requests that would otherwise hit read timeouts. Ignored under an
+                execution budget, which meters single non-streamed calls.
             **kwargs: Forwarded to the underlying generate_content call.
 
         Returns:
@@ -130,22 +158,16 @@ class GeminiClient:
         else:
             from .job_execution import single_submission
 
-            if single_submission.get():
-                response = await client.aio.models.generate_content(
-                    model=resolved_model,
-                    contents=contents,
-                    config=config,
-                    **kwargs,
-                )
-            else:
-                response = await with_retry(
-                    lambda: client.aio.models.generate_content(
-                        model=resolved_model,
-                        contents=contents,
-                        config=config,
-                        **kwargs,
-                    )
-                )
+            if stream:
+                config.http_options = types.HttpOptions(timeout=_STREAM_TIMEOUT_MS)
+
+            def request():
+                options = dict(model=resolved_model, contents=contents, config=config, **kwargs)
+                if stream:
+                    return _streamed(client, **options)
+                return client.aio.models.generate_content(**options)
+
+            response = await (request() if single_submission.get() else with_retry(request))
 
         # Strip thinking parts — only return user-visible text
         content = response.candidates[0].content if response.candidates else None
