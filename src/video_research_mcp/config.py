@@ -20,30 +20,39 @@ from .models.ingestion_service import DoclingService
 logger = logging.getLogger(__name__)
 
 VALID_THINKING_LEVELS = {"minimal", "low", "medium", "high"}
-_MODERN_FLASH_MODELS = {
+# Gemini 4 models cache implicitly only: caches.create returns 400 for each of them.
+_GEMINI_4_MODELS = {"gemini-4-carbon", "gemini-4-argon", "gemini-4-hydrogen"}
+# Models that ignore temperature/top_p/top_k and reject minimal thinking.
+_FIXED_SAMPLING_MODELS = {
     "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-flash-latest",
+    *_GEMINI_4_MODELS,
 }
 
 
 def supports_sampling(model: str) -> bool:
     """Return whether the configured model accepts sampling parameters."""
-    return model.removeprefix("models/") not in _MODERN_FLASH_MODELS
+    return model.removeprefix("models/") not in _FIXED_SAMPLING_MODELS
+
+
+def supports_explicit_cache(model: str) -> bool:
+    """Return whether the model accepts explicit context caches (caches.create)."""
+    return model.removeprefix("models/") not in _GEMINI_4_MODELS
 
 
 def validate_model_thinking(model: str, level: str) -> None:
     """Reject unsupported thinking levels before making a billable request."""
     model = model.removeprefix("models/")
     if level == "minimal" and (
-        model in _MODERN_FLASH_MODELS or model.startswith("gemini-3.1-pro-")
+        model in _FIXED_SAMPLING_MODELS or model.startswith("gemini-3.1-pro-")
     ):
         raise ValueError(f"{model} does not support minimal thinking; use low, medium, or high")
 
 
 MODEL_PRESETS: dict[str, dict[str, str]] = {
     "best": {
-        "default_model": "gemini-3.1-pro-preview",
+        "default_model": "gemini-4-carbon",
         "flash_model": "gemini-3.8-flash",
-        "label": "Reasoning — 3.1 Pro preview + 3.8 Flash",
+        "label": "Reasoning — Gemini 4 Carbon + 3.8 Flash",
     },
     "stable": {
         "default_model": "gemini-3.8-flash",

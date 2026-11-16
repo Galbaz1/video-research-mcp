@@ -9,6 +9,22 @@ and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.8.0-rc.7] - Unreleased candidate
 
+### Added
+
+- Gemini 4 Carbon/Argon/Hydrogen rules: no sampling parameters, no `minimal`
+  thinking, implicit caching only (explicit `caches.create` is skipped). The `best`
+  preset uses `gemini-4-carbon`.
+- `video_analyze` accepts `start_offset`/`end_offset`/`fps` for YouTube URLs and an
+  opt-in `agentic` flag (YouTube only, not combinable with offsets, `fps` or
+  `execution_budget`). `video_analyze_windows` accepts `overlap_ms`.
+
+### Changed
+
+- `google-genai` 3.x (`>=3.1.0,<4`, locked 3.3.0). The shared client pins API
+  version `v1beta`; Deep Research report text keeps its own final-output extraction.
+- Video analysis streams its response with a 10-minute deadline. Video tools
+  default to `medium` thinking.
+
 ### Fixed
 
 - Supply explicit `video/mp4` MIME for YouTube video Parts, including bounded

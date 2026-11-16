@@ -19,7 +19,7 @@ from video_research_mcp.tracing import trace
 from ..client import GeminiClient
 from ..retry import with_retry
 from .. import context_cache
-from ..config import get_config
+from ..config import get_config, validate_model_thinking
 from ..errors import make_tool_error
 from ..models.video import SessionInfo, SessionResponse
 from ..models.session_memory import SessionScope
@@ -131,20 +131,30 @@ async def video_analyze(
             "If omitted, uses default VideoResult schema."
         ),
     ] = None,
-    thinking_level: ThinkingLevel = "high",
+    thinking_level: ThinkingLevel = "medium",
     use_cache: Annotated[bool, Field(description="Use cached results")] = True,
     fps: Annotated[
         float | None,
-        Field(gt=0, le=30, strict=True, description="Local files only: requested static sampling frames per second; observed coverage remains unknown"),
+        Field(gt=0, le=30, strict=True, description="Requested static sampling frames per second; observed coverage remains unknown"),
     ] = None,
     start_offset: Annotated[
         str | None,
-        Field(max_length=64, strict=True, description="Local source interval start, using h/m/s units, for example '27m' or '1m30.5s'"),
+        Field(max_length=64, strict=True, description="Source interval start (local file or YouTube URL), using h/m/s units, for example '27m' or '1m30.5s'"),
     ] = None,
     end_offset: Annotated[
         str | None,
-        Field(max_length=64, strict=True, description="Local source interval end using h/m/s units; timestamps retain the original source origin"),
+        Field(max_length=64, strict=True, description="Source interval end using h/m/s units; timestamps retain the original source origin"),
     ] = None,
+    agentic: Annotated[
+        bool,
+        Field(
+            strict=True,
+            description="YouTube URL only: let the model navigate the video itself "
+            "(media_processing=AGENTIC). Slower (about 1-6 minutes) and adds tool tokens, "
+            "but finds specific moments in long videos. Not combinable with "
+            "fps/start_offset/end_offset or execution_budget.",
+        ),
+    ] = False,
     strict_contract: Annotated[
         bool,
         Field(
@@ -206,9 +216,10 @@ async def video_analyze(
         output_schema: Optional JSON Schema dict for custom output shape.
         thinking_level: Gemini thinking depth.
         use_cache: Whether to use cached results.
-        fps: Requested static sampling rate for a local file, at most 30.
-        start_offset: Local window start, normalized to milliseconds.
-        end_offset: Local window end, greater than the start when supplied.
+        fps: Requested static sampling rate, at most 30.
+        start_offset: Window start, normalized to milliseconds.
+        end_offset: Window end, greater than the start when supplied.
+        agentic: Agentic video processing for a YouTube URL (static mode otherwise).
         strict_contract: Run strict contract pipeline with quality gates.
         dry_run: Return a local execution plan with zero provider calls.
         execution_budget: Explicit request limits and a static sampling window.
@@ -239,9 +250,13 @@ async def video_analyze(
             raise ValueError("Provide exactly one of: url or file_path")
         if sources > 1:
             raise ValueError("Provide exactly one of: url or file_path — got both")
+        validate_model_thinking(get_config().default_model, thinking_level)
         window = normalize_window(fps, start_offset, end_offset)
-        if window is not None and url is not None:
-            raise ValueError("fps/start_offset/end_offset apply to local files only (file_path)")
+        if agentic and (url is None or window is not None or execution_budget is not None):
+            raise ValueError(
+                "agentic requires a YouTube url and cannot be combined with "
+                "fps/start_offset/end_offset or execution_budget (static mode only)"
+            )
         if window is not None and execution_budget is not None:
             raise ValueError("Use the execution_budget window or fps/start_offset/end_offset, not both")
     except ValueError as exc:
@@ -288,12 +303,20 @@ async def video_analyze(
             content_id = _extract_video_id(url)
             source_label = clean_url
 
-            meta_ctx, fps_override = await _youtube_metadata_pipeline(content_id, instruction)
-            if meta_ctx:
-                metadata_context = meta_ctx
-                contents = _video_content_with_metadata(clean_url, instruction, fps=fps_override)
-            else:
+            metadata_context, fps_override = await _youtube_metadata_pipeline(
+                content_id, instruction
+            )
+            if agentic:
+                from google.genai import types
+
                 contents = _video_content(clean_url, instruction)
+                contents.parts[0].media_processing = types.MediaProcessing.AGENTIC
+            elif window is not None:
+                contents = _video_content_with_metadata(
+                    clean_url, instruction, **window.model_dump(exclude_none=True)
+                )
+            else:
+                contents = _video_content_with_metadata(clean_url, instruction, fps=fps_override)
         else:
             if window is None:
                 contents, content_id, file_uri = await _video_file_content(file_path, instruction)

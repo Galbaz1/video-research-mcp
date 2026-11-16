@@ -1,11 +1,21 @@
 # Video windows and resumable analysis
 
-`video_analyze` accepts local-file `fps`, `start_offset` and `end_offset`. Durations
+`video_analyze` accepts `fps`, `start_offset` and `end_offset` for a local file or a
+YouTube URL; on a URL they become the URL part's `video_metadata`. Durations
 use ordered `h`, `m`, `s` units with at most three decimal places in seconds:
 `27m`, `1640s`, `1h2m3.125s`. Equivalent durations normalize to the same millisecond
 values. FPS must be finite, greater than zero and at most 30. An end must exceed
 the start. These arguments are separate from `execution_budget`, whose existing
 window already owns its requested FPS and interval.
+
+`agentic=true` (YouTube URL only) sets `media_processing="AGENTIC"`: the model
+navigates the video itself with tool calls instead of reading sampled frames. It
+suits a targeted question about a long video (measured on Gemini 4 Carbon: about
+1 minute and 30k tool tokens for one targeted question, 3–6 minutes and up to
+180k for broad ones). Clipping offsets and `fps` exist only in static mode, so
+`agentic` with `fps`, `start_offset`, `end_offset` or `execution_budget` is rejected
+before any call. The shared client uses API version `v1beta`, which agentic
+processing requires. Video analysis streams its response with a 10-minute deadline.
 
 The prepared inline or uploaded SDK media part carries typed `VideoMetadata` and
 `MediaProcessing.STATIC`. The response's `analysis_window` describes the requested
@@ -28,7 +38,10 @@ Symlink and nonregular source/index paths reject before provider dispatch.
 or YouTube `url`, explicit `end_ms`, instruction and five execution limits. The
 tool hashes local original bytes, freezes runtime/account/schema/prompt settings
 and enumerates at most 256
-contiguous, non-overlapping, half-open intervals. The interval is caller supplied;
+consecutive half-open intervals. With `overlap_ms` each window starts that long
+before the previous one ends (for example 17-minute windows with 30 s overlap);
+a final window that would fall inside the previous overlap is skipped. The default
+`overlap_ms` is 0, giving contiguous non-overlapping intervals. The interval is caller supplied;
 this planning step does not decode the source or verify its duration. Use
 `media_info` to inspect actual duration before choosing an interval. Explicit FPS
 is retained; automatic FPS selects a bounded uniform density from the initial

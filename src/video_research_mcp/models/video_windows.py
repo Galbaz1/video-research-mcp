@@ -35,9 +35,10 @@ class WindowAnalysisRequest(BaseModel):
     start_ms: StrictInt = Field(default=0, ge=0, le=2**53 - 1)
     end_ms: StrictInt = Field(gt=0, le=2**53 - 1)
     window_ms: StrictInt = Field(default=300000, gt=0, le=2**53 - 1)
+    overlap_ms: StrictInt = Field(default=0, ge=0, le=2**53 - 1)
     fps: float | None = Field(default=None, gt=0, le=30, strict=True, allow_inf_nan=False)
     output_schema: dict | None = None
-    thinking_level: str = "high"
+    thinking_level: str = "medium"
 
     @model_validator(mode="after")
     def validate_interval(self) -> WindowAnalysisRequest:
@@ -46,6 +47,13 @@ class WindowAnalysisRequest(BaseModel):
             raise ValueError("end_ms must exceed start_ms")
         if (self.file_path is None) == (self.url is None):
             raise ValueError("Exactly one of file_path or YouTube url is required")
-        if (self.end_ms - self.start_ms + self.window_ms - 1) // self.window_ms > 256:
+        if self.overlap_ms >= self.window_ms:
+            raise ValueError("overlap_ms must be shorter than window_ms")
+        if len(self.window_starts()) > 256:
             raise ValueError("A plan may select at most 256 windows")
         return self
+
+    def window_starts(self) -> range:
+        """Start each window overlap_ms before the previous one ends; skip a tail inside it."""
+        last = max(self.end_ms - self.overlap_ms, self.start_ms + 1)
+        return range(self.start_ms, last, self.window_ms - self.overlap_ms)

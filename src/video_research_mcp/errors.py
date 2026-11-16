@@ -114,7 +114,7 @@ def categorize_error(error: Exception) -> tuple[ErrorCategory, str]:
         )
     if any(message in s for message in (
         "invalid mode", "invalid thinking level", "does not support minimal thinking",
-        "does not support temperature",
+        "does not support temperature", "agentic requires a youtube url",
     )):
         return (
             ErrorCategory.API_INVALID_ARGUMENT,

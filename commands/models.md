@@ -17,10 +17,10 @@ You are a model switching assistant for the video-research MCP server.
 
 | Preset | Models | Description |
 |--------|--------|-------------|
-| `best` | Gemini 3.1 Pro preview + Gemini 3.8 Flash | Explicit Pro option; verify lifecycle and quota |
+| `best` | Gemini 4 Carbon + Gemini 3.8 Flash | Strongest reasoning; implicit caching only, no sampling parameters |
 | `stable` | Gemini 3.8 Flash for both routes | Source default; provider availability is separate |
 | `budget` | Gemini 3.5 Flash-Lite for both routes | Lower-cost option |
 
-4. Report supported thinking levels from the active model: Gemini 3.8 Flash accepts `low`, `medium`, and `high`; `minimal` is only valid on explicitly selected compatible models. Presets are runtime settings, not persisted environment changes.
+4. Report supported thinking levels from the active model: Gemini 3.8 Flash and Gemini 4 Carbon accept `low`, `medium`, and `high`; `minimal` is only valid on explicitly selected compatible models. Presets are runtime settings, not persisted environment changes.
 
 Keep responses concise. Highlight the active preset if one matches.

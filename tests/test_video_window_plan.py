@@ -97,6 +97,8 @@ def test_strict_limits_reject_invalid_reservations(field, value):
         {"fps": float("inf")},
         {"fps": True},
         {"fps": 31},
+        {"overlap_ms": -1},
+        {"window_ms": 1000, "overlap_ms": 1000},
     ],
 )
 def test_strict_selection_rejects_invalid_or_excessive_windows(change):
@@ -142,3 +144,29 @@ def test_plan_source_settings_and_metadata_mutation_fail_closed(
     update_config(gemini_api_key="different-dummy-account")
     with pytest.raises(ValueError, match="settings changed"):
         validate_plan(plan)
+
+
+@pytest.mark.parametrize(
+    ("end_ms", "window_ms", "overlap_ms", "expected"),
+    [
+        (2970000, 1020000, 30000, [(0, 1020000), (990000, 2010000), (1980000, 2970000)]),
+        (1000000, 600000, 400000, [(0, 600000), (200000, 800000), (400000, 1000000)]),
+        (1000, 600, 0, [(0, 600), (600, 1000)]),
+    ],
+)
+def test_overlapping_youtube_windows_start_before_previous_end(
+    clean_config, end_ms, window_ms, overlap_ms, expected
+):
+    """GIVEN overlap WHEN planned THEN each window starts overlap_ms early and no tail
+    window falls entirely inside the previous one."""
+    plan = plan_windows(
+        WindowAnalysisRequest(
+            url="https://youtu.be/pjdyNeccdpU", instruction="inspect", end_ms=end_ms,
+            window_ms=window_ms, overlap_ms=overlap_ms,
+        ),
+        limits(),
+    )
+    validate_plan(plan)
+    assert [(w["start_ms"], w["end_ms"]) for w in plan["windows"]] == expected
+    assert plan["source"]["kind"] == "remote_url"
+    assert plan["runtime"]["thinking_level"] == "medium"

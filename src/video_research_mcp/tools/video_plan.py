@@ -56,7 +56,7 @@ def plan_video(
     limits: ExecutionLimits | None,
     strict_contract: bool,
     output_schema: dict | None = None,
-    thinking_level: str = "high",
+    thinking_level: str = "medium",
     video_metadata: types.VideoMetadata | None = None,
 ) -> dict:
     """Enumerate source reads/sends and unknowns without clients, uploads or inference."""
